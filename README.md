@@ -38,7 +38,7 @@ Until it's a private repository and it's not published on packagist :
 
 ```yaml
     "require": {
-        "oro/crm": "dev-master",
+        "oro/crm-professional": "dev-master",
     },
     "repositories": [
         {
