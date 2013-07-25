@@ -37,7 +37,7 @@ Until it's a private repository and it's not published on packagist :
 
 ```yaml
     "require": {
-        "oro/platform": "dev-master",
+        "oro/platform-professional": "dev-master",
     },
     "repositories": [
         {
