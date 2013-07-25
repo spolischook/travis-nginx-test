@@ -1,0 +1,24 @@
+{
+    "name": "oro/platform-professional",
+    "description": "OroCRM",
+    "homepage": "https://github.com/laboro/platform-professional.git",
+    "license": "",
+    "autoload": {
+        "psr-0": { "OroProfessional\\Bundle": "src/" }
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "oro/platform": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/platform.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laboro/SonataAdminBundle.git"
+        }
+    ],
+    "minimum-stability": "dev"
+}
