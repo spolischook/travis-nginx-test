@@ -1,6 +1,6 @@
 {
     "name": "oro/platform-professional",
-    "description": "OroCRM",
+    "description": "Business Application Platform Professional (BAPP)",
     "homepage": "https://github.com/laboro/platform-professional.git",
     "license": "",
     "autoload": {
