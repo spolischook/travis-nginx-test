@@ -1,9 +1,9 @@
 {
-    "name": "oro/ews-bundle",
+    "name": "oro-professional/ews-bundle",
     "type": "symfony-bundle",
     "description": "BAPP Exchange Server Web Services Bundle",
     "keywords": ["BAPP"],
-    "homepage": "https://github.com/laboro/EwsBundle",
+    "homepage": "https://github.com/laboro/platform-professional/src/OroProfessional/Bundle/EwsBundle",
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",

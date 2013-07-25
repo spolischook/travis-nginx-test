@@ -6,7 +6,6 @@ use OroProfessional\Bundle\EwsBundle\Ews\ExchangeWebServices;
 use OroProfessional\Bundle\EwsBundle\Ews\EwsType as EwsType;
 use OroProfessional\Bundle\EwsBundle\Connector\Search\SearchQuery;
 
-
 /**
  * A base class for connectors intended to work with emails located on Microsoft Exchange Server using Exchange Web Services (EWS).
  *
