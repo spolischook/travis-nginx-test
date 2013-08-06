@@ -4,7 +4,7 @@
     "homepage": "https://github.com/laboro/platform-professional.git",
     "license": "",
     "autoload": {
-        "psr-0": { "OroProfessional\\Bundle": "src/" }
+        "psr-0": { "OroPro\\Bundle": "src/" }
     },
     "require": {
         "php": ">=5.3.3",
