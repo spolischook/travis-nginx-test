@@ -4,7 +4,7 @@
     "homepage": "https://github.com/laboro/crm-professional.git",
     "license": "",
     "autoload": {
-        "psr-0": { "OroCRMProfessional\\Bundle": "src/" }
+        "psr-0": { "OroCRMPro\\Bundle": "src/" }
     },
     "require": {
         "php": ">=5.3.3",

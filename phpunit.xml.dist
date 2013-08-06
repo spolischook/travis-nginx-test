@@ -29,13 +29,13 @@
             <directory>src</directory>
             <exclude>
                 <directory>vendor</directory>
-                <directory>src/OroCRMProfessional/Bundle/DataFixtures</directory>
-                <directory>src/OroCRMProfessional/Bundle/DataFixtures</directory>
-                <directory>src/OroCRMProfessional/Bundle/Resources</directory>
-                <directory>src/OroCRMProfessional/Bundle/Tests</directory>
-                <directory>src/OroCRMProfessional/Bundle/Resources</directory>
-                <directory>src/OroCRMProfessional/Bundle/Tests</directory>
-                <directory>src/OroCRMProfessional/Bundle/vendor</directory>
+                <directory>src/OroCRMPro/Bundle/DataFixtures</directory>
+                <directory>src/OroCRMPro/Bundle/DataFixtures</directory>
+                <directory>src/OroCRMPro/Bundle/Resources</directory>
+                <directory>src/OroCRMPro/Bundle/Tests</directory>
+                <directory>src/OroCRMPro/Bundle/Resources</directory>
+                <directory>src/OroCRMPro/Bundle/Tests</directory>
+                <directory>src/OroCRMPro/Bundle/vendor</directory>
             </exclude>
         </whitelist>
     </filter>
