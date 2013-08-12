@@ -38,10 +38,13 @@ class ItemId
 
     /**
      * @param string $id
+     * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -54,9 +57,12 @@ class ItemId
 
     /**
      * @param string $changeKey
+     * @return $this
      */
     public function setChangeKey($changeKey)
     {
         $this->changeKey = $changeKey;
+
+        return $this;
     }
 }

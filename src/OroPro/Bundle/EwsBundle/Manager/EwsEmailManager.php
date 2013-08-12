@@ -12,6 +12,11 @@ use OroPro\Bundle\EwsBundle\Manager\DTO\EmailBody;
 
 class EwsEmailManager
 {
+    /**
+     * The list of special folder names, also known as EWS distinguished folders
+     *
+     * @var array
+     */
     protected static $distinguishedFolderNames = array(
         'inbox' => EwsType\DistinguishedFolderIdNameType::INBOX,
         'sent' => EwsType\DistinguishedFolderIdNameType::OUTBOX,
@@ -29,38 +34,63 @@ class EwsEmailManager
      *
      * @var string
      */
-    protected $selectFolder = 'inbox';
+    protected $selectedFolder = 'inbox';
 
     /**
      * An user login all email related actions are performed for
      *
      * @var string
      */
-    protected $selectUser;
+    protected $selectedUser = null;
 
+    /**
+     * Constructor
+     *
+     * @param EwsConnector $connector
+     */
     public function __construct(EwsConnector $connector)
     {
         $this->connector = $connector;
     }
 
+    /**
+     * Get selected folder
+     *
+     * @return string
+     */
     public function getSelectedFolder()
     {
-        return $this->selectFolder;
+        return $this->selectedFolder;
     }
 
+    /**
+     * Set selected folder
+     *
+     * @param $folder
+     */
     public function selectFolder($folder)
     {
-        $this->selectFolder = $folder;
+        $this->selectedFolder = $folder;
     }
 
+    /**
+     * Get email of selected user
+     *
+     * @return string
+     */
     public function getSelectedUser()
     {
-        return $this->selectFolder;
+        return $this->selectedUser;
     }
 
+    /**
+     * Set email of selected user
+     *
+     * @param $email
+     */
     public function selectUser($email)
     {
-        $this->selectUser = $email;
+        $this->selectedUser = $email;
     }
 
     /**
@@ -103,6 +133,11 @@ class EwsEmailManager
                 foreach ($msg->BccRecipients->Mailbox as $mailbox) {
                     $email->addBccRecipient($mailbox->EmailAddress);
                 }
+                foreach ($msg->Attachments->FileAttachment as $attachment) {
+                    $email->addAttachmentId($attachment->AttachmentId->Id);
+                }
+
+                $result[] = $email;
             }
         }
 
@@ -120,7 +155,8 @@ class EwsEmailManager
         $response = $this->connector->getItem(
             $this->convertToEwsItemId($emailId),
             EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES,
-            EwsType\BodyTypeResponseType::BEST);
+            EwsType\BodyTypeResponseType::BEST
+        );
 
         $body = new EmailBody();
         $body
@@ -149,7 +185,8 @@ class EwsEmailManager
             $ids,
             false,
             false,
-            EwsType\BodyTypeResponseType::BEST);
+            EwsType\BodyTypeResponseType::BEST
+        );
 
         $result = array();
         foreach ($response as $item) {
@@ -175,7 +212,7 @@ class EwsEmailManager
      */
     protected function getSelectedFolderId()
     {
-        $key = strtolower($this->selectFolder);
+        $key = strtolower($this->selectedFolder);
         if (isset(static::$distinguishedFolderNames[$key])) {
             $result = new EwsType\DistinguishedFolderIdType();
             $result->Id = static::$distinguishedFolderNames[$key];
@@ -184,7 +221,7 @@ class EwsEmailManager
         }
 
         $result = new EwsType\FolderIdType();
-        $result->Id = $this->selectFolder;
+        $result->Id = $this->selectedFolder;
 
         return $result;
     }
@@ -196,12 +233,12 @@ class EwsEmailManager
      */
     protected function getSelectedUserId()
     {
-        if (empty($this->selectUser)) {
+        if (empty($this->selectedUser)) {
             return null;
         }
 
         $sid = new EwsType\ConnectingSIDType();
-        $sid->PrimarySmtpAddress = $this->selectUser;
+        $sid->PrimarySmtpAddress = $this->selectedUser;
 
         return $sid;
     }

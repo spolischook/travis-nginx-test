@@ -16,10 +16,6 @@ class EmailAttachment
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="content_transfer_encoding", type="string", length=20, nullable=false)
-     * @Soap\ComplexType("string")
-     * @Type("string")
      */
     protected $contentTransferEncoding;
 
