@@ -23,10 +23,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/laboro/platform-professional.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/SonataAdminBundle.git"
         }
     ],
     "minimum-stability": "dev"
