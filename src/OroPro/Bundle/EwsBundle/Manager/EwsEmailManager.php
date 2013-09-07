@@ -117,9 +117,9 @@ class EwsEmailManager
                     ->setId(new ItemId($msg->ItemId->Id, $msg->ItemId->ChangeKey))
                     ->setSubject($msg->Subject)
                     ->setFrom($msg->From->Mailbox->EmailAddress)
-                    ->setSentAt(new \DateTime($msg->DateTimeSent))
-                    ->setReceivedAt(new \DateTime($msg->DateTimeReceived))
-                    ->setInternalDate(new \DateTime($msg->DateTimeCreated))
+                    ->setSentAt($this->convertToDateTime($msg->DateTimeSent))
+                    ->setReceivedAt($this->convertToDateTime($msg->DateTimeReceived))
+                    ->setInternalDate($this->convertToDateTime($msg->DateTimeCreated))
                     ->setImportance($this->convertImportance($msg->Importance))
                     ->setMessageId($msg->InternetMessageId)
                     ->setXMessageId($msg->ItemId->Id)
@@ -241,6 +241,20 @@ class EwsEmailManager
         $sid->PrimarySmtpAddress = $this->selectedUser;
 
         return $sid;
+    }
+
+    /**
+     * Convert a string to DateTime
+     *
+     * @param string $value
+     * @return \DateTime
+     */
+    protected function convertToDateTime($value)
+    {
+        $dt = new \DateTime($value);
+        $dt->setTimezone(new \DateTimeZone('UTC'));
+
+        return $dt;
     }
 
     /**

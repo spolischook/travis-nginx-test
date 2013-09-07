@@ -13,6 +13,7 @@ class EmailBody
      * @var bool
      */
     protected $bodyIsText;
+
     /**
      * Get body content.
      *

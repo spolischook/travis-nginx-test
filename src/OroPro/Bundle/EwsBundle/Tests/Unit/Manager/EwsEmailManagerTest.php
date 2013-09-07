@@ -37,6 +37,7 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider getEmailsProvider
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function testGetEmails($user)
     {
@@ -65,9 +66,9 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $msg->RootFolder->Items->Message[0]->From = new EwsType\SingleRecipientType();
         $msg->RootFolder->Items->Message[0]->From->Mailbox = new EwsType\EmailAddressType();
         $msg->RootFolder->Items->Message[0]->From->Mailbox->EmailAddress = 'fromEmail';
-        $msg->RootFolder->Items->Message[0]->DateTimeSent = '2011-06-30 23:59:59';
-        $msg->RootFolder->Items->Message[0]->DateTimeReceived = '2012-06-30 23:59:59';
-        $msg->RootFolder->Items->Message[0]->DateTimeCreated = '2013-06-30 23:59:59';
+        $msg->RootFolder->Items->Message[0]->DateTimeSent = '2011-06-30 23:59:59 +0';
+        $msg->RootFolder->Items->Message[0]->DateTimeReceived = '2012-06-30 23:59:59 +0';
+        $msg->RootFolder->Items->Message[0]->DateTimeCreated = '2013-06-30 23:59:59 +0';
         $msg->RootFolder->Items->Message[0]->Importance = 'Normal';
         $msg->RootFolder->Items->Message[0]->InternetMessageId = 'MessageId';
         $msg->RootFolder->Items->Message[0]->ConversationId = new EwsType\ItemIdType();
@@ -111,9 +112,18 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('ChangeKey', $email->getId()->getChangeKey());
         $this->assertEquals('Subject', $email->getSubject());
         $this->assertEquals('fromEmail', $email->getFrom());
-        $this->assertEquals(new \DateTime('2011-06-30 23:59:59'), $email->getSentAt());
-        $this->assertEquals(new \DateTime('2012-06-30 23:59:59'), $email->getReceivedAt());
-        $this->assertEquals(new \DateTime('2013-06-30 23:59:59'), $email->getInternalDate());
+        $this->assertEquals(
+            new \DateTime('2011-06-30 23:59:59', new \DateTimeZone('UTC')),
+            $email->getSentAt()
+        );
+        $this->assertEquals(
+            new \DateTime('2012-06-30 23:59:59', new \DateTimeZone('UTC')),
+            $email->getReceivedAt()
+        );
+        $this->assertEquals(
+            new \DateTime('2013-06-30 23:59:59', new \DateTimeZone('UTC')),
+            $email->getInternalDate()
+        );
         $this->assertEquals(0, $email->getImportance());
         $this->assertEquals('MessageId', $email->getMessageId());
         $this->assertEquals('Id', $email->getXMessageId());
@@ -186,4 +196,3 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
-

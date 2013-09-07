@@ -447,7 +447,7 @@ class Email
     public function getAttachments()
     {
         if ($this->attachments === null) {
-            $this->attachments = count($this->attachmentIds) > 0
+            $this->attachments = !empty($this->attachmentIds)
                 ? $this->manager->getEmailAttachments($this->attachmentIds)
                 : array();
         }
