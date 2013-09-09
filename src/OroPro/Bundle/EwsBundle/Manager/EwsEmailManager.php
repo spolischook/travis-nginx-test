@@ -191,7 +191,7 @@ class EwsEmailManager
         $result = array();
         foreach ($response as $item) {
             foreach ($item->Attachments->FileAttachment as $msg) {
-                $attachment = new EmailAttachment($this);
+                $attachment = new EmailAttachment();
                 $attachment
                     ->setFileName($msg->Name)
                     ->setContentType($msg->ContentType)
