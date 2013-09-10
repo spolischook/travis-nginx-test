@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class OroEwsExtension extends Extension
+class OroProfessionalEwsExtension extends Extension
 {
     /**
      * {@inheritDoc}
