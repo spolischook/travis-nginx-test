@@ -7,7 +7,8 @@ use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 
 /**
- * A base class for connectors intended to work with emails located on Microsoft Exchange Server using Exchange Web Services (EWS).
+ * A base class for connectors intended to work with emails located
+ * on Microsoft Exchange Server using Exchange Web Services (EWS).
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
@@ -65,7 +66,10 @@ class EwsConnector
 
         $response = $this->ews->FindItem($request);
 
-        if ($response == null || !isset($response->ResponseMessages) || !isset($response->ResponseMessages->FindItemResponseMessage)) {
+        if ($response == null
+            || !isset($response->ResponseMessages)
+            || !isset($response->ResponseMessages->FindItemResponseMessage)
+        ) {
             return array();
         }
 
@@ -155,7 +159,10 @@ class EwsConnector
 
         $response = $this->ews->FindFolder($request);
 
-        if ($response == null || !isset($response->ResponseMessages) || !isset($response->ResponseMessages->FindFolderResponseMessage)) {
+        if ($response == null
+            || !isset($response->ResponseMessages)
+            || !isset($response->ResponseMessages->FindFolderResponseMessage)
+        ) {
             return array();
         }
 
@@ -234,7 +241,10 @@ class EwsConnector
 
         $response = $this->ews->GetItem($request);
 
-        if ($response == null || !isset($response->ResponseMessages) || !isset($response->ResponseMessages->GetItemResponseMessage)) {
+        if ($response == null
+            || !isset($response->ResponseMessages)
+            || !isset($response->ResponseMessages->GetItemResponseMessage)
+        ) {
             return array();
         }
 
@@ -351,7 +361,10 @@ class EwsConnector
                 switch ($query->getQueryType()) {
                     case SearchQuery::QUERY_STRING:
                         if (!$this->ews->isQueryStringSupported()) {
-                            throw new \InvalidArgumentException(sprintf('The query string search is not supported by %s.', $this->ews->getVersion()));
+                            throw new \InvalidArgumentException(sprintf(
+                                'The query string search is not supported by %s.',
+                                $this->ews->getVersion()
+                            ));
                         }
                         $request->QueryString = $query->convertToQueryString();
                         break;
