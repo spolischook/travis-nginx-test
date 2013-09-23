@@ -2,13 +2,13 @@
 
 namespace OroPro\Bundle\EwsBundle\Tests\Unit\DependencyInjection;
 
-use OroPro\Bundle\EwsBundle\DependencyInjection\OroEwsExtension;
+use OroPro\Bundle\EwsBundle\DependencyInjection\OroProfessionalEwsExtension;
 
-class OroEwsExtensionTest extends \PHPUnit_Framework_TestCase
+class OroProfessionalEwsExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoad()
     {
-        $extension = new OroEwsExtension();
+        $extension = new OroProfessionalEwsExtension();
         $configs = array(
             array('wsdl_endpoint' => '@OroProfessionalEwsBundle/test')
         );
