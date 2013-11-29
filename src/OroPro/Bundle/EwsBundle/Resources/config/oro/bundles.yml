@@ -1,0 +1,2 @@
+bundles:
+    - { name: OroPro\Bundle\EwsBundle\OroProfessionalEwsBundle, priority: 20 }
