@@ -11,17 +11,20 @@ class SearchQueryMatch
     const DEFAULT_MATCH = 0;
     /**
      * This type of the match is supported for QUERY_STRING search query only.
-     * Examples: 'win product' matches 'win95 product', 'windows production line', 'windows new product' or 'product of win'.
+     * Examples: 'win product' matches 'win95 product', 'windows production line',
+     * 'windows new product' or 'product of win'.
      * */
     const PREFIX_MATCH = 1;
     /**
      * This type of the match is supported for QUERY_STRING search query only.
-     * Examples: 'win product' matches 'win95 product', 'windows production line' but not 'windows new product' or 'product of win'.
+     * Examples: 'win product' matches 'win95 product', 'windows production line'
+     * but not 'windows new product' or 'product of win'.
      */
     const PREFIX_WITH_ORDER_RESTRICTED_MATCH = 2;
     /**
      * This type of the match is supported for QUERY_STRING search query only.
-     * Examples: 'win product' matches 'win product', 'new win product' but not 'win95 product', 'win new product' or 'product of win'.
+     * Examples: 'win product' matches 'win product', 'new win product'
+     * but not 'win95 product', 'win new product' or 'product of win'.
      */
     const EXACT_WITH_ORDER_RESTRICTED_MATCH = 3;
     /**

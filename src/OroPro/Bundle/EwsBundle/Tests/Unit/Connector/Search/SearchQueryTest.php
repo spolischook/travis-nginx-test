@@ -116,8 +116,10 @@ class SearchQueryTest extends \PHPUnit_Framework_TestCase
         $this->query->notOperator();
         $this->query->item('subject', 'product4');
         $this->query->closeParenthesis();
-        $this->assertEquals("subject:product1 AND subject:(val1 AND val2) OR (subject:product3 AND NOT subject:product4)",
-            $this->query->convertToQueryString());
+        $this->assertEquals(
+            "subject:product1 AND subject:(val1 AND val2) OR (subject:product3 AND NOT subject:product4)",
+            $this->query->convertToQueryString()
+        );
     }
 
     /**
@@ -148,14 +150,22 @@ class SearchQueryTest extends \PHPUnit_Framework_TestCase
         $sampleQuery->value('product');
 
         return array(
-            'one word + DEFAULT_MATCH' => array('product', SearchQueryMatch::DEFAULT_MATCH, 'product'),
-            'one word + PREFIX_MATCH' => array('product', SearchQueryMatch::PREFIX_MATCH, 'product'),
-            'one word + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array('product', SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, '"product"*'),
-            'one word + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array('product', SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, '"product"'),
-            'two words + DEFAULT_MATCH' => array('my product', SearchQueryMatch::DEFAULT_MATCH, 'my product'),
-            'two words + PREFIX_MATCH' => array('my product', SearchQueryMatch::PREFIX_MATCH, 'my product'),
-            'two words + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array('my product', SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, '"my product"*'),
-            'two words + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array('my product', SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, '"my product"'),
+            'one word + DEFAULT_MATCH'
+                => array('product', SearchQueryMatch::DEFAULT_MATCH, 'product'),
+            'one word + PREFIX_MATCH'
+                => array('product', SearchQueryMatch::PREFIX_MATCH, 'product'),
+            'one word + PREFIX_WITH_ORDER_RESTRICTED_MATCH'
+                => array('product', SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, '"product"*'),
+            'one word + EXACT_WITH_ORDER_RESTRICTED_MATCH'
+                => array('product', SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, '"product"'),
+            'two words + DEFAULT_MATCH'
+                => array('my product', SearchQueryMatch::DEFAULT_MATCH, 'my product'),
+            'two words + PREFIX_MATCH'
+                => array('my product', SearchQueryMatch::PREFIX_MATCH, 'my product'),
+            'two words + PREFIX_WITH_ORDER_RESTRICTED_MATCH'
+                => array('my product', SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, '"my product"*'),
+            'two words + EXACT_WITH_ORDER_RESTRICTED_MATCH'
+                => array('my product', SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, '"my product"'),
 
             'SearchQuery as value + DEFAULT_MATCH' => array($sampleQuery, SearchQueryMatch::DEFAULT_MATCH, 'product'),
         );
@@ -168,9 +178,12 @@ class SearchQueryTest extends \PHPUnit_Framework_TestCase
         $complexQuery->value('product2');
 
         return array(
-            'SearchQuery as value + PREFIX_MATCH' => array($complexQuery, SearchQueryMatch::PREFIX_MATCH),
-            'SearchQuery as value + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array($complexQuery, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH),
-            'SearchQuery as value + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array($complexQuery, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH),
+            'SearchQuery as value + PREFIX_MATCH'
+                => array($complexQuery, SearchQueryMatch::PREFIX_MATCH),
+            'SearchQuery as value + PREFIX_WITH_ORDER_RESTRICTED_MATCH'
+                => array($complexQuery, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH),
+            'SearchQuery as value + EXACT_WITH_ORDER_RESTRICTED_MATCH'
+                => array($complexQuery, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH),
         );
     }
 
@@ -185,126 +198,384 @@ class SearchQueryTest extends \PHPUnit_Framework_TestCase
         $sampleQuery->value('product');
 
         return array(
-            'one word + EQ + DEFAULT_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, 'subject:product'),
-            'one word + EQ + PREFIX_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::EQ, SearchQueryMatch::PREFIX_MATCH, 'subject:product'),
-            'one word + EQ + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::EQ, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:"product"*'),
-            'one word + EQ + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::EQ, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:"product"'),
-
-            'one word + NEQ + DEFAULT_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::NEQ, SearchQueryMatch::DEFAULT_MATCH, 'subject:- product'),
-            'one word + NEQ + PREFIX_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::NEQ, SearchQueryMatch::PREFIX_MATCH, 'subject:- product'),
-            'one word + NEQ + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::NEQ, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:- "product"*'),
-            'one word + NEQ + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::NEQ, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:- "product"'),
-
-            'one word + LT + DEFAULT_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::LT, SearchQueryMatch::DEFAULT_MATCH, 'subject:<product'),
-            'one word + LT + PREFIX_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::LT, SearchQueryMatch::PREFIX_MATCH, 'subject:<product'),
-            'one word + LT + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::LT, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:<"product"*'),
-            'one word + LT + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::LT, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:<"product"'),
-
-            'one word + LE + DEFAULT_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::LE, SearchQueryMatch::DEFAULT_MATCH, 'subject:<=product'),
-            'one word + LE + PREFIX_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::LE, SearchQueryMatch::PREFIX_MATCH, 'subject:<=product'),
-            'one word + LE + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::LE, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:<="product"*'),
-            'one word + LE + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::LE, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:<="product"'),
-
-            'one word + GT + DEFAULT_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::GT, SearchQueryMatch::DEFAULT_MATCH, 'subject:>product'),
-            'one word + GT + PREFIX_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::GT, SearchQueryMatch::PREFIX_MATCH, 'subject:>product'),
-            'one word + GT + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::GT, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:>"product"*'),
-            'one word + GT + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::GT, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:>"product"'),
-
-            'one word + GE + DEFAULT_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::GE, SearchQueryMatch::DEFAULT_MATCH, 'subject:>=product'),
-            'one word + GE + PREFIX_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::GE, SearchQueryMatch::PREFIX_MATCH, 'subject:>=product'),
-            'one word + GE + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::GE, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:>="product"*'),
-            'one word + GE + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'product', SearchQueryOperator::GE, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:>="product"'),
-
-            'two words + EQ + DEFAULT_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, 'subject:my product'),
-            'two words + EQ + PREFIX_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::EQ, SearchQueryMatch::PREFIX_MATCH, 'subject:my product'),
-            'two words + EQ + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::EQ, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:"my product"*'),
-            'two words + EQ + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::EQ, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:"my product"'),
-
-            'two words + NEQ + DEFAULT_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::NEQ, SearchQueryMatch::DEFAULT_MATCH, 'subject:- my product'),
-            'two words + NEQ + PREFIX_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::NEQ, SearchQueryMatch::PREFIX_MATCH, 'subject:- my product'),
-            'two words + NEQ + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::NEQ, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:- "my product"*'),
-            'two words + NEQ + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::NEQ, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:- "my product"'),
-
-            'two words + LT + DEFAULT_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::LT, SearchQueryMatch::DEFAULT_MATCH, 'subject:<my product'),
-            'two words + LT + PREFIX_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::LT, SearchQueryMatch::PREFIX_MATCH, 'subject:<my product'),
-            'two words + LT + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::LT, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:<"my product"*'),
-            'two words + LT + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::LT, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:<"my product"'),
-
-            'two words + LE + DEFAULT_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::LE, SearchQueryMatch::DEFAULT_MATCH, 'subject:<=my product'),
-            'two words + LE + PREFIX_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::LE, SearchQueryMatch::PREFIX_MATCH, 'subject:<=my product'),
-            'two words + LE + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::LE, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:<="my product"*'),
-            'two words + LE + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::LE, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:<="my product"'),
-
-            'two words + GT + DEFAULT_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::GT, SearchQueryMatch::DEFAULT_MATCH, 'subject:>my product'),
-            'two words + GT + PREFIX_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::GT, SearchQueryMatch::PREFIX_MATCH, 'subject:>my product'),
-            'two words + GT + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::GT, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:>"my product"*'),
-            'two words + GT + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::GT, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:>"my product"'),
-
-            'two words + GE + DEFAULT_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::GE, SearchQueryMatch::DEFAULT_MATCH, 'subject:>=my product'),
-            'two words + GE + PREFIX_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::GE, SearchQueryMatch::PREFIX_MATCH, 'subject:>=my product'),
-            'two words + GE + PREFIX_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::GE, SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH, 'subject:>="my product"*'),
-            'two words + GE + EXACT_WITH_ORDER_RESTRICTED_MATCH' =>
-                array('subject', 'my product', SearchQueryOperator::GE, SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH, 'subject:>="my product"'),
-
-            'SearchQuery as value + EQ + DEFAULT_MATCH' =>
-                array('subject', $sampleQuery, SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, 'subject:product'),
-            'SearchQuery as value + NEQ + DEFAULT_MATCH' =>
-                array('subject', $sampleQuery, SearchQueryOperator::NEQ, SearchQueryMatch::DEFAULT_MATCH, 'subject:- product'),
-            'SearchQuery as value + LT + DEFAULT_MATCH' =>
-                array('subject', $sampleQuery, SearchQueryOperator::LT, SearchQueryMatch::DEFAULT_MATCH, 'subject:<product'),
-            'SearchQuery as value + LE + DEFAULT_MATCH' =>
-                array('subject', $sampleQuery, SearchQueryOperator::LE, SearchQueryMatch::DEFAULT_MATCH, 'subject:<=product'),
-            'SearchQuery as value + GT + DEFAULT_MATCH' =>
-                array('subject', $sampleQuery, SearchQueryOperator::GT, SearchQueryMatch::DEFAULT_MATCH, 'subject:>product'),
-            'SearchQuery as value + GE + DEFAULT_MATCH' =>
-                array('subject', $sampleQuery, SearchQueryOperator::GE, SearchQueryMatch::DEFAULT_MATCH, 'subject:>=product'),
+            'one word + EQ + DEFAULT_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:product'
+            ),
+            'one word + EQ + PREFIX_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:product'
+            ),
+            'one word + EQ + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:"product"*'
+            ),
+            'one word + EQ + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:"product"'
+            ),
+            'one word + NEQ + DEFAULT_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::NEQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:- product'
+            ),
+            'one word + NEQ + PREFIX_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::NEQ,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:- product'
+            ),
+            'one word + NEQ + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::NEQ,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:- "product"*'
+            ),
+            'one word + NEQ + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::NEQ,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:- "product"'
+            ),
+            'one word + LT + DEFAULT_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::LT,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:<product'
+            ),
+            'one word + LT + PREFIX_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::LT,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:<product'
+            ),
+            'one word + LT + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::LT,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:<"product"*'
+            ),
+            'one word + LT + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::LT,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:<"product"'
+            ),
+            'one word + LE + DEFAULT_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::LE,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:<=product'
+            ),
+            'one word + LE + PREFIX_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::LE,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:<=product'
+            ),
+            'one word + LE + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::LE,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:<="product"*'
+            ),
+            'one word + LE + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::LE,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:<="product"'
+            ),
+            'one word + GT + DEFAULT_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::GT,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:>product'
+            ),
+            'one word + GT + PREFIX_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::GT,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:>product'
+            ),
+            'one word + GT + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::GT,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:>"product"*'
+            ),
+            'one word + GT + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::GT,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:>"product"'
+            ),
+            'one word + GE + DEFAULT_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::GE,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:>=product'
+            ),
+            'one word + GE + PREFIX_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::GE,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:>=product'
+            ),
+            'one word + GE + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::GE,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:>="product"*'
+            ),
+            'one word + GE + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'product',
+                SearchQueryOperator::GE,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:>="product"'
+            ),
+            'two words + EQ + DEFAULT_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:my product'
+            ),
+            'two words + EQ + PREFIX_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:my product'
+            ),
+            'two words + EQ + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:"my product"*'
+            ),
+            'two words + EQ + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:"my product"'
+            ),
+            'two words + NEQ + DEFAULT_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::NEQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:- my product'
+            ),
+            'two words + NEQ + PREFIX_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::NEQ,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:- my product'
+            ),
+            'two words + NEQ + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::NEQ,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:- "my product"*'
+            ),
+            'two words + NEQ + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::NEQ,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:- "my product"'
+            ),
+            'two words + LT + DEFAULT_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::LT,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:<my product'
+            ),
+            'two words + LT + PREFIX_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::LT,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:<my product'
+            ),
+            'two words + LT + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::LT,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:<"my product"*'
+            ),
+            'two words + LT + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::LT,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:<"my product"'
+            ),
+            'two words + LE + DEFAULT_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::LE,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:<=my product'
+            ),
+            'two words + LE + PREFIX_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::LE,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:<=my product'
+            ),
+            'two words + LE + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::LE,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:<="my product"*'
+            ),
+            'two words + LE + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::LE,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:<="my product"'
+            ),
+            'two words + GT + DEFAULT_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::GT,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:>my product'
+            ),
+            'two words + GT + PREFIX_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::GT,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:>my product'
+            ),
+            'two words + GT + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::GT,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:>"my product"*'
+            ),
+            'two words + GT + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::GT,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:>"my product"'
+            ),
+            'two words + GE + DEFAULT_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::GE,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:>=my product'
+            ),
+            'two words + GE + PREFIX_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::GE,
+                SearchQueryMatch::PREFIX_MATCH,
+                'subject:>=my product'
+            ),
+            'two words + GE + PREFIX_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::GE,
+                SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:>="my product"*'
+            ),
+            'two words + GE + EXACT_WITH_ORDER_RESTRICTED_MATCH' => array(
+                'subject',
+                'my product',
+                SearchQueryOperator::GE,
+                SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH,
+                'subject:>="my product"'
+            ),
+            'SearchQuery as value + EQ + DEFAULT_MATCH' => array(
+                'subject',
+                $sampleQuery,
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:product'
+            ),
+            'SearchQuery as value + NEQ + DEFAULT_MATCH' => array(
+                'subject',
+                $sampleQuery,
+                SearchQueryOperator::NEQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:- product'
+            ),
+            'SearchQuery as value + LT + DEFAULT_MATCH' => array(
+                'subject',
+                $sampleQuery,
+                SearchQueryOperator::LT,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:<product'
+            ),
+            'SearchQuery as value + LE + DEFAULT_MATCH' => array(
+                'subject',
+                $sampleQuery,
+                SearchQueryOperator::LE,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:<=product'
+            ),
+            'SearchQuery as value + GT + DEFAULT_MATCH' => array(
+                'subject',
+                $sampleQuery,
+                SearchQueryOperator::GT,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:>product'
+            ),
+            'SearchQuery as value + GE + DEFAULT_MATCH' => array(
+                'subject',
+                $sampleQuery,
+                SearchQueryOperator::GE,
+                SearchQueryMatch::DEFAULT_MATCH,
+                'subject:>=product'
+            ),
         );
     }
 
@@ -315,11 +586,36 @@ class SearchQueryTest extends \PHPUnit_Framework_TestCase
         $sampleQuery->value('product2');
 
         return array(
-            'SearchQuery as value + NEQ + DEFAULT_MATCH' => array('subject', $sampleQuery, SearchQueryOperator::NEQ, SearchQueryMatch::DEFAULT_MATCH),
-            'SearchQuery as value + LT + DEFAULT_MATCH' => array('subject', $sampleQuery, SearchQueryOperator::LT, SearchQueryMatch::DEFAULT_MATCH),
-            'SearchQuery as value + LE + DEFAULT_MATCH' => array('subject', $sampleQuery, SearchQueryOperator::LE, SearchQueryMatch::DEFAULT_MATCH),
-            'SearchQuery as value + GT + DEFAULT_MATCH' => array('subject', $sampleQuery, SearchQueryOperator::GT, SearchQueryMatch::DEFAULT_MATCH),
-            'SearchQuery as value + GE + DEFAULT_MATCH' => array('subject', $sampleQuery, SearchQueryOperator::GE, SearchQueryMatch::DEFAULT_MATCH),
+            'SearchQuery as value + NEQ + DEFAULT_MATCH' => array(
+                'subject',
+                $sampleQuery,
+                SearchQueryOperator::NEQ,
+                SearchQueryMatch::DEFAULT_MATCH
+            ),
+            'SearchQuery as value + LT + DEFAULT_MATCH' => array(
+                'subject',
+                $sampleQuery,
+                SearchQueryOperator::LT,
+                SearchQueryMatch::DEFAULT_MATCH
+            ),
+            'SearchQuery as value + LE + DEFAULT_MATCH' => array(
+                'subject',
+                $sampleQuery,
+                SearchQueryOperator::LE,
+                SearchQueryMatch::DEFAULT_MATCH
+            ),
+            'SearchQuery as value + GT + DEFAULT_MATCH' => array(
+                'subject',
+                $sampleQuery,
+                SearchQueryOperator::GT,
+                SearchQueryMatch::DEFAULT_MATCH
+            ),
+            'SearchQuery as value + GE + DEFAULT_MATCH' => array(
+                'subject',
+                $sampleQuery,
+                SearchQueryOperator::GE,
+                SearchQueryMatch::DEFAULT_MATCH
+            ),
         );
     }
 
@@ -387,6 +683,7 @@ class SearchQueryTest extends \PHPUnit_Framework_TestCase
     {
         return new SearchQuery(
             new QueryStringBuilder(),
-            new RestrictionBuilder());
+            new RestrictionBuilder()
+        );
     }
 }

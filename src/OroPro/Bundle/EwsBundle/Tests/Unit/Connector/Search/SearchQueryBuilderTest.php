@@ -221,6 +221,7 @@ class SearchQueryBuilderTest extends \PHPUnit_Framework_TestCase
             new SearchQuery(
                 new QueryStringBuilder(),
                 new RestrictionBuilder()
-            ));
+            )
+        );
     }
 }

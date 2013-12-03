@@ -2,7 +2,10 @@
 
 namespace OroPro\Bundle\EwsBundle\Connector\Search;
 
-class SearchQueryExprItem extends SearchQueryExprValueBase implements SearchQueryExprNamedItemInterface, SearchQueryExprValueInterface, SearchQueryExprInterface
+class SearchQueryExprItem extends SearchQueryExprValueBase implements
+    SearchQueryExprNamedItemInterface,
+    SearchQueryExprValueInterface,
+    SearchQueryExprInterface
 {
     /**
      * @param string $name The property name

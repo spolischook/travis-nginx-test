@@ -175,7 +175,7 @@ class ExchangeWebServices extends AbstractExchangeWebServices
      *        The uri option is the target namespace of the SOAP service
      *        The soapaction option is the action to call
      * @param mixed $input_headers [optional] An array of headers to be sent along with the SOAP request
-     * @param array $output_headers [optional] If supplied, this array will be filled with the headers from the SOAP response
+     * @param array $output_headers [optional] If supplied, array will be filled with the headers from the SOAP response
      *
      * @return mixed
      */
@@ -247,7 +247,8 @@ class ExchangeWebServices extends AbstractExchangeWebServices
                 throw new EwsException(
                     "SOAP client returns a response as 'stdClass' class, but it is expected more precise response type."
                     . "Please check that SOAP client is configured properly.",
-                    EwsException::buildSenderFaultCode("Ews.InvalidConfiguration"));
+                    EwsException::buildSenderFaultCode("Ews.InvalidConfiguration")
+                );
             }
             if (property_exists($response, "ResponseMessages")) {
                 $responseMessagesCount = 0;
@@ -270,7 +271,8 @@ class ExchangeWebServices extends AbstractExchangeWebServices
                 if (!$this->ignoreFailedResponseMessages && count($failedMessages) > 0) {
                     throw new EwsException(
                         $failedMessages[0]['MessageText'],
-                        EwsException::buildReceiverFaultCode("Ews." . $failedMessages[0]['ResponseCode']));
+                        EwsException::buildReceiverFaultCode("Ews." . $failedMessages[0]['ResponseCode'])
+                    );
                 }
             }
         }

@@ -88,7 +88,8 @@ class NTLMSoapClient extends SoapClient
         if ($response === false) {
             throw new EwsException(
                 'Curl error: ' . curl_error($this->ch),
-                EwsException::buildSenderFaultCode('cUrl.RequestProcessing'));
+                EwsException::buildSenderFaultCode('cUrl.RequestProcessing')
+            );
         }
 
         return $response;
