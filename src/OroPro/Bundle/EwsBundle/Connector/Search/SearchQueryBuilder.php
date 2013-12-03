@@ -178,9 +178,17 @@ class SearchQueryBuilder extends AbstractSearchQueryBuilder
             $this->query->item($name, $fromValue);
         } else {
             if ($fromValue == null && $toValue != null) {
-                $this->query->item($name, $toValue, $includeGivenValue ? SearchQueryOperator::LE : SearchQueryOperator::LT);
+                $this->query->item(
+                    $name,
+                    $toValue,
+                    $includeGivenValue ? SearchQueryOperator::LE : SearchQueryOperator::LT
+                );
             } elseif ($fromValue != null && $toValue == null) {
-                $this->query->item($name, $fromValue, $includeGivenValue ? SearchQueryOperator::GE : SearchQueryOperator::GT);
+                $this->query->item(
+                    $name,
+                    $fromValue,
+                    $includeGivenValue ? SearchQueryOperator::GE : SearchQueryOperator::GT
+                );
             } else {
                 $this->query->itemRange($name, $fromValue, $toValue);
             }

@@ -300,8 +300,8 @@ class EwsConnector
 
     /**
      * @param EwsType\RequestAttachmentIdType[] $ids The list of ids of attachments
-     * @param bool $includeMimeContent A value that indicates whether the MIME content of an attachment is returned
-     * @param bool $filterHtmlContent A value that specifies whether potentially unsafe HTML content is filtered from an attachment.
+     * @param bool $includeMimeContent Whether the MIME content of an attachment is returned
+     * @param bool $filterHtmlContent Whether potentially unsafe HTML content is filtered from an attachment
      * @param EwsType\BodyTypeResponseType $bodyType Defines format of body to return
      * @return EwsType\AttachmentInfoResponseMessageType[]
      * @throws \InvalidArgumentException
@@ -328,7 +328,10 @@ class EwsConnector
 
         $response = $this->ews->GetAttachment($request);
 
-        if ($response == null || !isset($response->ResponseMessages) || !isset($response->ResponseMessages->GetAttachmentResponseMessage)) {
+        if ($response == null
+            || !isset($response->ResponseMessages)
+            || !isset($response->ResponseMessages->GetAttachmentResponseMessage)
+        ) {
             return array();
         }
 
@@ -414,7 +417,8 @@ class EwsConnector
     }
 
     /**
-     * Sets appropriate properties of given NonEmptyArrayOfBaseFolderIdsType object based on a value of the folderId parameter
+     * Sets appropriate properties of given NonEmptyArrayOfBaseFolderIdsType object
+     * based on a value of the folderId parameter
      *
      * @param EwsType\NonEmptyArrayOfBaseFolderIdsType $parentFolderIds
      * @param EwsType\DistinguishedFolderIdType|EwsType\FolderIdType|EwsType\DistinguishedFolderIdNameType $folderId

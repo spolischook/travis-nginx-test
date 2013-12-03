@@ -85,7 +85,8 @@ class EwsConnectorTest extends \PHPUnit_Framework_TestCase
             new SearchQuery(
                 new QueryStringBuilder(),
                 new RestrictionBuilder()
-            ));
+            )
+        );
         $query = $queryBuilder
             ->subject('test')
             ->get();
@@ -138,7 +139,8 @@ class EwsConnectorTest extends \PHPUnit_Framework_TestCase
     {
         $response = $this->createEmptyFindItemResponseType();
         $response->ResponseMessages->FindItemResponseMessage[0]->RootFolder->Items->Message = array();
-        $response->ResponseMessages->FindItemResponseMessage[0]->RootFolder->Items->Message[] = new EwsType\MessageType();
+        $response->ResponseMessages->FindItemResponseMessage[0]->RootFolder->Items->Message[]
+            = new EwsType\MessageType();
         foreach ($ids as $id) {
             $itemId = new EwsType\ItemIdType();
             $itemId->Id = $id;

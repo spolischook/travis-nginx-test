@@ -83,7 +83,9 @@ class RestrictionBuilder
                 $numberOfOperands = 1;
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Incorrect value of the operator argument: %s.', $operator->getName()));
+                throw new \InvalidArgumentException(
+                    sprintf('Incorrect value of the operator argument: %s.', $operator->getName())
+                );
         }
 
         $operandsForExpr = array();
@@ -155,16 +157,22 @@ class RestrictionBuilder
             } elseif ($subItem instanceof SearchQueryExprOperator) {
                 $operands[] = $this->createExpr($subItem, $operands);
             } elseif ($subItem instanceof SearchQueryExpr) {
-                $mergedSubItem = $this->mergeSubQueryItem(new SearchQueryExprValue($subItem, SearchQueryMatch::DEFAULT_MATCH), $item);
+                $mergedSubItem = $this->mergeSubQueryItem(
+                    new SearchQueryExprValue($subItem, SearchQueryMatch::DEFAULT_MATCH),
+                    $item
+                );
                 $operands[] = $this->parseSubQueryValue($mergedSubItem, $operands);
             }
         }
         if (count($operands) !== 1) {
-            throw new \LogicException(sprintf(
-                'It is expected that the sub query is parsed to one operand but actually it is %d operands. Item name: %s',
-                count($operands),
-                $item['name']
-            ));
+            throw new \LogicException(
+                sprintf(
+                    'It is expected that the sub query is parsed to one operand ' .
+                    'but actually it is %d operands. Item name: %s',
+                    count($operands),
+                    $item['name']
+                )
+            );
         }
 
         return $operands[0];
@@ -195,9 +203,19 @@ class RestrictionBuilder
     {
         switch ($item->getOperator()) {
             case SearchQueryOperator::EQ:
-                return $this->createContainsOperand($item->getName(), $item->getValue(), $item->getMatch(), $item->getIgnoreCase());
+                return $this->createContainsOperand(
+                    $item->getName(),
+                    $item->getValue(),
+                    $item->getMatch(),
+                    $item->getIgnoreCase()
+                );
             case SearchQueryOperator::NEQ:
-                $containsOperand = $this->createContainsOperand($item->getName(), $item->getValue(), $item->getMatch(), $item->getIgnoreCase());
+                $containsOperand = $this->createContainsOperand(
+                    $item->getName(),
+                    $item->getValue(),
+                    $item->getMatch(),
+                    $item->getIgnoreCase()
+                );
                 $notExpr = new EwsType\NotType();
                 $notExpr->Contains = array(
                     $containsOperand->getElement()
@@ -342,8 +360,12 @@ class RestrictionBuilder
      * @param string $value The value the given EWS field is compared
      * @return RestrictionBuilderOperand
      */
-    protected function createComparisonOperand($operandType, EwsType\TwoOperandExpressionType $operandObj, $name, $value)
-    {
+    protected function createComparisonOperand(
+        $operandType,
+        EwsType\TwoOperandExpressionType $operandObj,
+        $name,
+        $value
+    ) {
         $this->setFieldURI($operandObj, $name);
         $operandObj->FieldURIOrConstant = new EwsType\FieldURIOrConstantType();
         $operandObj->FieldURIOrConstant->Constant = new EwsType\ConstantValueType();

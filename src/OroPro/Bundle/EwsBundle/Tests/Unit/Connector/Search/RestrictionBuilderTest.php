@@ -16,6 +16,9 @@ use OroPro\Bundle\EwsBundle\Connector\Search\QueryStringBuilder;
 use OroPro\Bundle\EwsBundle\Connector\Search\RestrictionBuilder;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 
+/**
+ * @TODO SuppressWarning
+ */
 class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /** @var RestrictionBuilder */
@@ -43,7 +46,15 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
     public function testOneContainsItem()
     {
         $expr = new SearchQueryExpr();
-        $expr->add(new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem(
+                'subject',
+                'val1',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                true
+            )
+        );
 
         $expected = new EwsType\RestrictionType();
         $expected->Contains = array(
@@ -64,7 +75,15 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $expr = new SearchQueryExpr();
         $expr->add(new SearchQueryExprOperator('NOT'));
-        $expr->add(new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem(
+                'subject',
+                'val1',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                true
+            )
+        );
 
         $expected = new EwsType\RestrictionType();
         $contain = $this->buildContainsExpression(
@@ -84,7 +103,9 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
     public function testOneNotEqualItem()
     {
         $expr = new SearchQueryExpr();
-        $expr->add(new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::NEQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::NEQ, SearchQueryMatch::DEFAULT_MATCH, true)
+        );
 
         $expected = new EwsType\RestrictionType();
         $contain = $this->buildContainsExpression(
@@ -104,7 +125,15 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
     public function testOneIsLessThanItem()
     {
         $expr = new SearchQueryExpr();
-        $expr->add(new SearchQueryExprItem('sent', '20/10/2013', SearchQueryOperator::LT, SearchQueryMatch::DEFAULT_MATCH, false));
+        $expr->add(
+            new SearchQueryExprItem(
+                'sent',
+                '20/10/2013',
+                SearchQueryOperator::LT,
+                SearchQueryMatch::DEFAULT_MATCH,
+                false
+            )
+        );
 
         $expected = new EwsType\RestrictionType();
         $expected->IsLessThan = array(
@@ -144,7 +173,15 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
         $subQuery->value('val1');
 
         $expr = new SearchQueryExpr();
-        $expr->add(new SearchQueryExprItem('subject', $subQuery->getExpression(), SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem(
+                'subject',
+                $subQuery->getExpression(),
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                true
+            )
+        );
 
         $expected = new EwsType\RestrictionType();
         $expected->Contains = array(
@@ -171,7 +208,15 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
         $subQuery->value('val2');
 
         $expr = new SearchQueryExpr();
-        $expr->add(new SearchQueryExprItem('subject', $subQuery->getExpression(), SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem(
+                'subject',
+                $subQuery->getExpression(),
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                true
+            )
+        );
 
         $expected = new EwsType\RestrictionType();
         $expected->AndRestriction = array(new EwsType\AndType());
@@ -207,9 +252,25 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAndOperatorWithTwoContainsItems()
     {
         $expr = new SearchQueryExpr();
-        $expr->add(new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem(
+                'subject',
+                'val1',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                true
+            )
+        );
         $expr->add(new SearchQueryExprOperator('AND'));
-        $expr->add(new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem(
+                'subject',
+                'val2',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                true
+            )
+        );
 
         $expected = new EwsType\RestrictionType();
         $expected->AndRestriction = array(new EwsType\AndType());
@@ -237,10 +298,14 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $expr = new SearchQueryExpr();
         $expr->add(new SearchQueryExprOperator('NOT'));
-        $expr->add(new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true)
+        );
         $expr->add(new SearchQueryExprOperator('AND'));
         $expr->add(new SearchQueryExprOperator('NOT'));
-        $expr->add(new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true)
+        );
 
         $expected = new EwsType\RestrictionType();
         $expected->AndRestriction = array(new EwsType\AndType());
@@ -271,11 +336,35 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAndOperatorWithThreeContainsItems()
     {
         $expr = new SearchQueryExpr();
-        $expr->add(new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem(
+                'subject',
+                'val1',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                true
+            )
+        );
         $expr->add(new SearchQueryExprOperator('AND'));
-        $expr->add(new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem(
+                'subject',
+                'val2',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                true
+            )
+        );
         $expr->add(new SearchQueryExprOperator('AND'));
-        $expr->add(new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem(
+                'subject',
+                'val3',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                true
+            )
+        );
 
         $expected = new EwsType\RestrictionType();
         $expected->AndRestriction = array();
@@ -316,7 +405,15 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
     public function testParticipantsItems()
     {
         $expr = new SearchQueryExpr();
-        $expr->add(new SearchQueryExprItem('participants', 'val', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true));
+        $expr->add(
+            new SearchQueryExprItem(
+                'participants',
+                'val',
+                SearchQueryOperator::EQ,
+                SearchQueryMatch::DEFAULT_MATCH,
+                true
+            )
+        );
 
         $expected = new EwsType\RestrictionType();
         $expected->OrRestriction = array(new EwsType\OrType());
@@ -392,7 +489,8 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
     {
         return new SearchQuery(
             new QueryStringBuilder(),
-            new RestrictionBuilder());
+            new RestrictionBuilder()
+        );
     }
 
     /**
@@ -405,58 +503,154 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
         return array(
             'val' => array(
                 array(
-                    new SearchQueryExprItem('subject', 'val', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
             ),
             'NOT val' => array(
                 array(
                     new SearchQueryExprOperator('NOT'),
-                    new SearchQueryExprItem('subject', 'val', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('NOT'),
                 ),
             ),
             'val1 AND val2' => array(
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
                 ),
             ),
             'val1 OR val2' => array(
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
                 ),
             ),
             'NOT val1 AND NOT val2' => array(
                 array(
                     new SearchQueryExprOperator('NOT'),
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
                     new SearchQueryExprOperator('NOT'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('NOT'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('NOT'),
                     new SearchQueryExprOperator('AND'),
                 ),
@@ -465,47 +659,143 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
                 array(
                     new SearchQueryExprOperator('NOT'),
                     new SearchQueryExprOperator('('),
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator(')'),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
                     new SearchQueryExprOperator('NOT'),
                 ),
             ),
             'val1 AND val2 AND val3' => array(
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
                 ),
             ),
             'val1 OR val2 OR val2' => array(
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
                 ),
             ),
@@ -513,177 +803,561 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
                 array(
                     new SearchQueryExprOperator('NOT'),
                     new SearchQueryExprOperator('('),
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator(')'),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
                     new SearchQueryExprOperator('NOT'),
                 ),
             ),
             'val1 AND val2 OR val3' => array(
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
                 ),
             ),
             'val1 AND (val2 OR val3)' => array(
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
                     new SearchQueryExprOperator('('),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator(')'),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
                     new SearchQueryExprOperator('AND'),
                 ),
             ),
             'val1 AND (val2 AND val3)' => array(
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
                     new SearchQueryExprOperator('('),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator(')'),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
                     new SearchQueryExprOperator('AND'),
                 ),
             ),
             'val1 AND (val2 AND val3 AND val4)' => array(
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
                     new SearchQueryExprOperator('('),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val4', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val4',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator(')'),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val4', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val4',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
                     new SearchQueryExprOperator('AND'),
                 ),
             ),
             'val1 OR val2 OR val3 AND val4' => array(
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val4', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val4',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val4', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val4',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
                 ),
             ),
             '(val1 OR val2 OR val3) AND val4' => array(
                 array(
                     new SearchQueryExprOperator('('),
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator(')'),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val4', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val4',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val4', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val4',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
                 ),
             ),
             'val1 AND val2 AND val3 OR val4' => array(
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val4', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val4',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val4', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val4',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
                 ),
             ),
             '(val1 AND val2 AND val3) OR val4' => array(
                 array(
                     new SearchQueryExprOperator('('),
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator(')'),
                     new SearchQueryExprOperator('OR'),
-                    new SearchQueryExprItem('subject', 'val4', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val4',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                 ),
                 array(
-                    new SearchQueryExprItem('subject', 'val1', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
-                    new SearchQueryExprItem('subject', 'val2', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val1',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val2',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val3', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val3',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('AND'),
-                    new SearchQueryExprItem('subject', 'val4', SearchQueryOperator::EQ, SearchQueryMatch::DEFAULT_MATCH, true),
+                    new SearchQueryExprItem(
+                        'subject',
+                        'val4',
+                        SearchQueryOperator::EQ,
+                        SearchQueryMatch::DEFAULT_MATCH,
+                        true
+                    ),
                     new SearchQueryExprOperator('OR'),
                 ),
             ),

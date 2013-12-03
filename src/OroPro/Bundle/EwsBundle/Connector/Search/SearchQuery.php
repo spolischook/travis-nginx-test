@@ -77,7 +77,9 @@ class SearchQuery
     {
         if (($value instanceof SearchQuery) && $value->isComplex()) {
             if ($match != SearchQueryMatch::DEFAULT_MATCH) {
-                throw new \InvalidArgumentException("The match argument can be specified only if the value argument is a string or a simple query.");
+                throw new \InvalidArgumentException(
+                    "The match argument can be specified only if the value argument is a string or a simple query."
+                );
             }
         }
         if ($this->type === SearchQuery::AUTO) {
@@ -113,10 +115,14 @@ class SearchQuery
     ) {
         if (($value instanceof SearchQuery) && $value->isComplex()) {
             if ($match != SearchQueryMatch::DEFAULT_MATCH) {
-                throw new \InvalidArgumentException("The match argument can be specified only if the value argument is a string or a simple query.");
+                throw new \InvalidArgumentException(
+                    "The match argument can be specified only if the value argument is a string or a simple query."
+                );
             }
             if ($operator != SearchQueryOperator::EQ) {
-                throw new \InvalidArgumentException("The operator argument can be specified only if the value argument is a string or a simple query.");
+                throw new \InvalidArgumentException(
+                    "The operator argument can be specified only if the value argument is a string or a simple query."
+                );
             }
         }
 
@@ -283,7 +289,9 @@ class SearchQuery
     public function convertToRestriction()
     {
         if ($this->type === SearchQuery::QUERY_STRING) {
-            throw new \LogicException('Only AUTO or RESTRICTION search query can be converted to a restriction object.');
+            throw new \LogicException(
+                'Only AUTO or RESTRICTION search query can be converted to a restriction object.'
+            );
         }
 
         return $this->restrictionBuilder->buildRestriction($this->expr);
