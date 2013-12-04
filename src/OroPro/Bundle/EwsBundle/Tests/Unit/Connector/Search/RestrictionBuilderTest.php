@@ -17,7 +17,7 @@ use OroPro\Bundle\EwsBundle\Connector\Search\RestrictionBuilder;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 
 /**
- * @TODO SuppressWarning
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
 class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
 {
