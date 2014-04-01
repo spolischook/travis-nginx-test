@@ -1,0 +1,7 @@
+config:
+    paths:
+        'orocrmprofusioncharts/js/chart.hc.charts': 'bundles/orocrmprofusioncharts/js/FusionCharts.HC.Charts.js'
+        'orocrmprofusioncharts/js/chart.hc': 'bundles/orocrmprofusioncharts/js/FusionCharts.HC.js'
+        'orocrmprofusioncharts/js/chart.jquery': 'bundles/orocrmprofusioncharts/js/FusionCharts.jqueryplugin.js'
+        'orocrmprofusioncharts/js/chart': 'bundles/orocrmprofusioncharts/js/FusionCharts.js'
+        'orocrmprofusioncharts/js/chart.export': 'bundles/orocrmprofusioncharts/js/FusionChartsExportComponent.js'
