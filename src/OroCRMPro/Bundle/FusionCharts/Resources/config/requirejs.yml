@@ -8,6 +8,10 @@ config:
             deps:
                 - 'jquery'
                 - 'orocrmprofusioncharts/lib/FusionCharts'
+        'orocrmprofusioncharts/lib/FusionCharts.HC.Widgets':
+            deps:
+                - 'jquery'
+                - 'orocrmprofusioncharts/lib/FusionCharts'
         'orocrmprofusioncharts/lib/FusionCharts':
             deps:
                 - 'jquery'
@@ -21,6 +25,7 @@ config:
                 - 'orocrmprofusioncharts/lib/FusionCharts'
     paths:
         'orocrmprofusioncharts/lib/FusionCharts.HC.Charts': 'bundles/orocrmprofusioncharts/lib/FusionCharts.HC.Charts.js'
+        'orocrmprofusioncharts/lib/FusionCharts.HC.Widgets': 'bundles/orocrmprofusioncharts/lib/FusionCharts.HC.Widgets.js'
         'orocrmprofusioncharts/lib/FusionCharts.HC': 'bundles/orocrmprofusioncharts/lib/FusionCharts.HC.js'
         'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin': 'bundles/orocrmprofusioncharts/lib/FusionCharts.jqueryplugin.js'
         'orocrmprofusioncharts/lib/FusionCharts': 'bundles/orocrmprofusioncharts/lib/FusionCharts.js'

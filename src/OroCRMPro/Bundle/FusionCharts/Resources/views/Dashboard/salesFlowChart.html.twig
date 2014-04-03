@@ -2,21 +2,48 @@
 
 {% block content %}
 
-{% set hasData = false %}
-{% for value in items %}
-    {% if value and value > 0 %}
-        {% set hasData = true %}
-    {% endif %}
-{% endfor %}
-
 {% if hasData %}
     <div class="chart-container">
         <div class="clearfix">
-            <div id="{{ widgetId }}-chart" class="bar-chart chart pull-left"></div>
+            <div id="{{ widgetId }}-chart" class="bar-chart chart"></div>
         </div>
     </div>
 
-    <script type="text/javascript"></script>
+    {% set json = {
+        'chart': {
+            'manageResize' : '1',
+            'numberPrefix' : '$',
+            'animation': '1',
+            'formatNumberScale': '0',
+            'decimals': '2',
+            'isHollow': '0',
+            'labeldistance': '50',
+            'useSameSlantAngle': '1',
+            'bgalpha': '0',
+            'showborder': '0',
+            'streamlineddata': '0',
+            'issliced': '0',
+            'funnelYScale': '30',
+        },
+        'data': items
+    } %}
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
+            function ($) {
+                $('#{{ widgetId }}-chart').insertFusionCharts({
+                    type: 'Funnel',
+                    renderer: 'JavaScript',
+                    dataSource: '{{ json|json_encode|raw }}',
+                    dataFormat: 'json',
+                    width: '100%',
+                    height: '400',
+                    id: '{{ widgetId }}'
+                });
+            }
+        );
+    </script>
 {% else %}
     <div class="clearfix no-data">
         <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>

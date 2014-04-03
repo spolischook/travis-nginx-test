@@ -6,27 +6,46 @@
                also you can build chart data in nested template by overriding 'data' block
 #}
 {% block content %}
-
-{% set hasData = false %}
-{% for source in data %}
-    {% if source.itemCount and source.itemCount > 0 %}
-        {% set hasData = true %}
-    {% endif %}
-{% endfor %}
-
-{% if hasData %}
-    <div class="chart-container">
-        <div class="clearfix">
-            <div id="{{ widgetId }}-chart" class="pie-chart chart pull-left"></div>
-            <div id="{{ widgetId }}-legend" class="pie-chart-legend chart-legend pull-left"></div>
+    {% if hasData %}
+        <div class="chart-container">
+            <div class="clearfix">
+                <div id="{{ widgetId }}-chart" class="pie-chart chart"></div>
+            </div>
         </div>
-    </div>
 
-    <script type="text/javascript"></script>
-{% else %}
-    <div class="clearfix no-data">
-        <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
-    </div>
-{% endif %}
+        {% set json = {
+            'chart': {
+                'manageResize' : '1',
+                'animation': '1',
+                'showpercentvalues': '1',
+                'showLegend': '1',
+                'legendPosition': 'BOTTOM',
+                'pieRadius': '150',
+                'legendIconScale': '1',
+            },
+            'data': data
+        } %}
+
+        <script type="text/javascript">
+            require(
+                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
+                function ($) {
+                    $('#{{ widgetId }}-chart').insertFusionCharts({
+                        type: 'Pie3D',
+                        renderer: 'JavaScript',
+                        dataSource: '{{ json|json_encode|raw }}',
+                        dataFormat: 'json',
+                        id: '{{ widgetId }}'
+                    });
+                }
+            );
+        </script>
+
+        <script type="text/javascript"></script>
+    {% else %}
+        <div class="clearfix no-data">
+            <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
+        </div>
+    {% endif %}
 
 {% endblock %}

@@ -19,7 +19,26 @@ class SalesFlowB2BController extends BaseDashboardController
      */
     public function opportunitiesByLeadSourceAction($widget)
     {
-        return parent::opportunitiesByLeadSourceAction($widget);
+        $result = parent::opportunitiesByLeadSourceAction($widget);
+
+        $hasData = false;
+        $data    = [];
+        foreach ($result['data'] as $record) {
+            $value = $record['itemCount'];
+
+            if ($value) {
+                $hasData = true;
+            }
+
+            $data[] = [
+                'label' => $record['label'],
+                'value' => $value
+            ];
+        }
+        $result['data']    = $data;
+        $result['hasData'] = $hasData;
+
+        return $result;
     }
 
     /**
@@ -64,6 +83,23 @@ class SalesFlowB2BController extends BaseDashboardController
      */
     public function mySalesFlowB2BAction($widget)
     {
-        return parent::mySalesFlowB2BAction($widget);
+        $result = parent::mySalesFlowB2BAction($widget);
+
+        $hasData = false;
+        $data    = [];
+        foreach ($result['items'] as $label => $value) {
+            if ($value) {
+                $hasData = true;
+            }
+
+            $data[] = [
+                'label' => $label,
+                'value' => $value
+            ];
+        }
+        $result['items']   = $data;
+        $result['hasData'] = $hasData;
+
+        return $result;
     }
 }
