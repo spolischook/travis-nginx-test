@@ -25,6 +25,6 @@ oro_dashboard_config:
                 opportunities_by_state:
                     position: 100
                 my_sales_flow_b2b_chart:
-                    position: 1400
+                    position: 130
                 my_sales_flow_b2c_chart:
                     position: 140

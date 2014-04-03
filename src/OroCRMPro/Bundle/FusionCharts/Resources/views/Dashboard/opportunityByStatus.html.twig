@@ -1,25 +1,49 @@
 {% extends 'OroDashboardBundle:Dashboard:chartWidget.html.twig' %}
 
 {% block content %}
-
-{% set hasData = false %}
-{% for status in items.data %}
-    {% if status[1] and status[1] > 0 %}
-        {% set hasData = true %}
-    {% endif %}
-{% endfor %}
-
-{% if hasData %}
-    <div class="chart-container">
-        <div class="clearfix">
-            <div id="{{ widgetId }}-chart" class="bar-chart chart pull-left"></div>
+    {% if hasData %}
+        <div class="chart-container">
+            <div class="clearfix">
+                <div id="{{ widgetId }}-chart" class="bar-chart chart"></div>
+            </div>
         </div>
-    </div>
-    <script type="text/javascript"></script>
-{% else %}
-    <div class="clearfix no-data">
-        <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
-    </div>
-{% endif %}
 
+        {% set json = {
+            'chart': {
+                'numberPrefix' : '$',
+                'xAxisName': 'orocrm.sales.opportunity.status.label'|trans,
+                'rotateXAxisName': '0',
+                'showDivLineValues ': '6',
+                'yAxisValuesStep ': '1',
+                'formatNumberScale': '0',
+                'decimals ': '2',
+                'palette': '2',
+                'animation': '1',
+                'formatnumberscale': '0',
+                'plotspacepercent': '0'
+            },
+            'data': items.data
+        } %}
+
+        <script type="text/javascript">
+            require(
+                    ['orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
+                    function ($) {
+                        $('#{{ widgetId }}-chart').insertFusionCharts({
+                            type: 'Column3D',
+                            renderer: 'JavaScript',
+                            dataSource: '{{ json|json_encode|raw }}',
+                            dataFormat: 'json',
+                            width: '100%',
+                            height: '100%',
+                            id: '{{ widgetId }}'
+                        });
+                    }
+            );
+        </script>
+    {% else %}
+        <div class="clearfix no-data">
+            <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
+        </div>
+    {% endif %}
 {% endblock %}

@@ -32,7 +32,26 @@ class SalesFlowB2BController extends BaseDashboardController
      */
     public function opportunityByStatusAction($widget)
     {
-        return parent::opportunityByStatusAction($widget);
+        $result = parent::opportunityByStatusAction($widget);
+
+        $hasData = false;
+        $data    = [];
+        foreach ($result['items']['data'] as $key => $record) {
+            $value = $record[1];
+
+            if ($value) {
+                $hasData = true;
+            }
+
+            $data[] = [
+                'label' => $result['items']['labels'][$key],
+                'value' => $value
+            ];
+        }
+        $result['items']['data'] = $data;
+        $result['hasData']       = $hasData;
+
+        return $result;
     }
 
     /**
