@@ -1,7 +1,27 @@
 config:
+    shim:
+        'orocrmprofusioncharts/lib/FusionCharts.HC.Charts':
+            deps:
+                - 'orocrmprofusioncharts/lib/FusionCharts'
+                - 'orocrmprofusioncharts/lib/FusionCharts.HC'
+        'orocrmprofusioncharts/lib/FusionCharts.HC':
+            deps:
+                - 'jquery'
+                - 'orocrmprofusioncharts/lib/FusionCharts'
+        'orocrmprofusioncharts/lib/FusionCharts':
+            deps:
+                - 'jquery'
+            exports: 'FusionCharts'
+        'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin':
+            deps:
+                - 'jquery'
+                - 'orocrmprofusioncharts/lib/FusionCharts'
+        'orocrmprofusioncharts/lib/FusionChartsExportComponent':
+            deps:
+                - 'orocrmprofusioncharts/lib/FusionCharts'
     paths:
-        'orocrmprofusioncharts/js/chart.hc.charts': 'bundles/orocrmprofusioncharts/js/FusionCharts.HC.Charts.js'
-        'orocrmprofusioncharts/js/chart.hc': 'bundles/orocrmprofusioncharts/js/FusionCharts.HC.js'
-        'orocrmprofusioncharts/js/chart.jquery': 'bundles/orocrmprofusioncharts/js/FusionCharts.jqueryplugin.js'
-        'orocrmprofusioncharts/js/chart': 'bundles/orocrmprofusioncharts/js/FusionCharts.js'
-        'orocrmprofusioncharts/js/chart.export': 'bundles/orocrmprofusioncharts/js/FusionChartsExportComponent.js'
+        'orocrmprofusioncharts/lib/FusionCharts.HC.Charts': 'bundles/orocrmprofusioncharts/lib/FusionCharts.HC.Charts.js'
+        'orocrmprofusioncharts/lib/FusionCharts.HC': 'bundles/orocrmprofusioncharts/lib/FusionCharts.HC.js'
+        'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin': 'bundles/orocrmprofusioncharts/lib/FusionCharts.jqueryplugin.js'
+        'orocrmprofusioncharts/lib/FusionCharts': 'bundles/orocrmprofusioncharts/lib/FusionCharts.js'
+        'orocrmprofusioncharts/lib/FusionChartsExportComponent': 'bundles/orocrmprofusioncharts/lib/FusionChartsExportComponent.js'
