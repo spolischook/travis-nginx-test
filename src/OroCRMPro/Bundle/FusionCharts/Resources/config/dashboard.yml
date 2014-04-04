@@ -21,10 +21,10 @@ oro_dashboard_config:
         main:
             widgets:
                 opportunities_by_lead_source_chart:
-                    position: 90
+                    position: 80
                 opportunities_by_state:
-                    position: 100
+                    position: 90
                 my_sales_flow_b2b_chart:
-                    position: 130
+                    position: 120
                 my_sales_flow_b2c_chart:
-                    position: 140
+                    position: 130

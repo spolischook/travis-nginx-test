@@ -3,10 +3,10 @@
 {% block content %}
     {% set data, hasData = {}, false %}
     {% for item in items.data %}
-        {% if item.1 %}
+        {% if item[1] is defined and item[1] %}
             {% set hasData = true %}
         {% endif %}
-        {% set data = data|merge([{label: items.labels[item.0], value: item.1}]) %}
+        {% set data = data|merge([{label: items.labels[item[0]], value: item[1]}]) %}
     {% endfor %}
 
     {% if hasData %}
@@ -44,7 +44,7 @@
                 function ($) {
                     $('#{{ widgetId }}-chart').insertFusionCharts({
                         type: 'Column3D',
-                        dataSource: '{{ json|json_encode|raw }}',
+                        dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
                         height: 300,
                         id: '{{ widgetId }}'

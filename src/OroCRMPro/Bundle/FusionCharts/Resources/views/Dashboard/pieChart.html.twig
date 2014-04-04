@@ -44,7 +44,7 @@
                     $('#{{ widgetId }}-chart').insertFusionCharts({
                         type: 'Pie3D',
                         renderer: 'JavaScript',
-                        dataSource: '{{ json|json_encode|raw }}',
+                        dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
                         height: 300,
                         id: '{{ widgetId }}'

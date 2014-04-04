@@ -49,17 +49,17 @@
 
         <script type="text/javascript">
             require(
-                    ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
-                    function ($) {
-                        $('#{{ widgetId }}-chart').insertFusionCharts({
-                            type: 'Funnel',
-                            dataSource: '{{ json|json_encode|raw }}',
-                            dataFormat: 'json',
-                            width: '100%',
-                            height: 300,
-                            id: '{{ widgetId }}'
-                        });
-                    }
+                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
+                function ($) {
+                    $('#{{ widgetId }}-chart').insertFusionCharts({
+                        type: 'Funnel',
+                        dataSource: {{ json|json_encode|raw }},
+                        dataFormat: 'json',
+                        width: '100%',
+                        height: 300,
+                        id: '{{ widgetId }}'
+                    });
+                }
             );
         </script>
     {% else %}
