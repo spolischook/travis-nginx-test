@@ -16,12 +16,14 @@
         {% set json = {
             'chart': {
                 'manageResize' : '1',
-                'animation': '1',
                 'showpercentvalues': '1',
+
                 'showLegend': '1',
                 'legendPosition': 'RIGHT',
                 'pieRadius': '150',
-                'legendIconScale': '1',
+                'legendIconScale': '2',
+                'legendBgAlpha': '0',
+                'legendBorderAlpha': '0',
             },
             'data': data
         } %}
@@ -35,6 +37,7 @@
                         renderer: 'JavaScript',
                         dataSource: '{{ json|json_encode|raw }}',
                         dataFormat: 'json',
+                        height: 300,
                         id: '{{ widgetId }}'
                     });
                 }

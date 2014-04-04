@@ -11,10 +11,13 @@
         {% set json = {
             'chart': {
                 'manageResize' : '1',
-                'animation': '1',
                 'plotspacepercent': '0',
                 'showCanvasBg': '0',
                 'showCanvasBase': '0',
+
+                'formatNumberScale': '0',
+                'decimals': '2',
+                'forceDecimals': '1',
 
                 'numberPrefix' : '$',
                 'xAxisName': 'orocrm.sales.opportunity.status.label'|trans,
@@ -29,15 +32,15 @@
         <script type="text/javascript">
             require(
                 ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
-                    function ($) {
-                        $('#{{ widgetId }}-chart').insertFusionCharts({
-                            type: 'Column3D',
-                            dataSource: '{{ json|json_encode|raw }}',
-                            dataFormat: 'json',
-                            height: 300,
-                            id: '{{ widgetId }}'
-                        });
-                    }
+                function ($) {
+                    $('#{{ widgetId }}-chart').insertFusionCharts({
+                        type: 'Column3D',
+                        dataSource: '{{ json|json_encode|raw }}',
+                        dataFormat: 'json',
+                        height: 300,
+                        id: '{{ widgetId }}'
+                    });
+                }
             );
         </script>
     {% else %}

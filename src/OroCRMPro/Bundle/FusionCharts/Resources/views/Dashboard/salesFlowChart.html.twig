@@ -12,18 +12,24 @@
     {% set json = {
         'chart': {
             'manageResize' : '1',
-            'numberPrefix' : '$',
-            'animation': '1',
+            'isHollow': '0',
+            'labelDistance': '50',
+            'useSameSlantAngle': '1',
+            'streamlinedData': '0',
+            'isSliced': '0',
+            'funnelYScale': '30',
+            'chartLeftMargin': '150',
+
             'formatNumberScale': '0',
             'decimals': '2',
-            'isHollow': '0',
-            'labeldistance': '50',
-            'useSameSlantAngle': '1',
-            'bgalpha': '0',
-            'showborder': '0',
-            'streamlineddata': '0',
-            'issliced': '0',
-            'funnelYScale': '30',
+            'forceDecimals': '1',
+
+            'numberPrefix' : '$',
+            'formatNumberScale': '0',
+            'decimals': '2',
+
+            'bgAlpha': '0',
+            'showBorder': '0',
         },
         'data': items
     } %}
@@ -37,7 +43,7 @@
                     dataSource: '{{ json|json_encode|raw }}',
                     dataFormat: 'json',
                     width: '100%',
-                    height: '400',
+                    height: 300,
                     id: '{{ widgetId }}'
                 });
             }
