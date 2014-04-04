@@ -19,26 +19,7 @@ class SalesFlowB2BController extends BaseDashboardController
      */
     public function opportunitiesByLeadSourceAction($widget)
     {
-        $result = parent::opportunitiesByLeadSourceAction($widget);
-
-        $hasData = false;
-        $data    = [];
-        foreach ($result['data'] as $record) {
-            $value = $record['itemCount'];
-
-            if ($value) {
-                $hasData = true;
-            }
-
-            $data[] = [
-                'label' => $record['label'],
-                'value' => $value
-            ];
-        }
-        $result['data']    = $data;
-        $result['hasData'] = $hasData;
-
-        return $result;
+        return parent::opportunitiesByLeadSourceAction($widget);
     }
 
     /**
@@ -51,26 +32,7 @@ class SalesFlowB2BController extends BaseDashboardController
      */
     public function opportunityByStatusAction($widget)
     {
-        $result = parent::opportunityByStatusAction($widget);
-
-        $hasData = false;
-        $data    = [];
-        foreach ($result['items']['data'] as $key => $record) {
-            $value = $record[1];
-
-            if ($value) {
-                $hasData = true;
-            }
-
-            $data[] = [
-                'label' => $result['items']['labels'][$key],
-                'value' => $value
-            ];
-        }
-        $result['items']['data'] = $data;
-        $result['hasData']       = $hasData;
-
-        return $result;
+        return parent::opportunityByStatusAction($widget);
     }
 
     /**
@@ -83,23 +45,6 @@ class SalesFlowB2BController extends BaseDashboardController
      */
     public function mySalesFlowB2BAction($widget)
     {
-        $result = parent::mySalesFlowB2BAction($widget);
-
-        $hasData = false;
-        $data    = [];
-        foreach ($result['items'] as $label => $value) {
-            if ($value) {
-                $hasData = true;
-            }
-
-            $data[] = [
-                'label' => $label,
-                'value' => $value
-            ];
-        }
-        $result['items']   = $data;
-        $result['hasData'] = $hasData;
-
-        return $result;
+        return parent::mySalesFlowB2BAction($widget);
     }
 }

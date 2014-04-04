@@ -1,6 +1,14 @@
 {% extends 'OroDashboardBundle:Dashboard:chartWidget.html.twig' %}
 
 {% block content %}
+    {% set data, hasData = {}, false %}
+    {% for item in items.data %}
+        {% if item.1 %}
+            {% set hasData = true %}
+        {% endif %}
+        {% set data = data|merge([{label: items.labels[item.0], value: item.1}]) %}
+    {% endfor %}
+
     {% if hasData %}
         <div class="chart-container">
             <div class="clearfix">
@@ -26,7 +34,7 @@
                 'decimals': '2',
                 'forceDecimals': '1',
             },
-            'data': items.data
+            'data': data
         } %}
 
         <script type="text/javascript">

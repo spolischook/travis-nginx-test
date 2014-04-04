@@ -19,23 +19,6 @@ class SalesFlowB2CController extends BaseDashboardController
      */
     public function mySalesFlowB2CAction($widget)
     {
-        $result = parent::mySalesFlowB2CAction($widget);
-
-        $hasData = false;
-        $data    = [];
-        foreach ($result['items'] as $label => $value) {
-            if ($value) {
-                $hasData = true;
-            }
-
-            $data[] = [
-                'label' => $label,
-                'value' => $value
-            ];
-        }
-        $result['items']   = $data;
-        $result['hasData'] = $hasData;
-
-        return $result;
+        return parent::mySalesFlowB2CAction($widget);
     }
 }

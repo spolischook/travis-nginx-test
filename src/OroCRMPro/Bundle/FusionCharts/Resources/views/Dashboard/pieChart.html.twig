@@ -6,6 +6,14 @@
                also you can build chart data in nested template by overriding 'data' block
 #}
 {% block content %}
+    {% set items, data, hasData = data, {}, false %}
+    {% for item in items %}
+        {% if item.itemCount %}
+            {% set hasData = true %}
+        {% endif %}
+        {% set data = data|merge([{label: item.label, value: item.itemCount}]) %}
+    {% endfor %}
+
     {% if hasData %}
         <div class="chart-container">
             <div class="clearfix">
