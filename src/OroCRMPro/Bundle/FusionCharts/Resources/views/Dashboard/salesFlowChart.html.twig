@@ -34,7 +34,6 @@
             function ($) {
                 $('#{{ widgetId }}-chart').insertFusionCharts({
                     type: 'Funnel',
-                    renderer: 'JavaScript',
                     dataSource: '{{ json|json_encode|raw }}',
                     dataFormat: 'json',
                     width: '100%',

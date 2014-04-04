@@ -11,13 +11,17 @@
         {% set json = {
             'chart': {
                 'manageResize' : '1',
+                'animation': '1',
+                'plotspacepercent': '0',
+                'showCanvasBg': '0',
+                'showCanvasBase': '0',
+
                 'numberPrefix' : '$',
                 'xAxisName': 'orocrm.sales.opportunity.status.label'|trans,
                 'rotateXAxisName': '0',
                 'formatNumberScale': '0',
                 'decimals': '2',
-                'animation': '1',
-                'plotspacepercent': '0',
+                'forceDecimals': '1',
             },
             'data': items.data
         } %}
@@ -28,9 +32,9 @@
                     function ($) {
                         $('#{{ widgetId }}-chart').insertFusionCharts({
                             type: 'Column3D',
-                            renderer: 'JavaScript',
                             dataSource: '{{ json|json_encode|raw }}',
                             dataFormat: 'json',
+                            height: 300,
                             id: '{{ widgetId }}'
                         });
                     }
