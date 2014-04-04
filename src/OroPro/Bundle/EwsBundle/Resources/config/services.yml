@@ -1,10 +1,10 @@
 parameters:
     oro_ews.connector.class:                         OroPro\Bundle\EwsBundle\Connector\EwsConnector
     oro_ews.services.class:                          OroPro\Bundle\EwsBundle\Ews\ExchangeWebServices
-    oro_ews.search_query.builder.class:              OroPro\Bundle\EwsBundle\Connector\SearchQueryBuilder
-    oro_ews.search_query.state.class:                OroPro\Bundle\EwsBundle\Connector\SearchQuery
-    oro_ews.search_query.query_string.builder.class: OroPro\Bundle\EwsBundle\Connector\QueryStringBuilder
-    oro_ews.search_query.restriction.builder.class:  OroPro\Bundle\EwsBundle\Connector\RestrictionBuilder
+    oro_ews.search_query.builder.class:              OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder
+    oro_ews.search_query.state.class:                OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery
+    oro_ews.search_query.query_string.builder.class: OroPro\Bundle\EwsBundle\Connector\Search\QueryStringBuilder
+    oro_ews.search_query.restriction.builder.class:  OroPro\Bundle\EwsBundle\Connector\Search\RestrictionBuilder
 
 services:
     oro_ews.connector:
