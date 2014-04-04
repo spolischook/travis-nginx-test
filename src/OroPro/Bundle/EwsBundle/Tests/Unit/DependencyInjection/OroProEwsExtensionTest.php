@@ -2,18 +2,18 @@
 
 namespace OroPro\Bundle\EwsBundle\Tests\Unit\DependencyInjection;
 
-use OroPro\Bundle\EwsBundle\DependencyInjection\OroProfessionalEwsExtension;
+use OroPro\Bundle\EwsBundle\DependencyInjection\OroProEwsExtension;
 
-class OroProfessionalEwsExtensionTest extends \PHPUnit_Framework_TestCase
+class OroProEwsExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoad()
     {
-        $extension = new OroProfessionalEwsExtension();
+        $extension = new OroProEwsExtension();
         $configs = array(
-            array('wsdl_endpoint' => '@OroProfessionalEwsBundle/test')
+            array('wsdl_endpoint' => '@OroProEwsBundle/test')
         );
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
-        $bundle = $this->getMock('OroPro\Bundle\EwsBundle\OroProfessionalEwsBundle');
+        $bundle = $this->getMock('OroPro\Bundle\EwsBundle\OroProEwsBundle');
 
         $bundle->expects($this->any())
             ->method('getPath')
@@ -22,7 +22,7 @@ class OroProfessionalEwsExtensionTest extends \PHPUnit_Framework_TestCase
         $container->expects($this->any())
             ->method('getParameter')
             ->with('kernel.bundles')
-            ->will($this->returnValue(array('OroProfessionalEwsBundle' => $bundle)));
+            ->will($this->returnValue(array('OroProEwsBundle' => $bundle)));
 
         $isCalled = false;
         $wsdlEndpointPath = '';
