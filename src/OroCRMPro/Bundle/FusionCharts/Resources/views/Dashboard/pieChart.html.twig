@@ -21,15 +21,16 @@
             </div>
         </div>
 
+        {% set isMobileVersion = isMobileVersion() %}
         {% set json = {
             'chart': {
+                'legendPosition': isMobileVersion ? 'BOTTOM' : 'RIGHT',
+                'pieRadius': isMobileVersion ? '' : '150',
+                'legendNumColumns': isMobileVersion ? '2' : '1',
                 'manageResize' : '1',
                 'showpercentvalues': '1',
                 'animation': '0',
-
                 'showLegend': '1',
-                'legendPosition': 'RIGHT',
-                'pieRadius': '150',
                 'legendIconScale': '2',
                 'legendBgAlpha': '0',
                 'legendBorderAlpha': '0',
@@ -46,7 +47,7 @@
                         renderer: 'JavaScript',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
-                        height: 300,
+                        height: 350,
                         id: '{{ widgetId }}'
                     });
                 }

@@ -1,50 +1,51 @@
 {% extends 'OroDashboardBundle:Dashboard:chartWidget.html.twig' %}
 
 {% block content %}
-    {% set data, hasData = {}, false %}
+    {% set data, nozzleData, hasData = {}, {}, false %}
     {% for label, value in items %}
-        {% if label in nozzleSteps %}
-            {% set label = label ~ ' (' ~ 'from'|trans ~ ' ' ~ quarterDate|oro_format_date ~ ')' %}
-        {% endif %}
         {% if value %}
             {% set hasData = true %}
         {% endif %}
-        {% set data = data|merge([{label: label, value: value}]) %}
+        {% if label in nozzleSteps %}
+            {% set label = label ~ ' (' ~ 'from'|trans ~ ' ' ~ quarterDate|oro_format_date ~ '): ' ~ value|oro_format_currency %}
+            {% set nozzleData = nozzleData|merge([{label: label, value: 0, showValue: 0}]) %}
+        {% else %}
+            {% set label = label ~ ': ' ~ value|oro_format_currency %}
+            {% set data = data|merge([{label: label, value: value}]) %}
+        {% endif %}
+
     {% endfor %}
 
     {% if hasData %}
         <div class="chart-container">
             <div class="clearfix">
                 <div id="{{ widgetId }}-chart" class="bar-chart chart"></div>
+                <div id="{{ widgetId }}-nozzle-chart" class="bar-chart chart"></div>
             </div>
         </div>
 
+        {% set isMobileVersion = isMobileVersion() %}
         {% set json = {
             'chart': {
+                'labelDistance': isMobileVersion ? '15' : '70',
+                'showLabels': isMobileVersion ? '0' : '1',
+                'showLegend': isMobileVersion ? '1' : '0',
+                'chartLeftMargin': isMobileVersion ? '10' : '150',
                 'manageResize' : '1',
                 'isHollow': '0',
-                'labelDistance': '50',
-                'useSameSlantAngle': '1',
+                'showValues': '0',
+                'useSameSlantAngle': '0',
                 'streamlinedData': '0',
-                'isSliced': '0',
-                'funnelYScale': '20',
-                'chartLeftMargin': '150',
+                'isSliced': '1',
+                'funnelYScale': '40',
                 'enableSmartLabels': '1',
                 'animation': '0',
-
-                'formatNumberScale': '0',
-                'decimals': '2',
-                'forceDecimals': '1',
-
-                'numberPrefix' : '$',
-                'formatNumberScale': '0',
-                'decimals': '2',
-                'labelSepChar': ': ',
-
                 'bgAlpha': '0',
+                'legendBorderAlpha': '0',
+                'legendShadow': '0',
                 'showBorder': '0',
             },
-            'data': data
+            'data': data|merge(nozzleData)
         } %}
 
         <script type="text/javascript">
@@ -56,7 +57,7 @@
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
                         width: '100%',
-                        height: 300,
+                        height: 350,
                         id: '{{ widgetId }}'
                     });
                 }

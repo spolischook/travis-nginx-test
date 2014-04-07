@@ -6,7 +6,10 @@
         {% if item[1] is defined and item[1] %}
             {% set hasData = true %}
         {% endif %}
-        {% set data = data|merge([{label: items.labels[item[0]], value: item[1]}]) %}
+        {% set value = item[1] %}
+        {% set label = items.labels[item[0]] %}
+        {% set displayValue = value|oro_format_currency %}
+        {% set data = data|merge([{label: label, value: value, displayValue: displayValue}]) %}
     {% endfor %}
 
     {% if hasData %}
@@ -16,21 +19,17 @@
             </div>
         </div>
 
+        {% set isMobileVersion = isMobileVersion() %}
         {% set json = {
             'chart': {
+                'showValues': isMobileVersion ? '0' : '1',
                 'manageResize' : '1',
-                'plotspacepercent': '0',
+                'plotspacepercent': '50',
                 'showCanvasBg': '0',
-                'showCanvasBase': '0',
                 'animation': '0',
-
-                'formatNumberScale': '0',
-                'decimals': '2',
-                'forceDecimals': '1',
-
-                'numberPrefix' : '$',
                 'xAxisName': 'orocrm.sales.opportunity.status.label'|trans,
                 'rotateXAxisName': '0',
+                'numberPrefix': '$',
                 'formatNumberScale': '0',
                 'decimals': '2',
                 'forceDecimals': '1',
@@ -46,7 +45,7 @@
                         type: 'Column3D',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
-                        height: 300,
+                        height: 350,
                         id: '{{ widgetId }}'
                     });
                 }
