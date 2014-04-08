@@ -20,6 +20,7 @@
         </div>
 
         {% set isMobileVersion = isMobileVersion() %}
+        {% set symbolPosition = 'number' ~ (oro_currency_symbol_prepend() ? 'Prefix' : 'Suffix') %}
         {% set json = {
             'chart': {
                 'showValues': isMobileVersion ? '0' : '1',
@@ -29,7 +30,7 @@
                 'animation': '0',
                 'xAxisName': 'orocrm.sales.opportunity.status.label'|trans,
                 'rotateXAxisName': '0',
-                'numberPrefix': '$',
+                (symbolPosition): oro_currency_symbol(),
                 'formatNumberScale': '0',
                 'decimals': '2',
                 'forceDecimals': '1',
