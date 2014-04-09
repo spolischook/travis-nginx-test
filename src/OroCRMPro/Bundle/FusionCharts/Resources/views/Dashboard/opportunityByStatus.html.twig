@@ -19,7 +19,7 @@
     {% if hasData %}
         <div class="chart-container">
             <div class="clearfix">
-                <div id="{{ widgetId }}-chart" class="bar-chart chart"></div>
+                <div id="{{ widgetId }}-chart" class="column-chart chart"></div>
             </div>
         </div>
 
@@ -59,6 +59,7 @@
                 ]
             }]
         } %}
+        {% set width = isMobileVersion ? 100 : 60 %}
 
         <script type="text/javascript">
             require(
@@ -68,7 +69,7 @@
                         type: 'Column3D',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
-                        width: '70%',
+                        width: '{{ width }}%',
                         height: 300,
                         id: '{{ widgetId }}'
                     });

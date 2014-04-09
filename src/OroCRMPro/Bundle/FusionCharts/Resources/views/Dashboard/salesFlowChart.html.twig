@@ -2,16 +2,21 @@
 
 {% block content %}
     {% set data, nozzleData, hasData = {}, {}, false %}
+    {% set isMobileVersion = isMobileVersion() %}
     {% for label, value in items %}
         {% if value %}
             {% set hasData = true %}
         {% endif %}
         {% if label in nozzleSteps %}
-            {% set label = label ~ ' (' ~ 'from'|trans ~ ' ' ~ quarterDate|oro_format_date ~ '): ' ~ value|oro_format_currency %}
-            {% set nozzleData = nozzleData|merge([{label: label, value: 0, showValue: 0}]) %}
+            {% if isMobileVersion %}
+                {% set label = label ~ ': ' ~ value|oro_format_currency ~ '{br}(' ~ 'from'|trans ~ ' ' ~ quarterDate|oro_format_date ~ ')' %}
+            {% else %}
+                {% set label = label ~ ' (' ~ 'from'|trans ~ ' ' ~ quarterDate|oro_format_date ~ '): ' ~ value|oro_format_currency %}
+            {% endif %}
+            {% set nozzleData = nozzleData|merge([{label: label, toolText: label, value: 0, showValue: 0}]) %}
         {% else %}
             {% set label = label ~ ': ' ~ value|oro_format_currency %}
-            {% set data = data|merge([{label: label, value: value}]) %}
+            {% set data = data|merge([{label: label, toolText: label, value: value}]) %}
         {% endif %}
     {% endfor %}
 
@@ -22,12 +27,13 @@
             </div>
         </div>
 
-        {% set isMobileVersion = isMobileVersion() %}
+        {% set data = data|merge(nozzleData) %}
         {% set json = {
             'chart': {
                 'labelDistance': isMobileVersion ? '15' : '',
                 'showLabels': isMobileVersion ? '0' : '1',
                 'showLegend': isMobileVersion ? '1' : '0',
+                'legendNumColumns': '2',
                 'useEllipsesWhenOverflow': '0',
                 'isHollow': '0',
                 'showValues': '0',
@@ -43,8 +49,10 @@
                 'showBorder': '0',
                 'paletteColors': 'c0dda6,7fab90,fdbc7c,fdbc7c,d6a970,72a4e1,ceebf3,5a897f'
             },
-            'data': data|merge(nozzleData)
+            'data': data
         } %}
+
+        {% set height = isMobileVersion ? 300 + (data|length * 12) : 300 %}
 
         <script type="text/javascript">
             require(
@@ -54,8 +62,8 @@
                         type: 'Funnel',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
-                        width: '80%',
-                        height: 300,
+                        width: '100%',
+                        height: '{{ height }}',
                         id: '{{ widgetId }}'
                     });
                 }

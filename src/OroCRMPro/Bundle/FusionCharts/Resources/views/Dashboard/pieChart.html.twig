@@ -30,7 +30,7 @@
                 'animation': '0',
                 'showLegend': isMobileVersion ? '1' : '0',
                 'showLabels': isMobileVersion ? '0' : '1',
-                'pieRadius': isMobileVersion ? '60' : '180',
+                'pieRadius': isMobileVersion ? '60' : '170',
                 'legendNumColumns': '2',
                 'legendIconScale': '1',
                 'legendBgAlpha': '0',
@@ -41,6 +41,7 @@
             },
             'data': data
         } %}
+        {% set width = isMobileVersion ? 100 : 70 %}
 
         <script type="text/javascript">
             require(
@@ -51,7 +52,7 @@
                         renderer: 'JavaScript',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
-                        width: '70%',
+                        width: '{{ width }}%',
                         height: 300,
                         id: '{{ widgetId }}'
                     });
