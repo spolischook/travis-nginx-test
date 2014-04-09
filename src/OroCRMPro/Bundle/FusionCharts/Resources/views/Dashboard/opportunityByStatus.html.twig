@@ -34,6 +34,7 @@
                 'formatNumberScale': '0',
                 'decimals': '2',
                 'forceDecimals': '1',
+                'divLineColor': 'd3d3d3',
                 'paletteColors': '7fab90,fdbc7c,72a4e1,bedb99,5a897f,ceebf3,d6a970,fde090'
             },
             'data': data
@@ -47,6 +48,7 @@
                         type: 'Column3D',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
+                        width: '70%',
                         height: 350,
                         id: '{{ widgetId }}'
                     });
