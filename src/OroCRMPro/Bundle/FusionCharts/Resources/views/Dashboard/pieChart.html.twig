@@ -30,13 +30,13 @@
                 'animation': '0',
                 'showLegend': isMobileVersion ? '1' : '0',
                 'showLabels': isMobileVersion ? '0' : '1',
-                'pieRadius': isMobileVersion ? '60' : '200',
+                'pieRadius': isMobileVersion ? '60' : '180',
                 'legendNumColumns': '2',
                 'legendIconScale': '1',
                 'legendBgAlpha': '0',
                 'use3DLighting': '0',
                 'legendBorderAlpha': '0',
-                'pieslicedepth': isMobileVersion ? '10' : '40',
+                'pieslicedepth': isMobileVersion ? '10' : '30',
                 'paletteColors': '7fab90,c0dda6,5a897f,ceebf3,d6a970,72a4e1,fdbc7c,fdbc7c'
             },
             'data': data
@@ -52,7 +52,7 @@
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
                         width: '70%',
-                        height: 350,
+                        height: 300,
                         id: '{{ widgetId }}'
                     });
                 }

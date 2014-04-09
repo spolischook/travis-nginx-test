@@ -13,24 +13,22 @@
             {% set label = label ~ ': ' ~ value|oro_format_currency %}
             {% set data = data|merge([{label: label, value: value}]) %}
         {% endif %}
-
     {% endfor %}
 
     {% if hasData %}
         <div class="chart-container">
             <div class="clearfix">
                 <div id="{{ widgetId }}-chart" class="bar-chart chart"></div>
-                <div id="{{ widgetId }}-nozzle-chart" class="bar-chart chart"></div>
             </div>
         </div>
 
         {% set isMobileVersion = isMobileVersion() %}
         {% set json = {
             'chart': {
-                'labelDistance': isMobileVersion ? '15' : '70',
+                'labelDistance': isMobileVersion ? '15' : '',
                 'showLabels': isMobileVersion ? '0' : '1',
                 'showLegend': isMobileVersion ? '1' : '0',
-                'chartLeftMargin': isMobileVersion ? '10' : '150',
+                'useEllipsesWhenOverflow': '0',
                 'isHollow': '0',
                 'showValues': '0',
                 'useSameSlantAngle': '0',
@@ -45,7 +43,7 @@
                 'showBorder': '0',
                 'paletteColors': 'c0dda6,7fab90,fdbc7c,fdbc7c,d6a970,72a4e1,ceebf3,5a897f'
             },
-            'data': data|merge(data)|merge(nozzleData)
+            'data': data|merge(nozzleData)
         } %}
 
         <script type="text/javascript">
@@ -56,8 +54,8 @@
                         type: 'Funnel',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
-                        width: '70%',
-                        height: 370,
+                        width: '80%',
+                        height: 300,
                         id: '{{ widgetId }}'
                     });
                 }
