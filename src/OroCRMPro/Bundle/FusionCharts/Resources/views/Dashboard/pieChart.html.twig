@@ -25,13 +25,17 @@
         {% set json = {
             'chart': {
                 'showPercentValues': '1',
+                'manageLabelOverflow': isMobileVersion ? '1' : '0',
                 'smartLabelClearance': '20',
                 'animation': '0',
-                'showLegend': '0',
-                'legendIconScale': '2',
+                'showLegend': isMobileVersion ? '1' : '0',
+                'showLabels': isMobileVersion ? '0' : '1',
+                'pieRadius': isMobileVersion ? '60' : '',
+                'legendNumColumns': '2',
+                'legendIconScale': '1',
                 'legendBgAlpha': '0',
                 'legendBorderAlpha': '0',
-                'pieslicedepth': '40',
+                'pieslicedepth': isMobileVersion ? '10' : '40',
                 'paletteColors': '7fab90,bedb99,5a897f,ceebf3,d6a970,72a4e1,fde090,fdbc7c'
             },
             'data': data
