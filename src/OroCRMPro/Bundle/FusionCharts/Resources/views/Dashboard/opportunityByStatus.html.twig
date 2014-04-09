@@ -24,9 +24,9 @@
         {% set json = {
             'chart': {
                 'showValues': isMobileVersion ? '0' : '1',
-                'manageResize' : '1',
                 'plotspacepercent': '50',
                 'showCanvasBg': '0',
+                'showCanvasBase': '0',
                 'animation': '0',
                 'xAxisName': 'orocrm.sales.opportunity.status.label'|trans,
                 'rotateXAxisName': '0',
@@ -34,6 +34,7 @@
                 'formatNumberScale': '0',
                 'decimals': '2',
                 'forceDecimals': '1',
+                'paletteColors': '7fab90,fdbc7c,72a4e1,bedb99,5a897f,ceebf3,d6a970,fde090'
             },
             'data': data
         } %}
