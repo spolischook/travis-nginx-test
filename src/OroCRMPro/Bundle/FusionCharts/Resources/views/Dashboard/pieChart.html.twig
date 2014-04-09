@@ -34,9 +34,10 @@
                 'legendNumColumns': '2',
                 'legendIconScale': '1',
                 'legendBgAlpha': '0',
+                'use3DLighting': '0',
                 'legendBorderAlpha': '0',
                 'pieslicedepth': isMobileVersion ? '10' : '40',
-                'paletteColors': '7fab90,bedb99,5a897f,ceebf3,d6a970,72a4e1,fde090,fdbc7c'
+                'paletteColors': '7fab90,c0dda6,5a897f,ceebf3,d6a970,72a4e1,fdbc7c,fdbc7c'
             },
             'data': data
         } %}
@@ -50,6 +51,7 @@
                         renderer: 'JavaScript',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
+                        width: '70%',
                         height: 350,
                         id: '{{ widgetId }}'
                     });

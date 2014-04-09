@@ -43,9 +43,9 @@
                 'legendBorderAlpha': '0',
                 'legendShadow': '0',
                 'showBorder': '0',
-                'paletteColors': 'bedb99,7fab90,fdbc7c,fde090,d6a970,72a4e1,ceebf3,5a897f'
+                'paletteColors': 'c0dda6,7fab90,fdbc7c,fdbc7c,d6a970,72a4e1,ceebf3,5a897f'
             },
-            'data': data|merge(nozzleData)
+            'data': data|merge(data)|merge(nozzleData)
         } %}
 
         <script type="text/javascript">
@@ -56,6 +56,7 @@
                         type: 'Funnel',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
+                        width: '70%',
                         height: 370,
                         id: '{{ widgetId }}'
                     });
