@@ -3,6 +3,7 @@
 namespace OroPro\Bundle\EwsBundle\Manager;
 
 use OroPro\Bundle\EwsBundle\Connector\EwsConnector;
+use OroPro\Bundle\EwsBundle\Ews\EwsException;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 use OroPro\Bundle\EwsBundle\Manager\DTO\EmailAttachment;
@@ -112,36 +113,85 @@ class EwsEmailManager
         $result = array();
         foreach ($response as $item) {
             foreach ($item->RootFolder->Items->Message as $msg) {
-                $email = new Email($this);
-                $email
-                    ->setId(new ItemId($msg->ItemId->Id, $msg->ItemId->ChangeKey))
-                    ->setSubject($msg->Subject)
-                    ->setFrom($msg->From->Mailbox->EmailAddress)
-                    ->setSentAt($this->convertToDateTime($msg->DateTimeSent))
-                    ->setReceivedAt($this->convertToDateTime($msg->DateTimeReceived))
-                    ->setInternalDate($this->convertToDateTime($msg->DateTimeCreated))
-                    ->setImportance($this->convertImportance($msg->Importance))
-                    ->setMessageId($msg->InternetMessageId)
-                    ->setXMessageId($msg->ItemId->Id)
-                    ->setXThreadId($msg->ConversationId->Id);
-                foreach ($msg->ToRecipients->Mailbox as $mailbox) {
-                    $email->addToRecipient($mailbox->EmailAddress);
-                }
-                foreach ($msg->CcRecipients->Mailbox as $mailbox) {
-                    $email->addCcRecipient($mailbox->EmailAddress);
-                }
-                foreach ($msg->BccRecipients->Mailbox as $mailbox) {
-                    $email->addBccRecipient($mailbox->EmailAddress);
-                }
-                foreach ($msg->Attachments->FileAttachment as $attachment) {
-                    $email->addAttachmentId($attachment->AttachmentId->Id);
-                }
-
-                $result[] = $email;
+                $result[] = $this->convertToEmail($msg);
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Creates Email DTO for the given email message
+     *
+     * @param EwsType\MessageType $msg
+     * @return Email
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function convertToEmail(EwsType\MessageType $msg)
+    {
+        $email = new Email($this);
+        $email
+            ->setId(new ItemId($msg->ItemId->Id, $msg->ItemId->ChangeKey))
+            ->setSubject($msg->Subject)
+            ->setFrom($msg->From->Mailbox->EmailAddress)
+            ->setSentAt($this->convertToDateTime($msg->DateTimeSent))
+            ->setReceivedAt($this->convertToDateTime($msg->DateTimeReceived))
+            ->setInternalDate($this->convertToDateTime($msg->DateTimeCreated))
+            ->setImportance($this->convertImportance($msg->Importance))
+            ->setMessageId($msg->InternetMessageId)
+            ->setXMessageId($msg->ItemId->Id)
+            ->setXThreadId($msg->ConversationId != null ? $msg->ConversationId->Id : null);
+
+        foreach ($msg->ToRecipients->Mailbox as $mailbox) {
+            $email->addToRecipient($mailbox->EmailAddress);
+        }
+
+        if (null != $msg->CcRecipients) {
+            foreach ($msg->CcRecipients->Mailbox as $mailbox) {
+                $email->addCcRecipient($mailbox->EmailAddress);
+            }
+        }
+
+        if (null != $msg->BccRecipients) {
+            foreach ($msg->BccRecipients->Mailbox as $mailbox) {
+                $email->addBccRecipient($mailbox->EmailAddress);
+            }
+        }
+
+        if (null != $msg->Attachments) {
+            foreach ($msg->Attachments->FileAttachment as $attachment) {
+                $email->addAttachmentId($attachment->AttachmentId->Id);
+            }
+        }
+
+        return $email;
+    }
+
+    /**
+     * Retrieve email by its Id
+     *
+     * @param ItemId $emailId
+     * @throws \RuntimeException
+     * @return null|Email
+     */
+    public function findEmail(ItemId $emailId)
+    {
+        /** @var EwsType\ItemIdType $ewsItemId */
+        $ewsItemId = $this->convertToEwsItemId($emailId);
+
+        try {
+            /** @var EwsType\ItemInfoResponseMessageType $msg */
+            $msg = $this->connector->getItem(
+                $ewsItemId,
+                EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES,
+                EwsType\BodyTypeResponseType::BEST
+            );
+
+            return $this->convertToEmail($msg->Items->Message[0]);
+        } catch (EwsException $ex) {
+            throw new \RuntimeException('Cannot retrieve email message.');
+        }
     }
 
     /**
@@ -152,16 +202,19 @@ class EwsEmailManager
      */
     public function getEmailBody(ItemId $emailId)
     {
+        /** @var EwsType\ItemInfoResponseMessageType $response */
         $response = $this->connector->getItem(
             $this->convertToEwsItemId($emailId),
             EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES,
             EwsType\BodyTypeResponseType::BEST
         );
 
+        $messageBody = $response->Items->Message[0]->Body;
+
         $body = new EmailBody();
         $body
-            ->setContent($response->Body->_)
-            ->setBodyIsText($response->Body->BodyType === EwsType\BodyTypeType::TEXT);
+            ->setContent($messageBody->_)
+            ->setBodyIsText($messageBody->BodyType === EwsType\BodyTypeType::TEXT);
 
         return $body;
     }
