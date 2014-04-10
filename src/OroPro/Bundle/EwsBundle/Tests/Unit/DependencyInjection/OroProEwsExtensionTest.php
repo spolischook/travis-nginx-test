@@ -32,7 +32,7 @@ class OroProEwsExtensionTest extends \PHPUnit_Framework_TestCase
             ->will(
                 $this->returnCallback(
                     function ($name, $value) use (&$isCalled, &$wsdlEndpointPath) {
-                        if ($name == 'oro_ews.wsdl_endpoint' && is_string($value)) {
+                        if ($name == 'oro_pro_ews.wsdl_endpoint' && is_string($value)) {
                             $isCalled = true;
                             $wsdlEndpointPath = $value;
                         }

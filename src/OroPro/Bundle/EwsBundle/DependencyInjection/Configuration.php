@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('oro_ews');
+        $rootNode = $treeBuilder->root('oro_pro_ews');
         $rootNode
             ->children()
             ->scalarNode('wsdl_endpoint')->end()
@@ -24,7 +24,11 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             [
-                'version' => ['value' => 2010]
+                'version'     => ['value' => 2010],
+                'login'       => ['value' => ''],
+                'url'         => ['value' => ''],
+                'password'    => ['value' => ''],
+                'domain_list' => ['value' => '', 'type' => 'array'],
             ]
         );
 

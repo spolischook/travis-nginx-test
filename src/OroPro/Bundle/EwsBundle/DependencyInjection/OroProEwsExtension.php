@@ -28,8 +28,8 @@ class OroProEwsExtension extends Extension
         $config        = $this->processConfiguration($configuration, $configs);
 
         // Load EWS configuration parameters to a DI container
-        // The config parameter name is prefixed with 'oro_ews.' before it is added to DI container
-        // For example: 'wsdl_endpoint' config parameter is added to DI container as 'oro_ews.wsdl_endpoint'
+        // The config parameter name is prefixed with 'oro_pro_ews.' before it is added to DI container
+        // For example: 'wsdl_endpoint' config parameter is added to DI container as 'oro_pro_ews.wsdl_endpoint'
         $bundles          = $container->getParameter('kernel.bundles');
         $parametersFile   = $fileLocator->locate('parameters.yml');
         $ewsConfigContent = Yaml::parse($parametersFile);
@@ -50,7 +50,7 @@ class OroProEwsExtension extends Extension
                     }
                 }
             }
-            $container->setParameter('oro_ews.' . $key, $prmVal);
+            $container->setParameter('oro_pro_ews.' . $key, $prmVal);
         }
 
         // Load services
