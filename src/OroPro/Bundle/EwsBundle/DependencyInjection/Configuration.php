@@ -4,7 +4,8 @@ namespace OroPro\Bundle\EwsBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\Builder\NodeBuilder;
+
+use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 
 class Configuration implements ConfigurationInterface
 {
@@ -19,6 +20,13 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('wsdl_endpoint')->end()
             ->end();
+
+        SettingsBuilder::append(
+            $rootNode,
+            [
+                'version' => ['value' => 2010]
+            ]
+        );
 
         return $treeBuilder;
     }

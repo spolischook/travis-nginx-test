@@ -56,5 +56,7 @@ class OroProEwsExtension extends Extension
         // Load services
         $loader = new Loader\YamlFileLoader($container, $fileLocator);
         $loader->load('services.yml');
+
+        $container->prependExtensionConfig($this->getAlias(), array_intersect_key($config, array_flip(['settings'])));
     }
 }
