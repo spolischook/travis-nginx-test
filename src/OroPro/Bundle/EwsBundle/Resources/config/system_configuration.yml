@@ -25,10 +25,11 @@ oro_system_configuration:
             options:
                 label: 'Version'
                 choices:
-                    2007: 2007
-                    2010: 2010
-                    2013: 2013
-                    online: Exchange Online
+                    Exchange2007:     Exchange 2007
+                    Exchange2007_SP1: Exchange 2007 SP1
+                    Exchange2010:     Exchange 2010
+                    Exchange2010_SP1: Exchange 2010 SP1
+                    Exchange2010_SP2: Exchange 2010 SP2
 
         oro_pro_ews.domain_list:
             type: oro_list
