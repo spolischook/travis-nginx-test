@@ -66,7 +66,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      */
     public function supports(EmailOrigin $origin)
     {
-        return ($origin instanceof EwsEmailOrigin);
+        return $origin instanceof EwsEmailOrigin;
     }
 
     /**
