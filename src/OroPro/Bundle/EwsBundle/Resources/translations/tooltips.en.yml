@@ -1,4 +1,4 @@
 oro_pro_ews:
     form:
         tooltip:
-            domain_list: Domain list can be one or few items separated by comma (,).
+            domain_list: Single value or several tems separated by comma (,).
