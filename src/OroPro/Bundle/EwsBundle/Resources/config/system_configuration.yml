@@ -32,7 +32,7 @@ oro_system_configuration:
                     Exchange2010_SP2: Exchange 2010 SP2
 
         oro_pro_ews.domain_list:
-            type: oro_list
+            type: oro_textlist
             options:
                 label: 'Domain list'
 
