@@ -5,27 +5,32 @@ parameters:
     oro_pro_ews.search_query.state.class:                OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery
     oro_pro_ews.search_query.query_string.builder.class: OroPro\Bundle\EwsBundle\Connector\Search\QueryStringBuilder
     oro_pro_ews.search_query.restriction.builder.class:  OroPro\Bundle\EwsBundle\Connector\Search\RestrictionBuilder
+    oro_pro_ews.service_configurator.class:              OroPro\Bundle\EwsBundle\Provider\EwsServiceConfigurator
 
 services:
     oro_pro_ews.connector:
         class: %oro_pro_ews.connector.class%
         arguments:
             - @oro_pro_ews.services
+
     oro_pro_ews.services:
         public: false
         class: %oro_pro_ews.services.class%
-        arguments: # TODO: use ConfigurationBundle to get server, username and password
-            - %oro_pro_ews.wsdl_endpoint% # wsdlFile
-            - mail.orolab.net         # server
-            - Administrator           # username
-            - Win2008ServDc           # password
-            - Exchange2010            # Exchange version
-            - false                   # ignoreFailedResponseMessages
+        arguments:
+            - @oro_pro_ews.service_configurator
+#            - %oro_pro_ews.wsdl_endpoint% # wsdlFile
+#            - mail.orolab.net         # server
+#            - Administrator           # username
+#            - Win2008ServDc           # password
+#            - Exchange2010            # Exchange version
+#            - false                   # ignoreFailedResponseMessages
+
     oro_pro_ews.search_query.builder:
         scope: prototype
         class: %oro_pro_ews.search_query.builder.class%
         arguments:
             - @oro_pro_ews.search_query.state
+
     oro_pro_ews.search_query.state:
         public: false
         scope: prototype
@@ -33,9 +38,19 @@ services:
         arguments:
             - @oro_pro_ews.search_query.query_string.builder
             - @oro_pro_ews.search_query.restriction.builder
+
     oro_pro_ews.search_query.query_string.builder:
         public: false
         class: %oro_pro_ews.search_query.query_string.builder.class%
+
     oro_pro_ews.search_query.restriction.builder:
         public: false
         class: %oro_pro_ews.search_query.restriction.builder.class%
+
+    oro_pro_ews.service_configurator:
+        class: %oro_pro_ews.service_configurator.class%
+        arguments:
+            - @oro_config.global
+            - @oro_security.encoder.mcrypt
+            - %oro_pro_ews.wsdl_endpoint%
+            - false                         # ignoreFailedResponseMessages

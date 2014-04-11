@@ -15,9 +15,10 @@ oro_system_configuration:
                 label: 'Login'
 
         oro_pro_ews.password:
-            type: password
+            type: oro_encoded_password
             options:
                 label: 'Password'
+                always_empty: false
 
         oro_pro_ews.version:
             type: choice
@@ -30,7 +31,7 @@ oro_system_configuration:
                     online: Exchange Online
 
         oro_pro_ews.domain_list:
-            type: textarea
+            type: oro_list
             options:
                 label: 'Domain list'
 

@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
                 'login'       => ['value' => ''],
                 'url'         => ['value' => ''],
                 'password'    => ['value' => ''],
-                'domain_list' => ['value' => '', 'type' => 'array'],
+                'domain_list' => ['value' => [], 'type' => 'array'],
             ]
         );
 
