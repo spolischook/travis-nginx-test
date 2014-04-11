@@ -30,18 +30,19 @@
                 'animation': '0',
                 'showLegend': isMobileVersion ? '1' : '0',
                 'showLabels': isMobileVersion ? '0' : '1',
-                'pieRadius': isMobileVersion ? '60' : '170',
+                'enableSmartLabels': isMobileVersion ? '0' : '1',
+                'labelDistance': isMobileVersion ? '1' : '',
+                'pieRadius': isMobileVersion ? '80' : '120',
                 'legendNumColumns': '2',
                 'legendIconScale': '1',
                 'legendBgAlpha': '0',
                 'use3DLighting': '0',
                 'legendBorderAlpha': '0',
                 'pieslicedepth': isMobileVersion ? '10' : '30',
-                'paletteColors': '7fab90,c0dda6,5a897f,ceebf3,d6a970,72a4e1,fdbc7c,fdbc7c'
+                'paletteColors': 'fdbc7c,b6c05d,fee090,80d4cf,bedb99,e6c160,5a8980,ceeaf2,d6a970,73a4e1,7fab90,ed935c'
             },
             'data': data
         } %}
-        {% set width = isMobileVersion ? 100 : 70 %}
 
         <script type="text/javascript">
             require(
@@ -52,7 +53,7 @@
                         renderer: 'JavaScript',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
-                        width: '{{ width }}%',
+                        width: '100%',
                         height: 300,
                         id: '{{ widgetId }}'
                     });
