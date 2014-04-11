@@ -121,54 +121,6 @@ class EwsEmailManager
     }
 
     /**
-     * Creates Email DTO for the given email message
-     *
-     * @param EwsType\MessageType $msg
-     * @return Email
-     *
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     */
-    public function convertToEmail(EwsType\MessageType $msg)
-    {
-        $email = new Email($this);
-        $email
-            ->setId(new ItemId($msg->ItemId->Id, $msg->ItemId->ChangeKey))
-            ->setSubject($msg->Subject)
-            ->setFrom($msg->From->Mailbox->EmailAddress)
-            ->setSentAt($this->convertToDateTime($msg->DateTimeSent))
-            ->setReceivedAt($this->convertToDateTime($msg->DateTimeReceived))
-            ->setInternalDate($this->convertToDateTime($msg->DateTimeCreated))
-            ->setImportance($this->convertImportance($msg->Importance))
-            ->setMessageId($msg->InternetMessageId)
-            ->setXMessageId($msg->ItemId->Id)
-            ->setXThreadId($msg->ConversationId != null ? $msg->ConversationId->Id : null);
-
-        foreach ($msg->ToRecipients->Mailbox as $mailbox) {
-            $email->addToRecipient($mailbox->EmailAddress);
-        }
-
-        if (null != $msg->CcRecipients) {
-            foreach ($msg->CcRecipients->Mailbox as $mailbox) {
-                $email->addCcRecipient($mailbox->EmailAddress);
-            }
-        }
-
-        if (null != $msg->BccRecipients) {
-            foreach ($msg->BccRecipients->Mailbox as $mailbox) {
-                $email->addBccRecipient($mailbox->EmailAddress);
-            }
-        }
-
-        if (null != $msg->Attachments) {
-            foreach ($msg->Attachments->FileAttachment as $attachment) {
-                $email->addAttachmentId($attachment->AttachmentId->Id);
-            }
-        }
-
-        return $email;
-    }
-
-    /**
      * Retrieve email by its Id
      *
      * @param ItemId $emailId
@@ -341,5 +293,53 @@ class EwsEmailManager
         $result->ChangeKey = $id->getChangeKey();
 
         return $result;
+    }
+
+    /**
+     * Creates Email DTO for the given email message
+     *
+     * @param EwsType\MessageType $msg
+     * @return Email
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    protected function convertToEmail(EwsType\MessageType $msg)
+    {
+        $email = new Email($this);
+        $email
+            ->setId(new ItemId($msg->ItemId->Id, $msg->ItemId->ChangeKey))
+            ->setSubject($msg->Subject)
+            ->setFrom($msg->From->Mailbox->EmailAddress)
+            ->setSentAt($this->convertToDateTime($msg->DateTimeSent))
+            ->setReceivedAt($this->convertToDateTime($msg->DateTimeReceived))
+            ->setInternalDate($this->convertToDateTime($msg->DateTimeCreated))
+            ->setImportance($this->convertImportance($msg->Importance))
+            ->setMessageId($msg->InternetMessageId)
+            ->setXMessageId($msg->ItemId->Id)
+            ->setXThreadId($msg->ConversationId != null ? $msg->ConversationId->Id : null);
+
+        foreach ($msg->ToRecipients->Mailbox as $mailbox) {
+            $email->addToRecipient($mailbox->EmailAddress);
+        }
+
+        if (null != $msg->CcRecipients) {
+            foreach ($msg->CcRecipients->Mailbox as $mailbox) {
+                $email->addCcRecipient($mailbox->EmailAddress);
+            }
+        }
+
+        if (null != $msg->BccRecipients) {
+            foreach ($msg->BccRecipients->Mailbox as $mailbox) {
+                $email->addBccRecipient($mailbox->EmailAddress);
+            }
+        }
+
+        if (null != $msg->Attachments) {
+            foreach ($msg->Attachments->FileAttachment as $attachment) {
+                $email->addAttachmentId($attachment->AttachmentId->Id);
+            }
+        }
+
+        return $email;
     }
 }
