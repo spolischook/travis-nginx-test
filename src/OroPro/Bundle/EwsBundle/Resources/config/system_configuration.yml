@@ -1,33 +1,33 @@
 oro_system_configuration:
     groups:
         integrations_ews:
-            title: 'MS Exchange'
+            title: oro_pro_ews.form.ews
 
     fields:
         oro_pro_ews.url:
             type: text
             priority: 100
             options:
-                label: 'Url'
+                label: oro_pro_ews.form.url
 
         oro_pro_ews.login:
             type: text
             priority: 80
             options:
-                label: 'Login'
+                label: oro_pro_ews.form.login
 
         oro_pro_ews.password:
             type: oro_encoded_password
             priority: 70
             options:
-                label: 'Password'
+                label: oro_pro_ews.form.password
                 always_empty: false
 
         oro_pro_ews.version:
             type: choice
             priority: 90
             options:
-                label: 'Version'
+                label: oro_pro_ews.form.version
                 choices:
                     Exchange2007:     Exchange 2007
                     Exchange2007_SP1: Exchange 2007 SP1
@@ -39,7 +39,8 @@ oro_system_configuration:
             type: oro_textlist
             priority: 60
             options:
-                label: 'Domain list'
+                label: oro_pro_ews.form.domains
+                tooltip: oro_pro_ews.form.tooltip.domain_list
 
     tree:
         system_configuration:
