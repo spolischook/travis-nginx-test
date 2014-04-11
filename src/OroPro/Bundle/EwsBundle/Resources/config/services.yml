@@ -6,6 +6,7 @@ parameters:
     oro_pro_ews.search_query.query_string.builder.class: OroPro\Bundle\EwsBundle\Connector\Search\QueryStringBuilder
     oro_pro_ews.search_query.restriction.builder.class:  OroPro\Bundle\EwsBundle\Connector\Search\RestrictionBuilder
     oro_pro_ews.service_configurator.class:              OroPro\Bundle\EwsBundle\Provider\EwsServiceConfigurator
+    oro_pro_ews.email_synchronizer.class:                OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizer
 
 services:
     oro_pro_ews.connector:
@@ -54,3 +55,16 @@ services:
             - @oro_security.encoder.mcrypt
             - %oro_pro_ews.wsdl_endpoint%
             - false                         # ignoreFailedResponseMessages
+
+    oro_pro_ews.email_synchronizer:
+        scope: prototype
+        class: %oro_pro_ews.email_synchronizer.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_email.email.entity.builder
+            - @oro_email.email.address.manager
+            - @oro_email.email.owner.provider.storage
+            - @oro_pro_ews.connector
+            - %oro_user.entity.class%
+        tags:
+            - { name: oro_email.email_synchronizer }
