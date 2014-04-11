@@ -23,7 +23,7 @@ class EwsConnector
      * @param ExchangeWebServices $ews
      * @throws \InvalidArgumentException
      */
-    public function __construct(ExchangeWebServices $ews)
+    public function setExchangeWebServices(ExchangeWebServices $ews)
     {
         if ($ews === null) {
             throw new \InvalidArgumentException('The EWS proxy must not be null.');

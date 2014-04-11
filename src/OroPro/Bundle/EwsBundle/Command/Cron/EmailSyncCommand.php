@@ -92,7 +92,7 @@ class EmailSyncCommand extends ContainerAwareCommand implements CronCommandInter
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var EwsEmailSynchronizer $synchronizer */
-        $synchronizer = $this->getContainer()->get('oro_ews.email_synchronizer');
+        $synchronizer = $this->getContainer()->get('oro_pro_ews.email_synchronizer');
         $synchronizer->setLogger(new OutputLogger($output));
 
         $originIds = $input->getOption('id');
