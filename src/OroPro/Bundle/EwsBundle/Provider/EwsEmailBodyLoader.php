@@ -4,6 +4,7 @@ namespace OroPro\Bundle\EwsBundle\Provider;
 
 use Doctrine\ORM\EntityManager;
 
+use Doctrine\ORM\Query;
 use Oro\Bundle\EmailBundle\Builder\EmailBodyBuilder;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
@@ -52,17 +53,23 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
             ->setParameter(1, $email)
             ->getQuery();
 
-        /** @var EwsEmail $ewsEmail */
-        $ewsEmail = $query->getSingleResult();
+        $query->setHydrationMode(Query::HYDRATE_ARRAY);
 
-        /** @var ItemId $id */
-        $id = new ItemId(
-            $ewsEmail['ewsId'],
-            $ewsEmail['ewsChangeKey']
-        );
-
-        /** @var \OroPro\Bundle\EwsBundle\Manager\DTO\Email $loadedEmail */
-        $loadedEmail = $manager->findEmail($id);
+        try {
+            $ewsEmail    = $query->getSingleResult();
+            $id          = new ItemId($ewsEmail['ewsId'], $ewsEmail['ewsChangeKey']);
+            $loadedEmail = $manager->findEmail($id);
+        } catch (\Exception $e) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Cannot find a body for "%s" email.',
+                    $email->getSubject()
+                ),
+                $e->getCode(),
+                $e->getFile(),
+                $e->getLine()
+            );
+        }
 
         $builder = new EmailBodyBuilder();
 
@@ -73,7 +80,6 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
         );
 
         $emailFileAttachements = $manager->getEmailAttachments($loadedEmail->getAttachmentIds());
-
         foreach ($emailFileAttachements as $fileAttachment) {
             $builder->addEmailAttachment(
                 $fileAttachment->getFileName(),
