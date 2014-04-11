@@ -132,18 +132,14 @@ class EwsEmailManager
         /** @var EwsType\ItemIdType $ewsItemId */
         $ewsItemId = $this->convertToEwsItemId($emailId);
 
-        try {
-            /** @var EwsType\ItemInfoResponseMessageType $msg */
-            $msg = $this->connector->getItem(
-                $ewsItemId,
-                EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES,
-                EwsType\BodyTypeResponseType::BEST
-            );
+        /** @var EwsType\ItemInfoResponseMessageType $msg */
+        $msg = $this->connector->getItem(
+            $ewsItemId,
+            EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES,
+            EwsType\BodyTypeResponseType::BEST
+        );
 
-            return $this->convertToEmail($msg->Items->Message[0]);
-        } catch (EwsException $ex) {
-            throw new \RuntimeException('Cannot retrieve email message.');
-        }
+        return $this->convertToEmail($msg->Items->Message[0]);
     }
 
     /**
