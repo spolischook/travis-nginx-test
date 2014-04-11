@@ -70,7 +70,6 @@ services:
         tags:
             - { name: oro_email.email_synchronizer }
 
-
     oro_pro_ews.email_body_loader:
         public: false
         class: %oro_pro_ews.email_body_loader.class%
