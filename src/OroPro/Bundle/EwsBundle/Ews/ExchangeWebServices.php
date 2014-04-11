@@ -2,9 +2,10 @@
 
 namespace OroPro\Bundle\EwsBundle\Ews;
 
-use OroPro\Bundle\EwsBundle\Ews\AbstractExchangeWebServices;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
-use SoapClient;
+
+use OroPro\Bundle\EwsBundle\Provider\EwsServiceConfigurator;
+use \SoapClient;
 
 /**
  * The ExchangeWebServices class provides a SOAP client
@@ -76,28 +77,18 @@ class ExchangeWebServices extends AbstractExchangeWebServices
     /**
      * Constructor for the ExchangeWebServices class
      *
-     * @param string $wsdlFile
-     * @param string $server
-     * @param string $username
-     * @param string $password
-     * @param string $version one of the ExchangeVersionType::* constants
-     * @param bool $ignoreFailedResponseMessages
-     * @see EwsType\ExchangeVersionType
+     * @param \OroPro\Bundle\EwsBundle\Provider\EwsServiceConfigurator $configurator
+     *
+     * @see   EwsType\ExchangeVersionType
      */
-    public function __construct(
-        $wsdlFile,
-        $server = null,
-        $username = null,
-        $password = null,
-        $version = EwsType\ExchangeVersionType::EXCHANGE2007,
-        $ignoreFailedResponseMessages = false
-    ) {
-        $this->wsdlFile = $wsdlFile;
-        $this->server = $server;
-        $this->username = $username;
-        $this->password = $password;
-        $this->version = $version;
-        $this->ignoreFailedResponseMessages = $ignoreFailedResponseMessages;
+    public function __construct(EwsServiceConfigurator $configurator)
+    {
+        $this->wsdlFile                     = $configurator->getEndpoint();
+        $this->server                       = $configurator->getServer();
+        $this->username                     = $configurator->getLogin();
+        $this->password                     = $configurator->getPassword();
+        $this->version                      = $configurator->getVersion();
+        $this->ignoreFailedResponseMessages = $configurator->isIgnoreFailedResponseMessages();
     }
 
     /**

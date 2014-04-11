@@ -40,11 +40,11 @@ Usage
 <?php
     // Accessing EWS connector
     /** @var $ews \OroPro\Bundle\EwsBundle\Connector\EwsConnector */
-    $ews = $this->get('oro_ews.connector');
+    $ews = $this->get('oro_pro_ews.connector');
 
     // Accessing the search query builder
     /** @var $queryBuilder \OroPro\Bundle\EwsBundle\Connector\SearchQueryBuilder */
-    $queryBuilder = $this->get('oro_ews.search_query.builder');
+    $queryBuilder = $this->get('oro_pro_ews.search_query.builder');
 
     // Building a search query
     $query = $queryBuilder
