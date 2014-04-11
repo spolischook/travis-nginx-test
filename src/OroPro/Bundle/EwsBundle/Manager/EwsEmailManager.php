@@ -94,6 +94,36 @@ class EwsEmailManager
     }
 
     /**
+     * Retrieve folders
+     *
+     * @param string|null $parentFolder The global name of a parent folder.
+     * @param bool $recursive True to get all subordinate folders
+     * @return array
+     */
+    public function getFolders($parentFolder = null, $recursive = false)
+    {
+        if ($parentFolder === null) {
+            $parentFolder = EwsType\DistinguishedFolderIdNameType::MSGFOLDERROOT;
+        }
+
+        $response = $this->connector->findFolders(
+            $parentFolder,
+            $this->getSelectedUserId(),
+            EwsType\ItemQueryTraversalType::SHALLOW,
+            EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES
+        );
+
+        $result = array();
+        foreach ($response as $item) {
+            foreach ($item->RootFolder->Folders->Folder as $folder) {
+                $result[] = $folder;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Retrieve emails by the given criteria
      *
      * @param SearchQuery $query

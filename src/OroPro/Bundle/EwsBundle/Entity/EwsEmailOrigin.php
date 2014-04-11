@@ -23,9 +23,9 @@ class EwsEmailOrigin extends EmailOrigin
     /**
      * @var string
      *
-     * @ORM\Column(name="ews_user", type="string", length=255, nullable=true)
+     * @ORM\Column(name="ews_user_email", type="string", length=255, nullable=true)
      */
-    protected $user;
+    protected $userEmail;
 
     /**
      * Gets the EWS server name
@@ -51,24 +51,24 @@ class EwsEmailOrigin extends EmailOrigin
     }
 
     /**
-     * Gets the user name
+     * Gets the user's login email
      *
      * @return string
      */
-    public function getUser()
+    public function getUserEmail()
     {
-        return $this->user;
+        return $this->userEmail;
     }
 
     /**
-     * Sets the user name
+     * Sets the user's login email
      *
-     * @param string $user
+     * @param string $userEmail
      * @return EwsEmailOrigin
      */
-    public function setUser($user)
+    public function setUserEmail($userEmail)
     {
-        $this->user = $user;
+        $this->userEmail = $userEmail;
 
         return $this;
     }

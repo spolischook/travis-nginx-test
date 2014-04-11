@@ -56,6 +56,6 @@ class OroProEwsBundle implements Migration
         /** Add EWS fields to the oro_email_origin table **/
         $table = $schema->getTable('oro_email_origin');
         $table->addColumn('ews_server', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('ews_user', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('ews_user_email', 'string', ['notnull' => false, 'length' => 255]);
     }
 }
