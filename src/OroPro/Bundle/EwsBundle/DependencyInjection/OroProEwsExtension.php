@@ -41,13 +41,11 @@ class OroProEwsExtension extends Extension
                 $bundleName       = substr($prmVal, 1, $bundleNameEndPos - 1);
                 if (isset($bundles[$bundleName])) {
                     $bundle = $bundles[$bundleName];
-                    if ($bundle instanceof Bundle) {
-                        $relDir = substr($prmVal, $bundleNameEndPos);
-                        if (DIRECTORY_SEPARATOR != '/') {
-                            $relDir = str_replace('/', DIRECTORY_SEPARATOR, $relDir);
-                        }
-                        $prmVal = $bundle->getPath() . $relDir;
+                    $relDir = substr($prmVal, $bundleNameEndPos);
+                    if (DIRECTORY_SEPARATOR != '/') {
+                        $relDir = str_replace('/', DIRECTORY_SEPARATOR, $relDir);
                     }
+                    $prmVal = dirname((new \ReflectionClass($bundle))->getFileName()) . $relDir;
                 }
             }
             $container->setParameter('oro_pro_ews.' . $key, $prmVal);

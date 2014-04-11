@@ -8,7 +8,12 @@ class OroProEwsExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoad()
     {
+        /**
+         * TODO
+         *  !!! feractor test
+         */
         $extension = new OroProEwsExtension();
+
         $configs = array(
             array('wsdl_endpoint' => '@OroProEwsBundle/test')
         );

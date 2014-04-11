@@ -7,6 +7,7 @@ parameters:
     oro_pro_ews.search_query.restriction.builder.class:  OroPro\Bundle\EwsBundle\Connector\Search\RestrictionBuilder
     oro_pro_ews.service_configurator.class:              OroPro\Bundle\EwsBundle\Provider\EwsServiceConfigurator
     oro_pro_ews.email_synchronizer.class:                OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizer
+    oro_pro_ews.email_body_loader.class:                 OroPro\Bundle\EwsBundle\Provider\EwsEmailBodyLoader
 
 services:
     oro_pro_ews.connector:
@@ -68,3 +69,11 @@ services:
             - %oro_user.entity.class%
         tags:
             - { name: oro_email.email_synchronizer }
+
+    oro_pro_ews.email_body_loader:
+        public: false
+        class: %oro_pro_ews.email_body_loader.class%
+        arguments:
+            - @oro_pro_ews.connector
+        tags:
+            - { name: oro_email.email_body_loader }
