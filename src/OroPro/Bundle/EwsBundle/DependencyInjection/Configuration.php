@@ -24,7 +24,7 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             [
-                'version'     => ['value' => 2010],
+                'version'     => ['value' => 'Exchange2010'],
                 'login'       => ['value' => ''],
                 'url'         => ['value' => ''],
                 'password'    => ['value' => ''],

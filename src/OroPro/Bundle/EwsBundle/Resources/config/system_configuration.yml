@@ -6,22 +6,26 @@ oro_system_configuration:
     fields:
         oro_pro_ews.url:
             type: text
+            priority: 100
             options:
                 label: 'Url'
 
         oro_pro_ews.login:
             type: text
+            priority: 80
             options:
                 label: 'Login'
 
         oro_pro_ews.password:
             type: oro_encoded_password
+            priority: 70
             options:
                 label: 'Password'
                 always_empty: false
 
         oro_pro_ews.version:
             type: choice
+            priority: 90
             options:
                 label: 'Version'
                 choices:
@@ -33,6 +37,7 @@ oro_system_configuration:
 
         oro_pro_ews.domain_list:
             type: oro_textlist
+            priority: 60
             options:
                 label: 'Domain list'
 
