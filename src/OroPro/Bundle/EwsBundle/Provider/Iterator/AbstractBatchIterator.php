@@ -15,7 +15,7 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
     use LoggerAwareTrait;
 
     const DEFAULT_SYNC_RANGE = '1 month';
-    const READ_BATCH_SIZE    = 100;
+    const READ_BATCH_SIZE    = 1;
 
     /** @var \DateTime needed to restore initial value on next rewinds */
     protected $lastSyncDateInitialValue;
@@ -152,6 +152,8 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
         // TODO: add date filter to search query
         $offset = $this->offset * self::READ_BATCH_SIZE;
         $prepareRequestClosure = function (EwsType\FindItemType $request) use ($offset) {
+            $request->IndexedPageItemView = new EwsType\IndexedPageViewType();
+            $request->IndexedPageItemView->BasePoint = EwsType\IndexBasePointType::BEGINNING;
             $request->IndexedPageItemView->MaxEntriesReturned = self::READ_BATCH_SIZE;
             $request->IndexedPageItemView->Offset = $offset;
         };

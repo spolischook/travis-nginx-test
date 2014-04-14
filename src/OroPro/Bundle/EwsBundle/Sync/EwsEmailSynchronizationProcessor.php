@@ -5,6 +5,7 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
+use OroPro\Bundle\EwsBundle\Provider\EwsEmailIterator;
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
@@ -403,13 +404,16 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     protected function loadEmails(EmailFolder $folder, SearchQuery $searchQuery)
     {
         $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToQueryString()));
-        $folder->setSynchronizedAt(new \DateTime('now', new \DateTimeZone('UTC')));
-        $emails = $this->manager->getEmails($searchQuery);
+        $startDate = new \DateTime('now', new \DateTimeZone('UTC'));
+        $folder->setSynchronizedAt($startDate);
+        //$emails = $this->manager->getEmails($searchQuery);
+
+        $iterator = new EwsEmailIterator($this->manager, $searchQuery, $startDate);
 
         $needFolderFlush = true;
         $count = 0;
         $batch = array();
-        foreach ($emails as $email) {
+        foreach ($iterator as $email) {
             $count++;
             $batch[] = $email;
             if ($count === self::DB_BATCH_SIZE) {

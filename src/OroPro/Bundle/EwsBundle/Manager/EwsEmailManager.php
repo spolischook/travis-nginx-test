@@ -239,11 +239,12 @@ class EwsEmailManager
     /**
      * Retrieve email by its Id
      *
-     * @param ItemId $emailId
-     * @throws \RuntimeException
+     * @param ItemId   $emailId
+     * @param callable $prepareRequest
+     *
      * @return null|Email
      */
-    public function findEmail(ItemId $emailId)
+    public function findEmail(ItemId $emailId, \Closure $prepareRequest = null)
     {
         /** @var EwsType\ItemIdType $ewsItemId */
         $ewsItemId = $this->convertToEwsItemId($emailId);
