@@ -44,7 +44,14 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
     public function loadEmailBody(Email $email, EntityManager $em)
     {
         $manager = new EwsEmailManager($this->connector);
-        $manager->selectUser($email);
+        $origin  = $email->getFolder()->getOrigin();
+        if ($origin instanceof EwsEmailOrigin) {
+            $manager->selectUser($origin->getUserEmail());
+        } else {
+            throw new \RuntimeException(
+                sprintf('The origin for "%s" email must be instance of EwsEmailOrigin.', $email->getSubject())
+            );
+        }
 
         $repo  = $em->getRepository('OroProEwsBundle:EwsEmail');
         $query = $repo->createQueryBuilder('e')
@@ -61,32 +68,30 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
             $loadedEmail = $manager->findEmail($id);
         } catch (\Exception $e) {
             throw new \RuntimeException(
-                sprintf(
-                    'Cannot find a body for "%s" email.',
-                    $email->getSubject()
-                ),
+                sprintf('Cannot find a body for "%s" email.', $email->getSubject()),
                 $e->getCode(),
-                $e->getFile(),
-                $e->getLine()
+                $e
             );
         }
 
         $builder = new EmailBodyBuilder();
 
-        $emailBody = $manager->getEmailBody($id);
         $builder->setEmailBody(
-            $emailBody->getContent(),
-            $emailBody->getBodyIsText()
+            $loadedEmail->getBody()->getContent(),
+            $loadedEmail->getBody()->getBodyIsText()
         );
 
-        $emailFileAttachements = $manager->getEmailAttachments($loadedEmail->getAttachmentIds());
-        foreach ($emailFileAttachements as $fileAttachment) {
-            $builder->addEmailAttachment(
-                $fileAttachment->getFileName(),
-                $fileAttachment->getContent(),
-                $fileAttachment->getContentType(),
-                $fileAttachment->getContentTransferEncoding()
-            );
+        $attachmentIds = $loadedEmail->getAttachmentIds();
+        if (!empty($attachmentIds)) {
+            $emailFileAttachments = $manager->getEmailAttachments($attachmentIds);
+            foreach ($emailFileAttachments as $fileAttachment) {
+                $builder->addEmailAttachment(
+                    $fileAttachment->getFileName(),
+                    $fileAttachment->getContent(),
+                    $fileAttachment->getContentType(),
+                    $fileAttachment->getContentTransferEncoding()
+                );
+            }
         }
 
         return $builder->getEmailBody();

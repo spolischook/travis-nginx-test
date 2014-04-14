@@ -27,7 +27,8 @@ class SearchQueryBuilder extends AbstractSearchQueryBuilder
      * Search in all word phase properties.
      *
      * @param string $value
-     * @param SearchQueryMatch $match
+     * @param int    $match
+     *
      * @return $this
      */
     public function value($value, $match = SearchQueryMatch::DEFAULT_MATCH)

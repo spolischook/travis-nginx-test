@@ -2,6 +2,9 @@
 
 namespace OroPro\Bundle\EwsBundle\Connector;
 
+use OroPro\Bundle\EwsBundle\Connector\Search\QueryStringBuilder;
+use OroPro\Bundle\EwsBundle\Connector\Search\RestrictionBuilder;
+use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder;
 use OroPro\Bundle\EwsBundle\Ews\ExchangeWebServices;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
@@ -23,7 +26,7 @@ class EwsConnector
      * @param ExchangeWebServices $ews
      * @throws \InvalidArgumentException
      */
-    public function setExchangeWebServices(ExchangeWebServices $ews)
+    public function __construct(ExchangeWebServices $ews)
     {
         if ($ews === null) {
             throw new \InvalidArgumentException('The EWS proxy must not be null.');
@@ -31,37 +34,45 @@ class EwsConnector
         $this->ews = $ews;
     }
 
+    /**
+     * Gets the search query builder
+     *
+     * @return SearchQueryBuilder
+     */
+    public function getSearchQueryBuilder()
+    {
+        return new SearchQueryBuilder(
+            new SearchQuery(
+                new QueryStringBuilder(),
+                new RestrictionBuilder()
+            )
+        );
+    }
+
     // @codingStandardsIgnoreStart
     /**
      * Finds items.
      *
      * @param EwsType\DistinguishedFolderIdType|EwsType\FolderIdType|EwsType\DistinguishedFolderIdNameType|EwsType\DistinguishedFolderIdType[]|EwsType\FolderIdType[]|EwsType\DistinguishedFolderIdNameType[]|array $parentFolder
-     * @param EwsType\ConnectingSIDType $targetUser An user whose items to be searched
      * @param SearchQuery|EwsType\RestrictionType|string $query The search query
-     * @param EwsType\ItemQueryTraversalType $traversal The type of subtree traversals
-     * @param EwsType\DefaultShapeNamesType $shape Defines sets of properties to return
+     * @param \Closure $prepareRequest function (EwsType\FindItemType $request)
      * @return EwsType\FindItemResponseMessageType[]
      */
     // @codingStandardsIgnoreEnd
-    public function findItems(
-        $parentFolder,
-        EwsType\ConnectingSIDType $targetUser = null,
-        $query = null,
-        $traversal = EwsType\ItemQueryTraversalType::SHALLOW,
-        $shape = EwsType\DefaultShapeNamesType::ID_ONLY
-    ) {
-        if ($targetUser !== null) {
-            $this->setTargetUser($targetUser);
-        }
-
+    public function findItems($parentFolder, $query = null, $prepareRequest = null)
+    {
         $request = new EwsType\FindItemType();
         $request->ItemShape = new EwsType\ItemResponseShapeType();
-        $request->ItemShape->BaseShape = $shape;
-        $request->Traversal = $traversal;
+        $request->ItemShape->BaseShape = EwsType\DefaultShapeNamesType::ID_ONLY;
+        $request->Traversal = EwsType\ItemQueryTraversalType::SHALLOW;
         $request->ParentFolderIds = $this->createParentFolderIds($parentFolder);
 
         if ($query !== null) {
             $this->setSearchQuery($request, $query);
+        }
+
+        if ($prepareRequest) {
+            $prepareRequest($request);
         }
 
         $response = $this->ews->FindItem($request);
@@ -135,27 +146,21 @@ class EwsConnector
      * Finds folders.
      *
      * @param EwsType\DistinguishedFolderIdType|EwsType\FolderIdType|EwsType\DistinguishedFolderIdNameType|EwsType\DistinguishedFolderIdType[]|EwsType\FolderIdType[]|EwsType\DistinguishedFolderIdNameType[]|array $parentFolder
-     * @param EwsType\ConnectingSIDType $targetUser An user whose items to be searched
-     * @param EwsType\FolderQueryTraversalType $traversal The type of subtree traversals
-     * @param EwsType\DefaultShapeNamesType $shape Defines sets of properties to return
+     * @param \Closure $prepareRequest function (EwsType\FindFolderType $request)
      * @return EwsType\FindFolderResponseMessageType[]
      */
     // @codingStandardsIgnoreEnd
-    public function findFolders(
-        $parentFolder,
-        EwsType\ConnectingSIDType $targetUser = null,
-        $traversal = EwsType\FolderQueryTraversalType::SHALLOW,
-        $shape = EwsType\DefaultShapeNamesType::ID_ONLY
-    ) {
-        if ($targetUser !== null) {
-            $this->setTargetUser($targetUser);
-        }
-
+    public function findFolders($parentFolder, $prepareRequest = null)
+    {
         $request = new EwsType\FindFolderType();
         $request->FolderShape = new EwsType\FolderResponseShapeType();
-        $request->FolderShape->BaseShape = $shape;
-        $request->Traversal = $traversal;
+        $request->FolderShape->BaseShape = EwsType\DefaultShapeNamesType::ID_ONLY;
+        $request->Traversal = EwsType\FolderQueryTraversalType::SHALLOW;
         $request->ParentFolderIds = $this->createParentFolderIds($parentFolder);
+
+        if ($prepareRequest) {
+            $prepareRequest($request);
+        }
 
         $response = $this->ews->FindFolder($request);
 
@@ -167,6 +172,37 @@ class EwsConnector
         }
 
         return $response->ResponseMessages->FindFolderResponseMessage;
+    }
+
+    /**
+     * Finds folders by its identifiers.
+     *
+     * @param EwsType\DistinguishedFolderIdNameType $folderName
+     * @param \Closure $prepareRequest function (EwsType\GetFolderType $request)
+     * @return EwsType\FolderInfoResponseMessageType[]
+     */
+    public function findDistinguishedFolder($folderName, $prepareRequest = null)
+    {
+        $request = new EwsType\GetFolderType();
+        $request->FolderShape = new EwsType\FolderResponseShapeType();
+        $request->FolderShape->BaseShape = EwsType\DefaultShapeNamesType::ID_ONLY;
+
+        $request->FolderIds = $this->createParentFolderIds($folderName);
+
+        if ($prepareRequest) {
+            $prepareRequest($request);
+        }
+
+        $response = $this->ews->GetFolder($request);
+
+        if ($response == null
+            || !isset($response->ResponseMessages)
+            || !isset($response->ResponseMessages->GetFolderResponseMessage)
+        ) {
+            return array();
+        }
+
+        return $response->ResponseMessages->GetFolderResponseMessage;
     }
 
     /**
@@ -193,21 +229,17 @@ class EwsConnector
      * Retrieves item detail by its id.
      *
      * @param EwsType\ItemIdType $id
-     * @param EwsType\DefaultShapeNamesType $shape Defines sets of properties to return
-     * @param EwsType\BodyTypeResponseType $bodyType Defines format of body to return
+     * @param \Closure $prepareRequest function (EwsType\GetItemType $request)
      * @return EwsType\MessageType
      * @throws \InvalidArgumentException
      */
-    public function getItem(
-        EwsType\ItemIdType $id,
-        $shape = EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES,
-        $bodyType = EwsType\BodyTypeResponseType::BEST
-    ) {
+    public function getItem(EwsType\ItemIdType $id, $prepareRequest = null)
+    {
         if ($id === null) {
             throw new \InvalidArgumentException('The item identifier is not specified.');
         }
         $ids = array($id);
-        $items = $this->getItems($ids, $shape, $bodyType);
+        $items = $this->getItems($ids, $prepareRequest);
 
         return empty($items) ? null : $items[0];
     }
@@ -216,16 +248,12 @@ class EwsConnector
      * Retrieves multiple items in a single call to Exchange Web Services (EWS).
      *
      * @param EwsType\ItemIdType[] $ids The list of ids of items
-     * @param EwsType\DefaultShapeNamesType $shape Defines sets of properties to return
-     * @param EwsType\BodyTypeResponseType $bodyType Defines format of body to return
+     * @param \Closure $prepareRequest function (EwsType\GetItemType $request)
      * @return EwsType\ItemInfoResponseMessageType[]
      * @throws \InvalidArgumentException
      */
-    public function getItems(
-        array $ids,
-        $shape = EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES,
-        $bodyType = EwsType\BodyTypeResponseType::BEST
-    ) {
+    public function getItems(array $ids, $prepareRequest = null)
+    {
         if (empty($ids)) {
             throw new \InvalidArgumentException('At least one item identifier must be specified.');
         }
@@ -233,11 +261,15 @@ class EwsConnector
         $request = new EwsType\GetItemType();
 
         $request->ItemShape = new EwsType\ItemResponseShapeType();
-        $request->ItemShape->BaseShape = $shape;
-        $request->ItemShape->BodyType = $bodyType;
+        $request->ItemShape->BaseShape = EwsType\DefaultShapeNamesType::ID_ONLY;
+        $request->ItemShape->BodyType = EwsType\BodyTypeResponseType::BEST;
 
         $request->ItemIds = new EwsType\NonEmptyArrayOfBaseItemIdsType();
         $request->ItemIds->ItemId = $ids;
+
+        if ($prepareRequest) {
+            $prepareRequest($request);
+        }
 
         $response = $this->ews->GetItem($request);
 
@@ -343,7 +375,7 @@ class EwsConnector
      *
      * @param EwsType\ConnectingSIDType $targetUser
      */
-    protected function setTargetUser(EwsType\ConnectingSIDType $targetUser)
+    public function setTargetUser(EwsType\ConnectingSIDType $targetUser)
     {
         $ei = new EwsType\ExchangeImpersonationType();
         $ei->ConnectingSID = $targetUser;
@@ -364,10 +396,12 @@ class EwsConnector
                 switch ($query->getQueryType()) {
                     case SearchQuery::QUERY_STRING:
                         if (!$this->ews->isQueryStringSupported()) {
-                            throw new \InvalidArgumentException(sprintf(
-                                'The query string search is not supported by %s.',
-                                $this->ews->getVersion()
-                            ));
+                            throw new \InvalidArgumentException(
+                                sprintf(
+                                    'The query string search is not supported by %s.',
+                                    $this->ews->getVersion()
+                                )
+                            );
                         }
                         $request->QueryString = $query->convertToQueryString();
                         break;

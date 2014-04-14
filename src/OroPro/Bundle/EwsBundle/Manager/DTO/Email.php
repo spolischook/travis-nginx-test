@@ -417,6 +417,19 @@ class Email
     }
 
     /**
+     * Get email body
+     *
+     * @param EmailBody $body
+     * @return $this
+     */
+    public function setBody(EmailBody $body)
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+    /**
      * Get ids of email attachments
      *
      * @return string[]

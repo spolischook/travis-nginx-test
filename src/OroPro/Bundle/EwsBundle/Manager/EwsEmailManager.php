@@ -2,8 +2,9 @@
 
 namespace OroPro\Bundle\EwsBundle\Manager;
 
+use OroPro\Bundle\EwsBundle\Connector\EwsAdditionalPropertiesBuilder;
 use OroPro\Bundle\EwsBundle\Connector\EwsConnector;
-use OroPro\Bundle\EwsBundle\Ews\EwsException;
+use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 use OroPro\Bundle\EwsBundle\Manager\DTO\EmailAttachment;
@@ -92,6 +93,46 @@ class EwsEmailManager
     public function selectUser($email)
     {
         $this->selectedUser = $email;
+        $this->connector->setTargetUser($this->getUserId($email));
+    }
+
+    /**
+     * Gets the search query builder
+     *
+     * @return SearchQueryBuilder
+     */
+    public function getSearchQueryBuilder()
+    {
+        return $this->connector->getSearchQueryBuilder();
+    }
+
+    /**
+     * Retrieve the distinguished folder by its name
+     *
+     * @param EwsType\DistinguishedFolderIdNameType|string $folderName
+     * @return EwsType\FolderType
+     */
+    public function getDistinguishedFolder($folderName)
+    {
+        $response = $this->connector->findDistinguishedFolder(
+            $folderName,
+            function (EwsType\GetFolderType $request) {
+                $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
+                $additionalPropertiesBuilder->addUnindexedFieldUri(EwsType\UnindexedFieldURIType::FOLDER_DISPLAY_NAME);
+                $request->FolderShape->AdditionalProperties = $additionalPropertiesBuilder->get();
+            }
+        );
+
+        $result = null;
+        foreach ($response as $item) {
+            if ($item->Folders->Folder) {
+                foreach ($item->Folders->Folder as $folder) {
+                    $result = $folder;
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -109,15 +150,25 @@ class EwsEmailManager
 
         $response = $this->connector->findFolders(
             $parentFolder,
-            $this->getSelectedUserId(),
-            EwsType\ItemQueryTraversalType::SHALLOW,
-            EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES
+            function (EwsType\FindFolderType $request) use ($recursive) {
+                $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
+                $additionalPropertiesBuilder->addUnindexedFieldUri(EwsType\UnindexedFieldURIType::FOLDER_DISPLAY_NAME);
+                if ($recursive) {
+                    $request->Traversal = EwsType\FolderQueryTraversalType::DEEP;
+                    $additionalPropertiesBuilder->addUnindexedFieldUri(
+                        EwsType\UnindexedFieldURIType::FOLDER_PARENT_FOLDER_ID
+                    );
+                }
+                $request->FolderShape->AdditionalProperties = $additionalPropertiesBuilder->get();
+            }
         );
 
         $result = array();
         foreach ($response as $item) {
-            foreach ($item->RootFolder->Folders->Folder as $folder) {
-                $result[] = $folder;
+            if ($item->RootFolder->Folders->Folder) {
+                foreach ($item->RootFolder->Folders->Folder as $folder) {
+                    $result[] = $folder;
+                }
             }
         }
 
@@ -128,22 +179,57 @@ class EwsEmailManager
      * Retrieve emails by the given criteria
      *
      * @param SearchQuery $query
+     * @param \Closure    $prepareRequest
+     *
      * @return Email[]
      */
-    public function getEmails(SearchQuery $query = null)
+    public function getEmails(SearchQuery $query = null, $prepareRequest = null)
     {
         $response = $this->connector->findItems(
             $this->getSelectedFolderId(),
-            $this->getSelectedUserId(),
             $query,
-            EwsType\ItemQueryTraversalType::SHALLOW,
-            EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES
+            $prepareRequest
         );
 
-        $result = array();
+        $ids = array();
         foreach ($response as $item) {
-            foreach ($item->RootFolder->Items->Message as $msg) {
-                $result[] = $this->convertToEmail($msg);
+            if ($item->RootFolder->Items->Message) {
+                foreach ($item->RootFolder->Items->Message as $msg) {
+                    $ids[] = $msg->ItemId;
+                }
+            }
+        }
+
+        $result = array();
+        if (!empty($ids)) {
+            $response = $this->connector->getItems(
+                $ids,
+                function (EwsType\GetItemType $request) {
+                    $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
+                    $additionalPropertiesBuilder->addUnindexedFieldUris(
+                        [
+                            EwsType\UnindexedFieldURIType::MESSAGE_FROM,
+                            EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
+                            EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
+                            EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
+                            EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
+                            EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
+                            EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
+                            EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
+                            EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
+                            EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
+                            EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID,
+                        ]
+                    );
+                    $request->ItemShape->AdditionalProperties = $additionalPropertiesBuilder->get();
+                }
+            );
+            foreach ($response as $item) {
+                if ($item->Items->Message) {
+                    foreach ($item->Items->Message as $msg) {
+                        $result[] = $this->convertToEmail($msg);
+                    }
+                }
             }
         }
 
@@ -153,11 +239,12 @@ class EwsEmailManager
     /**
      * Retrieve email by its Id
      *
-     * @param ItemId $emailId
-     * @throws \RuntimeException
+     * @param ItemId   $emailId
+     * @param callable $prepareRequest
+     *
      * @return null|Email
      */
-    public function findEmail(ItemId $emailId)
+    public function findEmail(ItemId $emailId, \Closure $prepareRequest = null)
     {
         /** @var EwsType\ItemIdType $ewsItemId */
         $ewsItemId = $this->convertToEwsItemId($emailId);
@@ -165,8 +252,28 @@ class EwsEmailManager
         /** @var EwsType\ItemInfoResponseMessageType $msg */
         $msg = $this->connector->getItem(
             $ewsItemId,
-            EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES,
-            EwsType\BodyTypeResponseType::BEST
+            function (EwsType\GetItemType $request) {
+                $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
+                $additionalPropertiesBuilder->addUnindexedFieldUris(
+                    [
+                        EwsType\UnindexedFieldURIType::MESSAGE_FROM,
+                        EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
+                        EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
+                        EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
+                        EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
+                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
+                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
+                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
+                        EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
+                        EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
+                        EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID,
+                        EwsType\UnindexedFieldURIType::ITEM_BODY,
+                        EwsType\UnindexedFieldURIType::ITEM_HAS_ATTACHMENTS,
+                        EwsType\UnindexedFieldURIType::ITEM_ATTACHMENTS,
+                    ]
+                );
+                $request->ItemShape->AdditionalProperties = $additionalPropertiesBuilder->get();
+            }
         );
 
         return $this->convertToEmail($msg->Items->Message[0]);
@@ -183,8 +290,11 @@ class EwsEmailManager
         /** @var EwsType\ItemInfoResponseMessageType $response */
         $response = $this->connector->getItem(
             $this->convertToEwsItemId($emailId),
-            EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES,
-            EwsType\BodyTypeResponseType::BEST
+            function (EwsType\GetItemType $request) {
+                $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
+                $additionalPropertiesBuilder->addUnindexedFieldUri(EwsType\UnindexedFieldURIType::ITEM_BODY);
+                $request->ItemShape->AdditionalProperties = $additionalPropertiesBuilder->get();
+            }
         );
 
         $messageBody = $response->Items->Message[0]->Body;
@@ -212,24 +322,21 @@ class EwsEmailManager
             $ids[] = $id;
         }
 
-        $response = $this->connector->getAttachments(
-            $ids,
-            false,
-            false,
-            EwsType\BodyTypeResponseType::BEST
-        );
+        $response = $this->connector->getAttachments($ids);
 
         $result = array();
         foreach ($response as $item) {
-            foreach ($item->Attachments->FileAttachment as $msg) {
-                $attachment = new EmailAttachment();
-                $attachment
-                    ->setFileName($msg->Name)
-                    ->setContentType($msg->ContentType)
-                    ->setContent($msg->Content)
-                    ->setContentTransferEncoding('BINARY');
+            if ($item->Attachments->FileAttachment) {
+                foreach ($item->Attachments->FileAttachment as $msg) {
+                    $attachment = new EmailAttachment();
+                    $attachment
+                        ->setFileName($msg->Name)
+                        ->setContentType($msg->ContentType)
+                        ->setContent($msg->Content)
+                        ->setContentTransferEncoding('BINARY');
 
-                $result[] = $attachment;
+                    $result[] = $attachment;
+                }
             }
         }
 
@@ -260,16 +367,17 @@ class EwsEmailManager
     /**
      * Get id of the selected user
      *
+     * @param string|null $email
      * @return null|EwsType\ConnectingSIDType
      */
-    protected function getSelectedUserId()
+    protected function getUserId($email)
     {
-        if (empty($this->selectedUser)) {
+        if (empty($email)) {
             return null;
         }
 
         $sid = new EwsType\ConnectingSIDType();
-        $sid->PrimarySmtpAddress = $this->selectedUser;
+        $sid->PrimarySmtpAddress = $email;
 
         return $sid;
     }
@@ -358,6 +466,14 @@ class EwsEmailManager
             foreach ($msg->BccRecipients->Mailbox as $mailbox) {
                 $email->addBccRecipient($mailbox->EmailAddress);
             }
+        }
+
+        if (null != $msg->Body) {
+            $body = new EmailBody();
+            $body
+                ->setContent($msg->Body->_)
+                ->setBodyIsText($msg->Body->BodyType === EwsType\BodyTypeType::TEXT);
+            $email->setBody($body);
         }
 
         if (null != $msg->Attachments) {
