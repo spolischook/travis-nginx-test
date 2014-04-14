@@ -75,7 +75,7 @@ class QueryStringBuilder
                     }
                 }
             } else {
-                $result = $this->processStringValue($value, $item->getMatch());
+                $result = $this->processSimpleValue($value, $item->getMatch());
                 if ($item instanceof SearchQueryExprItem) {
                     $result = $item->getOperator() . $result;
                 }
@@ -110,8 +110,12 @@ class QueryStringBuilder
      * @see SearchQueryMatch
      * @return string
      */
-    protected function processStringValue($value, $match)
+    protected function processSimpleValue($value, $match)
     {
+        if ($value instanceof \DateTime) {
+            $value = $value->format('c');
+        }
+
         switch ($match) {
             case SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH:
                 return '"' . $value . '"';

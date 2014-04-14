@@ -16,6 +16,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use OroPro\Bundle\EwsBundle\Connector\EwsConnector;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
 use OroPro\Bundle\EwsBundle\Manager\EwsEmailManager;
+use OroPro\Bundle\EwsBundle\Provider\EwsServiceConfigurator;
 
 class EwsEmailSynchronizer extends AbstractEmailSynchronizer
 {
@@ -32,6 +33,11 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
     protected $connector;
 
     /**
+     * @var EwsServiceConfigurator
+     */
+    protected $configurator;
+
+    /**
      * @var string
      */
     protected $userEntityClass;
@@ -44,6 +50,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      * @param EmailAddressManager       $emailAddressManager
      * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
      * @param EwsConnector              $connector
+     * @param EwsServiceConfigurator    $configurator
      * @param string                    $userEntityClass
      */
     public function __construct(
@@ -52,11 +59,13 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
         EmailAddressManager $emailAddressManager,
         EmailOwnerProviderStorage $emailOwnerProviderStorage,
         EwsConnector $connector,
+        EwsServiceConfigurator $configurator,
         $userEntityClass
     ) {
         parent::__construct($em, $emailEntityBuilder, $emailAddressManager);
 
         $this->connector                 = $connector;
+        $this->configurator              = $configurator;
         $this->emailOwnerProviderStorage = $emailOwnerProviderStorage;
         $this->userEntityClass           = $userEntityClass;
     }
@@ -67,6 +76,16 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
     public function supports(EmailOrigin $origin)
     {
         return $origin instanceof EwsEmailOrigin;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function checkConfiguration()
+    {
+        $server = $this->configurator->getServer();
+
+        return !empty($server);
     }
 
     /**
@@ -111,7 +130,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
     {
         $this->log->notice('Initializing email origins ...');
 
-        $server = 'orolab.net:8091';
+        $server = $this->configurator->getServer();
 
         $iterator = new BufferedQueryResultIterator(
             $this->findDataForNewEmailOriginsQuery($server)
@@ -154,7 +173,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      */
     protected function findDataForNewEmailOriginsQuery($server)
     {
-        $domains = [];
+        $domains = $this->configurator->getDomains();
         if (empty($domains)) {
             $domains[] = $this->getHost($server);
         }

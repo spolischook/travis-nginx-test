@@ -40,6 +40,8 @@ class EwsServiceConfigurator
     }
 
     /**
+     * Gets the Exchange Server uri.
+     *
      * @return string
      */
     public function getServer()
@@ -48,6 +50,8 @@ class EwsServiceConfigurator
     }
 
     /**
+     * Gets the user name is used to login to the Exchange Server.
+     *
      * @return string
      */
     public function getLogin()
@@ -66,11 +70,21 @@ class EwsServiceConfigurator
     }
 
     /**
+     * Gets the Exchange Server version.
+     *
      * @return string
      */
     public function getVersion()
     {
         return $this->cm->get('oro_pro_ews.version');
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDomains()
+    {
+        return $this->cm->get('oro_pro_ews.domain_list');
     }
 
     /**
