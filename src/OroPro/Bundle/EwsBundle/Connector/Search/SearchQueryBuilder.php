@@ -151,7 +151,7 @@ class SearchQueryBuilder extends AbstractSearchQueryBuilder
      *   If this flag is null only fromValue will be used
      * @return $this
      */
-    public function sent($fromValue = null, $toValue = null, $includeGivenValue = null)
+    public function sent($fromValue = null, $toValue = null, $includeGivenValue = false)
     {
         $this->processDateField('sent', $fromValue, $toValue, $includeGivenValue);
         return $this;
@@ -167,7 +167,7 @@ class SearchQueryBuilder extends AbstractSearchQueryBuilder
      *   If this flag is null only fromValue will be used
      * @return $this
      */
-    public function received($fromValue = null, $toValue = null, $includeGivenValue = null)
+    public function received($fromValue = null, $toValue = null, $includeGivenValue = false)
     {
         $this->processDateField('received', $fromValue, $toValue, $includeGivenValue);
         return $this;
