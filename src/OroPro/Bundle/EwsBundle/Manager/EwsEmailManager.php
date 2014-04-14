@@ -5,7 +5,6 @@ namespace OroPro\Bundle\EwsBundle\Manager;
 use OroPro\Bundle\EwsBundle\Connector\EwsAdditionalPropertiesBuilder;
 use OroPro\Bundle\EwsBundle\Connector\EwsConnector;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder;
-use OroPro\Bundle\EwsBundle\Ews\EwsException;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 use OroPro\Bundle\EwsBundle\Manager\DTO\EmailAttachment;
@@ -253,8 +252,28 @@ class EwsEmailManager
         /** @var EwsType\ItemInfoResponseMessageType $msg */
         $msg = $this->connector->getItem(
             $ewsItemId,
-            EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES,
-            EwsType\BodyTypeResponseType::BEST
+            function (EwsType\GetItemType $request) {
+                $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
+                $additionalPropertiesBuilder->addUnindexedFieldUris(
+                    [
+                        EwsType\UnindexedFieldURIType::MESSAGE_FROM,
+                        EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
+                        EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
+                        EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
+                        EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
+                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
+                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
+                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
+                        EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
+                        EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
+                        EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID,
+                        EwsType\UnindexedFieldURIType::ITEM_BODY,
+                        EwsType\UnindexedFieldURIType::ITEM_HAS_ATTACHMENTS,
+                        EwsType\UnindexedFieldURIType::ITEM_ATTACHMENTS,
+                    ]
+                );
+                $request->ItemShape->AdditionalProperties = $additionalPropertiesBuilder->get();
+            }
         );
 
         return $this->convertToEmail($msg->Items->Message[0]);
@@ -271,8 +290,11 @@ class EwsEmailManager
         /** @var EwsType\ItemInfoResponseMessageType $response */
         $response = $this->connector->getItem(
             $this->convertToEwsItemId($emailId),
-            EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES,
-            EwsType\BodyTypeResponseType::BEST
+            function (EwsType\GetItemType $request) {
+                $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
+                $additionalPropertiesBuilder->addUnindexedFieldUri(EwsType\UnindexedFieldURIType::ITEM_BODY);
+                $request->ItemShape->AdditionalProperties = $additionalPropertiesBuilder->get();
+            }
         );
 
         $messageBody = $response->Items->Message[0]->Body;
@@ -300,12 +322,7 @@ class EwsEmailManager
             $ids[] = $id;
         }
 
-        $response = $this->connector->getAttachments(
-            $ids,
-            false,
-            false,
-            EwsType\BodyTypeResponseType::BEST
-        );
+        $response = $this->connector->getAttachments($ids);
 
         $result = array();
         foreach ($response as $item) {
@@ -449,6 +466,14 @@ class EwsEmailManager
             foreach ($msg->BccRecipients->Mailbox as $mailbox) {
                 $email->addBccRecipient($mailbox->EmailAddress);
             }
+        }
+
+        if (null != $msg->Body) {
+            $body = new EmailBody();
+            $body
+                ->setContent($msg->Body->_)
+                ->setBodyIsText($msg->Body->BodyType === EwsType\BodyTypeType::TEXT);
+            $email->setBody($body);
         }
 
         if (null != $msg->Attachments) {

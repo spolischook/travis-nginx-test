@@ -36,10 +36,9 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getEmailsProvider
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function testGetEmails($user)
+    public function testGetEmails()
     {
         $query = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery')
             ->disableOriginalConstructor()
@@ -47,59 +46,64 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
 
         $folderId = new EwsType\DistinguishedFolderIdType();
         $folderId->Id = 'inbox';
-        $sid = null;
-        if ($user !== null) {
-            $this->manager->selectUser($user);
-            $sid = new EwsType\ConnectingSIDType();
-            $sid->PrimarySmtpAddress = $user;
-        }
 
-        $msg = new EwsType\FindItemResponseMessageType();
-        $msg->RootFolder = new EwsType\FindItemParentType();
-        $msg->RootFolder->Items = new EwsType\ArrayOfRealItemsType();
-        $msg->RootFolder->Items->Message = array();
-        $msg->RootFolder->Items->Message[] = new EwsType\MessageType();
-        $msg->RootFolder->Items->Message[0]->ItemId = new EwsType\ItemIdType();
-        $msg->RootFolder->Items->Message[0]->ItemId->Id = 'Id';
-        $msg->RootFolder->Items->Message[0]->ItemId->ChangeKey = 'ChangeKey';
-        $msg->RootFolder->Items->Message[0]->Subject = 'Subject';
-        $msg->RootFolder->Items->Message[0]->From = new EwsType\SingleRecipientType();
-        $msg->RootFolder->Items->Message[0]->From->Mailbox = new EwsType\EmailAddressType();
-        $msg->RootFolder->Items->Message[0]->From->Mailbox->EmailAddress = 'fromEmail';
-        $msg->RootFolder->Items->Message[0]->DateTimeSent = '2011-06-30 23:59:59 +0';
-        $msg->RootFolder->Items->Message[0]->DateTimeReceived = '2012-06-30 23:59:59 +0';
-        $msg->RootFolder->Items->Message[0]->DateTimeCreated = '2013-06-30 23:59:59 +0';
-        $msg->RootFolder->Items->Message[0]->Importance = 'Normal';
-        $msg->RootFolder->Items->Message[0]->InternetMessageId = 'MessageId';
-        $msg->RootFolder->Items->Message[0]->ConversationId = new EwsType\ItemIdType();
-        $msg->RootFolder->Items->Message[0]->ConversationId->Id = 'ConversationId';
-        $msg->RootFolder->Items->Message[0]->ToRecipients = new EwsType\ArrayOfRecipientsType();
-        $msg->RootFolder->Items->Message[0]->ToRecipients->Mailbox = array();
-        $msg->RootFolder->Items->Message[0]->ToRecipients->Mailbox[] = new EwsType\EmailAddressType();
-        $msg->RootFolder->Items->Message[0]->ToRecipients->Mailbox[0]->EmailAddress = 'toEmail';
-        $msg->RootFolder->Items->Message[0]->CcRecipients = new EwsType\ArrayOfRecipientsType();
-        $msg->RootFolder->Items->Message[0]->CcRecipients->Mailbox = array();
-        $msg->RootFolder->Items->Message[0]->CcRecipients->Mailbox[] = new EwsType\EmailAddressType();
-        $msg->RootFolder->Items->Message[0]->CcRecipients->Mailbox[0]->EmailAddress = 'ccEmail';
-        $msg->RootFolder->Items->Message[0]->BccRecipients = new EwsType\ArrayOfRecipientsType();
-        $msg->RootFolder->Items->Message[0]->BccRecipients->Mailbox = array();
-        $msg->RootFolder->Items->Message[0]->BccRecipients->Mailbox[] = new EwsType\EmailAddressType();
-        $msg->RootFolder->Items->Message[0]->BccRecipients->Mailbox[0]->EmailAddress = 'bccEmail';
-        $msg->RootFolder->Items->Message[0]->Attachments = new EwsType\NonEmptyArrayOfAttachmentsType();
-        $msg->RootFolder->Items->Message[0]->Attachments->FileAttachment = array();
-        $msg->RootFolder->Items->Message[0]->Attachments->FileAttachment[] = new EwsType\FileAttachmentType();
-        $msg->RootFolder->Items->Message[0]->Attachments->FileAttachment[0]->AttachmentId =
+        $findMsg = new EwsType\FindItemResponseMessageType();
+        $findMsg->RootFolder = new EwsType\FindItemParentType();
+        $findMsg->RootFolder->Items = new EwsType\ArrayOfRealItemsType();
+        $findMsg->RootFolder->Items->Message = array();
+        $findMsg->RootFolder->Items->Message[] = new EwsType\MessageType();
+        $findMsg->RootFolder->Items->Message[0]->ItemId = new EwsType\ItemIdType();
+        $findMsg->RootFolder->Items->Message[0]->ItemId->Id = 'Id';
+        $findMsg->RootFolder->Items->Message[0]->ItemId->ChangeKey = 'ChangeKey';
+
+        $msg = new EwsType\ItemInfoResponseMessageType();
+        $msg->Items = new EwsType\ArrayOfRealItemsType();
+        $msg->Items->Message = array();
+        $msg->Items->Message[] = new EwsType\MessageType();
+        $msg->Items->Message[0]->ItemId = new EwsType\ItemIdType();
+        $msg->Items->Message[0]->ItemId->Id = 'Id';
+        $msg->Items->Message[0]->ItemId->ChangeKey = 'ChangeKey';
+        $msg->Items->Message[0]->Subject = 'Subject';
+        $msg->Items->Message[0]->From = new EwsType\SingleRecipientType();
+        $msg->Items->Message[0]->From->Mailbox = new EwsType\EmailAddressType();
+        $msg->Items->Message[0]->From->Mailbox->EmailAddress = 'fromEmail';
+        $msg->Items->Message[0]->DateTimeSent = '2011-06-30 23:59:59 +0';
+        $msg->Items->Message[0]->DateTimeReceived = '2012-06-30 23:59:59 +0';
+        $msg->Items->Message[0]->DateTimeCreated = '2013-06-30 23:59:59 +0';
+        $msg->Items->Message[0]->Importance = 'Normal';
+        $msg->Items->Message[0]->InternetMessageId = 'MessageId';
+        $msg->Items->Message[0]->ConversationId = new EwsType\ItemIdType();
+        $msg->Items->Message[0]->ConversationId->Id = 'ConversationId';
+        $msg->Items->Message[0]->ToRecipients = new EwsType\ArrayOfRecipientsType();
+        $msg->Items->Message[0]->ToRecipients->Mailbox = array();
+        $msg->Items->Message[0]->ToRecipients->Mailbox[] = new EwsType\EmailAddressType();
+        $msg->Items->Message[0]->ToRecipients->Mailbox[0]->EmailAddress = 'toEmail';
+        $msg->Items->Message[0]->CcRecipients = new EwsType\ArrayOfRecipientsType();
+        $msg->Items->Message[0]->CcRecipients->Mailbox = array();
+        $msg->Items->Message[0]->CcRecipients->Mailbox[] = new EwsType\EmailAddressType();
+        $msg->Items->Message[0]->CcRecipients->Mailbox[0]->EmailAddress = 'ccEmail';
+        $msg->Items->Message[0]->BccRecipients = new EwsType\ArrayOfRecipientsType();
+        $msg->Items->Message[0]->BccRecipients->Mailbox = array();
+        $msg->Items->Message[0]->BccRecipients->Mailbox[] = new EwsType\EmailAddressType();
+        $msg->Items->Message[0]->BccRecipients->Mailbox[0]->EmailAddress = 'bccEmail';
+        $msg->Items->Message[0]->Attachments = new EwsType\NonEmptyArrayOfAttachmentsType();
+        $msg->Items->Message[0]->Attachments->FileAttachment = array();
+        $msg->Items->Message[0]->Attachments->FileAttachment[] = new EwsType\FileAttachmentType();
+        $msg->Items->Message[0]->Attachments->FileAttachment[0]->AttachmentId =
             new EwsType\AttachmentIdType();
-        $msg->RootFolder->Items->Message[0]->Attachments->FileAttachment[0]->AttachmentId->Id = 'attId';
+        $msg->Items->Message[0]->Attachments->FileAttachment[0]->AttachmentId->Id = 'attId';
 
         $this->connector->expects($this->once())
             ->method('findItems')
             ->with(
                 $this->equalTo($folderId),
-                $this->equalTo($sid),
-                $this->identicalTo($query),
-                $this->equalTo(EwsType\ItemQueryTraversalType::SHALLOW),
-                $this->equalTo(EwsType\DefaultShapeNamesType::DEFAULT_PROPERTIES)
+                $this->identicalTo($query)
+            )
+            ->will($this->returnValue(array($findMsg)));
+        $this->connector->expects($this->once())
+            ->method('getItems')
+            ->with(
+                $this->equalTo(array($findMsg->RootFolder->Items->Message[0]->ItemId))
             )
             ->will($this->returnValue(array($msg)));
 
@@ -186,13 +190,5 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('attContent', $attachments[0]->getContent());
         $this->assertEquals('attContentType', $attachments[0]->getContentType());
         $this->assertEquals('BINARY', $attachments[0]->getContentTransferEncoding());
-    }
-
-    public static function getEmailsProvider()
-    {
-        return array(
-            //'no user' => array(null),
-            'has user' => array('user'),
-        );
     }
 }
