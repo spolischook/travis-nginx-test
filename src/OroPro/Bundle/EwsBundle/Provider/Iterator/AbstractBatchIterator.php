@@ -8,12 +8,14 @@ use Psr\Log\LoggerAwareInterface;
 
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 use OroPro\Bundle\EwsBundle\Manager\EwsEmailManager;
+use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 
 abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     const DEFAULT_SYNC_RANGE = '1 month';
+    const READ_BATCH_SIZE    = 100;
 
     /** @var \DateTime needed to restore initial value on next rewinds */
     protected $lastSyncDateInitialValue;
@@ -38,6 +40,12 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
 
     /** @var SearchQuery */
     protected $searchQuery;
+
+    /** @var int */
+    protected $offset = 0;
+
+    /** @var int */
+    protected $key = 0;
 
     public function __construct(EwsEmailManager $ewsEmailManager, SearchQuery $searchQuery, \DateTime $startSyncDate)
     {
@@ -67,6 +75,7 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
         do {
             if (!empty($this->buffer)) {
                 $result = array_shift($this->buffer);
+                $this->key++;
             } else {
                 $result = $this->findEntities();
             }
@@ -89,9 +98,7 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
      */
     public function key()
     {
-        return is_object($this->current)
-            ? $this->current->{$this->getIdFieldName()}
-            : $this->current[$this->getIdFieldName()];
+        return $this->key;
     }
 
     /**
@@ -111,12 +118,13 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
             $this->loaded = true;
         }
 
-        $this->buffer            = [];
-        $this->current           = null;
-        $this->lastSyncDate      = clone $this->lastSyncDateInitialValue;
+        $this->buffer       = [];
+        $this->current      = null;
+        $this->key          = 0;
+        //$this->lastSyncDate = clone $this->lastSyncDateInitialValue;
 
         // reset filter
-//        $this->filter->reset();
+        // $this->filter->reset();
 
         $this->next();
     }
@@ -142,22 +150,27 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         // TODO: add date filter to search query
+        $offset = $this->offset * self::READ_BATCH_SIZE;
+        $prepareRequestClosure = function (EwsType\FindItemType $request) use ($offset) {
+            $request->IndexedPageItemView->MaxEntriesReturned = self::READ_BATCH_SIZE;
+            $request->IndexedPageItemView->Offset = $offset;
+        };
 
-        $this->buffer = $this->ewsManager->getEmails($this->searchQuery);
+        $this->buffer = $this->ewsManager->getEmails($this->searchQuery, $prepareRequestClosure);
         $this->logger->info(sprintf('found %d entities', count($this->buffer)));
 
         // clone date to check if there's last batch in this range
-        $lastSyncDate = clone $this->lastSyncDate;
-        $lastSyncDate->add($this->syncRange);
+//        $lastSyncDate = clone $this->lastSyncDate;
+//        $lastSyncDate->add($this->syncRange);
 
-        if (empty($this->buffer) && $lastSyncDate >= $now) {
+        if (empty($this->buffer)) {
             $result = null;
         } else {
             $result = true;
         }
 
         // increment date for further filtering
-        $this->lastSyncDate->add($this->syncRange);
+        //$this->lastSyncDate->add($this->syncRange);
 
         return $result;
     }

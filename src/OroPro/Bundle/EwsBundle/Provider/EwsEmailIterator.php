@@ -15,4 +15,4 @@ use OroPro\Bundle\EwsBundle\Provider\Iterator\AbstractBatchIterator;
 class EwsEmailIterator extends AbstractBatchIterator
 {
 
-} 
+}

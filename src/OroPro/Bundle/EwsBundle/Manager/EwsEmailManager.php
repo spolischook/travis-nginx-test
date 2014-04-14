@@ -180,13 +180,16 @@ class EwsEmailManager
      * Retrieve emails by the given criteria
      *
      * @param SearchQuery $query
+     * @param \Closure    $prepareRequest
+     *
      * @return Email[]
      */
-    public function getEmails(SearchQuery $query = null)
+    public function getEmails(SearchQuery $query = null, $prepareRequest = null)
     {
         $response = $this->connector->findItems(
             $this->getSelectedFolderId(),
-            $query
+            $query,
+            $prepareRequest
         );
 
         $ids = array();
