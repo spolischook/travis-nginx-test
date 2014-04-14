@@ -1,17 +1,22 @@
 {% extends 'OroDashboardBundle:Dashboard:chartWidget.html.twig' %}
 
 {% block content %}
-    {# @todo: refactor #}
-    {% set visible = ['Open', 'Contacted', 'Converted', 'New Opportunity', 'Developed Opportunity', 'Won Opportunity'] %}
-    {% set data, hasData = {}, false %}
+    {% set data, nozzleData, hasData = {}, {}, false %}
     {% set isMobileVersion = isMobileVersion() %}
     {% for label, value in items %}
         {% if value %}
             {% set hasData = true %}
         {% endif %}
-        {% if label in visible %}
+        {% if label in nozzleSteps %}
+            {% if isMobileVersion %}
+                {% set label = label ~ ': ' ~ value|oro_format_currency ~ '{br}(' ~ 'from'|trans ~ ' ' ~ quarterDate|oro_format_date ~ ')' %}
+            {% else %}
+                {% set label = label ~ ' (' ~ 'from'|trans ~ ' ' ~ quarterDate|oro_format_date ~ '): ' ~ value|oro_format_currency %}
+            {% endif %}
+            {% set nozzleData = nozzleData|merge([{label: label, toolText: label, value: value, showValue: 0}]) %}
+        {% else %}
             {% set label = label ~ ': ' ~ value|oro_format_currency %}
-            {% set data = data|merge([{label: label, value: value}]) %}
+            {% set data = data|merge([{label: label, toolText: label, value: value}]) %}
         {% endif %}
     {% endfor %}
 
@@ -40,11 +45,11 @@
                 'showBorder': '0',
                 'paletteColors': '73a4e1,bedb99,ceeaf2,80d4cf,fdbc7c,e6c160,5a8980,b6c05d,d6a970,fee090,7fab90,ed935c'
             },
-            'data': data
+            'data': data|merge(nozzleData)
         } %}
 
         {% set height = isMobileVersion ? 300 + (data|length * 12) : 300 %}
-        {% set width = isMobileVersion ? '100%' : 500 %}
+        {% set width = isMobileVersion ? '100%' : 600 %}
 
         <script type="text/javascript">
             require(
