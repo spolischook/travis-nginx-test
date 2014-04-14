@@ -198,34 +198,37 @@ class EwsEmailManager
             }
         }
 
-        $response = $this->connector->getItems(
-            $ids,
-            function (EwsType\GetItemType $request) {
-                $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
-                $additionalPropertiesBuilder->addUnindexedFieldUris(
-                    [
-                        EwsType\UnindexedFieldURIType::MESSAGE_FROM,
-                        EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
-                        EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
-                        EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
-                        EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
-                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
-                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
-                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
-                        EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
-                        EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
-                        EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID,
-
-                    ]
-                );
-                $request->ItemShape->AdditionalProperties = $additionalPropertiesBuilder->get();
-            }
-        );
-
         $result = array();
-        foreach ($response as $item) {
-            foreach ($item->Items->Message as $msg) {
-                $result[] = $this->convertToEmail($msg);
+        if (!empty($ids)) {
+            $response = $this->connector->getItems(
+                $ids,
+                function (EwsType\GetItemType $request) {
+                    $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
+                    $additionalPropertiesBuilder->addUnindexedFieldUris(
+                        [
+                            EwsType\UnindexedFieldURIType::MESSAGE_FROM,
+                            EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
+                            EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
+                            EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
+                            EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
+                            EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
+                            EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
+                            EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
+                            EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
+                            EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
+                            EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID,
+
+                        ]
+                    );
+                    $request->ItemShape->AdditionalProperties = $additionalPropertiesBuilder->get();
+                }
+            );
+            foreach ($response as $item) {
+                if ($item->Items->Message) {
+                    foreach ($item->Items->Message as $msg) {
+                        $result[] = $this->convertToEmail($msg);
+                    }
+                }
             }
         }
 
@@ -303,15 +306,17 @@ class EwsEmailManager
 
         $result = array();
         foreach ($response as $item) {
-            foreach ($item->Attachments->FileAttachment as $msg) {
-                $attachment = new EmailAttachment();
-                $attachment
-                    ->setFileName($msg->Name)
-                    ->setContentType($msg->ContentType)
-                    ->setContent($msg->Content)
-                    ->setContentTransferEncoding('BINARY');
+            if ($item->Attachments->FileAttachment) {
+                foreach ($item->Attachments->FileAttachment as $msg) {
+                    $attachment = new EmailAttachment();
+                    $attachment
+                        ->setFileName($msg->Name)
+                        ->setContentType($msg->ContentType)
+                        ->setContent($msg->Content)
+                        ->setContentTransferEncoding('BINARY');
 
-                $result[] = $attachment;
+                    $result[] = $attachment;
+                }
             }
         }
 
