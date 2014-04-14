@@ -66,6 +66,7 @@ services:
             - @oro_email.email.address.manager
             - @oro_email.email.owner.provider.storage
             - @oro_pro_ews.connector
+            - @oro_pro_ews.service_configurator
             - %oro_user.entity.class%
         tags:
             - { name: oro_email.email_synchronizer }
