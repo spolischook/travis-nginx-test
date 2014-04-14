@@ -219,7 +219,6 @@ class EwsEmailManager
                             EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
                             EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
                             EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID,
-
                         ]
                     );
                     $request->ItemShape->AdditionalProperties = $additionalPropertiesBuilder->get();

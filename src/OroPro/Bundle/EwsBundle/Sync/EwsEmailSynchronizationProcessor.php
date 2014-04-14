@@ -108,7 +108,6 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         }
     }
 
-
     /**
      * Adds the given email addresses to the search query.
      * Addresses are delimited by OR operator.
