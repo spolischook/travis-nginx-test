@@ -202,7 +202,7 @@ class SearchQueryBuilderTest extends \PHPUnit_Framework_TestCase
             ->$name($values['val'][0])
             ->get()
             ->convertToQueryString();
-        $this->assertEquals($name.':>'.$values['val'][1], $query);
+        $this->assertEquals($name.':>='.$values['val'][1], $query);
 
         $query = self::createSearchQueryBuilder()
             ->$name($values['val'][0], null, null)
