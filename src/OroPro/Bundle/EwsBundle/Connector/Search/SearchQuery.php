@@ -266,6 +266,18 @@ class SearchQuery
     }
 
     /**
+     * Builds a string contains human readable representation of the search query.
+     *
+     * @return string
+     */
+    public function convertToString()
+    {
+        $converter = new SearchQueryToStringConverter();
+
+        return $converter->buildString($this->expr);
+    }
+
+    /**
      * Builds a string representation of the search query which can be passed to Exchange Web Services (EWS).
      *
      * @return string

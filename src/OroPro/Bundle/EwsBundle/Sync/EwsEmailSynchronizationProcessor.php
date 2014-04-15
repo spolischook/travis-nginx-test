@@ -17,6 +17,7 @@ use Oro\Bundle\EmailBundle\Sync\AbstractEmailSynchronizationProcessor;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder;
+use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryMatch;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmail;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
@@ -26,6 +27,8 @@ use OroPro\Bundle\EwsBundle\Provider\EwsEmailIterator;
 
 /**
  * @todo the implemented synchronization algorithm is just a demo and it will be fixed soon
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProcessor
 {
@@ -76,6 +79,14 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $folders = $this->getFolders($origin);
         foreach ($folders as $ewsFolder) {
             $folder = $ewsFolder->getFolder();
+
+            // set current folder
+            if ($folder->getType() === EmailFolder::OTHER) {
+                $this->manager->selectFolder($ewsFolder->getEwsId());
+            } else {
+                $this->manager->selectFolder($folder->getType());
+            }
+
             // register the current folder in the entity builder
             $this->emailEntityBuilder->setFolder($folder);
 
@@ -90,21 +101,19 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                     $sqb->sent($folder->getSynchronizedAt(), null, true);
                 }
 
-                $sqb->openParenthesis();
-
-                $sqb->openParenthesis();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'from', $emailAddressBatch['items']);
-                $sqb->closeParenthesis();
-
-                $sqb->openParenthesis();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'to', $emailAddressBatch['items']);
-                $sqb->orOperator();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'cc', $emailAddressBatch['items']);
-                $sqb->orOperator();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'bcc', $emailAddressBatch['items']);
-                $sqb->closeParenthesis();
-
-                $sqb->closeParenthesis();
+                if ($folder->getType() === EmailFolder::SENT) {
+                    $sqb->openParenthesis();
+                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'to', $emailAddressBatch['items']);
+                    $sqb->orOperator();
+                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'cc', $emailAddressBatch['items']);
+                    $sqb->orOperator();
+                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'bcc', $emailAddressBatch['items']);
+                    $sqb->closeParenthesis();
+                } else {
+                    $sqb->openParenthesis();
+                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'from', $emailAddressBatch['items']);
+                    $sqb->closeParenthesis();
+                }
 
                 // load emails using this search query
                 $this->loadEmails($folder, $sqb->get());
@@ -129,7 +138,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             if ($i > 0) {
                 $sqb->orOperator();
             }
-            $sqb->{$addressType}($addresses[$i]->getEmail());
+            $sqb->{$addressType}($addresses[$i]->getEmail(), SearchQueryMatch::FULL_STRING_MATCH);
         }
     }
 
@@ -211,7 +220,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $retrievedFolderCount += $this->ensureDistinguishedFolderInitialized(
             $folders,
             $origin,
-            EwsType\DistinguishedFolderIdNameType::OUTBOX,
+            EwsType\DistinguishedFolderIdNameType::SENTITEMS,
             EmailFolder::SENT
         );
         $this->log->notice(sprintf('Retrieved %d folder(s).', $retrievedFolderCount));
@@ -409,7 +418,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      */
     protected function loadEmails(EmailFolder $folder, SearchQuery $searchQuery)
     {
-        $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToQueryString()));
+        $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToString()));
 
         $iterator = new EwsEmailIterator($this->manager, $searchQuery, $this->log);
 
