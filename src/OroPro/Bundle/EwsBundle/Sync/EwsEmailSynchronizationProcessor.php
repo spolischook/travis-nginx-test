@@ -4,7 +4,6 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
-use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryMatch;
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
@@ -17,6 +16,7 @@ use Oro\Bundle\EmailBundle\Sync\AbstractEmailSynchronizationProcessor;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder;
+use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryMatch;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmail;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
@@ -26,6 +26,8 @@ use OroPro\Bundle\EwsBundle\Provider\EwsEmailIterator;
 
 /**
  * @todo the implemented synchronization algorithm is just a demo and it will be fixed soon
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProcessor
 {
