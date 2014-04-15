@@ -410,8 +410,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     {
         $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToQueryString()));
 
-        $startDate = new \DateTime('now', new \DateTimeZone('UTC'));
-        $iterator = new EwsEmailIterator($this->manager, $searchQuery, $startDate);
+        $iterator = new EwsEmailIterator($this->manager, $searchQuery);
 
         $needFolderFlush = true;
         $count = 0;
