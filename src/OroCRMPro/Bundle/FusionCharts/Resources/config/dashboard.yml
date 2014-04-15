@@ -16,15 +16,3 @@ oro_dashboard_config:
             label: My Sales Flow B2C
             route: orocrmpro_fusioncharts_dashboard_sales_flow_b2c_chart
             acl:   orocrm_magento_cart_view
-
-    dashboards:
-        main:
-            widgets:
-                opportunities_by_lead_source_chart:
-                    position: 80
-                opportunities_by_state:
-                    position: 90
-                my_sales_flow_b2b_chart:
-                    position: 120
-                my_sales_flow_b2c_chart:
-                    position: 130
