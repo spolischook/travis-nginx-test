@@ -75,6 +75,12 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $folders = $this->getFolders($origin);
         foreach ($folders as $ewsFolder) {
             $folder = $ewsFolder->getFolder();
+            if ($folder->getType() === EmailFolder::OTHER) {
+                $this->manager->selectFolder($ewsFolder->getEwsId());
+            } else {
+                $this->manager->selectFolder($folder->getType());
+            }
+
             // register the current folder in the entity builder
             $this->emailEntityBuilder->setFolder($folder);
 
