@@ -106,6 +106,9 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 // load emails using this search query
                 $this->loadEmails($folder, $sqb->get());
             }
+
+            $folder->setSynchronizedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+            $this->em->flush();
         }
     }
 
@@ -404,10 +407,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     protected function loadEmails(EmailFolder $folder, SearchQuery $searchQuery)
     {
         $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToQueryString()));
-        $startDate = new \DateTime('now', new \DateTimeZone('UTC'));
-        $folder->setSynchronizedAt($startDate);
-        //$emails = $this->manager->getEmails($searchQuery);
 
+        $startDate = new \DateTime('now', new \DateTimeZone('UTC'));
         $iterator = new EwsEmailIterator($this->manager, $searchQuery, $startDate);
 
         $needFolderFlush = true;

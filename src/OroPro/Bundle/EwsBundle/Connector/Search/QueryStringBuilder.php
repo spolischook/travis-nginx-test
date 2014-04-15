@@ -114,6 +114,7 @@ class QueryStringBuilder
     {
         if ($value instanceof \DateTime) {
             $value = $value->format('c');
+            $value = str_replace('+00:00', 'Z', $value);
         }
 
         switch ($match) {
