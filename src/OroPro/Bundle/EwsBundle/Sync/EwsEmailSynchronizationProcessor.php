@@ -4,6 +4,7 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
+
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
@@ -419,7 +420,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     {
         $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToString()));
 
-        $iterator = new EwsEmailIterator($this->manager, $searchQuery);
+        $iterator = new EwsEmailIterator($this->manager, $searchQuery, $this->log);
 
         $needFolderFlush = true;
         $count = 0;
