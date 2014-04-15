@@ -98,7 +98,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                     && $folder->getSynchronizedAt()
                     && !$emailAddressBatch['needFullSync']
                 ) {
-                    $sqb->sent($folder->getSynchronizedAt(), null, true);
+                    $sqb->sent($folder->getSynchronizedAt());
                 }
 
                 if ($folder->getType() === EmailFolder::SENT) {
