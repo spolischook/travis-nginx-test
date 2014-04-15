@@ -21,7 +21,7 @@ class EwsEmailManager
      */
     protected static $distinguishedFolderNames = array(
         'inbox' => EwsType\DistinguishedFolderIdNameType::INBOX,
-        'sent' => EwsType\DistinguishedFolderIdNameType::OUTBOX,
+        'sent' => EwsType\DistinguishedFolderIdNameType::SENTITEMS,
         'drafts' => EwsType\DistinguishedFolderIdNameType::DRAFTS,
         'trash' => EwsType\DistinguishedFolderIdNameType::DELETEDITEMS,
     );

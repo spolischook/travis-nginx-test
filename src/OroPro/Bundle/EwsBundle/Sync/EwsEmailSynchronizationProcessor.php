@@ -75,6 +75,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $folders = $this->getFolders($origin);
         foreach ($folders as $ewsFolder) {
             $folder = $ewsFolder->getFolder();
+
+            // set current folder
             if ($folder->getType() === EmailFolder::OTHER) {
                 $this->manager->selectFolder($ewsFolder->getEwsId());
             } else {
@@ -216,7 +218,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $retrievedFolderCount += $this->ensureDistinguishedFolderInitialized(
             $folders,
             $origin,
-            EwsType\DistinguishedFolderIdNameType::OUTBOX,
+            EwsType\DistinguishedFolderIdNameType::SENTITEMS,
             EmailFolder::SENT
         );
         $this->log->notice(sprintf('Retrieved %d folder(s).', $retrievedFolderCount));
