@@ -4,6 +4,7 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
+use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryMatch;
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
@@ -97,21 +98,19 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                     $sqb->sent($folder->getSynchronizedAt());
                 }
 
-                $sqb->openParenthesis();
-
-                $sqb->openParenthesis();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'from', $emailAddressBatch['items']);
-                $sqb->closeParenthesis();
-
-                $sqb->openParenthesis();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'to', $emailAddressBatch['items']);
-                $sqb->orOperator();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'cc', $emailAddressBatch['items']);
-                $sqb->orOperator();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'bcc', $emailAddressBatch['items']);
-                $sqb->closeParenthesis();
-
-                $sqb->closeParenthesis();
+                if ($folder->getType() === EmailFolder::SENT) {
+                    $sqb->openParenthesis();
+                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'to', $emailAddressBatch['items']);
+                    $sqb->orOperator();
+                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'cc', $emailAddressBatch['items']);
+                    $sqb->orOperator();
+                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'bcc', $emailAddressBatch['items']);
+                    $sqb->closeParenthesis();
+                } else {
+                    $sqb->openParenthesis();
+                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'from', $emailAddressBatch['items']);
+                    $sqb->closeParenthesis();
+                }
 
                 // load emails using this search query
                 $this->loadEmails($folder, $sqb->get());
@@ -136,7 +135,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             if ($i > 0) {
                 $sqb->orOperator();
             }
-            $sqb->{$addressType}($addresses[$i]->getEmail());
+            $sqb->{$addressType}($addresses[$i]->getEmail(), SearchQueryMatch::FULL_STRING_MATCH);
         }
     }
 
@@ -416,7 +415,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      */
     protected function loadEmails(EmailFolder $folder, SearchQuery $searchQuery)
     {
-        $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToQueryString()));
+        $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToString()));
 
         $iterator = new EwsEmailIterator($this->manager, $searchQuery);
 
