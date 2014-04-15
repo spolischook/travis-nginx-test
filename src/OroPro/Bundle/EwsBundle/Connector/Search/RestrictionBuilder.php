@@ -128,7 +128,7 @@ class RestrictionBuilder
             if ($value instanceof SearchQueryExpr) {
                 return $this->parseSubQueryValue($item);
             } else {
-                return $this->parseStringValue($item);
+                return $this->parseSimpleValue($item);
             }
         } elseif ($item instanceof SearchQueryExprRangeItem) {
             return $this->parseRangeValue($item);
@@ -199,7 +199,7 @@ class RestrictionBuilder
      * @return RestrictionBuilderOperand
      * @throws \LogicException
      */
-    protected function parseStringValue(SearchQueryExprItem $item)
+    protected function parseSimpleValue(SearchQueryExprItem $item)
     {
         switch ($item->getOperator()) {
             case SearchQueryOperator::EQ:
@@ -274,7 +274,7 @@ class RestrictionBuilder
                 );
                 $element->FieldURI[0]->FieldURI = $fieldURI;
                 $element->Constant = new EwsType\ConstantValueType();
-                $element->Constant->Value = $value;
+                $element->Constant->Value = $this->normalizeValue($value);
                 $element->ContainmentMode = $this->getContainmentMode($match);
                 $element->ContainmentComparison = $this->getContainmentComparison($ignoreCase);
                 $orExpr->Contains[] = $element;
@@ -286,7 +286,7 @@ class RestrictionBuilder
         $result = new EwsType\ContainsExpressionType();
         $this->setFieldURI($result, $name);
         $result->Constant = new EwsType\ConstantValueType();
-        $result->Constant->Value = $value;
+        $result->Constant->Value = $this->normalizeValue($value);
         $result->ContainmentMode = $this->getContainmentMode($match);
         $result->ContainmentComparison = $this->getContainmentComparison($ignoreCase);
 
@@ -369,7 +369,7 @@ class RestrictionBuilder
         $this->setFieldURI($operandObj, $name);
         $operandObj->FieldURIOrConstant = new EwsType\FieldURIOrConstantType();
         $operandObj->FieldURIOrConstant->Constant = new EwsType\ConstantValueType();
-        $operandObj->FieldURIOrConstant->Constant->Value = $value;
+        $operandObj->FieldURIOrConstant->Constant->Value = $this->normalizeValue($value);
 
         return new RestrictionBuilderOperand($operandType, $operandObj);
     }
@@ -474,5 +474,18 @@ class RestrictionBuilder
         }
 
         return $result;
+    }
+
+    /**
+     * @param mixed $value The value to be normalized
+     * @return string
+     */
+    protected function normalizeValue($value)
+    {
+        if ($value instanceof \DateTime) {
+            return $value->format('Y-m-d') . 'T00:00:00Z';
+        }
+
+        return $value;
     }
 }

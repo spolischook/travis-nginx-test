@@ -112,10 +112,7 @@ class QueryStringBuilder
      */
     protected function processSimpleValue($value, $match)
     {
-        if ($value instanceof \DateTime) {
-            $value = $value->format('c');
-            $value = str_replace('+00:00', 'Z', $value);
-        }
+        $value = $this->normalizeValue($value);
 
         switch ($match) {
             case SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH:
@@ -133,6 +130,19 @@ class QueryStringBuilder
      */
     protected function processRangeValue(SearchQueryExprRangeItem $item)
     {
-        return $item->getFromValue() . '..' . $item->getToValue();
+        return $this->normalizeValue($item->getFromValue()) . '..' . $this->normalizeValue($item->getToValue());
+    }
+
+    /**
+     * @param mixed $value The value to be normalized
+     * @return string
+     */
+    protected function normalizeValue($value)
+    {
+        if ($value instanceof \DateTime) {
+            return $value->format('m/d/Y');
+        }
+
+        return $value;
     }
 }

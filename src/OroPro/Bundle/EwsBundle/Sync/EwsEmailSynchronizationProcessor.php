@@ -3,9 +3,7 @@
 namespace OroPro\Bundle\EwsBundle\Sync;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
-use OroPro\Bundle\EwsBundle\Provider\EwsEmailIterator;
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
@@ -23,7 +21,11 @@ use OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
 use OroPro\Bundle\EwsBundle\Manager\EwsEmailManager;
 use OroPro\Bundle\EwsBundle\Manager\DTO\Email;
+use OroPro\Bundle\EwsBundle\Provider\EwsEmailIterator;
 
+/**
+ * @todo the implemented synchronization algorithm is just a demo and it will be fixed soon
+ */
 class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProcessor
 {
     const EMAIL_ADDRESS_BATCH_SIZE = 10;
