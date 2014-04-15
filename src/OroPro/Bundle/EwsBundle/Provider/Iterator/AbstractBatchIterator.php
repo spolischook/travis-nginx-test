@@ -2,6 +2,7 @@
 
 namespace OroPro\Bundle\EwsBundle\Provider\Iterator;
 
+use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerAwareInterface;
@@ -9,27 +10,18 @@ use Psr\Log\LoggerAwareInterface;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 use OroPro\Bundle\EwsBundle\Manager\EwsEmailManager;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
+use OroPro\Bundle\EwsBundle\Manager\DTO\Email;
 
 abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    const DEFAULT_SYNC_RANGE = '1 month';
-    const READ_BATCH_SIZE    = 1;
-
-    /** @var \DateTime needed to restore initial value on next rewinds */
-    protected $lastSyncDateInitialValue;
-
-    /** @var \DateTime */
-    protected $lastSyncDate;
-
-    /** @var \DateInterval */
-    protected $syncRange;
+    const READ_BATCH_SIZE = 100;
 
     /** @var array */
     protected $buffer = [];
 
-    /** @var null|\stdClass */
+    /** @var null|Email */
     protected $current;
 
     /** @var bool */
@@ -47,14 +39,18 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
     /** @var int */
     protected $key = 0;
 
-    public function __construct(EwsEmailManager $ewsEmailManager, SearchQuery $searchQuery, \DateTime $startSyncDate)
-    {
+    public function __construct(
+        EwsEmailManager $ewsEmailManager,
+        SearchQuery $searchQuery,
+        AbstractLogger $logger = null
+    ) {
         $this->ewsManager  = $ewsEmailManager;
         $this->searchQuery = clone $searchQuery;
-        $this->syncRange   = \DateInterval::createFromDateString(self::DEFAULT_SYNC_RANGE);
 
-        $this->setStartDate($startSyncDate);
-        $this->setLogger(new NullLogger());
+        if (is_null($logger)) {
+            $logger = new NullLogger();
+        }
+        $this->setLogger($logger);
     }
 
     /**
@@ -62,7 +58,7 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
      */
     public function current()
     {
-        $this->logger->info(sprintf('Loading entity by id: %s', $this->key()));
+        $this->logger->info(sprintf('Processing item #%d', $this->key()));
 
         return $this->current;
     }
@@ -87,7 +83,6 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
 
             // loop again if result is true
             // true means that there are entities to process or
-            // there are intervals to retrieve entities there
         } while ($result === true);
 
         $this->current = $result;
@@ -118,24 +113,11 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
             $this->loaded = true;
         }
 
-        $this->buffer       = [];
-        $this->current      = null;
-        $this->key          = 0;
-        //$this->lastSyncDate = clone $this->lastSyncDateInitialValue;
-
-        // reset filter
-        // $this->filter->reset();
+        $this->buffer  = [];
+        $this->current = null;
+        $this->key     = 0;
 
         $this->next();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStartDate(\DateTime $date)
-    {
-        $this->lastSyncDate             = clone $date;
-        $this->lastSyncDateInitialValue = clone $date;
     }
 
     /**
@@ -147,10 +129,9 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
     {
         $this->logger->info('Looking for batch');
 
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
-
-        // TODO: add date filter to search query
         $offset = $this->offset * self::READ_BATCH_SIZE;
+        $this->offset++;
+
         $prepareRequestClosure = function (EwsType\FindItemType $request) use ($offset) {
             $request->IndexedPageItemView = new EwsType\IndexedPageViewType();
             $request->IndexedPageItemView->BasePoint = EwsType\IndexBasePointType::BEGINNING;
@@ -158,22 +139,10 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
             $request->IndexedPageItemView->Offset = $offset;
         };
 
+
         $this->buffer = $this->ewsManager->getEmails($this->searchQuery, $prepareRequestClosure);
         $this->logger->info(sprintf('found %d entities', count($this->buffer)));
 
-        // clone date to check if there's last batch in this range
-//        $lastSyncDate = clone $this->lastSyncDate;
-//        $lastSyncDate->add($this->syncRange);
-
-        if (empty($this->buffer)) {
-            $result = null;
-        } else {
-            $result = true;
-        }
-
-        // increment date for further filtering
-        //$this->lastSyncDate->add($this->syncRange);
-
-        return $result;
+        return empty($this->buffer) ? null : true;
     }
 }
