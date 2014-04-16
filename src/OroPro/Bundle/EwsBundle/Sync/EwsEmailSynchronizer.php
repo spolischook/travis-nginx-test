@@ -5,7 +5,6 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 
-use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
@@ -132,14 +131,11 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
 
         $server = $this->configurator->getServer();
 
-        $iterator = new BufferedQueryResultIterator(
-            $this->findDataForNewEmailOriginsQuery($server)
-        );
-
         $lastUserId   = -1;
         $batchCounter = self::CREATE_ORIGIN_BATCH_SIZE;
         $counter = 0;
-        foreach ($iterator as $item) {
+        $items = $this->findDataForNewEmailOriginsQuery($server)->execute();
+        foreach ($items as $item) {
             /** @var User $user */
             $user  = $item[0];
             $email = $item['email'];
