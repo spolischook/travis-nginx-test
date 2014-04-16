@@ -96,6 +96,7 @@ class Sender
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($connection, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($connection, CURLOPT_HTTPHEADER, array('Expect:'));
 
         return $connection;
     }

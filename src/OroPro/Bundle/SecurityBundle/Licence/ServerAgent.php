@@ -44,9 +44,6 @@ class ServerAgent
             'timestamp' => $datetime->getTimestamp(),
             'datetime'  => $datetime->format('c'),
         );
-        if (!$this->licence) {
-            $data['server'] = $_SERVER;
-        }
         $data = array_merge($data, $this->collectUserStatistics());
 
         $this->sender->sendPost('status_information', $data);
