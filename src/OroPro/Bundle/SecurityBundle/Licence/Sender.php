@@ -9,12 +9,12 @@ class Sender
     /**
      * @var string
      */
-    protected $url = 'http://crm.dev/logger.php';
+    protected $url = 'https://crm.orocrm.com/enterprise/license';
 
     /**
      * @var int
      */
-    protected $port = 80;
+    protected $port = 443;
 
     /**
      * @var int
@@ -62,7 +62,8 @@ class Sender
     {
         $response = curl_exec($connection);
         if (!$response) {
-            throw new \LogicException('Can\'t get response from licence server');
+            $error = curl_error($connection);
+            throw new \LogicException('Can\'t get response from licence server: ' . $error);
         }
 
         return $this->parseResponse($response);
@@ -94,6 +95,7 @@ class Sender
         curl_setopt($connection, CURLOPT_HEADER, true);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($connection, CURLOPT_SSL_VERIFYHOST, false);
 
         return $connection;
     }
