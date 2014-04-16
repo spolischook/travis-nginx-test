@@ -9,7 +9,12 @@ class Sender
     /**
      * @var string
      */
-    protected $url = 'https://github.com/';
+    protected $url = 'http://crm.dev/logger.php';
+
+    /**
+     * @var int
+     */
+    protected $port = 80;
 
     /**
      * @var int
@@ -17,9 +22,9 @@ class Sender
     protected $timeout = 15;
 
     /**
-     * @param $type
+     * @param string $type
      * @param array $data
-     * @return null|Response
+     * @return Response
      */
     public function sendGet($type, array $data = array())
     {
@@ -36,7 +41,7 @@ class Sender
     /**
      * @param string $type
      * @param array $data
-     * @return null|Response
+     * @return Response
      */
     public function sendPost($type, array $data = array())
     {
@@ -50,35 +55,32 @@ class Sender
 
     /**
      * @param resource $connection
-     * @return null|Response
+     * @return Response
+     * @throws \LogicException
      */
     protected function getResponse($connection)
     {
-        try {
-            $response = curl_exec($connection);
-            if ($response) {
-                return $this->parseResponse($response);
-            } else {
-                return null;
-            }
-        } catch (\Exception $e) {
-            return null;
+        $response = curl_exec($connection);
+        if (!$response) {
+            throw new \LogicException('Can\'t get response from licence server');
         }
+
+        return $this->parseResponse($response);
     }
 
     /**
-     * @return resource
-     */
-
-    /**
      * @param string|null $url
+     * @param int|null $port
      * @param int|null $timeout
      * @return resource
      */
-    protected function initConnection($url = null, $timeout = null)
+    protected function initConnection($url = null, $port = null, $timeout = null)
     {
         if ($url === null) {
             $url = $this->url;
+        }
+        if ($port === null) {
+            $port = $this->port;
         }
         if ($timeout === null) {
             $timeout = $this->timeout;
@@ -87,6 +89,7 @@ class Sender
         $connection = curl_init();
 
         curl_setopt($connection, CURLOPT_URL, $url);
+        curl_setopt($connection, CURLOPT_PORT, $port);
         curl_setopt($connection, CURLOPT_CONNECTTIMEOUT, $timeout);
         curl_setopt($connection, CURLOPT_HEADER, true);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);

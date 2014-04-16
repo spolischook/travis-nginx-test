@@ -5,6 +5,10 @@ parameters:
 services:
     oropro_security.licence.server_agent:
         class: %oropro_security.licence.server_agent.class%
+        arguments:
+            - %enterprise_licence%
+            - @oropro_security.licence.sender
+            - @doctrine
 
     oropro_security.licence.sender:
         class: %oropro_security.licence.sender.class%
