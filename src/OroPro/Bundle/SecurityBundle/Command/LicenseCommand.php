@@ -40,6 +40,10 @@ class LicenseCommand extends ContainerAwareCommand implements CronCommandInterfa
         $logger    = new OutputLogger($output);
         $serverAgent = $this->getContainer()->get('oropro_security.licence.server_agent');
 
+        if (!$this->getContainer()->getParameter('enterprise_licence')) {
+            $logger->warning('Enterprise license is empty');
+        }
+
         try {
             $serverAgent->sendStatusInformation();
             $logger->notice('License information sent');
