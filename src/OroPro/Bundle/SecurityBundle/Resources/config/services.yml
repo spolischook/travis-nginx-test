@@ -1,6 +1,10 @@
 parameters:
     oropro_security.licence.server_agent.class: OroPro\Bundle\SecurityBundle\Licence\ServerAgent
+    oropro_security.licence.sender.class:       OroPro\Bundle\SecurityBundle\Licence\Sender
 
 services:
     oropro_security.licence.server_agent:
         class: %oropro_security.licence.server_agent.class%
+
+    oropro_security.licence.sender:
+        class: %oropro_security.licence.sender.class%
