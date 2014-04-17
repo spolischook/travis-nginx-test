@@ -2,6 +2,7 @@
 
 namespace OroPro\Bundle\EwsBundle\Tests\Unit\Manager\DTO;
 
+use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use OroPro\Bundle\EwsBundle\Connector\EwsAdditionalPropertiesBuilder;
 use OroPro\Bundle\EwsBundle\Connector\EwsConnector;
 use OroPro\Bundle\EwsBundle\Manager\EwsEmailManager;
@@ -16,9 +17,22 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $manager = new EwsEmailManager($connector);
 
-        $this->assertEquals('inbox', $manager->getSelectedFolder());
-        $manager->selectFolder('test');
-        $this->assertEquals('test', $manager->getSelectedFolder());
+        $this->assertEquals(
+            $manager->getFolderId(EmailFolder::INBOX),
+            $manager->getSelectedFolder()
+        );
+
+        $manager->selectFolder(EmailFolder::SENT);
+        $this->assertEquals(
+            $manager->getFolderId(EmailFolder::SENT),
+            $manager->getSelectedFolder()
+        );
+
+        $manager->selectFolder('12345');
+        $this->assertEquals(
+            $manager->getFolderId('12345'),
+            $manager->getSelectedFolder()
+        );
     }
 
     public function testSelectUser()
@@ -29,8 +43,18 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new EwsEmailManager($connector);
 
         $this->assertNull($manager->getSelectedUser());
-        $manager->selectUser('test');
-        $this->assertEquals('test', $manager->getSelectedUser());
+
+        $sid = new EwsType\ConnectingSIDType();
+        $sid->PrimarySmtpAddress = 'test@example.com';
+        $connector->expects($this->once())
+            ->method('setTargetUser')
+            ->with($sid);
+        $connector->expects($this->once())
+            ->method('getTargetUser')
+            ->will($this->returnValue($sid));
+
+        $manager->selectUser('test@example.com');
+        $this->assertEquals($sid, $manager->getSelectedUser());
     }
 
     /**

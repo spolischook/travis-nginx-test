@@ -108,6 +108,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
             $this->em,
             $this->emailEntityBuilder,
             $this->emailAddressManager,
+            $this->knownEmailAddressChecker,
             new EwsEmailManager($this->connector)
         );
     }

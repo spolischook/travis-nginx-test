@@ -2,8 +2,8 @@
 
 namespace OroPro\Bundle\EwsBundle\Provider\Iterator;
 
-use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerAwareInterface;
 
@@ -42,7 +42,7 @@ abstract class AbstractBatchIterator implements \Iterator, LoggerAwareInterface
     public function __construct(
         EwsEmailManager $ewsEmailManager,
         SearchQuery $searchQuery,
-        AbstractLogger $logger = null
+        LoggerInterface $logger = null
     ) {
         $this->ewsManager  = $ewsEmailManager;
         $this->searchQuery = clone $searchQuery;

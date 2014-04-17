@@ -2,6 +2,7 @@
 
 namespace OroPro\Bundle\EwsBundle\Manager;
 
+use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use OroPro\Bundle\EwsBundle\Connector\EwsAdditionalPropertiesBuilder;
 use OroPro\Bundle\EwsBundle\Connector\EwsConnector;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder;
@@ -12,6 +13,9 @@ use OroPro\Bundle\EwsBundle\Manager\DTO\ItemId;
 use OroPro\Bundle\EwsBundle\Manager\DTO\Email;
 use OroPro\Bundle\EwsBundle\Manager\DTO\EmailBody;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class EwsEmailManager
 {
     /**
@@ -20,10 +24,10 @@ class EwsEmailManager
      * @var array
      */
     protected static $distinguishedFolderNames = array(
-        'inbox' => EwsType\DistinguishedFolderIdNameType::INBOX,
-        'sent' => EwsType\DistinguishedFolderIdNameType::SENTITEMS,
-        'drafts' => EwsType\DistinguishedFolderIdNameType::DRAFTS,
-        'trash' => EwsType\DistinguishedFolderIdNameType::DELETEDITEMS,
+        EmailFolder::INBOX  => EwsType\DistinguishedFolderIdNameType::INBOX,
+        EmailFolder::SENT   => EwsType\DistinguishedFolderIdNameType::SENTITEMS,
+        EmailFolder::DRAFTS => EwsType\DistinguishedFolderIdNameType::DRAFTS,
+        EmailFolder::TRASH  => EwsType\DistinguishedFolderIdNameType::DELETEDITEMS,
     );
 
     /**
@@ -34,16 +38,9 @@ class EwsEmailManager
     /**
      * A mailbox name all email related actions are performed for
      *
-     * @var string
+     * @var EwsType\DistinguishedFolderIdType|EwsType\FolderIdType
      */
-    protected $selectedFolder = 'inbox';
-
-    /**
-     * An user login all email related actions are performed for
-     *
-     * @var string
-     */
-    protected $selectedUser = null;
+    protected $selectedFolder;
 
     /**
      * Constructor
@@ -53,12 +50,14 @@ class EwsEmailManager
     public function __construct(EwsConnector $connector)
     {
         $this->connector = $connector;
+
+        $this->selectFolder(EmailFolder::INBOX);
     }
 
     /**
      * Get selected folder
      *
-     * @return string
+     * @return EwsType\DistinguishedFolderIdType|EwsType\FolderIdType
      */
     public function getSelectedFolder()
     {
@@ -72,28 +71,29 @@ class EwsEmailManager
      */
     public function selectFolder($folder)
     {
-        $this->selectedFolder = $folder;
+        $this->selectedFolder = is_string($folder)
+            ? $this->getFolderId($folder)
+            : $folder;
     }
 
     /**
-     * Get email of selected user
+     * Get the user all email related actions are performed for
      *
-     * @return string
+     * @return EwsType\ConnectingSIDType|null
      */
     public function getSelectedUser()
     {
-        return $this->selectedUser;
+        return $this->connector->getTargetUser();
     }
 
     /**
-     * Set email of selected user
+     * Set the user all email related actions are performed for
      *
-     * @param $email
+     * @param string $userEmail
      */
-    public function selectUser($email)
+    public function selectUser($userEmail)
     {
-        $this->selectedUser = $email;
-        $this->connector->setTargetUser($this->getUserId($email));
+        $this->connector->setTargetUser($this->getUserId($userEmail));
     }
 
     /**
@@ -140,7 +140,7 @@ class EwsEmailManager
      *
      * @param string|null $parentFolder The global name of a parent folder.
      * @param bool $recursive True to get all subordinate folders
-     * @return array
+     * @return EwsType\FolderType[] key = FolderId->Id
      */
     public function getFolders($parentFolder = null, $recursive = false)
     {
@@ -167,7 +167,7 @@ class EwsEmailManager
         foreach ($response as $item) {
             if ($item->RootFolder->Folders->Folder) {
                 foreach ($item->RootFolder->Folders->Folder as $folder) {
-                    $result[] = $folder;
+                    $result[$folder->FolderId->Id] = $folder;
                 }
             }
         }
@@ -186,7 +186,7 @@ class EwsEmailManager
     public function getEmails(SearchQuery $query = null, $prepareRequest = null)
     {
         $response = $this->connector->findItems(
-            $this->getSelectedFolderId(),
+            $this->selectedFolder,
             $query,
             $prepareRequest
         );
@@ -344,22 +344,37 @@ class EwsEmailManager
     }
 
     /**
-     * Get id of the selected folder
+     * Get the name of distinguished folder by its type
      *
-     * @return EwsType\DistinguishedFolderIdType|EwsType\FolderIdType
+     * @param string $folderType
+     * @return string|null
      */
-    protected function getSelectedFolderId()
+    public function getDistinguishedFolderName($folderType)
     {
-        $key = strtolower($this->selectedFolder);
-        if (isset(static::$distinguishedFolderNames[$key])) {
-            $result = new EwsType\DistinguishedFolderIdType();
-            $result->Id = static::$distinguishedFolderNames[$key];
-
-            return $result;
+        $key = strtolower($folderType);
+        if (!isset(static::$distinguishedFolderNames[$key])) {
+            return null;
         }
 
-        $result = new EwsType\FolderIdType();
-        $result->Id = $this->selectedFolder;
+        return static::$distinguishedFolderNames[$key];
+    }
+
+    /**
+     * Get EWS id of the given folder
+     *
+     * @param string $folder The folder type or id if folder type is 'other'
+     * @return EwsType\DistinguishedFolderIdType|EwsType\FolderIdType
+     */
+    public function getFolderId($folder)
+    {
+        $distinguishedFolderName = $this->getDistinguishedFolderName($folder);
+        if ($distinguishedFolderName) {
+            $result = new EwsType\DistinguishedFolderIdType();
+            $result->Id = $distinguishedFolderName;
+        } else {
+            $result = new EwsType\FolderIdType();
+            $result->Id = $folder;
+        }
 
         return $result;
     }
@@ -367,17 +382,17 @@ class EwsEmailManager
     /**
      * Get id of the selected user
      *
-     * @param string|null $email
-     * @return null|EwsType\ConnectingSIDType
+     * @param string|null $userEmail
+     * @return EwsType\ConnectingSIDType|null
      */
-    protected function getUserId($email)
+    protected function getUserId($userEmail)
     {
-        if (empty($email)) {
+        if (empty($userEmail)) {
             return null;
         }
 
         $sid = new EwsType\ConnectingSIDType();
-        $sid->PrimarySmtpAddress = $email;
+        $sid->PrimarySmtpAddress = $userEmail;
 
         return $sid;
     }
