@@ -318,7 +318,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             $this->em->persist($folder);
 
             $folderInfo = new FolderInfo($ewsFolder, true);
-            $folders[]  = $folderInfo;
+            $folders[$id->Id]  = $folderInfo;
 
             $this->log->notice(sprintf('The "%s" folder was persisted.', $fullName));
         }
