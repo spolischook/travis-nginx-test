@@ -39,6 +39,7 @@ oro_system_configuration:
                     Exchange2010:     Exchange 2010
                     Exchange2010_SP1: Exchange 2010 SP1
                     Exchange2010_SP2: Exchange 2010 SP2
+                    Exchange2013:     Exchange 2013
                 required: false
                 resettable: false
 
