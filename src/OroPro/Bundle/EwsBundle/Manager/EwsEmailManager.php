@@ -23,12 +23,12 @@ class EwsEmailManager
      *
      * @var array
      */
-    protected static $distinguishedFolderNames = array(
+    protected static $distinguishedFolderNames = [
         EmailFolder::INBOX  => EwsType\DistinguishedFolderIdNameType::INBOX,
         EmailFolder::SENT   => EwsType\DistinguishedFolderIdNameType::SENTITEMS,
         EmailFolder::DRAFTS => EwsType\DistinguishedFolderIdNameType::DRAFTS,
         EmailFolder::TRASH  => EwsType\DistinguishedFolderIdNameType::DELETEDITEMS,
-    );
+    ];
 
     /**
      * @var EwsConnector
@@ -163,7 +163,7 @@ class EwsEmailManager
             }
         );
 
-        $result = array();
+        $result = [];
         foreach ($response as $item) {
             if ($item->RootFolder->Folders->Folder) {
                 foreach ($item->RootFolder->Folders->Folder as $folder) {
@@ -191,7 +191,7 @@ class EwsEmailManager
             $prepareRequest
         );
 
-        $ids = array();
+        $ids = [];
         foreach ($response as $item) {
             if ($item->RootFolder->Items->Message) {
                 foreach ($item->RootFolder->Items->Message as $msg) {
@@ -200,7 +200,7 @@ class EwsEmailManager
             }
         }
 
-        $result = array();
+        $result = [];
         if (!empty($ids)) {
             $response = $this->connector->getItems(
                 $ids,
@@ -315,7 +315,7 @@ class EwsEmailManager
      */
     public function getEmailAttachments(array $attachmentIds)
     {
-        $ids = array();
+        $ids = [];
         foreach ($attachmentIds as $attachmentId) {
             $id = new EwsType\RequestAttachmentIdType();
             $id->Id = $attachmentId;
@@ -324,7 +324,7 @@ class EwsEmailManager
 
         $response = $this->connector->getAttachments($ids);
 
-        $result = array();
+        $result = [];
         foreach ($response as $item) {
             if ($item->Attachments->FileAttachment) {
                 foreach ($item->Attachments->FileAttachment as $msg) {
