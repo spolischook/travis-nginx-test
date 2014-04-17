@@ -3,8 +3,8 @@
 namespace OroPro\Bundle\EwsBundle\Provider;
 
 use Doctrine\ORM\EntityManager;
-
 use Doctrine\ORM\Query;
+
 use Oro\Bundle\EmailBundle\Builder\EmailBodyBuilder;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
@@ -43,18 +43,9 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
      */
     public function loadEmailBody(Email $email, EntityManager $em)
     {
-        $manager = new EwsEmailManager($this->connector);
-        $origin  = $email->getFolder()->getOrigin();
-        if ($origin instanceof EwsEmailOrigin) {
-            $manager->selectUser($origin->getUserEmail());
-        } else {
-            throw new \RuntimeException(
-                sprintf('The origin for "%s" email must be instance of EwsEmailOrigin.', $email->getSubject())
-            );
-        }
-
-        $repo  = $em->getRepository('OroProEwsBundle:EwsEmail');
-        $query = $repo->createQueryBuilder('e')
+        $manager = $this->getManager($email);
+        $repo    = $em->getRepository('OroProEwsBundle:EwsEmail');
+        $query   = $repo->createQueryBuilder('e')
             ->select('e.ewsId AS ewsId, e.ewsChangeKey AS ewsChangeKey')
             ->where('e.email = ?1')
             ->setParameter(1, $email)
@@ -95,5 +86,25 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
         }
 
         return $builder->getEmailBody();
+    }
+
+    /**
+     * @param Email $email
+     * @return EwsEmailManager
+     * @throws \RuntimeException
+     */
+    protected function getManager(Email $email)
+    {
+        $manager = new EwsEmailManager($this->connector);
+        $origin  = $email->getFolder()->getOrigin();
+        if ($origin instanceof EwsEmailOrigin) {
+            $manager->selectUser($origin->getUserEmail());
+        } else {
+            throw new \RuntimeException(
+                sprintf('The origin for "%s" email must be instance of EwsEmailOrigin.', $email->getSubject())
+            );
+        }
+
+        return $manager;
     }
 }
