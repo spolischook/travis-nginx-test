@@ -82,9 +82,10 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      */
     protected function checkConfiguration()
     {
-        $server = $this->configurator->getServer();
+        $server    = $this->configurator->getServer();
+        $isEnabled = $this->configurator->isEnabled();
 
-        return !empty($server);
+        return !empty($server) && $isEnabled;
     }
 
     /**
