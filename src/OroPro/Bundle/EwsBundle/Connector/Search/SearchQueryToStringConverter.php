@@ -3,19 +3,19 @@
 namespace OroPro\Bundle\EwsBundle\Connector\Search;
 
 /**
- * Provides functionality to build EWS QueryString based on given SearchQuery expression.
+ * This class builds human readable representation of SearchQuery expression
  */
-class QueryStringBuilder
+class SearchQueryToStringConverter
 {
     /**
-     * Builds a string representation of the search query which can be passed to Exchange Web Services (EWS).
+     * Builds a string contains human readable representation of the search query.
      *
      * @param SearchQueryExpr $searchQueryExpr
      * @see SearchQuery
      *
      * @return string
      */
-    public function buildQueryString(SearchQueryExpr $searchQueryExpr)
+    public function buildString(SearchQueryExpr $searchQueryExpr)
     {
         return $this->processExpr($searchQueryExpr);
     }
@@ -115,10 +115,14 @@ class QueryStringBuilder
         $value = $this->normalizeValue($value);
 
         switch ($match) {
+            case SearchQueryMatch::SUBSTRING_MATCH:
+                return '%"' . $value . '"%';
+            case SearchQueryMatch::PREFIX_MATCH:
+                return '"' . $value . '"%';
             case SearchQueryMatch::EXACT_WITH_ORDER_RESTRICTED_MATCH:
                 return '"' . $value . '"';
             case SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH:
-                return '"' . $value . '"*';
+                return '"' . $value . '"%*';
             default: // DEFAULT_MATCH and PREFIX_MATCH
                 return $value;
         }

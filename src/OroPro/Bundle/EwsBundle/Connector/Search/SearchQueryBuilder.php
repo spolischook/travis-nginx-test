@@ -27,7 +27,8 @@ class SearchQueryBuilder extends AbstractSearchQueryBuilder
      * Search in all word phase properties.
      *
      * @param string $value
-     * @param SearchQueryMatch $match
+     * @param int    $match
+     *
      * @return $this
      */
     public function value($value, $match = SearchQueryMatch::DEFAULT_MATCH)
@@ -150,7 +151,7 @@ class SearchQueryBuilder extends AbstractSearchQueryBuilder
      *   If this flag is null only fromValue will be used
      * @return $this
      */
-    public function sent($fromValue = null, $toValue = null, $includeGivenValue = null)
+    public function sent($fromValue = null, $toValue = null, $includeGivenValue = true)
     {
         $this->processDateField('sent', $fromValue, $toValue, $includeGivenValue);
         return $this;
@@ -166,7 +167,7 @@ class SearchQueryBuilder extends AbstractSearchQueryBuilder
      *   If this flag is null only fromValue will be used
      * @return $this
      */
-    public function received($fromValue = null, $toValue = null, $includeGivenValue = null)
+    public function received($fromValue = null, $toValue = null, $includeGivenValue = true)
     {
         $this->processDateField('received', $fromValue, $toValue, $includeGivenValue);
         return $this;

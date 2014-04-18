@@ -6,11 +6,7 @@ use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryOperator;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryMatch;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryExprItem;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryExprOperator;
-use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryExprNamedItemInterface;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryExprRangeItem;
-use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryExprValueInterface;
-use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryExprValueBase;
-use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryExprValue;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryExpr;
 use OroPro\Bundle\EwsBundle\Connector\Search\QueryStringBuilder;
 use OroPro\Bundle\EwsBundle\Connector\Search\RestrictionBuilder;
@@ -140,6 +136,32 @@ class RestrictionBuilderTest extends \PHPUnit_Framework_TestCase
             $this->buildIsLessThanExpression(
                 EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
                 '20/10/2013'
+            )
+        );
+
+        $actual = $this->builder->buildRestriction($expr);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testOneIsGreaterThanItem()
+    {
+        $expr = new SearchQueryExpr();
+        $expr->add(
+            new SearchQueryExprItem(
+                'sent',
+                new \DateTime('2013-10-20 10:20:30'),
+                SearchQueryOperator::GT,
+                SearchQueryMatch::DEFAULT_MATCH,
+                false
+            )
+        );
+
+        $expected = new EwsType\RestrictionType();
+        $expected->IsGreaterThan = array(
+            $this->buildIsGreaterThanExpression(
+                EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
+                '2013-10-20T00:00:00Z'
             )
         );
 

@@ -1,0 +1,8 @@
+oro_pro_ews:
+    form:
+        ews:      MS Exchange
+        server:   Server
+        login:    Login
+        password: Password
+        version:  Version
+        domains:  Domain List
