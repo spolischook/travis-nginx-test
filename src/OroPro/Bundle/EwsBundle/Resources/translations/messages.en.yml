@@ -1,7 +1,7 @@
 oro_pro_ews:
     form:
         ews:      MS Exchange
-        url:      Url
+        server:   Server
         login:    Login
         password: Password
         version:  Version

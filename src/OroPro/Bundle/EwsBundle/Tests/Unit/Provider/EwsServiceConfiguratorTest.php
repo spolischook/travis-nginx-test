@@ -33,7 +33,7 @@ class EwsServiceConfiguratorTest extends \PHPUnit_Framework_TestCase
     {
         $this->cmMock->expects($this->at(0))
             ->method('get')
-            ->with('oro_pro_ews.url')
+            ->with('oro_pro_ews.server')
             ->will($this->returnValue('localhost'));
 
         $this->cmMock->expects($this->at(1))

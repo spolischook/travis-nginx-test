@@ -4,11 +4,11 @@ oro_system_configuration:
             title: oro_pro_ews.form.ews
 
     fields:
-        oro_pro_ews.url:
+        oro_pro_ews.server:
             type: text
             priority: 100
             options:
-                label: oro_pro_ews.form.url
+                label: oro_pro_ews.form.server
                 resettable: false
                 required: false
 
@@ -39,6 +39,7 @@ oro_system_configuration:
                     Exchange2010:     Exchange 2010
                     Exchange2010_SP1: Exchange 2010 SP1
                     Exchange2010_SP2: Exchange 2010 SP2
+                    Exchange2013:     Exchange 2013
                 required: false
                 resettable: false
 
@@ -61,7 +62,7 @@ oro_system_configuration:
                                 children:
                                     integrations_ews:
                                         children:
-                                            - oro_pro_ews.url
+                                            - oro_pro_ews.server
                                             - oro_pro_ews.login
                                             - oro_pro_ews.password
                                             - oro_pro_ews.version

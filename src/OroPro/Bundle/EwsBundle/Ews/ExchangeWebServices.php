@@ -92,9 +92,19 @@ class ExchangeWebServices extends AbstractExchangeWebServices
     }
 
     /**
+     * Gets the impersonation property.
+     *
+     * @return EWSType\ExchangeImpersonationType|null
+     */
+    public function getImpersonation()
+    {
+        return $this->impersonation;
+    }
+
+    /**
      * Sets the impersonation property.
      *
-     * @param EWSType\ExchangeImpersonationType $impersonation
+     * @param EWSType\ExchangeImpersonationType $impersonation|null
      */
     public function setImpersonation($impersonation)
     {

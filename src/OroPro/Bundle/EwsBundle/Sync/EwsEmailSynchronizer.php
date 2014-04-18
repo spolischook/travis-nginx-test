@@ -108,6 +108,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
             $this->em,
             $this->emailEntityBuilder,
             $this->emailAddressManager,
+            $this->knownEmailAddressChecker,
             new EwsEmailManager($this->connector)
         );
     }
@@ -117,9 +118,29 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      */
     protected function resetHangedOrigins()
     {
+        $this->deactivateOutdatedOrigins();
         $this->initializeOrigins();
 
         parent::resetHangedOrigins();
+    }
+
+    /**
+     * Deactivates outdated email origins
+     */
+    protected function deactivateOutdatedOrigins()
+    {
+        $this->log->notice('Deactivating outdated email origins ...');
+
+        $qb = $this->em->createQueryBuilder()
+            ->update($this->getEmailOriginClass(), 'ews')
+            ->set('ews.isActive', ':inactive')
+            ->where('ews.isActive = :isActive AND ews.server <> :server')
+            ->setParameter('inactive', false)
+            ->setParameter('isActive', true)
+            ->setParameter('server', $this->configurator->getServer());
+        $counter = $qb->getQuery()->execute();
+
+        $this->log->notice(sprintf('Deactivated %d email origin(s).', $counter));
     }
 
     /**
@@ -184,7 +205,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
                 sprintf('a1.%s = u1.id', $this->getEmailAddressUserOwnerFieldName())
             )
             ->innerJoin($this->getEmailOriginClass(), 'ews', 'WITH', 'ews.id = o.id')
-            ->where('u1.id = u.id AND ews.server = :server AND ews.userEmail = a1.email')
+            ->where('u1.id = u.id AND o.isActive = :isActive AND ews.server = :server AND ews.userEmail = a1.email')
             ->getQuery();
 
         $qb = $this->em->getRepository($this->userEntityClass)
@@ -211,7 +232,8 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
         $qb
             ->andWhere($emailExpr)
             ->orderBy('u.id')
-            ->setParameter('server', $server);
+            ->setParameter('server', $server)
+            ->setParameter('isActive', true);
 
         return $qb->getQuery();
     }

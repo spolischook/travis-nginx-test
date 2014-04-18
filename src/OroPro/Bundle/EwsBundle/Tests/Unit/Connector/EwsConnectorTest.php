@@ -67,10 +67,10 @@ class EwsConnectorTest extends \PHPUnit_Framework_TestCase
 
         $ewsMock = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Ews\ExchangeWebServices')
             ->disableOriginalConstructor()
-            ->setMethods(array('SetImpersonation', 'FindItem'))
+            ->setMethods(array('setImpersonation', 'FindItem'))
             ->getMock();
 
-        $ewsMock->expects($this->at(0))->method('SetImpersonation')
+        $ewsMock->expects($this->at(0))->method('setImpersonation')
             ->with($this->equalTo($ei));
         $ewsMock->expects($this->at(1))->method('FindItem')
             ->with($this->equalTo($request))

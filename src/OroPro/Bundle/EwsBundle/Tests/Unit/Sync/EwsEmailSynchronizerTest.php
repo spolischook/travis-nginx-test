@@ -4,13 +4,13 @@ namespace OroPro\Bundle\EwsBundle\Tests\Unit\Sync;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+
 use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
-use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\Mocks\ConnectionMock;
-use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\Mocks\DriverMock;
 use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\Mocks\EntityManagerMock;
 use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\OrmTestCase;
 use Oro\Bundle\UserBundle\OroUserBundle;
+
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
 use OroPro\Bundle\EwsBundle\OroProEwsBundle;
 use OroPro\Bundle\EwsBundle\Tests\Unit\Sync\Fixtures\TestEwsEmailSynchronizer;
@@ -141,9 +141,12 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         ];
 
         $selectStmt = $this->createFetchStatementMock($records);
-        $selectStmt->expects($this->once())
+        $selectStmt->expects($this->at(0))
             ->method('bindValue')
-            ->with(1, 'test_server');
+            ->with(1, true);
+        $selectStmt->expects($this->at(1))
+            ->method('bindValue')
+            ->with(2, 'test_server');
         $insertOriginStmt = $this->getMock('Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\Mocks\StatementMock');
         $insertOriginStmt->expects($this->at(5))
             ->method('bindValue')
@@ -201,7 +204,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             . ' AND o3_.name IN (ALL_ORIGINS)'
             . ' INNER JOIN oro_email_address o5_ ON (o5_.owner_user_id = o2_.id)'
             . ' INNER JOIN oro_email_origin o6_ ON (o6_.id = o3_.id) AND o6_.name IN (\'ewsemailorigin\')'
-            . ' WHERE o2_.id = o0_.id AND o6_.ews_server = ?'
+            . ' WHERE o2_.id = o0_.id AND o3_.isActive = ? AND o6_.ews_server = ?'
             . ' AND o6_.ews_user_email = o5_.email)))'
             . ' AND (o1_.email LIKE \'%@domain1.com\' OR o1_.email LIKE \'%@domain2.com\')'
             . ' ORDER BY o0_.id ASC';

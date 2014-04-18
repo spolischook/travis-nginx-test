@@ -371,15 +371,33 @@ class EwsConnector
     }
 
     /**
+     * Get a user, whose mailbox is currently used
+     *
+     * @return EwsType\ConnectingSIDType|null
+     */
+    public function getTargetUser()
+    {
+        $impersonation = $this->ews->getImpersonation();
+
+        return $impersonation
+            ? $impersonation->ConnectingSID
+            : null;
+    }
+
+    /**
      * Set a user, whose mailbox you want to use
      *
-     * @param EwsType\ConnectingSIDType $targetUser
+     * @param EwsType\ConnectingSIDType|null $targetUser
      */
-    public function setTargetUser(EwsType\ConnectingSIDType $targetUser)
+    public function setTargetUser($targetUser)
     {
-        $ei = new EwsType\ExchangeImpersonationType();
-        $ei->ConnectingSID = $targetUser;
-        $this->ews->SetImpersonation($ei);
+        if ($targetUser === null) {
+            $this->ews->setImpersonation(null);
+        } else {
+            $ei = new EwsType\ExchangeImpersonationType();
+            $ei->ConnectingSID = $targetUser;
+            $this->ews->setImpersonation($ei);
+        }
     }
 
     /**
