@@ -23,9 +23,6 @@ use OroPro\Bundle\EwsBundle\Manager\EwsEmailManager;
 use OroPro\Bundle\EwsBundle\Manager\DTO\Email;
 use OroPro\Bundle\EwsBundle\Provider\EwsEmailIterator;
 
-/**
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- */
 class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProcessor
 {
     const EMAIL_ADDRESS_BATCH_SIZE = 10;
