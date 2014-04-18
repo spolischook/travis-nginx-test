@@ -205,7 +205,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
                 sprintf('a1.%s = u1.id', $this->getEmailAddressUserOwnerFieldName())
             )
             ->innerJoin($this->getEmailOriginClass(), 'ews', 'WITH', 'ews.id = o.id')
-            ->where('u1.id = u.id AND ews.server = :server AND ews.userEmail = a1.email')
+            ->where('u1.id = u.id AND o.isActive = :isActive AND ews.server = :server AND ews.userEmail = a1.email')
             ->getQuery();
 
         $qb = $this->em->getRepository($this->userEntityClass)
@@ -232,7 +232,8 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
         $qb
             ->andWhere($emailExpr)
             ->orderBy('u.id')
-            ->setParameter('server', $server);
+            ->setParameter('server', $server)
+            ->setParameter('isActive', true);
 
         return $qb->getQuery();
     }
