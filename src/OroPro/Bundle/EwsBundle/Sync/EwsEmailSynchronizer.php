@@ -118,9 +118,29 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      */
     protected function resetHangedOrigins()
     {
+        $this->deactivateOutdatedOrigins();
         $this->initializeOrigins();
 
         parent::resetHangedOrigins();
+    }
+
+    /**
+     * Deactivates outdated email origins
+     */
+    protected function deactivateOutdatedOrigins()
+    {
+        $this->log->notice('Deactivating outdated email origins ...');
+
+        $qb = $this->em->createQueryBuilder()
+            ->update($this->getEmailOriginClass(), 'ews')
+            ->set('ews.isActive', ':inactive')
+            ->where('ews.isActive = :isActive AND ews.server <> :server')
+            ->setParameter('inactive', false)
+            ->setParameter('isActive', true)
+            ->setParameter('server', $this->configurator->getServer());
+        $counter = $qb->getQuery()->execute();
+
+        $this->log->notice(sprintf('Deactivated %d email origin(s).', $counter));
     }
 
     /**
