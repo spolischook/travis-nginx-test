@@ -26,7 +26,7 @@ class Configuration implements ConfigurationInterface
             [
                 'version'     => ['value' => 'Exchange2010'],
                 'login'       => ['value' => ''],
-                'url'         => ['value' => ''],
+                'server'      => ['value' => ''],
                 'password'    => ['value' => ''],
                 'domain_list' => ['value' => [], 'type' => 'array'],
             ]

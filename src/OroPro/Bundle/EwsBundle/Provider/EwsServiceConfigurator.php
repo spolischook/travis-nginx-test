@@ -46,7 +46,7 @@ class EwsServiceConfigurator
      */
     public function getServer()
     {
-        return $this->cm->get('oro_pro_ews.url');
+        return $this->cm->get('oro_pro_ews.server');
     }
 
     /**
