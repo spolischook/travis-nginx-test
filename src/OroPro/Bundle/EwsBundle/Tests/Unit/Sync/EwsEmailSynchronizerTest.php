@@ -83,10 +83,10 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         $metadataDriver = new AnnotationDriver(
             $reader,
             [
-                $oroBasePath . '\EmailBundle\Entity',
-                $oroBasePath . '\UserBundle\Entity',
-                $oroProBasePath . '\EwsBundle\Entity',
-                $oroProBasePath . '\EwsBundle\Tests\Unit\Sync\Fixtures\Entity',
+                $oroBasePath . '/EmailBundle/Entity',
+                $oroBasePath . '/UserBundle/Entity',
+                $oroProBasePath . '/EwsBundle/Entity',
+                $oroProBasePath . '/EwsBundle/Tests/Unit/Sync/Fixtures/Entity',
             ]
         );
 
@@ -112,6 +112,10 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         $this->ewsConfigurator->expects($this->exactly(3))
             ->method('getServer')
             ->will($this->onConsecutiveCalls(null, '', 'test'));
+
+        $this->ewsConfigurator->expects($this->exactly(3))
+            ->method('isEnabled')
+            ->will($this->onConsecutiveCalls(false, false, true));
 
         $this->assertFalse($this->sync->callCheckConfiguration());
         $this->assertFalse($this->sync->callCheckConfiguration());

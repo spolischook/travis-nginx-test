@@ -1,9 +1,21 @@
 oro_system_configuration:
     groups:
+        integration_email_settings:
+            title: oro_pro_ews.form.email_settings
+            icon:  icon-envelope
+
         integrations_ews:
             title: oro_pro_ews.form.ews
 
     fields:
+        oro_pro_ews.enabled:
+            type: oro_config_checkbox
+            priority: 150
+            options:
+                label: oro_pro_ews.form.is_enabled
+                resettable: false
+                required: false
+
         oro_pro_ews.server:
             type: text
             priority: 100
@@ -56,12 +68,13 @@ oro_system_configuration:
         system_configuration:
             platform:
                 children:
-                    general_setup:
+                    integrations:
                         children:
-                            integrations:
+                            integration_email_settings:
                                 children:
                                     integrations_ews:
                                         children:
+                                            - oro_pro_ews.enabled
                                             - oro_pro_ews.server
                                             - oro_pro_ews.login
                                             - oro_pro_ews.password

@@ -94,4 +94,12 @@ class EwsServiceConfigurator
     {
         return $this->ignoreFailedResponseMessages;
     }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return (bool)$this->cm->get('oro_pro_ews.enabled');
+    }
 }
