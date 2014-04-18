@@ -1,7 +1,7 @@
 {
-    "name": "oro/crm-professional",
-    "description": "OroCRM Professional",
-    "homepage": "https://github.com/laboro/crm-professional.git",
+    "name": "oro/crm-enterprise",
+    "description": "OroCRM Enterprise",
+    "homepage": "https://github.com/laboro/crm-enterprise.git",
     "license": "",
     "autoload": {
         "psr-0": { "OroCRMPro\\Bundle": "src/" }
