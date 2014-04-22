@@ -4,12 +4,14 @@
     "homepage": "https://github.com/laboro/crm-enterprise.git",
     "license": "",
     "autoload": {
-        "psr-0": { "OroCRMPro\\Bundle": "src/" }
+        "psr-0": {
+            "OroCRMPro\\Bundle": "src/",
+            "OroPro\\Bundle": "src/"
+        }
     },
     "require": {
         "php": ">=5.4.4",
-        "oro/crm": "dev-master",
-        "oro/platform-professional": "dev-master"
+        "oro/crm": "dev-master"
     },
     "repositories": [
         {
@@ -19,10 +21,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/laboro/platform.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/platform-professional.git"
         }
     ],
     "minimum-stability": "dev"
