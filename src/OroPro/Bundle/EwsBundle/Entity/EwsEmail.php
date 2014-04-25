@@ -8,7 +8,10 @@ use Oro\Bundle\EmailBundle\Entity\Email;
 /**
  * EWS Email
  *
- * @ORM\Table(name="oro_email_ews")
+ * @ORM\Table(
+ *      name="oro_email_ews",
+ *      indexes={@ORM\Index(name="idx_oro_email_ews", columns={"ews_id"})}
+ * )
  * @ORM\Entity
  */
 class EwsEmail
