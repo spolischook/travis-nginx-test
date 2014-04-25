@@ -31,6 +31,7 @@ class OroProEwsBundle implements Migration
         $table->addColumn('ews_change_key', 'string', ['length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['email_id'], 'UNIQ_1257C23FA832C1C9');
+        $table->addIndex(['ews_id'], 'idx_oro_email_ews', []);
         /** End of generate table oro_email_ews **/
 
         /** Generate foreign keys for table oro_email_folder_ews **/

@@ -25,8 +25,6 @@ use OroPro\Bundle\EwsBundle\Provider\EwsEmailIterator;
 
 class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProcessor
 {
-    const EMAIL_ADDRESS_BATCH_SIZE = 10;
-
     /**
      * @var EwsEmailManager
      */
@@ -292,8 +290,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                     )
                 );
                 $folderInfo->ewsFolder->setEwsChangeKey($id->ChangeKey);
-                $folderInfo->needSynchronization = true;
             }
+            $folderInfo->needSynchronization = true;
         } else {
             $this->log->notice(sprintf('Persisting "%s" folder ...', $fullName));
 
