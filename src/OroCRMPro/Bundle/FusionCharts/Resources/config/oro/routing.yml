@@ -1,4 +1,0 @@
-orocrmpro_charts_bundle:
-    resource:     "@OroCRMProFusionChartsBundle/Controller/Dashboard"
-    type:         annotation
-    prefix:       /
