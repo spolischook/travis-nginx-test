@@ -96,9 +96,21 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
     protected function getManager(Email $email)
     {
         $manager = new EwsEmailManager($this->connector);
-        $origin  = $email->getFolder()->getOrigin();
-        if ($origin instanceof EwsEmailOrigin) {
-            $manager->selectUser($origin->getUserEmail());
+
+        foreach ($email->getFolders() as $folder) {
+            $origin  = $folder->getOrigin();
+
+            if ($origin instanceof EwsEmailOrigin) {
+                $userEmail = $origin->getUserEmail();
+                break;
+            } else {
+                $userEmail = false;
+
+            }
+        }
+
+        if ($userEmail !== false) {
+            $manager->selectUser($userEmail);
         } else {
             throw new \RuntimeException(
                 sprintf('The origin for "%s" email must be instance of EwsEmailOrigin.', $email->getSubject())

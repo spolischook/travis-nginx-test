@@ -553,7 +553,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $index = 0;
         $qb->expects($this->at($index++))
             ->method('select')
-            ->with('e.ewsId')
+            ->with('e.ewsId, se.id')
             ->will($this->returnSelf());
         $qb->expects($this->at($index++))
             ->method('innerJoin')
@@ -561,7 +561,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnSelf());
         $qb->expects($this->at($index++))
             ->method('innerJoin')
-            ->with('se.folder', 'sf')
+            ->with('se.folders', 'sf')
             ->will($this->returnSelf());
         $qb->expects($this->at($index++))
             ->method('where')
@@ -584,7 +584,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->will(
                 $this->returnValue(
                     [
-                        ['ewsId' => $email1Id->getId()],
+                        ['ewsId' => $email1Id->getId(), 'id' => $email1Id->getId()],
                     ]
                 )
             );
@@ -615,13 +615,22 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->em->expects($this->once())
             ->method('persist')
             ->with($newEwsEmailEntity);
-        $batch = $this->getMock('Oro\Bundle\EmailBundle\Builder\EmailEntityBatchInterface');
-        $this->emailEntityBuilder->expects($this->once())
+
+        $batch = $this->getMockBuilder('Oro\Bundle\EmailBundle\Builder\EmailEntityBatchProcessor')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->emailEntityBuilder->expects($this->exactly(2))
             ->method('getBatch')
             ->will($this->returnValue($batch));
-        $batch->expects($this->once())
+        $batch->expects($this->exactly(2))
             ->method('persist')
             ->with($this->equalTo($this->em));
+        $batch->expects($this->once())
+            ->method('getEmails')
+            ->with()
+            ->will($this->returnValue([]));
+
         $this->em->expects($this->once())
             ->method('flush');
 
@@ -637,7 +646,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($email2->getMessageId(), $newEmailEntity->getMessageId());
         $this->assertEquals($email2->getXMessageId(), $newEmailEntity->getXMessageId());
         $this->assertEquals($email2->getXThreadId(), $newEmailEntity->getXThreadId());
-        $this->assertEquals($folder, $newEmailEntity->getFolder());
+        $this->assertEquals($folder, $newEmailEntity->getFolders()->first());
     }
 
     /**

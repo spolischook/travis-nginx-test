@@ -217,7 +217,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->setInternalDate(new \DateTime('now', new \DateTimeZone('UTC')))
             ->setImportance(Email::NORMAL_IMPORTANCE);
 
-        $result->setFolder($origin->getFolder(EmailFolder::SENT));
+        $result->addFolder($origin->getFolder(EmailFolder::SENT));
 
         return $result;
     }
