@@ -1,6 +1,6 @@
-# OroCRM Application
+# OroCRM Enterprise Application
 
-Welcome to OroCRM the Open Source Customer Relationship Management (CRM) application.
+Welcome to OroCRM Enterpris the Customer Relationship Management (CRM) application.
 
 ## Requirements
 
