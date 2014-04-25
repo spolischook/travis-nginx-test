@@ -292,8 +292,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                     )
                 );
                 $folderInfo->ewsFolder->setEwsChangeKey($id->ChangeKey);
-                $folderInfo->needSynchronization = true;
             }
+            $folderInfo->needSynchronization = true;
         } else {
             $this->log->notice(sprintf('Persisting "%s" folder ...', $fullName));
 

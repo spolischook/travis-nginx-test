@@ -157,6 +157,63 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(EmailFolder::OTHER, $folderInfo->ewsFolder->getFolder()->getType());
     }
 
+    public function testEnsureFolderPersistedForExistingFolderWithNoChanges()
+    {
+        $processor = new EwsEmailSynchronizationProcessor(
+            $this->log,
+            $this->em,
+            $this->emailEntityBuilder,
+            $this->emailAddressManager,
+            $this->knownEmailAddressChecker,
+            $this->manager
+        );
+
+        $origin = new EwsEmailOrigin();
+        $folders = [];
+        $folderId = new EwsType\FolderIdType();
+        $folderId->Id = '123';
+        $folderId->ChangeKey = 'CK';
+
+        $existEwsFolder = $this->createEwsEmailFolder();
+        $existEwsFolder->getFolder()->setFullName('Inbox/TestOld');
+        $existEwsFolder->getFolder()->setName('TestOld');
+        $existEwsFolder->getFolder()->setType(EmailFolder::DRAFTS);
+        $existEwsFolder->setEwsId($folderId->Id);
+        $existEwsFolder->setEwsChangeKey($folderId->ChangeKey);
+        $existFolderInfo = new FolderInfo($existEwsFolder, false);
+        $folders[$folderId->Id] = $existFolderInfo;
+        $origin->addFolder($existEwsFolder->getFolder());
+
+        $this->assertCount(1, $origin->getFolders());
+        $this->assertCount(1, $folders);
+
+        ReflectionUtil::callProtectedMethod(
+            $processor,
+            'ensureFolderPersisted',
+            [
+                $origin,
+                &$folders,
+                $folderId,
+                'Inbox/Test',
+                'Test',
+                EmailFolder::OTHER
+            ]
+        );
+
+        $this->assertCount(1, $origin->getFolders());
+        $this->assertCount(1, $folders);
+
+        /** @var FolderInfo $folderInfo */
+        $folderInfo = $folders[$folderId->Id];
+        $this->assertTrue($folderInfo->needSynchronization);
+        $this->assertNull($folderInfo->folderType);
+        $this->assertEquals('123', $folderInfo->ewsFolder->getEwsId());
+        $this->assertEquals('CK', $folderInfo->ewsFolder->getEwsChangeKey());
+        $this->assertEquals('Inbox/Test', $folderInfo->ewsFolder->getFolder()->getFullName());
+        $this->assertEquals('Test', $folderInfo->ewsFolder->getFolder()->getName());
+        $this->assertEquals(EmailFolder::OTHER, $folderInfo->ewsFolder->getFolder()->getType());
+    }
+
     public function testEnsureDistinguishedFolderInitialized()
     {
         $processor = $this->createProcessor(['ensureFolderPersisted']);
