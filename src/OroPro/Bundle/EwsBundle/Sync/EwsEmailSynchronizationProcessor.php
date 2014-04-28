@@ -419,6 +419,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             ->setParameter('folderId', $folder->getId())
             ->setParameter('ewsIds', $ewsIds)
             ->getQuery();
+
         $result = $query->getResult();
 
         $existingEwsIds = array_map(

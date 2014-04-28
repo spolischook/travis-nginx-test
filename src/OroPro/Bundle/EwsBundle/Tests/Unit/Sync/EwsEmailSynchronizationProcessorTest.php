@@ -662,7 +662,6 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             );
     }
 
-
     /**
      * @return EwsEmailFolder
      */

@@ -3,6 +3,7 @@
 namespace OroPro\Bundle\EwsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use Oro\Bundle\EmailBundle\Entity\Email;
 
 /**
@@ -28,7 +29,7 @@ class EwsEmail
     /**
      * @var Email
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\EmailBundle\Entity\Email")
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\EmailBundle\Entity\Email")
      * @ORM\JoinColumn(name="email_id", referencedColumnName="id", nullable=false)
      */
     protected $email;
