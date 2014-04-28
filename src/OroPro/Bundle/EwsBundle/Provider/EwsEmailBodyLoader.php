@@ -7,6 +7,7 @@ use Doctrine\ORM\Query;
 
 use Oro\Bundle\EmailBundle\Builder\EmailBodyBuilder;
 use Oro\Bundle\EmailBundle\Entity\Email;
+use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Provider\EmailBodyLoaderInterface;
 
@@ -41,9 +42,9 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadEmailBody(Email $email, EntityManager $em)
+    public function loadEmailBody(EmailFolder $folder, Email $email, EntityManager $em)
     {
-        $manager = $this->getManager($email);
+        $manager = $this->getManager($folder, $email);
         $repo    = $em->getRepository('OroProEwsBundle:EwsEmail');
         $query   = $repo->createQueryBuilder('e')
             ->select('e.ewsId AS ewsId, e.ewsChangeKey AS ewsChangeKey')
@@ -89,28 +90,19 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
     }
 
     /**
-     * @param Email $email
-     * @return EwsEmailManager
+     * @param EmailFolder $folder
+     * @param Email       $email
+     *
      * @throws \RuntimeException
+     * @return EwsEmailManager
      */
-    protected function getManager(Email $email)
+    protected function getManager(EmailFolder $folder, Email $email)
     {
         $manager = new EwsEmailManager($this->connector);
 
-        foreach ($email->getFolders() as $folder) {
-            $origin  = $folder->getOrigin();
-
-            if ($origin instanceof EwsEmailOrigin) {
-                $userEmail = $origin->getUserEmail();
-                break;
-            } else {
-                $userEmail = false;
-
-            }
-        }
-
-        if ($userEmail !== false) {
-            $manager->selectUser($userEmail);
+        $origin  = $folder->getOrigin();
+        if ($origin instanceof EwsEmailOrigin) {
+            $manager->selectUser($origin->getUserEmail());
         } else {
             throw new \RuntimeException(
                 sprintf('The origin for "%s" email must be instance of EwsEmailOrigin.', $email->getSubject())
