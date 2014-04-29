@@ -476,9 +476,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $this->emailEntityBuilder->getBatch()->persist($this->em);
 
         // link emails with ews-emails after save
+        /** @var Email[] $oEmails */
         $oEmails = $this->emailEntityBuilder->getBatch()->getEmails();
-
-        /** @var Email $email */
         foreach ($oEmails as $email) {
             if ($email->getId() || in_array($email->getId(), $existingEwsEmailIds)) {
                 continue;
