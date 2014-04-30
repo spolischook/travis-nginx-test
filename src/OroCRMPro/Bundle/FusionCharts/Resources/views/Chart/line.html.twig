@@ -27,37 +27,40 @@
             'animation': '0',
             'valuePadding': '10',
             'rotateXAxisName': '0',
+            'bgColor': 'transparent',
+            'showZeroPlane': '0',
+            'canvasBgColor': 'transparent',
+            'borderColor': 'transparent',
+            'showShadow': '0',
             (symbolPosition): oro_currency_symbol(),
             'formatNumberScale': '0',
             'decimals': '2',
-            'forceDecimals': '1',
+            'chartRightMargin': '50',
             'divLineColor': 'eaeaea',
+            'showVLineLabelBorder': '0',
             'paletteColors': options.settings.chartColors,
             'yAxisMaxValue': max
         },
-        'data': chartData,
-        'trendlines': [{
-            'line': [
-                {
-                    'startvalue': '0',
-                    'color': '666666',
-                    'alpha': '10'
-                },
-                {
-                    'startvalue': max,
-                    'color': '666666',
-                    'alpha': '10'
-                }
-            ]
-        }]
+        'data': chartData
     } %}
+
+    {% if options.settings.connect_dots_with_line == false %}
+        {% set json = json|merge({
+            'chart':{
+                'anchorBgColor': options.settings.chartColors,
+                'anchorBorderColor': options.settings.chartColors,
+                'lineColor': 'transparent'
+            }|merge(json.chart)
+        }) %}
+    {% endif %}
 
     <script type="text/javascript">
         require(
                 ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
                 function ($) {
+
                     $('#{{ widgetId }}-chart').insertFusionCharts({
-                        type: 'Column3D',
+                        type: 'Line',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
                         width: '100%',
