@@ -59,6 +59,12 @@
                     var dataSource = {{ json|json_encode|raw }};
 
                     dataSource.data = dataSource.data.sort(function(first, second){
+                        if(first.label == null){
+                            return 1;
+                        }
+                        if(second.label == null){
+                            return -1;
+                        }
                         var firstLabel = dataFormatter.clearValue(first.label, schema.label.frontend_type);
                         var secondLabel = dataFormatter.clearValue(second.label, schema.label.frontend_type);
                         return firstLabel - secondLabel;
@@ -74,8 +80,13 @@
 
                     for (var i in dataSource.data) {
                         var point = dataSource.data[i];
-                        var labelValue = dataFormatter.clearValue(point.label, schema.label.frontend_type);
-                        point.label = dataFormatter.formatLabel(labelValue, schema.label.frontend_type);
+                        if (point.label != null) {
+                            var labelValue = dataFormatter.clearValue(point.label, schema.label.frontend_type);
+                            point.label = dataFormatter.formatLabel(labelValue, schema.label.frontend_type);
+                        } else {
+                            point.label = '';
+                        }
+
                         point.displayValue = dataFormatter.formatLabel(point.value, schema.value.frontend_type);
                         if (schema.value.frontend_type == 'percent') {
                             point.value*=100;
