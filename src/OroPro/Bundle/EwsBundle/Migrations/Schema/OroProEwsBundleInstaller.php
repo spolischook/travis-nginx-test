@@ -24,8 +24,8 @@ class OroProEwsBundleInstaller implements Installation
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        OroProEwsBundle::createOroEmailFolderEwsTable($schema);
-        OroProEwsBundle::createOroEmailEwsTable($schema, '');
+        OroProEwsBundle::oroEmailFolderEwsTable($schema);
+        OroProEwsBundle::oroEmailEwsTable($schema, false);
         OroProEwsBundle::updateOroEmailOriginTable($schema);
     }
 }

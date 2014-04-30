@@ -14,15 +14,15 @@ class OroProEwsBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        self::createOroEmailFolderEwsTable($schema);
-        self::createOroEmailEwsTable($schema);
+        self::oroEmailFolderEwsTable($schema);
+        self::oroEmailEwsTable($schema);
         self::updateOroEmailOriginTable($schema);
     }
 
     /**
      * @param Schema $schema
      */
-    public static function createOroEmailFolderEwsTable(Schema $schema)
+    public static function oroEmailFolderEwsTable(Schema $schema)
     {
         /** Create table */
         $table = $schema->createTable('oro_email_folder_ews');
@@ -46,7 +46,7 @@ class OroProEwsBundle implements Migration
      * @param Schema $schema
      * @param bool   $isEmailIdUniqueIndex
      */
-    public static function createOroEmailEwsTable(Schema $schema, $isEmailIdUniqueIndex = true)
+    public static function oroEmailEwsTable(Schema $schema, $isEmailIdUniqueIndex = true)
     {
         /** Create table */
         $table = $schema->createTable('oro_email_ews');
