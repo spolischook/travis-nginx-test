@@ -69,7 +69,7 @@
                         var secondLabel = dataFormatter.clearValue(second.label, schema.label.type);
                         return firstLabel - secondLabel;
                     });
-                    
+
                     if (schema.value.type == 'percent') {
                         dataSource.chart['numberSuffix'] = '%';
                     } else if (schema.value.type == 'currency' || schema.value.type == 'money') {
