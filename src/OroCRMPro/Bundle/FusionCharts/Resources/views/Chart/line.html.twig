@@ -70,12 +70,12 @@
                         var point = dataSource.data[i];
                         var labelValue = dataFormatter.clearValue(point.label, schema.label.frontend_type);
                         point.label = dataFormatter.formatLabel(labelValue, schema.label.frontend_type);
+                        point.displayValue = dataFormatter.formatLabel(point.value, schema.value.frontend_type);
                         if (schema.value.frontend_type == 'percent') {
                             point.value*=100;
                         } else {
                             point.value = dataFormatter.clearValue(point.value, schema.value.frontend_type);
                         }
-                        point.displayValue = dataFormatter.formatLabel(point.value, schema.value.frontend_type);
                         dataSource.data[i] = point;
                     }
                     $('#{{ widgetId }}-chart').insertFusionCharts({
