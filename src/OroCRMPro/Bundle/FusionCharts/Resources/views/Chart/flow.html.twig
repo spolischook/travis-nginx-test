@@ -1,4 +1,4 @@
-{% set widgetId = random() %}
+{% set containerId = "chart-container-" ~ random() %}
 {% set hasData = data|length>0 %}
 {% set chartData = [] %}
 {% set isMobileVersion = isMobileVersion() %}
@@ -21,7 +21,7 @@
 {% if hasData %}
     <div class="chart-container">
         <div class="clearfix">
-            <div id="{{ widgetId }}-chart" class="bar-chart chart"></div>
+            <div id="{{ containerId }}-chart" class="bar-chart chart"></div>
         </div>
     </div>
 
@@ -53,13 +53,13 @@
         require(
                 ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
                 function ($) {
-                    $('#{{ widgetId }}-chart').insertFusionCharts({
+                    $('#{{ containerId }}-chart').insertFusionCharts({
                         type: 'Funnel',
                         dataSource: {{ json|json_encode|raw }},
                         dataFormat: 'json',
                         width: '{{ width }}',
                         height: '{{ height }}',
-                        id: '{{ widgetId }}'
+                        id: '{{ containerId }}'
                     });
                 }
         );
