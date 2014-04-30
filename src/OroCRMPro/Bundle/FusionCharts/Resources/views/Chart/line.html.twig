@@ -65,14 +65,15 @@
                         if(second.label == null){
                             return -1;
                         }
-                        var firstLabel = dataFormatter.clearValue(first.label, schema.label.frontend_type);
-                        var secondLabel = dataFormatter.clearValue(second.label, schema.label.frontend_type);
+                        var firstLabel = dataFormatter.clearValue(first.label, schema.label.type);
+                        var secondLabel = dataFormatter.clearValue(second.label, schema.label.type);
                         return firstLabel - secondLabel;
                     });
-                    if(schema.value.frontend_type == 'percent'){
+                    
+                    if (schema.value.type == 'percent') {
                         dataSource.chart['numberSuffix'] = '%';
-                    }else if(schema.value.frontend_type == 'currency') {
-                        schema.value.frontend_type = 'money';
+                    } else if (schema.value.type == 'currency' || schema.value.type == 'money') {
+                        schema.value.type = 'money';
                         dataSource.chart['{{ symbolPosition }}'] = '{{ oro_currency_symbol() }}';
                         dataSource.chart['forceDecimals'] = '1';
                     }
@@ -81,20 +82,22 @@
                     for (var i in dataSource.data) {
                         var point = dataSource.data[i];
                         if (point.label != null) {
-                            var labelValue = dataFormatter.clearValue(point.label, schema.label.frontend_type);
-                            point.label = dataFormatter.formatLabel(labelValue, schema.label.frontend_type);
+                            var labelValue = dataFormatter.clearValue(point.label, schema.label.type);
+                            point.label = dataFormatter.formatLabel(labelValue, schema.label.type);
                         } else {
                             point.label = '';
                         }
 
-                        point.displayValue = dataFormatter.formatLabel(point.value, schema.value.frontend_type);
-                        if (schema.value.frontend_type == 'percent') {
-                            point.value*=100;
+                        point.displayValue = dataFormatter.formatLabel(point.value, schema.value.type);
+                        if (schema.value.type == 'percent') {
+                            point.value *= 100;
                         } else {
-                            point.value = dataFormatter.clearValue(point.value, schema.value.frontend_type);
+                            point.value = dataFormatter.clearValue(point.value, schema.value.type);
                         }
                         dataSource.data[i] = point;
                     }
+
+                    console.log(dataSource);
 
                     $('#{{ widgetId }}-chart').insertFusionCharts({
                         type: 'Line',
