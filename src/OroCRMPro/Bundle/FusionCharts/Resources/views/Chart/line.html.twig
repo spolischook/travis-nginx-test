@@ -58,6 +58,11 @@
                     var schema = {{ options.data_schema|json_encode|raw }};
                     var dataSource = {{ json|json_encode|raw }};
 
+                    dataSource.data = dataSource.data.sort(function(first, second){
+                        var firstLabel = dataFormatter.clearValue(first.label, schema.label.frontend_type);
+                        var secondLabel = dataFormatter.clearValue(second.label, schema.label.frontend_type);
+                        return firstLabel - secondLabel;
+                    });
                     if(schema.value.frontend_type == 'percent'){
                         dataSource.chart['numberSuffix'] = '%';
                     }else if(schema.value.frontend_type == 'currency') {
@@ -65,6 +70,7 @@
                         dataSource.chart['{{ symbolPosition }}'] = '{{ oro_currency_symbol() }}';
                         dataSource.chart['forceDecimals'] = '1';
                     }
+
 
                     for (var i in dataSource.data) {
                         var point = dataSource.data[i];
@@ -78,6 +84,7 @@
                         }
                         dataSource.data[i] = point;
                     }
+
                     $('#{{ widgetId }}-chart').insertFusionCharts({
                         type: 'Line',
                         dataSource: dataSource,
