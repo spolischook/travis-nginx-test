@@ -4,8 +4,6 @@
 {% set hasData = data|length>0 %}
 {% for item in data %}
     {% set max = max(max, item.value) %}
-    {% set displayValue = item.value|oro_format_currency %}
-    {% set chartData = chartData|merge([{label: item.label, value: item.value, displayValue: displayValue}]) %}
 {% endfor %}
 {% set max = (max * 1.2)|round(-3) %}
 
@@ -32,7 +30,6 @@
             'canvasBgColor': 'transparent',
             'borderColor': 'transparent',
             'showShadow': '0',
-            (symbolPosition): oro_currency_symbol(),
             'formatNumberScale': '0',
             'decimals': '2',
             'chartRightMargin': '50',
@@ -41,7 +38,7 @@
             'paletteColors': options.settings.chartColors,
             'yAxisMaxValue': max
         },
-        'data': chartData
+        'data': data
     } %}
 
     {% if options.settings.connect_dots_with_line == false %}
@@ -56,12 +53,34 @@
 
     <script type="text/javascript">
         require(
-                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
-                function ($) {
+                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin', 'oro/chart/data_formatter'],
+                function ($, fusion, dataFormatter) {
+                    var schema = {{ options.data_schema|json_encode|raw }};
+                    var dataSource = {{ json|json_encode|raw }};
 
+                    if(schema.value.frontend_type == 'percent'){
+                        dataSource.chart['numberSuffix'] = '%';
+                    }else if(schema.value.frontend_type == 'currency') {
+                        schema.value.frontend_type = 'money';
+                        dataSource.chart['{{ symbolPosition }}'] = '{{ oro_currency_symbol() }}';
+                        dataSource.chart['forceDecimals'] = '1';
+                    }
+
+                    for (var i in dataSource.data) {
+                        var point = dataSource.data[i];
+                        var labelValue = dataFormatter.clearValue(point.label, schema.label.frontend_type);
+                        point.label = dataFormatter.formatLabel(labelValue, schema.label.frontend_type);
+                        if (schema.value.frontend_type == 'percent') {
+                            point.value*=100;
+                        } else {
+                            point.value = dataFormatter.clearValue(point.value, schema.value.frontend_type);
+                        }
+                        point.displayValue = dataFormatter.formatLabel(point.value, schema.value.frontend_type);
+                        dataSource.data[i] = point;
+                    }
                     $('#{{ widgetId }}-chart').insertFusionCharts({
                         type: 'Line',
-                        dataSource: {{ json|json_encode|raw }},
+                        dataSource: dataSource,
                         dataFormat: 'json',
                         width: '100%',
                         height: 300,
