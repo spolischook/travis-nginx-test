@@ -60,20 +60,22 @@
 
                     dataSource.data = dataSource.data.sort(function(first, second){
                         if(first.label == null){
-                            return 1;
+                            return -1;
                         }
                         if(second.label == null){
-                            return -1;
+                            return 1;
                         }
                         var firstLabel = dataFormatter.clearValue(first.label, schema.label.type);
                         var secondLabel = dataFormatter.clearValue(second.label, schema.label.type);
-                        return firstLabel - secondLabel;
+                        if(firstLabel == secondLabel){
+                            return 0;
+                        }
+                        return firstLabel > secondLabel ? 1 : -1;
                     });
 
                     if (schema.value.type == 'percent') {
                         dataSource.chart['numberSuffix'] = '%';
-                    } else if (schema.value.type == 'currency' || schema.value.type == 'money') {
-                        schema.value.type = 'money';
+                    } else if (schema.value.type == 'currency') {
                         dataSource.chart['{{ symbolPosition }}'] = '{{ oro_currency_symbol() }}';
                         dataSource.chart['forceDecimals'] = '1';
                     }
@@ -83,16 +85,16 @@
                         var point = dataSource.data[i];
                         if (point.label != null) {
                             var labelValue = dataFormatter.clearValue(point.label, schema.label.type);
-                            point.label = dataFormatter.formatLabel(labelValue, schema.label.type);
+                            point.label = labelValue === null ? point.label : dataFormatter.formatLabel(labelValue, schema.label.type);
                         } else {
-                            point.label = '';
+                            point.label = '{{ "oro.chart.no_data"|trans() }}';
                         }
 
                         point.displayValue = dataFormatter.formatLabel(point.value, schema.value.type);
                         if (schema.value.type == 'percent') {
                             point.value *= 100;
                         } else {
-                            point.value = dataFormatter.clearValue(point.value, schema.value.type);
+                            point.value = point.value === null ? 0 :dataFormatter.clearValue(point.value, schema.value.type);
                         }
                         dataSource.data[i] = point;
                     }
