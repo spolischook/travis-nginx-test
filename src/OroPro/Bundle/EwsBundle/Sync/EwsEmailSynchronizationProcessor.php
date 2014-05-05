@@ -25,8 +25,6 @@ use OroPro\Bundle\EwsBundle\Provider\EwsEmailIterator;
 
 class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProcessor
 {
-    const EMAIL_ADDRESS_BATCH_SIZE = 10;
-
     /**
      * @var EwsEmailManager
      */
@@ -292,8 +290,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                     )
                 );
                 $folderInfo->ewsFolder->setEwsChangeKey($id->ChangeKey);
-                $folderInfo->needSynchronization = true;
             }
+            $folderInfo->needSynchronization = true;
         } else {
             $this->log->notice(sprintf('Persisting "%s" folder ...', $fullName));
 
@@ -414,20 +412,31 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
         $repo           = $this->em->getRepository('OroProEwsBundle:EwsEmail');
         $query          = $repo->createQueryBuilder('e')
-            ->select('e.ewsId')
+            ->select('e.ewsId, se.id')
             ->innerJoin('e.email', 'se')
-            ->innerJoin('se.folder', 'sf')
+            ->innerJoin('se.folders', 'sf')
             ->where('sf.id = :folderId AND e.ewsId IN (:ewsIds)')
             ->setParameter('folderId', $folder->getId())
             ->setParameter('ewsIds', $ewsIds)
             ->getQuery();
+
+        $result = $query->getResult();
+
         $existingEwsIds = array_map(
             function ($el) {
                 return $el['ewsId'];
             },
-            $query->getResult()
+            $result
         );
 
+        $existingEwsEmailIds = array_map(
+            function ($el) {
+                return $el['id'];
+            },
+            $result
+        );
+
+        $srcStack = [];
         foreach ($emails as $src) {
             if (!in_array($src->getId()->getId(), $existingEwsIds)) {
                 $this->log->notice(
@@ -448,13 +457,9 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $email->setMessageId($src->getMessageId());
                 $email->setXMessageId($src->getXMessageId());
                 $email->setXThreadId($src->getXThreadId());
-                $email->setFolder($folder);
-                $ewsEmail = new EwsEmail();
-                $ewsEmail
-                    ->setEwsId($src->getId()->getId())
-                    ->setEwsChangeKey($src->getId()->getChangeKey())
-                    ->setEmail($email);
-                $this->em->persist($ewsEmail);
+                $email->addFolder($folder);
+
+                $srcStack[$src->getMessageId()] = ['id' => $src->getId()->getId(), 'changeKey' => $src->getId()->getChangeKey()];
 
                 $this->log->notice(sprintf('The "%s" email was persisted.', $src->getSubject()));
             } else {
@@ -469,6 +474,26 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         }
 
         $this->emailEntityBuilder->getBatch()->persist($this->em);
+
+        // link emails with ews-emails after save
+        /** @var Email[] $oEmails */
+        $oEmails = $this->emailEntityBuilder->getBatch()->getEmails();
+        foreach ($oEmails as $email) {
+            if ($email->getId() || in_array($email->getId(), $existingEwsEmailIds)) {
+                continue;
+            }
+
+            $stackItem = $srcStack[$email->getMessageId()];
+
+            $ewsEmail = new EwsEmail();
+            $ewsEmail
+                ->setEwsId($stackItem['id'])
+                ->setEwsChangeKey($stackItem['changeKey'])
+                ->setEmail($email);
+
+            $this->em->persist($ewsEmail);
+        }
+
         $this->em->flush();
     }
 }

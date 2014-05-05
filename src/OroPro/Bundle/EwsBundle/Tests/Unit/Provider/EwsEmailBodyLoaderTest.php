@@ -76,7 +76,8 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getDoctrineMocks()));
 
         $email = $this->getTestEmail($this->getTestEwsOrigin());
-        $this->ewsEmailBodyLoader->loadEmailBody($email, $this->em);
+        $folder = $email->getFolders()->first();
+        $this->ewsEmailBodyLoader->loadEmailBody($folder, $email, $this->em);
     }
 
     /**
@@ -92,7 +93,9 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getDoctrineMocks()));
 
         $email = $this->getTestEmail($this->getTestEwsOrigin());
-        $this->ewsEmailBodyLoader->loadEmailBody($email, $this->em);
+        $folder = $email->getFolders()->first();
+
+        $this->ewsEmailBodyLoader->loadEmailBody($folder, $email, $this->em);
     }
 
     /**
@@ -104,8 +107,9 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
         $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector);
 
         $email = $this->getTestEmail($this->getTestInternalOrigin());
+        $folder = $email->getFolders()->first();
 
-        $this->ewsEmailBodyLoader->loadEmailBody($email, $this->em);
+        $this->ewsEmailBodyLoader->loadEmailBody($folder, $email, $this->em);
     }
 
     protected function getDoctrineMocks()
@@ -217,7 +221,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->setInternalDate(new \DateTime('now', new \DateTimeZone('UTC')))
             ->setImportance(Email::NORMAL_IMPORTANCE);
 
-        $result->setFolder($origin->getFolder(EmailFolder::SENT));
+        $result->addFolder($origin->getFolder(EmailFolder::SENT));
 
         return $result;
     }

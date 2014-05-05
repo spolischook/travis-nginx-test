@@ -36,14 +36,14 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->log                      = $this->getMock('Psr\Log\LoggerInterface');
-        $this->em                       = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+        $this->log = $this->getMock('Psr\Log\LoggerInterface');
+        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->emailEntityBuilder       = $this->getMockBuilder('Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder')
+        $this->emailEntityBuilder = $this->getMockBuilder('Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->emailAddressManager      = $this->getMockBuilder(
+        $this->emailAddressManager = $this->getMockBuilder(
             'Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager'
         )
             ->disableOriginalConstructor()
@@ -51,7 +51,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->knownEmailAddressChecker = $this->getMockBuilder('Oro\Bundle\EmailBundle\Sync\KnownEmailAddressChecker')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->manager          = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Manager\EwsEmailManager')
+        $this->manager = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Manager\EwsEmailManager')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -123,6 +123,63 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $existEwsFolder->getFolder()->setType(EmailFolder::DRAFTS);
         $existEwsFolder->setEwsId($folderId->Id);
         $existEwsFolder->setEwsChangeKey('old_ck');
+        $existFolderInfo = new FolderInfo($existEwsFolder, false);
+        $folders[$folderId->Id] = $existFolderInfo;
+        $origin->addFolder($existEwsFolder->getFolder());
+
+        $this->assertCount(1, $origin->getFolders());
+        $this->assertCount(1, $folders);
+
+        ReflectionUtil::callProtectedMethod(
+            $processor,
+            'ensureFolderPersisted',
+            [
+                $origin,
+                &$folders,
+                $folderId,
+                'Inbox/Test',
+                'Test',
+                EmailFolder::OTHER
+            ]
+        );
+
+        $this->assertCount(1, $origin->getFolders());
+        $this->assertCount(1, $folders);
+
+        /** @var FolderInfo $folderInfo */
+        $folderInfo = $folders[$folderId->Id];
+        $this->assertTrue($folderInfo->needSynchronization);
+        $this->assertNull($folderInfo->folderType);
+        $this->assertEquals('123', $folderInfo->ewsFolder->getEwsId());
+        $this->assertEquals('CK', $folderInfo->ewsFolder->getEwsChangeKey());
+        $this->assertEquals('Inbox/Test', $folderInfo->ewsFolder->getFolder()->getFullName());
+        $this->assertEquals('Test', $folderInfo->ewsFolder->getFolder()->getName());
+        $this->assertEquals(EmailFolder::OTHER, $folderInfo->ewsFolder->getFolder()->getType());
+    }
+
+    public function testEnsureFolderPersistedForExistingFolderWithNoChanges()
+    {
+        $processor = new EwsEmailSynchronizationProcessor(
+            $this->log,
+            $this->em,
+            $this->emailEntityBuilder,
+            $this->emailAddressManager,
+            $this->knownEmailAddressChecker,
+            $this->manager
+        );
+
+        $origin = new EwsEmailOrigin();
+        $folders = [];
+        $folderId = new EwsType\FolderIdType();
+        $folderId->Id = '123';
+        $folderId->ChangeKey = 'CK';
+
+        $existEwsFolder = $this->createEwsEmailFolder();
+        $existEwsFolder->getFolder()->setFullName('Inbox/TestOld');
+        $existEwsFolder->getFolder()->setName('TestOld');
+        $existEwsFolder->getFolder()->setType(EmailFolder::DRAFTS);
+        $existEwsFolder->setEwsId($folderId->Id);
+        $existEwsFolder->setEwsChangeKey($folderId->ChangeKey);
         $existFolderInfo = new FolderInfo($existEwsFolder, false);
         $folders[$folderId->Id] = $existFolderInfo;
         $origin->addFolder($existEwsFolder->getFolder());
@@ -444,18 +501,18 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     */
     public function testSaveEmails()
     {
         $processor = $this->createProcessor();
 
         $folder = new EmailFolder();
         ReflectionUtil::setId($folder, 123);
+
         $email1 = new Email($this->manager);
         $email1Id = new ItemId('test1', 'ck1');
         $email1->setId($email1Id);
+        $email1->setMessageId('message_id');
+
         $email2 = new Email($this->manager);
         $email2Id = new ItemId('test2', 'ck2');
         $email2
@@ -472,65 +529,8 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->setMessageId('message_id')
             ->setXMessageId('x_message_id')
             ->setXThreadId('x_thread_id');
-        $emails = [$email1, $email2];
 
-        $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getResult'))
-            ->getMockForAbstractClass();
-        $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $repo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $repo->expects($this->once())
-            ->method('createQueryBuilder')
-            ->with('e')
-            ->will($this->returnValue($qb));
-        $this->em->expects($this->once())
-            ->method('getRepository')
-            ->with('OroProEwsBundle:EwsEmail')
-            ->will($this->returnValue($repo));
-
-        $index = 0;
-        $qb->expects($this->at($index++))
-            ->method('select')
-            ->with('e.ewsId')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('innerJoin')
-            ->with('e.email', 'se')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('innerJoin')
-            ->with('se.folder', 'sf')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('where')
-            ->with('sf.id = :folderId AND e.ewsId IN (:ewsIds)')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('setParameter')
-            ->with('folderId', $folder->getId())
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('setParameter')
-            ->with('ewsIds', [$email1Id->getId(), $email2Id->getId()])
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('getQuery')
-            ->will($this->returnValue($query));
-
-        $query->expects($this->once())
-            ->method('getResult')
-            ->will(
-                $this->returnValue(
-                    [
-                        ['ewsId' => $email1Id->getId()],
-                    ]
-                )
-            );
+        $this->initSaveEmailQBMocks($folder, $email1Id, $email2Id);
 
         $newEmailEntity = new EmailEntity();
         $newEwsEmailEntity = new EwsEmail();
@@ -558,13 +558,31 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->em->expects($this->once())
             ->method('persist')
             ->with($newEwsEmailEntity);
-        $batch = $this->getMock('Oro\Bundle\EmailBundle\Builder\EmailEntityBatchInterface');
-        $this->emailEntityBuilder->expects($this->once())
+
+        $batch = $this->getMockBuilder('Oro\Bundle\EmailBundle\Builder\EmailEntityBatchProcessor')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->emailEntityBuilder->expects($this->exactly(2))
             ->method('getBatch')
             ->will($this->returnValue($batch));
         $batch->expects($this->once())
-            ->method('persist')
-            ->with($this->equalTo($this->em));
+            ->method('persist');
+
+        $newEmailEntity->setMessageId('message_id');
+        $new2EmailEntity = new EmailEntity();
+        ReflectionUtil::setId($new2EmailEntity, '123');
+
+        $emails = [
+            $newEmailEntity,
+            $new2EmailEntity
+        ];
+
+        $batch->expects($this->once())
+            ->method('getEmails')
+            ->with()
+            ->will($this->returnValue($emails));
+
         $this->em->expects($this->once())
             ->method('flush');
 
@@ -572,7 +590,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             $processor,
             'saveEmails',
             [
-                $emails,
+                [$email1, $email2],
                 $folder
             ]
         );
@@ -580,7 +598,68 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($email2->getMessageId(), $newEmailEntity->getMessageId());
         $this->assertEquals($email2->getXMessageId(), $newEmailEntity->getXMessageId());
         $this->assertEquals($email2->getXThreadId(), $newEmailEntity->getXThreadId());
-        $this->assertEquals($folder, $newEmailEntity->getFolder());
+        $this->assertEquals($folder, $newEmailEntity->getFolders()->first());
+    }
+
+    protected function initSaveEmailQBMocks(EmailFolder $folder, ItemId $email1Id, ItemId $email2Id)
+    {
+        $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getResult'))
+            ->getMockForAbstractClass();
+        $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repo->expects($this->once())
+            ->method('createQueryBuilder')
+            ->with('e')
+            ->will($this->returnValue($qb));
+        $this->em->expects($this->once())
+            ->method('getRepository')
+            ->with('OroProEwsBundle:EwsEmail')
+            ->will($this->returnValue($repo));
+
+        $index = 0;
+        $qb->expects($this->at($index++))
+            ->method('select')
+            ->with('e.ewsId, se.id')
+            ->will($this->returnSelf());
+        $qb->expects($this->at($index++))
+            ->method('innerJoin')
+            ->with('e.email', 'se')
+            ->will($this->returnSelf());
+        $qb->expects($this->at($index++))
+            ->method('innerJoin')
+            ->with('se.folders', 'sf')
+            ->will($this->returnSelf());
+        $qb->expects($this->at($index++))
+            ->method('where')
+            ->with('sf.id = :folderId AND e.ewsId IN (:ewsIds)')
+            ->will($this->returnSelf());
+        $qb->expects($this->at($index++))
+            ->method('setParameter')
+            ->with('folderId', $folder->getId())
+            ->will($this->returnSelf());
+        $qb->expects($this->at($index++))
+            ->method('setParameter')
+            ->with('ewsIds', [$email1Id->getId(), $email2Id->getId()])
+            ->will($this->returnSelf());
+        $qb->expects($this->at($index++))
+            ->method('getQuery')
+            ->will($this->returnValue($query));
+
+        $query->expects($this->once())
+            ->method('getResult')
+            ->will(
+                $this->returnValue(
+                    [
+                        ['ewsId' => $email1Id->getId(), 'id' => $email1Id->getId()],
+                    ]
+                )
+            );
     }
 
     /**
