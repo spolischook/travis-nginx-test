@@ -65,8 +65,8 @@
                         if(second.label == null){
                             return 1;
                         }
-                        var firstLabel = dataFormatter.clearValue(first.label, schema.label.type);
-                        var secondLabel = dataFormatter.clearValue(second.label, schema.label.type);
+                        var firstLabel = dataFormatter.parseValue(first.label, schema.label.type);
+                        var secondLabel = dataFormatter.parseValue(second.label, schema.label.type);
                         if(firstLabel == secondLabel){
                             return 0;
                         }
@@ -84,17 +84,17 @@
                     for (var i in dataSource.data) {
                         var point = dataSource.data[i];
                         if (point.label != null) {
-                            var labelValue = dataFormatter.clearValue(point.label, schema.label.type);
-                            point.label = labelValue === null ? point.label : dataFormatter.formatLabel(labelValue, schema.label.type);
+                            var labelValue = dataFormatter.parseValue(point.label, schema.label.type);
+                            point.label = labelValue === null ? point.label : dataFormatter.formatValue(labelValue, schema.label.type);
                         } else {
                             point.label = '{{ "oro.chart.no_data"|trans() }}';
                         }
 
-                        point.displayValue = dataFormatter.formatLabel(point.value, schema.value.type);
+                        point.displayValue = dataFormatter.formatValue(point.value, schema.value.type);
                         if (schema.value.type == 'percent') {
                             point.value *= 100;
                         } else {
-                            point.value = point.value === null ? 0 :dataFormatter.clearValue(point.value, schema.value.type);
+                            point.value = point.value === null ? 0 :dataFormatter.parseValue(point.value, schema.value.type);
                         }
                         dataSource.data[i] = point;
                     }
