@@ -1,23 +1,21 @@
-{% extends 'OroDashboardBundle:Dashboard:chartWidget.html.twig' %}
-
+{% set containerId = "chart-container-" ~ random() %}
 {#
     Variables:
         data - should be an array contains 'fraction' and 'label' values in each row
                also you can build chart data in nested template by overriding 'data' block
 #}
 {% block content %}
-    {% set items, data, hasData = data, {}, false %}
-    {% for item in items %}
-        {% if item.itemCount %}
+    {% set hasData = false %}
+    {% for item in data %}
+        {% if item.value %}
             {% set hasData = true %}
         {% endif %}
-        {% set data = data|merge([{label: item.label, value: item.itemCount}]) %}
     {% endfor %}
 
     {% if hasData %}
         <div class="chart-container">
             <div class="clearfix">
-                <div id="{{ widgetId }}-chart" class="pie-chart chart"></div>
+                <div id="{{ containerId }}-chart" class="pie-chart chart"></div>
             </div>
         </div>
 
@@ -39,25 +37,25 @@
                 'use3DLighting': '0',
                 'legendBorderAlpha': '0',
                 'pieslicedepth': isMobileVersion ? '10' : '30',
-                'paletteColors': 'fdbc7c,b6c05d,fee090,80d4cf,bedb99,e6c160,5a8980,ceeaf2,d6a970,73a4e1,7fab90,ed935c'
+                'paletteColors': options.settings.chartColors
             },
             'data': data
         } %}
 
         <script type="text/javascript">
             require(
-                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
-                function ($) {
-                    $('#{{ widgetId }}-chart').insertFusionCharts({
-                        type: 'Pie3D',
-                        renderer: 'JavaScript',
-                        dataSource: {{ json|json_encode|raw }},
-                        dataFormat: 'json',
-                        width: '100%',
-                        height: 300,
-                        id: '{{ widgetId }}'
-                    });
-                }
+                    ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
+                    function ($) {
+                        $('#{{ containerId }}-chart').insertFusionCharts({
+                            type: 'Pie3D',
+                            renderer: 'JavaScript',
+                            dataSource: {{ json|json_encode|raw }},
+                            dataFormat: 'json',
+                            width: '100%',
+                            height: 300,
+                            id: '{{ containerId }}'
+                        });
+                    }
             );
         </script>
 

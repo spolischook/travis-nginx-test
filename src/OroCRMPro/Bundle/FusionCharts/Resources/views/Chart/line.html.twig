@@ -1,0 +1,117 @@
+{% set chartData = {} %}
+{% set max = 0 %}
+{% set containerId = "chart-container-" ~ random() %}
+{% set hasData = data|length>0 %}
+{% for item in data %}
+    {% set max = max(max, item.value) %}
+{% endfor %}
+{% set max = (max * 1.2)|round(-3) %}
+
+{% if hasData %}
+    <div class="chart-container">
+        <div class="clearfix">
+            <div id="{{ containerId }}-chart" class="column-chart chart"></div>
+        </div>
+    </div>
+
+    {% set isMobileVersion = isMobileVersion() %}
+    {% set symbolPosition = 'number' ~ (oro_currency_symbol_prepend() ? 'Prefix' : 'Suffix') %}
+    {% set json = {
+        'chart': {
+            'showValues': isMobileVersion ? '0' : '1',
+            'maxColWidth': '50',
+            'showCanvasBg': '0',
+            'showCanvasBase': '0',
+            'animation': '0',
+            'valuePadding': '10',
+            'rotateXAxisName': '0',
+            'bgColor': 'transparent',
+            'showZeroPlane': '0',
+            'canvasBgColor': 'transparent',
+            'borderColor': 'transparent',
+            'showShadow': '0',
+            'formatNumberScale': '0',
+            'decimals': '2',
+            'chartRightMargin': '50',
+            'divLineColor': 'eaeaea',
+            'showVLineLabelBorder': '0',
+            'paletteColors': options.settings.chartColors,
+            'yAxisMaxValue': max
+        },
+        'data': data
+    } %}
+
+    {% if options.settings.connect_dots_with_line == false %}
+        {% set json = json|merge({
+            'chart':{
+                'anchorBgColor': options.settings.chartColors,
+                'anchorBorderColor': options.settings.chartColors,
+                'lineColor': 'transparent'
+            }|merge(json.chart)
+        }) %}
+    {% endif %}
+
+    <script type="text/javascript">
+        require(
+                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin', 'oro/chart/data_formatter'],
+                function ($, fusion, dataFormatter) {
+                    var schema = {{ options.data_schema|json_encode|raw }};
+                    var dataSource = {{ json|json_encode|raw }};
+
+                    dataSource.data = dataSource.data.sort(function(first, second){
+                        if(first.label == null){
+                            return -1;
+                        }
+                        if(second.label == null){
+                            return 1;
+                        }
+                        var firstLabel = dataFormatter.parseValue(first.label, schema.label.type);
+                        var secondLabel = dataFormatter.parseValue(second.label, schema.label.type);
+                        if(firstLabel == secondLabel){
+                            return 0;
+                        }
+                        return firstLabel > secondLabel ? 1 : -1;
+                    });
+
+                    if (schema.value.type == 'percent') {
+                        dataSource.chart['numberSuffix'] = '%';
+                    } else if (schema.value.type == 'currency') {
+                        dataSource.chart['{{ symbolPosition }}'] = '{{ oro_currency_symbol() }}';
+                        dataSource.chart['forceDecimals'] = '1';
+                    }
+
+
+                    for (var i in dataSource.data) {
+                        var point = dataSource.data[i];
+                        if (point.label != null) {
+                            var labelValue = dataFormatter.parseValue(point.label, schema.label.type);
+                            point.label = labelValue === null ? point.label : dataFormatter.formatValue(labelValue, schema.label.type);
+                        } else {
+                            point.label = '{{ "oro.chart.no_data"|trans() }}';
+                        }
+
+                        point.displayValue = dataFormatter.formatValue(point.value, schema.value.type);
+                        if (schema.value.type == 'percent') {
+                            point.value *= 100;
+                        } else {
+                            point.value = point.value === null ? 0 :dataFormatter.parseValue(point.value, schema.value.type);
+                        }
+                        dataSource.data[i] = point;
+                    }
+
+                    $('#{{ containerId }}-chart').insertFusionCharts({
+                        type: 'Line',
+                        dataSource: dataSource,
+                        dataFormat: 'json',
+                        width: '100%',
+                        height: 300,
+                        id: '{{ containerId }}'
+                    });
+                }
+        );
+    </script>
+{% else %}
+    <div class="clearfix no-data">
+        <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
+    </div>
+{% endif %}

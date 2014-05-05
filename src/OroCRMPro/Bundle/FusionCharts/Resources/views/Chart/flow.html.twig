@@ -1,0 +1,71 @@
+{% set containerId = "chart-container-" ~ random() %}
+{% set hasData = data|length>0 %}
+{% set chartData = [] %}
+{% set isMobileVersion = isMobileVersion() %}
+{% for item in data %}
+    {% if item.isNozzle %}
+        {% if isMobileVersion %}
+            {% set label = item.label ~ ': ' ~ item.value|oro_format_currency ~ '{br}(' ~ 'from'|trans ~ ' '
+            ~ options.settings.quarterDate|oro_format_date ~ ')' %}
+        {% else %}
+            {% set label = item.label ~ ' (' ~ 'from'|trans ~ ' ' ~ options.settings.quarterDate|oro_format_date
+            ~ '): ' ~ item.value|oro_format_currency %}
+        {% endif %}
+        {% set chartData = chartData|merge([{label: label, toolText: label, value: item.value, showValue: 0}]) %}
+    {% else %}
+        {% set label = item.label ~ ': ' ~ item.value|oro_format_currency %}
+        {% set chartData = chartData|merge([{label: label, toolText: label, value: item.value}]) %}
+    {% endif %}
+{% endfor %}
+
+{% if hasData %}
+    <div class="chart-container">
+        <div class="clearfix">
+            <div id="{{ containerId }}-chart" class="bar-chart chart"></div>
+        </div>
+    </div>
+
+    {% set json = {
+        'chart': {
+            'showLabels': isMobileVersion ? '0' : '1',
+            'showLegend': isMobileVersion ? '1' : '0',
+            'isHollow': '0',
+            'showValues': '0',
+            'useSameSlantAngle': '1',
+            'streamlinedData': '0',
+            'isSliced': '1',
+            'funnelYScale': '40',
+            'enableSmartLabels': '1',
+            'animation': '0',
+            'bgAlpha': '0',
+            'legendBorderAlpha': '0',
+            'legendShadow': '0',
+            'showBorder': '0',
+            'paletteColors': options.settings.chartColors
+        },
+        'data': chartData
+    } %}
+
+    {% set height = isMobileVersion ? 300 + (chartData|length * 12) : 300 %}
+    {% set width = isMobileVersion ? '100%' : 600 %}
+
+    <script type="text/javascript">
+        require(
+                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
+                function ($) {
+                    $('#{{ containerId }}-chart').insertFusionCharts({
+                        type: 'Funnel',
+                        dataSource: {{ json|json_encode|raw }},
+                        dataFormat: 'json',
+                        width: '{{ width }}',
+                        height: '{{ height }}',
+                        id: '{{ containerId }}'
+                    });
+                }
+        );
+    </script>
+{% else %}
+    <div class="clearfix no-data">
+        <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
+    </div>
+{% endif %}

@@ -1,0 +1,74 @@
+{% set chartData = {} %}
+{% set max = 0 %}
+{% set containerId = "chart-container-" ~ random() %}
+{% set hasData = data|length>0 %}
+{% for item in data %}
+    {% set max = max(max, item.value) %}
+    {% set displayValue = item.value|oro_format_currency %}
+    {% set chartData = chartData|merge([{label: item.label, value: item.value, displayValue: displayValue}]) %}
+{% endfor %}
+{% set max = (max * 1.2)|round(-3) %}
+
+{% if hasData %}
+    <div class="chart-container">
+        <div class="clearfix">
+            <div id="{{ containerId }}-chart" class="column-chart chart"></div>
+        </div>
+    </div>
+
+    {% set isMobileVersion = isMobileVersion() %}
+    {% set symbolPosition = 'number' ~ (oro_currency_symbol_prepend() ? 'Prefix' : 'Suffix') %}
+    {% set json = {
+        'chart': {
+            'showValues': isMobileVersion ? '0' : '1',
+            'maxColWidth': '50',
+            'showCanvasBg': '0',
+            'showCanvasBase': '0',
+            'animation': '0',
+            'valuePadding': '10',
+            'rotateXAxisName': '0',
+            (symbolPosition): oro_currency_symbol(),
+            'formatNumberScale': '0',
+            'decimals': '2',
+            'forceDecimals': '1',
+            'divLineColor': 'eaeaea',
+            'paletteColors': options.settings.chartColors,
+            'yAxisMaxValue': max
+        },
+        'data': chartData,
+        'trendlines': [{
+            'line': [
+                {
+                    'startvalue': '0',
+                    'color': '666666',
+                    'alpha': '10'
+                },
+                {
+                    'startvalue': max,
+                    'color': '666666',
+                    'alpha': '10'
+                }
+            ]
+        }]
+    } %}
+
+    <script type="text/javascript">
+        require(
+                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
+                function ($) {
+                    $('#{{ containerId }}-chart').insertFusionCharts({
+                        type: 'Column3D',
+                        dataSource: {{ json|json_encode|raw }},
+                        dataFormat: 'json',
+                        width: '100%',
+                        height: 300,
+                        id: '{{ containerId }}'
+                    });
+                }
+        );
+    </script>
+{% else %}
+    <div class="clearfix no-data">
+        <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
+    </div>
+{% endif %}
