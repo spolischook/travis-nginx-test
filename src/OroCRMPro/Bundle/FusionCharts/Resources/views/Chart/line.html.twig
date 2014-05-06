@@ -53,7 +53,7 @@
 
     <script type="text/javascript">
         require(
-                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin', 'oro/chart/data_formatter'],
+                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin', 'orochart/js/data_formatter'],
                 function ($, fusion, dataFormatter) {
                     var schema = {{ options.data_schema|json_encode|raw }};
                     var dataSource = {{ json|json_encode|raw }};
