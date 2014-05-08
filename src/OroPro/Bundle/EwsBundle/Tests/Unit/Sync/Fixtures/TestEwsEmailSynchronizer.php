@@ -19,6 +19,6 @@ class TestEwsEmailSynchronizer extends EwsEmailSynchronizer
 
     public function callInitializeOrigins()
     {
-        return $this->initializeOrigins();
+        $this->initializeOrigins();
     }
 }
