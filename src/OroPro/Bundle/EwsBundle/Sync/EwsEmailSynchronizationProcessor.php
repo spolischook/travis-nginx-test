@@ -26,20 +26,18 @@ use OroPro\Bundle\EwsBundle\Provider\EwsEmailIterator;
 
 class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProcessor
 {
-    /**
-     * @var EwsEmailManager
-     */
+    /** @var EwsEmailManager */
     protected $manager;
 
     /**
      * Constructor
      *
-     * @param LoggerInterface $log
-     * @param EntityManager $em
-     * @param EmailEntityBuilder $emailEntityBuilder
-     * @param EmailAddressManager $emailAddressManager
+     * @param LoggerInterface          $log
+     * @param EntityManager            $em
+     * @param EmailEntityBuilder       $emailEntityBuilder
+     * @param EmailAddressManager      $emailAddressManager
      * @param KnownEmailAddressChecker $knownEmailAddressChecker
-     * @param EwsEmailManager $manager
+     * @param EwsEmailManager          $manager
      */
     public function __construct(
         LoggerInterface $log,
@@ -104,6 +102,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      * Gets a list of folders to be synchronized
      *
      * @param EmailOrigin $origin
+     *
      * @return FolderInfo[]
      */
     protected function getFolders(EmailOrigin $origin)
@@ -141,7 +140,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      * Check the given folders and if needed correct them
      *
      * @param FolderInfo[] $folders
-     * @param EmailOrigin $origin
+     * @param EmailOrigin  $origin
      */
     protected function ensureFoldersInitialized(array &$folders, EmailOrigin $origin)
     {
@@ -163,8 +162,9 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
     /**
      * @param FolderInfo[] $folders
-     * @param EmailOrigin $origin
-     * @param string $folderType
+     * @param EmailOrigin  $origin
+     * @param string       $folderType
+     *
      * @return int Number of loaded folders including sub folders
      */
     protected function ensureDistinguishedFolderInitialized(
@@ -207,9 +207,10 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     }
 
     /**
-     * @param EwsType\FolderType $folder
-     * @param EwsType\FolderType $distinguishedFolder
+     * @param EwsType\FolderType   $folder
+     * @param EwsType\FolderType   $distinguishedFolder
      * @param EwsType\FolderType[] $folders
+     *
      * @return string
      */
     protected function buildFolderFullName(
@@ -242,12 +243,13 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     }
 
     /**
-     * @param EmailOrigin $origin
-     * @param FolderInfo[] $folders
+     * @param EmailOrigin          $origin
+     * @param FolderInfo[]         $folders
      * @param EwsType\FolderIdType $id
-     * @param string $fullName
-     * @param string $localName
-     * @param string $type
+     * @param string               $fullName
+     * @param string               $localName
+     * @param string               $type
+     *
      * @return FolderInfo
      */
     protected function ensureFolderPersisted(
@@ -325,8 +327,9 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     /**
      * Loads emails from an email server and save them into the database
      *
-     * @param FolderInfo $folderInfo
+     * @param FolderInfo  $folderInfo
      * @param SearchQuery $searchQuery
+     *
      * @return \DateTime The max sent date
      */
     protected function loadEmails(FolderInfo $folderInfo, SearchQuery $searchQuery)
@@ -374,8 +377,9 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     }
 
     /**
-     * @param Email $email
+     * @param Email  $email
      * @param string $folderType
+     *
      * @return bool
      */
     protected function isApplicableEmail(Email $email, $folderType)
