@@ -45,13 +45,19 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
     public function loadEmailBody(EmailFolder $folder, Email $email, EntityManager $em)
     {
         $manager = $this->getManager($folder, $email);
+
+        // find ews folder based on folder
+        $ewsFolder = $em->getRepository('OroProEwsBundle:EwsEmailFolder')
+            ->findOneBy(['folder' => $folder]);
+
+        // find ews email by email and ews folder
         $repo    = $em->getRepository('OroProEwsBundle:EwsEmail');
         $query   = $repo->createQueryBuilder('e')
             ->select('e.ewsId AS ewsId, e.ewsChangeKey AS ewsChangeKey')
-            ->where('e.email = ?1')
+            ->where('e.email = ?1 AND e.ewsFolder = ?2')
             ->setParameter(1, $email)
+            ->setParameter(2, $ewsFolder)
             ->getQuery();
-
         $query->setHydrationMode(Query::HYDRATE_ARRAY);
 
         try {

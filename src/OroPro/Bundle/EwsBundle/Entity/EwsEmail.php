@@ -35,6 +35,14 @@ class EwsEmail
     protected $email;
 
     /**
+     * @var EwsEmailFolder
+     *
+     * @ORM\ManyToOne(targetEntity="OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder")
+     * @ORM\JoinColumn(name="ews_folder_id", referencedColumnName="id", nullable=false)
+     */
+    protected $ewsFolder;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="ews_id", type="string", length=255)
@@ -72,6 +80,7 @@ class EwsEmail
      * Set related email object
      *
      * @param Email $email
+     *
      * @return EwsEmail
      */
     public function setEmail(Email $email)
@@ -79,6 +88,26 @@ class EwsEmail
         $this->email = $email;
 
         return $this;
+    }
+
+    /**
+     * @param EwsEmailFolder $ewsFolder
+     *
+     * @return $this
+     */
+    public function setEwsFolder($ewsFolder)
+    {
+        $this->ewsFolder = $ewsFolder;
+
+        return $this;
+    }
+
+    /**
+     * @return EwsEmailFolder
+     */
+    public function getEwsFolder()
+    {
+        return $this->ewsFolder;
     }
 
     /**
@@ -95,6 +124,7 @@ class EwsEmail
      * Set email EWS item id
      *
      * @param string $ewsId
+     *
      * @return EwsEmail
      */
     public function setEwsId($ewsId)
@@ -118,6 +148,7 @@ class EwsEmail
      * Set email EWS item change key
      *
      * @param string $ewsChangeKey
+     *
      * @return EwsEmail
      */
     public function setEwsChangeKey($ewsChangeKey)
