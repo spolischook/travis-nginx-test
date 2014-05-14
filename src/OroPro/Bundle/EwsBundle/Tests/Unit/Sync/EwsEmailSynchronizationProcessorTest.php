@@ -508,6 +508,10 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $folder = new EmailFolder();
         ReflectionUtil::setId($folder, 123);
 
+        $ewsFolder = new EwsEmailFolder();
+        $ewsFolder->setFolder($folder);
+        $folderInfo = new FolderInfo($ewsFolder, true);
+
         $email1 = new Email($this->manager);
         $email1Id = new ItemId('test1', 'ck1');
         $email1->setId($email1Id);
@@ -537,7 +541,8 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $newEwsEmailEntity
             ->setEmail($newEmailEntity)
             ->setEwsId($email2->getId()->getId())
-            ->setEwsChangeKey($email2->getId()->getChangeKey());
+            ->setEwsChangeKey($email2->getId()->getChangeKey())
+            ->setEwsFolder($ewsFolder);
 
         $this->emailEntityBuilder->expects($this->once())
             ->method('removeEmails');
@@ -555,7 +560,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
                 $email2->getBccRecipients()
             )
             ->will($this->returnValue($newEmailEntity));
-        $this->em->expects($this->once())
+        $this->em->expects($this->exactly(2))
             ->method('persist')
             ->with($newEwsEmailEntity);
 
@@ -591,7 +596,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             'saveEmails',
             [
                 [$email1, $email2],
-                $folder
+                $folderInfo
             ]
         );
 

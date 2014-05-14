@@ -12,6 +12,7 @@ use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
 use Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures\EmailAddress;
 
+use OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
 use OroPro\Bundle\EwsBundle\Manager\EwsEmailManager;
 use OroPro\Bundle\EwsBundle\Provider\EwsEmailBodyLoader;
@@ -70,13 +71,29 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->will($this->returnValue($ewsEmailManager));
 
-        $this->em->expects($this->once())
+        $ewsFolder = new EwsEmailFolder();
+
+        $repo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->setConstructorArgs([$this->em, new ClassMetadata('OroProEwsBundle:EwsEmailFolder')])
+            ->getMock();
+        $repo->expects($this->once())
+            ->method('findOneBy')
+            ->will($this->returnValue($ewsFolder));
+
+        $this->em->expects($this->at(0))
+            ->method('getRepository')
+            ->with('OroProEwsBundle:EwsEmailFolder')
+            ->will($this->returnValue($repo));
+
+        $this->em->expects($this->at(1))
             ->method('getRepository')
             ->with('OroProEwsBundle:EwsEmail')
             ->will($this->returnValue($this->getDoctrineMocks()));
 
         $email = $this->getTestEmail($this->getTestEwsOrigin());
         $folder = $email->getFolders()->first();
+        $ewsFolder->setFolder($folder);
+
         $this->ewsEmailBodyLoader->loadEmailBody($folder, $email, $this->em);
     }
 
@@ -86,11 +103,24 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testloadEmailBodyException()
     {
-        $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector);
-        $this->em->expects($this->once())
+        $repo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->setConstructorArgs([$this->em, new ClassMetadata('OroProEwsBundle:EwsEmailFolder')])
+            ->getMock();
+        $repo->expects($this->once())
+            ->method('findOneBy')
+            ->will($this->returnValue(new EwsEmailFolder()));
+
+        $this->em->expects($this->at(0))
+            ->method('getRepository')
+            ->with('OroProEwsBundle:EwsEmailFolder')
+            ->will($this->returnValue($repo));
+
+        $this->em->expects($this->at(1))
             ->method('getRepository')
             ->with('OroProEwsBundle:EwsEmail')
             ->will($this->returnValue($this->getDoctrineMocks()));
+
+        $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector);
 
         $email = $this->getTestEmail($this->getTestEwsOrigin());
         $folder = $email->getFolders()->first();
@@ -136,7 +166,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
         $queryBuilder->expects($this->once())
             ->method('where')
             ->will($this->returnSelf());
-        $queryBuilder->expects($this->once())
+        $queryBuilder->expects($this->exactly(2))
             ->method('setParameter')
             ->will($this->returnSelf());
         $queryBuilder->expects($this->once())
