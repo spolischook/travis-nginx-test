@@ -5,6 +5,7 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 
+use OroPro\Bundle\EwsBundle\Manager\DTO\ItemId;
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
@@ -442,7 +443,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             $result
         );
 
-        $srcStack = [];
+        $newEwsIds = [];
         foreach ($emails as $src) {
             if (!in_array($src->getId()->getId(), $existingEwsIds)) {
                 $this->log->notice(
@@ -465,10 +466,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $email->setXThreadId($src->getXThreadId());
                 $email->addFolder($folder);
 
-                $srcStack[$src->getMessageId()] = [
-                    'ewsId' => $src->getId()->getId(),
-                    'changeKey' => $src->getId()->getChangeKey(),
-                ];
+                $newEwsIds[$src->getMessageId()] = $src->getId();
 
                 $this->log->notice(sprintf('The "%s" email was persisted.', $src->getSubject()));
             } else {
@@ -483,19 +481,35 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         }
 
         $this->emailEntityBuilder->getBatch()->persist($this->em);
+        $this->linkEmailsToEwsEmails($emails, $newEwsIds, $existingEwsEmailIds, $folderInfo);
+        $this->em->flush();
+    }
+
+    /**
+     * @param Email[]|array $emails
+     * @param array|ItemId  $newEwsIds
+     * @param array         $existingEwsEmailIds
+     * @param FolderInfo    $folderInfo
+     */
+    protected function linkEmailsToEwsEmails(
+        array $emails,
+        array $newEwsIds,
+        array $existingEwsEmailIds,
+        FolderInfo $folderInfo
+    ) {
         /** @var EmailEntity[] $oEmails */
-        $oEmails = $this->getEmailsByMessageIdArray(
+        $oEmails = $this->getEmailsByMessageId(
             $this->emailEntityBuilder->getBatch()->getEmails()
         );
 
-        // link emails with ews-emails after save
         foreach ($emails as $emailDTO) {
-            if (empty($srcStack[$emailDTO->getMessageId()])) {
+            if (empty($newEwsIds[$emailDTO->getMessageId()])) {
                 // email was skipped
                 continue;
             }
 
-            $stackItem = $srcStack[$emailDTO->getMessageId()];
+            /** @var ItemId $newEwsId */
+            $newEwsId = $newEwsIds[$emailDTO->getMessageId()];
 
             /** @var EmailEntity $email */
             $email = $oEmails[$emailDTO->getMessageId()];
@@ -505,15 +519,13 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
             $ewsEmail = new EwsEmail();
             $ewsEmail
-                ->setEwsId($stackItem['ewsId'])
-                ->setEwsChangeKey($stackItem['changeKey'])
+                ->setEwsId($newEwsId->getId())
+                ->setEwsChangeKey($newEwsId->getChangeKey())
                 ->setEmail($email)
                 ->setEwsFolder($folderInfo->ewsFolder);
 
             $this->em->persist($ewsEmail);
         }
-
-        $this->em->flush();
     }
 
     /**
@@ -521,7 +533,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      *
      * @return array
      */
-    protected function getEmailsByMessageIdArray(array $emails)
+    protected function getEmailsByMessageId(array $emails)
     {
         $result = [];
 

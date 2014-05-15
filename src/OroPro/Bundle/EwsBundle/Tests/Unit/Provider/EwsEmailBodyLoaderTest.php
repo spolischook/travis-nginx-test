@@ -73,19 +73,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
 
         $ewsFolder = new EwsEmailFolder();
 
-        $repo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->setConstructorArgs([$this->em, new ClassMetadata('OroProEwsBundle:EwsEmailFolder')])
-            ->getMock();
-        $repo->expects($this->once())
-            ->method('findOneBy')
-            ->will($this->returnValue($ewsFolder));
-
-        $this->em->expects($this->at(0))
-            ->method('getRepository')
-            ->with('OroProEwsBundle:EwsEmailFolder')
-            ->will($this->returnValue($repo));
-
-        $this->em->expects($this->at(1))
+        $this->em->expects($this->once())
             ->method('getRepository')
             ->with('OroProEwsBundle:EwsEmail')
             ->will($this->returnValue($this->getDoctrineMocks()));
@@ -103,19 +91,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testloadEmailBodyException()
     {
-        $repo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->setConstructorArgs([$this->em, new ClassMetadata('OroProEwsBundle:EwsEmailFolder')])
-            ->getMock();
-        $repo->expects($this->once())
-            ->method('findOneBy')
-            ->will($this->returnValue(new EwsEmailFolder()));
-
-        $this->em->expects($this->at(0))
-            ->method('getRepository')
-            ->with('OroProEwsBundle:EwsEmailFolder')
-            ->will($this->returnValue($repo));
-
-        $this->em->expects($this->at(1))
+        $this->em->expects($this->once())
             ->method('getRepository')
             ->with('OroProEwsBundle:EwsEmail')
             ->will($this->returnValue($this->getDoctrineMocks()));
@@ -162,6 +138,9 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $queryBuilder->expects($this->once())
             ->method('select')
+            ->will($this->returnSelf());
+        $queryBuilder->expects($this->exactly(2))
+            ->method('leftJoin')
             ->will($this->returnSelf());
         $queryBuilder->expects($this->once())
             ->method('where')
