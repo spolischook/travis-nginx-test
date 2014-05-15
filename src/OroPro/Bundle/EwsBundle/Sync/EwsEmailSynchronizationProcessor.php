@@ -445,31 +445,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
         $newEwsIds = [];
         foreach ($emails as $src) {
-            if (!in_array($src->getId()->getId(), $existingEwsIds)) {
-                $this->log->notice(
-                    sprintf('Persisting "%s" email (EWS ID: %s) ...', $src->getSubject(), $src->getId()->getId())
-                );
-
-                $email = $this->emailEntityBuilder->email(
-                    $src->getSubject(),
-                    $src->getFrom(),
-                    $src->getToRecipients(),
-                    $src->getSentAt(),
-                    $src->getReceivedAt(),
-                    $src->getInternalDate(),
-                    $src->getImportance(),
-                    $src->getCcRecipients(),
-                    $src->getBccRecipients()
-                );
-                $email->setMessageId($src->getMessageId());
-                $email->setXMessageId($src->getXMessageId());
-                $email->setXThreadId($src->getXThreadId());
-                $email->addFolder($folder);
-
-                $newEwsIds[$src->getMessageId()] = $src->getId();
-
-                $this->log->notice(sprintf('The "%s" email was persisted.', $src->getSubject()));
-            } else {
+            if (in_array($src->getId()->getId(), $existingEwsIds)) {
                 $this->log->notice(
                     sprintf(
                         'Skip "%s" (EWS ID: %s) email, because it is already synchronised.',
@@ -477,7 +453,35 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                         $src->getId()->getId()
                     )
                 );
+                continue;
             }
+
+            $this->log->notice(
+                sprintf('Persisting "%s" email (EWS ID: %s) ...', $src->getSubject(), $src->getId()->getId())
+            );
+
+            $email = $this->emailEntityBuilder->email(
+                $src->getSubject(),
+                $src->getFrom(),
+                $src->getToRecipients(),
+                $src->getSentAt(),
+                $src->getReceivedAt(),
+                $src->getInternalDate(),
+                $src->getImportance(),
+                $src->getCcRecipients(),
+                $src->getBccRecipients()
+            );
+            $email->setMessageId($src->getMessageId());
+            $email->setXMessageId($src->getXMessageId());
+            $email->setXThreadId($src->getXThreadId());
+            $email->addFolder($folder);
+
+            if (!isset($newEwsIds[$src->getMessageId()])) {
+                $newEwsIds[$src->getMessageId()] = [];
+            }
+            $newEwsIds[$src->getMessageId()][] = $src->getId();
+
+            $this->log->notice(sprintf('The "%s" email was persisted.', $src->getSubject()));
         }
 
         $this->emailEntityBuilder->getBatch()->persist($this->em);
@@ -508,8 +512,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 continue;
             }
 
-            /** @var ItemId $newEwsId */
-            $newEwsId = $newEwsIds[$emailDTO->getMessageId()];
+            /** @var ItemId[] $newEwsId */
+            $newEwsIdArray = $newEwsIds[$emailDTO->getMessageId()];
 
             /** @var EmailEntity $email */
             $email = $oEmails[$emailDTO->getMessageId()];
@@ -517,14 +521,16 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 continue;
             }
 
-            $ewsEmail = new EwsEmail();
-            $ewsEmail
-                ->setEwsId($newEwsId->getId())
-                ->setEwsChangeKey($newEwsId->getChangeKey())
-                ->setEmail($email)
-                ->setEwsFolder($folderInfo->ewsFolder);
+            foreach ($newEwsIdArray as $newEwsId) {
+                $ewsEmail = new EwsEmail();
+                $ewsEmail
+                    ->setEwsId($newEwsId->getId())
+                    ->setEwsChangeKey($newEwsId->getChangeKey())
+                    ->setEmail($email)
+                    ->setEwsFolder($folderInfo->ewsFolder);
 
-            $this->em->persist($ewsEmail);
+                $this->em->persist($ewsEmail);
+            }
         }
     }
 
