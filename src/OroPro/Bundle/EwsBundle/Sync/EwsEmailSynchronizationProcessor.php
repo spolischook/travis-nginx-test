@@ -419,7 +419,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $folder = $folderInfo->ewsFolder->getFolder();
         $repo   = $this->em->getRepository('OroProEwsBundle:EwsEmail');
 
-        $result = $repo->createQueryBuilder('e')
+        $ewsDataRows = $repo->createQueryBuilder('e')
             ->select('e.ewsId, se.id')
             ->innerJoin('e.email', 'se')
             ->innerJoin('se.folders', 'sf')
@@ -433,14 +433,14 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             function ($el) {
                 return $el['ewsId'];
             },
-            $result
+            $ewsDataRows
         );
 
         $existingEwsEmailIds = array_map(
             function ($el) {
                 return $el['id'];
             },
-            $result
+            $ewsDataRows
         );
 
         $newEwsIds = [];

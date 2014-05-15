@@ -139,8 +139,8 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
         $queryBuilder->expects($this->once())
             ->method('select')
             ->will($this->returnSelf());
-        $queryBuilder->expects($this->exactly(2))
-            ->method('leftJoin')
+        $queryBuilder->expects($this->once())
+            ->method('innerJoin')
             ->will($this->returnSelf());
         $queryBuilder->expects($this->once())
             ->method('where')
