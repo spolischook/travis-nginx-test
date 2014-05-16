@@ -31,7 +31,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|EwsEmailBodyLoader */
     protected $ewsEmailBodyLoader;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->connector = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Connector\EwsConnector')
             ->disableOriginalConstructor()

@@ -19,7 +19,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
     /** @var SearchQuery */
     protected $searchQueryMock;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->ewsManagerMock  = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Manager\EwsEmailManager')
             ->disableOriginalConstructor()
