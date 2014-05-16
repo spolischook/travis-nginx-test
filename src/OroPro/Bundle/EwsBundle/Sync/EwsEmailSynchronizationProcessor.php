@@ -512,14 +512,14 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 continue;
             }
 
-            /** @var ItemId[] $newEwsId */
-            $newEwsIdArray = $newEwsIds[$emailDTO->getMessageId()];
-
             /** @var EmailEntity $email */
             $email = $oEmails[$emailDTO->getMessageId()];
             if (in_array($email->getId(), $existingEwsEmailIds)) {
                 continue;
             }
+
+            /** @var ItemId[] $newEwsId */
+            $newEwsIdArray = $newEwsIds[$emailDTO->getMessageId()];
 
             foreach ($newEwsIdArray as $newEwsId) {
                 $ewsEmail = new EwsEmail();
@@ -532,22 +532,5 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $this->em->persist($ewsEmail);
             }
         }
-    }
-
-    /**
-     * @param EmailEntity[]|array $emails
-     *
-     * @return array
-     */
-    protected function getEmailsByMessageId(array $emails)
-    {
-        $result = [];
-
-        /** @var EmailEntity $email */
-        foreach ($emails as $email) {
-            $result[$email->getMessageId()] = $email;
-        }
-
-        return $result;
     }
 }
