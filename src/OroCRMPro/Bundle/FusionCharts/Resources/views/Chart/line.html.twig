@@ -2,19 +2,6 @@
 {% set containerId = "chart-container-" ~ random() %}
 {% set hasData = data|length>0 %}
 {% if hasData %}
-    {% set min, max = data[0].value, data[0].value %}
-
-    {% for item in data %}
-        {% set max = max(max, item.value) %}
-        {% set min = min(min, item.value) %}
-    {% endfor %}
-    {% set delta = ((max-min)/10)|round %}
-    {% if delta == 0 %}
-        {% set delta = 1 %}
-    {% endif %}
-    {% set max = max + delta %}
-    {% set min = min - delta %}
-
     <div class="chart-container">
         <div class="clearfix">
             <div id="{{ containerId }}-chart" class="column-chart chart"></div>
@@ -48,9 +35,7 @@
             'decimals': '2',
             'divLineColor': 'eaeaea',
             'showVLineLabelBorder': '0',
-            'paletteColors': options.settings.chartColors,
-            'yAxisMaxValue': max,
-            'yAxisMinValue': min
+            'paletteColors': options.settings.chartColors
         },
         'data': data
     } %}
@@ -94,7 +79,8 @@
                         dataSource.chart['forceDecimals'] = '1';
                     }
 
-
+                    var max = dataFormatter.parseValue(dataSource.data[0].value, schema.value.type);
+                    var min = max;
                     for (var i in dataSource.data) {
                         var point = dataSource.data[i];
                         if (point.label != null) {
@@ -110,7 +96,28 @@
                         } else {
                             point.value = point.value === null ? 0 :dataFormatter.parseValue(point.value, schema.value.type);
                         }
+
+                        if (point.value > max) {
+                            max = point.value;
+                        }
+                        if (point.value < min) {
+                            min = point.value;
+                        }
+
                         dataSource.data[i] = point;
+                    }
+
+                    var delta = (max-min)/10;
+                    delta = delta == 0 ? 1 : delta;
+                    max += delta;
+
+                    var noNegativeValues = min >= 0;
+
+                    min -= delta;
+
+                    dataSource.chart.yAxisMaxValue = Math.round(max);
+                    if(!noNegativeValues || min > 0) {
+                        dataSource.chart.yAxisMinValue = Math.floor(min);
                     }
 
                     $('#{{ containerId }}-chart').insertFusionCharts({
