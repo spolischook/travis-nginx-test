@@ -1,12 +1,6 @@
 {% set chartData = {} %}
-{% set max = 0 %}
 {% set containerId = "chart-container-" ~ random() %}
 {% set hasData = data|length>0 %}
-{% for item in data %}
-    {% set max = max(max, item.value) %}
-{% endfor %}
-{% set max = (max * 1.2)|round(-3) %}
-
 {% if hasData %}
     <div class="chart-container">
         <div class="clearfix">
@@ -18,6 +12,11 @@
     {% set symbolPosition = 'number' ~ (oro_currency_symbol_prepend() ? 'Prefix' : 'Suffix') %}
     {% set json = {
         'chart': {
+            'canvasPadding': 40,
+            'labelPadding': 10,
+            'yAxisValuesPadding': 10,
+            'xAxisNamePadding': 10,
+            'yAxisNamePadding': 10,
             'showValues': isMobileVersion ? '0' : '1',
             'maxColWidth': '50',
             'showCanvasBg': '0',
@@ -34,11 +33,9 @@
             'showShadow': '0',
             'formatNumberScale': '0',
             'decimals': '2',
-            'chartRightMargin': '50',
             'divLineColor': 'eaeaea',
             'showVLineLabelBorder': '0',
-            'paletteColors': options.settings.chartColors,
-            'yAxisMaxValue': max
+            'paletteColors': options.settings.chartColors
         },
         'data': data
     } %}
@@ -61,15 +58,15 @@
                     var dataSource = {{ json|json_encode|raw }};
 
                     dataSource.data = dataSource.data.sort(function(first, second){
-                        if(first.label == null){
+                        if (first.label == null) {
                             return -1;
                         }
-                        if(second.label == null){
+                        if (second.label == null) {
                             return 1;
                         }
                         var firstLabel = dataFormatter.parseValue(first.label, schema.label.type);
                         var secondLabel = dataFormatter.parseValue(second.label, schema.label.type);
-                        if(firstLabel == secondLabel){
+                        if (firstLabel == secondLabel) {
                             return 0;
                         }
                         return firstLabel > secondLabel ? 1 : -1;
@@ -82,7 +79,8 @@
                         dataSource.chart['forceDecimals'] = '1';
                     }
 
-
+                    var max = dataFormatter.parseValue(dataSource.data[0].value, schema.value.type);
+                    var min = max;
                     for (var i in dataSource.data) {
                         var point = dataSource.data[i];
                         if (point.label != null) {
@@ -98,7 +96,28 @@
                         } else {
                             point.value = point.value === null ? 0 :dataFormatter.parseValue(point.value, schema.value.type);
                         }
+
+                        if (point.value > max) {
+                            max = point.value;
+                        }
+                        if (point.value < min) {
+                            min = point.value;
+                        }
+
                         dataSource.data[i] = point;
+                    }
+
+                    var delta = (max-min)/10;
+                    delta = delta == 0 ? 1 : delta;
+                    max += delta;
+
+                    var noNegativeValues = min >= 0;
+
+                    min -= delta;
+
+                    dataSource.chart.yAxisMaxValue = Math.round(max);
+                    if (!noNegativeValues || min > 0) {
+                        dataSource.chart.yAxisMinValue = Math.floor(min);
                     }
 
                     $('#{{ containerId }}-chart').insertFusionCharts({
