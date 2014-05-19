@@ -1,12 +1,17 @@
 {% set chartData = {} %}
-{% set max = 0 %}
+{% set min, max = 10000, 0 %}
 {% set containerId = "chart-container-" ~ random() %}
 {% set hasData = data|length>0 %}
 {% for item in data %}
     {% set max = max(max, item.value) %}
+    {% set min = min(min, item.value) %}
 {% endfor %}
-{% set max = (max * 1.2)|round(-3) %}
-
+{% set delta = ((max-min)/10)|round %}
+{% if delta == 0 %}
+    {% set delta = 1 %}
+{% endif %}
+{% set max = max + delta %}
+{% set min = min - delta %}
 {% if hasData %}
     <div class="chart-container">
         <div class="clearfix">
@@ -18,6 +23,11 @@
     {% set symbolPosition = 'number' ~ (oro_currency_symbol_prepend() ? 'Prefix' : 'Suffix') %}
     {% set json = {
         'chart': {
+            'canvasPadding': 40,
+            'labelPadding': 10,
+            'yAxisValuesPadding': 10,
+            'xAxisNamePadding':10,
+            'yAxisNamePadding':10,
             'showValues': isMobileVersion ? '0' : '1',
             'maxColWidth': '50',
             'showCanvasBg': '0',
@@ -34,11 +44,11 @@
             'showShadow': '0',
             'formatNumberScale': '0',
             'decimals': '2',
-            'chartRightMargin': '50',
             'divLineColor': 'eaeaea',
             'showVLineLabelBorder': '0',
             'paletteColors': options.settings.chartColors,
-            'yAxisMaxValue': max
+            'yAxisMaxValue': max,
+            'yAxisMinValue': min
         },
         'data': data
     } %}
