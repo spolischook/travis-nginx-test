@@ -1,18 +1,20 @@
 {% set chartData = {} %}
-{% set min, max = 10000, 0 %}
 {% set containerId = "chart-container-" ~ random() %}
 {% set hasData = data|length>0 %}
-{% for item in data %}
-    {% set max = max(max, item.value) %}
-    {% set min = min(min, item.value) %}
-{% endfor %}
-{% set delta = ((max-min)/10)|round %}
-{% if delta == 0 %}
-    {% set delta = 1 %}
-{% endif %}
-{% set max = max + delta %}
-{% set min = min - delta %}
 {% if hasData %}
+    {% set min, max = data[0].value, data[0].value %}
+
+    {% for item in data %}
+        {% set max = max(max, item.value) %}
+        {% set min = min(min, item.value) %}
+    {% endfor %}
+    {% set delta = ((max-min)/10)|round %}
+    {% if delta == 0 %}
+        {% set delta = 1 %}
+    {% endif %}
+    {% set max = max + delta %}
+    {% set min = min - delta %}
+
     <div class="chart-container">
         <div class="clearfix">
             <div id="{{ containerId }}-chart" class="column-chart chart"></div>
