@@ -15,8 +15,8 @@
             'canvasPadding': 40,
             'labelPadding': 10,
             'yAxisValuesPadding': 10,
-            'xAxisNamePadding':10,
-            'yAxisNamePadding':10,
+            'xAxisNamePadding': 10,
+            'yAxisNamePadding': 10,
             'showValues': isMobileVersion ? '0' : '1',
             'maxColWidth': '50',
             'showCanvasBg': '0',
@@ -58,15 +58,15 @@
                     var dataSource = {{ json|json_encode|raw }};
 
                     dataSource.data = dataSource.data.sort(function(first, second){
-                        if(first.label == null){
+                        if (first.label == null) {
                             return -1;
                         }
-                        if(second.label == null){
+                        if (second.label == null) {
                             return 1;
                         }
                         var firstLabel = dataFormatter.parseValue(first.label, schema.label.type);
                         var secondLabel = dataFormatter.parseValue(second.label, schema.label.type);
-                        if(firstLabel == secondLabel){
+                        if (firstLabel == secondLabel) {
                             return 0;
                         }
                         return firstLabel > secondLabel ? 1 : -1;
@@ -116,7 +116,7 @@
                     min -= delta;
 
                     dataSource.chart.yAxisMaxValue = Math.round(max);
-                    if(!noNegativeValues || min > 0) {
+                    if (!noNegativeValues || min > 0) {
                         dataSource.chart.yAxisMinValue = Math.floor(min);
                     }
 
