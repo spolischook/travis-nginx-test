@@ -18,7 +18,7 @@ class EwsServiceConfiguratorTest extends \PHPUnit_Framework_TestCase
     /** @var Mcrypt */
     protected $encryptor;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->cmMock  = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
