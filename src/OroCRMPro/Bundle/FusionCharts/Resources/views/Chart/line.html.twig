@@ -58,7 +58,6 @@
                 ],
                 function ($, dataHandler) {
                     var schema = {{ options.data_schema|json_encode|raw }};
-                    console.log(schema);
                     var dataSource = {{ json|json_encode|raw }};
                     var isCurrencyPrepend = {{ oro_currency_symbol_prepend() }};
                     var handler = new dataHandler(dataSource, schema, isCurrencyPrepend);

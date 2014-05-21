@@ -10,7 +10,7 @@
     {% set isMobileVersion = isMobileVersion() %}
     {% set json = {
         'chart': {
-            'showValues': '1',
+            'showValues': isMobileVersion ? '0' : '1',
             'maxColWidth': '50',
             'showCanvasBg': '0',
             'showCanvasBase': '0',
