@@ -1,7 +1,7 @@
 {% set chartData = {} %}
 {% set containerId = "chart-container-" ~ random() %}
-{% set hasData = data|length>0 %}
-{% if hasData %}
+
+{% if data|length > 0 %}
     <div class="chart-container">
         <div class="clearfix">
             <div id="{{ containerId }}-chart" class="column-chart chart"></div>
@@ -9,7 +9,6 @@
     </div>
 
     {% set isMobileVersion = isMobileVersion() %}
-    {% set symbolPosition = 'number' ~ (oro_currency_symbol_prepend() ? 'Prefix' : 'Suffix') %}
     {% set json = {
         'chart': {
             'canvasPadding': 40,
@@ -52,61 +51,20 @@
 
     <script type="text/javascript">
         require(
-                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin', 'orochart/js/data_formatter'],
-                function ($, fusion, dataFormatter) {
+                [
+                    'jquery',
+                    'orocrmprofusioncharts/js/fusion-data-handler',
+                    'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'
+                ],
+                function ($, dataHandler) {
                     var schema = {{ options.data_schema|json_encode|raw }};
+                    console.log(schema);
                     var dataSource = {{ json|json_encode|raw }};
-
-                    dataSource.data = dataSource.data.sort(function(first, second){
-                        if (first.label == null) {
-                            return -1;
-                        }
-                        if (second.label == null) {
-                            return 1;
-                        }
-                        var firstLabel = dataFormatter.parseValue(first.label, schema.label.type);
-                        var secondLabel = dataFormatter.parseValue(second.label, schema.label.type);
-                        if (firstLabel == secondLabel) {
-                            return 0;
-                        }
-                        return firstLabel > secondLabel ? 1 : -1;
-                    });
-
-                    if (schema.value.type == 'percent') {
-                        dataSource.chart['numberSuffix'] = '%';
-                    } else if (schema.value.type == 'currency') {
-                        dataSource.chart['{{ symbolPosition }}'] = '{{ oro_currency_symbol() }}';
-                        dataSource.chart['forceDecimals'] = '1';
-                    }
-
-                    var max = dataFormatter.parseValue(dataSource.data[0].value, schema.value.type);
-                    var min = max;
-                    for (var i in dataSource.data) {
-                        var point = dataSource.data[i];
-                        if (point.label != null) {
-                            var labelValue = dataFormatter.parseValue(point.label, schema.label.type);
-                            point.label = labelValue === null ? point.label : dataFormatter.formatValue(labelValue, schema.label.type);
-                        } else {
-                            point.label = '{{ "oro.chart.no_data"|trans() }}';
-                        }
-
-                        point.displayValue = dataFormatter.formatValue(point.value, schema.value.type);
-                        if (schema.value.type == 'percent') {
-                            point.value *= 100;
-                        } else {
-                            point.value = point.value === null ? 0 :dataFormatter.parseValue(point.value, schema.value.type);
-                        }
-
-                        if (point.value > max) {
-                            max = point.value;
-                        }
-                        if (point.value < min) {
-                            min = point.value;
-                        }
-
-                        dataSource.data[i] = point;
-                    }
-
+                    var isCurrencyPrepend = {{ oro_currency_symbol_prepend() }};
+                    var handler = new dataHandler(dataSource, schema, isCurrencyPrepend);
+                    dataSource = handler.getDataSource();
+                    var max = handler.getMaxValue();
+                    var min = handler.getMinValue();
                     var delta = (max-min)/10;
                     delta = delta == 0 ? 1 : delta;
                     max += delta;
