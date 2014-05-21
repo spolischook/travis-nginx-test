@@ -16,7 +16,7 @@ class OroProEwsBundle implements Migration
     {
         $table = $schema->getTable('oro_email_ews');
 
-        $table->addColumn('ews_folder_id', 'integer', ['notnull' => false]);
+        $table->addColumn('ews_folder_id', 'integer', ['notnull' => true]);
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_email_folder_ews'),
             ['ews_folder_id'],
