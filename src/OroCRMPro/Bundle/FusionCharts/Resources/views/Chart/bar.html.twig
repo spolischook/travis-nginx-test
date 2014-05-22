@@ -76,15 +76,11 @@
                         renderAt: '{{ containerId }}-chart'
                     });
 
-                    mediator.once('hash_navigation_request:start', function(){
-                        chartObj.removeEventListener ("DrawComplete", drawComplete);
+                    var isDrawFirstCall = true;
+
+                    mediator.once('hash_navigation_request:complete', function(){
                         chartObj.dispose();
                     });
-                    var isDrawFirstCall = true;
-                    mediator.once('hash_navigation_request:complete', function(){
-                        isDrawFirstCall = false;
-                    });
-
                     var drawComplete = function(){
                         if (isDrawFirstCall) {
                             isDrawFirstCall = false;
