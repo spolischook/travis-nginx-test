@@ -78,11 +78,11 @@
 
                     var isDrawFirstCall = true;
 
-                    mediator.once('hash_navigation_request:complete', function(){
+                    mediator.once('hash_navigation_request:complete', function () {
                         chartObj.dispose();
                     });
-                    var drawComplete = function(){
-                        if (isDrawFirstCall) {
+                    var drawComplete = function () {
+                        if (isDrawFirstCall && !document.pageReady) {
                             isDrawFirstCall = false;
                             return;
                         }

@@ -7,12 +7,11 @@ define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotransl
          * @export orocrmprofusioncharts/js/fusion-data-handler
          * @name   dataHandler
          */
-        return function(dataSource, schema, isCurrencyPrepend){
-            this.dataSource = dataSource;
+        return function (dataSource, schema, isCurrencyPrepend) {
             /**
              * Order data labels(fusion chart not ordered labels)
              */
-            this.dataSource.data = this.dataSource.data.sort(function(first, second){
+            dataSource.data = dataSource.data.sort(function (first, second) {
                 if (first.label == null) {
                     return -1;
                 }
@@ -28,18 +27,22 @@ define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotransl
             });
 
             if (schema.value.type == 'percent') {
-                this.dataSource.chart['numberSuffix'] = '%';
+                dataSource.chart['numberSuffix'] = '%';
             } else if (schema.value.type == 'currency') {
                 var currencySymbol = localeSettings.getCurrencySymbol();
                 var symbolPosition = 'number' + (isCurrencyPrepend ? 'Prefix' : 'Suffix');
-                this.dataSource.chart[symbolPosition] = currencySymbol;
-                this.dataSource.chart['forceDecimals'] = '1';
+                dataSource.chart[symbolPosition] = currencySymbol;
+                dataSource.chart['forceDecimals'] = '1';
             }
 
-            var max = dataFormatter.parseValue(this.dataSource.data[0].value, schema.value.type);
+            var max = 0;
+            if (dataSource.data.length) {
+                max = dataFormatter.parseValue(dataSource.data[0].value, schema.value.type);
+            }
             var min = max;
-            for (var i in this.dataSource.data) {
-                var point = this.dataSource.data[i];
+
+            for (var i in dataSource.data) {
+                var point = dataSource.data[i];
                 if (point.label != null) {
                     var labelValue = dataFormatter.parseValue(point.label, schema.label.type);
                     point.label = labelValue === null ? point.label : dataFormatter.formatValue(labelValue, schema.label.type);
@@ -61,28 +64,28 @@ define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotransl
                     min = point.value;
                 }
 
-                this.dataSource.data[i] = point;
+                dataSource.data[i] = point;
             }
 
             /**
              * @return {int|float}
              */
-            this.getMaxValue = function(){
+            this.getMaxValue = function () {
                 return max;
             };
 
             /**
              * @return {int|float}
              */
-            this.getMinValue = function(){
+            this.getMinValue = function () {
                 return min;
             };
 
             /**
              * @return {object}
              */
-            this.getDataSource = function(){
-                return this.dataSource;
+            this.getDataSource = function () {
+                return dataSource;
             }
         }
     }
