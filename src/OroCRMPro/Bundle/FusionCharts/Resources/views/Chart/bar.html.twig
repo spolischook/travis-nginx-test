@@ -1,15 +1,6 @@
-{% set chartData = {} %}
 {% set max = 0 %}
 {% set containerId = "chart-container-" ~ random() %}
-{% set hasData = data|length>0 %}
-{% for item in data %}
-    {% set max = max(max, item.value) %}
-    {% set displayValue = item.value|oro_format_currency %}
-    {% set chartData = chartData|merge([{label: item.label, value: item.value, displayValue: displayValue}]) %}
-{% endfor %}
-{% set max = (max * 1.2)|round(-3) %}
-
-{% if hasData %}
+{% if data|length > 0 %}
     <div class="chart-container">
         <div class="clearfix">
             <div id="{{ containerId }}-chart" class="column-chart chart"></div>
@@ -17,7 +8,6 @@
     </div>
 
     {% set isMobileVersion = isMobileVersion() %}
-    {% set symbolPosition = 'number' ~ (oro_currency_symbol_prepend() ? 'Prefix' : 'Suffix') %}
     {% set json = {
         'chart': {
             'showValues': isMobileVersion ? '0' : '1',
@@ -27,15 +17,17 @@
             'animation': '0',
             'valuePadding': '10',
             'rotateXAxisName': '0',
-            (symbolPosition): oro_currency_symbol(),
             'formatNumberScale': '0',
-            'decimals': '2',
-            'forceDecimals': '1',
+            'labelPadding': 10,
+            'yAxisValuesPadding': 10,
+            'xAxisNamePadding': 10,
+            'yAxisNamePadding': 10,
+            'drawAnchors': 0,
             'divLineColor': 'eaeaea',
-            'paletteColors': options.settings.chartColors,
-            'yAxisMaxValue': max
+            'paletteColors': options.settings.chartColors
+
         },
-        'data': chartData,
+        'data': data,
         'trendlines': [{
             'line': [
                 {
@@ -54,16 +46,51 @@
 
     <script type="text/javascript">
         require(
-                ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
-                function ($) {
-                    $('#{{ containerId }}-chart').insertFusionCharts({
+                [
+                    'jquery',
+                    'orocrmprofusioncharts/js/fusion-data-handler',
+                    'oroui/js/mediator',
+                     'orocrmprofusioncharts/lib/FusionCharts'
+                ],
+                function ($, dataHandler, mediator) {
+                    var dataSource = {{ json|json_encode|raw }};
+                    var schema = {{ options.data_schema|json_encode|raw }};
+                    var isCurrencyPrepend = {{ oro_currency_symbol_prepend() }};
+                    var handler = new dataHandler(dataSource, schema, isCurrencyPrepend);
+                    dataSource = handler.getDataSource();
+                    var max = handler.getMaxValue();
+                    var min = handler.getMinValue();
+                    max += max/5;
+                    dataSource.chart.yAxisMaxValue = Math.round(max);
+                    var chartObj = new FusionCharts({
                         type: 'Column3D',
-                        dataSource: {{ json|json_encode|raw }},
+                        dataSource: {
+                            'chart': dataSource.chart,
+                            'trendlines': dataSource.trendlines,
+                            'data': []
+                        },
                         dataFormat: 'json',
                         width: '100%',
                         height: 300,
-                        id: '{{ containerId }}'
+                        id: '{{ containerId }}',
+                        renderAt: '{{ containerId }}-chart'
                     });
+
+                    var isDrawFirstCall = true;
+
+                    mediator.once('hash_navigation_request:complete', function () {
+                        chartObj.dispose();
+                    });
+                    var drawComplete = function () {
+                        if (isDrawFirstCall && !document.pageReady) {
+                            isDrawFirstCall = false;
+                            return;
+                        }
+                        chartObj.removeEventListener ("DrawComplete", drawComplete);
+                        chartObj.setJSONData(dataSource);
+                    };
+                    FusionCharts('{{ containerId }}').addEventListener ("DrawComplete" ,  drawComplete);
+                    chartObj.render();
                 }
         );
     </script>

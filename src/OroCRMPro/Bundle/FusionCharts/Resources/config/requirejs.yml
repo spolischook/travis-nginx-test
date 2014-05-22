@@ -30,3 +30,5 @@ config:
         'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin': 'bundles/orocrmprofusioncharts/lib/FusionCharts.jqueryplugin.js'
         'orocrmprofusioncharts/lib/FusionCharts': 'bundles/orocrmprofusioncharts/lib/FusionCharts.js'
         'orocrmprofusioncharts/lib/FusionChartsExportComponent': 'bundles/orocrmprofusioncharts/lib/FusionChartsExportComponent.js'
+
+        'orocrmprofusioncharts/js/fusion-data-handler': 'bundles/orocrmprofusioncharts/js/fusion-data-handler.js'
