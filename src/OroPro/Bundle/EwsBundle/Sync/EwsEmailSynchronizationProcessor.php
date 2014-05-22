@@ -5,9 +5,11 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 
+use OroPro\Bundle\EwsBundle\Manager\DTO\ItemId;
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
+use Oro\Bundle\EmailBundle\Entity\Email as EmailEntity;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
@@ -25,9 +27,7 @@ use OroPro\Bundle\EwsBundle\Provider\EwsEmailIterator;
 
 class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProcessor
 {
-    /**
-     * @var EwsEmailManager
-     */
+    /** @var EwsEmailManager */
     protected $manager;
 
     /**
@@ -103,13 +103,14 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      * Gets a list of folders to be synchronized
      *
      * @param EmailOrigin $origin
+     *
      * @return FolderInfo[]
      */
     protected function getFolders(EmailOrigin $origin)
     {
         $this->log->notice('Loading folders ...');
 
-        $repo  = $this->em->getRepository('OroProEwsBundle:EwsEmailFolder');
+        $repo = $this->em->getRepository('OroProEwsBundle:EwsEmailFolder');
         $query = $repo->createQueryBuilder('ews')
             ->select('ews, f')
             ->innerJoin('ews.folder', 'f')
@@ -164,6 +165,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      * @param FolderInfo[] $folders
      * @param EmailOrigin  $origin
      * @param string       $folderType
+     *
      * @return int Number of loaded folders including sub folders
      */
     protected function ensureDistinguishedFolderInitialized(
@@ -178,7 +180,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         );
         if ($distinguishedFolder) {
             $folderCount++;
-            $folderInfo             = $this->ensureFolderPersisted(
+            $folderInfo = $this->ensureFolderPersisted(
                 $origin,
                 $folders,
                 $distinguishedFolder->FolderId,
@@ -187,10 +189,10 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $folderType
             );
             $folderInfo->folderType = $folderType;
-            $childFolders           = $this->manager->getFolders($distinguishedFolder->FolderId, true);
+            $childFolders = $this->manager->getFolders($distinguishedFolder->FolderId, true);
             foreach ($childFolders as $childFolder) {
                 $folderCount++;
-                $folderInfo             = $this->ensureFolderPersisted(
+                $folderInfo = $this->ensureFolderPersisted(
                     $origin,
                     $folders,
                     $childFolder->FolderId,
@@ -209,6 +211,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      * @param EwsType\FolderType   $folder
      * @param EwsType\FolderType   $distinguishedFolder
      * @param EwsType\FolderType[] $folders
+     *
      * @return string
      */
     protected function buildFolderFullName(
@@ -247,6 +250,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      * @param string               $fullName
      * @param string               $localName
      * @param string               $type
+     *
      * @return FolderInfo
      */
     protected function ensureFolderPersisted(
@@ -313,7 +317,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             $this->em->persist($folder);
 
             $folderInfo = new FolderInfo($ewsFolder, true);
-            $folders[$id->Id]  = $folderInfo;
+            $folders[$id->Id] = $folderInfo;
 
             $this->log->notice(sprintf('The "%s" folder was persisted.', $fullName));
         }
@@ -326,11 +330,12 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      *
      * @param FolderInfo  $folderInfo
      * @param SearchQuery $searchQuery
+     *
      * @return \DateTime The max sent date
      */
     protected function loadEmails(FolderInfo $folderInfo, SearchQuery $searchQuery)
     {
-        $folder             = $folderInfo->ewsFolder->getFolder();
+        $folder = $folderInfo->ewsFolder->getFolder();
         $lastSynchronizedAt = $folder->getSynchronizedAt();
 
         $this->log->notice(sprintf('Loading emails from "%s" folder ...', $folder->getFullName()));
@@ -339,8 +344,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $iterator = new EwsEmailIterator($this->manager, $searchQuery, $this->log);
 
         $needFolderFlush = true;
-        $count           = 0;
-        $batch           = [];
+        $count = 0;
+        $batch = [];
         /** @var Email $email */
         foreach ($iterator as $email) {
             if (!$this->isApplicableEmail($email, $folderInfo->folderType)) {
@@ -354,14 +359,14 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             $count++;
             $batch[] = $email;
             if ($count === self::DB_BATCH_SIZE) {
-                $this->saveEmails($batch, $folder);
+                $this->saveEmails($batch, $folderInfo);
                 $needFolderFlush = false;
-                $count           = 0;
-                $batch           = [];
+                $count = 0;
+                $batch = [];
             }
         }
         if ($count > 0) {
-            $this->saveEmails($batch, $folder);
+            $this->saveEmails($batch, $folderInfo);
             $needFolderFlush = false;
         }
 
@@ -375,6 +380,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     /**
      * @param Email  $email
      * @param string $folderType
+     *
      * @return bool
      */
     protected function isApplicableEmail(Email $email, $folderType)
@@ -395,10 +401,10 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     /**
      * Saves emails into the database
      *
-     * @param Email[]     $emails
-     * @param EmailFolder $folder
+     * @param Email[]    $emails
+     * @param FolderInfo $folderInfo
      */
-    protected function saveEmails(array $emails, EmailFolder $folder)
+    protected function saveEmails(array $emails, FolderInfo $folderInfo)
     {
         $this->emailEntityBuilder->removeEmails();
 
@@ -410,59 +416,36 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             $emails
         );
 
-        $repo           = $this->em->getRepository('OroProEwsBundle:EwsEmail');
-        $query          = $repo->createQueryBuilder('e')
+        $folder = $folderInfo->ewsFolder->getFolder();
+        $repo   = $this->em->getRepository('OroProEwsBundle:EwsEmail');
+
+        $ewsDataRows = $repo->createQueryBuilder('e')
             ->select('e.ewsId, se.id')
             ->innerJoin('e.email', 'se')
             ->innerJoin('se.folders', 'sf')
             ->where('sf.id = :folderId AND e.ewsId IN (:ewsIds)')
             ->setParameter('folderId', $folder->getId())
             ->setParameter('ewsIds', $ewsIds)
-            ->getQuery();
-
-        $result = $query->getResult();
+            ->getQuery()
+            ->getResult();
 
         $existingEwsIds = array_map(
             function ($el) {
                 return $el['ewsId'];
             },
-            $result
+            $ewsDataRows
         );
 
         $existingEwsEmailIds = array_map(
             function ($el) {
                 return $el['id'];
             },
-            $result
+            $ewsDataRows
         );
 
-        $srcStack = [];
+        $newEwsIds = [];
         foreach ($emails as $src) {
-            if (!in_array($src->getId()->getId(), $existingEwsIds)) {
-                $this->log->notice(
-                    sprintf('Persisting "%s" email (EWS ID: %s) ...', $src->getSubject(), $src->getId()->getId())
-                );
-
-                $email = $this->emailEntityBuilder->email(
-                    $src->getSubject(),
-                    $src->getFrom(),
-                    $src->getToRecipients(),
-                    $src->getSentAt(),
-                    $src->getReceivedAt(),
-                    $src->getInternalDate(),
-                    $src->getImportance(),
-                    $src->getCcRecipients(),
-                    $src->getBccRecipients()
-                );
-                $email->setMessageId($src->getMessageId());
-                $email->setXMessageId($src->getXMessageId());
-                $email->setXThreadId($src->getXThreadId());
-                $email->addFolder($folder);
-
-                $srcStack[$src->getMessageId()] = ['id' => $src->getId()->getId(), 'changeKey' => $src->getId()->getChangeKey()];
-
-                $this->log->notice(sprintf('The "%s" email was persisted.', $src->getSubject()));
-            } else {
+            if (in_array($src->getId()->getId(), $existingEwsIds)) {
                 $this->log->notice(
                     sprintf(
                         'Skip "%s" (EWS ID: %s) email, because it is already synchronised.',
@@ -470,30 +453,84 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                         $src->getId()->getId()
                     )
                 );
-            }
-        }
-
-        $this->emailEntityBuilder->getBatch()->persist($this->em);
-
-        // link emails with ews-emails after save
-        /** @var Email[] $oEmails */
-        $oEmails = $this->emailEntityBuilder->getBatch()->getEmails();
-        foreach ($oEmails as $email) {
-            if ($email->getId() || in_array($email->getId(), $existingEwsEmailIds)) {
                 continue;
             }
 
-            $stackItem = $srcStack[$email->getMessageId()];
+            $this->log->notice(
+                sprintf('Persisting "%s" email (EWS ID: %s) ...', $src->getSubject(), $src->getId()->getId())
+            );
 
-            $ewsEmail = new EwsEmail();
-            $ewsEmail
-                ->setEwsId($stackItem['id'])
-                ->setEwsChangeKey($stackItem['changeKey'])
-                ->setEmail($email);
+            $email = $this->emailEntityBuilder->email(
+                $src->getSubject(),
+                $src->getFrom(),
+                $src->getToRecipients(),
+                $src->getSentAt(),
+                $src->getReceivedAt(),
+                $src->getInternalDate(),
+                $src->getImportance(),
+                $src->getCcRecipients(),
+                $src->getBccRecipients()
+            );
+            $email->setMessageId($src->getMessageId());
+            $email->setXMessageId($src->getXMessageId());
+            $email->setXThreadId($src->getXThreadId());
+            $email->addFolder($folder);
 
-            $this->em->persist($ewsEmail);
+            if (!isset($newEwsIds[$src->getMessageId()])) {
+                $newEwsIds[$src->getMessageId()] = [];
+            }
+            $newEwsIds[$src->getMessageId()][] = $src->getId();
+
+            $this->log->notice(sprintf('The "%s" email was persisted.', $src->getSubject()));
         }
 
+        $this->emailEntityBuilder->getBatch()->persist($this->em);
+        $this->linkEmailsToEwsEmails($emails, $newEwsIds, $existingEwsEmailIds, $folderInfo);
         $this->em->flush();
+    }
+
+    /**
+     * @param Email[]|array $emails
+     * @param array|ItemId  $newEwsIds
+     * @param array         $existingEwsEmailIds
+     * @param FolderInfo    $folderInfo
+     */
+    protected function linkEmailsToEwsEmails(
+        array $emails,
+        array $newEwsIds,
+        array $existingEwsEmailIds,
+        FolderInfo $folderInfo
+    ) {
+        /** @var EmailEntity[] $oEmails */
+        $oEmails = $this->getEmailsByMessageId(
+            $this->emailEntityBuilder->getBatch()->getEmails()
+        );
+
+        foreach ($emails as $emailDTO) {
+            if (empty($newEwsIds[$emailDTO->getMessageId()])) {
+                // email was skipped
+                continue;
+            }
+
+            /** @var EmailEntity $email */
+            $email = $oEmails[$emailDTO->getMessageId()];
+            if (in_array($email->getId(), $existingEwsEmailIds)) {
+                continue;
+            }
+
+            /** @var ItemId[] $newEwsId */
+            $newEwsIdArray = $newEwsIds[$emailDTO->getMessageId()];
+
+            foreach ($newEwsIdArray as $newEwsId) {
+                $ewsEmail = new EwsEmail();
+                $ewsEmail
+                    ->setEwsId($newEwsId->getId())
+                    ->setEwsChangeKey($newEwsId->getChangeKey())
+                    ->setEmail($email)
+                    ->setEwsFolder($folderInfo->ewsFolder);
+
+                $this->em->persist($ewsEmail);
+            }
+        }
     }
 }
