@@ -329,7 +329,7 @@ class OroRequirements extends SymfonyRequirements
         $nodeExists = $nodeExists->getProcess();
 
         if (isset($_SERVER['PATH'])) {
-            $nodeExists->setEnv(['PATH' => $_SERVER['PATH']]);
+            $nodeExists->setEnv(array('PATH' => $_SERVER['PATH']));
         }
         $nodeExists->run();
 
@@ -345,7 +345,7 @@ class OroRequirements extends SymfonyRequirements
         $getConf = $getConf->getProcess();
 
         if (isset($_SERVER['PATH'])) {
-            $getConf->setEnv(['PATH' => $_SERVER['PATH']]);
+            $getConf->setEnv(array('PATH' => $_SERVER['PATH']));
         }
         $getConf->run();
 
@@ -365,13 +365,16 @@ class OroRequirements extends SymfonyRequirements
     protected function checkCliRequirements()
     {
         $finder  = new PhpExecutableFinder();
-        $command = sprintf(
-            '%s %soro-check.php',
-            $finder->find(),
-            __DIR__ . DIRECTORY_SEPARATOR
+        $builder = new ProcessBuilder(
+            array(
+                $finder->find(),
+                sprintf('%soro-check.php', __DIR__ . DIRECTORY_SEPARATOR)
+            )
         );
+        $process = $builder->getProcess();
+        $process->run();
 
-        return shell_exec($command);
+        return $process->getOutput();
     }
 }
 
