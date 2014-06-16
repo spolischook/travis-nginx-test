@@ -216,7 +216,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
 
         $body = new EmailBody();
         $body
-            ->setContent('email body content')
+            ->setBodyContent('email body content')
             ->setBodyIsText(true);
 
         $result = new Email();
