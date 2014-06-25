@@ -60,7 +60,7 @@
         "akeneo/batch-bundle": "0.1.2",
         "monolog/monolog": "1.7.*",
         "ocramius/proxy-manager": "0.4.*",
-	"knplabs/knp-gaufrette-bundle": "0.1.*"
+        "knplabs/knp-gaufrette-bundle": "0.1.*"
     },
     "scripts": {
         "post-install-cmd": [
