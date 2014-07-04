@@ -1,2 +1,6 @@
-parameters: ~
-services: ~
+parameters:
+    orocrmpro_chart.data_transformer.multi_line.class: OroCRMPro\Bundle\FusionCharts\Model\Data\Transformer\MultiLineDataTransformer
+
+services:
+    orocrmpro_chart.data_transformer.multi_line:
+        class: %orocrmpro_chart.data_transformer.multi_line.class%
