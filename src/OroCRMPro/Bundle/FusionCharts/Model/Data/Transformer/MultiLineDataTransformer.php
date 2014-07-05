@@ -4,10 +4,9 @@ namespace OroCRMPro\Bundle\FusionCharts\Model\Data\Transformer;
 
 use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
 use Oro\Bundle\ChartBundle\Model\Data\DataInterface;
-use Oro\Bundle\ChartBundle\Model\Data\MappedData;
-use Oro\Bundle\ChartBundle\Model\Data\Transformer\TransformerInterface;
+use OroCRM\Bundle\CampaignBundle\Model\Data\Transformer\MultiLineDataTransformer as BaseTransformer;
 
-class MultiLineDataTransformer implements TransformerInterface
+class MultiLineDataTransformer extends BaseTransformer
 {
     /**
      * @param DataInterface $data
@@ -17,23 +16,9 @@ class MultiLineDataTransformer implements TransformerInterface
      */
     public function transform(DataInterface $data, array $chartOptions)
     {
-        if (empty($chartOptions['default_settings']['groupingOption'])) {
-            return new ArrayData($data->toArray());
-        }
+        $this->initialize($data, $chartOptions);
 
-        /** @var MappedData $data */
-        $sourceData     = $data->getSourceData()->toArray();
-        $labelKey       = $chartOptions['data_schema']['label']['field_name'];
-        $valueKey       = $chartOptions['data_schema']['value']['field_name'];
-        $groupingOption = $chartOptions['default_settings']['groupingOption'];
-
-        // get labels
-        $labels = [];
-        foreach ($sourceData as $sourceDataValue) {
-            $labels[] = $sourceDataValue[$labelKey];
-        }
-        asort($labels);
-        $labels = array_unique($labels);
+        $labels = $this->getLabels($this->sourceData, $this->labelKey);
 
         // create default values
         $values = array_fill(0, sizeof($labels), 0);
@@ -41,18 +26,18 @@ class MultiLineDataTransformer implements TransformerInterface
 
         // set default values
         $values = [];
-        foreach ($sourceData as $sourceDataValue) {
-            $key = $sourceDataValue[$groupingOption];
+        foreach ($this->sourceData as $sourceDataValue) {
+            $key = $sourceDataValue[$this->groupingOption];
 
             $values[$key] = $value;
         }
 
         // set values
-        foreach ($sourceData as $sourceDataValue) {
-            $key   = $sourceDataValue[$groupingOption];
-            $label = $sourceDataValue[$labelKey];
+        foreach ($this->sourceData as $sourceDataValue) {
+            $key   = $sourceDataValue[$this->groupingOption];
+            $label = $sourceDataValue[$this->labelKey];
 
-            $values[$key][$label] = $sourceDataValue[$valueKey];
+            $values[$key][$label] = $sourceDataValue[$this->valueKey];
         }
 
         // set result data labels
