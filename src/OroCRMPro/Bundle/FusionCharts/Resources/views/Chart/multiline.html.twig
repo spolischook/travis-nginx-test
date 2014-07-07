@@ -1,0 +1,82 @@
+{% set chartData = {} %}
+{% set containerId = "chart-container-" ~ random() %}
+
+{% if data|length > 0 %}
+    <div class="chart-container">
+        <div class="clearfix">
+            <div id="{{ containerId }}-chart" class="column-chart chart"></div>
+        </div>
+    </div>
+
+    {% set isMobileVersion = isMobileVersion() %}
+    {% set json = {
+        'chart': {
+            'canvasPadding': 20,
+            'labelPadding': 10,
+            'yAxisValuesPadding': 10,
+            'xAxisNamePadding': 10,
+            'yAxisNamePadding': 10,
+            'showValues': '0',
+            'maxColWidth': '50',
+            'showCanvasBg': '0',
+            'showCanvasBase': '0',
+            'animation': '0',
+            'valuePadding': '10',
+            'rotateXAxisName': '0',
+            'bgColor': 'transparent',
+            'showZeroPlane': '0',
+            'canvasBgColor': 'transparent',
+            'borderColor': 'transparent',
+            'xaxisname': options.data_schema.label.label|trans,
+            'yaxisname': options.data_schema.value.label|trans,
+            'showShadow': '0',
+            'formatNumberScale': '0',
+            'decimals': '2',
+            'divLineColor': 'eaeaea',
+            'showVLineLabelBorder': '0',
+            'paletteColors': options.settings.chartColors
+        },
+        'categories': data.categories,
+        'dataset': data.dataset
+    } %}
+
+    {% if options.settings.connect_dots_with_line == false %}
+        {% set json = json|merge({
+            'chart':{
+                'anchorBgColor': options.settings.chartColors,
+                'anchorBorderColor': options.settings.chartColors,
+                'lineColor': 'transparent'
+            }|merge(json.chart)
+        }) %}
+    {% endif %}
+
+    <script type="text/javascript">
+        require(
+                [
+                    'jquery',
+                    'orocrmprofusioncharts/js/multiple-data-handler',
+                    'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'
+                ],
+                function ($, multipleHandler) {
+                    var handler = new multipleHandler(
+                        {{ json|json_encode|raw }},
+                        {{ options|json_encode|raw }},
+                        {{ oro_currency_symbol_prepend() }}
+                    );
+
+                    $('#{{ containerId }}-chart').insertFusionCharts({
+                        type: 'MSLine',
+                        dataSource: handler.getDataSource(),
+                        dataFormat: 'json',
+                        width: '100%',
+                        height: 400,
+                        id: '{{ containerId }}'
+                    });
+                }
+        );
+    </script>
+{% else %}
+    <div class="clearfix no-data">
+        <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
+    </div>
+{% endif %}
