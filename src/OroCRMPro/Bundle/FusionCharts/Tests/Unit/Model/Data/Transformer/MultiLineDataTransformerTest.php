@@ -74,6 +74,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                 [
                     'categories' => [
                         'category' => [
+                            ['label' => '2014-07-06'],
                             ['label' => '2014-07-07'],
                             ['label' => '2014-07-08'],
                             ['label' => '2014-07-09']
@@ -83,6 +84,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                         [
                             'seriesname' => 'o1',
                             'data'       => [
+                                ['value' => 0],
                                 ['value' => 'v1'],
                                 ['value' => 0],
                                 ['value' => 0],
@@ -91,6 +93,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                         [
                             'seriesname' => 'o2',
                             'data'       => [
+                                ['value' => 0],
                                 ['value' => 0],
                                 ['value' => 0],
                                 ['value' => 'v2'],
