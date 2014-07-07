@@ -18,6 +18,10 @@ class MultiLineDataTransformer extends BaseTransformer
     {
         $this->initialize($data, $chartOptions);
 
+        if (!$data->toArray()) {
+            return new ArrayData([]);
+        }
+
         $labels = $this->getLabels($this->sourceData, $this->labelKey);
 
         // create default values
