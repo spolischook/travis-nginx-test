@@ -11,6 +11,7 @@
     {% set isMobileVersion = isMobileVersion() %}
     {% set json = {
         'chart': {
+            'canvasPadding': 20,
             'labelPadding': 10,
             'yAxisValuesPadding': 10,
             'xAxisNamePadding': 10,
@@ -68,7 +69,7 @@
                         dataSource: handler.getDataSource(),
                         dataFormat: 'json',
                         width: '100%',
-                        height: 500,
+                        height: 400,
                         id: '{{ containerId }}'
                     });
                 }
