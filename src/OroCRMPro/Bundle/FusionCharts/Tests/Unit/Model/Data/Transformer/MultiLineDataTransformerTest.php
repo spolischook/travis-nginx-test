@@ -29,9 +29,15 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $sourceData = new ArrayData($data);
 
-        $data = new MappedData($data, $sourceData);
+        $mapping = [
+            'label' => 'label',
+            'value' => 'value',
+        ];
 
-        $result = $this->transformer->transform($data, $chartOptions);
+        $result = $this->transformer->transform(
+            new MappedData($mapping, $sourceData),
+            $chartOptions
+        );
 
         $this->assertEquals($expected, $result->toArray());
     }
@@ -154,5 +160,27 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                 ]
             ]
         ];
+    }
+
+    public function testEmptyData()
+    {
+        $sourceData   = new ArrayData([]);
+        $data         = new MappedData([], $sourceData);
+        $chartOptions = [
+            'data_schema'      => [
+                'label' => [
+                    'field_name' => 'label'
+                ],
+                'value' => [
+                    'field_name' => 'value'
+                ]
+            ],
+            'default_settings' => [
+                'groupingOption' => 'option',
+            ]
+        ];
+
+        $result = $this->transformer->transform($data, $chartOptions);
+        $this->assertEquals($sourceData, $result);
     }
 }
