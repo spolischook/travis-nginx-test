@@ -8,6 +8,10 @@
 {% block bodyClass %}error-page{% endblock %}
 
 {% block header %}
+
+    {% block breadcrumb %}
+    {% endblock %}
+
     {% if app.user is not null %}
         {{ parent() }}
     {% else %}
