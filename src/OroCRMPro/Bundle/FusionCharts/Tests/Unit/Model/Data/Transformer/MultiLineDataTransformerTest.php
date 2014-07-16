@@ -131,7 +131,8 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                         ]
                     ],
                     'default_settings' => [
-                        'groupingOption' => 'option'
+                        'groupingOption' => 'option',
+                        'period'         => 'hourly'
                     ]
                 ],
                 [
@@ -177,6 +178,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
             ],
             'default_settings' => [
                 'groupingOption' => 'option',
+                'period'         => 'daily'
             ]
         ];
 
