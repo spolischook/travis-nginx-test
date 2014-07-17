@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
+use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\Mocks\EntityManagerMock;
 use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\OrmTestCase;
 use Oro\Bundle\UserBundle\OroUserBundle;
@@ -66,6 +67,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             $this->em,
             $this->emailEntityBuilder,
             $this->emailAddressManager,
+            new EmailAddressHelper(),
             $emailOwnerProviderStorage,
             $ewsConnector,
             $this->ewsConfigurator,

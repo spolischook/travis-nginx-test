@@ -64,6 +64,7 @@ services:
             - @doctrine.orm.entity_manager
             - @oro_email.email.entity.builder
             - @oro_email.email.address.manager
+            - @oro_email.email.address.helper
             - @oro_email.email.owner.provider.storage
             - @oro_pro_ews.connector
             - @oro_pro_ews.service_configurator

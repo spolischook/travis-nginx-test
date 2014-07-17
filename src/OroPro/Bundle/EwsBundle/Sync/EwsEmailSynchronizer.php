@@ -9,6 +9,7 @@ use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
+use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\EmailBundle\Sync\AbstractEmailSynchronizer;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -47,6 +48,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      * @param EntityManager             $em
      * @param EmailEntityBuilder        $emailEntityBuilder
      * @param EmailAddressManager       $emailAddressManager
+     * @param EmailAddressHelper        $emailAddressHelper
      * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
      * @param EwsConnector              $connector
      * @param EwsServiceConfigurator    $configurator
@@ -56,12 +58,13 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
         EntityManager $em,
         EmailEntityBuilder $emailEntityBuilder,
         EmailAddressManager $emailAddressManager,
+        EmailAddressHelper $emailAddressHelper,
         EmailOwnerProviderStorage $emailOwnerProviderStorage,
         EwsConnector $connector,
         EwsServiceConfigurator $configurator,
         $userEntityClass
     ) {
-        parent::__construct($em, $emailEntityBuilder, $emailAddressManager);
+        parent::__construct($em, $emailEntityBuilder, $emailAddressManager, $emailAddressHelper);
 
         $this->connector                 = $connector;
         $this->configurator              = $configurator;
