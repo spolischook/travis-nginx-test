@@ -22,7 +22,7 @@ class MultiLineDataTransformer extends BaseTransformer
             return new ArrayData([]);
         }
 
-        $labels = $this->getLabels($this->sourceData, $this->labelKey);
+        $labels = $this->getLabels();
 
         // create default values
         $values = array_fill(0, sizeof($labels), 0);
