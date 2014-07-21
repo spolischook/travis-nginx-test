@@ -4,6 +4,7 @@ namespace OroCRMPro\Bundle\FusionCharts\Tests\Unit\Model\Data\Transformer;
 
 use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
 use Oro\Bundle\ChartBundle\Model\Data\MappedData;
+use OroCRM\Bundle\CampaignBundle\Entity\Campaign;
 use OroCRMPro\Bundle\FusionCharts\Model\Data\Transformer\MultiLineDataTransformer;
 
 class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
@@ -74,7 +75,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                     ],
                     'default_settings' => [
                         'groupingOption' => 'option',
-                        'period'         => 'daily'
+                        'period'         => Campaign::PERIOD_DAILY
                     ]
                 ],
                 [
@@ -132,7 +133,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                     ],
                     'default_settings' => [
                         'groupingOption' => 'option',
-                        'period'         => 'hourly'
+                        'period'         => Campaign::PERIOD_HOURLY
                     ]
                 ],
                 [
@@ -178,7 +179,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
             ],
             'default_settings' => [
                 'groupingOption' => 'option',
-                'period'         => 'daily'
+                'period'         => Campaign::PERIOD_DAILY
             ]
         ];
 
