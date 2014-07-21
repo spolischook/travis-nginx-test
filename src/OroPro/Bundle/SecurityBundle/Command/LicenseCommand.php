@@ -2,11 +2,13 @@
 
 namespace OroPro\Bundle\SecurityBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Oro\Bundle\CronBundle\Command\Logger\OutputLogger;
+use Oro\Component\Log\Logger\OutputLogger;
+
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 
 class LicenseCommand extends ContainerAwareCommand implements CronCommandInterface
