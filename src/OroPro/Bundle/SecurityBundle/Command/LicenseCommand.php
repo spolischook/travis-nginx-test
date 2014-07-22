@@ -5,7 +5,7 @@ namespace OroPro\Bundle\SecurityBundle\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Oro\Component\Log\Logger\OutputLogger;
+use Oro\Component\Log\OutputLogger;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
