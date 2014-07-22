@@ -4,6 +4,7 @@ namespace OroCRMPro\Bundle\FusionCharts\Tests\Unit\Model\Data\Transformer;
 
 use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
 use Oro\Bundle\ChartBundle\Model\Data\MappedData;
+use OroCRM\Bundle\CampaignBundle\Entity\Campaign;
 use OroCRMPro\Bundle\FusionCharts\Model\Data\Transformer\MultiLineDataTransformer;
 
 class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
@@ -55,12 +56,12 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                     [
                         'option' => 'o1',
                         'label'  => '2014-07-07',
-                        'value'  => 'v1',
+                        'value'  => 1,
                     ],
                     [
                         'option' => 'o2',
                         'label'  => '2014-07-09',
-                        'value'  => 'v2',
+                        'value'  => 1,
                     ]
                 ],
                 [
@@ -74,7 +75,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                     ],
                     'default_settings' => [
                         'groupingOption' => 'option',
-                        'period'         => 'daily'
+                        'period'         => Campaign::PERIOD_DAILY
                     ]
                 ],
                 [
@@ -91,7 +92,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                             'seriesname' => 'o1',
                             'data'       => [
                                 ['value' => 0],
-                                ['value' => 'v1'],
+                                ['value' => 1],
                                 ['value' => 0],
                                 ['value' => 0],
                             ]
@@ -102,7 +103,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                                 ['value' => 0],
                                 ['value' => 0],
                                 ['value' => 0],
-                                ['value' => 'v2'],
+                                ['value' => 1],
                             ]
                         ]
                     ]
@@ -113,12 +114,12 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                     [
                         'option' => 'o1',
                         'label'  => '2014-07-07',
-                        'value'  => 'v1',
+                        'value'  => 1,
                     ],
                     [
                         'option' => 'o2',
                         'label'  => '2014-07-09',
-                        'value'  => 'v2',
+                        'value'  => 1,
                     ]
                 ],
                 [
@@ -132,7 +133,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                     ],
                     'default_settings' => [
                         'groupingOption' => 'option',
-                        'period'         => 'hourly'
+                        'period'         => Campaign::PERIOD_HOURLY
                     ]
                 ],
                 [
@@ -146,7 +147,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                         [
                             'seriesname' => 'o1',
                             'data'       => [
-                                ['value' => 'v1'],
+                                ['value' => 1],
                                 ['value' => 0],
                             ]
                         ],
@@ -154,7 +155,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
                             'seriesname' => 'o2',
                             'data'       => [
                                 ['value' => 0],
-                                ['value' => 'v2'],
+                                ['value' => 1],
                             ]
                         ]
                     ]
@@ -178,7 +179,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
             ],
             'default_settings' => [
                 'groupingOption' => 'option',
-                'period'         => 'daily'
+                'period'         => Campaign::PERIOD_DAILY
             ]
         ];
 

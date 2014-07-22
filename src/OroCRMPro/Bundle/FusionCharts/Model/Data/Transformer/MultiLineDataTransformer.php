@@ -4,6 +4,7 @@ namespace OroCRMPro\Bundle\FusionCharts\Model\Data\Transformer;
 
 use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
 use Oro\Bundle\ChartBundle\Model\Data\DataInterface;
+use Oro\Bundle\UIBundle\Tools\ArrayUtils;
 use OroCRM\Bundle\CampaignBundle\Model\Data\Transformer\MultiLineDataTransformer as BaseTransformer;
 
 class MultiLineDataTransformer extends BaseTransformer
@@ -22,53 +23,42 @@ class MultiLineDataTransformer extends BaseTransformer
             return new ArrayData([]);
         }
 
-        $labels = $this->getLabels();
-
-        // create default values
-        $values = array_fill(0, sizeof($labels), 0);
-        $value  = array_combine($labels, $values);
-
-        // set default values
-        $values = [];
-        foreach ($this->sourceData as $sourceDataValue) {
-            $key = $sourceDataValue[$this->groupingOption];
-
-            $values[$key] = $value;
-        }
-
-        // set values
-        foreach ($this->sourceData as $sourceDataValue) {
-            $key   = $sourceDataValue[$this->groupingOption];
-            $label = $sourceDataValue[$this->labelKey];
-
-            $values[$key][$label] = $sourceDataValue[$this->valueKey];
-        }
-
-        // set result data labels
-        $labelSet = [];
-        foreach ($labels as $label) {
-            $labelSet[] = ['label' => $label];
-        }
-
-        // set result data values
         $dataSet = [];
-        foreach ($values as $name => $dataSetValue) {
-            $dataSetValues = [];
+        $labels  = $this->getLabels();
+        $keys    = array_unique(ArrayUtils::arrayColumn($this->sourceData, $this->groupingOption));
+        foreach ($keys as $key) {
+            $data = array_map(
+                function ($label) use ($key) {
+                    $counts = array_map(
+                        function ($item) use ($label, $key) {
+                            if ($item[$this->groupingOption] == $key && $item[$this->labelKey] == $label) {
+                                return $item[$this->valueKey];
+                            }
 
-            foreach ($dataSetValue as $value) {
-                $dataSetValues[] = ['value' => $value];
-            }
+                            return 0;
+                        },
+                        $this->sourceData
+                    );
+
+                    return ['value' => array_sum($counts)];
+                },
+                $labels
+            );
 
             $dataSet[] = [
-                'seriesname' => $name,
-                'data'       => $dataSetValues
+                'seriesname' => $key,
+                'data'       => $data
             ];
         }
 
-        // create result
         $result = [
             'categories' => [
-                'category' => $labelSet
+                'category' => array_map(
+                    function ($item) {
+                        return ['label' => $item];
+                    },
+                    $labels
+                )
             ],
             'dataset'    => $dataSet
         ];
