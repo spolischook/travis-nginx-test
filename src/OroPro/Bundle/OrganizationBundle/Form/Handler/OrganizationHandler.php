@@ -44,14 +44,8 @@ class OrganizationHandler
 
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
             $this->form->submit($this->request);
-
             if ($this->form->isValid()) {
-                //$appendAccounts = $this->form->get('appendAccounts')->getData();
-                //$removeAccounts = $this->form->get('removeAccounts')->getData();
-                //$this->onSuccess($entity, $appendAccounts, $removeAccounts);
-
                 $this->onSuccess($entity);
-
                 return true;
             }
         }
