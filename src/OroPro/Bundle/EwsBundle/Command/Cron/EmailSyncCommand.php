@@ -2,13 +2,15 @@
 
 namespace OroPro\Bundle\EwsBundle\Command\Cron;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Oro\Component\Log\OutputLogger;
+
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
-use Oro\Bundle\CronBundle\Command\Logger\OutputLogger;
 
 use OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizer;
 
