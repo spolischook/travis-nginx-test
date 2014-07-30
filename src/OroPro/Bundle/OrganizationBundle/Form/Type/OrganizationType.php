@@ -50,7 +50,6 @@ class OrganizationType extends AbstractType
             array(
                 'data_class'           => 'Oro\Bundle\OrganizationBundle\Entity\Organization',
                 'intention'            => 'organization',
-                'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
                 'cascade_validation'   => true,
             )
         );
