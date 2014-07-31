@@ -1,0 +1,4 @@
+oropro_organization_bundle:
+    resource:     "@OroProOrganizationBundle/Controller/OrganizationController.php"
+    type:         annotation
+    prefix:       /organization
