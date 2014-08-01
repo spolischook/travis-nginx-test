@@ -18,8 +18,11 @@ datagrid:
             name:
                 label: oro.organization.name.label
             enabled:
-                label: oro.organization.enabled.label
-                frontend_type: boolean
+                label:         oro.user.enabled.label
+                frontend_type: select
+                choices:
+                   - Inactive
+                   - Active
             createdAt:
                 label: oro.ui.created_at
                 frontend_type: datetime
