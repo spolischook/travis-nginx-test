@@ -73,8 +73,13 @@ datagrid:
                     type: string
                     data_name: u.name
                 enabled:
-                    type: boolean
+                    type: choice
                     data_name: u.enabled
+                    options:
+                        field_options:
+                            choices:
+                                false: Inactive
+                                true:  Active
                 createdAt:
                     type: datetime
                     data_name: u.createdAt
