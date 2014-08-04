@@ -1,5 +1,5 @@
 {
-    "name": "oro-professional/organization-bundle",
+    "name": "oropro/organization-bundle",
     "type": "symfony-bundle",
     "description": "BAPP Organization Bundle",
     "keywords": ["BAP"],
