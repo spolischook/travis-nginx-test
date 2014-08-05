@@ -30,15 +30,11 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             [
-                'contacts_sync_direction'        => ['value' => 'Both', 'scope' => 'user'],
-                'contacts_conflict_resolution'   => ['value' => 'OroCRMAlwaysWins', 'scope' => 'user'],
-                'contacts_sync_interval_orocrm'  => ['value' => 120, 'scope' => 'user'],
-                'contacts_sync_interval_outlook' => ['value' => 30, 'scope' => 'user'],
-                'contacts_mapping'               => [
-                    'value' => $contactMapping,
-                    'type'  => 'array',
-                    'scope' => 'user'
-                ]
+                'contacts_sync_direction'        => ['value' => 'Both'],
+                'contacts_conflict_resolution'   => ['value' => 'OroCRMAlwaysWins'],
+                'contacts_sync_interval_orocrm'  => ['value' => 120],
+                'contacts_sync_interval_outlook' => ['value' => 30],
+                'contacts_mapping'               => ['value' => $contactMapping, 'type'  => 'array']
             ]
         );
 

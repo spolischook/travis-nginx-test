@@ -18,19 +18,19 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     'resolved'                       => true,
                     'contacts_sync_direction'        => [
                         'value' => 'Both',
-                        'scope' => 'user'
+                        'scope' => 'app'
                     ],
                     'contacts_conflict_resolution'   => [
                         'value' => 'OroCRMAlwaysWins',
-                        'scope' => 'user'
+                        'scope' => 'app'
                     ],
                     'contacts_sync_interval_orocrm'  => [
                         'value' => 120,
-                        'scope' => 'user'
+                        'scope' => 'app'
                     ],
                     'contacts_sync_interval_outlook' => [
                         'value' => 30,
-                        'scope' => 'user'
+                        'scope' => 'app'
                     ],
                     'contacts_mapping'               => [
                         'value' => [
@@ -42,7 +42,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                             ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
                             ['OroCRM' => 'middleName', 'Outlook' => 'MiddleName'],
                         ],
-                        'scope' => 'user'
+                        'scope' => 'app'
                     ],
                 ]
             ],
