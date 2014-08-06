@@ -1,0 +1,72 @@
+oro_system_configuration:
+    groups:
+        integration_outlook_settings:
+            title: orocrmpro_outlook.form.outlook_settings
+            icon:  icon-envelope-alt
+
+        integrations_outlook_contacts:
+            title: orocrmpro_outlook.form.contacts
+
+    fields:
+        oro_crm_pro_outlook.contacts_sync_direction:
+            type: choice
+            priority: 80
+            options:
+                label:          orocrmpro_outlook.form.sync_direction
+                tooltip:        orocrmpro_outlook.form.tooltip.sync_direction
+                choices:
+                    OroCRMToOutlook:  OroCRM to Outlook
+                    OutlookToOroCRM:  Outlook to OroCRM
+                    Both:             Both OroCRM and Outlook
+                constraints:
+                    - NotBlank: ~
+        oro_crm_pro_outlook.contacts_conflict_resolution:
+            type: choice
+            priority: 70
+            options:
+                label:          orocrmpro_outlook.form.conflict_resolution
+                tooltip:        orocrmpro_outlook.form.tooltip.conflict_resolution
+                choices:
+                    OroCRMAlwaysWins:  OroCRM always wins
+                    OutlookAlwaysWins: Outlook always wins
+                constraints:
+                    - NotBlank: ~
+        oro_crm_pro_outlook.contacts_sync_interval_orocrm:
+            type: integer
+            priority: 60
+            options:
+                label:          orocrmpro_outlook.form.sync_interval_orocrm
+                tooltip:        orocrmpro_outlook.form.tooltip.sync_interval_orocrm
+                constraints:
+                    - NotBlank: ~
+                    - Type:     integer
+                    - Range:
+                        min:    1
+                        max:    86399 # 1 day - 1 sec
+        oro_crm_pro_outlook.contacts_sync_interval_outlook:
+            type: integer
+            priority: 50
+            options:
+                label:          orocrmpro_outlook.form.sync_interval_outlook
+                tooltip:        orocrmpro_outlook.form.tooltip.sync_interval_outlook
+                constraints:
+                    - NotBlank: ~
+                    - Range:
+                        min:    1
+                        max:    86399 # 1 day - 1 sec
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    integrations:
+                        children:
+                            integration_outlook_settings:
+                                priority: -10
+                                children:
+                                    integrations_outlook_contacts:
+                                        children:
+                                            - oro_crm_pro_outlook.contacts_sync_direction
+                                            - oro_crm_pro_outlook.contacts_conflict_resolution
+                                            - oro_crm_pro_outlook.contacts_sync_interval_orocrm
+                                            - oro_crm_pro_outlook.contacts_sync_interval_outlook
