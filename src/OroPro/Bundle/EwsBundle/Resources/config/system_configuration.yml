@@ -80,3 +80,11 @@ oro_system_configuration:
                                             - oro_pro_ews.password
                                             - oro_pro_ews.version
                                             - oro_pro_ews.domain_list
+
+    api_tree:
+        ews:
+            enabled:   oro_pro_ews.enabled
+            server:    oro_pro_ews.server
+            login:     oro_pro_ews.login
+            version:   oro_pro_ews.version
+            domains:   oro_pro_ews.domain_list

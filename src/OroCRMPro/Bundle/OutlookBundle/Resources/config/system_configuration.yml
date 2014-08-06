@@ -70,3 +70,13 @@ oro_system_configuration:
                                             - oro_crm_pro_outlook.contacts_conflict_resolution
                                             - oro_crm_pro_outlook.contacts_sync_interval_orocrm
                                             - oro_crm_pro_outlook.contacts_sync_interval_outlook
+
+    api_tree:
+        outlook:
+            contacts:
+                syncDirection:       oro_crm_pro_outlook.contacts_sync_direction
+                conflictResolution:  oro_crm_pro_outlook.contacts_conflict_resolution
+                syncInterval:
+                    OroCRM:          oro_crm_pro_outlook.contacts_sync_interval_orocrm
+                    Outlook:         oro_crm_pro_outlook.contacts_sync_interval_outlook
+                mapping:             oro_crm_pro_outlook.contacts_mapping
