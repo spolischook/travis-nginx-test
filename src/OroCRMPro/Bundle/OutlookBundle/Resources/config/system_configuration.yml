@@ -9,6 +9,7 @@ oro_system_configuration:
 
     fields:
         oro_crm_pro_outlook.contacts_sync_direction:
+            data_type: string
             type: choice
             priority: 80
             options:
@@ -21,6 +22,7 @@ oro_system_configuration:
                 constraints:
                     - NotBlank: ~
         oro_crm_pro_outlook.contacts_conflict_resolution:
+            data_type: string
             type: choice
             priority: 70
             options:
@@ -32,6 +34,7 @@ oro_system_configuration:
                 constraints:
                     - NotBlank: ~
         oro_crm_pro_outlook.contacts_sync_interval_orocrm:
+            data_type: integer
             type: integer
             priority: 60
             options:
@@ -44,6 +47,7 @@ oro_system_configuration:
                         min:    1
                         max:    86399 # 1 day - 1 sec
         oro_crm_pro_outlook.contacts_sync_interval_outlook:
+            data_type: integer
             type: integer
             priority: 50
             options:
@@ -54,6 +58,8 @@ oro_system_configuration:
                     - Range:
                         min:    1
                         max:    86399 # 1 day - 1 sec
+        oro_crm_pro_outlook.contacts_mapping:
+            data_type: array
 
     tree:
         system_configuration:
@@ -74,9 +80,8 @@ oro_system_configuration:
     api_tree:
         outlook:
             contacts:
-                syncDirection:       oro_crm_pro_outlook.contacts_sync_direction
-                conflictResolution:  oro_crm_pro_outlook.contacts_conflict_resolution
-                syncInterval:
-                    OroCRM:          oro_crm_pro_outlook.contacts_sync_interval_orocrm
-                    Outlook:         oro_crm_pro_outlook.contacts_sync_interval_outlook
-                mapping:             oro_crm_pro_outlook.contacts_mapping
+                oro_crm_pro_outlook.contacts_sync_direction: ~
+                oro_crm_pro_outlook.contacts_conflict_resolution: ~
+                oro_crm_pro_outlook.contacts_sync_interval_orocrm: ~
+                oro_crm_pro_outlook.contacts_sync_interval_outlook: ~
+                oro_crm_pro_outlook.contacts_mapping: ~
