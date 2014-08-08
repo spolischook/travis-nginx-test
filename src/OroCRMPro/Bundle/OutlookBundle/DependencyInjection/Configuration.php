@@ -19,9 +19,7 @@ class Configuration implements ConfigurationInterface
 
         $contactMapping = [
             ['OroCRM' => 'description', 'Outlook' => 'Body'],
-            ['OroCRM' => 'email', 'Outlook' => 'Email1Address'],
             ['OroCRM' => 'jobTitle', 'Outlook' => 'JobTitle'],
-            ['OroCRM' => 'fax', 'Outlook' => 'HomeFaxNumber'],
             ['OroCRM' => 'firstName', 'Outlook' => 'FirstName'],
             ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
             ['OroCRM' => 'middleName', 'Outlook' => 'MiddleName'],
