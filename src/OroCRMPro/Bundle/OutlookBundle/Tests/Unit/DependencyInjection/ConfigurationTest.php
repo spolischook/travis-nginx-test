@@ -35,9 +35,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     'contacts_mapping'               => [
                         'value' => [
                             ['OroCRM' => 'description', 'Outlook' => 'Body'],
-                            ['OroCRM' => 'email', 'Outlook' => 'Email1Address'],
                             ['OroCRM' => 'jobTitle', 'Outlook' => 'JobTitle'],
-                            ['OroCRM' => 'fax', 'Outlook' => 'HomeFaxNumber'],
                             ['OroCRM' => 'firstName', 'Outlook' => 'FirstName'],
                             ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
                             ['OroCRM' => 'middleName', 'Outlook' => 'MiddleName'],
