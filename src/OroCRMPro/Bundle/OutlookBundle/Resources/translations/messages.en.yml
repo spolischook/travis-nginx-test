@@ -1,0 +1,8 @@
+orocrmpro_outlook:
+    form:
+        outlook_settings:       MS Outlook settings
+        contacts:               Contacts
+        sync_direction:         Sync Direction
+        conflict_resolution:    Conflicts Resolution
+        sync_interval_orocrm:   CRM sync interval (in seconds)
+        sync_interval_outlook:  Outlook sync interval (in seconds)

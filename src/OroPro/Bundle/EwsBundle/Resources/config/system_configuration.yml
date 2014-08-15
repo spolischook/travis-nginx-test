@@ -9,6 +9,7 @@ oro_system_configuration:
 
     fields:
         oro_pro_ews.enabled:
+            data_type: boolean
             type: oro_config_checkbox
             priority: 150
             options:
@@ -17,6 +18,7 @@ oro_system_configuration:
                 required: false
 
         oro_pro_ews.server:
+            data_type: string
             type: text
             priority: 100
             options:
@@ -25,6 +27,7 @@ oro_system_configuration:
                 required: false
 
         oro_pro_ews.login:
+            data_type: string
             type: text
             priority: 80
             options:
@@ -33,6 +36,7 @@ oro_system_configuration:
                 required: false
 
         oro_pro_ews.password:
+            data_type: string
             type: oro_encoded_password
             priority: 70
             options:
@@ -41,6 +45,7 @@ oro_system_configuration:
                 resettable: false
 
         oro_pro_ews.version:
+            data_type: string
             type: choice
             priority: 90
             options:
@@ -56,6 +61,7 @@ oro_system_configuration:
                 resettable: false
 
         oro_pro_ews.domain_list:
+            data_type: array
             type: oro_textlist
             priority: 60
             options:
@@ -80,3 +86,11 @@ oro_system_configuration:
                                             - oro_pro_ews.password
                                             - oro_pro_ews.version
                                             - oro_pro_ews.domain_list
+
+    api_tree:
+        ews:
+            oro_pro_ews.enabled: ~
+            oro_pro_ews.server: ~
+            oro_pro_ews.login: ~
+            oro_pro_ews.version: ~
+            oro_pro_ews.domain_list: ~
