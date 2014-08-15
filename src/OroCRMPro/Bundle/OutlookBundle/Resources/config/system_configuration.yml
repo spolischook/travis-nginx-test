@@ -58,6 +58,8 @@ oro_system_configuration:
                     - Range:
                         min:    1
                         max:    86399 # 1 day - 1 sec
+        oro_crm_pro_outlook.contacts_keys:
+            data_type: array
         oro_crm_pro_outlook.contacts_mapping:
             data_type: array
 
@@ -84,4 +86,5 @@ oro_system_configuration:
                 oro_crm_pro_outlook.contacts_conflict_resolution: ~
                 oro_crm_pro_outlook.contacts_sync_interval_orocrm: ~
                 oro_crm_pro_outlook.contacts_sync_interval_outlook: ~
+                oro_crm_pro_outlook.contacts_keys: ~
                 oro_crm_pro_outlook.contacts_mapping: ~

@@ -17,6 +17,10 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode    = $treeBuilder->root('oro_crm_pro_outlook');
 
+        $contactKeys = [
+            ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
+            ['OroCRM' => 'firstName', 'Outlook' => 'FirstName'],
+        ];
         $contactMapping = [
             ['OroCRM' => 'description', 'Outlook' => 'Body'],
             ['OroCRM' => 'jobTitle', 'Outlook' => 'JobTitle'],
@@ -32,6 +36,7 @@ class Configuration implements ConfigurationInterface
                 'contacts_conflict_resolution'   => ['value' => 'OroCRMAlwaysWins'],
                 'contacts_sync_interval_orocrm'  => ['value' => 120],
                 'contacts_sync_interval_outlook' => ['value' => 30],
+                'contacts_keys'                  => ['value' => $contactKeys, 'type'  => 'array'],
                 'contacts_mapping'               => ['value' => $contactMapping, 'type'  => 'array']
             ]
         );

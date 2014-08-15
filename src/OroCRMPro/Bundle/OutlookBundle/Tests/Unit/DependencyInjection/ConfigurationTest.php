@@ -32,6 +32,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                         'value' => 30,
                         'scope' => 'app'
                     ],
+                    'contacts_keys'                  => [
+                        'value' => [
+                            ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
+                            ['OroCRM' => 'firstName', 'Outlook' => 'FirstName'],
+                        ],
+                        'scope' => 'app'
+                    ],
                     'contacts_mapping'               => [
                         'value' => [
                             ['OroCRM' => 'description', 'Outlook' => 'Body'],
