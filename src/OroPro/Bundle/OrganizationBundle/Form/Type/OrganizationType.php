@@ -31,8 +31,7 @@ class OrganizationType extends AbstractType
                     'required' => true,
                     'label' => 'oro.organization.name.label',
                     'constraints' => [
-                        new NotBlank(),
-                        //new UniqueEntity(['fields' => ['name']])
+                        new NotBlank()
                     ]
                 ]
             )
