@@ -5,6 +5,7 @@ namespace OroPro\Bundle\OrganizationBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class OrganizationType extends AbstractType
 {
@@ -28,7 +29,11 @@ class OrganizationType extends AbstractType
                 'text',
                 [
                     'required' => true,
-                    'label' => 'oro.organization.name.label'
+                    'label' => 'oro.organization.name.label',
+                    'constraints' => [
+                        new NotBlank(),
+                        //new UniqueEntity(['fields' => ['name']])
+                    ]
                 ]
             )
             ->add(
