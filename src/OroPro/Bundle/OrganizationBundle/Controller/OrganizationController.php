@@ -90,7 +90,7 @@ class OrganizationController extends Controller
      */
     protected function update(Organization $entity)
     {
-        if ($this->get('oropro_organization.form.handler.organization')->process($entity)) {
+        if ($this->get('oro_organization.form.handler.organization')->process($entity)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('oropro.organization.controller.message.saved')
@@ -105,7 +105,7 @@ class OrganizationController extends Controller
 
         return [
             'entity' => $entity,
-            'form' => $this->get('oropro_organization.form.organization')->createView(),
+            'form' => $this->get('oro_organization.form.organization')->createView(),
         ];
     }
 

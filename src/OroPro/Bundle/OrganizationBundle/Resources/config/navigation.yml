@@ -1,6 +1,6 @@
 oro_menu_config:
     items:
-        oropro_organization_list:
+        oro_organization_list:
             label: 'oro.organization.entity_plural_label'
             route: 'oropro_organization_index'
             extras:
@@ -13,7 +13,7 @@ oro_menu_config:
                     children:
                         users_management:
                             children:
-                                oropro_organization_list: ~
+                                oro_organization_list: ~
 
 oro_titles:
     oropro_organization_index:  ~
