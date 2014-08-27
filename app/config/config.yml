@@ -234,3 +234,6 @@ oro_help:
 
 oro_theme:
     active_theme: oro
+
+oro_search:
+    engine: "%search_engine_name%"
