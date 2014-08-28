@@ -1,2 +1,2 @@
 bundles:
-    - OroPro\Bundle\ElasticSearchBundle\OroElasticSearchBundle
+    - OroPro\Bundle\ElasticSearchBundle\OroProElasticSearchBundle

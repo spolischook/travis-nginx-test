@@ -7,7 +7,7 @@ use OroPro\Bundle\ElasticSearchBundle\DependencyInjection\Compiler\ElasticSearch
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class OroElasticSearchBundle extends Bundle
+class OroProElasticSearchBundle extends Bundle
 {
     /**
      * {@inheritdoc}
