@@ -18,7 +18,12 @@ parameters:
     websocket_port:     8080
 
     # search engine configuration
-    search_engine_name: orm
+    search_engine_name:      orm
+    search_engine_host:      localhost
+    search_engine_port:      ~
+    search_engine_username:  admin
+    search_engine_password:  admin
+    search_engine_auth_type: basic
 
     session_handler:    session.handler.native_file
 
