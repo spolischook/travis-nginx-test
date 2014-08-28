@@ -1,0 +1,7 @@
+parameters:
+#    oropro_elasticsearch.example.class: Oro\src\Oro\Bundle\ElasticSearchBundle\Example
+
+services:
+#    oropro_elasticsearch.example:
+#        class: %oropro_elasticsearch.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
