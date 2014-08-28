@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ElasticSearchProviderPass implements CompilerPassInterface
 {
-    const DEFAULT_INDEX_NAME      = 'defaultElasticSearchIndex';
+    const DEFAULT_INDEX_NAME      = 'default_elastic_search_index';
 
     const ENGINE_PARAMETERS_KEY   = 'oro_search.engine_parameters';
     const ENTITIES_CONFIG_KEY     = 'oro_search.entities_config';
@@ -82,8 +82,33 @@ class ElasticSearchProviderPass implements CompilerPassInterface
             }
         } else {
             $name = $fieldConfig['name'];
-            $type = $fieldConfig['target_type'];
+            $type = $this->getCorrectType($fieldConfig['target_type']);
             $elasticSearchConfig['index']['body']['mappings'][$indexName]['properties'][$name]['type'] = $type;
         }
+    }
+
+    // TODO: should be move to the initializer in the scope of OEE-226
+    /**
+     * @param  string $type
+     * @return string
+     * @throws \Exception
+     */
+    protected function getCorrectType($type)
+    {
+        $typeConvertRules = array(
+            'string'  => array('text', 'string'),
+            'integer' => array('integer', 'int', 'long'),
+            'float'   => array('decimal', 'double', 'float'),
+            'boolean' => array('boolean', 'bool'),
+            'date'    => array('date', 'datetime', 'time', 'birthday'),
+        );
+
+        foreach ($typeConvertRules as $correctType => $possibleTypes) {
+            if (in_array($type, $possibleTypes)) {
+                return $correctType;
+            }
+        }
+
+        throw new \Exception(sprintf('Unsupported type "%s"', $type));
     }
 }
