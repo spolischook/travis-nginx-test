@@ -1,0 +1,26 @@
+{
+    "name": "oro/elastic-search-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Elastic Search Bundle",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/ElasticSearchBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.3.*",
+        "oro/ui-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master",
+        "oro/locale-bundle": "dev-master",
+        "oro/search-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\ElasticSearchBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/ElasticSearchBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
