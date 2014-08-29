@@ -22,31 +22,13 @@ class ElasticSearch extends AbstractEngine
     public function __construct(
         ManagerRegistry $registry,
         EventDispatcher $dispatcher,
-        DoctrineHelper $doctrineHelper,
-        ElasticSearchMapper $mapper
+        DoctrineHelper $doctrineHelper
     ) {
         $this->registry            = $registry;
         $this->dispatcher          = $dispatcher;
         $this->doctrineHelper      = $doctrineHelper;
-        $this->mapper              = $mapper;
-        $this->elasticSearchClient = $this->initializeIndex();
-    }
-
-    /**
-     * Initialized elastic search index configuration
-     *
-     * @returns \Elasticsearch\Client
-     */
-    protected function initializeIndex()
-    {
-        $indexParameters     = $this->mapper->getIndexConfiguration();
-        $elasticSearchClient = new \Elasticsearch\Client();
-
-        if (!$elasticSearchClient->indices()->exists(array('index' => $indexParameters['index']))) {
-            $elasticSearchClient->indices()->create($indexParameters);
-        }
-
-        return $elasticSearchClient;
+        // TODO: should use initializer to get correct elastic search client OEE-226
+        $this->elasticSearchClient = new \Elasticsearch\Client();
     }
 
     /**

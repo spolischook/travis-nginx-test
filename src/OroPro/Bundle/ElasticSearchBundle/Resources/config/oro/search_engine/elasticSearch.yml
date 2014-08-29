@@ -8,6 +8,5 @@ services:
             - @doctrine
             - @event_dispatcher
             - @oro_entity.doctrine_helper
-            - @oro_search.elastic_search_mapper
         calls:
             - [setLogQueries, [%oro_search.log_queries%]]
