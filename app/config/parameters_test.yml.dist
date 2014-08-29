@@ -19,7 +19,7 @@ parameters:
 
     # search engine configuration
     search_engine_name:      orm
-    search_engine_host:      localhost
+    search_engine_host:      127.0.0.1
     search_engine_port:      ~
     search_engine_username:  ~
     search_engine_password:  ~
