@@ -1,18 +1,46 @@
 <?php
 
-namespace OroPro\Bundle\ElasticSearch\Engine;
+namespace OroPro\Bundle\ElasticSearchBundle\Engine;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+use Elasticsearch\Client;
+
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\SearchBundle\Query\Query;
 use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
 
 class ElasticSearch extends AbstractEngine
 {
     /**
-     * Reload search index
-     *
-     * @return int Count of index records
+     * @var Client
      */
-    public function reindex()
+    protected $client;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param EventDispatcher $dispatcher
+     * @param DoctrineHelper $doctrineHelper
+     * @param ObjectMapper $mapper
+     */
+    public function __construct(
+        ManagerRegistry $registry,
+        EventDispatcher $dispatcher,
+        DoctrineHelper $doctrineHelper,
+        ObjectMapper $mapper
+    ) {
+        parent::__construct($registry, $dispatcher, $doctrineHelper, $mapper);
+
+        // TODO: initialize client
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reindex($class = null)
     {
         return 0;
     }
