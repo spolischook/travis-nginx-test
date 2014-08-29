@@ -1,7 +1,15 @@
 parameters:
 #    oropro_elasticsearch.example.class: Oro\src\Oro\Bundle\ElasticSearchBundle\Example
+    oropro_elasticsearch.engine.initializer.class: OroPro\Bundle\ElasticSearchBundle\Engine\Initializer
 
 services:
 #    oropro_elasticsearch.example:
 #        class: %oropro_elasticsearch.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+    oropro_elasticsearch.engine.initializer:
+        class: %oropro_elasticsearch.engine.initializer.class%
+        arguments:
+            - %oro_search.engine_parameters%
+
+

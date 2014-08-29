@@ -2,33 +2,39 @@
 
 namespace OroPro\Bundle\ElasticSearchBundle\Engine;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+use Elasticsearch\Client;
+
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\SearchBundle\Query\Query;
 use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
-
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class ElasticSearch extends AbstractEngine
 {
     /**
-     * @var \Elasticsearch\Client
+     * @var Client
      */
-    protected $elasticSearchClient;
+    protected $client;
+
     /**
-     * {@inheritdoc}
+     * @param ManagerRegistry $registry
+     * @param EventDispatcher $dispatcher
+     * @param DoctrineHelper $doctrineHelper
+     * @param ObjectMapper $mapper
      */
     public function __construct(
         ManagerRegistry $registry,
         EventDispatcher $dispatcher,
-        DoctrineHelper $doctrineHelper
+        DoctrineHelper $doctrineHelper,
+        ObjectMapper $mapper
     ) {
-        $this->registry            = $registry;
-        $this->dispatcher          = $dispatcher;
-        $this->doctrineHelper      = $doctrineHelper;
-        // TODO: should use initializer to get correct elastic search client OEE-226
-        $this->elasticSearchClient = new \Elasticsearch\Client();
+        parent::__construct($registry, $dispatcher, $doctrineHelper, $mapper);
+
+        // TODO: initialize client
     }
 
     /**
