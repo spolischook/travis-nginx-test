@@ -7,10 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ElasticSearchProviderPass implements CompilerPassInterface
 {
-    const DEFAULT_INDEX_NAME      = 'default_elastic_search_index';
-
     const ENGINE_PARAMETERS_KEY   = 'oro_search.engine_parameters';
-    const ENTITIES_CONFIG_KEY     = 'oro_search.entities_config';
 
     const SEARCH_ENGINE_HOST      = 'search_engine_host';
     const SEARCH_ENGINE_PORT      = 'search_engine_port';
@@ -18,47 +15,60 @@ class ElasticSearchProviderPass implements CompilerPassInterface
     const SEARCH_ENGINE_PASSWORD  = 'search_engine_password';
     const SEARCH_ENGINE_AUTH_TYPE = 'search_engine_auth_type';
 
+    /**
+     * {@inheritdoc}
+     */
     public function process(ContainerBuilder $container)
     {
-        $elasticSearchConfig = $container->getParameter(self::ENGINE_PARAMETERS_KEY);
-        $this->processElasticSearchConnection($container, $elasticSearchConfig);
-        $this->processElasticSearchIndex($container, $elasticSearchConfig);
-
-        $container->setParameter(self::ENGINE_PARAMETERS_KEY, $elasticSearchConfig);
+        $engineParameters = $container->getParameter(self::ENGINE_PARAMETERS_KEY);
+        $engineParameters = $this->processElasticSearchConnection($container, $engineParameters);
+        $container->setParameter(self::ENGINE_PARAMETERS_KEY, $engineParameters);
     }
 
     /**
      * @param ContainerBuilder $container
-     * @param array            $elasticSearchConfig
+     * @param array            $engineParameters
+     * @return array
      */
-    protected function processElasticSearchConnection(ContainerBuilder $container, array &$elasticSearchConfig)
+    protected function processElasticSearchConnection(ContainerBuilder $container, array $engineParameters)
     {
+        // connection parameters
         $host = $container->getParameter(self::SEARCH_ENGINE_HOST);
         $port = $container->getParameter(self::SEARCH_ENGINE_PORT);
 
-        if (!empty($port)) {
+        if ($host && $port) {
             $host .= ':' . $port;
         }
 
-        // fill connection parameters
-        $elasticSearchConfig['connection']['hosts']                    = [$host];
-        $elasticSearchConfig['connection']['connectionParams']['auth'] = array(
-            $container->getParameter(self::SEARCH_ENGINE_USERNAME),
-            $container->getParameter(self::SEARCH_ENGINE_PASSWORD),
-            $container->getParameter(self::SEARCH_ENGINE_AUTH_TYPE)
-        );
+        if ($host) {
+            $engineParameters['connection']['hosts'] = [$host];
+        }
+
+        // authentication parameters
+        $username = $container->getParameter(self::SEARCH_ENGINE_USERNAME);
+        $password = $container->getParameter(self::SEARCH_ENGINE_PASSWORD);
+        $authType = $container->getParameter(self::SEARCH_ENGINE_AUTH_TYPE);
+
+        if ($username || $password || $authType) {
+            $engineParameters['connection']['connectionParams']['auth'] = array($username, $password, $authType);
+        }
+
+        return $engineParameters;
     }
 
+    // TODO: should be move to the initializer service in the scope of OEE-226
     /**
      * @param ContainerBuilder $container
      * @param array            $elasticSearchConfig
      */
-    protected function processElasticSearchIndex(ContainerBuilder $container, array &$elasticSearchConfig)
+/*    protected function processElasticSearchIndex(ContainerBuilder $container, array &$elasticSearchConfig)
     {
+        // const DEFAULT_INDEX_NAME = 'default_elastic_search_index'
         if (empty($elasticSearchConfig['index']['index'])) {
             $elasticSearchConfig['index']['index'] = self::DEFAULT_INDEX_NAME;
         }
 
+        // const ENTITIES_CONFIG_KEY = 'oro_search.entities_config';
         $entitiesMapping = $container->getParameter(self::ENTITIES_CONFIG_KEY);
         foreach ($entitiesMapping as $class => $config) {
             if (!empty($config['fields'])) {
@@ -68,13 +78,14 @@ class ElasticSearchProviderPass implements CompilerPassInterface
             }
         }
     }
+*/
 
     /**
      * @param string $indexName
      * @param array  $fieldConfig
      * @param array  $elasticSearchConfig
      */
-    protected function addElasticSearchIndexMapping($indexName, array $fieldConfig, array &$elasticSearchConfig)
+/*  protected function addElasticSearchIndexMapping($indexName, array $fieldConfig, array &$elasticSearchConfig)
     {
         if (!empty($fieldConfig['relation_fields'])) {
             foreach ($fieldConfig['relation_fields'] as $relationFieldConfig) {
@@ -86,14 +97,14 @@ class ElasticSearchProviderPass implements CompilerPassInterface
             $elasticSearchConfig['index']['body']['mappings'][$indexName]['properties'][$name]['type'] = $type;
         }
     }
+*/
 
-    // TODO: should be move to the initializer in the scope of OEE-226
     /**
      * @param  string $type
      * @return string
      * @throws \Exception
      */
-    protected function getCorrectType($type)
+/*    protected function getCorrectType($type)
     {
         $typeConvertRules = array(
             'string'  => array('text', 'string'),
@@ -111,4 +122,5 @@ class ElasticSearchProviderPass implements CompilerPassInterface
 
         throw new \Exception(sprintf('Unsupported type "%s"', $type));
     }
+*/
 }
