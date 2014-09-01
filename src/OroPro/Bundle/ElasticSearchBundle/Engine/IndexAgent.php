@@ -122,14 +122,6 @@ class IndexAgent
     }
 
     /**
-     * @return string
-     */
-    protected function getDefaultIndexName()
-    {
-        return static::DEFAULT_INDEX_NAME;
-    }
-
-    /**
      * @return array
      */
     protected function getIndexConfiguration()
@@ -227,7 +219,7 @@ class IndexAgent
                 foreach ($targetFields as $targetField) {
                     $fieldsWithTypes[$targetField] = $targetType;
                 }
-            } elseif (!empty($field['relation_type'])) {
+            } elseif (!empty($field['relation_fields'])) {
                 $fieldsWithTypes = array_merge($fieldsWithTypes, $this->getFieldsWithTypes($field['relation_fields']));
             }
         }
