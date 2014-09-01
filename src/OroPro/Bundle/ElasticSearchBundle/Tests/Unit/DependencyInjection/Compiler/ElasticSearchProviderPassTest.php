@@ -12,42 +12,6 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
     const DEFAULT_PASSWORD  = '1234567';
     const DEFAULT_AUTH_TYPE = 'basic';
 
-    // TODO: should be move to the test for initializer service in the scope of OEE-226
-    /**
-     * @var array
-     */
-/*    private $testMapping = array(
-        'Oro\Bundle\TestFrameworkBundle\Entity\Item' => array(
-            'label'           => 'Test Search Bundle Item',
-            'alias'           => 'oro_test_item',
-            'search_template' => 'OroSearchBundle:Test:searchResult.html.twig',
-            'route'           => array('name' => 'oro_search_results'),
-            'fields'          => array(
-                array(
-                    'name'          => 'stringValue',
-                    'target_type'   => 'text',
-                    'target_fields' => array('stringValue', 'all_data'),
-                ),
-                array(
-                    'name'            => 'relatedContact',
-                    'relation_type'   => 'many-to-one',
-                    'relation_fields' => array(
-                        array(
-                            'name'          => 'namePrefix',
-                            'target_type'   => 'text',
-                            'target_fields' => array('namePrefix'),
-                        ),
-                        array(
-                            'name'          => 'firstName',
-                            'target_type'   => 'text',
-                            'target_fields' => array('firstName'),
-                        )
-                    )
-                )
-            )
-        )
-    );
-*/
     /**
      * @var ElasticSearchProviderPass
      */

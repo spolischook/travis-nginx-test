@@ -1,6 +1,7 @@
 parameters:
     oropro_elasticsearch.engine.class: OroPro\Bundle\ElasticSearchBundle\Engine\ElasticSearch
     oropro_elasticsearch.engine.index_agent.class: OroPro\Bundle\ElasticSearchBundle\Engine\IndexAgent
+    oropro_elasticsearch.client.factory.class: OroPro\Bundle\ElasticSearchBundle\Client\ClientFactory
     oropro_elasticsearch.type_mapping:
         text:
             type: string
@@ -32,7 +33,11 @@ services:
     oropro_elasticsearch.engine.index_agent:
         class: %oropro_elasticsearch.engine.index_agent.class%
         arguments:
+            - @oropro_elasticsearch.client.factory
             - %oro_search.engine_parameters%
             - %oro_search.entities_config%
         calls:
             - [setTypeMapping, [%oropro_elasticsearch.type_mapping%]]
+
+    oropro_elasticsearch.client.factory:
+        class: %oropro_elasticsearch.client.factory.class%

@@ -3,7 +3,9 @@
 namespace OroPro\Bundle\ElasticSearchBundle\Engine;
 
 use Elasticsearch\Client;
+
 use Oro\Bundle\SearchBundle\Engine\Indexer;
+use OroPro\Bundle\ElasticSearchBundle\Client\ClientFactory;
 
 class IndexAgent
 {
@@ -11,6 +13,11 @@ class IndexAgent
 
     const FULLTEXT_SEARCH_ANALYZER = 'fulltext_search_analyzer';
     const FULLTEXT_INDEX_ANALYZER  = 'fulltext_index_analyzer';
+
+    /**
+     * @var ClientFactory
+     */
+    protected $clientFactory;
 
     /**
      * @var array
@@ -53,11 +60,13 @@ class IndexAgent
     );
 
     /**
+     * @param ClientFactory $clientFactory
      * @param array $engineParameters
      * @param array $entityConfiguration
      */
-    public function __construct(array $engineParameters, array $entityConfiguration)
+    public function __construct(ClientFactory $clientFactory, array $engineParameters, array $entityConfiguration)
     {
+        $this->clientFactory       = $clientFactory;
         $this->engineParameters    = $engineParameters;
         $this->entityConfiguration = $entityConfiguration;
     }
@@ -67,9 +76,9 @@ class IndexAgent
      */
     public function initializeClient()
     {
-        $client = $this->createClient($this->getClientConfiguration());
+        $client = $this->clientFactory->create($this->getClientConfiguration());
 
-        if (!$this->isIndexExists($client)) {
+        if (!$this->isIndexExists($client, $this->getIndexName())) {
             $client->indices()->create($this->getIndexConfiguration());
         }
 
@@ -91,15 +100,6 @@ class IndexAgent
     }
 
     /**
-     * @param array $configuration
-     * @return Client
-     */
-    protected function createClient(array $configuration)
-    {
-        return new Client($configuration);
-    }
-
-    /**
      * @return array
      */
     protected function getClientConfiguration()
@@ -113,14 +113,12 @@ class IndexAgent
 
     /**
      * @param Client $client
+     * @param string $indexName
      * @return bool
      */
-    protected function isIndexExists(Client $client)
+    protected function isIndexExists(Client $client, $indexName)
     {
-        $indexName = $this->getIndexName();
-        $aliases = $client->indices()->getAliases();
-
-        return array_key_exists($indexName, $aliases);
+        return $client->indices()->exists(array('index' => $indexName));
     }
 
     /**
