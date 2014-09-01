@@ -6,48 +6,12 @@ use OroPro\Bundle\ElasticSearchBundle\DependencyInjection\Compiler\ElasticSearch
 
 class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
 {
-    const DEFAULT_HOST      = 'localhost';
+    const DEFAULT_HOST      = '127.0.0.1';
     const DEFAULT_PORT      = '9200';
     const DEFAULT_USERNAME  = 'username';
     const DEFAULT_PASSWORD  = '1234567';
     const DEFAULT_AUTH_TYPE = 'basic';
 
-    // TODO: should be move to the test for initializer service in the scope of OEE-226
-    /**
-     * @var array
-     */
-/*    private $testMapping = array(
-        'Oro\Bundle\TestFrameworkBundle\Entity\Item' => array(
-            'label'           => 'Test Search Bundle Item',
-            'alias'           => 'oro_test_item',
-            'search_template' => 'OroSearchBundle:Test:searchResult.html.twig',
-            'route'           => array('name' => 'oro_search_results'),
-            'fields'          => array(
-                array(
-                    'name'          => 'stringValue',
-                    'target_type'   => 'text',
-                    'target_fields' => array('stringValue', 'all_data'),
-                ),
-                array(
-                    'name'            => 'relatedContact',
-                    'relation_type'   => 'many-to-one',
-                    'relation_fields' => array(
-                        array(
-                            'name'          => 'namePrefix',
-                            'target_type'   => 'text',
-                            'target_fields' => array('namePrefix'),
-                        ),
-                        array(
-                            'name'          => 'firstName',
-                            'target_type'   => 'text',
-                            'target_fields' => array('firstName'),
-                        )
-                    )
-                )
-            )
-        )
-    );
-*/
     /**
      * @var ElasticSearchProviderPass
      */
@@ -109,7 +73,7 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
                     ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY => array(),
                 ), $parameters),
                 'elasticSearchConfiguration' => array(
-                    'connection' => array(
+                    'client' => array(
                         'hosts'            => array(self::DEFAULT_HOST . ':' . self::DEFAULT_PORT),
                         'connectionParams' => array(
                             'auth' => array(
@@ -125,7 +89,7 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
             'not empty global configuration and parameters still not null' => array(
                 'parameters' => array_merge(array(
                     ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY  => array(
-                        'connection' => array(
+                        'client' => array(
                             'hosts'            => array('someTestHost:port'),
                             'connectionParams' => array(
                                 'auth' => array('name', 'password', 'other-type')
@@ -134,7 +98,7 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
                     ),
                 ), $parameters),
                 'elasticSearchConfiguration' => array(
-                    'connection' => array(
+                    'client' => array(
                         'hosts'            => array(self::DEFAULT_HOST . ':' . self::DEFAULT_PORT),
                         'connectionParams' => array(
                             'auth' => array(
@@ -150,7 +114,7 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
             'not empty global configuration; Host and Auth parameters still null' => array(
                 'parameters' => array(
                     ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY  => array(
-                        'connection' => array(
+                        'client' => array(
                             'hosts'            => array('someTestHost:port'),
                             'connectionParams' => array(
                                 'auth' => array('name', 'password', 'other-type')
@@ -164,7 +128,7 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
                     ElasticSearchProviderPass::SEARCH_ENGINE_AUTH_TYPE => null,
                 ),
                 'elasticSearchConfiguration' => array(
-                    'connection' => array(
+                    'client' => array(
                         'hosts'            => array('someTestHost:port'),
                         'connectionParams' => array(
                             'auth' => array('name', 'password', 'other-type')
@@ -176,7 +140,7 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
             'not empty global configuration; Only one Auth parameters still not null' => array(
                 'parameters' => array(
                     ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY  => array(
-                        'connection' => array(
+                        'client' => array(
                             'hosts'            => array('someTestHost:port'),
                             'connectionParams' => array(
                                 'auth' => array('name', 'password', 'other-type')
@@ -190,7 +154,7 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
                     ElasticSearchProviderPass::SEARCH_ENGINE_AUTH_TYPE => self::DEFAULT_AUTH_TYPE,
                 ),
                 'elasticSearchConfiguration' => array(
-                    'connection' => array(
+                    'client' => array(
                         'hosts'            => array(self::DEFAULT_HOST . ':port'),
                         'connectionParams' => array(
                             'auth' => array(null, null, self::DEFAULT_AUTH_TYPE)

@@ -41,7 +41,7 @@ class ElasticSearchProviderPass implements CompilerPassInterface
         }
 
         if ($host) {
-            $engineParameters['connection']['hosts'] = [$host];
+            $engineParameters['client']['hosts'] = [$host];
         }
 
         // authentication parameters
@@ -50,77 +50,9 @@ class ElasticSearchProviderPass implements CompilerPassInterface
         $authType = $container->getParameter(self::SEARCH_ENGINE_AUTH_TYPE);
 
         if ($username || $password || $authType) {
-            $engineParameters['connection']['connectionParams']['auth'] = array($username, $password, $authType);
+            $engineParameters['client']['connectionParams']['auth'] = array($username, $password, $authType);
         }
 
         return $engineParameters;
     }
-
-    // TODO: should be move to the initializer service in the scope of OEE-226
-    /**
-     * @param ContainerBuilder $container
-     * @param array            $elasticSearchConfig
-     */
-/*    protected function processElasticSearchIndex(ContainerBuilder $container, array &$elasticSearchConfig)
-    {
-        // const DEFAULT_INDEX_NAME = 'default_elastic_search_index'
-        if (empty($elasticSearchConfig['index']['index'])) {
-            $elasticSearchConfig['index']['index'] = self::DEFAULT_INDEX_NAME;
-        }
-
-        // const ENTITIES_CONFIG_KEY = 'oro_search.entities_config';
-        $entitiesMapping = $container->getParameter(self::ENTITIES_CONFIG_KEY);
-        foreach ($entitiesMapping as $class => $config) {
-            if (!empty($config['fields'])) {
-                foreach ($config['fields'] as $fieldConfig) {
-                    $this->addElasticSearchIndexMapping($class, $fieldConfig, $elasticSearchConfig);
-                }
-            }
-        }
-    }
-*/
-
-    /**
-     * @param string $indexName
-     * @param array  $fieldConfig
-     * @param array  $elasticSearchConfig
-     */
-/*  protected function addElasticSearchIndexMapping($indexName, array $fieldConfig, array &$elasticSearchConfig)
-    {
-        if (!empty($fieldConfig['relation_fields'])) {
-            foreach ($fieldConfig['relation_fields'] as $relationFieldConfig) {
-                $this->addElasticSearchIndexMapping($indexName, $relationFieldConfig, $elasticSearchConfig);
-            }
-        } else {
-            $name = $fieldConfig['name'];
-            $type = $this->getCorrectType($fieldConfig['target_type']);
-            $elasticSearchConfig['index']['body']['mappings'][$indexName]['properties'][$name]['type'] = $type;
-        }
-    }
-*/
-
-    /**
-     * @param  string $type
-     * @return string
-     * @throws \Exception
-     */
-/*    protected function getCorrectType($type)
-    {
-        $typeConvertRules = array(
-            'string'  => array('text', 'string'),
-            'integer' => array('integer', 'int', 'long'),
-            'float'   => array('decimal', 'double', 'float'),
-            'boolean' => array('boolean', 'bool'),
-            'date'    => array('date', 'datetime', 'time', 'birthday'),
-        );
-
-        foreach ($typeConvertRules as $correctType => $possibleTypes) {
-            if (in_array($type, $possibleTypes)) {
-                return $correctType;
-            }
-        }
-
-        throw new \Exception(sprintf('Unsupported type "%s"', $type));
-    }
-*/
 }

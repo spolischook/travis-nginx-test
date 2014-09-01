@@ -16,6 +16,11 @@ use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
 class ElasticSearch extends AbstractEngine
 {
     /**
+     * @var IndexAgent
+     */
+    protected $indexAgent;
+
+    /**
      * @var Client
      */
     protected $client;
@@ -25,16 +30,18 @@ class ElasticSearch extends AbstractEngine
      * @param EventDispatcher $dispatcher
      * @param DoctrineHelper $doctrineHelper
      * @param ObjectMapper $mapper
+     * @param IndexAgent $indexAgent
      */
     public function __construct(
         ManagerRegistry $registry,
         EventDispatcher $dispatcher,
         DoctrineHelper $doctrineHelper,
-        ObjectMapper $mapper
+        ObjectMapper $mapper,
+        IndexAgent $indexAgent
     ) {
         parent::__construct($registry, $dispatcher, $doctrineHelper, $mapper);
 
-        // TODO: initialize client
+        $this->indexAgent = $indexAgent;
     }
 
     /**
@@ -66,6 +73,20 @@ class ElasticSearch extends AbstractEngine
      */
     protected function doSearch(Query $query)
     {
-        return array();
+        $this->getClient();
+
+        return array('results' => array(), 'records_count' => 0);
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getClient()
+    {
+        if (!$this->client) {
+            $this->client = $this->indexAgent->initializeClient();
+        }
+
+        return $this->client;
     }
 }
