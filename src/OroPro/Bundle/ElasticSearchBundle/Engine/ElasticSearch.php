@@ -2,8 +2,6 @@
 
 namespace OroPro\Bundle\ElasticSearchBundle\Engine;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
-
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Elasticsearch\Client;
@@ -12,6 +10,9 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\SearchBundle\Query\Query;
 use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
+use Oro\Bundle\SearchBundle\Engine\Indexer;
+use Oro\Bundle\SearchBundle\Query\Result\Item;
+use OroPro\Bundle\ElasticSearchBundle\RequestBuilder\RequestBuilderInterface;
 
 class ElasticSearch extends AbstractEngine
 {
@@ -26,20 +27,23 @@ class ElasticSearch extends AbstractEngine
     protected $client;
 
     /**
+     * @var RequestBuilderInterface[]
+     */
+    protected $requestBuilders = array();
+
+    /**
      * @param ManagerRegistry $registry
-     * @param EventDispatcher $dispatcher
      * @param DoctrineHelper $doctrineHelper
      * @param ObjectMapper $mapper
      * @param IndexAgent $indexAgent
      */
     public function __construct(
         ManagerRegistry $registry,
-        EventDispatcher $dispatcher,
         DoctrineHelper $doctrineHelper,
         ObjectMapper $mapper,
         IndexAgent $indexAgent
     ) {
-        parent::__construct($registry, $dispatcher, $doctrineHelper, $mapper);
+        parent::__construct($registry, $doctrineHelper, $mapper);
 
         $this->indexAgent = $indexAgent;
     }
@@ -134,13 +138,71 @@ class ElasticSearch extends AbstractEngine
     }
 
     /**
+     * @param RequestBuilderInterface $requestBuilder
+     */
+    public function addRequestBuilder(RequestBuilderInterface $requestBuilder)
+    {
+        $this->requestBuilders[] = $requestBuilder;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function doSearch(Query $query)
     {
-        $this->getClient();
+        $request = array('index' => $this->indexAgent->getIndexName());
 
-        return array('results' => array(), 'records_count' => 0);
+        foreach ($this->requestBuilders as $requestBuilder) {
+            $request = $requestBuilder->build($query, $request);
+        }
+
+        $response = $this->getClient()->search($request);
+
+        $results = array();
+        if (!empty($response['hits']['hits'])) {
+            foreach ($response['hits']['hits'] as $hit) {
+                $item = $this->convertHitToItem($hit);
+                if ($item) {
+                    $results[] = $item;
+                }
+            }
+        }
+
+        $recordsCount = !empty($response['hits']['total']) ? $response['hits']['total'] : 0;
+
+        return array('results' => $results, 'records_count' => $recordsCount);
+    }
+
+    /**
+     * @param array $hit
+     * @return null|Item
+     */
+    protected function convertHitToItem(array $hit)
+    {
+        $type = !empty($hit['_type']) ? $hit['_type'] : null;
+        $id = !empty($hit['_id']) ? $hit['_id'] : null;
+        if (!$type || !$id) {
+            return null;
+        }
+
+        $entityName = $this->getEntityName($type);
+        if (!$entityName) {
+            return null;
+        }
+
+        $recordText = !empty($hit['_source'][Indexer::TEXT_ALL_DATA_FIELD])
+            ? $hit['_source'][Indexer::TEXT_ALL_DATA_FIELD]:
+            null;
+
+        return new Item(
+            $this->registry->getManagerForClass($entityName),
+            $entityName,
+            $id,
+            null,
+            null,
+            $recordText,
+            $this->mapper->getEntityConfig($entityName)
+        );
     }
 
     /**
@@ -161,9 +223,20 @@ class ElasticSearch extends AbstractEngine
      */
     protected function getEntityAlias($class)
     {
-        $aliases = $this->mapper->getEntitiesListAliases();
+        $entitiesToAliases = $this->mapper->getEntitiesListAliases();
 
-        return !empty($aliases[$class]) ? $aliases[$class] : null;
+        return !empty($entitiesToAliases[$class]) ? $entitiesToAliases[$class] : null;
+    }
+
+    /**
+     * @param string $alias
+     * @return string|null
+     */
+    protected function getEntityName($alias)
+    {
+        $aliasesToEntities = array_flip($this->mapper->getEntitiesListAliases());
+
+        return !empty($aliasesToEntities[$alias]) ? $aliasesToEntities[$alias] : null;
     }
 
     /**

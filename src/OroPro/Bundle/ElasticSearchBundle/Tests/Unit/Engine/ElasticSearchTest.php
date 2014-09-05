@@ -5,6 +5,9 @@ namespace OroPro\Bundle\ElasticSearchBundle\Tests\Unit\Engine;
 use JMS\JobQueueBundle\Entity\Job;
 
 use Oro\Bundle\SearchBundle\Command\IndexCommand;
+use Oro\Bundle\SearchBundle\Engine\Indexer;
+use Oro\Bundle\SearchBundle\Query\Query;
+use Oro\Bundle\SearchBundle\Query\Result\Item;
 use OroPro\Bundle\ElasticSearchBundle\Engine\ElasticSearch;
 use OroPro\Bundle\ElasticSearchBundle\Tests\Unit\Stub\TestEntity;
 
@@ -18,11 +21,6 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $registry;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $eventDispatcher;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -47,7 +45,6 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcher');
         $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
             ->disableOriginalConstructor()
             ->getMock();
@@ -98,7 +95,6 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
 
         $this->engine = new ElasticSearch(
             $this->registry,
-            $this->eventDispatcher,
             $this->doctrineHelper,
             $this->mapper,
             $this->indexAgent
@@ -343,7 +339,6 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
     {
         $arguments = array(
             $this->registry,
-            $this->eventDispatcher,
             $this->doctrineHelper,
             $this->mapper,
             $this->indexAgent
@@ -353,5 +348,134 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
             ->setConstructorArgs($arguments)
             ->setMethods(array('reindexSingleEntity'))
             ->getMock();
+    }
+
+    /**
+     * @param array $response
+     * @param array $items
+     * @param int $count
+     * @dataProvider searchDataProvider
+     */
+    public function testSearch(array $response, array $items, $count)
+    {
+        $query = new Query();
+
+        $entityConfiguration = array(
+            'alias' => self::TEST_ALIAS,
+            'fields' => array(array('name' => 'property', 'target_type' => 'text'))
+        );
+
+        $firstBuilder = $this->getMock('OroPro\Bundle\ElasticSearchBundle\RequestBuilder\RequestBuilderInterface');
+        $firstBuilder->expects($this->once())->method('build')
+            ->with($query, array('index' => self::TEST_INDEX))
+            ->will(
+                $this->returnCallback(
+                    function (Query $query, array $request) {
+                        $request['first'] = true;
+                        return $request;
+                    }
+                )
+            );
+        $secondBuilder = $this->getMock('OroPro\Bundle\ElasticSearchBundle\RequestBuilder\RequestBuilderInterface');
+        $secondBuilder->expects($this->once())->method('build')
+            ->with($query, array('index' => self::TEST_INDEX, 'first' => true))
+            ->will(
+                $this->returnCallback(
+                    function (Query $query, array $request) {
+                        $request['second'] = true;
+                        return $request;
+                    }
+                )
+            );
+
+        $expectedRequest = array('index' => self::TEST_INDEX, 'first' => true, 'second' => true);
+
+        $client = $this->getMockBuilder('Elasticsearch\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->expects($this->once())->method('search')->with($expectedRequest)
+            ->will($this->returnValue($response));
+
+        $this->indexAgent->expects($this->any())->method('getIndexName')
+            ->will($this->returnValue(self::TEST_INDEX));
+        $this->indexAgent->expects($this->once())->method('initializeClient')
+            ->will($this->returnValue($client));
+
+        $this->mapper->expects($this->any())->method('getEntityConfig')->with(self::TEST_CLASS)
+            ->will($this->returnValue($entityConfiguration));
+
+        $entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->registry->expects($this->any())->method('getManagerForClass')->with(self::TEST_CLASS)
+            ->will($this->returnValue($entityManager));
+
+        $expectedItems = array();
+        foreach ($items as $item) {
+            $expectedItems[] = new Item(
+                $entityManager,
+                $item['class'],
+                $item['id'],
+                null,
+                null,
+                $item['text'],
+                $entityConfiguration
+            );
+        }
+
+        $this->engine->addRequestBuilder($firstBuilder);
+        $this->engine->addRequestBuilder($secondBuilder);
+
+        $result = $this->engine->search($query);
+        $this->assertEquals($query, $result->getQuery());
+        $this->assertEquals($expectedItems, $result->getElements());
+        $this->assertEquals($count, $result->getRecordsCount());
+    }
+
+    /**
+     * @return array
+     */
+    public function searchDataProvider()
+    {
+        return array(
+            'valid response' => array(
+                'response' => array(
+                    'hits' => array(
+                        'total' => 5,
+                        'hits' => array(
+                            array(
+                                '_type' => self::TEST_ALIAS,
+                                '_id' => 1,
+                                '_source' => array(Indexer::TEXT_ALL_DATA_FIELD => 'first')
+                            ),
+                            array('_type' => self::TEST_ALIAS, '_id' => 2),
+                            array('_type' => 'unknown_entity', '_id' => 3),
+                            array('_type' => self::TEST_ALIAS),
+                        )
+                    )
+                ),
+                'items' => array(
+                    array('class' => self::TEST_CLASS, 'id' => 1, 'text' => 'first'),
+                    array('class' => self::TEST_CLASS, 'id' => 2, 'text' => null),
+
+                ),
+                'count' => 5
+            ),
+            'empty response' => array(
+                'response' => array(
+                    'hits' => array(
+                        'total' => 0,
+                        'hits' => array()
+                    )
+                ),
+                'items' => array(),
+                'count' => 0
+            ),
+            'invalid response' => array(
+                'response' => array(),
+                'items' => array(),
+                'count' => 0
+            )
+        );
     }
 }

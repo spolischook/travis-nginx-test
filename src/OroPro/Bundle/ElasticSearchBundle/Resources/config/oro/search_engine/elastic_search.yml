@@ -2,6 +2,9 @@ parameters:
     oropro_elasticsearch.engine.class: OroPro\Bundle\ElasticSearchBundle\Engine\ElasticSearch
     oropro_elasticsearch.engine.index_agent.class: OroPro\Bundle\ElasticSearchBundle\Engine\IndexAgent
     oropro_elasticsearch.client.factory.class: OroPro\Bundle\ElasticSearchBundle\Client\ClientFactory
+
+    oropro_elasticsearch.request_builder.from.class: OroPro\Bundle\ElasticSearchBundle\RequestBuilder\FromRequestBuilder
+
     oropro_elasticsearch.field_type_mapping:
         text:
             type: string
@@ -23,12 +26,12 @@ services:
         class: %oropro_elasticsearch.engine.class%
         arguments:
             - @doctrine
-            - @event_dispatcher
             - @oro_entity.doctrine_helper
             - @oro_search.mapper
             - @oropro_elasticsearch.engine.index_agent
         calls:
             - [setLogQueries, [%oro_search.log_queries%]]
+            - [addRequestBuilder, [@oropro_elasticsearch.request_builder.from]]
 
     oropro_elasticsearch.engine.index_agent:
         class: %oropro_elasticsearch.engine.index_agent.class%
@@ -41,3 +44,6 @@ services:
 
     oropro_elasticsearch.client.factory:
         class: %oropro_elasticsearch.client.factory.class%
+
+    oropro_elasticsearch.request_builder.from:
+        class: %oropro_elasticsearch.request_builder.from.class%
