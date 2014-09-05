@@ -77,11 +77,14 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function (TestEntity $entity) {
                         $map = array('text' => array());
-                        if ($entity->firstName) {
-                            $map['text']['firstName'] = $entity->firstName;
+                        if ($entity->name) {
+                            $map['text']['name'] = $entity->name;
                         }
-                        if ($entity->lastName) {
-                            $map['text']['lastName'] = $entity->lastName;
+                        if ($entity->birthday) {
+                            $map['datetime']['birthday'] = $entity->birthday;
+                        }
+                        if ($entity->entity) {
+                            $map['text']['entity'] = $entity->entity;
                         }
                         return $map;
                     }
@@ -209,27 +212,41 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
      */
     public function realTimeOperationDataProvider()
     {
+        $utcDate = new \DateTime('2012-12-12 12:12:12', new \DateTimeZone('UTC'));
+        $notUtcDate = new \DateTime('2012-12-12 14:12:12', new \DateTimeZone('Europe/Athens'));
+        $expectedDate = '2012-12-12 12:12:12';
+
         return array(
             'save successful' => array(
-                'entity' => array(new TestEntity(1, 'firstName1', 'lastName1'), new TestEntity(2, 'firstName2')),
+                'entity' => array(
+                    new TestEntity(1, 'name1', $utcDate),
+                    new TestEntity(2, 'name2', $notUtcDate),
+                    new TestEntity(3, 'name3', null, new TestEntity(null, 'entity3')),
+                ),
                 'body' => array(
                     array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 1)),
                     array('create' => array('_type' => self::TEST_ALIAS, '_id' => 1)),
-                    array('firstName' => 'firstName1', 'lastName' => 'lastName1'),
+                    array('name' => 'name1', 'birthday' => $expectedDate),
                     array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 2)),
                     array('create' => array('_type' => self::TEST_ALIAS, '_id' => 2)),
-                    array('firstName' => 'firstName2'),
+                    array('name' => 'name2', 'birthday' => $expectedDate),
+                    array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 3)),
+                    array('create' => array('_type' => self::TEST_ALIAS, '_id' => 3)),
+                    array('name' => 'name3', 'entity' => 'entity3'),
                 ),
                 'response' => array('errors' => false),
                 'result' => true,
                 'isSave' => true
             ),
             'save not successful' => array(
-                'entity' => array(new TestEntity(1, 'firstName1', 'lastName1'), new TestEntity(2)),
+                'entity' => array(
+                    new TestEntity(1, 'name1'),
+                    new TestEntity(2)
+                ),
                 'body' => array(
                     array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 1)),
                     array('create' => array('_type' => self::TEST_ALIAS, '_id' => 1)),
-                    array('firstName' => 'firstName1', 'lastName' => 'lastName1'),
+                    array('name' => 'name1'),
                     array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 2)),
                 ),
                 'response' => array('errors' => true),
@@ -244,7 +261,10 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
                 'isSave' => true
             ),
             'delete successful' => array(
-                'entity' => array(new TestEntity(1, 'firstName1', 'lastName1'), new TestEntity(2, 'firstName2')),
+                'entity' => array(
+                    new TestEntity(1, 'firstName1', 'lastName1'),
+                    new TestEntity(2, 'firstName2')
+                ),
                 'body' => array(
                     array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 1)),
                     array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 2)),
@@ -270,5 +290,68 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
                 'isSave' => false
             ),
         );
+    }
+
+    public function testReindexAll()
+    {
+        $client = $this->getMockBuilder('Elasticsearch\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $entities = array('firstEntity', 'secondEntity');
+
+        $this->indexAgent->expects($this->once())->method('recreateIndex')
+            ->will($this->returnValue($client));
+
+        $this->mapper->expects($this->any())->method('getEntities')
+            ->will($this->returnValue($entities));
+
+        $engine = $this->getEngineMock();
+        $engine->expects($this->at(0))->method('reindexSingleEntity')->with('firstEntity')
+            ->will($this->returnValue(1));
+        $engine->expects($this->at(1))->method('reindexSingleEntity')->with('secondEntity')
+            ->will($this->returnValue(2));
+
+        $this->assertEquals(3, $engine->reindex());
+        $this->assertAttributeEquals($client, 'client', $engine);
+    }
+
+    public function testReindexOneEntity()
+    {
+        $client = $this->getMockBuilder('Elasticsearch\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->indexAgent->expects($this->once())->method('initializeClient')
+            ->will($this->returnValue($client));
+        $this->indexAgent->expects($this->once())->method('recreateTypeMapping')->with($client, self::TEST_CLASS)
+            ->will($this->returnValue($client));
+
+        $count = 123;
+
+        $engine = $this->getEngineMock();
+        $engine->expects($this->once())->method('reindexSingleEntity')->with(self::TEST_CLASS)
+            ->will($this->returnValue($count));
+
+        $this->assertEquals($count, $engine->reindex(self::TEST_CLASS));
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|ElasticSearch
+     */
+    protected function getEngineMock()
+    {
+        $arguments = array(
+            $this->registry,
+            $this->eventDispatcher,
+            $this->doctrineHelper,
+            $this->mapper,
+            $this->indexAgent
+        );
+
+        return $this->getMockBuilder('OroPro\Bundle\ElasticSearchBundle\Engine\ElasticSearch')
+            ->setConstructorArgs($arguments)
+            ->setMethods(array('reindexSingleEntity'))
+            ->getMock();
     }
 }

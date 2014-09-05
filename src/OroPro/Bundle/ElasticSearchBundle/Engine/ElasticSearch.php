@@ -116,7 +116,21 @@ class ElasticSearch extends AbstractEngine
      */
     public function reindex($class = null)
     {
-        return 0;
+        if (null === $class) {
+            $this->client = $this->indexAgent->recreateIndex();
+            $entityNames = $this->mapper->getEntities();
+        } else {
+            $this->indexAgent->recreateTypeMapping($this->getClient(), $class);
+            $entityNames = array($class);
+        }
+
+        $recordsCount = 0;
+
+        while ($entityName = array_shift($entityNames)) {
+            $recordsCount += $this->reindexSingleEntity($entityName);
+        }
+
+        return $recordsCount;
     }
 
     /**
@@ -161,6 +175,15 @@ class ElasticSearch extends AbstractEngine
         $indexData = array();
         foreach ($this->mapper->mapObject($entity) as $fields) {
             $indexData = array_merge($indexData, $fields);
+        }
+
+        foreach ($indexData as $key => $value) {
+            if ($value instanceof \DateTime) {
+                $value->setTimezone(new \DateTimeZone('UTC'));
+                $indexData[$key] = $value->format('Y-m-d H:i:s');
+            } elseif (is_object($value)) {
+                $indexData[$key] = (string)$value;
+            }
         }
 
         return $indexData;

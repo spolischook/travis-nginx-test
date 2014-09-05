@@ -32,7 +32,7 @@ class IndexAgent
     /**
      * @var array
      */
-    protected $typeMapping = array();
+    protected $fieldTypeMapping = array();
 
     /**
      * @var array
@@ -52,7 +52,7 @@ class IndexAgent
             'filter' => array(
                 'substring' => array(
                     'type'     => 'nGram',
-                    'min_gram' => 1,
+                    'min_gram' => 2,
                     'max_gram' => 30
                 )
             ),
@@ -97,6 +97,38 @@ class IndexAgent
 
         // index name must be lowercase
         return strtolower($indexName);
+    }
+
+    /**
+     * @return Client
+     */
+    public function recreateIndex()
+    {
+        $client = $this->clientFactory->create($this->getClientConfiguration());
+
+        $indexName = $this->getIndexName();
+        if ($this->isIndexExists($client, $indexName)) {
+            $client->indices()->delete(array('index' => $indexName));
+        }
+
+        $client->indices()->create($this->getIndexConfiguration());
+
+        return $client;
+    }
+
+    /**
+     * @param Client $client
+     * @param string $entityName
+     */
+    public function recreateTypeMapping(Client $client, $entityName)
+    {
+        $typeMapping = $this->getTypeMapping($entityName);
+        $type = current(array_keys($typeMapping));
+        $body = current(array_values($typeMapping));
+
+        $indexName = $this->getIndexName();
+        $client->indices()->deleteMapping(array('index' => $indexName, 'type' => $type));
+        $client->indices()->putMapping(array('index' => $indexName, 'type' => $type, 'body' => $body));
     }
 
     /**
@@ -156,9 +188,9 @@ class IndexAgent
     /**
      * @param array $mapping
      */
-    public function setTypeMapping(array $mapping)
+    public function setFieldTypeMapping(array $mapping)
     {
-        $this->typeMapping = $mapping;
+        $this->fieldTypeMapping = $mapping;
     }
 
     /**
@@ -166,13 +198,13 @@ class IndexAgent
      * @return array
      * @throws \LogicException
      */
-    protected function getTypeMapping($type)
+    protected function getFieldTypeMapping($type)
     {
-        if (!array_key_exists($type, $this->typeMapping)) {
+        if (!array_key_exists($type, $this->fieldTypeMapping)) {
             throw new \LogicException(sprintf('Type mapping for type "%s" is not defined', $type));
         }
 
-        return $this->typeMapping[$type];
+        return $this->fieldTypeMapping[$type];
     }
 
     /**
@@ -181,27 +213,43 @@ class IndexAgent
     protected function getMappings()
     {
         $mappings = array();
-        foreach ($this->entityConfiguration as $configuration) {
-            $properties = array();
-            
-            // entity fields properties
-            foreach ($this->getFieldsWithTypes($configuration['fields']) as $field => $type) {
-                $properties[$field] = $this->getTypeMapping($type);
-            }
-
-            // all text property with nGram tokenizer
-            $properties[Indexer::TEXT_ALL_DATA_FIELD] = array(
-                'type'            => 'string',
-                'store'           => true,
-                'search_analyzer' => self::FULLTEXT_SEARCH_ANALYZER,
-                'index_analyzer'  => self::FULLTEXT_INDEX_ANALYZER
-            );
-
-            $alias = $configuration['alias'];
-            $mappings[$alias] = array('properties' => $properties);
+        foreach (array_keys($this->entityConfiguration) as $entityName) {
+            $mappings = array_merge($mappings, $this->getTypeMapping($entityName));
         }
 
         return $mappings;
+    }
+
+    /**
+     * @param string $entityName
+     * @return array
+     * @throws \LogicException
+     */
+    protected function getTypeMapping($entityName)
+    {
+        if (empty($this->entityConfiguration[$entityName])) {
+            throw new \LogicException(sprintf('Search configuration for %s is not defined', $entityName));
+        }
+
+        $configuration = $this->entityConfiguration[$entityName];
+        $properties = array();
+
+        // entity fields properties
+        foreach ($this->getFieldsWithTypes($configuration['fields']) as $field => $type) {
+            $properties[$field] = $this->getFieldTypeMapping($type);
+        }
+
+        // all text property with nGram tokenizer
+        $properties[Indexer::TEXT_ALL_DATA_FIELD] = array(
+            'type'            => 'string',
+            'store'           => true,
+            'search_analyzer' => self::FULLTEXT_SEARCH_ANALYZER,
+            'index_analyzer'  => self::FULLTEXT_INDEX_ANALYZER
+        );
+
+        $alias = $configuration['alias'];
+
+        return array($alias => array('properties' => $properties));
     }
 
     /**

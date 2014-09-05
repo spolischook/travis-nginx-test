@@ -12,22 +12,37 @@ class TestEntity
     /**
      * @var string
      */
-    public $firstName;
+    public $name;
 
     /**
-     * @var string
+     * @var \DateTime
      */
-    public $lastName;
+    public $birthday;
+
+    /**
+     * @var TestEntity
+     */
+    public $entity;
 
     /**
      * @param int|null $id
-     * @param string|null $firstName
-     * @param string|null $lastName
+     * @param string|null $name
+     * @param string|null $birthday
+     * @param TestEntity|null $entity
      */
-    public function __construct($id = null, $firstName = null, $lastName = null)
+    public function __construct($id = null, $name = null, $birthday = null, $entity = null)
     {
         $this->id = $id;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->name = $name;
+        $this->birthday = $birthday;
+        $this->entity = $entity;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 }
