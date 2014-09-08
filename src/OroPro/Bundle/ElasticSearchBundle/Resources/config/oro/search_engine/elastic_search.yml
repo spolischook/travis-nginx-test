@@ -5,6 +5,7 @@ parameters:
 
     oropro_elasticsearch.request_builder.from.class: OroPro\Bundle\ElasticSearchBundle\RequestBuilder\FromRequestBuilder
     oropro_elasticsearch.request_builder.order.class: OroPro\Bundle\ElasticSearchBundle\RequestBuilder\OrderRequestBuilder
+    oropro_elasticsearch.request_builder.limit.class: OroPro\Bundle\ElasticSearchBundle\RequestBuilder\LimitRequestBuilder
 
     oropro_elasticsearch.field_type_mapping:
         text:
@@ -34,6 +35,7 @@ services:
             - [setLogQueries, [%oro_search.log_queries%]]
             - [addRequestBuilder, [@oropro_elasticsearch.request_builder.from]]
             - [addRequestBuilder, [@oropro_elasticsearch.request_builder.order]]
+            - [addRequestBuilder, [@oropro_elasticsearch.request_builder.limit]]
 
     oropro_elasticsearch.engine.index_agent:
         class: %oropro_elasticsearch.engine.index_agent.class%
@@ -52,3 +54,6 @@ services:
 
     oropro_elasticsearch.request_builder.order:
         class: %oropro_elasticsearch.request_builder.order.class%
+
+    oropro_elasticsearch.request_builder.limit:
+        class: %oropro_elasticsearch.request_builder.limit.class%
