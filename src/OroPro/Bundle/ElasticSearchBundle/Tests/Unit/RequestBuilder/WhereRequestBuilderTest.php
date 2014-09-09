@@ -261,7 +261,6 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     'body' => ['query' => ['bool' => [
                         'should' => [
                             ['match' => ['field' => 'first']],
-                            ['match' => ['field' => 'second']],
                         ]
                     ]]]
                 ],
