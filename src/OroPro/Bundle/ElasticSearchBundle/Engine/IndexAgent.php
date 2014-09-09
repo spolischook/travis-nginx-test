@@ -32,32 +32,32 @@ class IndexAgent
     /**
      * @var array
      */
-    protected $fieldTypeMapping = array();
+    protected $fieldTypeMapping = [];
 
     /**
      * @var array
      */
-    protected $settings = array(
-        'analysis' => array(
-            'analyzer' => array(
-                self::FULLTEXT_SEARCH_ANALYZER => array(
+    protected $settings = [
+        'analysis' => [
+            'analyzer' => [
+                self::FULLTEXT_SEARCH_ANALYZER => [
                     'tokenizer' => 'keyword',
-                    'filter'    => array('lowercase')
-                ),
-                self::FULLTEXT_INDEX_ANALYZER => array(
+                    'filter'    => ['lowercase']
+                ],
+                self::FULLTEXT_INDEX_ANALYZER => [
                     'tokenizer' => 'keyword',
-                    'filter'    => array('lowercase', 'substring'),
-                ),
-            ),
-            'filter' => array(
-                'substring' => array(
+                    'filter'    => ['lowercase', 'substring'],
+                ],
+            ],
+            'filter' => [
+                'substring' => [
                     'type'     => 'nGram',
                     'min_gram' => 2,
                     'max_gram' => 30
-                )
-            ),
-        ),
-    );
+                ]
+            ],
+        ],
+    ];
 
     /**
      * @param ClientFactory $clientFactory
@@ -108,7 +108,7 @@ class IndexAgent
 
         $indexName = $this->getIndexName();
         if ($this->isIndexExists($client, $indexName)) {
-            $client->indices()->delete(array('index' => $indexName));
+            $client->indices()->delete(['index' => $indexName]);
         }
 
         $client->indices()->create($this->getIndexConfiguration());
@@ -127,8 +127,8 @@ class IndexAgent
         $body = current(array_values($typeMapping));
 
         $indexName = $this->getIndexName();
-        $client->indices()->deleteMapping(array('index' => $indexName, 'type' => $type));
-        $client->indices()->putMapping(array('index' => $indexName, 'type' => $type, 'body' => $body));
+        $client->indices()->deleteMapping(['index' => $indexName, 'type' => $type]);
+        $client->indices()->putMapping(['index' => $indexName, 'type' => $type, 'body' => $body]);
     }
 
     /**
@@ -140,7 +140,7 @@ class IndexAgent
             return $this->engineParameters['client'];
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -150,7 +150,7 @@ class IndexAgent
      */
     protected function isIndexExists(Client $client, $indexName)
     {
-        return $client->indices()->exists(array('index' => $indexName));
+        return $client->indices()->exists(['index' => $indexName]);
     }
 
     /**
@@ -158,7 +158,7 @@ class IndexAgent
      */
     protected function getIndexConfiguration()
     {
-        $indexConfiguration = array();
+        $indexConfiguration = [];
         if (!empty($this->engineParameters['index'])) {
             $indexConfiguration = $this->engineParameters['index'];
         }
@@ -170,14 +170,14 @@ class IndexAgent
 
         // process settings
         if (empty($indexConfiguration['body']['settings'])) {
-            $indexConfiguration['body']['settings'] = array();
+            $indexConfiguration['body']['settings'] = [];
         }
         $indexConfiguration['body']['settings']
             = array_merge_recursive($this->getSettings(), $indexConfiguration['body']['settings']);
 
         // process mappings
         if (empty($indexConfiguration['body']['mappings'])) {
-            $indexConfiguration['body']['mappings'] = array();
+            $indexConfiguration['body']['mappings'] = [];
         }
         $indexConfiguration['body']['mappings']
             = array_merge_recursive($this->getMappings(), $indexConfiguration['body']['mappings']);
@@ -212,7 +212,7 @@ class IndexAgent
      */
     protected function getMappings()
     {
-        $mappings = array();
+        $mappings = [];
         foreach (array_keys($this->entityConfiguration) as $entityName) {
             $mappings = array_merge($mappings, $this->getTypeMapping($entityName));
         }
@@ -232,7 +232,7 @@ class IndexAgent
         }
 
         $configuration = $this->entityConfiguration[$entityName];
-        $properties = array();
+        $properties = [];
 
         // entity fields properties
         foreach ($this->getFieldsWithTypes($configuration['fields']) as $field => $type) {
@@ -240,16 +240,16 @@ class IndexAgent
         }
 
         // all text property with nGram tokenizer
-        $properties[Indexer::TEXT_ALL_DATA_FIELD] = array(
+        $properties[Indexer::TEXT_ALL_DATA_FIELD] = [
             'type'            => 'string',
             'store'           => true,
             'search_analyzer' => self::FULLTEXT_SEARCH_ANALYZER,
             'index_analyzer'  => self::FULLTEXT_INDEX_ANALYZER
-        );
+        ];
 
         $alias = $configuration['alias'];
 
-        return array($alias => array('properties' => $properties));
+        return [$alias => ['properties' => $properties]];
     }
 
     /**
@@ -258,12 +258,12 @@ class IndexAgent
      */
     protected function getFieldsWithTypes(array $fields)
     {
-        $fieldsWithTypes = array();
+        $fieldsWithTypes = [];
 
         foreach ($fields as $field) {
             if (!empty($field['target_type'])) {
                 $targetType = $field['target_type'];
-                $targetFields = isset($field['target_fields']) ? $field['target_fields'] : array($field['name']);
+                $targetFields = isset($field['target_fields']) ? $field['target_fields'] : [$field['name']];
                 foreach ($targetFields as $targetField) {
                     $fieldsWithTypes[$targetField] = $targetType;
                 }

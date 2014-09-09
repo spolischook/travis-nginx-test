@@ -29,7 +29,7 @@ class ElasticSearch extends AbstractEngine
     /**
      * @var RequestBuilderInterface[]
      */
-    protected $requestBuilders = array();
+    protected $requestBuilders = [];
 
     /**
      * @param ManagerRegistry $registry
@@ -82,7 +82,7 @@ class ElasticSearch extends AbstractEngine
             return true;
         }
 
-        $body = array();
+        $body = [];
 
         foreach ($entities as $entity) {
             $type = $this->getEntityAlias($this->doctrineHelper->getEntityClass($entity));
@@ -92,8 +92,8 @@ class ElasticSearch extends AbstractEngine
             }
 
             // need to recreate index to avoid saving of not used fields
-            $indexIdentifier = array('_type' => $type, '_id' => $id);
-            $body[] = array('delete' => $indexIdentifier);
+            $indexIdentifier = ['_type' => $type, '_id' => $id];
+            $body[] = ['delete' => $indexIdentifier];
 
             if ($isSave) {
                 $indexData = $this->getIndexData($entity);
@@ -101,7 +101,7 @@ class ElasticSearch extends AbstractEngine
                     continue;
                 }
 
-                $body[] = array('create' => $indexIdentifier);
+                $body[] = ['create' => $indexIdentifier];
                 $body[] = $indexData;
             }
         }
@@ -110,7 +110,7 @@ class ElasticSearch extends AbstractEngine
             return false;
         }
 
-        $response = $this->getClient()->bulk(array('index' => $this->indexAgent->getIndexName(), 'body' => $body));
+        $response = $this->getClient()->bulk(['index' => $this->indexAgent->getIndexName(), 'body' => $body]);
 
         return empty($response['errors']);
     }
@@ -125,7 +125,7 @@ class ElasticSearch extends AbstractEngine
             $entityNames = $this->mapper->getEntities();
         } else {
             $this->indexAgent->recreateTypeMapping($this->getClient(), $class);
-            $entityNames = array($class);
+            $entityNames = [$class];
         }
 
         $recordsCount = 0;
@@ -150,7 +150,7 @@ class ElasticSearch extends AbstractEngine
      */
     protected function doSearch(Query $query)
     {
-        $request = array('index' => $this->indexAgent->getIndexName());
+        $request = ['index' => $this->indexAgent->getIndexName()];
 
         foreach ($this->requestBuilders as $requestBuilder) {
             $request = $requestBuilder->build($query, $request);
@@ -158,7 +158,7 @@ class ElasticSearch extends AbstractEngine
 
         $response = $this->getClient()->search($request);
 
-        $results = array();
+        $results = [];
         if (!empty($response['hits']['hits'])) {
             foreach ($response['hits']['hits'] as $hit) {
                 $item = $this->convertHitToItem($hit);
@@ -170,7 +170,7 @@ class ElasticSearch extends AbstractEngine
 
         $recordsCount = !empty($response['hits']['total']) ? $response['hits']['total'] : 0;
 
-        return array('results' => $results, 'records_count' => $recordsCount);
+        return ['results' => $results, 'records_count' => $recordsCount];
     }
 
     /**
@@ -179,8 +179,16 @@ class ElasticSearch extends AbstractEngine
      */
     protected function convertHitToItem(array $hit)
     {
-        $type = !empty($hit['_type']) ? $hit['_type'] : null;
-        $id = !empty($hit['_id']) ? $hit['_id'] : null;
+        $type = null;
+        if (!empty($hit['_type'])) {
+            $type = $hit['_type'];
+        }
+
+        $id = null;
+        if (!empty($hit['_id'])) {
+            $id = $hit['_id'];
+        }
+
         if (!$type || !$id) {
             return null;
         }
@@ -190,9 +198,10 @@ class ElasticSearch extends AbstractEngine
             return null;
         }
 
-        $recordText = !empty($hit['_source'][Indexer::TEXT_ALL_DATA_FIELD])
-            ? $hit['_source'][Indexer::TEXT_ALL_DATA_FIELD]:
-            null;
+        $recordText = null;
+        if (!empty($hit['_source'][Indexer::TEXT_ALL_DATA_FIELD])) {
+            $recordText = $hit['_source'][Indexer::TEXT_ALL_DATA_FIELD];
+        }
 
         return new Item(
             $this->registry->getManagerForClass($entityName),
@@ -245,7 +254,7 @@ class ElasticSearch extends AbstractEngine
      */
     protected function getIndexData($entity)
     {
-        $indexData = array();
+        $indexData = [];
         foreach ($this->mapper->mapObject($entity) as $fields) {
             $indexData = array_merge($indexData, $fields);
         }

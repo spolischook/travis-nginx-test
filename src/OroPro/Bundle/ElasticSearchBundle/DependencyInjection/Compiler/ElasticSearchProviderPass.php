@@ -50,7 +50,7 @@ class ElasticSearchProviderPass implements CompilerPassInterface
         $authType = $container->getParameter(self::SEARCH_ENGINE_AUTH_TYPE);
 
         if ($username || $password || $authType) {
-            $engineParameters['client']['connectionParams']['auth'] = array($username, $password, $authType);
+            $engineParameters['client']['connectionParams']['auth'] = [$username, $password, $authType];
         }
 
         return $engineParameters;

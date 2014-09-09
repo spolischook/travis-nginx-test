@@ -9,7 +9,7 @@ class ClientFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreate()
     {
         $factory = new ClientFactory();
-        $configuration = array('hosts' => array('1.2.3.4:5678'));
+        $configuration = ['hosts' => ['1.2.3.4:5678']];
         $client = $factory->create($configuration);
 
         $this->assertInstanceOf('Elasticsearch\Client', $client);

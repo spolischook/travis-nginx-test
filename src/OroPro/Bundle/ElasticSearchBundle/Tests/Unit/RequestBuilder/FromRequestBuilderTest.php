@@ -19,7 +19,7 @@ class FromRequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder = new FromRequestBuilder();
 
-        $this->assertEquals($request, $builder->build($query, array()));
+        $this->assertEquals($request, $builder->build($query, []));
     }
 
     /**
@@ -27,23 +27,23 @@ class FromRequestBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function buildDataProvider()
     {
-        return array(
-            'all entities' => array(
+        return [
+            'all entities' => [
                 'from' => '*',
-                'request' => array(),
-            ),
-            'one entity' => array(
+                'request' => [],
+            ],
+            'one entity' => [
                 'from' => 'first_entity',
-                'request' => array('type' => 'first_entity'),
-            ),
-            'two entities' => array(
-                'from' => array('first_entity', 'second_entity'),
-                'request' => array('type' => 'first_entity,second_entity'),
-            ),
-            'no entities' => array(
-                'from' => array(),
-                'request' => array(),
-            )
-        );
+                'request' => ['type' => 'first_entity'],
+            ],
+            'two entities' => [
+                'from' => ['first_entity', 'second_entity'],
+                'request' => ['type' => 'first_entity,second_entity'],
+            ],
+            'no entities' => [
+                'from' => [],
+                'request' => [],
+            ]
+        ];
     }
 }

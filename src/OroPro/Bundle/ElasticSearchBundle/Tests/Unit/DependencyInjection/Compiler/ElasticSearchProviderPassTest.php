@@ -59,109 +59,109 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
      */
     public function processProvider()
     {
-        $parameters = array(
+        $parameters = [
             ElasticSearchProviderPass::SEARCH_ENGINE_HOST      => self::DEFAULT_HOST,
             ElasticSearchProviderPass::SEARCH_ENGINE_PORT      => self::DEFAULT_PORT,
             ElasticSearchProviderPass::SEARCH_ENGINE_USERNAME  => self::DEFAULT_USERNAME,
             ElasticSearchProviderPass::SEARCH_ENGINE_PASSWORD  => self::DEFAULT_PASSWORD,
             ElasticSearchProviderPass::SEARCH_ENGINE_AUTH_TYPE => self::DEFAULT_AUTH_TYPE,
-        );
+        ];
 
-        return array(
-            'empty global configuration' => array(
-                'parameters' => array_merge(array(
-                    ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY => array(),
-                ), $parameters),
-                'elasticSearchConfiguration' => array(
-                    'client' => array(
-                        'hosts'            => array(self::DEFAULT_HOST . ':' . self::DEFAULT_PORT),
-                        'connectionParams' => array(
-                            'auth' => array(
+        return [
+            'empty global configuration' => [
+                'parameters' => array_merge([
+                    ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY => [],
+                ], $parameters),
+                'elasticSearchConfiguration' => [
+                    'client' => [
+                        'hosts'            => [self::DEFAULT_HOST . ':' . self::DEFAULT_PORT],
+                        'connectionParams' => [
+                            'auth' => [
                                 self::DEFAULT_USERNAME,
                                 self::DEFAULT_PASSWORD,
                                 self::DEFAULT_AUTH_TYPE
-                            )
-                        )
-                    )
-                )
-            ),
+                            ]
+                        ]
+                    ]
+                ]
+            ],
 
-            'not empty global configuration and parameters still not null' => array(
-                'parameters' => array_merge(array(
-                    ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY  => array(
-                        'client' => array(
-                            'hosts'            => array('someTestHost:port'),
-                            'connectionParams' => array(
-                                'auth' => array('name', 'password', 'other-type')
-                            )
-                        ),
-                    ),
-                ), $parameters),
-                'elasticSearchConfiguration' => array(
-                    'client' => array(
-                        'hosts'            => array(self::DEFAULT_HOST . ':' . self::DEFAULT_PORT),
-                        'connectionParams' => array(
-                            'auth' => array(
+            'not empty global configuration and parameters still not null' => [
+                'parameters' => array_merge([
+                    ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY  => [
+                        'client' => [
+                            'hosts'            => ['someTestHost:port'],
+                            'connectionParams' => [
+                                'auth' => ['name', 'password', 'other-type']
+                            ]
+                        ],
+                    ],
+                ], $parameters),
+                'elasticSearchConfiguration' => [
+                    'client' => [
+                        'hosts'            => [self::DEFAULT_HOST . ':' . self::DEFAULT_PORT],
+                        'connectionParams' => [
+                            'auth' => [
                                 self::DEFAULT_USERNAME,
                                 self::DEFAULT_PASSWORD,
                                 self::DEFAULT_AUTH_TYPE
-                            )
-                        )
-                    ),
-                )
-            ),
+                            ]
+                        ]
+                    ],
+                ]
+            ],
 
-            'not empty global configuration; Host and Auth parameters still null' => array(
-                'parameters' => array(
-                    ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY  => array(
-                        'client' => array(
-                            'hosts'            => array('someTestHost:port'),
-                            'connectionParams' => array(
-                                'auth' => array('name', 'password', 'other-type')
-                            )
-                        ),
-                    ),
+            'not empty global configuration; Host and Auth parameters still null' => [
+                'parameters' => [
+                    ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY => [
+                        'client' => [
+                            'hosts'            => ['someTestHost:port'],
+                            'connectionParams' => [
+                                'auth' => ['name', 'password', 'other-type']
+                            ]
+                        ],
+                    ],
                     ElasticSearchProviderPass::SEARCH_ENGINE_HOST      => null,
                     ElasticSearchProviderPass::SEARCH_ENGINE_PORT      => self::DEFAULT_PORT,
                     ElasticSearchProviderPass::SEARCH_ENGINE_USERNAME  => null,
                     ElasticSearchProviderPass::SEARCH_ENGINE_PASSWORD  => null,
                     ElasticSearchProviderPass::SEARCH_ENGINE_AUTH_TYPE => null,
-                ),
-                'elasticSearchConfiguration' => array(
-                    'client' => array(
-                        'hosts'            => array('someTestHost:port'),
-                        'connectionParams' => array(
-                            'auth' => array('name', 'password', 'other-type')
-                        )
-                    ),
-                )
-            ),
+                ],
+                'elasticSearchConfiguration' => [
+                    'client' => [
+                        'hosts'            => ['someTestHost:port'],
+                        'connectionParams' => [
+                            'auth' => ['name', 'password', 'other-type']
+                        ]
+                    ],
+                ]
+            ],
 
-            'not empty global configuration; Only one Auth parameters still not null' => array(
-                'parameters' => array(
-                    ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY  => array(
-                        'client' => array(
-                            'hosts'            => array('someTestHost:port'),
-                            'connectionParams' => array(
-                                'auth' => array('name', 'password', 'other-type')
-                            )
-                        ),
-                    ),
+            'not empty global configuration; Only one Auth parameters still not null' => [
+                'parameters' => [
+                    ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY => [
+                        'client' => [
+                            'hosts'            => ['someTestHost:port'],
+                            'connectionParams' => [
+                                'auth' => ['name', 'password', 'other-type']
+                            ]
+                        ],
+                    ],
                     ElasticSearchProviderPass::SEARCH_ENGINE_HOST      => self::DEFAULT_HOST,
                     ElasticSearchProviderPass::SEARCH_ENGINE_PORT      => 'port',
                     ElasticSearchProviderPass::SEARCH_ENGINE_USERNAME  => null,
                     ElasticSearchProviderPass::SEARCH_ENGINE_PASSWORD  => null,
                     ElasticSearchProviderPass::SEARCH_ENGINE_AUTH_TYPE => self::DEFAULT_AUTH_TYPE,
-                ),
-                'elasticSearchConfiguration' => array(
-                    'client' => array(
-                        'hosts'            => array(self::DEFAULT_HOST . ':port'),
-                        'connectionParams' => array(
-                            'auth' => array(null, null, self::DEFAULT_AUTH_TYPE)
-                        )
-                    ),
-                )
-            ),
-        );
+                ],
+                'elasticSearchConfiguration' => [
+                    'client' => [
+                        'hosts'            => [self::DEFAULT_HOST . ':port'],
+                        'connectionParams' => [
+                            'auth' => [null, null, self::DEFAULT_AUTH_TYPE]
+                        ]
+                    ],
+                ]
+            ],
+        ];
     }
 }

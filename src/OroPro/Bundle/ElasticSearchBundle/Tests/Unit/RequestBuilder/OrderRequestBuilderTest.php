@@ -26,7 +26,7 @@ class OrderRequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder = new OrderRequestBuilder();
 
-        $this->assertEquals($request, $builder->build($query, array()));
+        $this->assertEquals($request, $builder->build($query, []));
     }
 
     /**
@@ -34,33 +34,33 @@ class OrderRequestBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function buildDataProvider()
     {
-        return array(
-            'asc' => array(
+        return [
+            'asc' => [
                 'field' => 'name',
                 'direction' => Query::ORDER_ASC,
-                'request' => array(
-                    'body' => array('sort' => array('name' => array('order' => Query::ORDER_ASC)))
-                ),
-            ),
-            'desc' => array(
+                'request' => [
+                    'body' => ['sort' => ['name' => ['order' => Query::ORDER_ASC]]]
+                ],
+            ],
+            'desc' => [
                 'field' => 'name',
                 'direction' => Query::ORDER_DESC,
-                'request' => array(
-                    'body' => array('sort' => array('name' => array('order' => Query::ORDER_DESC)))
-                ),
-            ),
-            'no direction' => array(
+                'request' => [
+                    'body' => ['sort' => ['name' => ['order' => Query::ORDER_DESC]]]
+                ],
+            ],
+            'no direction' => [
                 'field' => 'name',
                 'direction' => null,
-                'request' => array(
-                    'body' => array('sort' => array('name' => array('order' => Query::ORDER_ASC)))
-                ),
-            ),
-            'empty' => array(
+                'request' => [
+                    'body' => ['sort' => ['name' => ['order' => Query::ORDER_ASC]]]
+                ],
+            ],
+            'empty' => [
                 'field' => null,
                 'direction' => null,
-                'request' => array(),
-            ),
-        );
+                'request' => [],
+            ],
+        ];
     }
 }

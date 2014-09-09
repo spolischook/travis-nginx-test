@@ -73,7 +73,7 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
             ->will(
                 $this->returnCallback(
                     function (TestEntity $entity) {
-                        $map = array('text' => array());
+                        $map = ['text' => []];
                         if ($entity->name) {
                             $map['text']['name'] = $entity->name;
                         }
@@ -88,7 +88,7 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
                 )
             );
         $this->mapper->expects($this->any())->method('getEntitiesListAliases')
-            ->will($this->returnValue(array(self::TEST_CLASS => self::TEST_ALIAS)));
+            ->will($this->returnValue([self::TEST_CLASS => self::TEST_ALIAS]));
 
         $this->indexAgent->expects($this->any())->method('getIndexName')
             ->will($this->returnValue(self::TEST_INDEX));
@@ -145,32 +145,32 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
      */
     public function queuedOperationDataProvider()
     {
-        return array(
-            'save with entities' => array(
-                'entity' => array(new TestEntity(1), new TestEntity(2)),
-                'jobArguments' => array(self::TEST_CLASS, 1, 2),
+        return [
+            'save with entities' => [
+                'entity' => [new TestEntity(1), new TestEntity(2)],
+                'jobArguments' => [self::TEST_CLASS, 1, 2],
                 'result' => true,
                 'isSave' => true
-            ),
-            'save without entities' => array(
-                'entity' => array(),
-                'jobArguments' => array(),
+            ],
+            'save without entities' => [
+                'entity' => [],
+                'jobArguments' => [],
                 'result' => false,
                 'isSave' => true
-            ),
-            'delete with entities' => array(
+            ],
+            'delete with entities' => [
                 'entity' => new TestEntity(1),
-                'jobArguments' => array(self::TEST_CLASS, 1),
+                'jobArguments' => [self::TEST_CLASS, 1],
                 'result' => true,
                 'isSave' => false
-            ),
-            'delete without entities' => array(
+            ],
+            'delete without entities' => [
                 'entity' => null,
-                'jobArguments' => array(),
+                'jobArguments' => [],
                 'result' => false,
                 'isSave' => false
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -187,7 +187,7 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         if ($body) {
-            $client->expects($this->once())->method('bulk')->with(array('index' => self::TEST_INDEX, 'body' => $body))
+            $client->expects($this->once())->method('bulk')->with(['index' => self::TEST_INDEX, 'body' => $body])
                 ->will($this->returnValue($response));
         } else {
             $client->expects($this->never())->method('bulk');
@@ -212,80 +212,80 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
         $notUtcDate = new \DateTime('2012-12-12 14:12:12', new \DateTimeZone('Europe/Athens'));
         $expectedDate = '2012-12-12 12:12:12';
 
-        return array(
-            'save successful' => array(
-                'entity' => array(
+        return [
+            'save successful' => [
+                'entity' => [
                     new TestEntity(1, 'name1', $utcDate),
                     new TestEntity(2, 'name2', $notUtcDate),
                     new TestEntity(3, 'name3', null, new TestEntity(null, 'entity3')),
-                ),
-                'body' => array(
-                    array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 1)),
-                    array('create' => array('_type' => self::TEST_ALIAS, '_id' => 1)),
-                    array('name' => 'name1', 'birthday' => $expectedDate),
-                    array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 2)),
-                    array('create' => array('_type' => self::TEST_ALIAS, '_id' => 2)),
-                    array('name' => 'name2', 'birthday' => $expectedDate),
-                    array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 3)),
-                    array('create' => array('_type' => self::TEST_ALIAS, '_id' => 3)),
-                    array('name' => 'name3', 'entity' => 'entity3'),
-                ),
-                'response' => array('errors' => false),
+                ],
+                'body' => [
+                    ['delete' => ['_type' => self::TEST_ALIAS, '_id' => 1]],
+                    ['create' => ['_type' => self::TEST_ALIAS, '_id' => 1]],
+                    ['name' => 'name1', 'birthday' => $expectedDate],
+                    ['delete' => ['_type' => self::TEST_ALIAS, '_id' => 2]],
+                    ['create' => ['_type' => self::TEST_ALIAS, '_id' => 2]],
+                    ['name' => 'name2', 'birthday' => $expectedDate],
+                    ['delete' => ['_type' => self::TEST_ALIAS, '_id' => 3]],
+                    ['create' => ['_type' => self::TEST_ALIAS, '_id' => 3]],
+                    ['name' => 'name3', 'entity' => 'entity3'],
+                ],
+                'response' => ['errors' => false],
                 'result' => true,
                 'isSave' => true
-            ),
-            'save not successful' => array(
-                'entity' => array(
+            ],
+            'save not successful' => [
+                'entity' => [
                     new TestEntity(1, 'name1'),
                     new TestEntity(2)
-                ),
-                'body' => array(
-                    array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 1)),
-                    array('create' => array('_type' => self::TEST_ALIAS, '_id' => 1)),
-                    array('name' => 'name1'),
-                    array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 2)),
-                ),
-                'response' => array('errors' => true),
+                ],
+                'body' => [
+                    ['delete' => ['_type' => self::TEST_ALIAS, '_id' => 1]],
+                    ['create' => ['_type' => self::TEST_ALIAS, '_id' => 1]],
+                    ['name' => 'name1'],
+                    ['delete' => ['_type' => self::TEST_ALIAS, '_id' => 2]],
+                ],
+                'response' => ['errors' => true],
                 'result' => false,
                 'isSave' => true
-            ),
-            'save without body' => array(
-                'entity' => array(new TestEntity()),
-                'body' => array(),
-                'response' => array(),
+            ],
+            'save without body' => [
+                'entity' => [new TestEntity()],
+                'body' => [],
+                'response' => [],
                 'result' => false,
                 'isSave' => true
-            ),
-            'delete successful' => array(
-                'entity' => array(
+            ],
+            'delete successful' => [
+                'entity' => [
                     new TestEntity(1, 'firstName1', 'lastName1'),
                     new TestEntity(2, 'firstName2')
-                ),
-                'body' => array(
-                    array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 1)),
-                    array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 2)),
-                ),
-                'response' => array('errors' => false),
+                ],
+                'body' => [
+                    ['delete' => ['_type' => self::TEST_ALIAS, '_id' => 1]],
+                    ['delete' => ['_type' => self::TEST_ALIAS, '_id' => 2]],
+                ],
+                'response' => ['errors' => false],
                 'result' => true,
                 'isSave' => false
-            ),
-            'delete not successful' => array(
+            ],
+            'delete not successful' => [
                 'entity' => new TestEntity(1, 'firstName1', 'lastName1'),
-                'body' => array(
-                    array('delete' => array('_type' => self::TEST_ALIAS, '_id' => 1)),
-                ),
-                'response' => array('errors' => true),
+                'body' => [
+                    ['delete' => ['_type' => self::TEST_ALIAS, '_id' => 1]],
+                ],
+                'response' => ['errors' => true],
                 'result' => false,
                 'isSave' => false
-            ),
-            'delete without body' => array(
-                'entity' => array(new TestEntity()),
-                'body' => array(),
-                'response' => array(),
+            ],
+            'delete without body' => [
+                'entity' => [new TestEntity()],
+                'body' => [],
+                'response' => [],
                 'result' => false,
                 'isSave' => false
-            ),
-        );
+            ],
+        ];
     }
 
     public function testReindexAll()
@@ -294,7 +294,7 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $entities = array('firstEntity', 'secondEntity');
+        $entities = ['firstEntity', 'secondEntity'];
 
         $this->indexAgent->expects($this->once())->method('recreateIndex')
             ->will($this->returnValue($client));
@@ -337,16 +337,16 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
      */
     protected function getEngineMock()
     {
-        $arguments = array(
+        $arguments = [
             $this->registry,
             $this->doctrineHelper,
             $this->mapper,
             $this->indexAgent
-        );
+        ];
 
         return $this->getMockBuilder('OroPro\Bundle\ElasticSearchBundle\Engine\ElasticSearch')
             ->setConstructorArgs($arguments)
-            ->setMethods(array('reindexSingleEntity'))
+            ->setMethods(['reindexSingleEntity'])
             ->getMock();
     }
 
@@ -360,14 +360,14 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
     {
         $query = new Query();
 
-        $entityConfiguration = array(
+        $entityConfiguration = [
             'alias' => self::TEST_ALIAS,
-            'fields' => array(array('name' => 'property', 'target_type' => 'text'))
-        );
+            'fields' => [['name' => 'property', 'target_type' => 'text']]
+        ];
 
         $firstBuilder = $this->getMock('OroPro\Bundle\ElasticSearchBundle\RequestBuilder\RequestBuilderInterface');
         $firstBuilder->expects($this->once())->method('build')
-            ->with($query, array('index' => self::TEST_INDEX))
+            ->with($query, ['index' => self::TEST_INDEX])
             ->will(
                 $this->returnCallback(
                     function (Query $query, array $request) {
@@ -378,7 +378,7 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
             );
         $secondBuilder = $this->getMock('OroPro\Bundle\ElasticSearchBundle\RequestBuilder\RequestBuilderInterface');
         $secondBuilder->expects($this->once())->method('build')
-            ->with($query, array('index' => self::TEST_INDEX, 'first' => true))
+            ->with($query, ['index' => self::TEST_INDEX, 'first' => true])
             ->will(
                 $this->returnCallback(
                     function (Query $query, array $request) {
@@ -388,7 +388,7 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $expectedRequest = array('index' => self::TEST_INDEX, 'first' => true, 'second' => true);
+        $expectedRequest = ['index' => self::TEST_INDEX, 'first' => true, 'second' => true];
 
         $client = $this->getMockBuilder('Elasticsearch\Client')
             ->disableOriginalConstructor()
@@ -410,7 +410,7 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
         $this->registry->expects($this->any())->method('getManagerForClass')->with(self::TEST_CLASS)
             ->will($this->returnValue($entityManager));
 
-        $expectedItems = array();
+        $expectedItems = [];
         foreach ($items as $item) {
             $expectedItems[] = new Item(
                 $entityManager,
@@ -437,45 +437,45 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
      */
     public function searchDataProvider()
     {
-        return array(
-            'valid response' => array(
-                'response' => array(
-                    'hits' => array(
+        return [
+            'valid response' => [
+                'response' => [
+                    'hits' => [
                         'total' => 5,
-                        'hits' => array(
-                            array(
+                        'hits' => [
+                            [
                                 '_type' => self::TEST_ALIAS,
                                 '_id' => 1,
-                                '_source' => array(Indexer::TEXT_ALL_DATA_FIELD => 'first')
-                            ),
-                            array('_type' => self::TEST_ALIAS, '_id' => 2),
-                            array('_type' => 'unknown_entity', '_id' => 3),
-                            array('_type' => self::TEST_ALIAS),
-                        )
-                    )
-                ),
-                'items' => array(
-                    array('class' => self::TEST_CLASS, 'id' => 1, 'text' => 'first'),
-                    array('class' => self::TEST_CLASS, 'id' => 2, 'text' => null),
+                                '_source' => [Indexer::TEXT_ALL_DATA_FIELD => 'first']
+                            ],
+                            ['_type' => self::TEST_ALIAS, '_id' => 2],
+                            ['_type' => 'unknown_entity', '_id' => 3],
+                            ['_type' => self::TEST_ALIAS],
+                        ]
+                    ]
+                ],
+                'items' => [
+                    ['class' => self::TEST_CLASS, 'id' => 1, 'text' => 'first'],
+                    ['class' => self::TEST_CLASS, 'id' => 2, 'text' => null],
 
-                ),
+                ],
                 'count' => 5
-            ),
-            'empty response' => array(
-                'response' => array(
-                    'hits' => array(
+            ],
+            'empty response' => [
+                'response' => [
+                    'hits' => [
                         'total' => 0,
-                        'hits' => array()
-                    )
-                ),
-                'items' => array(),
+                        'hits' => []
+                    ]
+                ],
+                'items' => [],
                 'count' => 0
-            ),
-            'invalid response' => array(
-                'response' => array(),
-                'items' => array(),
+            ],
+            'invalid response' => [
+                'response' => [],
+                'items' => [],
                 'count' => 0
-            )
-        );
+            ]
+        ];
     }
 }

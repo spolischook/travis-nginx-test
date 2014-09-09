@@ -10,7 +10,7 @@ class ClientFactory
      * @param array $configuration
      * @return Client
      */
-    public function create(array $configuration = array())
+    public function create(array $configuration = [])
     {
         return new Client($configuration);
     }

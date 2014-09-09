@@ -9,61 +9,61 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    protected $typeMapping = array(
-        'text' => array(
+    protected $typeMapping = [
+        'text' => [
             'type'  => 'string',
             'store' => true,
             'index' => 'not_analyzed'
-        ),
-        'decimal' => array(
+        ],
+        'decimal' => [
             'type'  => 'double',
             'store' => true,
-        ),
-        'integer' => array(
+        ],
+        'integer' => [
             'type'  => 'integer',
             'store' => true,
-        ),
-        'datetime' => array(
+        ],
+        'datetime' => [
             'type'   => 'date',
             'store'  => true,
             'format' => 'yyyy-MM-dd HH:mm:ss||yyyy-MM-dd'
-        ),
-    );
+        ],
+    ];
 
     /**
      * @var array
      */
-    protected $allTextMapping = array(
+    protected $allTextMapping = [
         'type'            => 'string',
         'store'           => true,
         'search_analyzer' => IndexAgent::FULLTEXT_SEARCH_ANALYZER,
         'index_analyzer'  => IndexAgent::FULLTEXT_INDEX_ANALYZER
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $settings = array(
-        'analysis' => array(
-            'analyzer' => array(
-                IndexAgent::FULLTEXT_SEARCH_ANALYZER => array(
+    protected $settings = [
+        'analysis' => [
+            'analyzer' => [
+                IndexAgent::FULLTEXT_SEARCH_ANALYZER => [
                     'tokenizer' => 'keyword',
-                    'filter'    => array('lowercase')
-                ),
-                IndexAgent::FULLTEXT_INDEX_ANALYZER => array(
+                    'filter'    => ['lowercase']
+                ],
+                IndexAgent::FULLTEXT_INDEX_ANALYZER => [
                     'tokenizer' => 'keyword',
-                    'filter'    => array('lowercase', 'substring'),
-                ),
-            ),
-            'filter' => array(
-                'substring' => array(
+                    'filter'    => ['lowercase', 'substring'],
+                ],
+            ],
+            'filter' => [
+                'substring' => [
                     'type'     => 'nGram',
                     'min_gram' => 2,
                     'max_gram' => 30
-                )
-            ),
-        ),
-    );
+                ]
+            ],
+        ],
+    ];
 
     /**
      * @param object|null $clientFactory
@@ -73,8 +73,8 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
      */
     protected function createIndexAgent(
         $clientFactory = null,
-        array $engineParameters = array(),
-        array $entityConfiguration = array()
+        array $engineParameters = [],
+        array $entityConfiguration = []
     ) {
         if (!$clientFactory) {
             $clientFactory = $this->getMockBuilder('OroPro\Bundle\ElasticSearchBundle\Client\ClientFactory')
@@ -101,20 +101,20 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
      */
     public function getIndexNameDataProvider()
     {
-        return array(
-            'default' => array(
-                'engineParameters'  => array(),
+        return [
+            'default' => [
+                'engineParameters'  => [],
                 'expectedIndexName' => IndexAgent::DEFAULT_INDEX_NAME,
-            ),
-            'custom' => array(
-                'engineParameters'  => array(
-                    'index' => array(
+            ],
+            'custom' => [
+                'engineParameters'  => [
+                    'index' => [
                         'index' => 'Custom_Index'
-                    )
-                ),
+                    ]
+                ],
                 'expectedIndexName' => 'custom_index',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -133,10 +133,10 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
         $indices = $this->getMockBuilder('Elasticsearch\Namespaces\IndicesNamespace')
             ->disableOriginalConstructor()
             ->getMock();
-        $indices->expects($this->at(0))->method('exists')->with(array('index' => $indexConfiguration['index']))
+        $indices->expects($this->at(0))->method('exists')->with(['index' => $indexConfiguration['index']])
             ->will($this->returnValue(false));
         $indices->expects($this->at(1))->method('create')->with($indexConfiguration);
-        $indices->expects($this->at(2))->method('exists')->with(array('index' => $indexConfiguration['index']))
+        $indices->expects($this->at(2))->method('exists')->with(['index' => $indexConfiguration['index']])
             ->will($this->returnValue(true));
 
         $client = $this->getMockBuilder('Elasticsearch\Client')
@@ -165,70 +165,70 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
      */
     public function initializeClientDataProvider()
     {
-        return array(
-            'minimum' => array(
-                'engineParameters' => array(),
-                'entityConfiguration' => array(
-                    'Test\Entity' => array(
+        return [
+            'minimum' => [
+                'engineParameters' => [],
+                'entityConfiguration' => [
+                    'Test\Entity' => [
                         'alias' => 'oro_test_entity',
-                        'fields' => array(array('name' => 'property', 'target_type' => 'text'))
-                    )
-                ),
-                'clientConfiguration' => array(),
-                'indexConfiguration' => array(
+                        'fields' => [['name' => 'property', 'target_type' => 'text']]
+                    ]
+                ],
+                'clientConfiguration' => [],
+                'indexConfiguration' => [
                     'index' => IndexAgent::DEFAULT_INDEX_NAME,
-                    'body' => array(
+                    'body' => [
                         'settings' => $this->settings,
-                        'mappings' => array(
-                            'oro_test_entity' => array(
-                                'properties' => array(
+                        'mappings' => [
+                            'oro_test_entity' => [
+                                'properties' => [
                                     'property' => $this->typeMapping['text'],
                                     'all_text' => $this->allTextMapping,
-                                ),
-                            ),
-                        ),
-                    ),
-                )
-            ),
-            'maximum' => array(
-                'engineParameters' => array(
-                    'client' => array(
-                        'hosts' => array('1.2.3.4'),
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            'maximum' => [
+                'engineParameters' => [
+                    'client' => [
+                        'hosts' => ['1.2.3.4'],
                         'logging' => true,
-                    ),
-                    'index' => array(
+                    ],
+                    'index' => [
                         'index' => 'custom_index_name',
-                    )
-                ),
-                'entityConfiguration' => array(
-                    'Test\Entity' => array(
+                    ]
+                ],
+                'entityConfiguration' => [
+                    'Test\Entity' => [
                         'alias' => 'oro_test_entity',
-                        'fields' => array(
-                            array('name' => 'name',      'target_type' => 'text'),
-                            array('name' => 'price',     'target_type' => 'decimal'),
-                            array('name' => 'count',     'target_type' => 'integer'),
-                            array('name' => 'createdAt', 'target_type' => 'datetime'),
-                            array(
+                        'fields' => [
+                            ['name' => 'name',      'target_type' => 'text'],
+                            ['name' => 'price',     'target_type' => 'decimal'],
+                            ['name' => 'count',     'target_type' => 'integer'],
+                            ['name' => 'createdAt', 'target_type' => 'datetime'],
+                            [
                                 'name'            => 'relatedEntity',
-                                'relation_fields' => array(
-                                    array('name' => 'firstName', 'target_type' => 'text'),
-                                    array('name' => 'lastName',  'target_type' => 'text'),
-                                )
-                            )
-                        ),
-                    ),
-                ),
-                'clientConfiguration' => array(
-                    'hosts' => array('1.2.3.4'),
+                                'relation_fields' => [
+                                    ['name' => 'firstName', 'target_type' => 'text'],
+                                    ['name' => 'lastName',  'target_type' => 'text'],
+                                ]
+                            ]
+                        ],
+                    ],
+                ],
+                'clientConfiguration' => [
+                    'hosts' => ['1.2.3.4'],
                     'logging' => true,
-                ),
-                'indexConfiguration' => array(
+                ],
+                'indexConfiguration' => [
                     'index' => 'custom_index_name',
-                    'body' => array(
+                    'body' => [
                         'settings' => $this->settings,
-                        'mappings' => array(
-                            'oro_test_entity' => array(
-                                'properties' => array(
+                        'mappings' => [
+                            'oro_test_entity' => [
+                                'properties' => [
                                     'name'      => $this->typeMapping['text'],
                                     'price'     => $this->typeMapping['decimal'],
                                     'count'     => $this->typeMapping['integer'],
@@ -236,13 +236,13 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
                                     'firstName' => $this->typeMapping['text'],
                                     'lastName'  => $this->typeMapping['text'],
                                     'all_text'  => $this->allTextMapping,
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        );
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -251,17 +251,17 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
      */
     public function testInitializeClientWithUnknownTypeMapping()
     {
-        $entityConfiguration = array(
-            'Test\Entity' => array(
+        $entityConfiguration = [
+            'Test\Entity' => [
                 'alias' => 'oro_test_entity',
-                'fields' => array(array('name' => 'property', 'target_type' => 'unknown_type'))
-            )
-        );
+                'fields' => [['name' => 'property', 'target_type' => 'unknown_type']]
+            ]
+        ];
 
         $indices = $this->getMockBuilder('Elasticsearch\Namespaces\IndicesNamespace')
             ->disableOriginalConstructor()
             ->getMock();
-        $indices->expects($this->once())->method('exists')->with(array('index' => IndexAgent::DEFAULT_INDEX_NAME))
+        $indices->expects($this->once())->method('exists')->with(['index' => IndexAgent::DEFAULT_INDEX_NAME])
             ->will($this->returnValue(false));
         $indices->expects($this->never())->method('create');
 
@@ -274,10 +274,10 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
         $clientFactory = $this->getMockBuilder('OroPro\Bundle\ElasticSearchBundle\Client\ClientFactory')
             ->disableOriginalConstructor()
             ->getMock();
-        $clientFactory->expects($this->once())->method('create')->with(array())
+        $clientFactory->expects($this->once())->method('create')->with([])
             ->will($this->returnValue($client));
 
-        $indexAgent = $this->createIndexAgent($clientFactory, array(), $entityConfiguration);
+        $indexAgent = $this->createIndexAgent($clientFactory, [], $entityConfiguration);
         $indexAgent->initializeClient();
     }
 
@@ -287,34 +287,34 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
      */
     public function testRecreateIndex($isIndexExists)
     {
-        $entityConfiguration = array(
-            'Test\Entity' => array(
+        $entityConfiguration = [
+            'Test\Entity' => [
                 'alias' => 'oro_test_entity',
-                'fields' => array(array('name' => 'property', 'target_type' => 'text'))
-            )
-        );
-        $indexConfiguration = array(
+                'fields' => [['name' => 'property', 'target_type' => 'text']]
+            ]
+        ];
+        $indexConfiguration = [
             'index' => IndexAgent::DEFAULT_INDEX_NAME,
-            'body' => array(
+            'body' => [
                 'settings' => $this->settings,
-                'mappings' => array(
-                    'oro_test_entity' => array(
-                        'properties' => array(
+                'mappings' => [
+                    'oro_test_entity' => [
+                        'properties' => [
                             'property' => $this->typeMapping['text'],
                             'all_text' => $this->allTextMapping,
-                        ),
-                    ),
-                ),
-            ),
-        );
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         $indices = $this->getMockBuilder('Elasticsearch\Namespaces\IndicesNamespace')
             ->disableOriginalConstructor()
             ->getMock();
-        $indices->expects($this->once())->method('exists')->with(array('index' => IndexAgent::DEFAULT_INDEX_NAME))
+        $indices->expects($this->once())->method('exists')->with(['index' => IndexAgent::DEFAULT_INDEX_NAME])
             ->will($this->returnValue($isIndexExists));
         if ($isIndexExists) {
-            $indices->expects($this->once())->method('delete')->with(array('index' => IndexAgent::DEFAULT_INDEX_NAME));
+            $indices->expects($this->once())->method('delete')->with(['index' => IndexAgent::DEFAULT_INDEX_NAME]);
         } else {
             $indices->expects($this->never())->method('delete');
         }
@@ -330,10 +330,10 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
         $clientFactory = $this->getMockBuilder('OroPro\Bundle\ElasticSearchBundle\Client\ClientFactory')
             ->disableOriginalConstructor()
             ->getMock();
-        $clientFactory->expects($this->once())->method('create')->with(array())
+        $clientFactory->expects($this->once())->method('create')->with([])
             ->will($this->returnValue($client));
 
-        $indexAgent = $this->createIndexAgent($clientFactory, array(), $entityConfiguration);
+        $indexAgent = $this->createIndexAgent($clientFactory, [], $entityConfiguration);
         $indexAgent->setFieldTypeMapping($this->typeMapping);
         $this->assertEquals($client, $indexAgent->recreateIndex());
     }
@@ -343,36 +343,36 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
      */
     public function recreateIndexDataProvider()
     {
-        return array(
-            'index exists'     => array(true),
-            'index not exists' => array(false),
-        );
+        return [
+            'index exists'     => [true],
+            'index not exists' => [false],
+        ];
     }
 
     public function testRecreateTypeMapping()
     {
         $entityName = 'Test\Entity';
         $type = 'oro_test_entity';
-        $entityConfiguration = array(
-            $entityName => array(
+        $entityConfiguration = [
+            $entityName => [
                 'alias' => $type,
-                'fields' => array(array('name' => 'property', 'target_type' => 'text'))
-            )
-        );
-        $body = array(
-            'properties' => array(
+                'fields' => [['name' => 'property', 'target_type' => 'text']]
+            ]
+        ];
+        $body = [
+            'properties' => [
                 'property' => $this->typeMapping['text'],
                 'all_text' => $this->allTextMapping,
-            ),
-        );
+            ],
+        ];
 
         $indices = $this->getMockBuilder('Elasticsearch\Namespaces\IndicesNamespace')
             ->disableOriginalConstructor()
             ->getMock();
         $indices->expects($this->once())->method('deleteMapping')
-            ->with(array('index' => IndexAgent::DEFAULT_INDEX_NAME, 'type' => $type));
+            ->with(['index' => IndexAgent::DEFAULT_INDEX_NAME, 'type' => $type]);
         $indices->expects($this->once())->method('putMapping')
-            ->with(array('index' => IndexAgent::DEFAULT_INDEX_NAME, 'type' => $type, 'body' => $body));
+            ->with(['index' => IndexAgent::DEFAULT_INDEX_NAME, 'type' => $type, 'body' => $body]);
 
         $client = $this->getMockBuilder('Elasticsearch\Client')
             ->disableOriginalConstructor()
@@ -380,7 +380,7 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
         $client->expects($this->any())->method('indices')
             ->will($this->returnValue($indices));
 
-        $indexAgent = $this->createIndexAgent(null, array(), $entityConfiguration);
+        $indexAgent = $this->createIndexAgent(null, [], $entityConfiguration);
         $indexAgent->setFieldTypeMapping($this->typeMapping);
         $indexAgent->recreateTypeMapping($client, $entityName);
     }
@@ -395,7 +395,7 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $indexAgent = $this->createIndexAgent(null, array(), array());
+        $indexAgent = $this->createIndexAgent(null, [], []);
         $indexAgent->setFieldTypeMapping($this->typeMapping);
         $indexAgent->recreateTypeMapping($client, 'UnknownEntity');
     }

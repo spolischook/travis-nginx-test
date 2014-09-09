@@ -26,7 +26,7 @@ class LimitRequestBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder = new LimitRequestBuilder();
 
-        $this->assertEquals($request, $builder->build($query, array()));
+        $this->assertEquals($request, $builder->build($query, []));
     }
 
     /**
@@ -34,28 +34,28 @@ class LimitRequestBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function buildDataProvider()
     {
-        return array(
-            'no data' => array(
+        return [
+            'no data' => [
                 'firstResult' => null,
                 'maxResults' => null,
-                'request' => array(
-                    'body' => array('size' => 0)
-                ),
-            ),
-            'limit' => array(
+                'request' => [
+                    'body' => ['size' => 0]
+                ],
+            ],
+            'limit' => [
                 'firstResult' => null,
                 'maxResults' => 10,
-                'request' => array(
-                    'body' => array('size' => 10)
-                ),
-            ),
-            'limit and offset' => array(
+                'request' => [
+                    'body' => ['size' => 10]
+                ],
+            ],
+            'limit and offset' => [
                 'firstResult' => 5,
                 'maxResults' => 10,
-                'request' => array(
-                    'body' => array('from' => 5, 'size' => 10)
-                ),
-            ),
-        );
+                'request' => [
+                    'body' => ['from' => 5, 'size' => 10]
+                ],
+            ],
+        ];
     }
 }
