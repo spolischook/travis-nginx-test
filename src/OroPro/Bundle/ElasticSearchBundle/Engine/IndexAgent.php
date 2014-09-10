@@ -53,7 +53,7 @@ class IndexAgent
                 'substring' => [
                     'type'     => 'nGram',
                     'min_gram' => 2,
-                    'max_gram' => 30
+                    'max_gram' => 50
                 ]
             ],
         ],

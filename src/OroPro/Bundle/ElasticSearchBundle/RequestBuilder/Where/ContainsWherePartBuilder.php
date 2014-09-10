@@ -23,7 +23,6 @@ class ContainsWherePartBuilder extends AbstractWherePartBuilder
             $boolPart = 'must_not';
         } elseif ($keyword == Query::KEYWORD_OR) {
             $boolPart = 'should';
-
         }
 
         // define query part
