@@ -59,7 +59,7 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
                 'substring' => [
                     'type'     => 'nGram',
                     'min_gram' => 2,
-                    'max_gram' => 30
+                    'max_gram' =>50
                 ]
             ],
         ],
