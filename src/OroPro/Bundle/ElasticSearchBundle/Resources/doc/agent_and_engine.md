@@ -10,10 +10,10 @@ Index agent
 **Class:** OroPro\Bundle\ElasticSearchBundle\Engine\IndexAgent
 
 Index agent is used by search engine to get index name, initialize client and perform reindex operation.
-Agent receives DI configuration of search engine, and based on it defines index name and entity mapping. Then it adds
-additional settings to tokenize text fields, and merge all generated data with external configuration.
+Agent receives DI configuration of search engine and based on it defines index name and entity mapping. Then it adds
+additional settings to tokenize text fields and merge all generated data with external configuration.
 
-Entity mapping built based on search entity configuration defined in search.yml files, main configuration and
+Entity mapping built based on search entity configuration defined in `search.yml` files, main configuration and
 field type mappings. Field type mapping are injected through DI as parameter
 _oropro\_elasticsearch.field\_type\_mapping_:
 
@@ -34,16 +34,17 @@ datetime:
     format: "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd"
 ```
 
-To make search faster field that contains all text information converted to lowercase and
+To make search faster field that contains all text information ("all_text") converted to lowercase and
 split into tokens using nGram tokenizer, so this field has custom search and index analyzers that defined
 in additional index settings.
 
-All this data is used to create and initialize client (instance of Elasticsearch\Client) and then return it to
+This data is used to create and initialize client (instance of Elasticsearch\Client) and then return it to
 search engine to perform fulltext search.
 
-Also agent provides ability to recreate whole or recreate type for specific entity. Full recreation deletes existing index
-and creates new one with defined configuration. Recreation for specific entity only deletes mapping
-for one specific type. Recreation is used by search engine to perform reindex operation.
+Also agent provides ability to recreate whole index or recreate only one type for specific entity.
+Full recreation deletes existing index and creates new one with defined configuration.
+Recreation for specific entity deletes only one mapping for one specific type.
+Recreation is used by search engine to perform reindex operation.
 
 
 Search engine
@@ -52,7 +53,7 @@ Search engine
 **Class:** OroPro\Bundle\ElasticSearchBundle\Engine\ElasticSearch
 
 Search engine is the core of search - it implement SearchEngine interface and used by SearchBundle as main engine.
-Search engine uses index agent as a proxy that works directly with search index, f.e. to get index name or
+Search engine uses index agent as a proxy that works directly with search index f.e. to get index name or
 recreate whole index or part of it.
 
 To perform save and delete operations search engine uses [ElasticSearch bulk API](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/docs-bulk.html).
@@ -62,6 +63,6 @@ avoid storing of old values that are not overridden because of empty fields.
 Reindex operations recreate either whole search index or only one type of it, and then triggers save operation for
 all affected entities.
 
-Search engine uses [request builders](./request_builders.md) to build search request to ElasticSearch
+Search engine uses [request builders](./request_builders.md) to build ElasticSearch search request
 based on source query. Each request builder in chain receives current request, modifies it and returns altered data.
 New request builders can be added to engine through DI.
