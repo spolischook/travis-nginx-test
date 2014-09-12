@@ -6,7 +6,8 @@ OroProElasticSearchBundle provides ability to configure search engine for your n
 Parameters
 ----------
 
-At your disposal has next specific for ElasticSearch parameters (file `app/parameters.yml`):
+ElasticSearch uses following parameters from file `app/parameters.yml`:
+
 * **search_engine_name** - engine name, must be "elastic_search" for ElasticSearch engine;
 * **search_engine_host** - host name which ElasticSearch should be connected to;
 * **search_engine_port** - port number which ElasticSearch should use for connection;
