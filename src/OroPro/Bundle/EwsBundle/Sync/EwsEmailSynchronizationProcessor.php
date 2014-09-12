@@ -5,7 +5,6 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 
-use OroPro\Bundle\EwsBundle\Manager\DTO\ItemId;
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
@@ -16,6 +15,7 @@ use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 use Oro\Bundle\EmailBundle\Sync\AbstractEmailSynchronizationProcessor;
 use Oro\Bundle\EmailBundle\Sync\KnownEmailAddressChecker;
 
+use OroPro\Bundle\EwsBundle\Manager\DTO\ItemId;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmail;
