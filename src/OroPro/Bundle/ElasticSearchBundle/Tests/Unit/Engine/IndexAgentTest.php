@@ -165,6 +165,13 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
      */
     public function initializeClientDataProvider()
     {
+        $minGram = 4;
+        $maxGram = 20;
+
+        $customizedSettings = $this->settings;
+        $customizedSettings['analysis']['filter']['substring']['min_gram'] = $minGram;
+        $customizedSettings['analysis']['filter']['substring']['max_gram'] = $maxGram;
+
         return [
             'minimum' => [
                 'engineParameters' => [],
@@ -198,6 +205,13 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
                     ],
                     'index' => [
                         'index' => 'custom_index_name',
+                        'body' => [
+                            'settings' => [
+                                'analysis' => [
+                                    'filter' => ['substring' => ['min_gram' => $minGram, 'max_gram' => $maxGram]]
+                                ]
+                            ]
+                        ],
                     ]
                 ],
                 'entityConfiguration' => [
@@ -225,7 +239,7 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
                 'indexConfiguration' => [
                     'index' => 'custom_index_name',
                     'body' => [
-                        'settings' => $this->settings,
+                        'settings' => $customizedSettings,
                         'mappings' => [
                             'oro_test_entity' => [
                                 'properties' => [

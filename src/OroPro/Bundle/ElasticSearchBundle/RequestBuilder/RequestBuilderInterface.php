@@ -7,8 +7,7 @@ use Oro\Bundle\SearchBundle\Query\Query;
 interface RequestBuilderInterface
 {
     /**
-     * Build search request for ElasticSearch engine,
-     * returns modifier request
+     * Build search request for ElasticSearch engine, returns modified request
      *
      * @param Query $query
      * @param array $request

@@ -14,9 +14,11 @@ class OroProElasticSearchBundleTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->at(0))
             ->method('addCompilerPass')
-            ->with($this->isInstanceOf(
-                'OroPro\Bundle\ElasticSearchBundle\DependencyInjection\Compiler\ElasticSearchProviderPass'
-            ));
+            ->with(
+                $this->isInstanceOf(
+                    'OroPro\Bundle\ElasticSearchBundle\DependencyInjection\Compiler\ElasticSearchProviderPass'
+                )
+            );
 
         $bundle->build($container);
     }

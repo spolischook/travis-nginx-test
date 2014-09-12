@@ -97,12 +97,10 @@ class ElasticSearch extends AbstractEngine
 
             if ($isSave) {
                 $indexData = $this->getIndexData($entity);
-                if (!$indexData) {
-                    continue;
+                if ($indexData) {
+                    $body[] = ['create' => $indexIdentifier];
+                    $body[] = $indexData;
                 }
-
-                $body[] = ['create' => $indexIdentifier];
-                $body[] = $indexData;
             }
         }
 

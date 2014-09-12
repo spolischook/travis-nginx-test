@@ -173,14 +173,14 @@ class IndexAgent
             $indexConfiguration['body']['settings'] = [];
         }
         $indexConfiguration['body']['settings']
-            = array_merge_recursive($this->getSettings(), $indexConfiguration['body']['settings']);
+            = array_replace_recursive($this->getSettings(), $indexConfiguration['body']['settings']);
 
         // process mappings
         if (empty($indexConfiguration['body']['mappings'])) {
             $indexConfiguration['body']['mappings'] = [];
         }
         $indexConfiguration['body']['mappings']
-            = array_merge_recursive($this->getMappings(), $indexConfiguration['body']['mappings']);
+            = array_replace_recursive($this->getMappings(), $indexConfiguration['body']['mappings']);
 
         return $indexConfiguration;
     }

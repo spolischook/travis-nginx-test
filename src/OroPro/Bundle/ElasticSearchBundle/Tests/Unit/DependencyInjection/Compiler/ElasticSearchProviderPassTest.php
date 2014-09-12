@@ -69,9 +69,12 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
 
         return [
             'empty global configuration' => [
-                'parameters' => array_merge([
-                    ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY => [],
-                ], $parameters),
+                'parameters' => array_merge(
+                    [
+                        ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY => []
+                    ],
+                    $parameters
+                ),
                 'elasticSearchConfiguration' => [
                     'client' => [
                         'hosts'            => [self::DEFAULT_HOST . ':' . self::DEFAULT_PORT],
@@ -87,16 +90,19 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
             ],
 
             'not empty global configuration and parameters still not null' => [
-                'parameters' => array_merge([
-                    ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY  => [
-                        'client' => [
-                            'hosts'            => ['someTestHost:port'],
-                            'connectionParams' => [
-                                'auth' => ['name', 'password', 'other-type']
-                            ]
+                'parameters' => array_merge(
+                    [
+                        ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY  => [
+                            'client' => [
+                                'hosts'            => ['someTestHost:port'],
+                                'connectionParams' => [
+                                    'auth' => ['name', 'password', 'other-type']
+                                ]
+                            ],
                         ],
                     ],
-                ], $parameters),
+                    $parameters
+                ),
                 'elasticSearchConfiguration' => [
                     'client' => [
                         'hosts'            => [self::DEFAULT_HOST . ':' . self::DEFAULT_PORT],
