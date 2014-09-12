@@ -1,113 +1,103 @@
 Configuration
 =============
 
-`OroProElasticSearchBundle` provides useful possibilities of search engine configure for your needs.
+OroProElasticSearchBundle provides ability to configure search engine for your needs.
 
 Parameters
 ----------
 
-At your disposal has next specific for `Elastic Search` parameters (in `app/parameters.yml`):
-* **search_engine_host** - host name, which `Elastic Search` should be connected for;
-* **search_engine_port** - port number, which `Elastic Search` should use for connection;
+At your disposal has next specific for ElasticSearch parameters (file `app/parameters.yml`):
+* **search_engine_host** - host name which ElasticSearch should be connected for;
+* **search_engine_port** - port number which ElasticSearch should use for connection;
 * **search_engine_username** - login for HTTP Auth authentication;
 * **search_engine_password** - password for HTTP Auth authentication;
 * **search_engine_auth_type** - HTTP Auth authentication type, different types allowed appropriate options
-(for more information see [Elastic Search documentation](http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_configuration.html#CO1-1)).
+(for more information see [ElasticSearch documentation](http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_configuration.html#CO1-1)).
+
+Basically if you have ElasticSearch server running that's all you have to define - search engine will automatically
+define client and index configuration and then create index. But if you need to use more precise configuration
+you can define it (see following chapters).
 
 
-Configure connection
+Client configuration
 --------------------
 
-For configure your `Elastic Search` engine you should put configuration to the `app\config.yml` under the `oro_search`.
-Let's see example below, on this configuration we are took all parameters from `app/parameters.yml`:
-
-```yml
- # ... other configuration
-oro_search:
-    search_engine_name: "%search_engine_name%"
-    connection:
-        search_engine_host:      "%search_engine_host%"
-        search_engine_port:      "%search_engine_port%"
-        search_engine_username:  "%search_engine_username%"
-        search_engine_password:  "%search_engine_password%"
-        search_engine_auth_type: "%search_engine_auth_type%"
- # ... other configuration
-...
-```
-
-This configuration will be compiled in the `Elastic Search` format and will be available from container in the next format:
+To configure your ElasticSearch engine you should put configuration to the `app/config.yml` under the oro_search.
+Configuration parameters from app/parameters.yml will be compiled to the ElasticSearch format
+and will be available from container in the next format:
 
 ```yml
 oro_search:
+    engine: name
     engine_parameters:
-        connection:
+        client:
             hosts: ['localhost:port']
             connectionParams:
                 auth: ['username', 'password', 'auth_type']
         # ... other specific configuration
 ```
 
-You can don't add configuration to the `app\config.yml` file so as not to clutter up it.
-In this case `OroProElasticSearchBundle` will take all described parameter from `app/parameters.yml` automatically and your
-configuration file will content only next configuration:
+You might not add configuration to the `app/config.yml`. In this case OroProElasticSearchBundle
+will take all described parameter from `app/parameters.yml` automatically and your configuration file
+will have only following configuration:
 
 ```yml
- # ... other configuration
 oro_search:
-    search_engine_name: "%search_engine_name%"
- # ... other configuration
-...
+    engine: "%search_engine_name%"
 ```
 
-Also, possible situation, when you described your configuration in `app\config.yml` without using parameters.
-In this case wins parameters if appropriate parameter is not empty. In terms of `Elastic Search` parameters
-`host` and `port` pass in one group and parameters `username`, `password` and `auth_type` in other group. Based on this
-you can have next situation, when you have configuration like this:
+Also possible situation when you described your configuration in `app/config.yml` without using parameters.
+In this case wins parameters if appropriate parameter is not empty. In terms of ElasticSearch parameters
+"host" and "port" passes in one group and parameters "username", "password" and "auth_type"` in other group.
+Based on еруь you can have following situation:
+
 ```yml
- # ... other configuration
 oro_search:
-    search_engine_name: "%search_engine_name%"
-    connection:
-        search_engine_host:      customHost
-        search_engine_port:      9200
-        search_engine_username:  admin
-        search_engine_password:  admin
-        search_engine_auth_type: basic
- # ... other configuration
-...
+    engine: "%search_engine_name%"
+    engine_parameters
+        client:
+            hosts: ['customHost:9200']
+            connectionParams:
+                auth: ['admin', 'admin', 'basic']
 ```
- * `host` defined as null in parameters (`search_engine_host: ~`), then values will come from global config (`hosts: ['customHost:9200']`);
- * `host` defined in parameters (`search_engine_host: localhost`), then values will come from parameters (`hosts: ['localhost']`).
+
+ * if host defined as null in parameters then values will come from global config (`hosts: ['customHost:9200']`);
+ * if host defined in parameters then values will come from parameters (`hosts: ['localhost']`).
     **Note:** port will come from parameters too;
- * `username`, `password` and `auth_type` defined as null in parameters, then values will come from global config;
- * **any** of `username`, `password` or `auth_type` defined as not null in parameters, then values will come from parameters;
+ * if "username", "password" and "auth_type" defined as null in parameters then values will come from global config;
+ * if any of "username", "password" and "auth_type" defined as not null in parameters, then values will
+ come from parameters;
 
-Configure index
----------------
+More information about client configuration you can find in [ElasticSearch documentation](http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_configuration.html).
 
-All configuration, which needs to create index for `Elastic Search` contains in `search.yml` files and in main `config.yml`.
-More information you will find in [documentation](https://github.com/laboro/platform/blob/master/src/Oro/Bundle/SearchBundle/Resources/doc/configuration.md#entity-configuration) for `OroSearchBundle`.
-This configuration will be compiled in the `Elastic Search` format and will be available from container in the next format:
+
+Index configuration
+-------------------
+
+All configuration, which needs to create index for ElasticSearch contains in `search.yml` files and in main `config.yml`.
+This configuration will be converted to ElasticSearch mappings format and will be available from container in the next format:
 
 ```yml
 oro_search:
     engine_parameters:
-        connection:
-            # ... connection configuration
+        client:
+            # ... client configuration
         index:
             index: indexName                          # name of index
-                body:
-                    mappings:                         # mapping parameters
-                        <entityTypeName-1>:           # name of type
-                            properties:
-                                <entityField-1>:      # name of field
-                                    type:   string    # type of field
-                                # ... list of entity fields
-                                <entityField-N>:
-                                    type:   string
-                        # ... list of types
-                        <entityTypeName-N>:
-                            properties:
-                                <entityField-1>:
-                                    type:   string
+            body:
+                mappings:                               # mapping parameters
+                    <entityTypeName-1>:                 # name of type
+                        properties:
+                            <entityField-1>:            # name of field
+                                type:   string          # type of field
+                            # ... list of entity fields
+                            <entityField-N>:
+                                type:   string
+                    # ... list of types
+                    <entityTypeName-N>:
+                        properties:
+                            <entityField-1>:
+                                type:   string
 ```
+
+More information about index configuration you can find in [ElasticSearch documentation](http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/_index_operations.html).
