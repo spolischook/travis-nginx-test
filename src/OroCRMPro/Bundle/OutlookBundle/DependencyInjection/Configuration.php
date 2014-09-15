@@ -27,6 +27,11 @@ class Configuration implements ConfigurationInterface
             ['OroCRM' => 'firstName', 'Outlook' => 'FirstName'],
             ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
             ['OroCRM' => 'middleName', 'Outlook' => 'MiddleName'],
+            ['OroCRM' => 'emails[primary=true].email', 'Outlook' => 'Email1Address'],
+            ['OroCRM' => 'emails[primary=false][0].email', 'Outlook' => 'Email2Address'],
+            ['OroCRM' => 'phones[0].phone', 'Outlook' => 'BusinessTelephoneNumber'],
+            ['OroCRM' => 'gender', 'Outlook' => 'Gender'],
+            ['OroCRM' => 'fax', 'Outlook' => 'HomeFaxNumber'],
         ];
 
         SettingsBuilder::append(
