@@ -168,7 +168,6 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         $actualSqls = [];
         $statements = [
             $selectStmt,
-            $this->createFetchStatementMock([]), // select user api - redundant call
             $insertOriginStmt
         ];
         $this->getDriverConnectionMock($this->em)->expects($this->any())
@@ -217,7 +216,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         $this->assertEquals($expectedSql, $actualSql);
 
         // insert origin
-        $actualSql = $actualSqls[2];
+        $actualSql = $actualSqls[1];
         $expectedSql = 'INSERT INTO oro_email_origin'
             . ' (isActive, sync_code_updated, synchronized, sync_code, ews_server, ews_user_email, name)'
             . ' VALUES (?, ?, ?, ?, ?, ?, ?)';
