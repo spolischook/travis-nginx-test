@@ -63,8 +63,16 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $doctrine = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $doctrine->expects($this->any())
+            ->method('getManager')
+            ->with(null)
+            ->will($this->returnValue($this->em));
+
         $this->sync = new TestEwsEmailSynchronizer(
-            $this->em,
+            $doctrine,
             $this->emailEntityBuilder,
             $this->emailAddressManager,
             new EmailAddressHelper(),

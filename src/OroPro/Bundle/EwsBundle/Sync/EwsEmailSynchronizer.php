@@ -2,7 +2,7 @@
 
 namespace OroPro\Bundle\EwsBundle\Sync;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
@@ -45,7 +45,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
     /**
      * Constructor
      *
-     * @param EntityManager             $em
+     * @param ManagerRegistry           $doctrine
      * @param EmailEntityBuilder        $emailEntityBuilder
      * @param EmailAddressManager       $emailAddressManager
      * @param EmailAddressHelper        $emailAddressHelper
@@ -55,7 +55,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      * @param string                    $userEntityClass
      */
     public function __construct(
-        EntityManager $em,
+        ManagerRegistry $doctrine,
         EmailEntityBuilder $emailEntityBuilder,
         EmailAddressManager $emailAddressManager,
         EmailAddressHelper $emailAddressHelper,
@@ -64,7 +64,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
         EwsServiceConfigurator $configurator,
         $userEntityClass
     ) {
-        parent::__construct($em, $emailEntityBuilder, $emailAddressManager, $emailAddressHelper);
+        parent::__construct($doctrine, $emailEntityBuilder, $emailAddressManager, $emailAddressHelper);
 
         $this->connector                 = $connector;
         $this->configurator              = $configurator;
@@ -109,7 +109,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
     {
         return new EwsEmailSynchronizationProcessor(
             $this->log,
-            $this->em,
+            $this->getEntityManager(),
             $this->emailEntityBuilder,
             $this->emailAddressManager,
             $this->knownEmailAddressChecker,
@@ -135,7 +135,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
     {
         $this->log->notice('Deactivating outdated email origins ...');
 
-        $qb = $this->em->createQueryBuilder()
+        $qb = $this->getEntityManager()->createQueryBuilder()
             ->update($this->getEmailOriginClass(), 'ews')
             ->set('ews.isActive', ':inactive')
             ->where('ews.isActive = :isActive AND ews.server <> :server')
@@ -154,6 +154,8 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
     {
         $this->log->notice('Initializing email origins ...');
 
+        $em = $this->getEntityManager();
+
         $server = $this->configurator->getServer();
 
         $lastUserId   = -1;
@@ -169,21 +171,21 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
                 $origin = new EwsEmailOrigin();
                 $origin->setServer($server);
                 $origin->setUserEmail($email);
-                $this->em->persist($origin);
+                $em->persist($origin);
                 $user->addEmailOrigin($origin);
 
                 $batchCounter--;
                 $counter++;
             }
             if ($batchCounter <= 0 && $lastUserId != $user->getId()) {
-                $this->em->flush();
-                $this->em->clear();
+                $em->flush();
+                $em->clear();
                 $batchCounter = self::CREATE_ORIGIN_BATCH_SIZE;
             }
             $lastUserId = $user->getId();
         }
-        $this->em->flush();
-        $this->em->clear();
+        $em->flush();
+        $em->clear();
 
         $this->log->notice(sprintf('Created %d email origin(s).', $counter));
     }
@@ -199,7 +201,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
             $domains[] = $this->getHost($server);
         }
 
-        $subQuery = $this->em->getRepository($this->userEntityClass)
+        $subQuery = $this->getEntityManager()->getRepository($this->userEntityClass)
             ->createQueryBuilder('u1')
             ->innerJoin('u1.emailOrigins', 'o')
             ->innerJoin(
@@ -212,7 +214,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
             ->where('u1.id = u.id AND o.isActive = :isActive AND ews.server = :server AND ews.userEmail = a1.email')
             ->getQuery();
 
-        $qb = $this->em->getRepository($this->userEntityClass)
+        $qb = $this->getEntityManager()->getRepository($this->userEntityClass)
             ->createQueryBuilder('u')
             ->select('partial u.{id}, a.email')
             ->innerJoin(
