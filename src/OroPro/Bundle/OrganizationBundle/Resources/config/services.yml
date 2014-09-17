@@ -1,0 +1,4 @@
+parameters:
+    oropro_organization.entity.class: Oro\Bundle\OrganizationBundle\Entity\Organization
+
+services: ~

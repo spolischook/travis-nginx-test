@@ -1,0 +1,10 @@
+oropro:
+    organization:
+        datagrid:
+            action:
+                view: "View"
+                update: "Update"
+                delete: "Delete"
+        controller:
+            message:
+                saved: Organization saved
