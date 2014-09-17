@@ -31,7 +31,7 @@ define(['underscore', 'orochart/js/data_formatter', 'orolocale/js/locale-setting
                             0 : dataFormatter.parseValue(data.value, options.data_schema.value.type);
                     }
 
-                    if (options.default_settings.trackTotal) {
+                    if (options.default_settings && options.default_settings.trackTotal) {
                         data.value += prev;
                         data.displayValue = data.value;
                     }

@@ -26,6 +26,7 @@
             'bgColor': 'transparent',
             'showZeroPlane': '0',
             'canvasBgColor': 'transparent',
+            'canvasBorderThickness ': '0',
             'borderColor': 'transparent',
             'xaxisname': options.data_schema.label.label|trans,
             'yaxisname': options.data_schema.value.label|trans,
@@ -34,10 +35,20 @@
             'decimals': '2',
             'divLineColor': 'eaeaea',
             'showVLineLabelBorder': '0',
+            'showAlternateHGridColor': '0',
             'paletteColors': options.settings.chartColors
         },
         'categories': data.categories,
-        'dataset': data.dataset
+        'dataset': data.dataset,
+        'trendlines': [{
+            'line': [
+                {
+                    'startvalue': '0',
+                    'color': '666666',
+                    'alpha': '10'
+                }
+            ]
+        }]
     } %}
 
     {% if options.settings.connect_dots_with_line == false %}

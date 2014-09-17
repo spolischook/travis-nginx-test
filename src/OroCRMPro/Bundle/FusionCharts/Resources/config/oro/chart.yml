@@ -7,11 +7,11 @@ oro_chart:
         default_settings:
             chartColors: '7fab90,fdbc7c,73a4e1,bedb99,5a8980,ceeaf2,d6a970,fee090'
         template: OroCRMProFusionChartsBundle:Chart:line.html.twig
-#    multiline_chart:
-#        default_settings:
-#            chartColors: '7fab90,fdbc7c,73a4e1,bedb99,5a8980,ceeaf2,d6a970,fee090'
-#        template: OroCRMProFusionChartsBundle:Chart:multiline.html.twig
-#        data_transformer: orocrmpro_chart.data_transformer.multi_line
+    multiline_chart:
+        default_settings:
+            chartColors: '7fab90,fdbc7c,73a4e1,bedb99,5a8980,ceeaf2,d6a970,fee090'
+        template: OroCRMProFusionChartsBundle:Chart:multiline.html.twig
+        data_transformer: orocrmpro_chart.data_transformer.multi_line
     pie_chart:
         default_settings:
             chartColors: 'fdbc7c,b6c05d,fee090,80d4cf,bedb99,e6c160,5a8980,ceeaf2,d6a970,73a4e1,7fab90,ed935c'
