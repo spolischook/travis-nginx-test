@@ -20,12 +20,6 @@ services:
         class: %oro_pro_ews.services.class%
         arguments:
             - @oro_pro_ews.service_configurator
-#            - %oro_pro_ews.wsdl_endpoint% # wsdlFile
-#            - mail.orolab.net         # server
-#            - Administrator           # username
-#            - Win2008ServDc           # password
-#            - Exchange2010            # Exchange version
-#            - false                   # ignoreFailedResponseMessages
 
     oro_pro_ews.search_query.builder:
         scope: prototype
@@ -61,7 +55,7 @@ services:
         scope: prototype
         class: %oro_pro_ews.email_synchronizer.class%
         arguments:
-            - @doctrine.orm.entity_manager
+            - @doctrine
             - @oro_email.email.entity.builder
             - @oro_email.email.address.manager
             - @oro_email.email.address.helper
