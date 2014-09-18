@@ -89,8 +89,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                     $sqb->sent($folder->getSynchronizedAt());
                 }
 
-                // load emails using this search query
-                $lastSynchronizedAt = $this->loadEmails($folderInfo, $sqb->get());
+                // sync emails using this search query
+                $lastSynchronizedAt = $this->syncEmails($folderInfo, $sqb->get());
             }
 
             // update synchronization date for the current folder
@@ -326,14 +326,14 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     }
 
     /**
-     * Loads emails from an email server and save them into the database
+     * Performs synchronization of emails retrieved by the given search query in the given folder
      *
      * @param FolderInfo  $folderInfo
      * @param SearchQuery $searchQuery
      *
      * @return \DateTime The max sent date
      */
-    protected function loadEmails(FolderInfo $folderInfo, SearchQuery $searchQuery)
+    protected function syncEmails(FolderInfo $folderInfo, SearchQuery $searchQuery)
     {
         $folder = $folderInfo->ewsFolder->getFolder();
         $lastSynchronizedAt = $folder->getSynchronizedAt();
@@ -343,7 +343,6 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
         $iterator = new EwsEmailIterator($this->manager, $searchQuery, $this->log);
 
-        $needFolderFlush = true;
         $count = 0;
         $batch = [];
         /** @var Email $email */
@@ -360,18 +359,12 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             $batch[] = $email;
             if ($count === self::DB_BATCH_SIZE) {
                 $this->saveEmails($batch, $folderInfo);
-                $needFolderFlush = false;
                 $count = 0;
                 $batch = [];
             }
         }
         if ($count > 0) {
             $this->saveEmails($batch, $folderInfo);
-            $needFolderFlush = false;
-        }
-
-        if ($needFolderFlush) {
-            $this->em->flush();
         }
 
         return $lastSynchronizedAt;
