@@ -6,7 +6,7 @@ use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
 use Oro\Bundle\ChartBundle\Model\Data\DataInterface;
 use Oro\Bundle\ChartBundle\Model\Data\Transformer\TransformerInterface;
 
-class MultiLineDataTransformer implements TransformerInterface
+class MultiSetDataTransformer implements TransformerInterface
 {
     /**
      * {@inheritdoc}

@@ -3,9 +3,9 @@
 namespace OroCRMPro\Bundle\FusionCharts\Tests\Unit\Model\Data\Transformer;
 
 use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
-use OroCRMPro\Bundle\FusionCharts\Model\Data\Transformer\MultiLineDataTransformer;
+use OroCRMPro\Bundle\FusionCharts\Model\Data\Transformer\MultiSetDataTransformer;
 
-class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
+class MultiSetDataTransformerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @param array $source
@@ -14,7 +14,7 @@ class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testTransform(array $source, array $expected)
     {
-        $transformer = new MultiLineDataTransformer();
+        $transformer = new MultiSetDataTransformer();
         $this->assertEquals($expected, $transformer->transform(new ArrayData($source), [])->toArray());
     }
 
