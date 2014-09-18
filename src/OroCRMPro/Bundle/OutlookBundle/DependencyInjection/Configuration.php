@@ -35,7 +35,7 @@ class Configuration implements ConfigurationInterface
             ['OroCRM' => 'emails[primary=false][0].email', 'Outlook' => 'Email2Address'],
             ['OroCRM' => 'emails[primary=false][1].email', 'Outlook' => 'Email3Address'],
 
-            ['OroCRM' => 'phones[primary=true].phone', 'Outlook' => 'PrimaryTelephoneNumber'],
+            ['OroCRM' => 'phones[primary=true][0].phone', 'Outlook' => 'PrimaryTelephoneNumber'],
             ['OroCRM' => 'addresses[0].region', 'Outlook' => 'BusinessAddressState'],
             ['OroCRM' => 'addresses[0].country', 'Outlook' => 'BusinessAddressCountry'],
             ['OroCRM' => 'addresses[0].city', 'Outlook' => 'BusinessAddressCity'],
