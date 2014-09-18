@@ -7,7 +7,7 @@ use Oro\Bundle\ChartBundle\Model\Data\DataInterface;
 use Oro\Bundle\UIBundle\Tools\ArrayUtils;
 use OroCRM\Bundle\CampaignBundle\Model\Data\Transformer\MultiLineDataTransformer as BaseTransformer;
 
-class MultiLineDataTransformer extends BaseTransformer
+class CampaignMultiLineDataTransformer extends BaseTransformer
 {
     /**
      * @param DataInterface $data
