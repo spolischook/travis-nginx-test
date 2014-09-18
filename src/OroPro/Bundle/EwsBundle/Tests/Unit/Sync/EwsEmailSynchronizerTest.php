@@ -162,15 +162,15 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             ->method('bindValue')
             ->with(2, 'test_server');
         $insertOriginStmt = $this->getMock('Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\Mocks\StatementMock');
-        $insertOriginStmt->expects($this->at(5))
-            ->method('bindValue')
-            ->with(5, 'test_server');
         $insertOriginStmt->expects($this->at(6))
             ->method('bindValue')
-            ->with(6, 'test@example.com');
+            ->with(6, 'test_server');
         $insertOriginStmt->expects($this->at(7))
             ->method('bindValue')
-            ->with(7, 'ewsemailorigin');
+            ->with(7, 'test@example.com');
+        $insertOriginStmt->expects($this->at(8))
+            ->method('bindValue')
+            ->with(8, 'ewsemailorigin');
 
         $statementCount = -1;
         $actualSqls = [];
@@ -226,8 +226,8 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         // insert origin
         $actualSql = $actualSqls[1];
         $expectedSql = 'INSERT INTO oro_email_origin'
-            . ' (isActive, sync_code_updated, synchronized, sync_code, ews_server, ews_user_email, name)'
-            . ' VALUES (?, ?, ?, ?, ?, ?, ?)';
+            . ' (isActive, sync_code_updated, synchronized, sync_code, sync_count, ews_server, ews_user_email, name)'
+            . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         $this->assertEquals($expectedSql, $actualSql);
     }
 }

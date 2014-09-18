@@ -430,7 +430,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function testProcess()
     {
-        $processor = $this->createProcessor(['getFolders', 'loadEmails']);
+        $processor = $this->createProcessor(['getFolders', 'syncEmails']);
 
         $origin = new EwsEmailOrigin();
         $origin->setUserEmail('test@example.com');
@@ -481,7 +481,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->method('getFolders')
             ->will($this->returnValue($folders));
         $processor->expects($this->once())
-            ->method('loadEmails')
+            ->method('syncEmails')
             ->with($folders[$ewsFolder2->getEwsId()], $sq)
             ->will($this->returnValue(new \DateTime('2014-04-15 12:30:00')));
 
