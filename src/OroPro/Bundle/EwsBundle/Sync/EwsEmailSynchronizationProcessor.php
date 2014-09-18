@@ -7,6 +7,7 @@ use Doctrine\ORM\Query;
 
 use Psr\Log\LoggerInterface;
 
+use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\Email as EmailEntity;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
@@ -77,7 +78,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             } else {
                 // set current folder
                 $this->manager->selectFolder(
-                    $folder->getType() === EmailFolder::OTHER ? $folderInfo->ewsFolder->getEwsId() : $folder->getType()
+                    $folder->getType() === FolderType::OTHER ? $folderInfo->ewsFolder->getEwsId() : $folder->getType()
                 );
 
                 // register the current folder in the entity builder
@@ -149,12 +150,12 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $retrievedFolderCount = $this->ensureDistinguishedFolderInitialized(
             $folders,
             $origin,
-            EmailFolder::SENT
+            FolderType::SENT
         );
         $retrievedFolderCount += $this->ensureDistinguishedFolderInitialized(
             $folders,
             $origin,
-            EmailFolder::INBOX
+            FolderType::INBOX
         );
         $this->log->notice(sprintf('Retrieved %d folder(s).', $retrievedFolderCount));
 
@@ -198,7 +199,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                     $childFolder->FolderId,
                     $this->buildFolderFullName($childFolder, $distinguishedFolder, $childFolders),
                     $childFolder->DisplayName,
-                    EmailFolder::OTHER
+                    FolderType::OTHER
                 );
                 $folderInfo->folderType = $folderType;
             }
@@ -385,7 +386,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      */
     protected function isApplicableEmail(Email $email, $folderType)
     {
-        if ($folderType === EmailFolder::SENT) {
+        if ($folderType === FolderType::SENT) {
             return $this->knownEmailAddressChecker->isAtLeastOneKnownEmailAddress(
                 $email->getToRecipients(),
                 $email->getCcRecipients(),

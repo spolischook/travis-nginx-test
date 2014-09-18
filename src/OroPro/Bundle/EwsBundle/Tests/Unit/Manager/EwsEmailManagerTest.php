@@ -2,7 +2,8 @@
 
 namespace OroPro\Bundle\EwsBundle\Tests\Unit\Manager\DTO;
 
-use Oro\Bundle\EmailBundle\Entity\EmailFolder;
+use Oro\Bundle\EmailBundle\Model\FolderType;
+
 use OroPro\Bundle\EwsBundle\Connector\EwsAdditionalPropertiesBuilder;
 use OroPro\Bundle\EwsBundle\Connector\EwsConnector;
 use OroPro\Bundle\EwsBundle\Manager\EwsEmailManager;
@@ -18,13 +19,13 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new EwsEmailManager($connector);
 
         $this->assertEquals(
-            $manager->getFolderId(EmailFolder::INBOX),
+            $manager->getFolderId(FolderType::INBOX),
             $manager->getSelectedFolder()
         );
 
-        $manager->selectFolder(EmailFolder::SENT);
+        $manager->selectFolder(FolderType::SENT);
         $this->assertEquals(
-            $manager->getFolderId(EmailFolder::SENT),
+            $manager->getFolderId(FolderType::SENT),
             $manager->getSelectedFolder()
         );
 

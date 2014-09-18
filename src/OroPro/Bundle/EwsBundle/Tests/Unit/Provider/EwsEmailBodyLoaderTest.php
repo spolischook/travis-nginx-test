@@ -10,6 +10,7 @@ use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
+use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures\EmailAddress;
 
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder;
@@ -176,9 +177,9 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $outboxFolder = new EmailFolder();
         $outboxFolder
-            ->setType(EmailFolder::SENT)
-            ->setName(EmailFolder::SENT)
-            ->setFullName(EmailFolder::SENT);
+            ->setType(FolderType::SENT)
+            ->setName(FolderType::SENT)
+            ->setFullName(FolderType::SENT);
 
         $origin = new InternalEmailOrigin();
         $origin->addFolder($outboxFolder);
@@ -190,9 +191,9 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $outboxFolder = new EmailFolder();
         $outboxFolder
-            ->setType(EmailFolder::SENT)
-            ->setName(EmailFolder::SENT)
-            ->setFullName(EmailFolder::SENT);
+            ->setType(FolderType::SENT)
+            ->setName(FolderType::SENT)
+            ->setFullName(FolderType::SENT);
 
         $origin = new EwsEmailOrigin();
         $origin->addFolder($outboxFolder);
@@ -230,7 +231,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->setInternalDate(new \DateTime('now', new \DateTimeZone('UTC')))
             ->setImportance(Email::NORMAL_IMPORTANCE);
 
-        $result->addFolder($origin->getFolder(EmailFolder::SENT));
+        $result->addFolder($origin->getFolder(FolderType::SENT));
 
         return $result;
     }

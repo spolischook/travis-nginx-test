@@ -4,10 +4,12 @@ namespace OroPro\Bundle\EwsBundle\Tests\Unit\Sync;
 
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\Email as EmailEntity;
+use Oro\Bundle\EmailBundle\Model\FolderType;
+use Oro\Bundle\EmailBundle\Tests\Unit\ReflectionUtil;
+
 use OroPro\Bundle\EwsBundle\Entity\EwsEmail;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
-use Oro\Bundle\EmailBundle\Tests\Unit\ReflectionUtil;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
 use OroPro\Bundle\EwsBundle\Manager\DTO\Email;
 use OroPro\Bundle\EwsBundle\Manager\DTO\ItemId;
@@ -82,7 +84,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
                 $folderId,
                 'Inbox/Test',
                 'Test',
-                EmailFolder::OTHER
+                FolderType::OTHER
             ]
         );
 
@@ -97,7 +99,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($folderId->ChangeKey, $folderInfo->ewsFolder->getEwsChangeKey());
         $this->assertEquals('Inbox/Test', $folderInfo->ewsFolder->getFolder()->getFullName());
         $this->assertEquals('Test', $folderInfo->ewsFolder->getFolder()->getName());
-        $this->assertEquals(EmailFolder::OTHER, $folderInfo->ewsFolder->getFolder()->getType());
+        $this->assertEquals(FolderType::OTHER, $folderInfo->ewsFolder->getFolder()->getType());
     }
 
     public function testEnsureFolderPersistedForExistingFolder()
@@ -120,7 +122,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $existEwsFolder = $this->createEwsEmailFolder();
         $existEwsFolder->getFolder()->setFullName('Inbox/TestOld');
         $existEwsFolder->getFolder()->setName('TestOld');
-        $existEwsFolder->getFolder()->setType(EmailFolder::DRAFTS);
+        $existEwsFolder->getFolder()->setType(FolderType::DRAFTS);
         $existEwsFolder->setEwsId($folderId->Id);
         $existEwsFolder->setEwsChangeKey('old_ck');
         $existFolderInfo = new FolderInfo($existEwsFolder, false);
@@ -139,7 +141,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
                 $folderId,
                 'Inbox/Test',
                 'Test',
-                EmailFolder::OTHER
+                FolderType::OTHER
             ]
         );
 
@@ -154,7 +156,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('CK', $folderInfo->ewsFolder->getEwsChangeKey());
         $this->assertEquals('Inbox/Test', $folderInfo->ewsFolder->getFolder()->getFullName());
         $this->assertEquals('Test', $folderInfo->ewsFolder->getFolder()->getName());
-        $this->assertEquals(EmailFolder::OTHER, $folderInfo->ewsFolder->getFolder()->getType());
+        $this->assertEquals(FolderType::OTHER, $folderInfo->ewsFolder->getFolder()->getType());
     }
 
     public function testEnsureFolderPersistedForExistingFolderWithNoChanges()
@@ -177,7 +179,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $existEwsFolder = $this->createEwsEmailFolder();
         $existEwsFolder->getFolder()->setFullName('Inbox/TestOld');
         $existEwsFolder->getFolder()->setName('TestOld');
-        $existEwsFolder->getFolder()->setType(EmailFolder::DRAFTS);
+        $existEwsFolder->getFolder()->setType(FolderType::DRAFTS);
         $existEwsFolder->setEwsId($folderId->Id);
         $existEwsFolder->setEwsChangeKey($folderId->ChangeKey);
         $existFolderInfo = new FolderInfo($existEwsFolder, false);
@@ -196,7 +198,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
                 $folderId,
                 'Inbox/Test',
                 'Test',
-                EmailFolder::OTHER
+                FolderType::OTHER
             ]
         );
 
@@ -211,7 +213,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('CK', $folderInfo->ewsFolder->getEwsChangeKey());
         $this->assertEquals('Inbox/Test', $folderInfo->ewsFolder->getFolder()->getFullName());
         $this->assertEquals('Test', $folderInfo->ewsFolder->getFolder()->getName());
-        $this->assertEquals(EmailFolder::OTHER, $folderInfo->ewsFolder->getFolder()->getType());
+        $this->assertEquals(FolderType::OTHER, $folderInfo->ewsFolder->getFolder()->getType());
     }
 
     public function testEnsureDistinguishedFolderInitialized()
@@ -236,7 +238,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
 
         $this->manager->expects($this->once())
             ->method('getDistinguishedFolderName')
-            ->with(EmailFolder::SENT)
+            ->with(FolderType::SENT)
             ->will($this->returnValue('SentItems'));
         $this->manager->expects($this->once())
             ->method('getDistinguishedFolder')
@@ -261,7 +263,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
                 $distinguishedFolder->FolderId,
                 $distinguishedFolder->DisplayName,
                 $distinguishedFolder->DisplayName,
-                EmailFolder::SENT
+                FolderType::SENT
             )
             ->will($this->returnValue($distinguishedFolderInfo));
         $processor->expects($this->at(1))
@@ -272,7 +274,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
                 $childFolder->FolderId,
                 'Test/Test_c',
                 $childFolder->DisplayName,
-                EmailFolder::OTHER
+                FolderType::OTHER
             )
             ->will($this->returnValue($childFolderInfo));
 
@@ -282,14 +284,14 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             [
                 &$folders,
                 $origin,
-                EmailFolder::SENT
+                FolderType::SENT
             ]
         );
 
         $this->assertEquals(2, $result);
 
-        $this->assertEquals(EmailFolder::SENT, $distinguishedFolderInfo->folderType);
-        $this->assertEquals(EmailFolder::SENT, $childFolderInfo->folderType);
+        $this->assertEquals(FolderType::SENT, $distinguishedFolderInfo->folderType);
+        $this->assertEquals(FolderType::SENT, $childFolderInfo->folderType);
     }
 
     public function testEnsureFoldersInitialized()
@@ -304,7 +306,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $folders,
                 $origin,
-                EmailFolder::SENT
+                FolderType::SENT
             )
             ->will($this->returnValue(2));
         $processor->expects($this->at(1))
@@ -312,7 +314,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $folders,
                 $origin,
-                EmailFolder::INBOX
+                FolderType::INBOX
             )
             ->will($this->returnValue(3));
 
@@ -442,7 +444,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $ewsFolder2 = $this->createEwsEmailFolder();
         $ewsFolder2->setEwsId('2');
         $ewsFolder2->getFolder()->setFullName('Folder2');
-        $ewsFolder2->getFolder()->setType(EmailFolder::OTHER);
+        $ewsFolder2->getFolder()->setType(FolderType::OTHER);
         $ewsFolder2->getFolder()->setSynchronizedAt(new \DateTime('2014-04-15 11:30:00'));
 
         $folders = [];
