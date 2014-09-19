@@ -12,46 +12,11 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $config    = new Configuration();
         $processor = new Processor();
-        $this->assertEquals(
-            [
-                'settings' => [
-                    'resolved'                       => true,
-                    'contacts_sync_direction'        => [
-                        'value' => 'Both',
-                        'scope' => 'app'
-                    ],
-                    'contacts_conflict_resolution'   => [
-                        'value' => 'OroCRMAlwaysWins',
-                        'scope' => 'app'
-                    ],
-                    'contacts_sync_interval_orocrm'  => [
-                        'value' => 120,
-                        'scope' => 'app'
-                    ],
-                    'contacts_sync_interval_outlook' => [
-                        'value' => 30,
-                        'scope' => 'app'
-                    ],
-                    'contacts_keys'                  => [
-                        'value' => [
-                            ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
-                            ['OroCRM' => 'firstName', 'Outlook' => 'FirstName'],
-                        ],
-                        'scope' => 'app'
-                    ],
-                    'contacts_mapping'               => [
-                        'value' => [
-                            ['OroCRM' => 'description', 'Outlook' => 'Body'],
-                            ['OroCRM' => 'jobTitle', 'Outlook' => 'JobTitle'],
-                            ['OroCRM' => 'firstName', 'Outlook' => 'FirstName'],
-                            ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
-                            ['OroCRM' => 'middleName', 'Outlook' => 'MiddleName'],
-                        ],
-                        'scope' => 'app'
-                    ],
-                ]
-            ],
-            $processor->processConfiguration($config, [])
-        );
+
+        $actualConfiguration = $processor->processConfiguration($config, []);
+
+        $this->assertInternalType('array', $actualConfiguration);
+        $this->assertTrue(isset($actualConfiguration['settings']));
+        $this->assertCount(7, $actualConfiguration['settings']);
     }
 }

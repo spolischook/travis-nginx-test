@@ -5,18 +5,18 @@ namespace OroCRMPro\Bundle\FusionCharts\Tests\Unit\Model\Data\Transformer;
 use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
 use Oro\Bundle\ChartBundle\Model\Data\MappedData;
 use OroCRM\Bundle\CampaignBundle\Entity\Campaign;
-use OroCRMPro\Bundle\FusionCharts\Model\Data\Transformer\MultiLineDataTransformer;
+use OroCRMPro\Bundle\FusionCharts\Model\Data\Transformer\CampaignMultiLineDataTransformer;
 
-class MultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
+class CampaignMultiLineDataTransformerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var MultiLineDataTransformer
+     * @var CampaignMultiLineDataTransformer
      */
     protected $transformer;
 
     protected function setUp()
     {
-        $this->transformer = new MultiLineDataTransformer();
+        $this->transformer = new CampaignMultiLineDataTransformer();
     }
 
     /**
