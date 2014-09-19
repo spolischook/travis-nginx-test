@@ -65,7 +65,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $this->emailEntityBuilder->clear();
 
         // iterate through all folders and do a synchronization of emails for each one
-        $folders = $this->getFolders($origin);
+        $folders = $this->syncFolders($origin);
         foreach ($folders as $folderInfo) {
             $folder = $folderInfo->ewsFolder->getFolder();
 
@@ -101,13 +101,13 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     }
 
     /**
-     * Gets a list of folders to be synchronized
+     * Performs synchronization of folders
      *
      * @param EmailOrigin $origin
      *
-     * @return FolderInfo[]
+     * @return FolderInfo[] The list of folders for which emails need to be synchronized
      */
-    protected function getFolders(EmailOrigin $origin)
+    protected function syncFolders(EmailOrigin $origin)
     {
         $this->log->notice('Loading folders ...');
 
@@ -342,12 +342,12 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $this->log->notice(sprintf('Loading emails from "%s" folder ...', $folder->getFullName()));
         $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToString()));
 
-        $iterator = new EwsEmailIterator($this->manager, $searchQuery, $this->log);
+        $emails = new EwsEmailIterator($this->manager, $searchQuery, $this->log);
 
         $count = 0;
         $batch = [];
         /** @var Email $email */
-        foreach ($iterator as $email) {
+        foreach ($emails as $email) {
             if (!$this->isApplicableEmail($email, $folderInfo->folderType)) {
                 continue;
             }
@@ -526,5 +526,22 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $this->em->persist($ewsEmail);
             }
         }
+    }
+
+    /**
+     * @param EmailEntity[]|array $emails
+     *
+     * @return array
+     */
+    protected function getEmailsByMessageId(array $emails)
+    {
+        $result = [];
+
+        /** @var EmailEntity $email */
+        foreach ($emails as $email) {
+            $result[$email->getMessageId()] = $email;
+        }
+
+        return $result;
     }
 }
