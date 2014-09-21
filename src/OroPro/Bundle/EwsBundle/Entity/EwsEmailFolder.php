@@ -9,7 +9,7 @@ use Oro\Bundle\EmailBundle\Entity\EmailFolder;
  * EWS Email Folder
  *
  * @ORM\Table(name="oro_email_folder_ews")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="OroPro\Bundle\EwsBundle\Entity\Repository\EwsEmailFolderRepository")
  */
 class EwsEmailFolder
 {

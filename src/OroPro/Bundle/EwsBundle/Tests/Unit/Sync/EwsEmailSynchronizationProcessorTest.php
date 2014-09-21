@@ -274,7 +274,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
                 $childFolder->FolderId,
                 'Test/Test_c',
                 $childFolder->DisplayName,
-                FolderType::OTHER
+                FolderType::SENT
             )
             ->will($this->returnValue($childFolderInfo));
 
@@ -332,7 +332,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetFolders()
+    public function testSyncFolders()
     {
         $processor = $this->createProcessor(['ensureFoldersInitialized']);
 
@@ -355,52 +355,12 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $folders['2'] = new FolderInfo($ewsFolder2, true);
         $folders['3'] = new FolderInfo($ewsFolder3, false);
 
-        $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getResult'))
-            ->getMockForAbstractClass();
-        $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $repo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+        $repo = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Entity\Repository\EwsEmailFolderRepository')
             ->disableOriginalConstructor()
             ->getMock();
         $repo->expects($this->once())
-            ->method('createQueryBuilder')
-            ->with('ews')
-            ->will($this->returnValue($qb));
-        $this->em->expects($this->once())
-            ->method('getRepository')
-            ->with('OroProEwsBundle:EwsEmailFolder')
-            ->will($this->returnValue($repo));
-
-        $index = 0;
-        $qb->expects($this->at($index++))
-            ->method('select')
-            ->with('ews, f')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('innerJoin')
-            ->with('ews.folder', 'f')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('where')
-            ->with('f.origin = ?1')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('orderBy')
-            ->with('f.name')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('setParameter')
-            ->with(1, $origin)
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('getQuery')
-            ->will($this->returnValue($query));
-
-        $query->expects($this->once())
-            ->method('getResult')
+            ->method('getFoldersByOrigin')
+            ->with($this->identicalTo($origin))
             ->will(
                 $this->returnValue(
                     [
@@ -410,6 +370,10 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
                     ]
                 )
             );
+        $this->em->expects($this->once())
+            ->method('getRepository')
+            ->with('OroProEwsBundle:EwsEmailFolder')
+            ->will($this->returnValue($repo));
 
         $processor->expects($this->once())
             ->method('ensureFoldersInitialized')
@@ -421,7 +385,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
 
         $result = ReflectionUtil::callProtectedMethod(
             $processor,
-            'getFolders',
+            'syncFolders',
             [
                 $origin
             ]
@@ -432,7 +396,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function testProcess()
     {
-        $processor = $this->createProcessor(['getFolders', 'syncEmails']);
+        $processor = $this->createProcessor(['syncFolders', 'syncEmails']);
 
         $origin = new EwsEmailOrigin();
         $origin->setUserEmail('test@example.com');
@@ -458,7 +422,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $sqb->expects($this->once())
-            ->method('sent')
+            ->method('received')
             ->with($ewsFolder2->getFolder()->getSynchronizedAt());
         $sqb->expects($this->once())
             ->method('get')
@@ -480,7 +444,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($sqb));
 
         $processor->expects($this->once())
-            ->method('getFolders')
+            ->method('syncFolders')
             ->will($this->returnValue($folders));
         $processor->expects($this->once())
             ->method('syncEmails')
@@ -503,11 +467,17 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function testSaveEmails()
     {
         $processor = $this->createProcessor();
 
+        $origin = new EwsEmailOrigin();
+
         $folder = new EmailFolder();
+        $folder->setOrigin($origin);
         ReflectionUtil::setId($folder, 123);
 
         $ewsFolder = new EwsEmailFolder();
@@ -536,7 +506,22 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->setXMessageId('x_message_id')
             ->setXThreadId('x_thread_id');
 
-        $this->initSaveEmailQBMocks($folder, $email1Id, $email2Id);
+        $repo = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Entity\Repository\EwsEmailRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->em->expects($this->any())
+            ->method('getRepository')
+            ->with('OroProEwsBundle:EwsEmail')
+            ->will($this->returnValue($repo));
+
+        $repo->expects($this->once())
+            ->method('getExistingEwsIds')
+            ->with($this->identicalTo($folder), [$email1Id->getId(), $email2Id->getId()])
+            ->will($this->returnValue([$email1Id->getId()]));
+        $repo->expects($this->once())
+            ->method('getEmailsByMessageIds')
+            ->with($this->identicalTo($origin))
+            ->will($this->returnValue([]));
 
         $newEmailEntity = new EmailEntity();
         $newEwsEmailEntity = new EwsEmail();
@@ -562,7 +547,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
                 $email2->getBccRecipients()
             )
             ->will($this->returnValue($newEmailEntity));
-        $this->em->expects($this->exactly(2))
+        $this->em->expects($this->once())
             ->method('persist')
             ->with($newEwsEmailEntity);
 
@@ -575,20 +560,13 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($batch));
         $batch->expects($this->once())
             ->method('persist');
+        $batch->expects($this->once())
+            ->method('getChanges')
+            ->will($this->returnValue([]));
 
         $newEmailEntity->setMessageId('message_id');
         $new2EmailEntity = new EmailEntity();
         ReflectionUtil::setId($new2EmailEntity, '123');
-
-        $emails = [
-            $newEmailEntity,
-            $new2EmailEntity
-        ];
-
-        $batch->expects($this->once())
-            ->method('getEmails')
-            ->with()
-            ->will($this->returnValue($emails));
 
         $this->em->expects($this->once())
             ->method('flush');
@@ -606,67 +584,6 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($email2->getXMessageId(), $newEmailEntity->getXMessageId());
         $this->assertEquals($email2->getXThreadId(), $newEmailEntity->getXThreadId());
         $this->assertEquals($folder, $newEmailEntity->getFolders()->first());
-    }
-
-    protected function initSaveEmailQBMocks(EmailFolder $folder, ItemId $email1Id, ItemId $email2Id)
-    {
-        $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getResult'))
-            ->getMockForAbstractClass();
-        $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $repo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $repo->expects($this->once())
-            ->method('createQueryBuilder')
-            ->with('e')
-            ->will($this->returnValue($qb));
-        $this->em->expects($this->once())
-            ->method('getRepository')
-            ->with('OroProEwsBundle:EwsEmail')
-            ->will($this->returnValue($repo));
-
-        $index = 0;
-        $qb->expects($this->at($index++))
-            ->method('select')
-            ->with('e.ewsId, se.id')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('innerJoin')
-            ->with('e.email', 'se')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('innerJoin')
-            ->with('se.folders', 'sf')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('where')
-            ->with('sf.id = :folderId AND e.ewsId IN (:ewsIds)')
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('setParameter')
-            ->with('folderId', $folder->getId())
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('setParameter')
-            ->with('ewsIds', [$email1Id->getId(), $email2Id->getId()])
-            ->will($this->returnSelf());
-        $qb->expects($this->at($index++))
-            ->method('getQuery')
-            ->will($this->returnValue($query));
-
-        $query->expects($this->once())
-            ->method('getResult')
-            ->will(
-                $this->returnValue(
-                    [
-                        ['ewsId' => $email1Id->getId(), 'id' => $email1Id->getId()],
-                    ]
-                )
-            );
     }
 
     /**

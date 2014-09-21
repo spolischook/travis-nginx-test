@@ -13,7 +13,7 @@ use Oro\Bundle\EmailBundle\Entity\Email;
  *      name="oro_email_ews",
  *      indexes={@ORM\Index(name="idx_oro_email_ews", columns={"ews_id"})}
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="OroPro\Bundle\EwsBundle\Entity\Repository\EwsEmailRepository")
  */
 class EwsEmail
 {
