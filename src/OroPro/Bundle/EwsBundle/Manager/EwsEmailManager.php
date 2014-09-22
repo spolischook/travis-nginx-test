@@ -2,7 +2,8 @@
 
 namespace OroPro\Bundle\EwsBundle\Manager;
 
-use Oro\Bundle\EmailBundle\Entity\EmailFolder;
+use Oro\Bundle\EmailBundle\Model\FolderType;
+
 use OroPro\Bundle\EwsBundle\Connector\EwsAdditionalPropertiesBuilder;
 use OroPro\Bundle\EwsBundle\Connector\EwsConnector;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder;
@@ -24,10 +25,10 @@ class EwsEmailManager
      * @var array
      */
     protected static $distinguishedFolderNames = [
-        EmailFolder::INBOX  => EwsType\DistinguishedFolderIdNameType::INBOX,
-        EmailFolder::SENT   => EwsType\DistinguishedFolderIdNameType::SENTITEMS,
-        EmailFolder::DRAFTS => EwsType\DistinguishedFolderIdNameType::DRAFTS,
-        EmailFolder::TRASH  => EwsType\DistinguishedFolderIdNameType::DELETEDITEMS,
+        FolderType::INBOX  => EwsType\DistinguishedFolderIdNameType::INBOX,
+        FolderType::SENT   => EwsType\DistinguishedFolderIdNameType::SENTITEMS,
+        FolderType::DRAFTS => EwsType\DistinguishedFolderIdNameType::DRAFTS,
+        FolderType::TRASH  => EwsType\DistinguishedFolderIdNameType::DELETEDITEMS,
     ];
 
     /**
@@ -51,7 +52,7 @@ class EwsEmailManager
     {
         $this->connector = $connector;
 
-        $this->selectFolder(EmailFolder::INBOX);
+        $this->selectFolder(FolderType::INBOX);
     }
 
     /**
@@ -67,7 +68,7 @@ class EwsEmailManager
     /**
      * Set selected folder
      *
-     * @param $folder
+     * @param string $folder
      */
     public function selectFolder($folder)
     {
