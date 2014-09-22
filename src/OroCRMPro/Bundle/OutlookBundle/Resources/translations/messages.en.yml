@@ -6,3 +6,14 @@ orocrmpro_outlook:
         conflict_resolution:    Conflicts Resolution
         sync_interval_orocrm:   CRM sync interval (in seconds)
         sync_interval_outlook:  Outlook sync interval (in seconds)
+
+        contacts_sync_direction:
+            choices:
+                orocrm_to_outlook:  OroCRM to Outlook
+                outlook_to_orocrm:  Outlook to OroCRM
+                both:               Both OroCRM and Outlook
+
+        contacts_conflict_resolution:
+            choices:
+                orocrm_always_wins:  OroCRM always wins
+                outlook_always_wins: Outlook always wins
