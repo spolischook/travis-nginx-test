@@ -16,6 +16,8 @@ use OroPro\Bundle\ElasticSearchBundle\RequestBuilder\RequestBuilderInterface;
 
 class ElasticSearch extends AbstractEngine
 {
+    const ENGINE_NAME = 'elastic_search';
+
     /**
      * @var IndexAgent
      */
