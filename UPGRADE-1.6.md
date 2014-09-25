@@ -22,6 +22,3 @@ UPGRADE FROM 1.5.1 to 1.6
 
 ####OrganizationBundle has been added:
 - User is able to create new or edit all existing organizations (System > User Management > Organizations)
-
-
-
