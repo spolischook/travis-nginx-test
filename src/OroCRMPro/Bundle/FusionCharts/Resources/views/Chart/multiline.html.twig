@@ -72,7 +72,7 @@
                     var handler = new multipleHandler(
                         {{ json|json_encode|raw }},
                         {{ options|json_encode|raw }},
-                        {{ oro_currency_symbol_prepend() }}
+                        {{ oro_currency_symbol_prepend()|json_encode }}
                     );
 
                     $('#{{ containerId }}-chart').insertFusionCharts({
