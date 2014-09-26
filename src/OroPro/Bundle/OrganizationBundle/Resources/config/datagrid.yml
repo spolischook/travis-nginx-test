@@ -44,14 +44,14 @@ datagrid:
         actions:
             view:
                 type:          navigate
-                label:         oropro.organization.datagrid.action.view
+                label:         oro.grid.action.view
                 link:          view_link
                 icon:          eye-open
                 acl_resource:  oro_organization_view
                 rowAction:     true
             update:
                 type:          navigate
-                label:         oropro.organization.datagrid.action.update
+                label:         oro.grid.action.update
                 link:          update_link
                 icon:          edit
                 acl_resource:  oro_organization_update
