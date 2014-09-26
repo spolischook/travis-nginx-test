@@ -2,59 +2,16 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
+use Oro\Bundle\OrganizationBundle\Form\Type\OrganizationsSelectType;
 
-class OrganizationsProSelectType extends AbstractType
+class OrganizationsProSelectType extends OrganizationsSelectType
 {
-    /** @var  EntityManager */
-    protected $em;
-
-    /** @var BusinessUnitManager */
-    protected $buManager;
-
-    public function __construct(EntityManager $em, BusinessUnitManager $buManager)
-    {
-        $this->em        = $em;
-        $this->buManager = $buManager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(
-            [
-                'configs'                     => [
-                    'is_translated_option' => false,
-                    'is_safe'              => false,
-                ],
-                //'organization_tree_ids'       => [],
-                //'selected_organizations'      => [],
-                //'selected_business_units'     => [],
-                //'show_organizations_selector' => false,
-                'inherit_data'            => true,
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'oro_organizations_select';
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -117,15 +74,5 @@ class OrganizationsProSelectType extends AbstractType
 
         $view->vars['selected_organizations']  = $organizationsData;
         $view->vars['selected_business_units'] = $businessUnitData;
-    }
-
-    /**
-     * Prepare choice options for a select
-     *
-     * @return array
-     */
-    protected function getOrganizationOptions()
-    {
-        return $this->em->getRepository('OroOrganizationBundle:Organization')->getEnabled();
     }
 }

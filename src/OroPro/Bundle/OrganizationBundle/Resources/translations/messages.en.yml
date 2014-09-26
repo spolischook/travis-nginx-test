@@ -4,8 +4,6 @@ oro:
             GLOBAL: Organization
 
 oropro:
-#    user:
-#        organizations.label: Orgs
     organization:
         datagrid:
             action:
