@@ -21,7 +21,6 @@ class OrganizationsProSelectType extends OrganizationsSelectType
             'organizations',
             'entity',
             [
-                'label'    => 'oropro.user.organizations.label',
                 'class'    => 'OroOrganizationBundle:Organization',
                 'property' => 'name',
                 'multiple' => true,
@@ -36,7 +35,6 @@ class OrganizationsProSelectType extends OrganizationsSelectType
                 'multiple' => true,
                 'expanded' => true,
                 'required' => false,
-                'label'    => 'oro.user.business_units.label'
             ]
         );
     }
