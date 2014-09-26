@@ -5,10 +5,13 @@ namespace OroPro\Bundle\ElasticSearchBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+use OroPro\Bundle\ElasticSearchBundle\Engine\ElasticSearch;
+
 class ElasticSearchProviderPass implements CompilerPassInterface
 {
     const ENGINE_PARAMETERS_KEY   = 'oro_search.engine_parameters';
 
+    const SEARCH_ENGINE_NAME      = 'search_engine_name';
     const SEARCH_ENGINE_HOST      = 'search_engine_host';
     const SEARCH_ENGINE_PORT      = 'search_engine_port';
     const SEARCH_ENGINE_USERNAME  = 'search_engine_username';
@@ -20,6 +23,10 @@ class ElasticSearchProviderPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        if ($container->getParameter(self::SEARCH_ENGINE_NAME) != ElasticSearch::ENGINE_NAME) {
+            return;
+        }
+
         $engineParameters = $container->getParameter(self::ENGINE_PARAMETERS_KEY);
         $engineParameters = $this->processElasticSearchConnection($container, $engineParameters);
         $container->setParameter(self::ENGINE_PARAMETERS_KEY, $engineParameters);

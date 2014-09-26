@@ -3,6 +3,7 @@
 namespace OroPro\Bundle\ElasticSearchBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use OroPro\Bundle\ElasticSearchBundle\DependencyInjection\Compiler\ElasticSearchProviderPass;
+use OroPro\Bundle\ElasticSearchBundle\Engine\ElasticSearch;
 
 class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
 {
@@ -46,9 +47,14 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($value));
         }
 
-        $this->container->expects($this->at($callOrder))
-            ->method('setParameter')
-            ->with(ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY, $elasticSearchConfiguration);
+        if ($elasticSearchConfiguration) {
+            $this->container->expects($this->at($callOrder))
+                ->method('setParameter')
+                ->with(ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY, $elasticSearchConfiguration);
+        } else {
+            $this->container->expects($this->never())
+                ->method('setParameter');
+        }
 
         $this->compiler->process($this->container);
     }
@@ -60,6 +66,7 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
     public function processProvider()
     {
         $parameters = [
+            ElasticSearchProviderPass::SEARCH_ENGINE_NAME      => ElasticSearch::ENGINE_NAME,
             ElasticSearchProviderPass::SEARCH_ENGINE_HOST      => self::DEFAULT_HOST,
             ElasticSearchProviderPass::SEARCH_ENGINE_PORT      => self::DEFAULT_PORT,
             ElasticSearchProviderPass::SEARCH_ENGINE_USERNAME  => self::DEFAULT_USERNAME,
@@ -68,9 +75,16 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
         ];
 
         return [
+            'not elastic search engine' => [
+                'parameters' => [
+                    ElasticSearchProviderPass::SEARCH_ENGINE_NAME => 'other_engine'
+                ],
+                'elasticSearchConfiguration' => []
+            ],
             'empty global configuration' => [
                 'parameters' => array_merge(
                     [
+                        ElasticSearchProviderPass::SEARCH_ENGINE_NAME    => ElasticSearch::ENGINE_NAME,
                         ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY => []
                     ],
                     $parameters
@@ -92,6 +106,7 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
             'not empty global configuration and parameters still not null' => [
                 'parameters' => array_merge(
                     [
+                        ElasticSearchProviderPass::SEARCH_ENGINE_NAME     => ElasticSearch::ENGINE_NAME,
                         ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY  => [
                             'client' => [
                                 'hosts'            => ['someTestHost:port'],
@@ -119,6 +134,7 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
 
             'not empty global configuration; Host and Auth parameters still null' => [
                 'parameters' => [
+                    ElasticSearchProviderPass::SEARCH_ENGINE_NAME    => ElasticSearch::ENGINE_NAME,
                     ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY => [
                         'client' => [
                             'hosts'            => ['someTestHost:port'],
@@ -145,6 +161,7 @@ class ElasticSearchProviderPassTest extends \PHPUnit_Framework_TestCase
 
             'not empty global configuration; Only one Auth parameters still not null' => [
                 'parameters' => [
+                    ElasticSearchProviderPass::SEARCH_ENGINE_NAME    => ElasticSearch::ENGINE_NAME,
                     ElasticSearchProviderPass::ENGINE_PARAMETERS_KEY => [
                         'client' => [
                             'hosts'            => ['someTestHost:port'],
