@@ -1,3 +1,8 @@
+oro:
+    security:
+        access-level:
+            GLOBAL: Organization
+
 oropro:
     organization:
         datagrid:
@@ -8,3 +13,4 @@ oropro:
         controller:
             message:
                 saved: Organization saved
+

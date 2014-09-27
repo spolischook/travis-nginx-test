@@ -29,9 +29,11 @@ define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotransl
             if (schema.value.type == 'percent') {
                 dataSource.chart['numberSuffix'] = '%';
             } else if (schema.value.type == 'currency') {
-                var currencySymbol = localeSettings.getCurrencySymbol();
-                var symbolPosition = 'number' + (isCurrencyPrepend ? 'Prefix' : 'Suffix');
-                dataSource.chart[symbolPosition] = currencySymbol;
+                if (isCurrencyPrepend !== null) {
+                    var currencySymbol = localeSettings.getCurrencySymbol();
+                    var symbolPosition = 'number' + (isCurrencyPrepend ? 'Prefix' : 'Suffix');
+                    dataSource.chart[symbolPosition] = currencySymbol;
+                }
                 dataSource.chart['forceDecimals'] = '1';
             }
 
