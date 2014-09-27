@@ -38,6 +38,11 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
     protected $indexAgent;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $eventDispatcher;
+
+    /**
      * @var ElasticSearch
      */
     protected $engine;
@@ -93,11 +98,17 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
         $this->indexAgent->expects($this->any())->method('getIndexName')
             ->will($this->returnValue(self::TEST_INDEX));
 
+        $this->eventDispatcher =
+            $this->getMockBuilder('Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher')
+                ->disableOriginalConstructor()
+                ->getMock();
+
         $this->engine = new ElasticSearch(
             $this->registry,
             $this->doctrineHelper,
             $this->mapper,
-            $this->indexAgent
+            $this->indexAgent,
+            $this->eventDispatcher
         );
     }
 
@@ -341,7 +352,8 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
             $this->registry,
             $this->doctrineHelper,
             $this->mapper,
-            $this->indexAgent
+            $this->indexAgent,
+            $this->eventDispatcher
         ];
 
         return $this->getMockBuilder('OroPro\Bundle\ElasticSearchBundle\Engine\ElasticSearch')
