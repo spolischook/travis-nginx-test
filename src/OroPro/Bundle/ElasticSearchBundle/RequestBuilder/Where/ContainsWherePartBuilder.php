@@ -35,7 +35,7 @@ class ContainsWherePartBuilder extends AbstractWherePartBuilder
         }
 
         // add condition
-        $request['body']['query']['bool'][$boolPart][] = $queryPart;
+        $request['body']['query']['filtered']['query']['bool'][$boolPart][] = $queryPart;
 
         return $request;
     }

@@ -85,5 +85,3 @@ services:
 
     oropro_elasticsearch.request_builder.where.in:
         class: %oropro_elasticsearch.request_builder.where.in.class%
-        arguments:
-            - @oropro_elasticsearch.request_builder.where.equals
