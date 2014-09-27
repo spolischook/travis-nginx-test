@@ -37,6 +37,7 @@ services:
             - @oro_entity.doctrine_helper
             - @oro_search.mapper
             - @oropro_elasticsearch.engine.index_agent
+            - @event_dispatcher
         calls:
             - [setLogQueries, [%oro_search.log_queries%]]
             - [addRequestBuilder, [@oropro_elasticsearch.request_builder.from]]
