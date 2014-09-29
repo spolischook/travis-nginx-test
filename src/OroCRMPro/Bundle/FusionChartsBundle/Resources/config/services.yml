@@ -1,0 +1,10 @@
+parameters:
+    orocrmpro_chart.data_transformer.multi_set.class: OroCRMPro\Bundle\FusionChartsBundle\Model\Data\Transformer\MultiSetDataTransformer
+    orocrmpro_chart.data_transformer.campaign_multi_line.class: OroCRMPro\Bundle\FusionChartsBundle\Model\Data\Transformer\CampaignMultiLineDataTransformer
+
+services:
+    orocrmpro_chart.data_transformer.campaign_multi_line:
+        class: %orocrmpro_chart.data_transformer.campaign_multi_line.class%
+
+    orocrmpro_chart.data_transformer.multi_set:
+        class: %orocrmpro_chart.data_transformer.multi_set.class%

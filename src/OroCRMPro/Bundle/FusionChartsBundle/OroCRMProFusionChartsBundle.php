@@ -1,6 +1,6 @@
 <?php
 
-namespace OroCRMPro\Bundle\FusionCharts;
+namespace OroCRMPro\Bundle\FusionChartsBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

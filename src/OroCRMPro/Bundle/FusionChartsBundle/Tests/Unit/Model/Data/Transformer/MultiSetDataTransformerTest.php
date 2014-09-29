@@ -1,9 +1,9 @@
 <?php
 
-namespace OroCRMPro\Bundle\FusionCharts\Tests\Unit\Model\Data\Transformer;
+namespace OroCRMPro\Bundle\FusionChartsBundle\Tests\Unit\Model\Data\Transformer;
 
 use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
-use OroCRMPro\Bundle\FusionCharts\Model\Data\Transformer\MultiSetDataTransformer;
+use OroCRMPro\Bundle\FusionChartsBundle\Model\Data\Transformer\MultiSetDataTransformer;
 
 class MultiSetDataTransformerTest extends \PHPUnit_Framework_TestCase
 {

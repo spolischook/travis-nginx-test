@@ -1,6 +1,6 @@
 <?php
 
-namespace OroCRMPro\Bundle\FusionCharts\DependencyInjection;
+namespace OroCRMPro\Bundle\FusionChartsBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace OroCRMPro\Bundle\FusionCharts\DependencyInjection;
+namespace OroCRMPro\Bundle\FusionChartsBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

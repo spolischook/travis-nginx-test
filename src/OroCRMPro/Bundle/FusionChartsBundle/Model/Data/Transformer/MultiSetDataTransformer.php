@@ -1,6 +1,6 @@
 <?php
 
-namespace OroCRMPro\Bundle\FusionCharts\Model\Data\Transformer;
+namespace OroCRMPro\Bundle\FusionChartsBundle\Model\Data\Transformer;
 
 use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
 use Oro\Bundle\ChartBundle\Model\Data\DataInterface;

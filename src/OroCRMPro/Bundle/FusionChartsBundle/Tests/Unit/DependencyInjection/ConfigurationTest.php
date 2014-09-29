@@ -1,8 +1,8 @@
 <?php
 
-namespace OroCRMPro\Bundle\FusionCharts\Tests\Unit\DependencyInjection;
+namespace OroCRMPro\Bundle\FusionChartsBundle\Tests\Unit\DependencyInjection;
 
-use OroCRMPro\Bundle\FusionCharts\DependencyInjection\Configuration;
+use OroCRMPro\Bundle\FusionChartsBundle\DependencyInjection\Configuration;
 
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
