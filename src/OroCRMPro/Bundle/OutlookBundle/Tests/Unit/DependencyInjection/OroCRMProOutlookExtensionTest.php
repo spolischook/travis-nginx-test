@@ -13,10 +13,6 @@ class OroCRMProOutlookExtensionTest extends \PHPUnit_Framework_TestCase
         $extension = new OroCRMProOutlookExtension();
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 
-        $container->expects($this->at(0))
-            ->method('addResource')
-            ->with(new FileResource(realpath(__DIR__ . '/../../../Resources/config/services.yml')));
-
         $container->expects($this->once())
             ->method('prependExtensionConfig')
             ->with('oro_crm_pro_outlook', $this->isType('array'));

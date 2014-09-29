@@ -16,9 +16,9 @@ oro_system_configuration:
                 label:          orocrmpro_outlook.form.sync_direction
                 tooltip:        orocrmpro_outlook.form.tooltip.sync_direction
                 choices:
-                    OroCRMToOutlook:  OroCRM to Outlook
-                    OutlookToOroCRM:  Outlook to OroCRM
-                    Both:             Both OroCRM and Outlook
+                    OroCRMToOutlook:  orocrmpro_outlook.form.contacts_sync_direction.choices.orocrm_to_outlook
+                    OutlookToOroCRM:  orocrmpro_outlook.form.contacts_sync_direction.choices.outlook_to_orocrm
+                    Both:             orocrmpro_outlook.form.contacts_sync_direction.choices.both
                 constraints:
                     - NotBlank: ~
         oro_crm_pro_outlook.contacts_conflict_resolution:
@@ -29,8 +29,8 @@ oro_system_configuration:
                 label:          orocrmpro_outlook.form.conflict_resolution
                 tooltip:        orocrmpro_outlook.form.tooltip.conflict_resolution
                 choices:
-                    OroCRMAlwaysWins:  OroCRM always wins
-                    OutlookAlwaysWins: Outlook always wins
+                    OroCRMAlwaysWins:  orocrmpro_outlook.form.contacts_conflict_resolution.choices.orocrm_always_wins
+                    OutlookAlwaysWins: orocrmpro_outlook.form.contacts_conflict_resolution.choices.outlook_always_wins
                 constraints:
                     - NotBlank: ~
         oro_crm_pro_outlook.contacts_sync_interval_orocrm:
