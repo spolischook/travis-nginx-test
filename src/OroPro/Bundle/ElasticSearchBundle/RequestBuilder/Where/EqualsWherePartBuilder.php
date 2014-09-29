@@ -25,7 +25,7 @@ class EqualsWherePartBuilder extends AbstractWherePartBuilder
         }
 
         // add condition
-        $request['body']['query']['bool'][$boolPart][] = ['match' => [$field => $value]];
+        $request['body']['query']['filtered']['query']['bool'][$boolPart][] = ['match' => [$field => $value]];
 
         return $request;
     }

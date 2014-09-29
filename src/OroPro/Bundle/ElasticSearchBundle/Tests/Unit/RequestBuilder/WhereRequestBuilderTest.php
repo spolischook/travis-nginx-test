@@ -69,9 +69,9 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
+                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
                         'must' => [['match' => [Indexer::TEXT_ALL_DATA_FIELD => 'value']]]
-                    ]]]
+                    ]]]]]
                 ],
             ],
             'field ~ value' => [
@@ -84,9 +84,9 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
+                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
                         'must' => [['wildcard' => ['field' => '*value*']]]
-                    ]]]
+                    ]]]]]
                 ],
             ],
             'field !~ value' => [
@@ -99,9 +99,9 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
+                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
                         'must_not' => [['wildcard' => ['field' => '*value*']]]
-                    ]]]
+                    ]]]]]
                 ],
             ],
             'field1 ~ value1 or field2 ~ value2' => [
@@ -120,12 +120,12 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
+                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
                         'should' => [
                             ['wildcard' => ['field1' => '*value1*']],
                             ['wildcard' => ['field2' => '*value2*']],
                         ]
-                    ]]]
+                    ]]]]]
                 ],
             ],
             'field = value' => [
@@ -138,9 +138,9 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
+                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
                         'must' => [['match' => ['field' => 'value']]]
-                    ]]]
+                    ]]]]]
                 ],
             ],
             'field != value' => [
@@ -153,9 +153,9 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
+                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
                         'must_not' => [['match' => ['field' => 'value']]]
-                    ]]]
+                    ]]]]]
                 ],
             ],
             'field1 = value1 or field2 = value2' => [
@@ -174,12 +174,12 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
+                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
                         'should' => [
                             ['match' => ['field1' => 'value1']],
                             ['match' => ['field2' => 'value2']],
                         ]
-                    ]]]
+                    ]]]]]
                 ],
             ],
             'field > 1 and field < 10' => [
@@ -198,12 +198,12 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
+                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
                         'must' => [
                             ['range' => ['field' => ['gt' => 1]]],
                             ['range' => ['field' => ['lt' => 10]]],
                         ]
-                    ]]]
+                    ]]]]]
                 ],
             ],
             'field <= 1 or field => 10' => [
@@ -222,12 +222,12 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
+                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
                         'should' => [
                             ['range' => ['field' => ['lte' => 1]]],
                             ['range' => ['field' => ['gte' => 10]]],
                         ]
-                    ]]]
+                    ]]]]]
                 ],
             ],
             'field in (first, second)' => [
@@ -240,29 +240,29 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
-                        'should' => [
-                            ['match' => ['field' => 'first']],
-                            ['match' => ['field' => 'second']],
-                        ]
-                    ]]]
+                    'body' => ['query' => ['filtered' => ['filter' => ['bool' => [
+                        'must' => [['or' => [
+                            ['term' => ['field' => 'first']],
+                            ['term' => ['field' => 'second']],
+                        ]]]
+                    ]]]]]
                 ],
             ],
             'field in first' => [
                 'where' => [
                     [
-                        'keyword'  => Query::KEYWORD_AND,
+                        'keyword'  => Query::KEYWORD_OR,
                         'name'     => 'field',
                         'operator' => Query::OPERATOR_IN,
                         'value'    => 'first'
                     ],
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
-                        'should' => [
-                            ['match' => ['field' => 'first']],
-                        ]
-                    ]]]
+                    'body' => ['query' => ['filtered' => ['filter' => ['bool' => [
+                        'should' => [['or' => [
+                            ['term' => ['field' => 'first']],
+                        ]]]
+                    ]]]]]
                 ],
             ],
             'field !in (first, second)' => [
@@ -275,12 +275,12 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
                 'request' => [
-                    'body' => ['query' => ['bool' => [
-                        'must_not' => [
-                            ['match' => ['field' => 'first']],
-                            ['match' => ['field' => 'second']],
-                        ]
-                    ]]]
+                    'body' => ['query' => ['filtered' => ['filter' => ['bool' => [
+                        'must_not' => [['or' => [
+                            ['term' => ['field' => 'first']],
+                            ['term' => ['field' => 'second']],
+                        ]]]
+                    ]]]]]
                 ],
             ],
         ];

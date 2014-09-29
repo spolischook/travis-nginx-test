@@ -41,7 +41,8 @@ class RangeWherePartBuilder extends AbstractWherePartBuilder
         $modifier = $this->operatorModifiers[$operator];
 
         // add condition
-        $request['body']['query']['bool'][$boolPart][] = ['range' => [$field => [$modifier => $value]]];
+        $request['body']['query']['filtered']['query']['bool'][$boolPart][]
+            = ['range' => [$field => [$modifier => $value]]];
 
         return $request;
     }

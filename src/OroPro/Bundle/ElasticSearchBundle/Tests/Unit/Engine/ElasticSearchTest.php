@@ -38,6 +38,11 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
     protected $indexAgent;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $eventDispatcher;
+
+    /**
      * @var ElasticSearch
      */
     protected $engine;
@@ -93,8 +98,11 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
         $this->indexAgent->expects($this->any())->method('getIndexName')
             ->will($this->returnValue(self::TEST_INDEX));
 
+        $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+
         $this->engine = new ElasticSearch(
             $this->registry,
+            $this->eventDispatcher,
             $this->doctrineHelper,
             $this->mapper,
             $this->indexAgent
@@ -339,6 +347,7 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
     {
         $arguments = [
             $this->registry,
+            $this->eventDispatcher,
             $this->doctrineHelper,
             $this->mapper,
             $this->indexAgent
