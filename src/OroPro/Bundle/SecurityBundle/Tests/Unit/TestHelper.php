@@ -4,13 +4,12 @@ namespace OroPro\Bundle\SecurityBundle\Tests\Unit;
 
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
-use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
-use Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension;
 use Oro\Bundle\SecurityBundle\Owner\EntityOwnerAccessor;
 use Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
+
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProviderStub;
 
 use OroPro\Bundle\SecurityBundle\Acl\Extension\EntityAclProExtension;
@@ -33,35 +32,8 @@ class TestHelper
     /**
      * @param  OwnershipMetadataProvider $metadataProvider
      * @param  OwnerTree                 $ownerTree
-     * @return AclExtensionSelector
-     */
-    public function createAclExtensionSelector(
-        OwnershipMetadataProvider $metadataProvider = null,
-        OwnerTree $ownerTree = null
-    ) {
-        $idAccessor = new ObjectIdAccessor();
-        $selector = new AclExtensionSelector($idAccessor);
-        $actionMetadataProvider =
-            $this->testCase->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $actionMetadataProvider->expects($this->testCase->any())
-            ->method('isKnownAction')
-            ->will($this->testCase->returnValue(true));
-        $selector->addAclExtension(
-            new ActionAclExtension($actionMetadataProvider)
-        );
-        $selector->addAclExtension(
-            $this->createEntityAclExtension($metadataProvider, $ownerTree, $idAccessor)
-        );
-
-        return $selector;
-    }
-
-    /**
-     * @param  OwnershipMetadataProvider $metadataProvider
-     * @param  OwnerTree                 $ownerTree
      * @param  ObjectIdAccessor          $idAccessor
+     *
      * @return EntityAclProExtension
      */
     public function createEntityAclExtension(
