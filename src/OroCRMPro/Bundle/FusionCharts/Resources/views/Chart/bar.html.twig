@@ -55,7 +55,7 @@
                 function ($, dataHandler, mediator) {
                     var dataSource = {{ json|json_encode|raw }};
                     var schema = {{ options.data_schema|json_encode|raw }};
-                    var isCurrencyPrepend = {{ oro_currency_symbol_prepend()|json_encode }};
+                    var isCurrencyPrepend = {{ oro_currency_symbol_prepend()|json_encode|raw }};
                     var handler = new dataHandler(dataSource, schema, isCurrencyPrepend);
                     dataSource = handler.getDataSource();
                     var max = handler.getMaxValue();
