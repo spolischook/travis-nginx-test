@@ -9,6 +9,9 @@ use OroPro\Bundle\SecurityBundle\DependencyInjection\Compiler\EntityAclCompilerP
 
 class OroProSecurityBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
