@@ -34,6 +34,7 @@ services:
         class: %oropro_elasticsearch.engine.class%
         arguments:
             - @doctrine
+            - @event_dispatcher
             - @oro_entity.doctrine_helper
             - @oro_search.mapper
             - @oropro_elasticsearch.engine.index_agent
@@ -84,5 +85,3 @@ services:
 
     oropro_elasticsearch.request_builder.where.in:
         class: %oropro_elasticsearch.request_builder.where.in.class%
-        arguments:
-            - @oropro_elasticsearch.request_builder.where.equals

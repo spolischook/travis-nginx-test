@@ -2,6 +2,8 @@
 
 namespace OroPro\Bundle\ElasticSearchBundle\Engine;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Elasticsearch\Client;
@@ -34,18 +36,21 @@ class ElasticSearch extends AbstractEngine
     protected $requestBuilders = [];
 
     /**
-     * @param ManagerRegistry $registry
-     * @param DoctrineHelper $doctrineHelper
-     * @param ObjectMapper $mapper
-     * @param IndexAgent $indexAgent
+     * @param ManagerRegistry          $registry
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param DoctrineHelper           $doctrineHelper
+     * @param ObjectMapper             $mapper
+     * @param IndexAgent               $indexAgent
+     *
      */
     public function __construct(
         ManagerRegistry $registry,
+        EventDispatcherInterface $eventDispatcher,
         DoctrineHelper $doctrineHelper,
         ObjectMapper $mapper,
         IndexAgent $indexAgent
     ) {
-        parent::__construct($registry, $doctrineHelper, $mapper);
+        parent::__construct($registry, $eventDispatcher, $doctrineHelper, $mapper);
 
         $this->indexAgent = $indexAgent;
     }
