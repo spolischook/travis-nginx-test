@@ -1,0 +1,2 @@
+bundles:
+    - { name: OroCRMPro\Bundle\FusionChartsBundle\OroCRMProFusionChartsBundle, priority: 60 }

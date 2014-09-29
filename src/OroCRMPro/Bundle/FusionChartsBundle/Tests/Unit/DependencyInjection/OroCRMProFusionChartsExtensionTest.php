@@ -1,8 +1,8 @@
 <?php
 
-namespace OroCRMPro\Bundle\FusionCharts\Tests\Unit\DependencyInjection;
+namespace OroCRMPro\Bundle\FusionChartsBundle\Tests\Unit\DependencyInjection;
 
-use OroCRMPro\Bundle\FusionCharts\DependencyInjection\OroCRMProFusionChartsExtension;
+use OroCRMPro\Bundle\FusionChartsBundle\DependencyInjection\OroCRMProFusionChartsExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class OroCRMProFusionChartsExtensionTest extends \PHPUnit_Framework_TestCase
