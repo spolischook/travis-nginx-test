@@ -2,6 +2,11 @@ parameters:
     oropro_security.licence.server_agent.class: OroPro\Bundle\SecurityBundle\Licence\ServerAgent
     oropro_security.licence.sender.class:       OroPro\Bundle\SecurityBundle\Licence\Sender
 
+    #
+    # Override ACLExtension
+    #
+    oro_security.acl.extension.entity.class:    OroPro\Bundle\SecurityBundle\Acl\Extension\EntityAclProExtension
+
 services:
     oropro_security.licence.server_agent:
         class: %oropro_security.licence.server_agent.class%
