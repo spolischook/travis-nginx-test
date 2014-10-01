@@ -51,17 +51,11 @@ class Configuration implements ConfigurationInterface
             ['OroCRM' => 'addresses[1].street', 'Outlook' => 'HomeAddressStreet'],
             ['OroCRM' => 'addresses[1].postalCode', 'Outlook' => 'HomeAddressPostalCode'],
 
-            ['OroCRM' => 'addresses[2].region', 'Outlook' => 'MailingAddressState'],
-            ['OroCRM' => 'addresses[2].country', 'Outlook' => 'MailingAddressCountry'],
-            ['OroCRM' => 'addresses[2].city', 'Outlook' => 'MailingAddressCity'],
-            ['OroCRM' => 'addresses[2].street', 'Outlook' => 'MailingAddressStreet'],
-            ['OroCRM' => 'addresses[2].postalCode', 'Outlook' => 'MailingAddressPostalCode'],
-
-            ['OroCRM' => 'addresses[3].region', 'Outlook' => 'OtherAddressState'],
-            ['OroCRM' => 'addresses[3].country', 'Outlook' => 'OtherAddressCountry'],
-            ['OroCRM' => 'addresses[3].city', 'Outlook' => 'OtherAddressCity'],
-            ['OroCRM' => 'addresses[3].street', 'Outlook' => 'OtherAddressStreet'],
-            ['OroCRM' => 'addresses[3].postalCode', 'Outlook' => 'OtherAddressPostalCode'],
+            ['OroCRM' => 'addresses[2].region', 'Outlook' => 'OtherAddressState'],
+            ['OroCRM' => 'addresses[2].country', 'Outlook' => 'OtherAddressCountry'],
+            ['OroCRM' => 'addresses[2].city', 'Outlook' => 'OtherAddressCity'],
+            ['OroCRM' => 'addresses[2].street', 'Outlook' => 'OtherAddressStreet'],
+            ['OroCRM' => 'addresses[2].postalCode', 'Outlook' => 'OtherAddressPostalCode'],
         ];
 
         SettingsBuilder::append(
