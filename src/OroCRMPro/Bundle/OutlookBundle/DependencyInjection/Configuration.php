@@ -20,22 +20,25 @@ class Configuration implements ConfigurationInterface
         $contactKeys    = [
             ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
             ['OroCRM' => 'firstName', 'Outlook' => 'FirstName'],
-            ['OroCRM' => 'nameSuffix', 'Outlook' => 'Suffix'],
             ['OroCRM' => 'birthday', 'Outlook' => 'Birthday'],
             ['OroCRM' => 'gender', 'Outlook' => 'Gender'],
-            ['OroCRM' => 'fax', 'Outlook' => 'BusinessFaxNumber'],
         ];
         $contactMapping = [
             ['OroCRM' => 'description', 'Outlook' => 'Body'],
             ['OroCRM' => 'jobTitle', 'Outlook' => 'JobTitle'],
+            ['OroCRM' => 'nameSuffix', 'Outlook' => 'Suffix'],
             ['OroCRM' => 'firstName', 'Outlook' => 'FirstName'],
             ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
             ['OroCRM' => 'middleName', 'Outlook' => 'MiddleName'],
+            ['OroCRM' => 'birthday', 'Outlook' => 'Birthday'],
+            ['OroCRM' => 'gender', 'Outlook' => 'Gender'],
             ['OroCRM' => 'emails[primary=true].email', 'Outlook' => 'Email1Address'],
             ['OroCRM' => 'emails[primary=false][0].email', 'Outlook' => 'Email2Address'],
             ['OroCRM' => 'emails[primary=false][1].email', 'Outlook' => 'Email3Address'],
 
             ['OroCRM' => 'phones[primary=true][0].phone', 'Outlook' => 'PrimaryTelephoneNumber'],
+            ['OroCRM' => 'fax', 'Outlook' => 'BusinessFaxNumber'],
+
             ['OroCRM' => 'addresses[0].region', 'Outlook' => 'BusinessAddressState'],
             ['OroCRM' => 'addresses[0].country', 'Outlook' => 'BusinessAddressCountry'],
             ['OroCRM' => 'addresses[0].city', 'Outlook' => 'BusinessAddressCity'],
