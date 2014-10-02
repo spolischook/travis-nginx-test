@@ -1,0 +1,65 @@
+oro_entity_config:
+    organization:
+        entity:
+            form:
+                block_config:
+                    organization:
+                        #title:              oro.attachment.block_titles.attachments.label
+                        title:              'Applicable organization'
+                        priority:           0
+            items:
+                organization:
+                    options:
+                        #priority:           100
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+#                    grid:
+#                        type:               select
+#                        label:              'Organization'
+#                        filter_type:        choice
+#                        required:           true
+#                        sortable:           true
+#                        filterable:         true
+#                        show_filter:        true
+#                        #choices:            oro_organization.method.get_ownership_type
+                    form:
+                        type:               oro_type_choice_organization_type
+                        options:
+                            block:          organization
+                            required:       true
+                            #label:          'Applicable organization'
+
+        fields:
+            items:
+                organization:
+                    options:
+                        #priority:           100
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+#                    grid:
+#                        type:               select
+#                        label:              'Organization'
+#                        filter_type:        choice
+#                        required:           true
+#                        sortable:           true
+#                        filterable:         true
+#                        show_filter:        true
+#                        #choices:            oro_organization.method.get_ownership_type
+                    form:
+                        #type:               oro_type_choice_ownership_type
+                        type:               choice
+                        options:
+                            block:          other
+                            required:       true
+                            label:          'Organization'
+                            choices:        ['Org1', 'Org2']
+                            empty_value:    false
+                            multiple:       true
+
+

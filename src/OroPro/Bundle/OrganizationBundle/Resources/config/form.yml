@@ -1,0 +1,10 @@
+parameters:
+    oropro_organization.form.type.organization_type.class: OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationType
+
+services:
+    oropro_organization.form.type.organization_type:
+        class: %oropro_organization.form.type.organization_type.class%
+        arguments:
+            - @doctrine
+        tags:
+            - { name: form.type, alias: oro_type_choice_organization_type }
