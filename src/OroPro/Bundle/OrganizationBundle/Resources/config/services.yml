@@ -1,4 +1,16 @@
 parameters:
     oropro_organization.entity.class: Oro\Bundle\OrganizationBundle\Entity\Organization
 
-services: ~
+    oropro_organization.twig.extension.entity_data.class: OroPro\Bundle\OrganizationBundle\Twig\EntityDataExtension
+    #
+    # Overrides
+    #
+
+services:
+
+    oropro_organization.twig.extension.entity_data:
+        class: %oropro_organization.twig.extension.entity_data.class%
+        arguments:
+            - @doctrine
+        tags:
+            - { name: twig.extension }

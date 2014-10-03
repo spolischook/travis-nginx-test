@@ -1,0 +1,35 @@
+{% block oro_type_choice_organization_type_widget %}
+    {% spaceless %}
+        <div class="controls-row">
+            {{ form_widget(form.all) }}
+            <div class="span5">
+                {{ form_label(form.all) }}
+            </div>
+        </div>
+        <div class="controls-row">
+            {{ form_widget(form.selective) }}
+        </div>
+        {#<script type="text/javascript">#}
+            {#require(['oroproorganization/js/init-applicable-organization-selector'])#}
+        {#</script>#}
+        <script type="text/javascript">
+        require(['jquery'], function($) {
+            'use strict';
+            $(function() {
+//                $(document).on('change', 'input.bu:checkbox', function (e) {
+//                    var org_id = $(this).data('organization');
+//                    $('input.org-id-' + org_id + ':checkbox').prop('checked', true);
+//                });
+//                $(document).on('change', 'input.org:checkbox', function (e) {
+//                    if($(this).prop('checked') == false) {
+//                        $('input.bu:checkbox[data-organization="' + $(this).val() + '"]')
+//                                .each(function(index, el){
+//                                    $(el).prop('checked', false);
+//                                });
+//                    }
+//                });
+            });
+        });
+        </script>
+    {% endspaceless %}
+{% endblock %}
