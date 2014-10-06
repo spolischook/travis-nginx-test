@@ -9,38 +9,8 @@
         <div class="controls-row">
             {{ form_widget(form.selective) }}
         </div>
-        {#<script type="text/javascript">#}
-            {#require(['oroproorganization/js/init-applicable-organization-selector'])#}
-        {#</script>#}
         <script type="text/javascript">
-        require(['jquery'], function($) {
-            'use strict';
-            $(function() {
-                var all_selector = $('input.all-selector:checkbox');
-                var selective_selectors = $('div.selective-selector input:checkbox');
-
-                if ($(all_selector).prop('checked') === true) {
-                    $(selective_selectors).each(function(index, el){
-                        $(el).prop('disabled', true);
-                    });
-                }
-
-                $(document).on('change', 'input.all-selector:checkbox', function () {
-                    console.log(this);
-                    if($(this).prop('checked') === true) {
-                        console.log(1);
-                        $(selective_selectors).each(function(index, el){
-                            $(el).prop('disabled', true);
-                        });
-                    } else {
-                        console.log(2);
-                        $(selective_selectors).each(function(index, el){
-                            $(el).removeAttr('disabled');
-                        });
-                    }
-                });
-            });
-        });
+            require(['oroproorganization/js/init-applicable-organization-selector']);
         </script>
     {% endspaceless %}
 {% endblock %}

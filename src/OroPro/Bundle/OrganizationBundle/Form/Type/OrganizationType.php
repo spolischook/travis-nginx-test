@@ -13,9 +13,6 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository;
 
 /**
- * Class OrganizationType
- * @package OroPro\Bundle\OrganizationBundle\Form\Type
- *
  * Used in EntityManagement to configure entity/field availability per organization
  */
 class OrganizationType extends AbstractType
