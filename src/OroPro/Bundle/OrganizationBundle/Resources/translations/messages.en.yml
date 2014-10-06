@@ -16,6 +16,4 @@ oropro:
         controller:
             message:
                 saved: Organization saved
-        block_titles:
-            organizations.label: Applicable organizations
-        applicable: Organizations
+        applicable: Applicable organizations

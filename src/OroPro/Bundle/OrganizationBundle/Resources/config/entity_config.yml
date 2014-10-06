@@ -26,7 +26,7 @@ oro_entity_config:
                         type:               oro_type_choice_organization_type
                         options:
                             block:          other
-                            required:       false
+                            required:       true
                             label:          oropro.organization.applicable
         field:
             items:
