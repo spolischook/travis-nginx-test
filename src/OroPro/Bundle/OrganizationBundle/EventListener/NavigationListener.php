@@ -2,42 +2,13 @@
 
 namespace OroPro\Bundle\OrganizationBundle\EventListener;
 
-use Symfony\Component\Translation\Translator;
-
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\NavigationBundle\Event\ConfigureMenuEvent;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Oro\Bundle\EntityBundle\EventListener\NavigationListener as BaseNavigationListener;
 
-class NavigationListener
+class NavigationListener extends BaseNavigationListener
 {
-    /**
-     * @var SecurityFacade
-     */
-    protected $securityFacade;
-
-    /** @var ConfigManager $configManager */
-    protected $configManager;
-
-    /** @var  Translator */
-    protected $translator;
-
-    /**
-     * @param SecurityFacade $securityFacade
-     * @param ConfigManager  $configManager
-     * @param Translator     $translator
-     */
-    public function __construct(
-        SecurityFacade $securityFacade,
-        ConfigManager $configManager,
-        Translator $translator
-    ) {
-        $this->securityFacade       = $securityFacade;
-        $this->configManager        = $configManager;
-        $this->translator           = $translator;
-    }
-
     /**
      * @param ConfigureMenuEvent $event
      */
@@ -80,10 +51,12 @@ class NavigationListener
                     }
 
                     $applicable = $organizationConfig->get('applicable');
-                    if (!in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])) {
-                        continue;
-                    }
 
+                    if (!$applicable['all']) {
+                        if (!in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])) {
+                            continue;
+                        }
+                    }
                     $children[$config->get('label')] = array(
                         'label'   => $this->translator->trans($config->get('label')),
                         'options' => array(
