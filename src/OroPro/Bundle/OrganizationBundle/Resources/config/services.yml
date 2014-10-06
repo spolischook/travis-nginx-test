@@ -1,10 +1,11 @@
 parameters:
     oropro_organization.entity.class: Oro\Bundle\OrganizationBundle\Entity\Organization
-
     oropro_organization.twig.extension.entity_data.class: OroPro\Bundle\OrganizationBundle\Twig\EntityDataExtension
     #
-    # Overrides
+    # Override Oro\Bundle\EntityBundle\EventListener\NavigationListener
+    # in enterprise edition CustomEntities navigation works in organization scope
     #
+    oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\NavigationListener
 
 services:
 
