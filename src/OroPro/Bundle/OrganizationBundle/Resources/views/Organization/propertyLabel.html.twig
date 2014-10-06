@@ -1,13 +1,6 @@
-{#{{ dump() }}#}
-{#{{ dump(record) }}#}
-{#{{ dump(record.getValue('id')) }}#}
-
-{{ dump(value) }}
-{{ value }}
-
-{{ dump(oro_entity_data('OroOrganizationBundle:Organization', [1,2])) }}
-
-{#{% if record.hasValue('entity_icon') is defined %}#}
-    {#<i class="{{ record.getValue('entity_icon') }} hide-text pull-right"></i>#}
-{#{% endif %}#}
+{% if record.getValue('extend_owner') is same as ('System') %}
+    {{ 'oropro.organization.datagrid.applicable_all'|trans }}
+{% else %}
+    {{ dump(value) }}
+{% endif %}
 

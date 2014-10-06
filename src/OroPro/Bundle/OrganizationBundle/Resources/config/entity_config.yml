@@ -1,11 +1,6 @@
 oro_entity_config:
     organization:
         entity:
-            form:
-                block_config:
-                    organization:
-                        title:              oropro.organization.block_titles.organizations.label
-                        priority:           0
             items:
                 applicable:
                     options:
@@ -16,42 +11,43 @@ oro_entity_config:
                                 scope:      extend
                             code:           owner
                             value:          Custom
+                        auditable:          false
                     grid:
                         type:               html
-                        label:              'Organization'
-                        filter_type:        choice
+                        label:              oropro.organization.datagrid.organization
+                        #filter_type:        choice
                         #required:           false
                         #sortable:           false
-                        filterable:         true
-                        show_filter:        true
-                        choices:            oropro_organization.method.get_organization_type
+                        #filterable:         false
+                        #show_filter:        false
+                        #choices:            oropro_organization.method.get_organization_type
                         template:           OroProOrganizationBundle:Organization:propertyLabel.html.twig
                     form:
                         type:               oro_type_choice_organization_type
                         options:
-                            block:          organization
+                            block:          other
                             required:       false
-        fields:
+                            label:          oropro.organization.applicable
+        field:
             items:
                 applicable:
                     options:
-#                        indexed:            true
+                        indexed:            true
+                        indexed_type:       json
                         required_property:
                             config_id:
                                 scope:      extend
                             code:           owner
                             value:          Custom
-#                    grid:
-#                        type:               select
-#                        label:              'Organization'
-#                        filter_type:        choice
-#                        required:           true
-#                        sortable:           false
-#                        filterable:         true
-#                        show_filter:        true
-#                        choices:            oropro_organization.method.get_organization_type
+                        auditable:          false
+                    grid:
+                        type:               html
+                        label:              oropro.organization.datagrid.organization
+                        template:           OroProOrganizationBundle:Organization:propertyLabel.html.twig
                     form:
                         type:               oro_type_choice_organization_type
                         options:
-                            block:          organization
+                            block:          other
                             required:       false
+                            label:          oropro.organization.applicable
+

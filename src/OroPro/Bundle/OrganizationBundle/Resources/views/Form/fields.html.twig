@@ -16,18 +16,29 @@
         require(['jquery'], function($) {
             'use strict';
             $(function() {
-//                $(document).on('change', 'input.bu:checkbox', function (e) {
-//                    var org_id = $(this).data('organization');
-//                    $('input.org-id-' + org_id + ':checkbox').prop('checked', true);
-//                });
-//                $(document).on('change', 'input.org:checkbox', function (e) {
-//                    if($(this).prop('checked') == false) {
-//                        $('input.bu:checkbox[data-organization="' + $(this).val() + '"]')
-//                                .each(function(index, el){
-//                                    $(el).prop('checked', false);
-//                                });
-//                    }
-//                });
+                var all_selector = $('input.all-selector:checkbox');
+                var selective_selectors = $('div.selective-selector input:checkbox');
+
+                if ($(all_selector).prop('checked') === true) {
+                    $(selective_selectors).each(function(index, el){
+                        $(el).prop('disabled', true);
+                    });
+                }
+
+                $(document).on('change', 'input.all-selector:checkbox', function () {
+                    console.log(this);
+                    if($(this).prop('checked') === true) {
+                        console.log(1);
+                        $(selective_selectors).each(function(index, el){
+                            $(el).prop('disabled', true);
+                        });
+                    } else {
+                        console.log(2);
+                        $(selective_selectors).each(function(index, el){
+                            $(el).removeAttr('disabled');
+                        });
+                    }
+                });
             });
         });
         </script>

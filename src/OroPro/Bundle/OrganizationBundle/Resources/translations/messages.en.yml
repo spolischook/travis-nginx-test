@@ -7,11 +7,15 @@ oropro:
     organization:
         datagrid:
             action:
-                view: "View"
-                update: "Update"
-                delete: "Delete"
+                view:   View
+                update: Update
+                delete: Delete
+
+            organization:   Organization
+            applicable_all: All
         controller:
             message:
                 saved: Organization saved
         block_titles:
             organizations.label: Applicable organizations
+        applicable: Organizations
