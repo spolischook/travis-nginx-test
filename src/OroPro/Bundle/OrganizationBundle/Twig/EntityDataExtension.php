@@ -3,7 +3,6 @@
 namespace OroPro\Bundle\OrganizationBundle\Twig;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 
 class EntityDataExtension extends \Twig_Extension
@@ -40,20 +39,12 @@ class EntityDataExtension extends \Twig_Extension
     public function getEntityData($entityClass, $ids = [])
     {
         /**
-         * TODO: add ACL checking
+         * TODO: retrive organization names for given organization ids
          */
 
         /** @var EntityManager $em */
         $em = $this->doctrine->getManager();
-
-        //$pk = $em->getClassMetadata($entityClass)->getIdentifier();
-        //return $pk;
-
-        $data = $em->getRepository($entityClass)->matching(
-            new Criteria()
-        );
-        //findBy(['id in(' . implode(',', $ids) . ')']);
-
+        $data = [];
 
         return $data;
 
