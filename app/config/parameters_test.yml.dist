@@ -1,5 +1,5 @@
 parameters:
-    database_driver:        pdo_mysql
+    datapase_driver:        pdo_mysql
     database_host:          127.0.0.1
     database_port:          ~
     database_name:          oro_crm_test
@@ -16,6 +16,14 @@ parameters:
     # WebSocket server config
     websocket_host:         "127.0.0.1"
     websocket_port:         8080
+
+    # search engine configuration
+    search_engine_name:      orm
+    search_engine_host:      127.0.0.1
+    search_engine_port:      ~
+    search_engine_username:  ~
+    search_engine_password:  ~
+    search_engine_auth_type: ~
 
     session_handler:        ~
 
