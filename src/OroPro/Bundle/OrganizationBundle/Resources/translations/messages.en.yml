@@ -6,17 +6,10 @@ oro:
 oropro:
     organization:
         datagrid:
-            action:
-                view:   View
-                update: Update
-                delete: Delete
-
-            organization:   Organization
             applicable_all: All
         controller:
             message:
                 saved: Organization saved
-
         entity_config:
             organization:
                 entity:
