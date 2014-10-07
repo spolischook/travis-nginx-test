@@ -1,6 +1,7 @@
 parameters:
     oropro_organization.entity.class: Oro\Bundle\OrganizationBundle\Entity\Organization
     oropro_organization.twig.extension.entity_data.class: OroPro\Bundle\OrganizationBundle\Twig\EntityDataExtension
+    oropro_organization.exclusion_provider.config.class: OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider
     #
     # Override Oro\Bundle\EntityBundle\EventListener\NavigationListener
     # in enterprise edition CustomEntities navigation works in organization scope
@@ -8,10 +9,27 @@ parameters:
     oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\NavigationListener
 
 services:
-
     oropro_organization.twig.extension.entity_data:
         class: %oropro_organization.twig.extension.entity_data.class%
         arguments:
             - @doctrine
         tags:
             - { name: twig.extension }
+
+    oropro_organization.exclusion_provider:
+        class: %oropro_organization.exclusion_provider.config.class%
+        arguments:
+            - @oro_security.security_facade
+            - @oro_entity_config.provider.organization
+        tags:
+            - { name: oro_entity.exclusion_provider.default }
+
+    oro_entity.entity_provider:
+        class: %oro_entity.entity_provider.class%
+        arguments:
+            - @oro_entity_config.provider.entity
+            - @oro_entity_config.provider.extend
+            - @oro_entity.orm.entity_class_resolver
+            - @translator
+        calls:
+            - [setExclusionProvider, [@oropro_organization.exclusion_provider]]
