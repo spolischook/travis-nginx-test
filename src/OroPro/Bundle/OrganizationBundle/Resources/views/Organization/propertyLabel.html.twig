@@ -1,6 +1,6 @@
 {% if record.getValue('extend_owner') is same as ('System') %}
     {{ 'oropro.organization.datagrid.applicable_all'|trans }}
 {% else %}
-    {{ dump(value) }}
+    {{ oropro_applicable_organizations(value) }}
 {% endif %}
 

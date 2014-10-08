@@ -11,6 +11,7 @@ services:
         class: %oropro_organization.twig.extension.entity_data.class%
         arguments:
             - @doctrine
+            - @translator
         tags:
             - { name: twig.extension }
 #

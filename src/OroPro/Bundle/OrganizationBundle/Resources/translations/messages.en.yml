@@ -6,7 +6,8 @@ oro:
 oropro:
     organization:
         datagrid:
-            applicable_all: All
+            applicable_all:  All
+            applicable_none: N/A
         controller:
             message:
                 saved: Organization saved
@@ -15,8 +16,8 @@ oropro:
                 entity:
                     items:
                         applicable: Applicable organizations
-                        grid.applicable: Organizations
+                        grid.applicable: Organization
                 field:
                     items:
                         applicable: Applicable organizations
-                        grid.applicable: Organizations
+                        grid.applicable: Organization
