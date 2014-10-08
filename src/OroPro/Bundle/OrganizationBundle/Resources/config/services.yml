@@ -6,12 +6,16 @@ parameters:
     # in enterprise edition CustomEntities navigation works in organization scope
     #
     oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\NavigationListener
+    oropro_organization.twig.extension.entity_data.class: OroPro\Bundle\OrganizationBundle\Twig\OrganizationExtension
+
+    # override community oro_entity_config.twig.extension.dynamic_fields
+    oro_entity_config.twig.extension.dynamic_fields.class: OroPro\Bundle\OrganizationBundle\Twig\DynamicFieldsExtension
 
 services:
-
     oropro_organization.twig.extension.entity_data:
         class: %oropro_organization.twig.extension.entity_data.class%
         arguments:
             - @doctrine
+            - @translator
         tags:
             - { name: twig.extension }
