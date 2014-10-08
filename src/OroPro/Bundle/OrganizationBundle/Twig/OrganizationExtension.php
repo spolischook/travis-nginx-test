@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\TranslationBundle\Translation\Translator;
 
-class EntityDataExtension extends \Twig_Extension
+class OrganizationExtension extends \Twig_Extension
 {
     const NAME = 'oropro_organization';
 
@@ -60,6 +60,8 @@ class EntityDataExtension extends \Twig_Extension
             if ($data->all === true) {
                 $result = $this->translator->trans('oropro.organization.datagrid.applicable_all');
             } elseif (!empty($data->selective)) {
+                $result = [];
+
                 /** @var EntityManager $em */
                 $em = $this->doctrine->getManager();
 
