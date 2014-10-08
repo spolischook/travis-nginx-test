@@ -1,5 +1,6 @@
 datagrid:
     organization-grid:
+        extended_entity_name: %oro_organization.organization.entity.class%
         options:
             entityHint: organization
         source:

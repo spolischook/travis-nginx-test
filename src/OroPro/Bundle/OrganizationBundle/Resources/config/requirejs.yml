@@ -1,0 +1,4 @@
+config:
+    paths:
+        'oroproorganization/js/init-applicable-organization-selector': 'bundles/oroproorganization/js/init-applicable-organization-selector.js'
+

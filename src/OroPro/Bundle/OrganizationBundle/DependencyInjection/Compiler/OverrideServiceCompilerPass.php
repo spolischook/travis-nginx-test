@@ -12,10 +12,24 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $serviceId = 'oro_organization.form.type.organizations_select';
+        /**
+         * Override Oro\Bundle\EntityBundle\Grid\DynamicFieldsExtension
+         */
+        $serviceId = 'oro_entity.datagrid.extension.dynamic_fields';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
-            $definition->setClass('OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationsProSelectType');
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Grid\DynamicFieldsExtension');
+            $definition->addArgument($container->getDefinition('oro_security.security_facade'));
+        }
+
+        /**
+         * Override Oro\Bundle\EntityConfigBundle\Twig\DynamicFieldsExtension
+         */
+        $serviceId = 'oro_entity_config.twig.extension.dynamic_fields';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Twig\DynamicFieldsExtension');
+            $definition->addArgument($container->getDefinition('oro_security.security_facade'));
         }
     }
 }

@@ -1,0 +1,16 @@
+{% block oro_type_choice_organization_type_widget %}
+    {% spaceless %}
+        <div class="controls-row">
+            {{ form_widget(form.all) }}
+            <div class="span5">
+                {{ form_label(form.all) }}
+            </div>
+        </div>
+        <div class="controls-row">
+            {{ form_widget(form.selective) }}
+        </div>
+        <script type="text/javascript">
+            require(['oroproorganization/js/init-applicable-organization-selector']);
+        </script>
+    {% endspaceless %}
+{% endblock %}
