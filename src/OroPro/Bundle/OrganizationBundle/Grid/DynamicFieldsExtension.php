@@ -4,42 +4,63 @@ namespace OroPro\Bundle\OrganizationBundle\Grid;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridGuesser;
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
-use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 
+use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Oro\Bundle\EntityBundle\Grid\DynamicFieldsExtension as DynamicFields;
+
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class DynamicFieldsExtension extends DynamicFields
 {
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
+    /**
+     * @param ConfigManager       $configManager
+     * @param EntityClassResolver $entityClassResolver
+     * @param DatagridGuesser     $datagridGuesser
+     * @param SecurityFacade      $securityFacade
+     */
+    public function __construct(
+        ConfigManager $configManager,
+        EntityClassResolver $entityClassResolver,
+        DatagridGuesser $datagridGuesser,
+        SecurityFacade $securityFacade
+    ) {
+        parent::__construct($configManager, $entityClassResolver, $datagridGuesser);
+
+        $this->securityFacade = $securityFacade;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function getFields(DatagridConfiguration $config)
     {
-        parent::getFields($config);
+        $fields = parent::getFields($config);
 
-//        $entityClassName = $this->entityClassResolver->getEntityClass($this->getEntityName($config));
-//        if (!$this->configManager->hasConfig($entityClassName)) {
-//            return [];
-//        }
-//
-//        $entityConfigProvider   = $this->configManager->getProvider('entity');
-//        $extendConfigProvider   = $this->configManager->getProvider('extend');
-//        $datagridConfigProvider = $this->configManager->getProvider('datagrid');
-//
-//        $fields   = [];
-//        $fieldIds = $entityConfigProvider->getIds($entityClassName);
-//        foreach ($fieldIds as $fieldId) {
-//            $extendConfig = $extendConfigProvider->getConfigById($fieldId);
-//            if ($extendConfig->is('owner', ExtendScope::OWNER_CUSTOM)
-//                && $datagridConfigProvider->getConfigById($fieldId)->is('is_visible')
-//                && !$extendConfig->is('state', ExtendScope::STATE_NEW)
-//                && !$extendConfig->is('is_deleted')
-//            ) {
-//                $fields[] = $fieldId;
-//            }
-//        }
-//
-//        return $fields;
+        if (!empty($fields)) {
+            $currentOrganizationId      = $this->securityFacade->getOrganizationId();
+            $organizationConfigProvider = $this->configManager->getProvider('organization');
+
+            $fields = array_filter(
+                $fields,
+                function ($fieldConfigId) use ($currentOrganizationId, $organizationConfigProvider) {
+                    $fieldConfig = $organizationConfigProvider->getConfigById($fieldConfigId);
+                    if ($fieldConfig->has('applicable')) {
+                        $config = $fieldConfig->get('applicable');
+                        if ($config['all'] === true || in_array($currentOrganizationId, $config['selective'])) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+            );
+        }
+
+        return $fields;
     }
 }
