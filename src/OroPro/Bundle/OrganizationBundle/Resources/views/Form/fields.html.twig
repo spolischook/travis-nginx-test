@@ -10,7 +10,28 @@
             {{ form_widget(form.selective) }}
         </div>
         <script type="text/javascript">
-            require(['oroproorganization/js/init-applicable-organization-selector']);
+            require(['jquery'], function($){
+                $(function() {
+                    var all_selector = 'input.all-selector:checkbox';
+                    var selective_selectors = 'div.selective-selector input:checkbox';
+                    if ($(all_selector).prop('checked') === true) {
+                        $(selective_selectors).each(function (index, el) {
+                            $(el).prop('disabled', true);
+                        });
+                    }
+                    $(document).on('change', all_selector, function () {
+                        if ($(this).prop('checked') === true) {
+                            $(selective_selectors).each(function (index, el) {
+                                $(el).prop('disabled', true);
+                            });
+                        } else {
+                            $(selective_selectors).each(function (index, el) {
+                                $(el).removeAttr('disabled');
+                            });
+                        }
+                    });
+                });
+            });
         </script>
     {% endspaceless %}
 {% endblock %}
