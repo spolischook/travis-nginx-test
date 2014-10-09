@@ -6,13 +6,13 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridGuesser;
 
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
-use Oro\Bundle\EntityBundle\Grid\DynamicFieldsExtension as DynamicFields;
+use Oro\Bundle\EntityBundle\Grid\DynamicFieldsExtension as BaseDynamicFieldsExtension;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
-class DynamicFieldsExtension extends DynamicFields
+class DynamicFieldsExtension extends BaseDynamicFieldsExtension
 {
     /** @var SecurityFacade */
     protected $securityFacade;
