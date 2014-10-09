@@ -35,10 +35,10 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
         if ($config->has('applicable')) {
             $applicable = $config->get('applicable');
 
-            return
-                $applicable['all']
-                || in_array($this->securityFacade->getOrganizationId(), $applicable['selective']);
-
+            return !(
+                $applicable['all'] === true
+                || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
+            );
         }
 
         return false;

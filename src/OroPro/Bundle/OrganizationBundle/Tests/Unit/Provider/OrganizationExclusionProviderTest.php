@@ -8,9 +8,7 @@ use OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider;
 
 class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var OrganizationExclusionProvider
-     */
+    /** @var OrganizationExclusionProvider */
     protected $provider;
 
     /**
@@ -39,14 +37,14 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider dataProvider
      */
-    public function testIsIgnoredEntity($organizationId, $className, $expected, $entity)
+    public function testIsIgnoredEntity($organizationId, $calls, $className, $expected, $entityConfig)
     {
         $this->configProvider->expects($this->once())
             ->method('getConfig')
             ->with($className)
-            ->will($this->returnValue($entity));
+            ->will($this->returnValue($entityConfig));
 
-        $this->securityFacade->expects($this->any())
+        $this->securityFacade->expects($this->exactly($calls))
             ->method('getOrganizationId')
             ->will($this->returnValue($organizationId));
 
@@ -57,15 +55,17 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                1,
-                'Test\Entity\Entity1',
-                false,
+                1,                     //organization Id
+                1,                     //getOrganizationId calls num
+                'Test\Entity\Entity1', //Entity class name
+                false,                 //expectation
                 $this->getEntityConfig(
                     'Test\Entity\Entity1',
                     [ 'applicable' => ['all' => false, 'selective' => [1]] ]
                 )
             ],
             [
+                1,
                 1,
                 'Test\Entity\Entity2',
                 true,
@@ -76,6 +76,7 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 1,
+                0,
                 'Test\Entity\Entity3',
                 false,
                 $this->getEntityConfig(
@@ -85,6 +86,7 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 4,
+                0,
                 'Test\Entity\Entity4',
                 false,
                 $this->getEntityConfig(
