@@ -31,7 +31,7 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      */
     public function isIgnoredEntity($className)
     {
-        return $this->checkAvailability($className);
+        return $this->isIgnored($className);
     }
 
     /**
@@ -39,7 +39,7 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      */
     public function isIgnoredField(ClassMetadata $metadata, $fieldName)
     {
-        return $this->checkAvailability($metadata->getName(), $fieldName);
+        return $this->isIgnored($metadata->getName(), $fieldName);
     }
 
     /**
@@ -47,7 +47,7 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      */
     public function isIgnoredRelation(ClassMetadata $metadata, $associationName)
     {
-        return $this->checkAvailability($metadata->getName(), $associationName);
+        return $this->isIgnored($metadata->getName(), $associationName);
     }
 
     /**
@@ -56,7 +56,7 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      *
      * @return bool
      */
-    protected function checkAvailability($className, $propertyName = null)
+    protected function isIgnored($className, $propertyName = null)
     {
         if (!$this->organizationConfigProvider->hasConfig($className, $propertyName)) {
             return true;
@@ -65,12 +65,13 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
         $config = $this->organizationConfigProvider->getConfig($className, $propertyName);
         if ($config->has('applicable')) {
             $applicable = $config->get('applicable');
-            if (!$applicable['all']) {
-                if (!in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])) {
-                    return true;
-                }
-            }
+
+            return !(
+                $applicable['all'] == true
+                || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
+            );
         }
+
         return false;
     }
 }
