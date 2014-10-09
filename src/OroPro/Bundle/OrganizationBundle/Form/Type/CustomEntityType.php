@@ -29,9 +29,8 @@ class CustomEntityType extends BaseCustomEntityType
         Translator $translator,
         SecurityFacade $securityFacade
     ) {
-        $this->configManager = $configManager;
-        $this->router        = $router;
-        $this->translator    = $translator;
+        parent::__construct($configManager, $router, $translator);
+
         $this->securityFacade = $securityFacade;
     }
 
