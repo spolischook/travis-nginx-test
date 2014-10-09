@@ -31,17 +31,7 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      */
     public function isIgnoredEntity($className)
     {
-        $config = $this->organizationConfigProvider->getConfig($className);
-        if ($config->has('applicable')) {
-            $applicable = $config->get('applicable');
-
-            return !(
-                $applicable['all'] === true
-                || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
-            );
-        }
-
-        return false;
+        return $this->isIgnored($className);
     }
 
     /**
@@ -49,7 +39,7 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      */
     public function isIgnoredField(ClassMetadata $metadata, $fieldName)
     {
-        return false;
+        return $this->isIgnored($metadata->getName(), $fieldName);
     }
 
     /**
@@ -57,6 +47,29 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      */
     public function isIgnoredRelation(ClassMetadata $metadata, $associationName)
     {
+        return $this->isIgnored($metadata->getName(), $associationName);
+    }
+
+    /**
+     * @param      $className
+     * @param null $propertyName
+     *
+     * @return bool
+     */
+    protected function isIgnored($className, $propertyName = null)
+    {
+        if ($this->organizationConfigProvider->hasConfig($className, $propertyName)) {
+            $config = $this->organizationConfigProvider->getConfig($className, $propertyName);
+            if ($config->has('applicable')) {
+                $applicable = $config->get('applicable');
+
+                return !(
+                    $applicable['all'] == true
+                    || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
+                );
+            }
+        }
+
         return false;
     }
 }
