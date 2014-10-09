@@ -46,6 +46,11 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
             ->with($className)
             ->will($this->returnValue($entity));
 
+        $this->configProvider->expects($this->once())
+            ->method('hasConfig')
+            ->with($className)
+            ->will($this->returnValue(true));
+
         $this->securityFacade->expects($this->any())
             ->method('getOrganizationId')
             ->will($this->returnValue($organizationId));

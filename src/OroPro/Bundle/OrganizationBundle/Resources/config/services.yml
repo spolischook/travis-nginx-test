@@ -1,6 +1,5 @@
 parameters:
     oropro_organization.entity.class: Oro\Bundle\OrganizationBundle\Entity\Organization
-    oropro_organization.twig.extension.entity_data.class: OroPro\Bundle\OrganizationBundle\Twig\EntityDataExtension
     oropro_organization.exclusion_provider.config.class: OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider
     #
     # Override Oro\Bundle\EntityBundle\EventListener\NavigationListener

@@ -35,7 +35,38 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      */
     public function isIgnoredEntity($className)
     {
-        $config = $this->configProvider->getConfig($className);
+        return $this->checkAvailability($className);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isIgnoredField(ClassMetadata $metadata, $fieldName)
+    {
+        return $this->checkAvailability($metadata->getName(), $fieldName);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isIgnoredRelation(ClassMetadata $metadata, $associationName)
+    {
+        return $this->checkAvailability($metadata->getName(), $associationName);
+    }
+
+    /**
+     * @param      $className
+     * @param null $propertyName
+     *
+     * @return bool
+     */
+    protected function checkAvailability($className, $propertyName = null)
+    {
+        if (!$this->configProvider->hasConfig($className, $propertyName)) {
+            return true;
+        }
+
+        $config = $this->configProvider->getConfig($className, $propertyName);
         if ($config->has('applicable')) {
             $applicable = $config->get('applicable');
             if (!$applicable['all']) {
@@ -44,22 +75,6 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
                 }
             }
         }
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isIgnoredField(ClassMetadata $metadata, $fieldName)
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isIgnoredRelation(ClassMetadata $metadata, $associationName)
-    {
         return false;
     }
 }
