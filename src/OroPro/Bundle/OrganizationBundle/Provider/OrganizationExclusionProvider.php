@@ -58,18 +58,16 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      */
     protected function isIgnored($className, $propertyName = null)
     {
-        if (!$this->organizationConfigProvider->hasConfig($className, $propertyName)) {
-            return true;
-        }
+        if ($this->organizationConfigProvider->hasConfig($className, $propertyName)) {
+            $config = $this->organizationConfigProvider->getConfig($className, $propertyName);
+            if ($config->has('applicable')) {
+                $applicable = $config->get('applicable');
 
-        $config = $this->organizationConfigProvider->getConfig($className, $propertyName);
-        if ($config->has('applicable')) {
-            $applicable = $config->get('applicable');
-
-            return !(
-                $applicable['all'] == true
-                || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
-            );
+                return !(
+                    $applicable['all'] == true
+                    || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
+                );
+            }
         }
 
         return false;
