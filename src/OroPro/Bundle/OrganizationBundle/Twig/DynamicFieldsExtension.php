@@ -11,9 +11,9 @@ use Oro\Bundle\EntityExtendBundle\Extend\FieldTypeHelper;
 use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
-use Oro\Bundle\EntityConfigBundle\Twig\DynamicFieldsExtension as DynamicFields;
+use Oro\Bundle\EntityConfigBundle\Twig\DynamicFieldsExtension as BaseDynamicFieldsExtension;
 
-class DynamicFieldsExtension extends DynamicFields
+class DynamicFieldsExtension extends BaseDynamicFieldsExtension
 {
     /** @var SecurityFacade */
     protected $securityFacade;
@@ -44,23 +44,18 @@ class DynamicFieldsExtension extends DynamicFields
     {
         if (parent::filterFields($config)) {
             $organizationConfigProvider = $this->configManager->getProvider('organization');
-            $organizationConfig = $organizationConfigProvider->getConfigById($config->getId());
+            $organizationConfig         = $organizationConfigProvider->getConfigById($config->getId());
 
-            $applicable = $organizationConfig->get('applicable', false);
             // skip field if it's not configured for current organization
-            if (!$applicable
-                || (
-                    !$applicable['all']
-                    && !in_array(
-                        $this->securityFacade->getOrganizationId(),
-                        $applicable['selective']
-                    )
-                )
-            ) {
-                return false;
-            }
+            $applicable = $organizationConfig->get('applicable', false, false);
+            return
+                $applicable
+                && (
+                    $applicable['all']
+                    || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
+                );
         }
 
-        return true;
+        return false;
     }
 }

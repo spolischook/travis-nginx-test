@@ -6,13 +6,13 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridGuesser;
 
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
-use Oro\Bundle\EntityBundle\Grid\DynamicFieldsExtension as DynamicFields;
+use Oro\Bundle\EntityBundle\Grid\DynamicFieldsExtension as BaseDynamicFieldsExtension;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
-class DynamicFieldsExtension extends DynamicFields
+class DynamicFieldsExtension extends BaseDynamicFieldsExtension
 {
     /** @var SecurityFacade */
     protected $securityFacade;
@@ -49,14 +49,14 @@ class DynamicFieldsExtension extends DynamicFields
                 $fields,
                 function ($fieldConfigId) use ($currentOrganizationId, $organizationConfigProvider) {
                     $fieldConfig = $organizationConfigProvider->getConfigById($fieldConfigId);
-                    if ($fieldConfig->has('applicable')) {
-                        $config = $fieldConfig->get('applicable');
-                        if ($config['all'] === true || in_array($currentOrganizationId, $config['selective'])) {
-                            return true;
-                        }
-                    }
+                    $applicable  = $fieldConfig->get('applicable', false, false);
 
-                    return false;
+                    return
+                        $applicable
+                        && (
+                            $applicable['all']
+                            || in_array($currentOrganizationId, $applicable['selective'])
+                        );
                 }
             );
         }
