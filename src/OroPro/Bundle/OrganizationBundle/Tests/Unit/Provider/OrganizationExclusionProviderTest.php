@@ -11,14 +11,10 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
     /** @var OrganizationExclusionProvider */
     protected $provider;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $securityFacade;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $configProvider;
 
     public function setUp()
