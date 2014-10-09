@@ -14,6 +14,7 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
     {
         /**
          * Override Oro\Bundle\EntityBundle\Grid\DynamicFieldsExtension
+         * Extension is responsible for columns of custom fields on grids
          */
         $serviceId = 'oro_entity.datagrid.extension.dynamic_fields';
         if ($container->hasDefinition($serviceId)) {
@@ -24,11 +25,23 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
 
         /**
          * Override Oro\Bundle\EntityConfigBundle\Twig\DynamicFieldsExtension
+         * Extension is responsible for custom fields on view pages
          */
         $serviceId = 'oro_entity_config.twig.extension.dynamic_fields';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
             $definition->setClass('OroPro\Bundle\OrganizationBundle\Twig\DynamicFieldsExtension');
+            $definition->addArgument($container->getDefinition('oro_security.security_facade'));
+        }
+
+        /**
+         * Override Oro\Bundle\EntityBundle\Form\Type\CustomEntityType
+         * Extension is responsible for custom fields on edit pages
+         */
+        $serviceId = 'oro_entity.form.type.custom_entity';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Form\Type\CustomEntityType');
             $definition->addArgument($container->getDefinition('oro_security.security_facade'));
         }
     }
