@@ -10,24 +10,20 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class OrganizationExclusionProvider implements ExclusionProviderInterface
 {
-    /**
-     * @var SecurityFacade
-     */
+    /** @var SecurityFacade */
     protected $securityFacade;
 
-    /**
-     * @var ConfigProvider
-     */
-    protected $configProvider;
+    /** @var ConfigProvider */
+    protected $organizationConfigProvider;
 
     /**
      * @param SecurityFacade $securityFacade
-     * @param ConfigProvider $configProvider
+     * @param ConfigProvider $organizationConfigProvider
      */
-    public function __construct(SecurityFacade $securityFacade, ConfigProvider $configProvider)
+    public function __construct(SecurityFacade $securityFacade, ConfigProvider $organizationConfigProvider)
     {
-        $this->configProvider = $configProvider;
-        $this->securityFacade = $securityFacade;
+        $this->organizationConfigProvider = $organizationConfigProvider;
+        $this->securityFacade             = $securityFacade;
     }
 
     /**
@@ -35,15 +31,16 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      */
     public function isIgnoredEntity($className)
     {
-        $config = $this->configProvider->getConfig($className);
+        $config = $this->organizationConfigProvider->getConfig($className);
         if ($config->has('applicable')) {
             $applicable = $config->get('applicable');
-            if (!$applicable['all']) {
-                if (!in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])) {
-                    return true;
-                }
-            }
+
+            return
+                $applicable['all']
+                || in_array($this->securityFacade->getOrganizationId(), $applicable['selective']);
+
         }
+
         return false;
     }
 

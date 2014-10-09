@@ -23,13 +23,3 @@ services:
             - @oro_entity_config.provider.organization
         tags:
             - { name: oro_entity.exclusion_provider.default }
-
-#    oro_entity.entity_provider:
-#        class: %oro_entity.entity_provider.class%
-#        arguments:
-#            - @oro_entity_config.provider.entity
-#            - @oro_entity_config.provider.extend
-#            - @oro_entity.orm.entity_class_resolver
-#            - @translator
-#        calls:
-#            - [setExclusionProvider, [@oropro_organization.exclusion_provider]]
