@@ -49,14 +49,14 @@ class DynamicFieldsExtension extends DynamicFields
                 $fields,
                 function ($fieldConfigId) use ($currentOrganizationId, $organizationConfigProvider) {
                     $fieldConfig = $organizationConfigProvider->getConfigById($fieldConfigId);
-                    if ($fieldConfig->has('applicable')) {
-                        $config = $fieldConfig->get('applicable');
-                        if ($config['all'] === true || in_array($currentOrganizationId, $config['selective'])) {
-                            return true;
-                        }
-                    }
+                    $applicable  = $fieldConfig->get('applicable', false, false);
 
-                    return false;
+                    return
+                        $applicable
+                        && (
+                            $applicable['all']
+                            || in_array($currentOrganizationId, $applicable['selective'])
+                        );
                 }
             );
         }
