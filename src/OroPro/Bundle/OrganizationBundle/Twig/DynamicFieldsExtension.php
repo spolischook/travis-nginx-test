@@ -46,21 +46,16 @@ class DynamicFieldsExtension extends DynamicFields
             $organizationConfigProvider = $this->configManager->getProvider('organization');
             $organizationConfig = $organizationConfigProvider->getConfigById($config->getId());
 
-            $applicable = $organizationConfig->get('applicable', false);
             // skip field if it's not configured for current organization
-            if (!$applicable
-                || (
-                    !$applicable['all']
-                    && !in_array(
-                        $this->securityFacade->getOrganizationId(),
-                        $applicable['selective']
-                    )
-                )
-            ) {
-                return false;
-            }
+            $applicable = $organizationConfig->get('applicable', false, false);
+            return
+                $applicable
+                && (
+                    $applicable['all']
+                    || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
+                );
         }
 
-        return true;
+        return false;
     }
 }
