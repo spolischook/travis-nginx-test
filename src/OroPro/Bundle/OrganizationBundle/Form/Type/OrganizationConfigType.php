@@ -7,19 +7,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository;
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 
 /**
  * Used in EntityManagement to configure entity/field availability per organization
  */
-class OrganizationType extends AbstractType
+class OrganizationConfigType extends AbstractType
 {
     const NAME = 'oro_type_choice_organization_type';
 
-    /** @var EntityManager */
+    /** @var OroEntityManager */
     protected $em;
 
     /**
@@ -51,45 +49,21 @@ class OrganizationType extends AbstractType
             'all',
             'checkbox',
             [
-                'required'   => false,
-                'attr'       => [
+                'required' => false,
+                'attr'     => [
                     'class' => 'all-selector pull-left',
                 ]
             ]
         );
         $builder->add(
             'selective',
-            'choice',
+            'oro_organization_choice_select2',
             [
-                'multiple' => true,
-                'expanded' => true,
-                'choices'  => $this->getOptions(),
-                'required' => false,
-                'attr'     => [
-                    'class' => 'selective-selector'
+                'configs' => [
+                    'containerCssClass' => 'organization-selective-selector'
                 ]
             ]
         );
-    }
-
-    /**
-     * Prepare choice options for a select
-     * @return array
-     */
-    public function getOptions()
-    {
-        $options = [];
-
-        /** @var OrganizationRepository $organizationRepository */
-        $organizationRepository = $this->em->getRepository('OroOrganizationBundle:Organization');
-
-        /** @var Organization[] $organizations */
-        $organizations = $organizationRepository->findAll();
-        foreach ($organizations as $organization) {
-            $options[$organization->getId()] = $organization->getName();
-        }
-
-        return $options;
     }
 
     /**
