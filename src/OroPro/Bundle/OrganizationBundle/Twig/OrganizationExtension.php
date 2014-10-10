@@ -51,7 +51,7 @@ class OrganizationExtension extends \Twig_Extension
     /**
      * Used to render configuration value "applicable" from "organization" configuration scope.
      * Due to restriction that configuration property which you want to show on grid should be indexed,
-     * and complicated entity config form type "oro_type_choice_organization_type" that stores multiple values.
+     * and complicated config form type "oro_type_choice_organization_type" that stores multiple values.
      *
      * @param string      $value
      * @param string|null $className
@@ -70,7 +70,6 @@ class OrganizationExtension extends \Twig_Extension
             return $this->translator->trans('oropro.organization.datagrid.applicable_all');
         } elseif (!empty($data->selective)) {
             $selected = $this->filterByParentEntity($data->selective, $className);
-
             if (empty($selected)) {
                 return $result;
             }
