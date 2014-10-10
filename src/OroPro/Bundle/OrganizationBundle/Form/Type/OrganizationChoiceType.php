@@ -97,24 +97,28 @@ class OrganizationChoiceType extends AbstractType
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        if ($form->getParent()->getConfig()->hasOption('config_id')) {
-            $configId = $form->getParent()->getConfig()->getOption('config_id');
-            if ($configId instanceof FieldConfigId) {
-                $entityClassName    = $configId->getClassName();
-                $entityExtendConfig = $this->configManager->getProvider('extend')->getConfig($entityClassName);
-                if ($entityExtendConfig->is('owner', 'Custom')) {
-                    $entityOrgConfig = $this->configManager->getProvider('organization')->getConfig($entityClassName);
-                    $applicable      = $entityOrgConfig->get('applicable', false, false);
-                    if ($applicable && !$applicable['all']) {
-                        $selected = $applicable['selective'];
-                        $view->vars['choices'] = array_filter(
-                            $view->vars['choices'],
-                            function (ChoiceView $choiceViewItem) use ($selected) {
-                                return in_array($choiceViewItem->data, $selected);
-                            }
-                        );
+        if (!$form->getParent()->getConfig()->hasOption('config_id')) {
+            return;
+        }
+
+        $configId = $form->getParent()->getConfig()->getOption('config_id');
+        if (!($configId instanceof FieldConfigId)) {
+            return;
+        }
+
+        $entityClassName    = $configId->getClassName();
+        $entityExtendConfig = $this->configManager->getProvider('extend')->getConfig($entityClassName);
+        if ($entityExtendConfig->is('owner', 'Custom')) {
+            $entityOrgConfig = $this->configManager->getProvider('organization')->getConfig($entityClassName);
+            $applicable      = $entityOrgConfig->get('applicable', false, false);
+            if ($applicable && !$applicable['all']) {
+                $selected = $applicable['selective'];
+                $view->vars['choices'] = array_filter(
+                    $view->vars['choices'],
+                    function (ChoiceView $choiceViewItem) use ($selected) {
+                        return in_array($choiceViewItem->data, $selected);
                     }
-                }
+                );
             }
         }
     }
