@@ -25,7 +25,7 @@ class OrganizationChoiceType extends AbstractType
     /** @var OroEntityManager */
     protected $em;
 
-    /** @var  ConfigManager */
+    /** @var ConfigManager */
     protected $configManager;
 
     /**
@@ -122,7 +122,6 @@ class OrganizationChoiceType extends AbstractType
             }
         }
     }
-
 
     /**
      * {@inheritdoc}
