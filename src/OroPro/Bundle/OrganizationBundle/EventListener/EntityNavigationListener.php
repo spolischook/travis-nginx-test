@@ -3,14 +3,14 @@
 namespace OroPro\Bundle\OrganizationBundle\EventListener;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
-use Oro\Bundle\EntityBundle\EventListener\NavigationListener as BaseNavigationListener;
+use Oro\Bundle\EntityBundle\EventListener\NavigationListener;
 
-class NavigationListener extends BaseNavigationListener
+class EntityNavigationListener extends NavigationListener
 {
     /**
      * {@inheritdoc}
      */
-    protected function checkAvailability(Config $extendConfig)
+    public function checkAvailability(Config $extendConfig)
     {
         if (parent::checkAvailability($extendConfig)) {
             $className                  = $extendConfig->getId()->getClassname();
