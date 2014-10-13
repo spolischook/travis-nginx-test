@@ -2,11 +2,11 @@ parameters:
     # override community organizations_select form type
     oro_organization.form.type.organizations_select.class: OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationsProSelectType
 
-    oropro_organization.form.type.organization_type.class: OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationType
-
+    oropro_organization.form.type.organization_config_type.class: OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationConfigType
+    oropro_organization.form.type.organization_choice.class: OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationChoiceType
 services:
-    oropro_organization.form.type.organization_type:
-        class: %oropro_organization.form.type.organization_type.class%
+    oropro_organization.form.type.organization_config_type:
+        class: %oropro_organization.form.type.organization_config_type.class%
         arguments:
             - @doctrine
         tags:
@@ -16,6 +16,13 @@ services:
         arguments:
             - @doctrine
         tags:
-            - { name: oro_service_method, service: oropro_organization.form.type.organization_type, method: getOptions }
+            - { name: oro_service_method, service: oropro_organization.form.type.organization_choice, method: getChoices }
         lazy: true
 
+    oropro_organization.form.type.organization_choice:
+        class: %oropro_organization.form.type.organization_choice.class%
+        arguments:
+            - @doctrine
+            - @oro_entity_config.config_manager
+        tags:
+            - { name: form.type, alias: oro_organization_choice_select2 }

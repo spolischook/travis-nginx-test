@@ -10,6 +10,7 @@ services:
     oropro_organization.twig.extension.organization:
         class: %oropro_organization.twig.extension.organization.class%
         arguments:
+            - @oro_entity_config.provider.organization
             - @doctrine
             - @translator
         tags:

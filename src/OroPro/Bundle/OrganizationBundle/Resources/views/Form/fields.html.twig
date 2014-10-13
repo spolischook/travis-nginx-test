@@ -13,21 +13,15 @@
             require(['jquery'], function($){
                 $(function() {
                     var all_selector = 'input.all-selector:checkbox';
-                    var selective_selectors = 'div.selective-selector input:checkbox';
+                    var selective_selectors = '.organization-selective-selector';
                     if ($(all_selector).prop('checked') === true) {
-                        $(selective_selectors).each(function (index, el) {
-                            $(el).prop('disabled', true);
-                        });
+                        $(selective_selectors).select2("readonly", true);
                     }
                     $(document).on('change', all_selector, function () {
                         if ($(this).prop('checked') === true) {
-                            $(selective_selectors).each(function (index, el) {
-                                $(el).prop('disabled', true);
-                            });
+                            $(selective_selectors).select2("readonly", true);
                         } else {
-                            $(selective_selectors).each(function (index, el) {
-                                $(el).removeAttr('disabled');
-                            });
+                            $(selective_selectors).select2("readonly", false);
                         }
                     });
                 });

@@ -16,6 +16,7 @@ oro_entity_config:
                             code:           owner
                             value:          Custom
                         auditable:          false
+                        default_value:      {all: true, selective: []}
                     grid:
                         type:               html
                         label:              oropro.organization.entity_config.organization.entity.items.grid.applicable
@@ -42,6 +43,7 @@ oro_entity_config:
                             code:           owner
                             value:          Custom
                         auditable:          false
+                        default_value:      {all: true, selective: []}
                     grid:
                         type:               html
                         label:              oropro.organization.entity_config.organization.field.items.grid.applicable
