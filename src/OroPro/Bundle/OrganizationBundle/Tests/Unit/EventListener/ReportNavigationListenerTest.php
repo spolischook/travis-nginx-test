@@ -4,6 +4,7 @@ namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\EventListener;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
+
 use OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener;
 
 class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
@@ -11,24 +12,16 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
     /** @var ReportNavigationListener */
     protected $listener;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $entityManager;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $configProvider;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject  */
     protected $securityFacade;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $aclHelper;
 
     public function setUp()
@@ -99,11 +92,19 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
             'organization',
             [ 'applicable' => ['all' => false, 'selective' => [1, 3, 5]] ]
         );
+        $entityName4 = 'Test\Entity\Entity4';
+        $config4     = $this->getEntityConfig($entityName4, 'entity');
+        $orgConfig4  = $this->getEntityConfig(
+            $entityName4,
+            'organization',
+            []
+        );
         return [
             [1, 1, true, $config1, $orgConfig1],
             [3, 0, true, $config2, $orgConfig2],
             [3, 1, true, $config3, $orgConfig3],
             [4, 1, false, $config3, $orgConfig3],
+            [1, 0, true, $config4, $orgConfig4]
         ];
     }
 
