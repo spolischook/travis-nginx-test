@@ -62,14 +62,13 @@ class OrganizationExtension extends \Twig_Extension
     {
         $result = $this->translator->trans('oropro.organization.datagrid.applicable_none');
 
-        /** @var \stdClass $data */
-        $data = json_decode($value);
-        if (!is_object($data)) {
+        $data = json_decode($value, true);
+        if (!is_array($data)) {
             return $result;
-        } elseif ($data->all === true) {
+        } elseif ($data['all'] === true) {
             return $this->translator->trans('oropro.organization.datagrid.applicable_all');
-        } elseif (!empty($data->selective)) {
-            $selected = $this->filterByParentEntity($data->selective, $className);
+        } elseif (!empty($data['selective'])) {
+            $selected = $this->filterByParentEntity($data['selective'], $className);
             if (empty($selected)) {
                 return $result;
             }
@@ -95,12 +94,12 @@ class OrganizationExtension extends \Twig_Extension
     }
 
     /**
-     * @param array $selected
-     * @param null  $className
+     * @param array       $selected
+     * @param string|null $className
      *
      * @return array
      */
-    protected function filterByParentEntity($selected = [], $className = null)
+    protected function filterByParentEntity(array $selected = [], $className = null)
     {
         if (!empty($selected) && $className) {
             $applicable = $this->organizationProvider->getConfig($className)->get('applicable');

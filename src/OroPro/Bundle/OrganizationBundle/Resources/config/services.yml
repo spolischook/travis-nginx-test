@@ -3,7 +3,7 @@ parameters:
 
     oropro_organization.twig.extension.organization.class: OroPro\Bundle\OrganizationBundle\Twig\OrganizationExtension
     oropro_organization.exclusion_provider.config.class:   OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider
-    oropro_organization.request.param_converter.class:     OroPro\Bundle\OrganizationBundle\Request\ParamConverter\DoctrineParamConverter
+    oropro_organization.request.param_converter.class:     OroPro\Bundle\OrganizationBundle\Request\ParamConverter\RequestReportParamConverter
 
     # Overrides
     oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener
@@ -29,6 +29,8 @@ services:
     oropro_organization.request.param_converter:
         class: %oropro_organization.request.param_converter.class%
         arguments:
+            - @oro_entity_config.provider.organization
             - @oro_security.security_facade
+            - @doctrine
         tags:
             - { name: request.param_converter, priority: 2, converter: applicable_organization_converter }
