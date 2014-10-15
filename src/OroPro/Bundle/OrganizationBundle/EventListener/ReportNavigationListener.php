@@ -14,7 +14,6 @@ class ReportNavigationListener extends NavigationListener
     public function checkAvailability(Config $config)
     {
         if (!parent::checkAvailability($config)) {
-
             return false;
         }
         $organizationConfig = $this->getOrganizationConfig($config);
