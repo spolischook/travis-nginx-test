@@ -59,14 +59,9 @@ class UpdateConfigsWithOrganizationQuery extends ParametrizedMigrationQuery
             $fieldConfigs = $this->loadFieldConfigs($logger, $className);
             foreach ($fieldConfigs as $fieldConfig) {
                 $data = $fieldConfig['data'];
-                if (
-                    !isset($data['extend']['is_extend']) ||
-                    $data['extend']['is_extend'] != true ||
-                    isset($data['organization'])
-                ) {
+                if (!isset($data['extend']['is_extend']) || $data['extend']['is_extend'] != true) {
                     continue;
                 }
-
                 $data['organization']['applicable'] = ['all' => true, 'selective' => []];
 
                 $query  = 'UPDATE oro_entity_config_field SET data = :data WHERE id = :id';
