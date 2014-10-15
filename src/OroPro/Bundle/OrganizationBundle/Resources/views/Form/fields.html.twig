@@ -1,0 +1,34 @@
+{% block oro_type_choice_organization_type_widget %}
+    {% spaceless %}
+        <div class="horizontal">
+            <div class="oro-clearfix">
+                {{ form_widget(form.all) }}
+                {{ form_label(form.all) }}
+            </div>
+        </div>
+        <div class="controls-row">
+            {{ form_widget(form.selective) }}
+        </div>
+        <script type="text/javascript">
+            require(['jquery'], function($){
+                $(function() {
+                    var all_selector = 'input.all-selector:checkbox';
+                    var selective_selectors = '.organization-selective-selector';
+                    if ($(all_selector).prop('checked') === true) {
+                        $(selective_selectors).select2("readonly", true);
+                        $(selective_selectors).hide();
+                    }
+                    $(document).on('change', all_selector, function () {
+                        if ($(this).prop('checked') === true) {
+                            $(selective_selectors).select2("readonly", true);
+                            $(selective_selectors).hide();
+                        } else {
+                            $(selective_selectors).select2("readonly", false);
+                            $(selective_selectors).show();
+                        }
+                    });
+                });
+            });
+        </script>
+    {% endspaceless %}
+{% endblock %}

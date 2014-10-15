@@ -1,4 +1,36 @@
 parameters:
     oropro_organization.entity.class: Oro\Bundle\OrganizationBundle\Entity\Organization
 
-services: ~
+    oropro_organization.twig.extension.organization.class: OroPro\Bundle\OrganizationBundle\Twig\OrganizationExtension
+    oropro_organization.exclusion_provider.config.class:   OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider
+    oropro_organization.request.param_converter.class:     OroPro\Bundle\OrganizationBundle\Request\ParamConverter\RequestReportParamConverter
+
+    # Overrides
+    oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener
+    oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
+services:
+    oropro_organization.twig.extension.organization:
+        class: %oropro_organization.twig.extension.organization.class%
+        arguments:
+            - @oro_entity_config.provider.organization
+            - @doctrine
+            - @translator
+        tags:
+            - { name: twig.extension }
+
+    oropro_organization.exclusion_provider:
+        class: %oropro_organization.exclusion_provider.config.class%
+        arguments:
+            - @oro_security.security_facade
+            - @oro_entity_config.provider.organization
+        tags:
+            - { name: oro_entity.exclusion_provider.default }
+
+    oropro_organization.request.param_converter:
+        class: %oropro_organization.request.param_converter.class%
+        arguments:
+            - @oro_entity_config.provider.organization
+            - @oro_security.security_facade
+            - @doctrine
+        tags:
+            - { name: request.param_converter, priority: 2, converter: applicable_organization_converter }
