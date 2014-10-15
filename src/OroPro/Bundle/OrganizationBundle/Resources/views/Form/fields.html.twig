@@ -1,6 +1,6 @@
 {% block oro_type_choice_organization_type_widget %}
     {% spaceless %}
-        <div class="controls-row">
+        <div class="control-label">
             {{ form_widget(form.all) }}
             <div class="span5">
                 {{ form_label(form.all) }}
@@ -16,12 +16,15 @@
                     var selective_selectors = '.organization-selective-selector';
                     if ($(all_selector).prop('checked') === true) {
                         $(selective_selectors).select2("readonly", true);
+                        $(selective_selectors).hide();
                     }
                     $(document).on('change', all_selector, function () {
                         if ($(this).prop('checked') === true) {
                             $(selective_selectors).select2("readonly", true);
+                            $(selective_selectors).hide();
                         } else {
                             $(selective_selectors).select2("readonly", false);
+                            $(selective_selectors).show();
                         }
                     });
                 });
