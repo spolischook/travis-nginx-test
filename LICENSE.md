@@ -11,12 +11,11 @@
 ## 2.   License Exclusions
 
 2.1.    Except as expressly authorized herein, Licensee shall not:
-
-      a. use or deploy the Software in excess of the number of Users specified in the applicable Oro Order Form or beyond the fully paid for Term;
-
-      b. distribute, sublicense, disclose, market, rent, lease, or offer remote computing and or hosting services, networking, batch processing or transfer of, the Software to any third party, or permit any person or entity to have access to the Software by means of a time sharing, remote computing or hosting services, networking, batch processing, service bureau or time sharing arrangement;
-
-      c. export the Software in violation of U.S. Department of Commerce export administration regulations.
+<ol type="a">
+ <li>use or deploy the Software in excess of the number of Users specified in the applicable Oro Order Form or beyond the fully paid for Term;</li>
+ <li>distribute, sublicense, disclose, market, rent, lease, or offer remote computing and or hosting services, networking, batch processing or transfer of, the Software to any third party, or permit any person or entity to have access to the Software by means of a time sharing, remote computing or hosting services, networking, batch processing, service bureau or time sharing arrangement;</li>
+ <li>export the Software in violation of U.S. Department of Commerce export administration regulations.</li>
+</ol>
 
 2.2.    No license, right or interest in any Oro trademark, trade name or service mark is granted hereunder.
 
@@ -78,18 +77,18 @@ This Agreement is made in and shall be governed by the laws of the State of Cali
 # SUPPORT SERVICES TERMS AND CONDITIONS 
 Unless otherwise defined herein, all capitalized terms will have the meanings set forth in the Agreement.
 ## 1.    Support Services consists of:
-
-      a.    Advice regarding the downloading, installation and configuration of the Software (including Updates provided by Oro, but excluding for the avoidance of doubt any Modifications to the Software), when used by Licensee on systems that meet the Softwares System Requirements specified on Oros website at www.orocrm.com/system-requirements.
-      b.    Facilities for bug tracking, escalation of problems for priority attention, and access to community-supported FAQs and Forums relating to the Software.
-      c.    Assistance with troubleshooting to diagnose and fix errors in the Software.
-
+<ol type="a">
+  <li>Advice regarding the downloading, installation and configuration of the Software (including Updates provided by Oro, but excluding for the avoidance of doubt any Modifications to the Software), when used by Licensee on systems that meet the Softwares System Requirements specified on Oros website at www.orocrm.com/system-requirements.</li>
+  <li>Facilities for bug tracking, escalation of problems for priority attention, and access to community-supported FAQs and Forums relating to the Software.</li>
+  <li>Assistance with troubleshooting to diagnose and fix errors in the Software.</li>
+</ol>
 ## 2.   Exclusions from Support Services.
 Oro shall have no obligation to support (i) versions of the Software other than the then-current and immediately previous releases, which are operated on a supported hardware/operating system platform specified in the release notes for the Software; (ii) altered or modified Software, including any  Modifications either by Licensee or any third party; (iii) Software accessed or used with equipment not specifically approved for use by Oro with such Software; (iv) problems caused by Licensee's negligence, misuse, or hardware malfunction; or (v) use of the Software inconsistent with Oros instructions, this Agreement or than in accordance with the documentation provided with the Software. Oro is not responsible for hardware changes necessitated by changes to the Software. Support Services also does not include:
-
-a. Assistance in the development or debugging of Licensee's system, including the operating system and support tools.
-b. Information and assistance on technical issues related to the installation, administration, and use of enabling technologies such as databases, computer networks, and communications.
-c. Assistance with the installation and configuration of hardware including, but not limited to computers, hard disks, networks, and printers.
-
+<ol type="a">
+  <li>Assistance in the development or debugging of Licensee's system, including the operating system and support tools.</li>
+  <li>Information and assistance on technical issues related to the installation, administration, and use of enabling technologies such as databases, computer networks, and communications.</li>
+  <li>Assistance with the installation and configuration of hardware including, but not limited to computers, hard disks, networks, and printers.</li>
+</ol>
 ## 3.   Subcontractors.
 Oro reserves the right to subcontract any or all of the work to be performed under these Support Terms, and Oro retains responsibility for any work so subcontracted.
 
@@ -101,12 +100,13 @@ Licensee shall designate one or more support contacts that are authorized to sub
 
 ## 6.   Problem Priority. 
 Upon receipt of a properly submitted Software problem, as specified on Oros website at www.ororm.com, Oro shall prioritize it in accordance with the guidelines below:
-            a.  Priority 1 (P1)  A P1 is a catastrophic problem within the Software that severely impacts the Licensee's ability to make use of the Software - The Software is unusable resulting in total disruption of work and critical business impact. No workaround is available. P1 problems must be reported on Oro's toll-free support telephone number in order to expedite resolution. Oro will use continuous efforts during its normal hours of operation, with appropriate escalation to senior management, to provide a resolution for any P1 problem as soon as is commercially reasonable.
-            b.  Priority 2 (P2)  A P2 is a serious problem within the Software where a major feature/function failure has occurred - the Software is functioning but in severely reduced capacity, or the problem is causing significant impact to portions of the Licensees business operations and productivity, or the Software is exposed to potential loss or interruption of service. Oro will use reasonable efforts during its normal hours of operation to provide a resolution for any P2 problem as soon as is commercially reasonable.
-           c.   Priority 3 (P3)  A P3 is a medium-to-low impact problem that involves partial and/or non-critical loss of functionality, or that impairs some operations but allows Licensee's operations to continue to function. Problems for which there is limited or no loss or functionality or impact to Licensee's operation and for which there is an easy work-around qualify as P3. Oro will use reasonable efforts during its normal hours of operation to provide a resolution for any P3 problem in time for the next minor release of the Software. 
-          d.    Priority 4 (P4)  A P4 is for a general usage question or issue that may be cosmetic in nature or documentation related, but the Software works without any functional limitation. Oro will use reasonable efforts during its normal hours of operation to provide a resolution for any P4 problem in time for the next major release of the Software.
-         e. Enhancement Request (ER)  An ER is a recommendation for future product enhancement or modification to add official support and documentation for unsupported or undocumented feature, or features that do not exist in the Software. Oro will take ERs into consideration in the product management process, but has no obligation to deliver enhancements based on any ER.
-
+<ol type="a">
+  <li>Priority 1 (P1)  A P1 is a catastrophic problem within the Software that severely impacts the Licensee's ability to make use of the Software - The Software is unusable resulting in total disruption of work and critical business impact. No workaround is available. P1 problems must be reported on Oro's toll-free support telephone number in order to expedite resolution. Oro will use continuous efforts during its normal hours of operation, with appropriate escalation to senior management, to provide a resolution for any P1 problem as soon as is commercially reasonable.</li>
+  <li>Priority 2 (P2)  A P2 is a serious problem within the Software where a major feature/function failure has occurred - the Software is functioning but in severely reduced capacity, or the problem is causing significant impact to portions of the Licensees business operations and productivity, or the Software is exposed to potential loss or interruption of service. Oro will use reasonable efforts during its normal hours of operation to provide a resolution for any P2 problem as soon as is commercially reasonable.</li>
+  <li>Priority 3 (P3)  A P3 is a medium-to-low impact problem that involves partial and/or non-critical loss of functionality, or that impairs some operations but allows Licensee's operations to continue to function. Problems for which there is limited or no loss or functionality or impact to Licensee's operation and for which there is an easy work-around qualify as P3. Oro will use reasonable efforts during its normal hours of operation to provide a resolution for any P3 problem in time for the next minor release of the Software.</li> 
+  <li>Priority 4 (P4)  A P4 is for a general usage question or issue that may be cosmetic in nature or documentation related, but the Software works without any functional limitation. Oro will use reasonable efforts during its normal hours of operation to provide a resolution for any P4 problem in time for the next major release of the Software.</li>
+  <li>Enhancement Request (ER)  An ER is a recommendation for future product enhancement or modification to add official support and documentation for unsupported or undocumented feature, or features that do not exist in the Software. Oro will take ERs into consideration in the product management process, but has no obligation to deliver enhancements based on any ER.</li>
+</ol>
 ## 7.   Response Times. 
 Oro or its authorized partner shall exercise commercially reasonable efforts to meet the response times specified below for Support, following receipt of a Software problem properly submitted by Licensee:
 Oro Support Response Times:
