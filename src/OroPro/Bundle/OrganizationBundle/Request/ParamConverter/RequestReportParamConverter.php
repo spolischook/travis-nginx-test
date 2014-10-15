@@ -2,7 +2,6 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Request\ParamConverter;
 
-use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Acl\Permission\BasicPermissionMap;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -16,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\ReportBundle\Entity\Report;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 
 class RequestReportParamConverter implements ParamConverterInterface
 {
