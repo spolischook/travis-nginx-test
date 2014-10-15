@@ -44,10 +44,7 @@ class UpdateConfigsWithOrganizationQuery extends ParametrizedMigrationQuery
                 continue;
             }
 
-            if (
-                $arrEntityConfig['extend']['is_extend'] &&
-                $arrEntityConfig['extend']['owner'] == ExtendScope::OWNER_CUSTOM
-            ) {
+            if ($arrEntityConfig['extend']['owner'] == ExtendScope::OWNER_CUSTOM) {
                 $arrEntityConfig['organization']['applicable'] = ['all' => true, 'selective' => []];
                 $query  = 'UPDATE oro_entity_config SET data = :data WHERE id = :id';
                 $params = ['data' => $arrEntityConfig, 'id' => $entityData['id']];
@@ -62,19 +59,22 @@ class UpdateConfigsWithOrganizationQuery extends ParametrizedMigrationQuery
             foreach ($fieldConfigs as $fieldConfig) {
                 $data = $fieldConfig['data'];
                 if (
-                    !isset($data['organization']) &&
-                    (isset($data['extend']['is_extend']) && $data['extend']['is_extend'])
+                    !isset($data['extend']['is_extend']) ||
+                    $data['extend']['is_extend'] != true ||
+                    isset($data['organization'])
                 ) {
-                    $data['organization']['applicable'] = ['all' => true, 'selective' => []];
+                    continue;
+                }
 
-                    $query  = 'UPDATE oro_entity_config_field SET data = :data WHERE id = :id';
-                    $params = ['data' => $data, 'id' => $fieldConfig['id']];
-                    $types  = ['data' => 'array', 'id' => 'integer'];
-                    $this->logQuery($logger, $query, $params, $types);
-                    if (!$dryRun) {
-                        $this->connection->executeUpdate($query, $params, $types);
-                        $this->insertConfigIndexValue(null, $fieldConfig['id']);
-                    }
+                $data['organization']['applicable'] = ['all' => true, 'selective' => []];
+
+                $query  = 'UPDATE oro_entity_config_field SET data = :data WHERE id = :id';
+                $params = ['data' => $data, 'id' => $fieldConfig['id']];
+                $types  = ['data' => 'array', 'id' => 'integer'];
+                $this->logQuery($logger, $query, $params, $types);
+                if (!$dryRun) {
+                    $this->connection->executeUpdate($query, $params, $types);
+                    $this->insertConfigIndexValue(null, $fieldConfig['id']);
                 }
             }
         }
