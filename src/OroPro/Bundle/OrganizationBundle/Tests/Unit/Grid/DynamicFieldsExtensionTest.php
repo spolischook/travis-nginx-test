@@ -8,7 +8,6 @@ use Oro\Bundle\DataGridBundle\Tests\Unit\Datagrid\DatagridGuesserMock;
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
 use OroPro\Bundle\OrganizationBundle\Grid\DynamicFieldsExtension;
 
@@ -50,7 +49,7 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
         $this->entityClassResolver = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\EntityClassResolver')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+        $this->securityFacade      = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -116,49 +115,8 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
             ->with(self::ENTITY_CLASS, self::FIELD_NAME)
             ->will($this->returnValue($datagridFieldConfig));
 
-//        $organizationFieldConfig = new Config(
-//            new FieldConfigId('organization', self::ENTITY_CLASS, self::FIELD_NAME, $fieldType)
-//        );
-//        $organizationFieldConfig->set('applicable', ['all' => true, 'selective' => []]);
-//        $this->organizationConfigProvider
-//            ->expects($this->once())
-//            ->method('getConfigById')
-//            ->will($this->returnValue($organizationFieldConfig));
-
         $config = DatagridConfiguration::create(['extended_entity_name' => self::ENTITY_NAME]);
         $this->extension->processConfigs($config);
-
-//        $initialConfig = $config->toArray();
-//        $this->assertEquals(
-//            array_merge(
-//                $initialConfig,
-//                [
-//                    'columns' => [
-//                        self::FIELD_NAME => [
-//                            'label'         => $fieldLabel,
-//                            'frontend_type' => 'string'
-//                        ]
-//                    ],
-//                    'sorters' => [
-//                        'columns' => [
-//                            self::FIELD_NAME => [
-//                                'data_name' => self::FIELD_NAME
-//                            ]
-//                        ]
-//                    ],
-//                    'filters' => [
-//                        'columns' => [
-//                            self::FIELD_NAME => [
-//                                'type'      => 'string',
-//                                'data_name' => self::FIELD_NAME,
-//                                'enabled'   => false
-//                            ]
-//                        ]
-//                    ],
-//                ]
-//            ),
-//            $config->toArray()
-//        );
     }
 
     protected function setExpectationForGetFields($className, $fieldName, $fieldType)
