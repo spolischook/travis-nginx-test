@@ -51,7 +51,7 @@ class OrganizationConfigType extends AbstractType
             [
                 'required' => false,
                 'attr'     => [
-                    'class' => 'all-selector pull-left',
+                    'class' => 'all-selector',
                 ]
             ]
         );
