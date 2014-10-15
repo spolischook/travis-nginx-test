@@ -2,6 +2,7 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Migrations\Schema\v1_0;
 
+use Doctrine\DBAL\Types\Type;
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\MigrationBundle\Migration\ArrayLogger;
@@ -127,12 +128,13 @@ class UpdateConfigsWithOrganizationQuery extends ParametrizedMigrationQuery
     {
         $query = 'INSERT INTO oro_entity_config_index_value (entity_id, field_id, code, scope, value)
                   VALUES (:entity_id, :field_id, :code, :scope, :value)';
+        $value = ['all' => true, 'selective' => []];
         $params = [
             'entity_id' => $entityId,
             'field_id'  => $fieldId,
             'code'      => 'applicable',
             'scope'     => 'organization',
-            'value'     => '{"all":true,"selective":[]}'
+            'value'     => $this->connection->convertToDatabaseValue($value, Type::JSON_ARRAY)
         ];
         $this->connection->executeQuery($query, $params);
     }
