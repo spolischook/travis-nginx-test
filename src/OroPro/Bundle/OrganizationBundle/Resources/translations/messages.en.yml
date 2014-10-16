@@ -6,11 +6,18 @@ oro:
 oropro:
     organization:
         datagrid:
-            action:
-                view: "View"
-                update: "Update"
-                delete: "Delete"
+            applicable_all:  All
+            applicable_none: N/A
         controller:
             message:
                 saved: Organization saved
-
+        entity_config:
+            organization:
+                entity:
+                    items:
+                        applicable: Applicable organizations
+                        grid.applicable: Organization
+                field:
+                    items:
+                        applicable: Applicable organizations
+                        grid.applicable: Organization
