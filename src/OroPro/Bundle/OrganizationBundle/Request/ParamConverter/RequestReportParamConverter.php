@@ -58,26 +58,26 @@ class RequestReportParamConverter implements ParamConverterInterface
         $record = $this->doctrine->getManager()
             ->getRepository($configuration->getClass())
             ->find($request->attributes->get('id'));
+        if ($record) {
+            $entityClass      = $record->getEntity();
+            $config           = $this->organizationConfigProvider->getConfig($entityClass);
+            $applicableConfig = $config->get('applicable', false, false);
 
-        $reportEntityClass = $record->getEntity();
-
-        $config = $this->organizationConfigProvider->getConfig($reportEntityClass);
-        $applicableConfig = $config->get('applicable', false, false);
-
-        $isApplicable =
-            $applicableConfig
-            && (
-                $applicableConfig['all']
-                || in_array($this->securityFacade->getOrganizationId(), $applicableConfig['selective'])
-            );
-
-        if (!$isApplicable) {
-            $acl = $this->securityFacade->getRequestAcl($request);
-            if ($acl->getPermission() == BasicPermissionMap::PERMISSION_VIEW) {
-                throw new AccessDeniedException(
-                    'You do not get ' . $acl->getPermission() . ' permission for this object. ' .
-                    'Entity is not applicable for current organization.'
+            $isApplicable =
+                $applicableConfig
+                && (
+                    $applicableConfig['all']
+                    || in_array($this->securityFacade->getOrganizationId(), $applicableConfig['selective'])
                 );
+
+            if (!$isApplicable) {
+                $acl = $this->securityFacade->getRequestAcl($request);
+                if ($acl->getPermission() == BasicPermissionMap::PERMISSION_VIEW) {
+                    throw new AccessDeniedException(
+                        'You do not get ' . $acl->getPermission() . ' permission for this object. ' .
+                        'Entity is not applicable for current organization.'
+                    );
+                }
             }
         }
     }
