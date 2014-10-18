@@ -11,7 +11,7 @@ use Oro\Bundle\EntityExtendBundle\Extend\FieldTypeHelper;
 use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
-use Oro\Bundle\EntityConfigBundle\Twig\DynamicFieldsExtension as BaseDynamicFieldsExtension;
+use Oro\Bundle\EntityExtendBundle\Twig\DynamicFieldsExtension as BaseDynamicFieldsExtension;
 
 class DynamicFieldsExtension extends BaseDynamicFieldsExtension
 {
