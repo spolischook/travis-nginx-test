@@ -16,7 +16,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                 $this->logicalOr(
                     $this->equalTo('oro_entity.datagrid.extension.dynamic_fields'),
                     $this->equalTo('oro_entity_config.twig.extension.dynamic_fields'),
-                    $this->equalTo('oro_entity.form.type.custom_entity')
+                    $this->equalTo('oro_entity_extend.extension.extend_entity')
                 )
             )
             ->will($this->returnValue(false));
@@ -41,7 +41,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                 $this->logicalOr(
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Grid\DynamicFieldsExtension'),
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Twig\DynamicFieldsExtension'),
-                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Form\Type\CustomEntityType')
+                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Form\Extension\ExtendEntityExtension')
                 )
             )
             ->will($this->returnSelf());
@@ -58,7 +58,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                 $this->logicalOr(
                     $this->equalTo('oro_entity.datagrid.extension.dynamic_fields'),
                     $this->equalTo('oro_entity_config.twig.extension.dynamic_fields'),
-                    $this->equalTo('oro_entity.form.type.custom_entity')
+                    $this->equalTo('oro_entity_extend.extension.extend_entity')
                 )
             )
             ->will($this->returnValue(true));
@@ -69,7 +69,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                 $this->logicalOr(
                     $this->equalTo('oro_entity.datagrid.extension.dynamic_fields'),
                     $this->equalTo('oro_entity_config.twig.extension.dynamic_fields'),
-                    $this->equalTo('oro_entity.form.type.custom_entity'),
+                    $this->equalTo('oro_entity_extend.extension.extend_entity'),
                     $this->equalTo('oro_security.security_facade')
                 )
             )

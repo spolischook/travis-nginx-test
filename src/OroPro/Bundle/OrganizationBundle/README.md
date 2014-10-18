@@ -31,8 +31,6 @@ Building Forms
 --------------
 The number of fields within **Create / Edit the entity instance** form varies. It depends on which organization they are.
 
-Forms that depends on CustomEntityType will be limited.
-
 Custom fields are limited by `OrganizationExclusionProvider`, fields assigned into another organization will be ignored.
 
 Building Datagrid

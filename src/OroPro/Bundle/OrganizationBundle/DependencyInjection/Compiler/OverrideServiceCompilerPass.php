@@ -35,13 +35,13 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
         }
 
         /**
-         * Override Oro\Bundle\EntityBundle\Form\Type\CustomEntityType
+         * Override Oro\Bundle\EntityExtendBundle\Form\Extension\ExtendEntityExtension
          * Extension is responsible for custom fields on edit pages
          */
-        $serviceId = 'oro_entity.form.type.custom_entity';
+        $serviceId = 'oro_entity_extend.extension.extend_entity';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
-            $definition->setClass('OroPro\Bundle\OrganizationBundle\Form\Type\CustomEntityType');
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Form\Extension\ExtendEntityExtension');
             $definition->addArgument($container->getDefinition('oro_security.security_facade'));
         }
     }

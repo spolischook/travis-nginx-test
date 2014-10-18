@@ -1,7 +1,8 @@
 <?php
 
-namespace OroPro\Bundle\OrganizationBundle\Form\Type;
+namespace OroPro\Bundle\OrganizationBundle\Form\Extension;
 
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Translation\Translator;
 
@@ -10,9 +11,9 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
-use Oro\Bundle\EntityBundle\Form\Type\CustomEntityType as BaseCustomEntityType;
+use Oro\Bundle\EntityExtendBundle\Form\Extension\ExtendEntityExtension as BaseExtendEntityExtension;
 
-class CustomEntityType extends BaseCustomEntityType
+class ExtendEntityExtension extends BaseExtendEntityExtension
 {
     /** @var  SecurityFacade */
     protected $securityFacade;
@@ -35,18 +36,15 @@ class CustomEntityType extends BaseCustomEntityType
     }
 
     /**
-     * @param string          $className
-     * @param ConfigInterface $formConfig
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    protected function checkAvailability($className, ConfigInterface $formConfig)
+    protected function isApplicableField(ConfigInterface $extendConfig, ConfigProviderInterface $extendConfigProvider)
     {
-        if (parent::checkAvailability($className, $formConfig)) {
+        if (parent::isApplicableField($extendConfig, $extendConfigProvider)) {
             $organizationConfigProvider = $this->configManager->getProvider('organization');
             $organizationConfig = $organizationConfigProvider->getConfig(
-                $className,
-                $formConfig->getId()->getFieldName()
+                $extendConfig->getId()->getClassName(),
+                $extendConfig->getId()->getFieldName()
             );
             $applicable = $organizationConfig->get('applicable', false);
 
