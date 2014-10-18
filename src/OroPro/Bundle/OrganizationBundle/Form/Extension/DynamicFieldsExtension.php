@@ -11,9 +11,9 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
-use Oro\Bundle\EntityExtendBundle\Form\Extension\ExtendEntityExtension as BaseExtendEntityExtension;
+use Oro\Bundle\EntityExtendBundle\Form\Extension\DynamicFieldsExtension as BaseDynamicFieldsExtension;
 
-class ExtendEntityExtension extends BaseExtendEntityExtension
+class DynamicFieldsExtension extends BaseDynamicFieldsExtension
 {
     /** @var  SecurityFacade */
     protected $securityFacade;

@@ -6,7 +6,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridGuesser;
 
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
-use Oro\Bundle\EntityBundle\Grid\DynamicFieldsExtension as BaseDynamicFieldsExtension;
+use Oro\Bundle\EntityExtendBundle\Grid\DynamicFieldsExtension as BaseDynamicFieldsExtension;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 

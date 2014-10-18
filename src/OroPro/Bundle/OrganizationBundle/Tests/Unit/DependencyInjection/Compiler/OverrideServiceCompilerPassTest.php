@@ -14,9 +14,9 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->method('hasDefinition')
             ->with(
                 $this->logicalOr(
-                    $this->equalTo('oro_entity.datagrid.extension.dynamic_fields'),
-                    $this->equalTo('oro_entity_config.twig.extension.dynamic_fields'),
-                    $this->equalTo('oro_entity_extend.extension.extend_entity')
+                    $this->equalTo('oro_entity_extend.datagrid.extension.dynamic_fields'),
+                    $this->equalTo('oro_entity_extend.twig.extension.dynamic_fields'),
+                    $this->equalTo('oro_entity_extend.form.extension.dynamic_fields')
                 )
             )
             ->will($this->returnValue(false));
@@ -41,7 +41,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                 $this->logicalOr(
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Grid\DynamicFieldsExtension'),
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Twig\DynamicFieldsExtension'),
-                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Form\Extension\ExtendEntityExtension')
+                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Form\Extension\DynamicFieldsExtension')
                 )
             )
             ->will($this->returnSelf());
@@ -56,9 +56,9 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->method('hasDefinition')
             ->with(
                 $this->logicalOr(
-                    $this->equalTo('oro_entity.datagrid.extension.dynamic_fields'),
-                    $this->equalTo('oro_entity_config.twig.extension.dynamic_fields'),
-                    $this->equalTo('oro_entity_extend.extension.extend_entity')
+                    $this->equalTo('oro_entity_extend.datagrid.extension.dynamic_fields'),
+                    $this->equalTo('oro_entity_extend.twig.extension.dynamic_fields'),
+                    $this->equalTo('oro_entity_extend.form.extension.dynamic_fields')
                 )
             )
             ->will($this->returnValue(true));
@@ -67,9 +67,9 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->method('getDefinition')
             ->with(
                 $this->logicalOr(
-                    $this->equalTo('oro_entity.datagrid.extension.dynamic_fields'),
-                    $this->equalTo('oro_entity_config.twig.extension.dynamic_fields'),
-                    $this->equalTo('oro_entity_extend.extension.extend_entity'),
+                    $this->equalTo('oro_entity_extend.datagrid.extension.dynamic_fields'),
+                    $this->equalTo('oro_entity_extend.twig.extension.dynamic_fields'),
+                    $this->equalTo('oro_entity_extend.form.extension.dynamic_fields'),
                     $this->equalTo('oro_security.security_facade')
                 )
             )

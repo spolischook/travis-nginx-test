@@ -13,10 +13,10 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         /**
-         * Override Oro\Bundle\EntityBundle\Grid\DynamicFieldsExtension
+         * Override Oro\Bundle\EntityExtendBundle\Grid\DynamicFieldsExtension
          * Extension is responsible for columns of custom fields on grids
          */
-        $serviceId = 'oro_entity.datagrid.extension.dynamic_fields';
+        $serviceId = 'oro_entity_extend.datagrid.extension.dynamic_fields';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
             $definition->setClass('OroPro\Bundle\OrganizationBundle\Grid\DynamicFieldsExtension');
@@ -24,10 +24,10 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
         }
 
         /**
-         * Override Oro\Bundle\EntityConfigBundle\Twig\DynamicFieldsExtension
+         * Override Oro\Bundle\EntityExtendBundle\Twig\DynamicFieldsExtension
          * Extension is responsible for custom fields on view pages
          */
-        $serviceId = 'oro_entity_config.twig.extension.dynamic_fields';
+        $serviceId = 'oro_entity_extend.twig.extension.dynamic_fields';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
             $definition->setClass('OroPro\Bundle\OrganizationBundle\Twig\DynamicFieldsExtension');
@@ -35,13 +35,13 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
         }
 
         /**
-         * Override Oro\Bundle\EntityExtendBundle\Form\Extension\ExtendEntityExtension
+         * Override Oro\Bundle\EntityExtendBundle\Form\Extension\DynamicFieldsExtension
          * Extension is responsible for custom fields on edit pages
          */
-        $serviceId = 'oro_entity_extend.extension.extend_entity';
+        $serviceId = 'oro_entity_extend.form.extension.dynamic_fields';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
-            $definition->setClass('OroPro\Bundle\OrganizationBundle\Form\Extension\ExtendEntityExtension');
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Form\Extension\DynamicFieldsExtension');
             $definition->addArgument($container->getDefinition('oro_security.security_facade'));
         }
     }
