@@ -3,7 +3,7 @@ orocrmpro_outlook:
         outlook_settings:       MS Outlook settings
         contacts:               Contacts
         sync_direction:         Sync Direction
-        conflict_resolution:    Conflicts Resolution
+        conflict_resolution:    Conflict Resolution
         sync_interval_orocrm:   CRM sync interval (in seconds)
         sync_interval_outlook:  Outlook sync interval (in seconds)
 
@@ -11,7 +11,7 @@ orocrmpro_outlook:
             choices:
                 orocrm_to_outlook:  OroCRM to Outlook
                 outlook_to_orocrm:  Outlook to OroCRM
-                both:               Both OroCRM and Outlook
+                both:               Bidirectional
 
         contacts_conflict_resolution:
             choices:
