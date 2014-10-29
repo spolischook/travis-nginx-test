@@ -13,3 +13,6 @@
 [submodule "src/OroCRMPackages/src/OroCRM/Bundle/ZendeskBundle"]
 	path = src/OroCRMPackages/src/OroCRM/Bundle/ZendeskBundle
 	url = git@github.com:laboro/OroCRMZendeskBundle.git
+[submodule "src/OroPackages/src/Oro/Bundle/EntitySerializedFieldsBundle"]
+	path = src/OroPackages/src/Oro/Bundle/EntitySerializedFieldsBundle
+	url = git@github.com:laboro/OroEntitySerializedFieldsBundle.git
