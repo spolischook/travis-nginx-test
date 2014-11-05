@@ -2,7 +2,7 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Twig;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
@@ -20,13 +20,13 @@ class DynamicFieldsExtension extends BaseDynamicFieldsExtension
     /**
      * @param ConfigManager   $configManager
      * @param FieldTypeHelper $fieldTypeHelper
-     * @param EventDispatcher $dispatcher
+     * @param EventDispatcherInterface $dispatcher
      * @param SecurityFacade  $securityFacade
      */
     public function __construct(
         ConfigManager $configManager,
         FieldTypeHelper $fieldTypeHelper,
-        EventDispatcher $dispatcher,
+        EventDispatcherInterface $dispatcher,
         SecurityFacade $securityFacade
     ) {
         parent::__construct($configManager, $fieldTypeHelper, $dispatcher);
