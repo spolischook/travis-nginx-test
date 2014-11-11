@@ -18,10 +18,10 @@ class DynamicFieldsExtension extends BaseDynamicFieldsExtension
     protected $organizationProvider;
 
     /**
-     * @param ConfigManager   $configManager
-     * @param FieldTypeHelper $fieldTypeHelper
+     * @param ConfigManager            $configManager
+     * @param FieldTypeHelper          $fieldTypeHelper
      * @param EventDispatcherInterface $dispatcher
-     * @param SecurityFacade  $securityFacade
+     * @param SecurityFacade           $securityFacade
      */
     public function __construct(
         ConfigManager $configManager,
