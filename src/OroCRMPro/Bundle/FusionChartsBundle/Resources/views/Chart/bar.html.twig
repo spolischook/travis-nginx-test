@@ -50,47 +50,50 @@
                     'jquery',
                     'orocrmprofusioncharts/js/fusion-data-handler',
                     'oroui/js/mediator',
-                     'orocrmprofusioncharts/lib/FusionCharts'
+                    'orocrmprofusioncharts/lib/FusionCharts'
                 ],
                 function ($, dataHandler, mediator) {
-                    var dataSource = {{ json|json_encode|raw }};
-                    var schema = {{ options.data_schema|json_encode|raw }};
-                    var isCurrencyPrepend = {{ oro_currency_symbol_prepend()|json_encode|raw }};
-                    var handler = new dataHandler(dataSource, schema, isCurrencyPrepend);
-                    dataSource = handler.getDataSource();
-                    var max = handler.getMaxValue();
-                    var min = handler.getMinValue();
-                    max += max/5;
-                    dataSource.chart.yAxisMaxValue = Math.round(max);
-                    var chartObj = new FusionCharts({
-                        type: 'Column3D',
-                        dataSource: {
-                            'chart': dataSource.chart,
-                            'trendlines': dataSource.trendlines,
-                            'data': []
-                        },
-                        dataFormat: 'json',
-                        width: '100%',
-                        height: 300,
-                        id: '{{ containerId }}',
-                        renderAt: '{{ containerId }}-chart'
-                    });
 
-                    var isDrawFirstCall = true;
+                    $(document).ready(function(){
+                        var dataSource = {{ json|json_encode|raw }};
+                        var schema = {{ options.data_schema|json_encode|raw }};
+                        var isCurrencyPrepend = {{ oro_currency_symbol_prepend()|json_encode|raw }};
+                        var handler = new dataHandler(dataSource, schema, isCurrencyPrepend);
+                        dataSource = handler.getDataSource();
+                        var max = handler.getMaxValue();
+                        max += max/5;
+                        dataSource.chart.yAxisMaxValue = Math.round(max);
+                        var chartObj = new FusionCharts({
+                            type: 'Column3D',
+                            dataSource: {
+                                'chart': dataSource.chart,
+                                'trendlines': dataSource.trendlines,
+                                'data': []
+                            },
+                            dataFormat: 'json',
+                            width: '100%',
+                            height: 300,
+                            id: '{{ containerId }}',
+                            renderAt: '{{ containerId }}-chart'
+                        });
 
-                    mediator.once('hash_navigation_request:complete', function () {
-                        chartObj.dispose();
+                        var isDrawFirstCall = true;
+
+                        mediator.once('page:beforeChange', function () {
+                            chartObj.dispose();
+                        });
+                        var drawComplete = function () {
+
+                            if (isDrawFirstCall) {
+                                isDrawFirstCall = false;
+                                return;
+                            }
+                            chartObj.removeEventListener ("DrawComplete", drawComplete);
+                            chartObj.setJSONData(dataSource);
+                        };
+                        FusionCharts('{{ containerId }}').addEventListener ("DrawComplete" ,  drawComplete);
+                        chartObj.render();
                     });
-                    var drawComplete = function () {
-                        if (isDrawFirstCall && !document.pageReady) {
-                            isDrawFirstCall = false;
-                            return;
-                        }
-                        chartObj.removeEventListener ("DrawComplete", drawComplete);
-                        chartObj.setJSONData(dataSource);
-                    };
-                    FusionCharts('{{ containerId }}').addEventListener ("DrawComplete" ,  drawComplete);
-                    chartObj.render();
                 }
         );
     </script>
