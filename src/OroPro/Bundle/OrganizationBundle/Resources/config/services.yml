@@ -21,7 +21,7 @@ services:
     oropro_organization.exclusion_provider:
         class: %oropro_organization.exclusion_provider.config.class%
         arguments:
-            - @oro_security.security_facade
+            - @oro_security.security_facade.link
             - @oro_entity_config.provider.organization
         tags:
             - { name: oro_entity.exclusion_provider.default }
