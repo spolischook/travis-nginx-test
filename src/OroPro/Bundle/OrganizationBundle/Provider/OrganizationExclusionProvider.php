@@ -5,25 +5,25 @@ namespace OroPro\Bundle\OrganizationBundle\Provider;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 use Oro\Bundle\EntityBundle\Provider\ExclusionProviderInterface;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class OrganizationExclusionProvider implements ExclusionProviderInterface
 {
-    /** @var SecurityFacade */
-    protected $securityFacade;
+    /** @var ServiceLink */
+    protected $securityFacadeLink;
 
     /** @var ConfigProvider */
     protected $organizationConfigProvider;
 
     /**
-     * @param SecurityFacade $securityFacade
+     * @param ServiceLink $securityFacadeLink
      * @param ConfigProvider $organizationConfigProvider
      */
-    public function __construct(SecurityFacade $securityFacade, ConfigProvider $organizationConfigProvider)
+    public function __construct(ServiceLink $securityFacadeLink, ConfigProvider $organizationConfigProvider)
     {
+        $this->securityFacadeLink         = $securityFacadeLink;
         $this->organizationConfigProvider = $organizationConfigProvider;
-        $this->securityFacade             = $securityFacade;
     }
 
     /**
@@ -65,7 +65,7 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
 
                 return !(
                     $applicable['all'] == true
-                    || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
+                    || in_array($this->securityFacadeLink->getService()->getOrganizationId(), $applicable['selective'])
                 );
             }
         }
