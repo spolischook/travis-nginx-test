@@ -4,6 +4,8 @@ namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider;
 
 class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
@@ -11,10 +13,10 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
     /** @var OrganizationExclusionProvider */
     protected $provider;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $securityFacade;
+    /** @var \PHPUnit_Framework_MockObject_MockObject|ServiceLink */
+    private $securityFacadeLink;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit_Framework_MockObject_MockObject|ConfigProvider */
     protected $configProvider;
 
     public function setUp()
@@ -23,14 +25,21 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+        $this->securityFacadeLink = $this
+            ->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->provider = new OrganizationExclusionProvider($this->securityFacade, $this->configProvider);
+        $this->provider = new OrganizationExclusionProvider($this->securityFacadeLink, $this->configProvider);
     }
 
     /**
+     * @param int $organizationId
+     * @param int $calls
+     * @param string $className
+     * @param bool $expected
+     * @param Config $entityConfig
+     *
      * @dataProvider dataProvider
      */
     public function testIsIgnoredEntity($organizationId, $calls, $className, $expected, $entityConfig)
@@ -45,13 +54,27 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
             ->with($className)
             ->will($this->returnValue(true));
 
-        $this->securityFacade->expects($this->exactly($calls))
+        $securityFacade = $this
+            ->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->securityFacadeLink
+            ->expects($this->any())
+            ->method('getService')
+            ->will($this->returnValue($securityFacade));
+
+        $securityFacade
+            ->expects($this->exactly($calls))
             ->method('getOrganizationId')
             ->will($this->returnValue($organizationId));
 
         $this->assertEquals($expected, $this->provider->isIgnoredEntity($className));
     }
 
+    /**
+     * @return array
+     */
     public function dataProvider()
     {
         return [
