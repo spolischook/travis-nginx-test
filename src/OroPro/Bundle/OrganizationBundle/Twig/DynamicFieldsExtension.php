@@ -2,13 +2,11 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Twig;
 
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityExtendBundle\Extend\FieldTypeHelper;
-
-use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Oro\Bundle\EntityExtendBundle\Twig\DynamicFieldsExtension as BaseDynamicFieldsExtension;
@@ -17,24 +15,24 @@ class DynamicFieldsExtension extends BaseDynamicFieldsExtension
 {
     /** @var SecurityFacade */
     protected $securityFacade;
+    protected $organizationProvider;
 
     /**
-     * @param ConfigManager         $configManager
-     * @param FieldTypeHelper       $fieldTypeHelper
-     * @param DateTimeFormatter     $dateTimeFormatter
-     * @param UrlGeneratorInterface $router
-     * @param SecurityFacade        $securityFacade
+     * @param ConfigManager            $configManager
+     * @param FieldTypeHelper          $fieldTypeHelper
+     * @param EventDispatcherInterface $dispatcher
+     * @param SecurityFacade           $securityFacade
      */
     public function __construct(
         ConfigManager $configManager,
         FieldTypeHelper $fieldTypeHelper,
-        DateTimeFormatter $dateTimeFormatter,
-        UrlGeneratorInterface $router,
+        EventDispatcherInterface $dispatcher,
         SecurityFacade $securityFacade
     ) {
-        parent::__construct($configManager, $fieldTypeHelper, $dateTimeFormatter, $router);
+        parent::__construct($configManager, $fieldTypeHelper, $dispatcher);
 
         $this->securityFacade = $securityFacade;
+        $this->organizationProvider = $configManager->getProvider('organization');
     }
 
     /**
@@ -43,8 +41,7 @@ class DynamicFieldsExtension extends BaseDynamicFieldsExtension
     public function filterFields(ConfigInterface $config)
     {
         if (parent::filterFields($config)) {
-            $organizationConfigProvider = $this->configManager->getProvider('organization');
-            $organizationConfig         = $organizationConfigProvider->getConfigById($config->getId());
+            $organizationConfig = $this->organizationProvider->getConfigById($config->getId());
 
             // skip field if it's not configured for current organization
             $applicable = $organizationConfig->get('applicable', false, false);
