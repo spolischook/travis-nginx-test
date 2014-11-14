@@ -17,11 +17,10 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $fieldTypeHelper;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
-    protected $dateTimeFormatter;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
-    protected $router;
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $eventDispatcher;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $securityFacade;
@@ -34,12 +33,7 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
         $this->fieldTypeHelper = $this->getMockBuilder('Oro\Bundle\EntityExtendBundle\Extend\FieldTypeHelper')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->dateTimeFormatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->router = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Routing\Router')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()
             ->getMock();
@@ -74,8 +68,7 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
         $this->twigExtension = new DynamicFieldsExtension(
             $this->configManager,
             $this->fieldTypeHelper,
-            $this->dateTimeFormatter,
-            $this->router,
+            $this->eventDispatcher,
             $this->securityFacade
         );
 
