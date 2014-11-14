@@ -16,3 +16,6 @@
 [submodule "src/OroPackages/src/Oro/Bundle/EntitySerializedFieldsBundle"]
 	path = src/OroPackages/src/Oro/Bundle/EntitySerializedFieldsBundle
 	url = git@github.com:laboro/OroEntitySerializedFieldsBundle.git
+[submodule "src/OroCRMPackages/src/OroCRM/Bundle/MailChimpBundle"]
+	path = src/OroCRMPackages/src/OroCRM/Bundle/MailChimpBundle
+	url = git@github.com:laboro/OroCRMMailChimpBundle.git
