@@ -36,6 +36,9 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
     protected $organizationConfigProvider;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
+    protected $viewConfigProvider;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $securityFacade;
 
     /** @var DynamicFieldsExtension */
@@ -57,6 +60,7 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extendConfigProvider       = $this->getConfigProviderMock();
         $this->datagridConfigProvider     = $this->getConfigProviderMock();
         $this->organizationConfigProvider = $this->getConfigProviderMock();
+        $this->viewConfigProvider         = $this->getConfigProviderMock();
 
         $this->configManager
             ->expects($this->any())
@@ -67,7 +71,8 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
                         ['entity', $this->entityConfigProvider],
                         ['extend', $this->extendConfigProvider],
                         ['datagrid', $this->datagridConfigProvider],
-                        ['organization', $this->organizationConfigProvider]
+                        ['organization', $this->organizationConfigProvider],
+                        ['view', $this->viewConfigProvider],
                     ]
                 )
             );
@@ -114,6 +119,14 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getConfig')
             ->with(self::ENTITY_CLASS, self::FIELD_NAME)
             ->will($this->returnValue($datagridFieldConfig));
+
+        $viewFieldConfig = new Config(
+            new FieldConfigId('view', self::ENTITY_CLASS, self::FIELD_NAME, $fieldType)
+        );
+        $this->viewConfigProvider->expects($this->any())
+            ->method('getConfig')
+            ->with(self::ENTITY_CLASS, self::FIELD_NAME)
+            ->will($this->returnValue($viewFieldConfig));
 
         $config = DatagridConfiguration::create(['extended_entity_name' => self::ENTITY_NAME]);
         $this->extension->processConfigs($config);
