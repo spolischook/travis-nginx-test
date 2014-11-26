@@ -2,6 +2,8 @@ oro:
     security:
         access-level:
             GLOBAL: Organization
+    organization:
+         is_global.label: Is Global mode organization
 
 oropro:
     organization:
