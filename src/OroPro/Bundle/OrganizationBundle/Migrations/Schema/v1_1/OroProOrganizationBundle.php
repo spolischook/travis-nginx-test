@@ -5,8 +5,10 @@ namespace OroPro\Bundle\OrganizationBundle\Migrations\Schema\v1_1;
 use Doctrine\DBAL\Schema\Schema;
 
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\EntityExtendBundle\Migration\ExtendOptionsManager;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
+use Oro\Bundle\EntityExtendBundle\Migration\OroOptions;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
@@ -33,11 +35,10 @@ class OroProOrganizationBundle implements Migration, ExtendExtensionAwareInterfa
             'is_global',
             'boolean',
             [
-                'oro_options' => [
+                OroOptions::KEY  => [
+
                     'extend'    => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
-                    'datagrid'  => ['is_visible' => false],
-                    'merge'     => ['display' => false],
-                    'dataaudit' => ['auditable' => false]
+                    ExtendOptionsManager::MODE_OPTION => 'hidden'
                 ]
             ]
         );
