@@ -35,9 +35,8 @@ class OroProOrganizationBundle implements Migration, ExtendExtensionAwareInterfa
             'is_global',
             'boolean',
             [
-                OroOptions::KEY  => [
-
-                    'extend'    => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
+                OroOptions::KEY => [
+                    'extend' => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
                     ExtendOptionsManager::MODE_OPTION => 'hidden'
                 ]
             ]
