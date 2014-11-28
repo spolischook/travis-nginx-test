@@ -8,6 +8,9 @@ parameters:
     #
     oro_security.acl.extension.entity.class:    OroPro\Bundle\SecurityBundle\Acl\Extension\EntityAclProExtension
 
+    oro_security.acl.privilege_repository.class: OroPro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeProRepository
+    oro_security.acl.voter.class:                OroPro\Bundle\SecurityBundle\Acl\Voter\AclProVoter
+
 services:
     oropro_security.licence.server_agent:
         class: %oropro_security.licence.server_agent.class%
