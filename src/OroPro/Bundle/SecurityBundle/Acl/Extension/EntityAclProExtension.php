@@ -8,21 +8,19 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension;
 use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 class EntityAclProExtension extends EntityAclExtension
 {
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    protected $accessLevel = null;
+    /** @var ServiceLink */
+    protected $contextLink;
 
     /**
-     * @param SecurityFacade $securityFacade
+     * @param ServiceLink $contextLink
      */
-    public function setSecurityFacade(SecurityFacade $securityFacade)
+    public function setContextLink(ServiceLink $contextLink)
     {
-        $this->securityFacade = $securityFacade;
+        $this->contextLink = $contextLink;
     }
 
     /**
@@ -33,6 +31,14 @@ class EntityAclProExtension extends EntityAclExtension
         // check if we are in global mode - return false in case if Access Level < AccessLevel::SYSTEM_LEVEL
         if ($securityToken instanceof OrganizationContextTokenInterface) {
             $organization = $securityToken->getOrganizationContext();
+
+            // todo: Should be deleted in OEE-418
+            // Hide Create/Update actions for the global mode.
+            $permissions = $this->getPermissions($triggeredMask, true);
+            if ($organization->getIsGlobal() && in_array($permissions[0], ['CREATE', 'EDIT'])) {
+                return false;
+            }
+
             if ($organization->getIsGlobal() && $this->getAccessLevel($triggeredMask) !== AccessLevel::SYSTEM_LEVEL) {
                 return false;
             }
@@ -53,10 +59,10 @@ class EntityAclProExtension extends EntityAclExtension
         } else {
             $metadata = $this->getMetadata($object);
             if (!$metadata->hasOwner()) {
-                return array(
+                return [
                     AccessLevel::NONE_LEVEL   => AccessLevel::NONE_LEVEL_NAME,
                     AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
-                );
+                ];
             }
             if ($metadata->isUserOwned()) {
                 $minLevel = AccessLevel::BASIC_LEVEL;
@@ -90,7 +96,12 @@ class EntityAclProExtension extends EntityAclExtension
      */
     protected function isGlobalMode()
     {
-        $organization = $this->securityFacade->getOrganization();
-        return $organization->getIsGlobal();
+        $token = $this->contextLink->getService()->getToken();
+        if ($token instanceof OrganizationContextTokenInterface)
+        {
+            return $token->getOrganizationContext()->getIsGlobal();
+        }
+
+        return false;
     }
 }

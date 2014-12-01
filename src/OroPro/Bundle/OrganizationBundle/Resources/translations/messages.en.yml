@@ -5,6 +5,7 @@ oro:
 
 oropro:
     organization:
+        label: Organization
         datagrid:
             applicable_all:  All
             applicable_none: N/A
