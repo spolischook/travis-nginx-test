@@ -2,6 +2,7 @@ parameters:
     oropro_organization.entity.class: Oro\Bundle\OrganizationBundle\Entity\Organization
 
     oropro_organization.twig.extension.organization.class: OroPro\Bundle\OrganizationBundle\Twig\OrganizationExtension
+    oropro_organization.twig.extension.search_organization.class: OroPro\Bundle\OrganizationBundle\Twig\SearchResultOrganizationExtension
     oropro_organization.exclusion_provider.config.class:   OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider
     oropro_organization.request.param_converter.class:     OroPro\Bundle\OrganizationBundle\Request\ParamConverter\RequestReportParamConverter
 
@@ -15,6 +16,15 @@ services:
             - @oro_entity_config.provider.organization
             - @doctrine
             - @translator
+        tags:
+            - { name: twig.extension }
+
+    oropro_organization.twig.extension.search_organization:
+        class: %oropro_organization.twig.extension.search_organization.class%
+        arguments:
+            - @oro_security.security_facade
+            - @oro_entity_config.provider.ownership
+            - @oro_entity.doctrine_helper
         tags:
             - { name: twig.extension }
 

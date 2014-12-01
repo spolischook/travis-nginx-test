@@ -1,0 +1,6 @@
+{% set organizationInfo = oropro_search_entity_organization_info(entity) %}
+{% if organizationInfo is not null %}
+    <li>
+        {{ 'oropro.organization.label'|trans }}: {{ organizationInfo }}
+    </li>
+{% endif %}

@@ -1,0 +1,13 @@
+placeholders:
+    search_item_entity_info:
+        items:
+            organization_info: ~
+    additional_entity_stats:
+        items:
+            organization_view_entity_info: ~
+
+items:
+  organization_info:
+      template: OroProOrganizationBundle::searchResultOrganizationInfo.html.twig
+  organization_view_entity_info:
+      template: OroProOrganizationBundle::viewOrganizationInfo.html.twig
