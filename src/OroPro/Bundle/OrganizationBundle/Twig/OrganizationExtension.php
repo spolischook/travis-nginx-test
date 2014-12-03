@@ -10,6 +10,8 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\TranslationBundle\Translation\Translator;
 
+use OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper;
+
 class OrganizationExtension extends \Twig_Extension
 {
     const NAME = 'oropro_organization';
@@ -21,21 +23,27 @@ class OrganizationExtension extends \Twig_Extension
     protected $translator;
 
     /** @var ConfigProvider */
-    private $organizationProvider;
+    protected $organizationProvider;
+
+    /** @var OrganizationProHelper */
+    protected $organizationHelper;
 
     /**
-     * @param ConfigProvider $organizationProvider
-     * @param Registry       $doctrine
-     * @param Translator     $translator
+     * @param ConfigProvider        $organizationProvider
+     * @param Registry              $doctrine
+     * @param Translator            $translator
+     * @param OrganizationProHelper $organizationHelper
      */
     public function __construct(
         ConfigProvider $organizationProvider,
         Registry $doctrine,
-        Translator $translator
+        Translator $translator,
+        OrganizationProHelper $organizationHelper
     ) {
         $this->doctrine             = $doctrine;
         $this->translator           = $translator;
         $this->organizationProvider = $organizationProvider;
+        $this->organizationHelper   = $organizationHelper;
     }
 
     /**
@@ -43,9 +51,20 @@ class OrganizationExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('oropro_applicable_organizations', array($this, 'getApplicable')),
-        );
+        return [
+            new \Twig_SimpleFunction('oropro_applicable_organizations', [$this, 'getApplicable']),
+            new \Twig_SimpleFunction('oropro_global_org_id', [$this, 'getGlobalOrgId']),
+        ];
+    }
+
+    /**
+     * Return current system global organization id. If the system has no global organization - returns null
+     *
+     * @return int|null
+     */
+    public function getGlobalOrgId()
+    {
+        return $this->organizationHelper->getGlobalOrganizationId();
     }
 
     /**

@@ -21,7 +21,7 @@ class TestHelper
         return new TestHelper($testCase);
     }
 
-    /** @var (\PHPUnit_Framework_TestCase */
+    /** @var \PHPUnit_Framework_TestCase */
     private $testCase;
 
     public function __construct(\PHPUnit_Framework_TestCase $testCase)

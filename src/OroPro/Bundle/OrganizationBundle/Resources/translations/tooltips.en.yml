@@ -1,0 +1,4 @@
+oropro:
+    organization:
+        form:
+            is_organization_checkbox: This select allows to set organization as Global. System can have only one global organization.
