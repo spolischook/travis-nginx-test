@@ -9,6 +9,9 @@ parameters:
     # Overrides
     oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener
     oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
+
+    oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
+
 services:
     oropro_organization.twig.extension.organization:
         class: %oropro_organization.twig.extension.organization.class%
@@ -44,3 +47,12 @@ services:
             - @doctrine
         tags:
             - { name: request.param_converter, priority: 2, converter: applicable_organization_converter }
+
+    oropro_organization.grid.extension.organization_column:
+        class: %oropro_organization.grid.extension.organization_column.class%
+        arguments:
+            - @oro_security.security_facade
+            - @oro_entity_config.config_manager
+            - @oro_entity.orm.entity_class_resolver
+        tags:
+            - { name: oro_datagrid.extension }
