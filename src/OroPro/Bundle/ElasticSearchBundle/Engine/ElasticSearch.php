@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Elasticsearch\Client;
 
+use Oro\Bundle\SearchBundle\Query\Mode;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\SearchBundle\Query\Query;
@@ -127,10 +128,19 @@ class ElasticSearch extends AbstractEngine
     {
         if (null === $class) {
             $this->client = $this->indexAgent->recreateIndex();
-            $entityNames = $this->mapper->getEntities();
+            $entityNames = $this->mapper->getEntities([Mode::NORMAL, Mode::WITH_DESCENDANTS]);
         } else {
-            $this->indexAgent->recreateTypeMapping($this->getClient(), $class);
             $entityNames = [$class];
+            $mode        = $this->mapper->getEntityModeConfig($class);
+            if ($mode === Mode::WITH_DESCENDANTS) {
+                $entityNames = array_merge($entityNames, $this->mapper->getRegisteredDescendants($class));
+            } elseif ($mode === Mode::ONLY_DESCENDANTS) {
+                $entityNames = $this->mapper->getRegisteredDescendants($class);
+            }
+
+            foreach ($entityNames as $class) {
+                $this->indexAgent->recreateTypeMapping($this->getClient(), $class);
+            }
         }
 
         $recordsCount = 0;
