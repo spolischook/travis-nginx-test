@@ -3,8 +3,8 @@
 namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Twig;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
-
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
+
 use OroPro\Bundle\OrganizationBundle\Twig\SearchResultOrganizationExtension;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
 

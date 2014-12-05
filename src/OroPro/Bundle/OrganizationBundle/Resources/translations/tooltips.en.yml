@@ -1,0 +1,4 @@
+oropro:
+    organization:
+        form:
+            is_global: Provides access to data from all organizations within a single organization. Only "System" access level will be available. Only one System organization can exist in the system

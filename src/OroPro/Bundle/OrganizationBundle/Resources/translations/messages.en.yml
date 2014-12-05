@@ -1,11 +1,13 @@
 oro:
+    user.form.access_settings.label: Organization structure
+    organization:
+        is_global.label: System access
     security:
         access-level:
             GLOBAL: Organization
 
 oropro:
     organization:
-        label: Organization
         datagrid:
             applicable_all:  All
             applicable_none: N/A
@@ -22,3 +24,4 @@ oropro:
                     items:
                         applicable: Applicable organizations
                         grid.applicable: Organization
+        is_global_organization: System access
