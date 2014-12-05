@@ -5,6 +5,7 @@ namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Grid;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 use OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension;
+use OroPro\Bundle\OrganizationBundle\Tests\Unit\Fixture\GlobalOrganization;
 
 class OrganizationColumnExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -127,21 +128,14 @@ class OrganizationColumnExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * We can't use original organization entity due to "is_global" field which is custom field and it's getter/setter
-     * will not be accessible in test environment.
-     *
      * @param bool $isGlobal
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return GlobalOrganization
      */
     protected function getOrganizationMock($isGlobal = false)
     {
-        $organization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
-            ->setMethods(['getIsGlobal'])
-            ->getMock();
-        $organization->expects($this->once())
-            ->method('getIsGlobal')
-            ->will($this->returnValue($isGlobal));
+        $organization = new GlobalOrganization();
+        $organization->setIsGlobal($isGlobal);
 
         return $organization;
     }
