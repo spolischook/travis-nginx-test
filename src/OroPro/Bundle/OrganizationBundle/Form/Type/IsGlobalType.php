@@ -12,8 +12,8 @@ use Symfony\Component\Validator\ExecutionContext;
 use OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper;
 
 /**
- * This form type allow to set organization as Global organization. In the system we should have only one organization
- * entity. This form type allow to check this.
+ * This form type allows to set organization as Global and checks that the system contains only only one such
+ * organization.
  *
  * Please do not use this form extension anywhere because of custom validation logic
  *
@@ -48,8 +48,7 @@ class IsGlobalType extends AbstractType
         $callback = function ($value, ExecutionContext $context) use ($organizationHelper) {
             /** @var OrganizationProHelper $organizationHelper */
             $globalOrgId = $organizationHelper->getGlobalOrganizationId();
-            if (
-                !empty($value)
+            if (!empty($value)
                 && $value == 1
                 && !is_null($globalOrgId)
                 && $globalOrgId !== $context->getRoot()->getData()->getId()
@@ -60,7 +59,7 @@ class IsGlobalType extends AbstractType
 
         $resolver->setDefaults(
             [
-                'tooltip' => 'oropro.organization.form.is_global',
+                'tooltip'     => 'oropro.organization.form.is_global',
                 'empty_value' => false,
                 'choices'     => ['No', 'Yes'],
                 'constraints' => new Assert\Callback([$callback])

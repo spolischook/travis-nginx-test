@@ -39,4 +39,4 @@ class OrganizationProExtension extends OrganizationExtension
             ]
         );
     }
-} 
+}

@@ -42,4 +42,4 @@ class OroProSecurityOrganizationExtension extends OroSecurityOrganizationExtensi
 
         return $result;
     }
-} 
+}

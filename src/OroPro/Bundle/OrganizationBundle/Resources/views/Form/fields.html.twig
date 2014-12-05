@@ -47,7 +47,7 @@
                                name="{{ form.vars.full_name }}[organizations][]" value="{{ org.id }}"
                                 {% if org.id in form.vars.selected_organizations %} checked="checked" {% endif %}
                                class="org org-id-{{ org.id }}"
-                                />
+                        />
                         <label for="{{ form.vars.id }}_organizations_{{ org.id }}">
                             <b>{{ org.name }}</b>
                             {% if globalOrgId and globalOrgId == org.id %}
@@ -73,23 +73,23 @@
         {% if form.vars.show_organizations_selector is defined %}
             <script type="text/javascript">
                 require(['jquery'],
-                        function($) {
-                            'use strict';
-                            $(function() {
-                                $(document).on('change', 'input.bu:checkbox', function (e) {
-                                    var org_id = $(this).data('organization');
-                                    $('input.org-id-' + org_id + ':checkbox').prop('checked', true);
-                                });
-                                $(document).on('change', 'input.org:checkbox', function (e) {
-                                    if($(this).prop('checked') == false) {
-                                        $('input.bu:checkbox[data-organization="' + $(this).val() + '"]')
-                                                .each(function(index, el){
-                                                    $(el).prop('checked', false);
-                                                });
-                                    }
-                                });
+                    function($) {
+                        'use strict';
+                        $(function() {
+                            $(document).on('change', 'input.bu:checkbox', function (e) {
+                                var org_id = $(this).data('organization');
+                                $('input.org-id-' + org_id + ':checkbox').prop('checked', true);
+                            });
+                            $(document).on('change', 'input.org:checkbox', function (e) {
+                                if($(this).prop('checked') == false) {
+                                    $('input.bu:checkbox[data-organization="' + $(this).val() + '"]')
+                                        .each(function(index, el){
+                                            $(el).prop('checked', false);
+                                        });
+                                }
                             });
                         });
+                    });
             </script>
         {% endif %}
     {% endspaceless %}
@@ -112,7 +112,7 @@
                     {% if child.id in selected %} checked="checked" {% endif %}
                    class="bu"
                    data-organization="{{ org_id }}"
-                    />
+            />
             <label for="{{ form.vars.id }}_businessUnits_{{ child.id }}">{{ child.name }}</label>
         </div>
         {% if child.children is defined %}
