@@ -1,6 +1,7 @@
 oro:
+    user.form.business_units.label: Organization structure
     organization:
-        is_global.label: Global organization
+        is_global.label: System access
     security:
         access-level:
             GLOBAL: Organization
@@ -23,4 +24,4 @@ oropro:
                     items:
                         applicable: Applicable organizations
                         grid.applicable: Organization
-        is_global_organization: With global organization capabilities
+        is_global_organization: System access

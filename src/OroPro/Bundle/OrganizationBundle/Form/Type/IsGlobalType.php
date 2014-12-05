@@ -60,7 +60,7 @@ class IsGlobalType extends AbstractType
 
         $resolver->setDefaults(
             [
-                'tooltip' => 'oropro.organization.form.is_organization_checkbox',
+                'tooltip' => 'oropro.organization.form.is_global',
                 'empty_value' => false,
                 'choices'     => ['No', 'Yes'],
                 'constraints' => new Assert\Callback([$callback])
