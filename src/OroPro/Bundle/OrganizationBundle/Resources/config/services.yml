@@ -11,9 +11,9 @@ parameters:
     # Overrides
     oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener
     oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
+    oro_organization.twig.organization.class:      OroPro\Bundle\OrganizationBundle\Twig\OrganizationProExtension
 
     oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
-    oro_organization.twig.organization.class:                     OroPro\Bundle\OrganizationBundle\Twig\OrganizationProExtension
 
 services:
     oropro_organization.twig.extension.organization:
