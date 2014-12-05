@@ -27,7 +27,7 @@ class OrganizationColumnExtension extends AbstractExtension
     /** @var EntityClassResolver */
     protected $entityClassResolver;
 
-    /** @var string|null  */
+    /** @var string|null */
     protected $entityClassName = null;
 
     /**
@@ -39,8 +39,7 @@ class OrganizationColumnExtension extends AbstractExtension
         SecurityFacade $securityFacade,
         ConfigManager $configManager,
         EntityClassResolver $entityClassResolver
-    )
-    {
+    ) {
         $this->securityFacade      = $securityFacade;
         $this->configManager       = $configManager;
         $this->entityClassResolver = $entityClassResolver;
@@ -51,9 +50,8 @@ class OrganizationColumnExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        return
-            $this->securityFacade->getOrganization()->getIsGlobal()
-            && (bool) $this->getOrganizationField($config);
+        return $this->securityFacade->getOrganization()->getIsGlobal()
+            && (bool)$this->getOrganizationField($config);
     }
 
     /**
@@ -72,6 +70,7 @@ class OrganizationColumnExtension extends AbstractExtension
         foreach ($fromParts as $fromPart) {
             if ($this->entityClassResolver->getEntityClass($fromPart->getFrom()) == $entityClassName) {
                 $alias = $fromPart->getAlias();
+                break;
             }
         }
 
@@ -164,7 +163,7 @@ class OrganizationColumnExtension extends AbstractExtension
     /**
      * @param DatagridConfiguration $config
      *
-     * @return mixed|null|string
+     * @return null|string
      */
     protected function getEntity(DatagridConfiguration $config)
     {
