@@ -44,3 +44,21 @@ Controls access to some objects
 Report or Segment could be created using some custom entity. It makes sense to restrict access to them in case, the entity was moved into another organization.
 
 It's done by `RequestReportParamConverter` that checks whether requested report or segment (rather the entity) is available for the current organization.
+
+
+System access organization
+--------------------------
+
+ By default, user can not see records from another organizations. To have ability to see all the records from all 
+ organizations, in organization edit page there is option `System access`. This option 
+ allow to set organization as `System Access Organization`.
+ 
+ If user will switch to this organization, he will see all the records from all organizations.
+ 
+ In this mode there are limitations with access permission check. In this mode works only System access level. If 
+ some permission for some entity  will have access level less than System (Organization, Division, Business Unit, etc), 
+ for this permission access will be disabled (same as None Access Level).
+ 
+ When user switch to the System Access organization, new filter with organizations adds to the grids. 
+ 
+ User can set only one organization as System Access Organization. 
