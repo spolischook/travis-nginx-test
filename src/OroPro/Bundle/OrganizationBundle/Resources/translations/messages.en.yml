@@ -1,5 +1,5 @@
 oro:
-    user.form.business_units.label: Organization structure
+    user.form.access_settings.label: Organization structure
     organization:
         is_global.label: System access
     security:
