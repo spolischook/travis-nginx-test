@@ -13,7 +13,8 @@ class SearchProListener extends SearchListener
     public function beforeSearchEvent(BeforeSearchEvent $event)
     {
         //In global mode we should not add organization limits
-        if (!$this->securityFacade->getOrganization()->getIsGlobal()) {
+        $organization = $this->securityFacade->getOrganization();
+        if ($organization && !$organization->getIsGlobal()) {
             parent::beforeSearchEvent($event);
         }
     }
