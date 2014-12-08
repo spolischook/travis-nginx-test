@@ -6,6 +6,7 @@ use JMS\JobQueueBundle\Entity\Job;
 
 use Oro\Bundle\SearchBundle\Command\IndexCommand;
 use Oro\Bundle\SearchBundle\Engine\Indexer;
+use Oro\Bundle\SearchBundle\Query\Mode;
 use Oro\Bundle\SearchBundle\Query\Query;
 use Oro\Bundle\SearchBundle\Query\Result\Item;
 use OroPro\Bundle\ElasticSearchBundle\Engine\ElasticSearch;
@@ -14,6 +15,8 @@ use OroPro\Bundle\ElasticSearchBundle\Tests\Unit\Stub\TestEntity;
 class ElasticSearchTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_CLASS = 'Stub\TestEntity';
+    const TEST_DESCENDANT_1 = 'Stub\TestChildEntity1';
+    const TEST_DESCENDANT_2 = 'Stub\TestChildEntity2';
     const TEST_ALIAS = 'test_entity';
     const TEST_INDEX = 'test_index';
 
@@ -307,7 +310,7 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
         $this->indexAgent->expects($this->once())->method('recreateIndex')
             ->will($this->returnValue($client));
 
-        $this->mapper->expects($this->any())->method('getEntities')
+        $this->mapper->expects($this->any())->method('getEntities')->with([Mode::NORMAL, Mode::WITH_DESCENDANTS])
             ->will($this->returnValue($entities));
 
         $engine = $this->getEngineMock();
@@ -323,8 +326,7 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
     public function testReindexOneEntity()
     {
         $client = $this->getMockBuilder('Elasticsearch\Client')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor()->getMock();
 
         $this->indexAgent->expects($this->once())->method('initializeClient')
             ->will($this->returnValue($client));
@@ -338,6 +340,72 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($count));
 
         $this->assertEquals($count, $engine->reindex(self::TEST_CLASS));
+    }
+
+    /**
+     * @dataProvider entityModeDataProvider
+     *
+     * @param string  $mode
+     * @param array   $descendants
+     * @param array   $expectedEntitiesToProcess
+     */
+    public function testReindexEntityWithMode($mode, array $descendants, array $expectedEntitiesToProcess)
+    {
+        $processedEntities = $clearedEntities = [];
+
+        $client = $this->getMockBuilder('Elasticsearch\Client')
+            ->disableOriginalConstructor()->getMock();
+
+        $this->mapper->expects($this->once())->method('getEntityModeConfig')->with(self::TEST_CLASS)
+            ->willReturn($mode);
+        $this->mapper->expects($descendants ? $this->once() : $this->never())->method('getRegisteredDescendants')
+            ->with(self::TEST_CLASS)
+            ->willReturn($descendants);
+
+        $this->indexAgent->expects($this->once())->method('initializeClient')
+            ->will($this->returnValue($client));
+        $this->indexAgent->expects($this->any())->method('recreateTypeMapping')
+            ->willReturnCallback(
+                function ($client, $class) use (&$clearedEntities) {
+                    $clearedEntities[] = $class;
+                }
+            );
+
+        $engine = $this->getEngineMock();
+        $engine->expects($this->any())->method('reindexSingleEntity')
+            ->willReturnCallback(
+                function ($class) use (&$processedEntities) {
+                    $processedEntities[] = $class;
+                }
+            );
+
+        $engine->reindex(self::TEST_CLASS);
+        $this->assertSame($expectedEntitiesToProcess, $processedEntities);
+        $this->assertSame($expectedEntitiesToProcess, $clearedEntities);
+    }
+
+    /**
+     * @return array
+     */
+    public function entityModeDataProvider()
+    {
+        return [
+            'with normal mode'                => [
+                Mode::NORMAL,
+                [],
+                [self::TEST_CLASS]
+            ],
+            'with mode only descendants'      => [
+                Mode::ONLY_DESCENDANTS,
+                [self::TEST_DESCENDANT_1],
+                [self::TEST_DESCENDANT_1]
+            ],
+            'with mode including descendants' => [
+                Mode::WITH_DESCENDANTS,
+                [self::TEST_DESCENDANT_1, self::TEST_DESCENDANT_2],
+                [self::TEST_CLASS, self::TEST_DESCENDANT_1, self::TEST_DESCENDANT_2]
+            ],
+        ];
     }
 
     /**
