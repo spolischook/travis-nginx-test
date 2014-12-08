@@ -310,7 +310,7 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
         $this->indexAgent->expects($this->once())->method('recreateIndex')
             ->will($this->returnValue($client));
 
-        $this->mapper->expects($this->any())->method('getEntities')->with(Mode::NORMAL)
+        $this->mapper->expects($this->any())->method('getEntities')->with([Mode::NORMAL, Mode::WITH_DESCENDANTS])
             ->will($this->returnValue($entities));
 
         $engine = $this->getEngineMock();
