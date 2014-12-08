@@ -8,10 +8,13 @@ parameters:
     oropro_organization.type.is_global.class:              OroPro\Bundle\OrganizationBundle\Form\Type\IsGlobalType
     oropro_organization.helper.class:                      OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper
 
+    oropro_organization.eventlistener.form.listener.class: OroPro\Bundle\OrganizationBundle\EventListener\FormListener
+
     # Overrides
     oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener
     oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
     oro_organization.twig.organization.class:      OroPro\Bundle\OrganizationBundle\Twig\OrganizationProExtension
+    oro_organization.form.extension.organization.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationProFormExtension
 services:
     oropro_organization.twig.extension.organization:
         class: %oropro_organization.twig.extension.organization.class%
@@ -60,3 +63,11 @@ services:
         class: %oropro_organization.helper.class%
         arguments:
             - @doctrine
+
+    oropro_organization.eventlistener.form.listener:
+        class: %oropro_organization.eventlistener.form.listener.class%
+        arguments:
+            - @oro_entity_config.config_manager
+            - @oro_security.security_facade
+        tags:
+            - { name: kernel.event_listener, event: entity_form.render.before, method: addOrganizationField }

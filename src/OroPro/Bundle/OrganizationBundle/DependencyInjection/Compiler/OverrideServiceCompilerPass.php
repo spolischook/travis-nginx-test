@@ -44,5 +44,11 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             $definition->setClass('OroPro\Bundle\OrganizationBundle\Form\Extension\DynamicFieldsExtension');
             $definition->addArgument($container->getDefinition('oro_security.security_facade'));
         }
+
+        $serviceId = 'oro_organization.form.extension.organization';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->addMethodCall('setSecurityFacade', [$container->getDefinition('oro_security.security_facade')]);
+        }
     }
 }
