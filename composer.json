@@ -2,7 +2,7 @@
     "name": "oro/crm-enterprise-application",
     "description": "The OroCRM Enterprise Application",
     "homepage": "https://github.com/orocrm/crm-enterprise-application.git",
-    "license": "OSL-3.0",
+    "license": "Commercial",
     "autoload": {
         "psr-0": {
             "": "src/"
