@@ -7,7 +7,20 @@ oro_system_configuration:
         integrations_outlook_contacts:
             title: orocrmpro_outlook.form.contacts
 
+        integrations_outlook_tasks:
+            title: orocrmpro_outlook.form.tasks
+
+        integrations_outlook_calendar_events:
+            title: orocrmpro_outlook.form.calendar_events
+
     fields:
+        oro_crm_pro_outlook.contacts_enabled:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 90
+            options:
+                label:          orocrmpro_outlook.form.enabled
+                tooltip:        orocrmpro_outlook.form.tooltip.enabled
         oro_crm_pro_outlook.contacts_sync_direction:
             data_type: string
             type: choice
@@ -63,6 +76,22 @@ oro_system_configuration:
         oro_crm_pro_outlook.contacts_mapping:
             data_type: array
 
+        oro_crm_pro_outlook.tasks_enabled:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 90
+            options:
+                label:          orocrmpro_outlook.form.enabled
+                tooltip:        orocrmpro_outlook.form.tooltip.enabled
+
+        oro_crm_pro_outlook.calendar_events_enabled:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 90
+            options:
+                label:          orocrmpro_outlook.form.enabled
+                tooltip:        orocrmpro_outlook.form.tooltip.enabled
+
     tree:
         system_configuration:
             platform:
@@ -74,17 +103,29 @@ oro_system_configuration:
                                 children:
                                     integrations_outlook_contacts:
                                         children:
+                                            - oro_crm_pro_outlook.contacts_enabled
                                             - oro_crm_pro_outlook.contacts_sync_direction
                                             - oro_crm_pro_outlook.contacts_conflict_resolution
                                             - oro_crm_pro_outlook.contacts_sync_interval_orocrm
                                             - oro_crm_pro_outlook.contacts_sync_interval_outlook
+                                    integrations_outlook_tasks:
+                                        children:
+                                            - oro_crm_pro_outlook.tasks_enabled
+                                    integrations_outlook_calendar_events:
+                                        children:
+                                            - oro_crm_pro_outlook.calendar_events_enabled
 
     api_tree:
         outlook:
             contacts:
+                oro_crm_pro_outlook.contacts_enabled: ~
                 oro_crm_pro_outlook.contacts_sync_direction: ~
                 oro_crm_pro_outlook.contacts_conflict_resolution: ~
                 oro_crm_pro_outlook.contacts_sync_interval_orocrm: ~
                 oro_crm_pro_outlook.contacts_sync_interval_outlook: ~
                 oro_crm_pro_outlook.contacts_keys: ~
                 oro_crm_pro_outlook.contacts_mapping: ~
+            tasks:
+                oro_crm_pro_outlook.tasks_enabled: ~
+            calendar_events:
+                oro_crm_pro_outlook.calendar_events_enabled: ~
