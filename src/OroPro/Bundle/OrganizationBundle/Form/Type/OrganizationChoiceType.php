@@ -9,35 +9,32 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-
-use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository;
 
 class OrganizationChoiceType extends AbstractType
 {
     const NAME = 'oro_organization_choice_select2';
 
-    /** @var OroEntityManager */
-    protected $em;
+    /** @var SecurityFacade */
+    protected $securityFacade;
 
     /** @var ConfigManager */
     protected $configManager;
 
     /**
-     * @param Registry      $doctrine
-     * @param ConfigManager $configManager
+     * @param SecurityFacade $securityFacade
+     * @param ConfigManager  $configManager
      */
     public function __construct(
-        Registry $doctrine,
+        SecurityFacade $securityFacade,
         ConfigManager $configManager
     ) {
-        $this->em            = $doctrine->getManager();
-        $this->configManager = $configManager;
+        $this->securityFacade = $securityFacade;
+        $this->configManager  = $configManager;
     }
 
     /**
@@ -50,9 +47,9 @@ class OrganizationChoiceType extends AbstractType
             return $that->getChoices();
         };
 
-        $defaultConfigs = array(
+        $defaultConfigs = [
             'placeholder' => 'oro.organization.form.choose_organization',
-        );
+        ];
 
         // this normalizer allows to add/override config options outside.
         $configsNormalizer = function (Options $options, $configs) use (&$defaultConfigs, $that) {
@@ -75,7 +72,7 @@ class OrganizationChoiceType extends AbstractType
     }
 
     /**
-     * Returns a list of choices
+     * Returns a list of choices for current logged user
      *
      * @return array of organizations: key = organization name, value = ChoiceListItem
      */
@@ -83,11 +80,8 @@ class OrganizationChoiceType extends AbstractType
     {
         $choices = [];
 
-        /** @var OrganizationRepository $organizationRepository */
-        $organizationRepository = $this->em->getRepository('OroOrganizationBundle:Organization');
-
         /** @var Organization[] $organizations */
-        $organizations = $organizationRepository->findAll();
+        $organizations = $this->securityFacade->getLoggedUser()->getOrganizations();
         foreach ($organizations as $organization) {
             $choices[$organization->getId()] = $organization->getName();
         }
@@ -95,6 +89,9 @@ class OrganizationChoiceType extends AbstractType
         return $choices;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         if (!$form->getParent()->getConfig()->hasOption('config_id')) {
