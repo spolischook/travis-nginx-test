@@ -58,7 +58,7 @@
         "sylius/flow-bundle": "0.6.*",
         "composer/composer": "1.0.0-alpha8",
         "nesbot/Carbon": "1.8.*",
-        "akeneo/batch-bundle": "0.1.2",
+        "akeneo/batch-bundle": "~0.3",
         "monolog/monolog": "1.7.*",
         "ocramius/proxy-manager": "0.4.*",
         "knplabs/knp-gaufrette-bundle": "0.1.*",
