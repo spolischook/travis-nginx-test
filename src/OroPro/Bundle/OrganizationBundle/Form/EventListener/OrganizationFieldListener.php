@@ -1,16 +1,14 @@
 <?php
 
-namespace OroPro\Bundle\OrganizationBundle\EventListener;
-
-use Doctrine\Common\Util\ClassUtils;
+namespace OroPro\Bundle\OrganizationBundle\Form\EventListener;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\UIBundle\Event\BeforeFormRenderEvent;
 
-class FormListener
+class OrganizationFieldListener
 {
-    const ORGANIZATION_FIELD_TEMPLATE = 'OroProOrganizationBundle::organization_field.html.twig';
+    const ORGANIZATION_FIELD_TEMPLATE = 'OroProOrganizationBundle::organizationSelector.html.twig';
 
     /** @var ConfigManager */
     protected $configManager;
@@ -19,11 +17,12 @@ class FormListener
     protected $securityFacade;
 
     /**
-     * @param ConfigManager $configManager
+     * @param ConfigManager  $configManager
+     * @param SecurityFacade $securityFacade
      */
     public function __construct(ConfigManager $configManager, SecurityFacade $securityFacade)
     {
-        $this->configManager = $configManager;
+        $this->configManager  = $configManager;
         $this->securityFacade = $securityFacade;
     }
 
@@ -36,12 +35,12 @@ class FormListener
     {
         if ($this->securityFacade->getOrganization()->getIsGlobal()) {
             $environment = $event->getTwigEnvironment();
-            $data = $event->getFormData();
-            $form = $event->getForm();
-            $label = false;
-            $entityProvider = $this->configManager->getProvider('entity');
+            $data        = $event->getFormData();
+            $form        = $event->getForm();
+            $label       = false;
 
-            /*if (is_object($form->vars['value'])) {
+            /*$entityProvider = $this->configManager->getProvider('entity');
+            if (is_object($form->vars['value'])) {
                 $className = ClassUtils::getClass($form->vars['value']);
                 if (class_exists($className)
                     && $entityProvider->hasConfig($className, 'owner')
