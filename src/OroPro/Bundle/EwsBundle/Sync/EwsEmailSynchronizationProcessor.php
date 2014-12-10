@@ -5,16 +5,13 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 
-use Psr\Log\LoggerInterface;
-
 use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\Email as EmailEntity;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
-use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 use Oro\Bundle\EmailBundle\Sync\AbstractEmailSynchronizationProcessor;
-use Oro\Bundle\EmailBundle\Sync\KnownEmailAddressChecker;
+use Oro\Bundle\EmailBundle\Sync\KnownEmailAddressCheckerInterface;
 
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmail;
@@ -45,22 +42,18 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     /**
      * Constructor
      *
-     * @param LoggerInterface          $log
-     * @param EntityManager            $em
-     * @param EmailEntityBuilder       $emailEntityBuilder
-     * @param EmailAddressManager      $emailAddressManager
-     * @param KnownEmailAddressChecker $knownEmailAddressChecker
-     * @param EwsEmailManager          $manager
+     * @param EntityManager                     $em
+     * @param EmailEntityBuilder                $emailEntityBuilder
+     * @param KnownEmailAddressCheckerInterface $knownEmailAddressChecker
+     * @param EwsEmailManager                   $manager
      */
     public function __construct(
-        LoggerInterface $log,
         EntityManager $em,
         EmailEntityBuilder $emailEntityBuilder,
-        EmailAddressManager $emailAddressManager,
-        KnownEmailAddressChecker $knownEmailAddressChecker,
+        KnownEmailAddressCheckerInterface $knownEmailAddressChecker,
         EwsEmailManager $manager
     ) {
-        parent::__construct($log, $em, $emailEntityBuilder, $emailAddressManager, $knownEmailAddressChecker);
+        parent::__construct($em, $emailEntityBuilder, $knownEmailAddressChecker);
         $this->manager = $manager;
     }
 

@@ -5,12 +5,11 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 
-use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
-use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\EmailBundle\Sync\AbstractEmailSynchronizer;
+use Oro\Bundle\EmailBundle\Sync\KnownEmailAddressCheckerFactory;
 use Oro\Bundle\UserBundle\Entity\User;
 
 use OroPro\Bundle\EwsBundle\Connector\EwsConnector;
@@ -22,53 +21,53 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
 {
     const CREATE_ORIGIN_BATCH_SIZE = 100;
 
-    /**
-     * @var EmailOwnerProviderStorage
-     */
+    /** @var EmailAddressManager */
+    protected $emailAddressManager;
+
+    /** @var EwsEmailSynchronizationProcessorFactory */
+    protected $syncProcessorFactory;
+
+    /** @var EmailOwnerProviderStorage */
     protected $emailOwnerProviderStorage;
 
-    /**
-     * @var EwsConnector
-     */
+    /** @var EwsConnector */
     protected $connector;
 
-    /**
-     * @var EwsServiceConfigurator
-     */
+    /** @var EwsServiceConfigurator */
     protected $configurator;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $userEntityClass;
 
     /**
      * Constructor
      *
-     * @param ManagerRegistry           $doctrine
-     * @param EmailEntityBuilder        $emailEntityBuilder
-     * @param EmailAddressManager       $emailAddressManager
-     * @param EmailAddressHelper        $emailAddressHelper
-     * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
-     * @param EwsConnector              $connector
-     * @param EwsServiceConfigurator    $configurator
-     * @param string                    $userEntityClass
+     * @param ManagerRegistry                         $doctrine
+     * @param KnownEmailAddressCheckerFactory         $knownEmailAddressCheckerFactory
+     * @param EwsEmailSynchronizationProcessorFactory $syncProcessorFactory
+     * @param EmailAddressManager                     $emailAddressManager
+     * @param EmailOwnerProviderStorage               $emailOwnerProviderStorage
+     * @param EwsConnector                            $connector
+     * @param EwsServiceConfigurator                  $configurator
+     * @param string                                  $userEntityClass
      */
     public function __construct(
         ManagerRegistry $doctrine,
-        EmailEntityBuilder $emailEntityBuilder,
+        KnownEmailAddressCheckerFactory $knownEmailAddressCheckerFactory,
+        EwsEmailSynchronizationProcessorFactory $syncProcessorFactory,
         EmailAddressManager $emailAddressManager,
-        EmailAddressHelper $emailAddressHelper,
         EmailOwnerProviderStorage $emailOwnerProviderStorage,
         EwsConnector $connector,
         EwsServiceConfigurator $configurator,
         $userEntityClass
     ) {
-        parent::__construct($doctrine, $emailEntityBuilder, $emailAddressManager, $emailAddressHelper);
+        parent::__construct($doctrine, $knownEmailAddressCheckerFactory);
 
+        $this->syncProcessorFactory      = $syncProcessorFactory;
+        $this->emailAddressManager       = $emailAddressManager;
+        $this->emailOwnerProviderStorage = $emailOwnerProviderStorage;
         $this->connector                 = $connector;
         $this->configurator              = $configurator;
-        $this->emailOwnerProviderStorage = $emailOwnerProviderStorage;
         $this->userEntityClass           = $userEntityClass;
     }
 
@@ -107,13 +106,9 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      */
     protected function createSynchronizationProcessor($origin)
     {
-        return new EwsEmailSynchronizationProcessor(
-            $this->log,
-            $this->getEntityManager(),
-            $this->emailEntityBuilder,
-            $this->emailAddressManager,
-            $this->knownEmailAddressChecker,
-            new EwsEmailManager($this->connector)
+        return $this->syncProcessorFactory->create(
+            new EwsEmailManager($this->connector),
+            $this->getKnownEmailAddressChecker()
         );
     }
 

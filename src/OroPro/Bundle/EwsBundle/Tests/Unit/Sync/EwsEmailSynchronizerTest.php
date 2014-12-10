@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
+use Oro\Bundle\EmailBundle\Sync\KnownEmailAddressCheckerFactory;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\Mocks\EntityManagerMock;
 use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\OrmTestCase;
@@ -14,6 +15,7 @@ use Oro\Bundle\UserBundle\OroUserBundle;
 
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
 use OroPro\Bundle\EwsBundle\OroProEwsBundle;
+use OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizationProcessorFactory;
 use OroPro\Bundle\EwsBundle\Tests\Unit\Sync\Fixtures\TestEwsEmailSynchronizer;
 
 class EwsEmailSynchronizerTest extends OrmTestCase
@@ -71,11 +73,18 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             ->with(null)
             ->will($this->returnValue($this->em));
 
+        $knownEmailAddressCheckerFactory = new KnownEmailAddressCheckerFactory(
+            $doctrine,
+            $this->emailAddressManager,
+            new EmailAddressHelper()
+        );
+        $syncProcessorFactory = new EwsEmailSynchronizationProcessorFactory($doctrine, $this->emailEntityBuilder);
+
         $this->sync = new TestEwsEmailSynchronizer(
             $doctrine,
-            $this->emailEntityBuilder,
+            $knownEmailAddressCheckerFactory,
+            $syncProcessorFactory,
             $this->emailAddressManager,
-            new EmailAddressHelper(),
             $emailOwnerProviderStorage,
             $ewsConnector,
             $this->ewsConfigurator,
