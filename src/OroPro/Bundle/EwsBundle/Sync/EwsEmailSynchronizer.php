@@ -128,7 +128,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      */
     protected function deactivateOutdatedOrigins()
     {
-        $this->log->notice('Deactivating outdated email origins ...');
+        $this->logger->notice('Deactivating outdated email origins ...');
 
         $qb = $this->getEntityManager()->createQueryBuilder()
             ->update($this->getEmailOriginClass(), 'ews')
@@ -139,7 +139,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
             ->setParameter('server', $this->configurator->getServer());
         $counter = $qb->getQuery()->execute();
 
-        $this->log->notice(sprintf('Deactivated %d email origin(s).', $counter));
+        $this->logger->notice(sprintf('Deactivated %d email origin(s).', $counter));
     }
 
     /**
@@ -147,7 +147,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      */
     protected function initializeOrigins()
     {
-        $this->log->notice('Initializing email origins ...');
+        $this->logger->notice('Initializing email origins ...');
 
         $em = $this->getEntityManager();
 
@@ -162,7 +162,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
             $user  = $item[0];
             $email = $item['email'];
             if (!empty($email)) {
-                $this->log->notice(sprintf('Create email origin. Server: %s. User Email: %s', $server, $email));
+                $this->logger->notice(sprintf('Create email origin. Server: %s. User Email: %s', $server, $email));
                 $origin = new EwsEmailOrigin();
                 $origin->setServer($server);
                 $origin->setUserEmail($email);
@@ -182,7 +182,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
         $em->flush();
         $em->clear();
 
-        $this->log->notice(sprintf('Created %d email origin(s).', $counter));
+        $this->logger->notice(sprintf('Created %d email origin(s).', $counter));
     }
 
     /**

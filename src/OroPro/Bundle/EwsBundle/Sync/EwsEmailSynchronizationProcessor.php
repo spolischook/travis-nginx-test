@@ -75,7 +75,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
             // check if the current folder need to be synchronized
             if (!$folderInfo->needSynchronization) {
-                $this->log->notice(
+                $this->logger->notice(
                     sprintf('Skip "%s" folder, because it is up-to-date.', $folder->getFullName())
                 );
                 $lastSynchronizedAt = $syncStartTime;
@@ -117,7 +117,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      */
     protected function syncFolders(EmailOrigin $origin)
     {
-        $this->log->notice('Loading existing folders ...');
+        $this->logger->notice('Loading existing folders ...');
 
         /** @var EwsEmailFolderRepository $repo */
         $repo       = $this->em->getRepository('OroProEwsBundle:EwsEmailFolder');
@@ -132,7 +132,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             $folders[$ewsFolder->getEwsId()] = new FolderInfo($ewsFolder, $needSynchronization);
         }
 
-        $this->log->notice(sprintf('Loaded %d folder(s).', count($folders)));
+        $this->logger->notice(sprintf('Loaded %d folder(s).', count($folders)));
 
         $this->ensureFoldersInitialized($folders, $origin);
 
@@ -147,7 +147,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      */
     protected function ensureFoldersInitialized(array &$folders, EmailOrigin $origin)
     {
-        $this->log->notice('Retrieving folders from an email server ...');
+        $this->logger->notice('Retrieving folders from an email server ...');
         $retrievedFolderCount = $this->ensureDistinguishedFolderInitialized(
             $folders,
             $origin,
@@ -158,7 +158,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             $origin,
             FolderType::INBOX
         );
-        $this->log->notice(sprintf('Retrieved %d folder(s).', $retrievedFolderCount));
+        $this->logger->notice(sprintf('Retrieved %d folder(s).', $retrievedFolderCount));
 
         $this->em->flush();
     }
@@ -270,7 +270,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         if ($folderInfo) {
             $folder = $folderInfo->ewsFolder->getFolder();
             if ($folder->getFullName() !== $fullName) {
-                $this->log->notice(
+                $this->logger->notice(
                     sprintf(
                         'Change folder full name from "%s" to "%s" for "%s" folder.',
                         $folder->getFullName(),
@@ -281,7 +281,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $folder->setFullName($fullName);
             }
             if ($folder->getName() !== $localName) {
-                $this->log->notice(
+                $this->logger->notice(
                     sprintf(
                         'Change folder name from "%s" to "%s" for "%s" folder.',
                         $folder->getName(),
@@ -292,7 +292,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $folder->setName($localName);
             }
             if ($folder->getType() !== $type) {
-                $this->log->notice(
+                $this->logger->notice(
                     sprintf(
                         'Change folder type from "%s" to "%s" for "%s" folder.',
                         $folder->getType(),
@@ -303,7 +303,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $folder->setType($type);
             }
             if ($folderInfo->ewsFolder->getEwsChangeKey() !== $id->ChangeKey) {
-                $this->log->notice(
+                $this->logger->notice(
                     sprintf(
                         'Change folder EWS ChangeKey from "%s" to "%s" for "%s" folder.',
                         $folderInfo->ewsFolder->getEwsChangeKey(),
@@ -315,7 +315,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             }
             $folderInfo->needSynchronization = true;
         } else {
-            $this->log->notice(sprintf('Persisting "%s" folder ...', $fullName));
+            $this->logger->notice(sprintf('Persisting "%s" folder ...', $fullName));
 
             $folder = new EmailFolder();
             $folder
@@ -337,7 +337,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             $folderInfo       = new FolderInfo($ewsFolder, true);
             $folders[$id->Id] = $folderInfo;
 
-            $this->log->notice(sprintf('The "%s" folder was persisted.', $fullName));
+            $this->logger->notice(sprintf('The "%s" folder was persisted.', $fullName));
         }
 
         return $folderInfo;
@@ -357,8 +357,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $folderType         = $folderInfo->folderType;
         $lastSynchronizedAt = $folder->getSynchronizedAt();
 
-        $this->log->notice(sprintf('Loading emails from "%s" folder ...', $folder->getFullName()));
-        $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToString()));
+        $this->logger->notice(sprintf('Loading emails from "%s" folder ...', $folder->getFullName()));
+        $this->logger->notice(sprintf('Query: "%s".', $searchQuery->convertToString()));
 
         $emails = new EwsEmailIterator($this->manager, $searchQuery);
         $emails->setBatchSize(self::READ_BATCH_SIZE);
@@ -375,7 +375,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         foreach ($emails as $email) {
             $processed++;
             if ($processed % self::READ_HINT_COUNT === 0) {
-                $this->log->notice(sprintf('Processed %d emails ...', $processed));
+                $this->logger->notice(sprintf('Processed %d emails ...', $processed));
             }
 
             if (!$this->isApplicableEmail($email, $folderType)) {
@@ -424,7 +424,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
         foreach ($emails as $email) {
             if (in_array($email->getId()->getId(), $existingEwsIds)) {
-                $this->log->notice(
+                $this->logger->notice(
                     sprintf(
                         'Skip "%s" (EWS ID: %s) email, because it is already synchronised.',
                         $email->getSubject(),
@@ -449,7 +449,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             if ($existingEwsEmail) {
                 $this->moveEmailToOtherFolder($existingEwsEmail, $folderInfo->ewsFolder, $email->getId());
             } else {
-                $this->log->notice(
+                $this->logger->notice(
                     sprintf('Persisting "%s" email (EWS ID: %s) ...', $email->getSubject(), $email->getId()->getId())
                 );
                 $ewsEmail       = $this->createEwsEmail(
@@ -459,7 +459,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 );
                 $newEwsEmails[] = $ewsEmail;
                 $this->em->persist($ewsEmail);
-                $this->log->notice(sprintf('The "%s" email was persisted.', $email->getSubject()));
+                $this->logger->notice(sprintf('The "%s" email was persisted.', $email->getSubject()));
             }
         }
 
@@ -525,7 +525,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      */
     protected function moveEmailToOtherFolder(EwsEmail $ewsEmail, EwsEmailFolder $newEwsFolder, ItemId $newEwsEmailId)
     {
-        $this->log->notice(
+        $this->logger->notice(
             sprintf(
                 'Move "%s" (EWS ID: %s) email from "%s" to "%s". New EWS ID: %s.',
                 $ewsEmail->getEmail()->getSubject(),

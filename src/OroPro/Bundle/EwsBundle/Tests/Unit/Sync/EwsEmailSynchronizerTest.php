@@ -24,7 +24,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
     private $sync;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $log;
+    private $logger;
 
     /** @var EntityManagerMock */
     private $em;
@@ -42,7 +42,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
     {
         $this->initializeEntityManager();
 
-        $this->log = $this->getMock('Psr\Log\LoggerInterface');
+        $this->logger = $this->getMock('Psr\Log\LoggerInterface');
         $this->emailEntityBuilder = $this->getMockBuilder('Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder')
             ->disableOriginalConstructor()
             ->getMock();
@@ -76,7 +76,9 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         $knownEmailAddressCheckerFactory = new KnownEmailAddressCheckerFactory(
             $doctrine,
             $this->emailAddressManager,
-            new EmailAddressHelper()
+            new EmailAddressHelper(),
+            new EmailOwnerProviderStorage(),
+            []
         );
         $syncProcessorFactory = new EwsEmailSynchronizationProcessorFactory($doctrine, $this->emailEntityBuilder);
 
@@ -91,7 +93,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             'Oro\Bundle\UserBundle\Entity\User'
         );
 
-        $this->sync->setLogger($this->log);
+        $this->sync->setLogger($this->logger);
     }
 
     protected function initializeEntityManager()

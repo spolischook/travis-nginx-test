@@ -19,7 +19,7 @@ use OroPro\Bundle\EwsBundle\Sync\FolderInfo;
 class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $log;
+    private $logger;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $em;
@@ -35,7 +35,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->log = $this->getMock('Psr\Log\LoggerInterface');
+        $this->logger = $this->getMock('Psr\Log\LoggerInterface');
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -59,7 +59,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             $this->knownEmailAddressChecker,
             $this->manager
         );
-        $processor->setLogger($this->log);
+        $processor->setLogger($this->logger);
 
         $origin = new EwsEmailOrigin();
         $folders = [];
@@ -102,7 +102,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             $this->knownEmailAddressChecker,
             $this->manager
         );
-        $processor->setLogger($this->log);
+        $processor->setLogger($this->logger);
 
         $origin = new EwsEmailOrigin();
         $folders = [];
@@ -158,7 +158,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             $this->knownEmailAddressChecker,
             $this->manager
         );
-        $processor->setLogger($this->log);
+        $processor->setLogger($this->logger);
 
         $origin = new EwsEmailOrigin();
         $folders = [];
@@ -308,7 +308,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue(3));
 
-        $this->log->expects($this->at(1))
+        $this->logger->expects($this->at(1))
             ->method('notice')
             ->with('Retrieved 5 folder(s).');
 
@@ -468,7 +468,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             $this->knownEmailAddressChecker,
             $this->manager
         );
-        $processor->setLogger($this->log);
+        $processor->setLogger($this->logger);
 
         $origin = new EwsEmailOrigin();
 
@@ -611,7 +611,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             )
             ->setMethods($methods)
             ->getMock();
-        $processor->setLogger($this->log);
+        $processor->setLogger($this->logger);
 
         return $processor;
     }
