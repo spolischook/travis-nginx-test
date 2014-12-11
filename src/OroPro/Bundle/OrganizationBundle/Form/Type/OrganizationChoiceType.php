@@ -81,7 +81,7 @@ class OrganizationChoiceType extends AbstractType
         $choices = [];
 
         /** @var Organization[] $organizations */
-        $organizations = $this->securityFacade->getLoggedUser()->getOrganizations();
+        $organizations = $this->securityFacade->getLoggedUser()->getOrganizations(true);
         foreach ($organizations as $organization) {
             $choices[$organization->getId()] = $organization->getName();
         }
