@@ -94,7 +94,7 @@ oro_system_configuration:
 
         oro_crm_pro_outlook.plugin_download_link:
             ui_only: true
-            type: oro_link_type
+            type: oro_link_type # @todo BAP-4696 use template
             priority: 0
             options:
                 label: false
