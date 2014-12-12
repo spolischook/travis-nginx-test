@@ -101,7 +101,7 @@ oro_system_configuration:
                 required: false
                 resettable: false
                 route: /bundles/orocrmprooutlook/files/OroCRMOutlookAddin.msi
-                acl: false
+                acl: ''
                 isPath: true
                 title: orocrmpro_outlook.form.plugin_download_link
                 class: no-hash
