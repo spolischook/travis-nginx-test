@@ -26,7 +26,7 @@ abstract class Selenium2TestCase extends BaseSelenium2TestCase
             $organization = $this->select($this->byId('prependedInput3'));
             $organization->selectOptionByValue($value);
         }
-            $login->submit();
+        $login->submit();
         return $login;
     }
 }
