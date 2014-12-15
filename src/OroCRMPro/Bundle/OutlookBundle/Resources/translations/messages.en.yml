@@ -2,6 +2,9 @@ orocrmpro_outlook:
     form:
         outlook_settings:       MS Outlook settings
         contacts:               Contacts
+        tasks:                  Tasks
+        calendar_events:        Calendar Events
+        enabled:                Enabled
         sync_direction:         Sync Direction
         conflict_resolution:    Conflict Resolution
         sync_interval_orocrm:   CRM sync interval (in seconds)

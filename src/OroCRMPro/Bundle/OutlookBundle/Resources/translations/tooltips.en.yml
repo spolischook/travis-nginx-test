@@ -1,6 +1,7 @@
 orocrmpro_outlook:
     form:
         tooltip:
+            enabled:                Indicates whether the synchronization of this entity is enabled or not
             sync_direction:         The data synchronization direction
             conflict_resolution:    Conflict resolution strategy that should be used if the same data are changed in both Outlook and CRM
             sync_interval_orocrm:   How often changes on CRM side will be checked
