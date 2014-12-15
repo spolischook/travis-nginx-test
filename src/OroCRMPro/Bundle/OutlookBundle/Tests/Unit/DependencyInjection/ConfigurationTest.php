@@ -17,6 +17,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $actualConfiguration);
         $this->assertTrue(isset($actualConfiguration['settings']));
-        $this->assertCount(7, $actualConfiguration['settings']);
+        $this->assertNotCount(0, $actualConfiguration['settings']);
     }
 }
