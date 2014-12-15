@@ -22,7 +22,7 @@ services:
     oropro_organization.form.type.organization_choice:
         class: %oropro_organization.form.type.organization_choice.class%
         arguments:
-            - @doctrine
+            - @oro_security.security_facade
             - @oro_entity_config.config_manager
         tags:
             - { name: form.type, alias: oro_organization_choice_select2 }

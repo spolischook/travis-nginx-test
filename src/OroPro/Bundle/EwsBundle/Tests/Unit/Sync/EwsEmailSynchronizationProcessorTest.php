@@ -19,16 +19,13 @@ use OroPro\Bundle\EwsBundle\Sync\FolderInfo;
 class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $log;
+    private $logger;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $em;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $emailEntityBuilder;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $emailAddressManager;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $knownEmailAddressChecker;
@@ -38,21 +35,17 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->log = $this->getMock('Psr\Log\LoggerInterface');
+        $this->logger = $this->getMock('Psr\Log\LoggerInterface');
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
         $this->emailEntityBuilder = $this->getMockBuilder('Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->emailAddressManager = $this->getMockBuilder(
-            'Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager'
-        )
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->knownEmailAddressChecker = $this->getMockBuilder('Oro\Bundle\EmailBundle\Sync\KnownEmailAddressChecker')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->knownEmailAddressChecker =
+            $this->getMockBuilder('Oro\Bundle\EmailBundle\Sync\KnownEmailAddressCheckerInterface')
+                ->disableOriginalConstructor()
+                ->getMock();
         $this->manager = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Manager\EwsEmailManager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -61,13 +54,12 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
     public function testEnsureFolderPersistedForNewFolder()
     {
         $processor = new EwsEmailSynchronizationProcessor(
-            $this->log,
             $this->em,
             $this->emailEntityBuilder,
-            $this->emailAddressManager,
             $this->knownEmailAddressChecker,
             $this->manager
         );
+        $processor->setLogger($this->logger);
 
         $origin = new EwsEmailOrigin();
         $folders = [];
@@ -105,13 +97,12 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
     public function testEnsureFolderPersistedForExistingFolder()
     {
         $processor = new EwsEmailSynchronizationProcessor(
-            $this->log,
             $this->em,
             $this->emailEntityBuilder,
-            $this->emailAddressManager,
             $this->knownEmailAddressChecker,
             $this->manager
         );
+        $processor->setLogger($this->logger);
 
         $origin = new EwsEmailOrigin();
         $folders = [];
@@ -162,13 +153,12 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
     public function testEnsureFolderPersistedForExistingFolderWithNoChanges()
     {
         $processor = new EwsEmailSynchronizationProcessor(
-            $this->log,
             $this->em,
             $this->emailEntityBuilder,
-            $this->emailAddressManager,
             $this->knownEmailAddressChecker,
             $this->manager
         );
+        $processor->setLogger($this->logger);
 
         $origin = new EwsEmailOrigin();
         $folders = [];
@@ -318,7 +308,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue(3));
 
-        $this->log->expects($this->at(1))
+        $this->logger->expects($this->at(1))
             ->method('notice')
             ->with('Retrieved 5 folder(s).');
 
@@ -472,7 +462,13 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSaveEmails()
     {
-        $processor = $this->createProcessor();
+        $processor = new EwsEmailSynchronizationProcessor(
+            $this->em,
+            $this->emailEntityBuilder,
+            $this->knownEmailAddressChecker,
+            $this->manager
+        );
+        $processor->setLogger($this->logger);
 
         $origin = new EwsEmailOrigin();
 
@@ -604,18 +600,19 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
      */
     protected function createProcessor(array $methods = [])
     {
-        return $this->getMockBuilder('OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizationProcessor')
+        $processor = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizationProcessor')
             ->setConstructorArgs(
                 [
-                    $this->log,
                     $this->em,
                     $this->emailEntityBuilder,
-                    $this->emailAddressManager,
                     $this->knownEmailAddressChecker,
                     $this->manager
                 ]
             )
             ->setMethods($methods)
             ->getMock();
+        $processor->setLogger($this->logger);
+
+        return $processor;
     }
 }
