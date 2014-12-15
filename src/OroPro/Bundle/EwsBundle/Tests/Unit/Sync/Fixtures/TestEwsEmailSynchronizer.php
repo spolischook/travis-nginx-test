@@ -13,7 +13,6 @@ class TestEwsEmailSynchronizer extends EwsEmailSynchronizer
 
     public function callCreateSynchronizationProcessor($origin)
     {
-        $this->ensureKnownEmailAddressCheckerCreated();
         return $this->createSynchronizationProcessor($origin);
     }
 

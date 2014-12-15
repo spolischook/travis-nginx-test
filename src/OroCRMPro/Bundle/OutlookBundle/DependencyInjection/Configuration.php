@@ -61,12 +61,15 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             [
+                'contacts_enabled'               => ['value' => true],
                 'contacts_sync_direction'        => ['value' => 'Both'],
                 'contacts_conflict_resolution'   => ['value' => 'OroCRMAlwaysWins'],
                 'contacts_sync_interval_orocrm'  => ['value' => 120],
                 'contacts_sync_interval_outlook' => ['value' => 30],
                 'contacts_keys'                  => ['value' => $contactKeys, 'type'  => 'array'],
-                'contacts_mapping'               => ['value' => $contactMapping, 'type'  => 'array']
+                'contacts_mapping'               => ['value' => $contactMapping, 'type'  => 'array'],
+                'tasks_enabled'                  => ['value' => true],
+                'calendar_events_enabled'        => ['value' => true],
             ]
         );
 
