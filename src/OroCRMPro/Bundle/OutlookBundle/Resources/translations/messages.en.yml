@@ -11,7 +11,6 @@ orocrmpro_outlook:
         sync_interval_orocrm:   CRM sync interval (in seconds)
         sync_interval_outlook:  Outlook sync interval (in seconds)
         addin_label:            Download
-        addin_title:            OroCRMOutlookAddin.msi
 
         contacts_sync_direction:
             choices:

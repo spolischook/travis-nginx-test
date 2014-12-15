@@ -106,7 +106,7 @@ oro_system_configuration:
                 route: /bundles/orocrmprooutlook/files/OroCRMOutlookAddin.msi
                 acl: ''
                 isPath: true
-                title: orocrmpro_outlook.form.addin_title
+                title: ''
                 class: no-hash
                 tooltip: orocrmpro_outlook.form.tooltip.addin
 
