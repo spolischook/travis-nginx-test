@@ -59,10 +59,11 @@ class Configuration implements ConfigurationInterface
             ['OroCRM' => 'addresses[2].postalCode', 'Outlook' => 'OtherAddressPostalCode'],
         ];
 
-        $path = __DIR__ . '/../Resources/public/files';
-        $finder = new Finder();
-        $resources = [];
-        foreach ($finder->in($path) as $file) {
+        $path       = __DIR__ . '/../Resources/public/files';
+        $finder     = new Finder();
+        $resources  = [];
+        $files      = $finder->in($path);
+        foreach ($files as $file) {
             $resources[$file->getFilename()] = '/bundles/orocrmprooutlook/files/' . $file->getFilename();
         }
 
