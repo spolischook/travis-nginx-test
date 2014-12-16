@@ -61,11 +61,11 @@
             {% else %}
                 <input type="hidden" name="{{ form.vars.full_name }}[organizations][]" value="{{ form.default_organization.vars.value }}" />
                 {{ _self.renderOrganizationChildren(
-                form,
-                form.vars.organization_tree_ids[0].organization,
-                form.vars.organization_tree_ids,
-                form.vars.selected_business_units,
-                0
+                    form,
+                    form.vars.organization_tree_ids[0].organization,
+                    form.vars.organization_tree_ids,
+                    form.vars.selected_business_units,
+                    0
                 ) }}
             {% endif %}
         </div>
