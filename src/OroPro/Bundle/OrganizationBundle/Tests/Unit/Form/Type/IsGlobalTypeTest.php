@@ -78,7 +78,7 @@ class IsGlobalTypeTest extends \PHPUnit_Framework_TestCase
         $this->type->setDefaultOptions($resolver);
         $result = $resolver->resolve([]);
 
-        $this->assertEquals('oropro.organization.form.is_organization_checkbox', $result['tooltip']);
+        $this->assertEquals('oropro.organization.form.is_global', $result['tooltip']);
         $this->assertFalse($result['empty_value']);
         $this->assertEquals(['No', 'Yes'], $result['choices']);
 

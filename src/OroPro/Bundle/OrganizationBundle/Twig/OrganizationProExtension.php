@@ -2,10 +2,10 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Twig;
 
-use Oro\Bundle\OrganizationBundle\Twig\OrganizationExtension;
+use Oro\Bundle\OrganizationBundle\Twig\OrganizationExtension as BaseOrganizationExtension;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-class OrganizationProExtension extends OrganizationExtension
+class OrganizationProExtension extends BaseOrganizationExtension
 {
     /**
      * {@inheritdoc}
