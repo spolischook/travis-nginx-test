@@ -19,6 +19,7 @@ parameters:
     oro_organization.twig.organization.class:      OroPro\Bundle\OrganizationBundle\Twig\OrganizationProExtension
     oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
     oro_organization.form.extension.organization.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationProFormExtension
+
 services:
     oropro_organization.twig.extension.organization:
         class: %oropro_organization.twig.extension.organization.class%
@@ -75,7 +76,7 @@ services:
             - @oropro_organization.helper
         tags:
             - { name: form.type, alias: oropro_organization_is_global }
-
+            
     oropro_organization.helper:
         class: %oropro_organization.helper.class%
         arguments:

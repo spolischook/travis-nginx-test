@@ -1,0 +1,13 @@
+{% if form.organization is defined %}
+    {{ form_row(form.organization, {'label': label is not same as(false) ? label : ''}) }}
+    <script type="text/javascript">
+        require(['jquery'], function($) {
+            $(function() {
+                var select2_fields = $('form#{{ form.vars.id }} :input.select2');
+                $.each(select2_fields, function(index, el) {
+                    $(el).data('select2_query_additional_params', {'_sa_org_id': {{ form.organization.vars.value }}});
+                });
+            });
+        });
+    </script>
+{% endif %}
