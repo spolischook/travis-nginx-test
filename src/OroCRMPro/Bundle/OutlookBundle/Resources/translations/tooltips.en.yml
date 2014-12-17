@@ -6,3 +6,4 @@ orocrmpro_outlook:
             conflict_resolution:    Conflict resolution strategy that should be used if the same data are changed in both Outlook and CRM
             sync_interval_orocrm:   How often changes on CRM side will be checked
             sync_interval_outlook:  How often changes on Outlook side will be checked
+            addin:                  Download MS Outlook OroCRM Plugin to integrate with your Outlook client. Once downloaded run the installation process.
