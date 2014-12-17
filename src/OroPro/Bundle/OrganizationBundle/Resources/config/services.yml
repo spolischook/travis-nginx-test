@@ -5,15 +5,14 @@ parameters:
     oropro_organization.twig.extension.search_organization.class: OroPro\Bundle\OrganizationBundle\Twig\SearchResultOrganizationExtension
     oropro_organization.exclusion_provider.config.class:   OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider
     oropro_organization.request.param_converter.class:     OroPro\Bundle\OrganizationBundle\Request\ParamConverter\RequestReportParamConverter
-    oropro_organization.type.is_global.class:              OroPro\Bundle\OrganizationBundle\Form\Type\IsGlobalType
     oropro_organization.helper.class:                      OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper
+    oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
 
     # Overrides
     oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener
     oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
     oro_organization.twig.organization.class:      OroPro\Bundle\OrganizationBundle\Twig\OrganizationProExtension
-
-    oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
+    oro_organization.form.extension.organization.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationProFormExtension
 
 services:
     oropro_organization.twig.extension.organization:
@@ -60,13 +59,6 @@ services:
             - @oro_entity.orm.entity_class_resolver
         tags:
             - { name: oro_datagrid.extension }
-
-    oropro_organization.type.is_global:
-        class: %oropro_organization.type.is_global.class%
-        arguments:
-            - @oropro_organization.helper
-        tags:
-            - { name: form.type, alias: oropro_organization_is_global }
 
     oropro_organization.helper:
         class: %oropro_organization.helper.class%

@@ -32,13 +32,6 @@ class EntityAclProExtension extends EntityAclExtension
         if ($securityToken instanceof OrganizationContextTokenInterface) {
             $organization = $securityToken->getOrganizationContext();
 
-            // todo: Should be deleted in OEE-418
-            // Hide Create/Update actions for the global mode.
-            $permissions = $this->getPermissions($triggeredMask, true);
-            if ($organization->getIsGlobal() && in_array($permissions[0], ['CREATE', 'EDIT'])) {
-                return false;
-            }
-
             if ($organization->getIsGlobal() && $this->getAccessLevel($triggeredMask) !== AccessLevel::SYSTEM_LEVEL) {
                 return false;
             }
