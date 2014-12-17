@@ -15,8 +15,8 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
 
     const SEARCH_LISTENER_SERVICE = 'oro_security.listener.search_listener';
 
-    const USER_ACL_ACL_HANDLER_SERVICE = 'oro_user.autocomplete.user.search_acl_handler';
-    const USER_ACL_ACL_HANDLER_CLASS   = 'OroPro\Bundle\SecurityBundle\Autocomplete\UserAclProHandler';
+    const USER_ACL_HANDLER_SERVICE = 'oro_user.autocomplete.user.search_acl_handler';
+    const USER_ACL_HANDLER_CLASS   = 'OroPro\Bundle\SecurityBundle\Autocomplete\UserAclProHandler';
 
     const SQL_WALKER_BUILDER_SERVICE = 'oro_security.orm.ownership_sql_walker_builder';
     const SQL_WALKER_BUILDER_CLASS   = 'OroPro\Bundle\SecurityBundle\ORM\Walker\OwnershipProConditionDataBuilder';
@@ -45,9 +45,9 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
         }
 
         // rewrite autocomplite search_acl_handler
-        if ($container->hasDefinition(self::USER_ACL_ACL_HANDLER_SERVICE)) {
-            $definition = $container->getDefinition(self::USER_ACL_ACL_HANDLER_SERVICE);
-            $definition->setClass(self::USER_ACL_ACL_HANDLER_CLASS);
+        if ($container->hasDefinition(self::USER_ACL_HANDLER_SERVICE)) {
+            $definition = $container->getDefinition(self::USER_ACL_HANDLER_SERVICE);
+            $definition->setClass(self::USER_ACL_HANDLER_CLASS);
             $this->setOrganizationProviderToService($definition);
         }
 

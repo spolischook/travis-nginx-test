@@ -6,18 +6,16 @@ parameters:
     oropro_organization.exclusion_provider.config.class:   OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider
     oropro_organization.system_mode_org_provider.class:    OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider
     oropro_organization.request.param_converter.class:     OroPro\Bundle\OrganizationBundle\Request\ParamConverter\RequestReportParamConverter
-    oropro_organization.type.is_global.class:              OroPro\Bundle\OrganizationBundle\Form\Type\IsGlobalType
     oropro_organization.helper.class:                      OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper
     oropro_organization.listener.zero_step_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ZeroStepOrganizationListener
 
-    oropro_organization.form.eventlistener.organization_field.class: OroPro\Bundle\OrganizationBundle\Form\EventListener\OrganizationFieldListener
     oropro_organization.exception.organization_aware_listener.class: OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareExceptionListener
+    oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
 
     # Overrides
     oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener
     oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
     oro_organization.twig.organization.class:      OroPro\Bundle\OrganizationBundle\Twig\OrganizationProExtension
-    oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
     oro_organization.form.extension.organization.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationProFormExtension
 
 services:
@@ -69,26 +67,11 @@ services:
             - @oropro_organization.system_mode_org_provider
         tags:
             - { name: oro_datagrid.extension }
-
-    oropro_organization.type.is_global:
-        class: %oropro_organization.type.is_global.class%
-        arguments:
-            - @oropro_organization.helper
-        tags:
-            - { name: form.type, alias: oropro_organization_is_global }
             
     oropro_organization.helper:
         class: %oropro_organization.helper.class%
         arguments:
             - @doctrine
-
-    oropro_organization.form.eventlistener.organization_field:
-        class: %oropro_organization.form.eventlistener.organization_field.class%
-        arguments:
-            - @oro_entity_config.config_manager
-            - @oro_security.security_facade
-        tags:
-            - { name: kernel.event_listener, event: entity_form.render.before, method: addOrganizationField }
 
     oropro_organization.listener.zero_step_listener:
         class: %oropro_organization.listener.zero_step_listener.class%

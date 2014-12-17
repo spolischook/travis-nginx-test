@@ -18,9 +18,7 @@ class DoctrineParamProConverter extends DoctrineParamConverter
     /** @var SystemAccessModeOrganizationProvider */
     protected $organizationProvider;
 
-    /**
-     * @var ServiceLink
-     */
+    /** @var ServiceLink */
     protected $metadataProviderLink;
 
     /**

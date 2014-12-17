@@ -23,7 +23,7 @@ class ZeroStepOrganizationListener
     public function __construct(SystemAccessModeOrganizationProvider $organizationProvider, ManagerRegistry $doctrine)
     {
         $this->organizationProvider = $organizationProvider;
-        $this->doctrine               = $doctrine;
+        $this->doctrine             = $doctrine;
     }
 
     /**
@@ -34,12 +34,11 @@ class ZeroStepOrganizationListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         $zeroStepOrganization = null;
-        $request = $event->getRequest();
-        $formRequest = $request->get('form');
+        $request              = $event->getRequest();
+        $formRequest          = $request->get('form');
         if ($formRequest && isset($formRequest['_sa_org_id'])) {
             $zeroStepOrganization = $formRequest['_sa_org_id'];
-        }
-        if (!$zeroStepOrganization) {
+        } else {
             $zeroStepOrganization = $event->getRequest()->get('_sa_org_id');
         }
 

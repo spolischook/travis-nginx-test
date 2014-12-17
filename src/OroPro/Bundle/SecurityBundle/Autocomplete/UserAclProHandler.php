@@ -31,7 +31,8 @@ class UserAclProHandler extends UserAclHandler
         // in System mode we should limit data by selected organization
         if ($organization->getIsGlobal() && $this->organizationProvider->getOrganizationId()) {
             $organization = $this->organizationProvider->getOrganization();
-            $queryBuilder->join('user.organizations', 'org')
+            $queryBuilder
+                ->join('user.organizations', 'org')
                 ->andWhere($queryBuilder->expr()->in('org.id', [$organization->getId()]));
 
             return $queryBuilder->getQuery();

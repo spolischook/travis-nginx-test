@@ -29,17 +29,10 @@ class SearchProListener extends SearchListener
         if ($organization && $organization->getIsGlobal()) {
             // in System access mode we must check organization id in the organization Provider and if
             // it is not null - use it to limit search data
-            if ($this->organizationProvider->getOrganizationId()) {
-                $query          = $event->getQuery();
-                $organizationId = $this->securityFacade->getOrganizationId();
-                if ($organizationId) {
-                    $query->andWhere(
-                        'organization',
-                        'in',
-                        [$this->organizationProvider->getOrganizationId(), self::EMPTY_ORGANIZATION_ID],
-                        'integer'
-                    );
-                }
+            $organizationId = $this->organizationProvider->getOrganizationId();
+            if ($organizationId) {
+                $query = $event->getQuery();
+                $query->andWhere('organization', 'in', [$organizationId, self::EMPTY_ORGANIZATION_ID], 'integer');
                 $event->setQuery($query);
             }
         } else {
