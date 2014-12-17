@@ -4,8 +4,12 @@ parameters:
     oropro_organization.twig.extension.organization.class: OroPro\Bundle\OrganizationBundle\Twig\OrganizationExtension
     oropro_organization.twig.extension.search_organization.class: OroPro\Bundle\OrganizationBundle\Twig\SearchResultOrganizationExtension
     oropro_organization.exclusion_provider.config.class:   OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider
+    oropro_organization.system_mode_org_provider.class:    OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider
     oropro_organization.request.param_converter.class:     OroPro\Bundle\OrganizationBundle\Request\ParamConverter\RequestReportParamConverter
     oropro_organization.helper.class:                      OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper
+    oropro_organization.listener.zero_step_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ZeroStepOrganizationListener
+
+    oropro_organization.exception.organization_aware_listener.class: OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareExceptionListener
     oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
 
     # Overrides
@@ -42,6 +46,9 @@ services:
         tags:
             - { name: oro_entity.exclusion_provider.default }
 
+    oropro_organization.system_mode_org_provider:
+        class: %oropro_organization.system_mode_org_provider.class%
+
     oropro_organization.request.param_converter:
         class: %oropro_organization.request.param_converter.class%
         arguments:
@@ -57,10 +64,27 @@ services:
             - @oro_security.security_facade
             - @oro_entity_config.config_manager
             - @oro_entity.orm.entity_class_resolver
+            - @oropro_organization.system_mode_org_provider
         tags:
             - { name: oro_datagrid.extension }
-
+            
     oropro_organization.helper:
         class: %oropro_organization.helper.class%
         arguments:
             - @doctrine
+
+    oropro_organization.listener.zero_step_listener:
+        class: %oropro_organization.listener.zero_step_listener.class%
+        arguments:
+            - @oropro_organization.system_mode_org_provider
+            - @doctrine
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest}
+
+    oropro_organization.exception.organization_aware_listener:
+        class: %oropro_organization.exception.organization_aware_listener.class%
+        arguments:
+           - @router
+           - @oropro_organization.system_mode_org_provider
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

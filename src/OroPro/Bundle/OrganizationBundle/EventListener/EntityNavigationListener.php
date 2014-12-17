@@ -12,6 +12,11 @@ class EntityNavigationListener extends NavigationListener
      */
     public function checkAvailability(Config $extendConfig)
     {
+        // In System access mode we should not check entities availability per organization
+        if ($this->securityFacade->getOrganization() && $this->securityFacade->getOrganization()->getIsGlobal()) {
+            return parent::checkAvailability($extendConfig);
+        }
+
         if (parent::checkAvailability($extendConfig)) {
             $className                  = $extendConfig->getId()->getClassname();
             $organizationConfigProvider = $this->configManager->getProvider('organization');

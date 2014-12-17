@@ -105,7 +105,7 @@ class OrganizationController extends Controller
 
         return [
             'entity' => $entity,
-            'form' => $this->get('oro_organization.form.organization')->createView(),
+            'form'   => $this->get('oro_organization.form.organization')->createView(),
         ];
     }
 
@@ -118,6 +118,32 @@ class OrganizationController extends Controller
     {
         return [
             'entity' => $entity
+        ];
+    }
+
+    /**
+     * Zero step with organization select for new entity creation process
+     *
+     * @Route("/zero_step", name="oropro_zero_step_form")
+     * @Template
+     */
+    public function organizationSelectAction()
+    {
+        $form = $this->createFormBuilder(null, ['csrf_protection' => false])
+            ->add(
+                '_sa_org_id',
+                'oro_organization_choice_select2',
+                [
+                    'mapped'   => false,
+                    'label'    => 'Organization',
+                    'multiple' => false
+                ]
+            )
+            ->setMethod('GET')
+            ->getForm();
+        return [
+            'form'       => $form->createView(),
+            'formAction' => $this->getRequest()->get('oropro_zero_url')
         ];
     }
 }

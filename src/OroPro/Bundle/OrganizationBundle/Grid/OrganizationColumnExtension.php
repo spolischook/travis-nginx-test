@@ -14,6 +14,8 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
+use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
+
 class OrganizationColumnExtension extends AbstractExtension
 {
     const COLUMN_NAME = 'organization_for_global_view_mode';
@@ -31,18 +33,26 @@ class OrganizationColumnExtension extends AbstractExtension
     protected $entityClassName = null;
 
     /**
-     * @param SecurityFacade      $securityFacade
-     * @param ConfigManager       $configManager
-     * @param EntityClassResolver $entityClassResolver
+     * @var SystemAccessModeOrganizationProvider
+     */
+    protected $organizationProvider;
+
+    /**
+     * @param SecurityFacade                       $securityFacade
+     * @param ConfigManager                        $configManager
+     * @param EntityClassResolver                  $entityClassResolver
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
     public function __construct(
         SecurityFacade $securityFacade,
         ConfigManager $configManager,
-        EntityClassResolver $entityClassResolver
+        EntityClassResolver $entityClassResolver,
+        SystemAccessModeOrganizationProvider $organizationProvider
     ) {
-        $this->securityFacade      = $securityFacade;
-        $this->configManager       = $configManager;
-        $this->entityClassResolver = $entityClassResolver;
+        $this->securityFacade       = $securityFacade;
+        $this->configManager        = $configManager;
+        $this->entityClassResolver  = $entityClassResolver;
+        $this->organizationProvider = $organizationProvider;
     }
 
     /**
@@ -51,6 +61,7 @@ class OrganizationColumnExtension extends AbstractExtension
     public function isApplicable(DatagridConfiguration $config)
     {
         return $this->securityFacade->getOrganization()->getIsGlobal()
+            && !$this->organizationProvider->getOrganizationId()
             && (bool)$this->getOrganizationField($config);
     }
 
