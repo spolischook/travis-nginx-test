@@ -13,6 +13,7 @@ use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use OroPro\Bundle\OrganizationBundle\Provider\OrganizationIdProvider;
 
 class OrganizationColumnExtension extends AbstractExtension
 {
@@ -31,6 +32,11 @@ class OrganizationColumnExtension extends AbstractExtension
     protected $entityClassName = null;
 
     /**
+     * @var OrganizationIdProvider
+     */
+    protected $organizationIdProvider;
+
+    /**
      * @param SecurityFacade      $securityFacade
      * @param ConfigManager       $configManager
      * @param EntityClassResolver $entityClassResolver
@@ -38,11 +44,13 @@ class OrganizationColumnExtension extends AbstractExtension
     public function __construct(
         SecurityFacade $securityFacade,
         ConfigManager $configManager,
-        EntityClassResolver $entityClassResolver
+        EntityClassResolver $entityClassResolver,
+        OrganizationIdProvider $organizationIdProvider
     ) {
         $this->securityFacade      = $securityFacade;
         $this->configManager       = $configManager;
         $this->entityClassResolver = $entityClassResolver;
+        $this->organizationIdProvider = $organizationIdProvider;
     }
 
     /**
@@ -51,6 +59,7 @@ class OrganizationColumnExtension extends AbstractExtension
     public function isApplicable(DatagridConfiguration $config)
     {
         return $this->securityFacade->getOrganization()->getIsGlobal()
+            && !$this->organizationIdProvider->getOrganizationId()
             && (bool)$this->getOrganizationField($config);
     }
 

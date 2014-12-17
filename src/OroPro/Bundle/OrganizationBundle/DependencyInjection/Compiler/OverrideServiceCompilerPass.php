@@ -4,7 +4,7 @@ namespace OroPro\Bundle\OrganizationBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
+use Symfony\Component\DependencyInjection\Reference;
 class OverrideServiceCompilerPass implements CompilerPassInterface
 {
     /**
@@ -49,6 +49,14 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
             $definition->addMethodCall('setSecurityFacade', [$container->getDefinition('oro_security.security_facade')]);
+            $definition->addMethodCall(
+                'setOrganizationIdProvider',
+                [new Reference('oropro_organization.organization_id_provider')]
+            );
+            $definition->addMethodCall(
+                'setDoctrineHelper',
+                [new Reference('oro_entity.doctrine_helper')]
+            );
         }
     }
 }
