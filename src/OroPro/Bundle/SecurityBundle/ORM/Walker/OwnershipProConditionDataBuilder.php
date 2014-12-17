@@ -21,6 +21,9 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
         $this->organizationProvider = $organizationProvider;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function buildConstraintIfAccessIsGranted(
         $targetEntityClassName,
         $accessLevel,
@@ -58,7 +61,7 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
     }
 
     /**
-     * @return int|null
+     * {@inheritdoc}
      */
     protected function getOrganizationId()
     {
