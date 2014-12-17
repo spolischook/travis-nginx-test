@@ -5,19 +5,19 @@ namespace OroPro\Bundle\SecurityBundle\EventListener;
 use Oro\Bundle\SearchBundle\Event\BeforeSearchEvent;
 use Oro\Bundle\SecurityBundle\EventListener\SearchListener;
 
-use OroPro\Bundle\OrganizationBundle\Provider\OrganizationIdProvider;
+use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
 class SearchProListener extends SearchListener
 {
-    /** @var OrganizationIdProvider */
-    protected $organizationIdProvider;
+    /** @var SystemAccessModeOrganizationProvider */
+    protected $organizationProvider;
 
     /**
-     * @param OrganizationIdProvider $organizationIdProvider
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
-    public function setOrganizationIdProvider(OrganizationIdProvider $organizationIdProvider)
+    public function setOrganizationProvider(SystemAccessModeOrganizationProvider $organizationProvider)
     {
-        $this->organizationIdProvider = $organizationIdProvider;
+        $this->organizationProvider = $organizationProvider;
     }
 
     /**
@@ -27,16 +27,16 @@ class SearchProListener extends SearchListener
     {
         $organization = $this->securityFacade->getOrganization();
         if ($organization && $organization->getIsGlobal()) {
-            // in System access mode we must check organization id in the organizationIdProvider and if
+            // in System access mode we must check organization id in the organization Provider and if
             // it is not null - use it to limit search data
-            if ($this->organizationIdProvider->getOrganizationId()) {
+            if ($this->organizationProvider->getOrganizationId()) {
                 $query          = $event->getQuery();
                 $organizationId = $this->securityFacade->getOrganizationId();
                 if ($organizationId) {
                     $query->andWhere(
                         'organization',
                         'in',
-                        [$this->organizationIdProvider->getOrganizationId(), self::EMPTY_ORGANIZATION_ID],
+                        [$this->organizationProvider->getOrganizationId(), self::EMPTY_ORGANIZATION_ID],
                         'integer'
                     );
                 }

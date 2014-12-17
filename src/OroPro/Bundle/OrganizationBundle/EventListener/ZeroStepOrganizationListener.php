@@ -6,22 +6,23 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
-use OroPro\Bundle\OrganizationBundle\Provider\OrganizationIdProvider;
+use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
 class ZeroStepOrganizationListener
 {
-    /** @var OrganizationIdProvider */
-    protected $organizationIdProvider;
+    /** @var SystemAccessModeOrganizationProvider */
+    protected $organizationProvider;
 
     /** @var ManagerRegistry */
     protected $doctrine;
 
     /**
-     * @param OrganizationIdProvider $organizationIdProvider
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
+     * @param ManagerRegistry                      $doctrine
      */
-    public function __construct(OrganizationIdProvider $organizationIdProvider, ManagerRegistry $doctrine)
+    public function __construct(SystemAccessModeOrganizationProvider $organizationProvider, ManagerRegistry $doctrine)
     {
-        $this->organizationIdProvider = $organizationIdProvider;
+        $this->organizationProvider = $organizationProvider;
         $this->doctrine               = $doctrine;
     }
 
@@ -43,7 +44,7 @@ class ZeroStepOrganizationListener
         }
 
         if ($zeroStepOrganization) {
-            $this->organizationIdProvider->setOrganization(
+            $this->organizationProvider->setOrganization(
                 $this->doctrine->getRepository('OroOrganizationBundle:Organization')->find((int)$zeroStepOrganization)
             );
         }

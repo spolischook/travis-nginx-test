@@ -6,19 +6,19 @@ use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInter
 use Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipConditionDataBuilder;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 
-use OroPro\Bundle\OrganizationBundle\Provider\OrganizationIdProvider;
+use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
 class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
 {
-    /** @var OrganizationIdProvider */
-    protected $organizationIdProvider;
+    /** @var SystemAccessModeOrganizationProvider */
+    protected $organizationProvider;
 
     /**
-     * @param OrganizationIdProvider $organizationIdProvider
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
-    public function setOrganizationIdProvider(OrganizationIdProvider $organizationIdProvider)
+    public function setOrganizationProvider(SystemAccessModeOrganizationProvider $organizationProvider)
     {
-        $this->organizationIdProvider = $organizationIdProvider;
+        $this->organizationProvider = $organizationProvider;
     }
 
     protected function buildConstraintIfAccessIsGranted(
@@ -30,7 +30,7 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
         if ($token instanceof OrganizationContextTokenInterface) {
             $organization = $token->getOrganizationContext();
             // in System mode if additional organization was set - we should limit data by this organization
-            if ($organization->getIsGlobal() && $this->organizationIdProvider->getOrganizationId()) {
+            if ($organization->getIsGlobal() && $this->organizationProvider->getOrganizationId()) {
                 if (!$metadata->hasOwner()) {
                     if ($this->metadataProvider->getOrganizationClass() === $targetEntityClassName) {
                         $tree       = $this->treeProvider->getTree();
@@ -42,7 +42,7 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
                 } else {
                     if ($metadata->isOrganizationOwned()) {
                         $constraint = $this->getCondition(
-                            [$this->organizationIdProvider->getOrganizationId()],
+                            [$this->organizationProvider->getOrganizationId()],
                             $metadata
                         );
                     } else {
@@ -65,9 +65,9 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
         $token = $this->getSecurityContext()->getToken();
         if ($token instanceof OrganizationContextTokenInterface
             && $token->getOrganizationContext()->getIsGlobal()
-            && $this->organizationIdProvider->getOrganizationId()
+            && $this->organizationProvider->getOrganizationId()
         ) {
-            return $this->organizationIdProvider->getOrganizationId();
+            return $this->organizationProvider->getOrganizationId();
         }
 
         return parent::getOrganizationId();

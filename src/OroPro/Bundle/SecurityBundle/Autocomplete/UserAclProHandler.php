@@ -8,19 +8,19 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Autocomplete\UserAclHandler;
 use Oro\Bundle\UserBundle\Entity\User;
 
-use OroPro\Bundle\OrganizationBundle\Provider\OrganizationIdProvider;
+use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
 class UserAclProHandler extends UserAclHandler
 {
-    /** @var OrganizationIdProvider */
-    protected $organizationIdProvider;
+    /** @var SystemAccessModeOrganizationProvider */
+    protected $organizationProvider;
 
     /**
-     * @param OrganizationIdProvider $organizationIdProvider
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
-    public function setOrganizationIdProvider(OrganizationIdProvider $organizationIdProvider)
+    public function setOrganizationProvider(SystemAccessModeOrganizationProvider $organizationProvider)
     {
-        $this->organizationIdProvider = $organizationIdProvider;
+        $this->organizationProvider = $organizationProvider;
     }
 
     /**
@@ -29,8 +29,8 @@ class UserAclProHandler extends UserAclHandler
     protected function applyAcl(QueryBuilder $queryBuilder, $accessLevel, User $user, Organization $organization)
     {
         // in System mode we should limit data by selected organization
-        if ($organization->getIsGlobal() && $this->organizationIdProvider->getOrganizationId()) {
-            $organization = $this->organizationIdProvider->getOrganization();
+        if ($organization->getIsGlobal() && $this->organizationProvider->getOrganizationId()) {
+            $organization = $this->organizationProvider->getOrganization();
             $queryBuilder->join('user.organizations', 'org')
                 ->andWhere($queryBuilder->expr()->in('org.id', [$organization->getId()]));
 

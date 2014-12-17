@@ -13,7 +13,8 @@ use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use OroPro\Bundle\OrganizationBundle\Provider\OrganizationIdProvider;
+
+use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
 class OrganizationColumnExtension extends AbstractExtension
 {
@@ -32,25 +33,26 @@ class OrganizationColumnExtension extends AbstractExtension
     protected $entityClassName = null;
 
     /**
-     * @var OrganizationIdProvider
+     * @var SystemAccessModeOrganizationProvider
      */
-    protected $organizationIdProvider;
+    protected $organizationProvider;
 
     /**
-     * @param SecurityFacade      $securityFacade
-     * @param ConfigManager       $configManager
-     * @param EntityClassResolver $entityClassResolver
+     * @param SecurityFacade                       $securityFacade
+     * @param ConfigManager                        $configManager
+     * @param EntityClassResolver                  $entityClassResolver
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
     public function __construct(
         SecurityFacade $securityFacade,
         ConfigManager $configManager,
         EntityClassResolver $entityClassResolver,
-        OrganizationIdProvider $organizationIdProvider
+        SystemAccessModeOrganizationProvider $organizationProvider
     ) {
-        $this->securityFacade      = $securityFacade;
-        $this->configManager       = $configManager;
-        $this->entityClassResolver = $entityClassResolver;
-        $this->organizationIdProvider = $organizationIdProvider;
+        $this->securityFacade       = $securityFacade;
+        $this->configManager        = $configManager;
+        $this->entityClassResolver  = $entityClassResolver;
+        $this->organizationProvider = $organizationProvider;
     }
 
     /**
@@ -59,7 +61,7 @@ class OrganizationColumnExtension extends AbstractExtension
     public function isApplicable(DatagridConfiguration $config)
     {
         return $this->securityFacade->getOrganization()->getIsGlobal()
-            && !$this->organizationIdProvider->getOrganizationId()
+            && !$this->organizationProvider->getOrganizationId()
             && (bool)$this->getOrganizationField($config);
     }
 

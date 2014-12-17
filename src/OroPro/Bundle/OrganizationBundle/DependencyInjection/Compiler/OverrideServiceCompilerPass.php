@@ -50,8 +50,8 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             $definition = $container->getDefinition($serviceId);
             $definition->addMethodCall('setSecurityFacade', [$container->getDefinition('oro_security.security_facade')]);
             $definition->addMethodCall(
-                'setOrganizationIdProvider',
-                [new Reference('oropro_organization.organization_id_provider')]
+                'setOrganizationProvider',
+                [new Reference('oropro_organization.system_mode_org_provider')]
             );
             $definition->addMethodCall(
                 'setDoctrineHelper',

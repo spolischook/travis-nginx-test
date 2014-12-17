@@ -7,11 +7,11 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 /**
  * This class store organization for create/edit process in System access mode
  *
- * Class OrganizationIdProvider
+ * Class SystemAccessModeOrganizationProvider
  *
  * @package OroPro\Bundle\OrganizationBundle\Provider
  */
-class OrganizationIdProvider
+class SystemAccessModeOrganizationProvider
 {
     /** @var Organization */
     protected $organization;

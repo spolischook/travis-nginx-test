@@ -11,7 +11,7 @@ use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\OrganizationBundle\Form\Extension\OrganizationFormExtension;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
-use OroPro\Bundle\OrganizationBundle\Provider\OrganizationIdProvider;
+use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 use OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareException;
 
 class OrganizationProFormExtension extends OrganizationFormExtension
@@ -19,18 +19,18 @@ class OrganizationProFormExtension extends OrganizationFormExtension
     /** @var SecurityFacade */
     protected $securityFacade;
 
-    /** @var OrganizationIdProvider */
-    protected $organizationIdProvider;
+    /** @var SystemAccessModeOrganizationProvider */
+    protected $organizationProvider;
 
     /** @var DoctrineHelper */
     protected $doctrineHelper;
 
     /**
-     * @param OrganizationIdProvider $organizationIdProvider
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
-    public function setOrganizationIdProvider(OrganizationIdProvider $organizationIdProvider)
+    public function setOrganizationProvider(SystemAccessModeOrganizationProvider $organizationProvider)
     {
-        $this->organizationIdProvider = $organizationIdProvider;
+        $this->organizationProvider = $organizationProvider;
     }
 
     /**
@@ -73,21 +73,21 @@ class OrganizationProFormExtension extends OrganizationFormExtension
                     ->getOrganizationFieldName();
                 if ($organizationField) {
                     $entityId = $this->doctrineHelper->getSingleEntityIdentifier($entity);
-                    if ($entityId === null && !$this->organizationIdProvider->getOrganizationId()) {
-                        //we in create process without organization in organizationIdProvider
+                    if ($entityId === null && !$this->organizationProvider->getOrganizationId()) {
+                        //we in create process without organization in organization Provider
                         throw new OrganizationAwareException($entityClass);
                     } else {
                         //we in edit process or in create process with organization id in parameter
                         if ($entityId) {
-                            if (!$this->organizationIdProvider->getOrganizationId()) {
+                            if (!$this->organizationProvider->getOrganizationId()) {
                                 //store current entity organization id if it was not set in param converter
-                                $this->organizationIdProvider->setOrganization(
+                                $this->organizationProvider->setOrganization(
                                     $this->getPropertyAccessor()->getValue($entity, $organizationField)
                                 );
                             }
                         } else {
                             // on create entity we should set selected organization
-                            $organization = $this->organizationIdProvider->getOrganization();
+                            $organization = $this->organizationProvider->getOrganization();
                             $this->getPropertyAccessor()->setValue($entity, $organizationField, $organization);
                         }
 

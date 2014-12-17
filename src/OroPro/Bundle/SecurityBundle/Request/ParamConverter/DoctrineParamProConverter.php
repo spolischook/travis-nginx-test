@@ -11,12 +11,12 @@ use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\Request\ParamConverter\DoctrineParamConverter;
 
-use OroPro\Bundle\OrganizationBundle\Provider\OrganizationIdProvider;
+use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
 class DoctrineParamProConverter extends DoctrineParamConverter
 {
-    /** @var OrganizationIdProvider */
-    protected $organizationIdProvider;
+    /** @var SystemAccessModeOrganizationProvider */
+    protected $organizationProvider;
 
     /**
      * @var ServiceLink
@@ -24,11 +24,11 @@ class DoctrineParamProConverter extends DoctrineParamConverter
     protected $metadataProviderLink;
 
     /**
-     * @param OrganizationIdProvider $organizationIdProvider
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
-    public function setOrganizationIdProvider(OrganizationIdProvider $organizationIdProvider)
+    public function setOrganizationProvider(SystemAccessModeOrganizationProvider $organizationProvider)
     {
-        $this->organizationIdProvider = $organizationIdProvider;
+        $this->organizationProvider = $organizationProvider;
     }
 
     /**
@@ -46,18 +46,22 @@ class DoctrineParamProConverter extends DoctrineParamConverter
     {
         $isSet = parent::apply($request, $configuration);
 
-        if ($this->securityFacade && $isSet) {
+        if ($this->securityFacade
+            && $isSet
+            && $this->securityFacade->getOrganization()
+            && $this->securityFacade->getOrganization()->getIsGlobal()
+        ) {
             $acl = $this->securityFacade->getRequestAcl($request, true);
 
             // set entity organization to the organization provider in case of edit page
-            if ($acl->getPermission() === 'EDIT') {
+            if ($acl && $acl->getPermission() === 'EDIT') {
                 $object = $request->attributes->get($configuration->getName());
                 $organizationField = $this->getMetadataProvider()
                     ->getMetadata($acl->getClass())
                     ->getOrganizationFieldName();
                 if ($organizationField) {
                     $propertyAccessor  = PropertyAccess::createPropertyAccessor();
-                    $this->organizationIdProvider->setOrganization(
+                    $this->organizationProvider->setOrganization(
                         $propertyAccessor->getValue($object, $organizationField)
                     );
                 }

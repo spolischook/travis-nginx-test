@@ -4,13 +4,13 @@ parameters:
     oropro_organization.twig.extension.organization.class: OroPro\Bundle\OrganizationBundle\Twig\OrganizationExtension
     oropro_organization.twig.extension.search_organization.class: OroPro\Bundle\OrganizationBundle\Twig\SearchResultOrganizationExtension
     oropro_organization.exclusion_provider.config.class:   OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider
-    oropro_organization.organization_id_provider.class:    OroPro\Bundle\OrganizationBundle\Provider\OrganizationIdProvider
+    oropro_organization.system_mode_org_provider.class:    OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider
     oropro_organization.request.param_converter.class:     OroPro\Bundle\OrganizationBundle\Request\ParamConverter\RequestReportParamConverter
     oropro_organization.type.is_global.class:              OroPro\Bundle\OrganizationBundle\Form\Type\IsGlobalType
     oropro_organization.helper.class:                      OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper
     oropro_organization.listener.zero_step_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ZeroStepOrganizationListener
 
-    oropro_organization.eventlistener.form.listener.class: OroPro\Bundle\OrganizationBundle\EventListener\FormListener
+    oropro_organization.form.eventlistener.organization_field.class: OroPro\Bundle\OrganizationBundle\Form\EventListener\OrganizationFieldListener
     oropro_organization.exception.organization_aware_listener.class: OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareExceptionListener
 
     # Overrides
@@ -48,8 +48,8 @@ services:
         tags:
             - { name: oro_entity.exclusion_provider.default }
 
-    oropro_organization.organization_id_provider:
-        class: %oropro_organization.organization_id_provider.class%
+    oropro_organization.system_mode_org_provider:
+        class: %oropro_organization.system_mode_org_provider.class%
 
     oropro_organization.request.param_converter:
         class: %oropro_organization.request.param_converter.class%
@@ -66,7 +66,7 @@ services:
             - @oro_security.security_facade
             - @oro_entity_config.config_manager
             - @oro_entity.orm.entity_class_resolver
-            - @oropro_organization.organization_id_provider
+            - @oropro_organization.system_mode_org_provider
         tags:
             - { name: oro_datagrid.extension }
 
@@ -82,8 +82,8 @@ services:
         arguments:
             - @doctrine
 
-    oropro_organization.eventlistener.form.listener:
-        class: %oropro_organization.eventlistener.form.listener.class%
+    oropro_organization.form.eventlistener.organization_field:
+        class: %oropro_organization.form.eventlistener.organization_field.class%
         arguments:
             - @oro_entity_config.config_manager
             - @oro_security.security_facade
@@ -93,7 +93,7 @@ services:
     oropro_organization.listener.zero_step_listener:
         class: %oropro_organization.listener.zero_step_listener.class%
         arguments:
-            - @oropro_organization.organization_id_provider
+            - @oropro_organization.system_mode_org_provider
             - @doctrine
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest}
@@ -102,6 +102,6 @@ services:
         class: %oropro_organization.exception.organization_aware_listener.class%
         arguments:
            - @router
-           - @oropro_organization.organization_id_provider
+           - @oropro_organization.system_mode_org_provider
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
