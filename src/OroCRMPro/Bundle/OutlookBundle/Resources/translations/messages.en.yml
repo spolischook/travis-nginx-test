@@ -1,16 +1,18 @@
 orocrmpro_outlook:
     form:
-        outlook_settings:       MS Outlook settings
-        outlook_addin:          MS Outlook Add-in
-        contacts:               Contacts
-        tasks:                  Tasks
-        calendar_events:        Calendar Events
-        enabled:                Enabled
-        sync_direction:         Sync Direction
-        conflict_resolution:    Conflict Resolution
-        sync_interval_orocrm:   CRM sync interval (in seconds)
-        sync_interval_outlook:  Outlook sync interval (in seconds)
-        addin_label:            Download
+        outlook_settings:         MS Outlook settings
+        outlook_addin:            MS Outlook Add-in
+        outlook_integration:      Integration settings
+        outlook_synchronization:  Synchronization settings
+        contacts:                 Contacts
+        tasks:                    Tasks
+        calendar_events:          Calendar Events
+        enabled:                  Enabled
+        sync_direction:           Sync Direction
+        conflict_resolution:      Conflict Resolution
+        sync_interval_orocrm:     CRM sync interval (in seconds)
+        sync_interval_outlook:    Outlook sync interval (in seconds)
+        addin_label:              Download
 
         contacts_sync_direction:
             choices:
