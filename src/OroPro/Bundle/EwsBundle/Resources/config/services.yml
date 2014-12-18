@@ -7,6 +7,7 @@ parameters:
     oro_pro_ews.search_query.restriction.builder.class:  OroPro\Bundle\EwsBundle\Connector\Search\RestrictionBuilder
     oro_pro_ews.service_configurator.class:              OroPro\Bundle\EwsBundle\Provider\EwsServiceConfigurator
     oro_pro_ews.email_synchronizer.class:                OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizer
+    oro_pro_ews.email_sync_processor_factory.class:      OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizationProcessorFactory
     oro_pro_ews.email_body_loader.class:                 OroPro\Bundle\EwsBundle\Provider\EwsEmailBodyLoader
 
 services:
@@ -56,15 +57,23 @@ services:
         class: %oro_pro_ews.email_synchronizer.class%
         arguments:
             - @doctrine
-            - @oro_email.email.entity.builder
+            - @oro_email.known_email_address_checker_factory
+            - @oro_pro_ews.email_sync_processor_factory
             - @oro_email.email.address.manager
-            - @oro_email.email.address.helper
             - @oro_email.email.owner.provider.storage
             - @oro_pro_ews.connector
             - @oro_pro_ews.service_configurator
             - %oro_user.entity.class%
         tags:
             - { name: oro_email.email_synchronizer }
+
+    oro_pro_ews.email_sync_processor_factory:
+        class: %oro_pro_ews.email_sync_processor_factory.class%
+        public: false
+        scope: prototype
+        arguments:
+            - @doctrine
+            - @oro_email.email.entity.builder
 
     oro_pro_ews.email_body_loader:
         public: false

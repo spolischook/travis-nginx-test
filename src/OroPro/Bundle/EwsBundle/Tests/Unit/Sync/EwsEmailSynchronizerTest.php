@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
+use Oro\Bundle\EmailBundle\Sync\KnownEmailAddressCheckerFactory;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\Mocks\EntityManagerMock;
 use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\OrmTestCase;
@@ -14,6 +15,7 @@ use Oro\Bundle\UserBundle\OroUserBundle;
 
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
 use OroPro\Bundle\EwsBundle\OroProEwsBundle;
+use OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizationProcessorFactory;
 use OroPro\Bundle\EwsBundle\Tests\Unit\Sync\Fixtures\TestEwsEmailSynchronizer;
 
 class EwsEmailSynchronizerTest extends OrmTestCase
@@ -22,7 +24,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
     private $sync;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $log;
+    private $logger;
 
     /** @var EntityManagerMock */
     private $em;
@@ -40,7 +42,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
     {
         $this->initializeEntityManager();
 
-        $this->log = $this->getMock('Psr\Log\LoggerInterface');
+        $this->logger = $this->getMock('Psr\Log\LoggerInterface');
         $this->emailEntityBuilder = $this->getMockBuilder('Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder')
             ->disableOriginalConstructor()
             ->getMock();
@@ -71,18 +73,27 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             ->with(null)
             ->will($this->returnValue($this->em));
 
-        $this->sync = new TestEwsEmailSynchronizer(
+        $knownEmailAddressCheckerFactory = new KnownEmailAddressCheckerFactory(
             $doctrine,
-            $this->emailEntityBuilder,
             $this->emailAddressManager,
             new EmailAddressHelper(),
+            new EmailOwnerProviderStorage(),
+            []
+        );
+        $syncProcessorFactory = new EwsEmailSynchronizationProcessorFactory($doctrine, $this->emailEntityBuilder);
+
+        $this->sync = new TestEwsEmailSynchronizer(
+            $doctrine,
+            $knownEmailAddressCheckerFactory,
+            $syncProcessorFactory,
+            $this->emailAddressManager,
             $emailOwnerProviderStorage,
             $ewsConnector,
             $this->ewsConfigurator,
             'Oro\Bundle\UserBundle\Entity\User'
         );
 
-        $this->sync->setLogger($this->log);
+        $this->sync->setLogger($this->logger);
     }
 
     protected function initializeEntityManager()
