@@ -50,7 +50,6 @@ class ZeroStepOrganizationListener
             if ($organization) {
                 $this->organizationProvider->setOrganization($organization);
             }
-
         }
     }
 }

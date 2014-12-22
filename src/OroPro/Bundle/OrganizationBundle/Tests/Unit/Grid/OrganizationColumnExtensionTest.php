@@ -78,7 +78,9 @@ class OrganizationColumnExtensionTest extends \PHPUnit_Framework_TestCase
         $this->securityFacade->expects($this->once())
             ->method('getOrganization')
             ->will($this->returnValue($this->getOrganizationMock(true)));
-        $this->organizationProvider->expects($this->once())->method('getOrganizationId')->willReturn(2);
+        $this->organizationProvider->expects($this->once())
+            ->method('getOrganizationId')
+            ->willReturn(2);
 
         $this->assertFalse($this->extension->isApplicable($this->getDatagridConfiguration()));
     }

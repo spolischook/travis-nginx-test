@@ -6,12 +6,15 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class SearchResultOrganizationExtension extends \Twig_Extension
 {
     const NAME = 'oropro_search_organization';
+
     const ORGANIZATION_INFO_TEMPLATE = 'OroProOrganizationBundle::organizationInfo.html.twig';
 
     /** @var SecurityFacade */
@@ -65,7 +68,7 @@ class SearchResultOrganizationExtension extends \Twig_Extension
     }
 
     /**
-     * Return entity organization name with hidden field with organization id
+     * Return entity organization name with hidden organization id field
      *
      * @param \Twig_Environment $environment
      * @param object            $entity
@@ -102,7 +105,7 @@ class SearchResultOrganizationExtension extends \Twig_Extension
     }
 
     /**
-     * If user works in Global mode - return entity organization
+     * If user works in System access mode - return entity organization
      *
      * @param $entity
      * @return Organization|null

@@ -119,7 +119,8 @@ class SearchResultOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
         $environment = $this->getMockBuilder('\Twig_Environment')->disableOriginalConstructor()->getMock();
 
         $template = $this->getMockBuilder('\Twig_Template')->disableOriginalConstructor()
-            ->setMethods(['doDisplay', 'getTemplateName', 'render'])->getMock();
+            ->setMethods(['doDisplay', 'getTemplateName', 'render'])
+            ->getMock();
 
         if (!is_null($expectedResult)) {
             $environment->expects($this->once())
