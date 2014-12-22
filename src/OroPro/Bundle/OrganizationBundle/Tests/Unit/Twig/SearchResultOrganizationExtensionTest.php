@@ -43,10 +43,9 @@ class SearchResultOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetFunctions()
     {
         $result = $this->searchExtension->getFunctions();
-        $this->assertCount(1, $result);
-        /** @var \Twig_SimpleFunction $function */
-        $function = $result[0];
-        $this->assertEquals('oropro_search_entity_organization_info', $function->getName());
+        $this->assertCount(2, $result);
+        $this->assertEquals('oropro_entity_organization_name', $result[0]->getName());
+        $this->assertEquals('oropro_entity_organization_info', $result[1]->getName());
     }
 
     public function testGetName()
@@ -57,22 +56,85 @@ class SearchResultOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider dataProvider
      *
-     * @param bool        $isGlobal
-     * @param Config|null $config
-     * @param object      $testEntity
-     * @param mixed       $expectedResult
+     * @param bool               $isGlobal
+     * @param Config|null        $config
+     * @param object             $testEntity
+     * @param mixed              $expectedResult
+     * @param GlobalOrganization $expectedOrg
      */
-    public function testGetOrganizationInfo($isGlobal, $config, $testEntity, $expectedResult)
+    public function testGetOrganizationName($isGlobal, $config, $testEntity, $expectedResult, $expectedOrg)
     {
         $organization = new GlobalOrganization();
         $organization->setIsGlobal($isGlobal);
-        $this->securityFacade->expects($this->any())->method('getOrganization')->willReturn($organization);
-        $this->doctrineHelper->expects($this->any())->method('getEntityClass')->willReturn('Acme\Test\TestEntity');
-        $this->configProvider->expects($this->any())->method('hasConfig')->with('Acme\Test\TestEntity')
+        $this->securityFacade->expects($this->any())
+            ->method('getOrganization')
+            ->willReturn($organization);
+        $this->doctrineHelper->expects($this->any())
+            ->method('getEntityClass')
+            ->willReturn('Acme\Test\TestEntity');
+        $this->configProvider->expects($this->any())
+            ->method('hasConfig')
+            ->with('Acme\Test\TestEntity')
             ->willReturn(is_object($config));
-        $this->configProvider->expects($this->any())->method('getConfig')->with('Acme\Test\TestEntity')
+        $this->configProvider->expects($this->any())
+            ->method('getConfig')
+            ->with('Acme\Test\TestEntity')
             ->willReturn($config);
-        $this->assertEquals($expectedResult, $this->searchExtension->getOrganizationInfo($testEntity));
+
+        $this->assertEquals($expectedResult, $this->searchExtension->getOrganizationName($testEntity));
+    }
+
+    /**
+     * @dataProvider dataProvider
+     *
+     * @param bool               $isGlobal
+     * @param Config|null        $config
+     * @param object             $testEntity
+     * @param mixed              $expectedResult
+     * @param GlobalOrganization $expectedOrg
+     */
+    public function testGetOrganizationInfo($isGlobal, $config, $testEntity, $expectedResult, $expectedOrg)
+    {
+        $organization = new GlobalOrganization();
+        $organization->setIsGlobal($isGlobal);
+
+        $this->securityFacade->expects($this->any())
+            ->method('getOrganization')
+            ->willReturn($organization);
+
+        $this->doctrineHelper->expects($this->any())
+            ->method('getEntityClass')
+            ->willReturn('Acme\Test\TestEntity');
+
+        $this->configProvider->expects($this->any())
+            ->method('hasConfig')
+            ->with('Acme\Test\TestEntity')
+            ->willReturn(is_object($config));
+
+        $this->configProvider->expects($this->any())
+            ->method('getConfig')
+            ->with('Acme\Test\TestEntity')
+            ->willReturn($config);
+
+        $environment = $this->getMockBuilder('\Twig_Environment')->disableOriginalConstructor()->getMock();
+
+        $template = $this->getMockBuilder('\Twig_Template')->disableOriginalConstructor()
+            ->setMethods(['doDisplay', 'getTemplateName', 'render'])
+            ->getMock();
+
+        if (!is_null($expectedResult)) {
+            $environment->expects($this->once())
+                ->method('loadTemplate')
+                ->willReturn($template);
+            $template->expects($this->once())
+                ->method('render')
+                ->with(['organization' => $expectedOrg]);
+        } else {
+            $environment->expects($this->never())
+                ->method('loadTemplate');
+        }
+
+        $this->searchExtension->getOrganizationInfo($environment, $testEntity);
     }
 
     public function dataProvider()
@@ -112,36 +174,42 @@ class SearchResultOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
                 false,
                 null,
                 $testEntity,
+                null,
                 null
             ],
             'Non configurable entity'     => [
                 true,
                 null,
                 $testEntity,
+                null,
                 null
             ],
             'User owning entity'          => [
                 true,
                 $userOwningConfig,
                 $userOwningTestEntity,
-                'User Owning Test Org'
+                'User Owning Test Org',
+                $userTestOrg
             ],
             'Business Unit owning entity' => [
                 true,
                 $buOwningConfig,
                 $buOwningTestEntity,
-                'Business Unit Owning Test Org'
+                'Business Unit Owning Test Org',
+                $buTestOrg
             ],
             'Organization owning entity'  => [
                 true,
                 $organizationOwningConfig,
                 $orgwningTestEntity,
-                'Organization Test Org'
+                'Organization Test Org',
+                $orgTestOrg
             ],
             'System owning entity'        => [
                 true,
                 $systemOwningConfig,
                 $testEntity,
+                null,
                 null
             ],
         ];
