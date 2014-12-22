@@ -66,12 +66,21 @@ class SearchResultOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $organization = new GlobalOrganization();
         $organization->setIsGlobal($isGlobal);
-        $this->securityFacade->expects($this->any())->method('getOrganization')->willReturn($organization);
-        $this->doctrineHelper->expects($this->any())->method('getEntityClass')->willReturn('Acme\Test\TestEntity');
-        $this->configProvider->expects($this->any())->method('hasConfig')->with('Acme\Test\TestEntity')
+        $this->securityFacade->expects($this->any())
+            ->method('getOrganization')
+            ->willReturn($organization);
+        $this->doctrineHelper->expects($this->any())
+            ->method('getEntityClass')
+            ->willReturn('Acme\Test\TestEntity');
+        $this->configProvider->expects($this->any())
+            ->method('hasConfig')
+            ->with('Acme\Test\TestEntity')
             ->willReturn(is_object($config));
-        $this->configProvider->expects($this->any())->method('getConfig')->with('Acme\Test\TestEntity')
+        $this->configProvider->expects($this->any())
+            ->method('getConfig')
+            ->with('Acme\Test\TestEntity')
             ->willReturn($config);
+
         $this->assertEquals($expectedResult, $this->searchExtension->getOrganizationName($testEntity));
     }
 
@@ -88,20 +97,40 @@ class SearchResultOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $organization = new GlobalOrganization();
         $organization->setIsGlobal($isGlobal);
-        $this->securityFacade->expects($this->any())->method('getOrganization')->willReturn($organization);
-        $this->doctrineHelper->expects($this->any())->method('getEntityClass')->willReturn('Acme\Test\TestEntity');
-        $this->configProvider->expects($this->any())->method('hasConfig')->with('Acme\Test\TestEntity')
+
+        $this->securityFacade->expects($this->any())
+            ->method('getOrganization')
+            ->willReturn($organization);
+
+        $this->doctrineHelper->expects($this->any())
+            ->method('getEntityClass')
+            ->willReturn('Acme\Test\TestEntity');
+
+        $this->configProvider->expects($this->any())
+            ->method('hasConfig')
+            ->with('Acme\Test\TestEntity')
             ->willReturn(is_object($config));
-        $this->configProvider->expects($this->any())->method('getConfig')->with('Acme\Test\TestEntity')
+
+        $this->configProvider->expects($this->any())
+            ->method('getConfig')
+            ->with('Acme\Test\TestEntity')
             ->willReturn($config);
+
         $environment = $this->getMockBuilder('\Twig_Environment')->disableOriginalConstructor()->getMock();
-        $template    = $this->getMockBuilder('\Twig_Template')->disableOriginalConstructor()
+
+        $template = $this->getMockBuilder('\Twig_Template')->disableOriginalConstructor()
             ->setMethods(['doDisplay', 'getTemplateName', 'render'])->getMock();
+
         if (!is_null($expectedResult)) {
-            $environment->expects($this->once())->method('loadTemplate')->willReturn($template);
-            $template->expects($this->once())->method('render')->with(['organization' => $expectedOrg]);
+            $environment->expects($this->once())
+                ->method('loadTemplate')
+                ->willReturn($template);
+            $template->expects($this->once())
+                ->method('render')
+                ->with(['organization' => $expectedOrg]);
         } else {
-            $environment->expects($this->never())->method('loadTemplate');
+            $environment->expects($this->never())
+                ->method('loadTemplate');
         }
 
         $this->searchExtension->getOrganizationInfo($environment, $testEntity);
