@@ -19,6 +19,9 @@ class SearchProListenerTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $securityFacade;
 
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    protected $organizationProvider;
+
     /** @var Query */
     protected $query;
 
@@ -33,6 +36,12 @@ class SearchProListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->listener = new SearchProListener($this->metadataProvider, $this->securityFacade);
+
+        $this->organizationProvider = $this
+            ->getMockBuilder('OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->listener->setOrganizationProvider($this->organizationProvider);
 
         $this->query = new Query();
         $this->query->from('testEntity')->andWhere('someTextField', '~', 'test');
@@ -63,7 +72,7 @@ class SearchProListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expexted, $wherePart[1]);
     }
 
-    public function testBeforeSearchEventGlobalMode()
+    public function testBeforeSearchEventSystemMode()
     {
         $organization = new GlobalOrganization();
         $this->securityFacade->expects($this->once())->method('getOrganization')->willReturn($organization);
@@ -77,5 +86,34 @@ class SearchProListenerTest extends \PHPUnit_Framework_TestCase
 
         $wherePart = $this->query->getOptions();
         $this->assertCount(1, $wherePart);
+    }
+
+    public function testBeforeSearchEventSystemModeWithAdditionalOrg()
+    {
+        $organization = new GlobalOrganization();
+        $this->securityFacade->expects($this->once())->method('getOrganization')->willReturn($organization);
+
+        $this->organizationProvider->expects($this->once())
+            ->method('getOrganizationId')
+            ->willReturn(2);
+
+        $this->securityFacade->expects($this->never())
+            ->method('getOrganizationId');
+        $event = new BeforeSearchEvent($this->query);
+
+        $this->listener->beforeSearchEvent($event);
+
+        $wherePart = $this->query->getOptions();
+        $this->assertCount(2, $wherePart);
+        $this->assertEquals(
+            [
+                'fieldName' => 'organization',
+                'condition' => 'in',
+                'fieldValue' => [2, 0],
+                'fieldType' => 'integer',
+                'type' => 'and'
+            ],
+            $wherePart[1]
+        );
     }
 }

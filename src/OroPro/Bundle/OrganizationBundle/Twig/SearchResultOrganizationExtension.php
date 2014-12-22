@@ -6,11 +6,16 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class SearchResultOrganizationExtension extends \Twig_Extension
 {
     const NAME = 'oropro_search_organization';
+
+    const ORGANIZATION_INFO_TEMPLATE = 'OroProOrganizationBundle::organizationInfo.html.twig';
 
     /** @var SecurityFacade */
     protected $securityFacade;
@@ -42,7 +47,15 @@ class SearchResultOrganizationExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('oropro_search_entity_organization_info', [$this, 'getOrganizationInfo']),
+            new \Twig_SimpleFunction(
+                'oropro_entity_organization_name',
+                [$this, 'getOrganizationName']
+            ),
+            new \Twig_SimpleFunction(
+                'oropro_entity_organization_info',
+                [$this, 'getOrganizationInfo'],
+                ['is_safe' => ['html'], 'needs_environment' => true]
+            ),
         ];
     }
 
@@ -55,18 +68,54 @@ class SearchResultOrganizationExtension extends \Twig_Extension
     }
 
     /**
-     * If user works in Global mode - return organization name for given search result entity
+     * Return entity organization name with hidden organization id field
+     *
+     * @param \Twig_Environment $environment
+     * @param object            $entity
+     * @return string
+     */
+    public function getOrganizationInfo(\Twig_Environment $environment, $entity)
+    {
+        $organization = $this->getEntityOrganization($entity);
+        if ($organization) {
+            return $environment->loadTemplate(self::ORGANIZATION_INFO_TEMPLATE)->render(
+                [
+                    'organization' => $organization
+                ]
+            );
+        }
+
+        return '';
+    }
+
+    /**
+     * Return organization name for given entity
      *
      * @param object $entity
      * @return string|null
      */
-    public function getOrganizationInfo($entity)
+    public function getOrganizationName($entity)
+    {
+        $organization = $this->getEntityOrganization($entity);
+        if ($organization) {
+            return $organization->getName();
+        }
+
+        return null;
+    }
+
+    /**
+     * If user works in System access mode - return entity organization
+     *
+     * @param $entity
+     * @return Organization|null
+     */
+    protected function getEntityOrganization($entity)
     {
         if ($this->securityFacade->getOrganization()->getIsGlobal()) {
             $className = $this->doctrineHelper->getEntityClass($entity);
             if ($this->configProvider->hasConfig($className)) {
-                $config  = $this->configProvider->getConfig($className);
-
+                $config = $this->configProvider->getConfig($className);
                 $organizationFieldName = '';
                 if (in_array($config->get('owner_type'), ['USER', 'BUSINESS_UNIT'])) {
                     $organizationFieldName = $config->get('organization_field_name');
@@ -74,9 +123,8 @@ class SearchResultOrganizationExtension extends \Twig_Extension
                     $organizationFieldName = $config->get('owner_field_name');
                 }
                 if ($organizationFieldName) {
-                    return PropertyAccess::createPropertyAccessor()
-                        ->getValue($entity, $organizationFieldName)
-                        ->getName();
+
+                    return PropertyAccess::createPropertyAccessor()->getValue($entity, $organizationFieldName);
                 }
             }
         }

@@ -204,7 +204,7 @@ class OrganizationColumnExtension extends AbstractExtension
     {
         $entityClassName   = $this->getEntity($config);
         $ownershipProvider = $this->configManager->getProvider('ownership');
-        if ($ownershipProvider->hasConfig($entityClassName)) {
+        if ($entityClassName && $ownershipProvider->hasConfig($entityClassName)) {
             $ownershipConfig = $ownershipProvider->getConfig($entityClassName);
             switch ($ownershipConfig->get('owner_type')) {
                 case 'USER':
