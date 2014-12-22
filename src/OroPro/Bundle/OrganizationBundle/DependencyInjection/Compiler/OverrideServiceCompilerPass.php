@@ -59,5 +59,15 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
                 [new Reference('oro_entity.doctrine_helper')]
             );
         }
+
+        $serviceId = 'oro_organization.form.extension.owner';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Form\Extension\OwnerProFormExtension');
+            $definition->addMethodCall(
+                'setOrganizationProvider',
+                [new Reference('oropro_organization.system_mode_org_provider')]
+            );
+        }
     }
 }

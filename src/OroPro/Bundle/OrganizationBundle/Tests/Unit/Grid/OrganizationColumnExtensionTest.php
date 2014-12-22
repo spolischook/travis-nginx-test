@@ -21,6 +21,9 @@ class OrganizationColumnExtensionTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $entityConfigProvider;
 
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    protected $organizationProvider;
+
     /** @var OrganizationColumnExtension */
     protected $extension;
 
@@ -39,10 +42,16 @@ class OrganizationColumnExtensionTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->organizationProvider =
+            $this->getMockBuilder('OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->extension = new OrganizationColumnExtension(
             $this->securityFacade,
             $this->configManager,
-            $this->entityClassResolver
+            $this->entityClassResolver,
+            $this->organizationProvider
         );
     }
 
@@ -60,6 +69,16 @@ class OrganizationColumnExtensionTest extends \PHPUnit_Framework_TestCase
         $this->securityFacade->expects($this->once())
             ->method('getOrganization')
             ->will($this->returnValue($this->getOrganizationMock()));
+
+        $this->assertFalse($this->extension->isApplicable($this->getDatagridConfiguration()));
+    }
+
+    public function testIsApplicableInSystemModeWithAdditionalOrg()
+    {
+        $this->securityFacade->expects($this->once())
+            ->method('getOrganization')
+            ->will($this->returnValue($this->getOrganizationMock(true)));
+        $this->organizationProvider->expects($this->once())->method('getOrganizationId')->willReturn(2);
 
         $this->assertFalse($this->extension->isApplicable($this->getDatagridConfiguration()));
     }

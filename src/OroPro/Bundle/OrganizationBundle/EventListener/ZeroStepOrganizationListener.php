@@ -43,9 +43,14 @@ class ZeroStepOrganizationListener
         }
 
         if ($zeroStepOrganization) {
-            $this->organizationProvider->setOrganization(
-                $this->doctrine->getRepository('OroOrganizationBundle:Organization')->find((int)$zeroStepOrganization)
-            );
+            $organization = $this
+                ->doctrine
+                ->getRepository('OroOrganizationBundle:Organization')
+                ->find((int)$zeroStepOrganization);
+            if ($organization) {
+                $this->organizationProvider->setOrganization($organization);
+            }
+
         }
     }
 }

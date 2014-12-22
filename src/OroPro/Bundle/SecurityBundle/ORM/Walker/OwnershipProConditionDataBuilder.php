@@ -2,6 +2,7 @@
 
 namespace OroPro\Bundle\SecurityBundle\ORM\Walker;
 
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipConditionDataBuilder;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
@@ -30,31 +31,12 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
         OwnershipMetadata $metadata
     ) {
         $token = $this->getSecurityContext()->getToken();
-        if ($token instanceof OrganizationContextTokenInterface) {
-            $organization = $token->getOrganizationContext();
-            // in System mode if additional organization was set - we should limit data by this organization
-            if ($organization->getIsGlobal() && $this->organizationProvider->getOrganizationId()) {
-                if (!$metadata->hasOwner()) {
-                    if ($this->metadataProvider->getOrganizationClass() === $targetEntityClassName) {
-                        $tree       = $this->treeProvider->getTree();
-                        $orgIds     = $tree->getUserOrganizationIds($this->getUserId());
-                        $constraint = $this->getCondition($orgIds, $metadata, 'id');
-                    } else {
-                        $constraint = [];
-                    }
-                } else {
-                    if ($metadata->isOrganizationOwned()) {
-                        $constraint = $this->getCondition(
-                            [$this->organizationProvider->getOrganizationId()],
-                            $metadata
-                        );
-                    } else {
-                        $constraint = $this->getCondition(null, $metadata, null, true);
-                    }
-                }
-
-                return $constraint;
-            }
+        // in System mode if additional organization was set - we should limit data by this organization
+        if ($token instanceof OrganizationContextTokenInterface
+            && $token->getOrganizationContext()->getIsGlobal()
+            && $this->organizationProvider->getOrganizationId()
+        ) {
+                $accessLevel = AccessLevel::GLOBAL_LEVEL;
         }
 
         return parent::buildConstraintIfAccessIsGranted($targetEntityClassName, $accessLevel, $metadata);
