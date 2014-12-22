@@ -4,6 +4,7 @@ namespace OroCRMPro\Bundle\OutlookBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Finder\Finder;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 
@@ -58,6 +59,14 @@ class Configuration implements ConfigurationInterface
             ['OroCRM' => 'addresses[2].postalCode', 'Outlook' => 'OtherAddressPostalCode'],
         ];
 
+        $path       = __DIR__ . '/../Resources/public/files';
+        $finder     = new Finder();
+        $resources  = [];
+        $files      = $finder->in($path);
+        foreach ($files as $file) {
+            $resources[$file->getFilename()] = '/bundles/orocrmprooutlook/files/' . $file->getFilename();
+        }
+
         SettingsBuilder::append(
             $rootNode,
             [
@@ -70,6 +79,7 @@ class Configuration implements ConfigurationInterface
                 'contacts_mapping'               => ['value' => $contactMapping, 'type'  => 'array'],
                 'tasks_enabled'                  => ['value' => true],
                 'calendar_events_enabled'        => ['value' => true],
+                'addin_download'                 => ['value' => $resources, 'type' => 'array'],
             ]
         );
 

@@ -4,6 +4,9 @@ oro_system_configuration:
             title: orocrmpro_outlook.form.outlook_settings
             icon:  icon-envelope-alt
 
+        integrations_outlook_addin:
+            title: orocrmpro_outlook.form.outlook_addin
+
         integrations_outlook_contacts:
             title: orocrmpro_outlook.form.contacts
 
@@ -92,6 +95,21 @@ oro_system_configuration:
                 label:          orocrmpro_outlook.form.enabled
                 tooltip:        orocrmpro_outlook.form.tooltip.enabled
 
+        oro_crm_pro_outlook.addin_download:
+            ui_only: true
+            type: oro_link_type # @todo BAP-4696 use template
+            priority: 0
+            options:
+                label: orocrmpro_outlook.form.addin_label
+                required: false
+                resettable: false
+                route: /bundles/orocrmprooutlook/files/OroCRMOutlookAddin.msi
+                acl: ''
+                isPath: true
+                title: ''
+                class: no-hash
+                tooltip: orocrmpro_outlook.form.tooltip.addin
+
     tree:
         system_configuration:
             platform:
@@ -101,7 +119,12 @@ oro_system_configuration:
                             integration_outlook_settings:
                                 priority: -10
                                 children:
+                                    integrations_outlook_addin:
+                                        priority: 80
+                                        children:
+                                            - oro_crm_pro_outlook.addin_download
                                     integrations_outlook_contacts:
+                                        priority: 70
                                         children:
                                             - oro_crm_pro_outlook.contacts_enabled
                                             - oro_crm_pro_outlook.contacts_sync_direction
@@ -109,9 +132,11 @@ oro_system_configuration:
                                             - oro_crm_pro_outlook.contacts_sync_interval_orocrm
                                             - oro_crm_pro_outlook.contacts_sync_interval_outlook
                                     integrations_outlook_tasks:
+                                        priority: 60
                                         children:
                                             - oro_crm_pro_outlook.tasks_enabled
                                     integrations_outlook_calendar_events:
+                                        priority: 50
                                         children:
                                             - oro_crm_pro_outlook.calendar_events_enabled
 
