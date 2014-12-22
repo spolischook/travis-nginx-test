@@ -64,7 +64,6 @@ class SearchResultOrganizationExtension extends \Twig_Extension
         return self::NAME;
     }
 
-
     /**
      * Return entity organization name with hidden field with organization id
      *
@@ -85,7 +84,6 @@ class SearchResultOrganizationExtension extends \Twig_Extension
 
         return '';
     }
-
 
     /**
      * Return organization name for given entity
