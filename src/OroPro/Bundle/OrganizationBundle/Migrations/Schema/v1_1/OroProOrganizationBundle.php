@@ -35,6 +35,8 @@ class OroProOrganizationBundle implements Migration
         $table->setPrimaryKey(['id']);
         $table->addIndex(['user_id'], 'IDX_A7BD917A76ED395', []);
         $table->addIndex(['organization_id'], 'IDX_A7BD91732C8A3DE', []);
+
+        $table->addUniqueIndex(['user_id', 'organization_id'], 'oro_pro_organization_usrorg_uq');
     }
 
     /**

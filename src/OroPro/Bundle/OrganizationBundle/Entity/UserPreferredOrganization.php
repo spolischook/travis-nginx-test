@@ -9,7 +9,14 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * @ORM\Entity()
- * @ORM\Table("oro_pro_organization_user_pref")
+ * @ORM\Table(
+ *    name="oro_pro_organization_user_pref",
+ *    uniqueConstraints={
+ *      @ORM\UniqueConstraint(
+ *          name="oro_pro_organization_usrorg_uq",
+ *          columns={"user_id", "organization_id"}
+ *      )
+ * })
  */
 class UserPreferredOrganization
 {
