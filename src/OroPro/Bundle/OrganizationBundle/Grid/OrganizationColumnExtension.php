@@ -74,7 +74,7 @@ class OrganizationColumnExtension extends AbstractExtension
             $data->offsetAddToArrayByPath(
                 '[options][urlParams]',
                 [
-                    '_sa_org_id' => 1
+                    '_sa_org_id' => $providedSystemOrganizationId
                 ]
             );
         }

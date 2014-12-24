@@ -43,6 +43,7 @@ services:
         arguments:
             - @oro_security.security_facade.link
             - @oro_entity_config.provider.organization
+            - @oropro_organization.system_mode_org_provider
         tags:
             - { name: oro_entity.exclusion_provider.default }
 
