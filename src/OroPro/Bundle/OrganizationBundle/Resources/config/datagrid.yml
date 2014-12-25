@@ -87,3 +87,106 @@ datagrid:
                 updatedAt:
                     type: datetime
                     data_name: u.updatedAt
+
+    organization-users-grid:
+        extends: user-relation-grid
+        source:
+            acl_resource: oro_organization_update
+            query:
+                select:
+                    - >
+                      (CASE WHEN (:organization_id IS NOT NULL) THEN
+                        CASE WHEN (:organization_id MEMBER OF u.organizations OR u.id IN (:data_in)) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      ELSE
+                        CASE WHEN u.id IN (:data_in) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      END) as has_organization
+            bind_parameters:
+                - organization_id
+        columns:
+            has_organization:
+                label: oropro.organization.datagrid.has_organization.label
+                editable: true
+                frontend_type: boolean
+            firstName:
+                label: oro.user.first_name.label
+            lastName:
+                label: oro.user.last_name.label
+            username:
+                label: oro.user.username.label
+            email:
+                label: oro.user.email.label
+        filters:
+            columns:
+                has_organization:
+                    type: boolean
+                    data_name: has_organization
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+        sorters:
+            multiple_sorting: true
+            columns:
+                has_organization:
+                    data_name: has_organization
+            default:
+                has_organization: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        options:
+            rowSelection:
+                dataField: id
+                columnName: has_organization
+                selectors:
+                    included: '#organizationAppendUsers'
+                    excluded: '#organizationRemoveUsers'
+
+    organization-view-users-grid:
+            extends: user-relation-grid
+            options:
+                entityHint: organization
+            source:
+                acl_resource: oro_organization_view
+                query:
+                    where:
+                        and:
+                            - :organization_id MEMBER OF u.organizations
+                bind_parameters:
+                    - organization_id
+            columns:
+                firstName:
+                    label: oro.user.first_name.label
+                lastName:
+                    label: oro.user.last_name.label
+                username:
+                    label: oro.user.username.label
+                email:
+                    label: oro.user.email.label
+            sorters:
+                default:
+                    lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+            filters:
+                columns:
+                    firstName:
+                        type: string
+                        data_name: u.firstName
+                    lastName:
+                        type: string
+                        data_name: u.lastName
+                    username:
+                        type: string
+                        data_name: u.username
+                    email:
+                        type: string
+                        data_name: u.email
