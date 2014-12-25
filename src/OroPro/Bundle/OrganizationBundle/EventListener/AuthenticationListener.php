@@ -37,12 +37,14 @@ class AuthenticationListener
      * Listen security.authentication.success event
      *
      * @param AuthenticationEvent $event
+     *
+     * @return bool|void
      */
     public function onAuthenticationSuccess(AuthenticationEvent $event)
     {
         $token = $event->getAuthenticationToken();
         if (!$token instanceof OrganizationContextTokenInterface) {
-            return;
+            return false;
         }
 
         /** @var User $user */
