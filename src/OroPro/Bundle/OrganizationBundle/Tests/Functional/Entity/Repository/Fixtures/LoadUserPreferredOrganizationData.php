@@ -36,6 +36,7 @@ class LoadUserPreferredOrganizationData extends AbstractFixture
     {
         $organization = new Organization();
         $organization->setName(uniqid('organization', true));
+        $organization->setEnabled(true);
 
         return $organization;
     }

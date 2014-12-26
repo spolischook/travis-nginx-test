@@ -27,15 +27,53 @@ class UserPreferredOrganizationRepositoryTest extends WebTestCase
 
     public function testSavePreferredOrganization()
     {
-        $user = $this->getReference('user');
+        $user         = $this->getReference('user');
+        $organization = $this->getReference('mainOrganization');
 
         $this->assertEquals(0, $this->getEntityCount());
 
-        $this->getContainer()->get('doctrine')
-            ->getRepository('OroProOrganizationBundle:UserPreferredOrganization')
-            ->savePreferredOrganization($user, $this->getReference('mainOrganization'));
+        $repo = $this->getContainer()->get('doctrine')
+            ->getRepository('OroProOrganizationBundle:UserPreferredOrganization');
+
+        $repo->savePreferredOrganization($user, $organization);
 
         $this->assertEquals(1, $this->getEntityCount());
+
+        /** @var UserPreferredOrganization $createdRecord */
+        $createdRecord = $repo->findOneBy(['user' => $user]);
+
+        $this->assertNotEmpty($createdRecord);
+        $this->assertEquals($organization->getId(), $createdRecord->getOrganization()->getId());
+
+        return $createdRecord;
+    }
+
+    /**
+     * @depends testSavePreferredOrganization
+     *
+     * @param UserPreferredOrganization $preferredOrganization
+     */
+    public function testUpdatePreferredOrganization(UserPreferredOrganization $preferredOrganization)
+    {
+        $user         = $preferredOrganization->getUser();
+        $organization = $this->getReference('organization');
+
+        $this->assertEquals(1, $this->getEntityCount());
+
+        $repo = $this->getContainer()->get('doctrine')
+            ->getRepository('OroProOrganizationBundle:UserPreferredOrganization');
+        $repo->updatePreferredOrganization($user, $organization);
+
+        $this->assertEquals(1, $this->getEntityCount());
+
+        $oldRecord = $repo->findOneBy(
+            [
+                'user'         => $user,
+                'organization' => $preferredOrganization->getOrganization()
+            ]
+        );
+
+        $this->assertEmpty($oldRecord);
     }
 
     /**
