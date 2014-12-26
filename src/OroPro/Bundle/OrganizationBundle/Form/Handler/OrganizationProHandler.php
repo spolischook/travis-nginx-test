@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class OrganizationProHandler
@@ -32,11 +33,16 @@ class OrganizationProHandler
         $this->manager = $manager;
     }
 
+    /**
+     * @param Organization $entity
+     *
+     * @return bool
+     */
     public function process(Organization $entity)
     {
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
+        if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
             $this->form->submit($this->request);
             if ($this->form->isValid()) {
                 $appendUsers = $this->form->get('appendUsers')->getData();
@@ -52,13 +58,14 @@ class OrganizationProHandler
 
     /**
      * @param Organization $entity
-     * @param User[] $appendUsers
-     * @param User[] $removeUsers
+     * @param User[]       $appendUsers
+     * @param User[]       $removeUsers
      */
     protected function onSuccess(Organization $entity, array $appendUsers, array $removeUsers)
     {
         $this->appendUsers($entity, $appendUsers);
         $this->removeUsers($entity, $removeUsers);
+
         $this->manager->persist($entity);
         $this->manager->flush();
     }
@@ -66,30 +73,26 @@ class OrganizationProHandler
     /**
      * Append users to organization
      *
-     * @param Organization  $organization
-     * @param User[] $users
+     * @param Organization $organization
+     * @param User[]       $users
      */
     protected function appendUsers(Organization $organization, array $users)
     {
-        /** @var $user User */
         foreach ($users as $user) {
             $user->addOrganization($organization);
-            $this->manager->persist($user);
         }
     }
 
     /**
-     * Remove users from group
+     * Remove users from organization
      *
-     * @param Organization  $organization
-     * @param User[] $users
+     * @param Organization $organization
+     * @param User[]       $users
      */
     protected function removeUsers(Organization $organization, array $users)
     {
-        /** @var $user User */
         foreach ($users as $user) {
             $user->removeOrganization($organization);
-            $this->manager->persist($user);
         }
     }
 }

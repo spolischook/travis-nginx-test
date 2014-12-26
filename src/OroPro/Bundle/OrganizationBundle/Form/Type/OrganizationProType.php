@@ -18,23 +18,22 @@ class OrganizationProType extends OrganizationType
         $builder->add(
             'appendUsers',
             'oro_entity_identifier',
-            array(
+            [
                 'class'    => 'OroUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
-                'multiple' => true,
-            )
+                'multiple' => true
+            ]
         )
         ->add(
             'removeUsers',
             'oro_entity_identifier',
-            array(
+            [
                 'class'    => 'OroUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
-                'multiple' => true,
-            )
+                'multiple' => true
+            ]
         );
     }
-
 }

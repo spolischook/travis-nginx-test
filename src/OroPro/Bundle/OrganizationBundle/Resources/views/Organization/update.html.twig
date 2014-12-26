@@ -4,7 +4,6 @@
 {% oro_title_set({params : {"%organization.name%": entity.name, "%entityName%": 'oro.organization.entity_label'|trans }}) %}
 
 {% set entityId = entity.id %}
-{% set gridName = 'organization-users-grid' %}
 {% set formAction = entityId ? path('oropro_organization_update', { 'id': entityId}) : path('oropro_organization_create') %}
 
 {% block navButtons %}
@@ -57,9 +56,11 @@
         'subblocks':
         [
             {
-                'title' : null,
+                'title' :  null,
                 'useSpan': false,
-                'data' : [dataGrid.renderGrid(gridName, {organization_id: entityId}, { cssClass: 'inner-grid' })]
+                'data' : [
+                    dataGrid.renderGrid('organization-users-grid', {organization_id: entityId}, {cssClass: 'inner-grid'})
+                ]
             }
         ]
     }]) %}

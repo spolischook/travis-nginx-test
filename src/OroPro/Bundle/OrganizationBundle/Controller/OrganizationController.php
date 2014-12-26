@@ -116,9 +116,7 @@ class OrganizationController extends Controller
      */
     public function infoAction(Organization $entity)
     {
-        return [
-            'entity' => $entity
-        ];
+        return ['entity' => $entity];
     }
 
     /**
@@ -128,8 +126,6 @@ class OrganizationController extends Controller
      */
     public function usersAction(Organization $entity)
     {
-        return array(
-            'entity' => $entity,
-        );
+        return ['entity' => $entity];
     }
 }

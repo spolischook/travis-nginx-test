@@ -140,12 +140,12 @@ datagrid:
                 has_organization:
                     data_name: has_organization
             default:
-                has_organization: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
-                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                has_organization: DESC
+                lastName:         ASC
 
         options:
             rowSelection:
-                dataField: id
+                dataField:  id
                 columnName: has_organization
                 selectors:
                     included: '#organizationAppendUsers'
@@ -153,8 +153,6 @@ datagrid:
 
     organization-view-users-grid:
             extends: user-relation-grid
-            options:
-                entityHint: organization
             source:
                 acl_resource: oro_organization_view
                 query:
@@ -174,8 +172,7 @@ datagrid:
                     label: oro.user.email.label
             sorters:
                 default:
-                    lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
-
+                    lastName: ASC
             filters:
                 columns:
                     firstName:

@@ -10,7 +10,6 @@ use Oro\Bundle\DataGridBundle\Tests\Functional\AbstractDatagridTestCase;
  */
 class OrganizationUsersGridTest extends AbstractDatagridTestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -37,7 +36,7 @@ class OrganizationUsersGridTest extends AbstractDatagridTestCase
     public function gridProvider()
     {
         return [
-            'User grid'                                 => [
+            'User grid'                                  => [
                 [
                     'gridParameters'      => [
                         'gridName' => 'organization-users-grid',
@@ -55,7 +54,7 @@ class OrganizationUsersGridTest extends AbstractDatagridTestCase
                     'expectedResultCount' => 1
                 ],
             ],
-            'User grid with filters'                    => [
+            'User grid with filters'                     => [
                 [
                     'gridParameters'      => [
                         'gridName' => 'organization-users-grid'
@@ -94,10 +93,10 @@ class OrganizationUsersGridTest extends AbstractDatagridTestCase
                     ],
                     'gridFilters'         => [],
                     'assert'              => [
-                        'firstName'        => 'test',
-                        'lastName'         => 'user',
-                        'username'         => 'test.user',
-                        'email'            => 'test.user@email.com'
+                        'firstName' => 'test',
+                        'lastName'  => 'user',
+                        'username'  => 'test.user',
+                        'email'     => 'test.user@email.com'
                     ],
                     'expectedResultCount' => 1
                 ],
@@ -108,13 +107,13 @@ class OrganizationUsersGridTest extends AbstractDatagridTestCase
                         'gridName' => 'organization-view-users-grid'
                     ],
                     'gridFilters'         => [
-                        'organization-view-users-grid[_filter][username][value]' => 'test.user',
+                        'organization-view-users-grid[_filter][email][value]' => 'test.user@email.com',
                     ],
                     'assert'              => [
-                        'firstName'        => 'test',
-                        'lastName'         => 'user',
-                        'username'         => 'test.user',
-                        'email'            => 'test.user@email.com'
+                        'firstName' => 'test',
+                        'lastName'  => 'user',
+                        'username'  => 'test.user',
+                        'email'     => 'test.user@email.com'
                     ],
                     'expectedResultCount' => 1
                 ],
