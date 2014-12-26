@@ -12,6 +12,14 @@ oropro:
         controller:
             message:
                 saved: Organization saved
+                multiorg:
+                    login:
+                        first: >
+                            You have been logged into "%organization_name%". If you want to work with different organization,
+                            change it in the top left corner.
+                        unpreferred: >
+                            The "%preferred_organization_name%" organization you have last logged into is no longer available.
+                            You have been logged into "%organization_name%" instead.
         entity_config:
             organization:
                 entity:
