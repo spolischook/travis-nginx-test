@@ -34,8 +34,8 @@ class AuthenticationListener
     }
 
     /**
-     * Checks whether user has preferable and it's available for him right now then replace
-     * current organization on preferable. Also handles first login and change login to another
+     * Checks whether user has preferable organization and it's available for him right now then replace
+     * current organization on preferable. Also handles first login, or login to organization different
      * from preferable organization and notifies user about this.
      * Listen `security.authentication.success` event
      *
