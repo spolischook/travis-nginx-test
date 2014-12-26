@@ -1,6 +1,6 @@
 <?php
 
-namespace OroPro\Bundle\OrganizationBundle\Tests\Functional\Entity\Repository\Fixtures;
+namespace OroPro\Bundle\OrganizationBundle\Tests\Functional\Fixture;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;

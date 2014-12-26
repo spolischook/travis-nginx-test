@@ -19,8 +19,7 @@ class UserPreferredOrganizationRepositoryTest extends WebTestCase
 
         $this->loadFixtures(
             [
-                'OroPro\Bundle\OrganizationBundle\Tests\Functional' .
-                '\Entity\Repository\Fixtures\LoadUserPreferredOrganizationData'
+                'OroPro\Bundle\OrganizationBundle\Tests\Functional\Fixture\LoadUserPreferredOrganizationData'
             ]
         );
     }
