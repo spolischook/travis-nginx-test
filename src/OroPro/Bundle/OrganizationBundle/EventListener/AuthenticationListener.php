@@ -34,7 +34,10 @@ class AuthenticationListener
     }
 
     /**
-     * Listen security.authentication.success event
+     * Checks whether user has preferable and it's available for him right now then replace
+     * current organization on preferable. Also handles first login and change login to another
+     * from preferable organization and notifies user about this.
+     * Listen `security.authentication.success` event
      *
      * @param AuthenticationEvent $event
      *
@@ -75,6 +78,7 @@ class AuthenticationListener
 
     /**
      * Save last organization that user was switched to
+     * Listen `oro_security.event.organization_switch.after` event
      *
      * @param OrganizationSwitchAfter $event
      */
