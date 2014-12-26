@@ -8,15 +8,8 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
- * @ORM\Entity()
- * @ORM\Table(
- *    name="oro_pro_organization_user_pref",
- *    uniqueConstraints={
- *      @ORM\UniqueConstraint(
- *          name="oro_pro_organization_usrorg_uq",
- *          columns={"user_id", "organization_id"}
- *      )
- * })
+ * @ORM\Entity(repositoryClass="OroPro\Bundle\OrganizationBundle\Entity\Repository\UserPreferredOrganizationRepository")
+ * @ORM\Table(name="oro_pro_organization_user_pref")
  */
 class UserPreferredOrganization
 {
@@ -32,7 +25,7 @@ class UserPreferredOrganization
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $user;

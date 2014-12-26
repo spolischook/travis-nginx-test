@@ -5,7 +5,6 @@ namespace OroPro\Bundle\OrganizationBundle\Tests\Functional\Grid;
 use Oro\Bundle\DataGridBundle\Tests\Functional\AbstractDatagridTestCase;
 
 /**
- * @outputBuffering enabled
  * @dbIsolation
  */
 class OrganizationUsersGridTest extends AbstractDatagridTestCase
@@ -14,7 +13,7 @@ class OrganizationUsersGridTest extends AbstractDatagridTestCase
     {
         parent::setUp();
 
-        $this->loadFixtures(['OroPro\Bundle\OrganizationBundle\Tests\Functional\Fixture\LoadOrganization']);
+        $this->loadFixtures(['OroPro\Bundle\OrganizationBundle\Tests\Functional\Fixture\LoadOrganizationUsersData']);
     }
 
     /**

@@ -41,10 +41,9 @@ class OroProOrganizationBundleInstaller implements Installation
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('user_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['user_id'], 'IDX_A7BD917A76ED395', []);
         $table->addIndex(['organization_id'], 'IDX_A7BD91732C8A3DE', []);
 
-        $table->addUniqueIndex(['user_id', 'organization_id'], 'oro_pro_organization_usrorg_uq');
+        $table->addUniqueIndex(['user_id'], 'UNIQ_A7BD917A76ED395');
     }
 
     /**

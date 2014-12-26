@@ -2,13 +2,13 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Tests\Functional\Fixture;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-class LoadOrganization extends AbstractFixture
+class LoadOrganizationUsersData extends AbstractFixture
 {
     /** @var ObjectManager */
     protected $em;
