@@ -8,6 +8,7 @@ oropro:
         datagrid:
             applicable_all:  All
             applicable_none: N/A
+            has_organization.label: Has organization
         controller:
             message:
                 saved: Organization saved
