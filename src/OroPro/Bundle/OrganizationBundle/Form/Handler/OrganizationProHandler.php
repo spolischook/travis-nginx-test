@@ -29,9 +29,9 @@ class OrganizationProHandler
     protected $securityContext;
 
     /**
-     * @param FormInterface $form
-     * @param Request       $request
-     * @param EntityManager $manager
+     * @param FormInterface            $form
+     * @param Request                  $request
+     * @param EntityManager            $manager
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(
@@ -40,9 +40,9 @@ class OrganizationProHandler
         EntityManager $manager,
         SecurityContextInterface $securityContext
     ) {
-        $this->form    = $form;
-        $this->request = $request;
-        $this->manager = $manager;
+        $this->form            = $form;
+        $this->request         = $request;
+        $this->manager         = $manager;
         $this->securityContext = $securityContext;
     }
 
@@ -60,9 +60,6 @@ class OrganizationProHandler
             if ($this->form->isValid()) {
                 $appendUsers = $this->form->get('appendUsers')->getData();
                 $removeUsers = $this->form->get('removeUsers')->getData();
-                if (!$entity->getId() && $currentUser = $this->getUser()) {
-                    $appendUsers[] = $currentUser;
-                }
 
                 $this->onSuccess($entity, $appendUsers, $removeUsers);
 
@@ -111,23 +108,5 @@ class OrganizationProHandler
         foreach ($users as $user) {
             $organization->removeUser($user);
         }
-    }
-
-    /**
-     * Get the current authenticated user
-     *
-     * @return UserInterface|null
-     */
-    protected function getUser()
-    {
-        $token = $this->securityContext->getToken();
-        if ($token instanceof TokenInterface) {
-            $user = $token->getUser();
-            if ($user instanceof User) {
-                return $user;
-            }
-        }
-
-        return null;
     }
 }
