@@ -44,7 +44,6 @@ services:
         tags:
             - { name: form.type, alias: oropro_organization_label }
 
-
     oropro_organization.form.eventlistener.organization_field:
         class: %oropro_organization.form.eventlistener.organization_field.class%
         arguments:

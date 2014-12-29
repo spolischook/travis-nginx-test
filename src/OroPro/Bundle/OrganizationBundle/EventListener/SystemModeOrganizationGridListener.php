@@ -47,8 +47,7 @@ class SystemModeOrganizationGridListener
         if ($currentOrganization && $currentOrganization->getIsGlobal()) {
             $organizationId = $event->getDatagrid()->getParameters()->get('_sa_org_id');
             if ($organizationId) {
-                $organization = $this
-                    ->doctrine
+                $organization = $this->doctrine
                     ->getRepository('OroOrganizationBundle:Organization')
                     ->find((int)$organizationId);
                 if ($organization) {

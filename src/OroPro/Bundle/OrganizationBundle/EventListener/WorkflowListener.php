@@ -49,7 +49,7 @@ class WorkflowListener
     }
 
     /**
-     * in case if user works in system access organization and additional organization was selected,
+     * If user works in system access organization and additional organization was selected,
      * on CreateRelatedEntity - set organization to the entity
      *
      * @param ExecuteActionEvent $event
@@ -79,7 +79,7 @@ class WorkflowListener
     }
 
     /**
-     * Add additional url parameter with selected additional organization
+     * Add additional url parameter with selected organization
      *
      * @param StartTransitionEvent $event
      */

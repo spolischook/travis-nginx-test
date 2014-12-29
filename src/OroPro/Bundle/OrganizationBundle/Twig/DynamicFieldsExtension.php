@@ -2,8 +2,7 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Twig;
 
-use Doctrine\Common\Util\ClassUtils;
-
+use Symfony\Component\Security\Core\Util\ClassUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
@@ -54,7 +53,7 @@ class DynamicFieldsExtension extends BaseDynamicFieldsExtension
     {
         $organizationFieldName = null;
         if (null === $entityClass) {
-            $entityClass = ClassUtils::getClass($entity);
+            $entityClass = ClassUtils::getRealClass($entity);
         }
         if ($this->ownershipProvider->hasConfig($entityClass)) {
             $ownershipConfig = $this->ownershipProvider->getConfig($entityClass);

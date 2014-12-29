@@ -5,7 +5,7 @@ namespace OroPro\Bundle\OrganizationBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * This form type uses in system access mode to display record organization on create/update form
+ * This form type used in system access mode to display record's organization on create/update form
  *
  * Class OrganizationLabelType
  * @package OroPro\Bundle\OrganizationBundle\Form\Type

@@ -6,7 +6,6 @@ use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 
 use OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener;
-use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
 
 class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -49,6 +48,14 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
             $this->securityFacade,
             $this->aclHelper
         );
+
+        $organizationProvider = $this
+            ->getMock('OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider');
+        $organizationProvider->expects($this->any())
+            ->method('getOrganizationId')
+            ->will($this->returnValue(null));
+
+        $this->listener->setOrganizationProvider($organizationProvider);
     }
 
     /**
@@ -66,6 +73,7 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getOrganizationId')
             ->will($this->returnValue($organizationId));
         $this->getOrganizationConfig($config, $organizationConfig);
+
         $organization = new GlobalOrganization();
         $organization->setIsGlobal(false);
 
@@ -112,7 +120,7 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
             [3, 1, true, $config2, $orgConfig2],
             [3, 1, true, $config3, $orgConfig3],
             [4, 1, false, $config3, $orgConfig3],
-            [1, 0, true, $config4, $orgConfig4]
+            [1, 0, false, $config4, $orgConfig4]
         ];
     }
 

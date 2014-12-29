@@ -61,8 +61,9 @@ class KernelRequestListener
     }
 
     /**
-     * Set organization to organization provider if in request where is additional parameter _sa_org_id and user
-     * work in the system access organization or redirect to the select organization form in case of workflow
+     * Set organization into organization provider if request has additional parameter "_sa_org_id" and user
+     * works in the system access organization.
+     * In case of workflow - redirect to the select organization form.
      *
      * @param GetResponseEvent $event
      */
@@ -74,10 +75,8 @@ class KernelRequestListener
 
             //try to find selected organization from request and set it into organization provider
             $selectedOrganizationId = $this->getOrganizationIdFromRequest($request);
-
             if ($selectedOrganizationId) {
-                $organization = $this
-                    ->doctrine
+                $organization = $this->doctrine
                     ->getRepository('OroOrganizationBundle:Organization')
                     ->find((int)$selectedOrganizationId);
                 if ($organization) {

@@ -68,7 +68,8 @@ class OrganizationProFormExtension extends OrganizationFormExtension
      */
     public function preSetData(FormEvent $event)
     {
-        if ($this->securityFacade->getOrganization() && $this->securityFacade->getOrganization()->getIsGlobal()) {
+        $currentOrganization = $this->securityFacade->getOrganization();
+        if ($currentOrganization && $currentOrganization->getIsGlobal()) {
             if ($event->getForm()->getParent() === null && is_object($event->getData())) {
                 $entity = $event->getData();
                 list ($organizationField, $entityId) = $this->getEntityInfo($entity);
@@ -101,7 +102,7 @@ class OrganizationProFormExtension extends OrganizationFormExtension
                                 'required'             => false,
                                 'property'             => 'name',
                                 'mapped'               => true,
-                                'label'                => 'Organization',
+                                'label'                => 'oro.organization.entity_label',
                                 'translatable_options' => false,
                                 'read_only'            => true,
                                 'disabled'             => true,
@@ -126,9 +127,8 @@ class OrganizationProFormExtension extends OrganizationFormExtension
     {
         if ($entity instanceof WorkflowData) {
             $workflowData = $entity->getValues();
-            foreach ($workflowData as $entityData) {
-                if (is_object($entityData)) {
-                    $entity            = $entityData;
+            foreach ($workflowData as $entity) {
+                if (is_object($entity)) {
                     $organizationField = $this->getMetadataProvider()
                         ->getMetadata($this->doctrineHelper->getEntityClass($entity))
                         ->getOrganizationFieldName();
@@ -146,7 +146,7 @@ class OrganizationProFormExtension extends OrganizationFormExtension
     }
 
     /**
-     * Set organization to entity. In case of Workflow gata, we should not set organization
+     * Set organization into entity. In case of Workflow data, we should not set organization
      *
      * @param object       $entity
      * @param string       $organizationField
@@ -174,9 +174,8 @@ class OrganizationProFormExtension extends OrganizationFormExtension
 
         if ($entity instanceof WorkflowData) {
             $workflowData   = $entity->getValues();
-            foreach ($workflowData as $key => $entityData) {
-                if (is_object($entityData)) {
-                    $entity            = $entityData;
+            foreach ($workflowData as $key => $entity) {
+                if (is_object($entity)) {
                     $organizationField = $this->getMetadataProvider()
                         ->getMetadata($this->doctrineHelper->getEntityClass($entity))
                         ->getOrganizationFieldName();
@@ -186,7 +185,6 @@ class OrganizationProFormExtension extends OrganizationFormExtension
                     }
                 }
             }
-
         } else {
             $entityClass       = $this->doctrineHelper->getEntityClass($entity);
             $organizationField = $this->getMetadataProvider()

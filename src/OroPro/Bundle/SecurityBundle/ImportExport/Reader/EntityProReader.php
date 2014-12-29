@@ -26,7 +26,7 @@ class EntityProReader extends EntityReader
      */
     protected function addOrganizationLimits(QueryBuilder $queryBuilder, $entityName, Organization $organization = null)
     {
-        // if user work in system access organization - we should not limit data by organization
+        // if user works in system access organization - we should not limit data by organization
         if ($this->securityFacade->getOrganization() && $this->securityFacade->getOrganization()->getIsGlobal()) {
             return;
         }

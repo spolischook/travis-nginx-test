@@ -106,7 +106,7 @@ class OrganizationColumnExtension extends AbstractExtension
             $qb->from($entityClassName, $alias);
         }
 
-        // we should not add organization limitation if organization provider have additional organization
+        // we should not add organization column if system access organization provider has organization
         if (!$this->organizationProvider->getOrganizationId()) {
             $qb->leftJoin(sprintf('%s.%s', $alias, $this->getOrganizationField($config)), 'org');
             $qb->addSelect('org.name as ' . self::COLUMN_NAME);
@@ -125,7 +125,7 @@ class OrganizationColumnExtension extends AbstractExtension
      */
     public function processConfigs(DatagridConfiguration $config)
     {
-        // we should not add organization limitation if organization provider have additional organization
+        // we should not add organization column if system access organization provider has organization
         if ($this->organizationProvider->getOrganizationId()) {
             return;
         }

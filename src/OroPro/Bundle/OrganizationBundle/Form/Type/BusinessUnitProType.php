@@ -24,9 +24,11 @@ class BusinessUnitProType extends BusinessUnitType
      */
     protected function getOrganizationId()
     {
-        // in System access mode we should check for additional organization in org provider and if it is set
-        // - set this organization as current
-        $organization = $this->securityFacade->getOrganization();
+        /**
+         * In system access mode we should check for additional organization in system access mode organization
+         * provider and if it was set - set this organization as current
+         */
+        $organization   = $this->securityFacade->getOrganization();
         $organizationId = $organization->getId();
         if ($organization->getIsGlobal() && $this->organizationProvider->getOrganizationId()) {
             $organizationId = $this->organizationProvider->getOrganizationId();
