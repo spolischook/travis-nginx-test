@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -22,15 +24,26 @@ class OrganizationProHandler
     protected $manager;
 
     /**
+     * @var SecurityContextInterface
+     */
+    protected $securityContext;
+
+    /**
      * @param FormInterface $form
      * @param Request       $request
      * @param EntityManager $manager
+     * @param SecurityContextInterface $securityContext
      */
-    public function __construct(FormInterface $form, Request $request, EntityManager $manager)
-    {
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        EntityManager $manager,
+        SecurityContextInterface $securityContext
+    ) {
         $this->form    = $form;
         $this->request = $request;
         $this->manager = $manager;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -47,6 +60,10 @@ class OrganizationProHandler
             if ($this->form->isValid()) {
                 $appendUsers = $this->form->get('appendUsers')->getData();
                 $removeUsers = $this->form->get('removeUsers')->getData();
+                if (!$entity->getId() && $currentUser = $this->getUser()) {
+                    $appendUsers[] = $currentUser;
+                }
+
                 $this->onSuccess($entity, $appendUsers, $removeUsers);
 
                 return true;
@@ -79,7 +96,7 @@ class OrganizationProHandler
     protected function appendUsers(Organization $organization, array $users)
     {
         foreach ($users as $user) {
-            $user->addOrganization($organization);
+            $organization->addUser($user);
         }
     }
 
@@ -92,7 +109,25 @@ class OrganizationProHandler
     protected function removeUsers(Organization $organization, array $users)
     {
         foreach ($users as $user) {
-            $user->removeOrganization($organization);
+            $organization->removeUser($user);
         }
+    }
+
+    /**
+     * Get the current authenticated user
+     *
+     * @return UserInterface|null
+     */
+    protected function getUser()
+    {
+        $token = $this->securityContext->getToken();
+        if ($token instanceof TokenInterface) {
+            $user = $token->getUser();
+            if ($user instanceof User) {
+                return $user;
+            }
+        }
+
+        return null;
     }
 }

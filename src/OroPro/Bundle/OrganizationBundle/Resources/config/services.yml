@@ -6,6 +6,7 @@ parameters:
     oropro_organization.request.param_converter.class:                      OroPro\Bundle\OrganizationBundle\Request\ParamConverter\RequestReportParamConverter
 
     oropro_organization.event_listener.authefication.class:                 OroPro\Bundle\OrganizationBundle\EventListener\AuthenticationListener
+    oropro_organization.content_provider.organization_switch.class:         OroPro\Bundle\OrganizationBundle\ContentProvider\OrganizationSwitchContentProvider
 
     # Overrides
     oro_entity.listener.navigation_listener.class:                          OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener
@@ -45,3 +46,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: security.authentication.success, method: onAuthenticationSuccess }
             - { name: kernel.event_listener, event: oro_security.event.organization_switch.after, method: onOrganizationSwitchAfter }
+
+    oropro_organization.content_provider.organization_switch:
+        class: %oropro_organization.content_provider.organization_switch.class%
+        arguments:
+            - @twig
+        tags:
+            - { name: oro_ui.content_provider }
