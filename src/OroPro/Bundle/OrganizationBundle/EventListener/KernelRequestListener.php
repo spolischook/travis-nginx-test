@@ -91,9 +91,8 @@ class KernelRequestListener
                         ->getWorkflow($request->attributes->get('workflowName'))
                         ->getDefinition()
                         ->getRelatedEntity();
-                    $metadata = $this->metadataProvider->getMetadata($relatedEntity);
-                    if ($metadata
-                        && $metadata->getOrganizationFieldName()
+                    if (is_object($relatedEntity)
+                        && $this->metadataProvider->getMetadata($relatedEntity)->getOrganizationFieldName()
                         && $request->query->get('entityId') == '0'
                     ) {
                         $event->setResponse(
