@@ -5,10 +5,10 @@
     {% set preferredOrganizationNameAttr = constant('OroPro\\Bundle\\OrganizationBundle\\EventListener\\AuthenticationListener::PREFERRED_ORGANIZATION_NAME') %}
 
     <div class="oropro-organization-notice-holder"></div>
-    {% if(app.session.has(multiorgLoginFirstAttr) or app.session.has(multiorgLoginUnpreferredAttr)) %}
+    {% if (app.session.has(multiorgLoginFirstAttr) or app.session.has(multiorgLoginUnpreferredAttr)) %}
         <script type="text/javascript">
             require(['jquery', 'bootstrap'], function($) {
-                $(function(){
+                $(function() {
                     {% set message = app.session.has(multiorgLoginFirstAttr)
                         ? 'oropro.organization.controller.message.multiorg.login.first'
                         : 'oropro.organization.controller.message.multiorg.login.unpreferred'
