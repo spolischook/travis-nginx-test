@@ -1,0 +1,8 @@
+placeholders:
+    organization_selector:
+        items:
+            organization_notice: ~
+
+items:
+    organization_notice:
+        template: OroProOrganizationBundle:Placeholder:organizationNotice.html.twig
