@@ -5,8 +5,10 @@ namespace OroPro\Bundle\OrganizationBundle\EventListener;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Event\ExecuteActionEvent;
 use Oro\Bundle\WorkflowBundle\Event\StartTransitionEvent;
@@ -16,24 +18,16 @@ use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvid
 
 class WorkflowListener
 {
-    /**
-     * @var SecurityFacade
-     */
+    /** @var SecurityFacade */
     protected $securityFacade;
 
-    /**
-     * @var SystemAccessModeOrganizationProvider
-     */
+    /** @var SystemAccessModeOrganizationProvider */
     protected $organizationProvider;
 
-    /**
-     * @var DoctrineHelper
-     */
+    /** @var DoctrineHelper */
     protected $doctrineHelper;
 
-    /**
-     * @var OwnershipMetadataProvider
-     */
+    /** @var OwnershipMetadataProvider */
     protected $metadataProvider;
 
     /**
@@ -74,8 +68,11 @@ class WorkflowListener
                     ->getOrganizationFieldName();
                 if ($organizationField) {
                     $propertyAccessor = PropertyAccess::createPropertyAccessor();
-                    $propertyAccessor->setValue($entity, $organizationField,
-                        $this->organizationProvider->getOrganization());
+                    $propertyAccessor->setValue(
+                        $entity,
+                        $organizationField,
+                        $this->organizationProvider->getOrganization()
+                    );
                 }
             }
         }
