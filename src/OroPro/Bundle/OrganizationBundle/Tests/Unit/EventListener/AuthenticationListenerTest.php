@@ -68,14 +68,20 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->listener->onAuthenticationSuccess($event));
     }
 
-    public function testShouldSavePreferredOrganizationForFirstLogin()
+    /**
+     * @dataProvider activeOrganizationsProvider
+     *
+     * @param array $activeOrganizations
+     * @param bool  $expectedSessionSet
+     */
+    public function testShouldSavePreferredOrganizationForFirstLogin($activeOrganizations, $expectedSessionSet)
     {
         $user         = $this->getUser();
         $organization = $this->getOrganization();
         $repo         = $this->getRepository();
 
         $user->expects($this->any())->method('getOrganizations')->with($this->identicalTo(true))
-            ->willReturn(new ArrayCollection([]));
+            ->willReturn(new ArrayCollection($activeOrganizations));
         $repo->expects($this->once())->method('findOneBy')->with(['user' => $user])->willReturn(false);
         $repo->expects($this->once())->method('savePreferredOrganization')
             ->with($this->identicalTo($user), $this->identicalTo($organization));
@@ -87,20 +93,46 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
         $token->expects($this->once())->method('getUser')->willReturn($user);
         $token->expects($this->never())->method('setOrganizationContext');
 
-        // TODO test notification logic
+        if ($expectedSessionSet) {
+            $user->expects($this->once())->method('getLoginCount')->willReturn(0);
+            $this->session->expects($this->once())->method('set')
+                ->with(AuthenticationListener::MULTIORG_LOGIN_FIRST, true);
+        } else {
+            $this->session->expects($this->never())->method('set');
+        }
 
         $event = new AuthenticationEvent($token);
         $this->assertNull($this->listener->onAuthenticationSuccess($event));
     }
 
+    /**
+     * @return array
+     */
+    public function activeOrganizationsProvider()
+    {
+        return [
+            'single active organization, do not notify user' => [
+                '$activeOrganizations' => [$this->getOrganization()],
+                '$expectedSessionSet'  => false
+            ],
+            'multiple active organizations, notify user'     => [
+                '$activeOrganizations' => [$this->getOrganization(), $this->getOrganization()],
+                '$expectedSessionSet'  => true
+            ],
+        ];
+    }
+
     public function testShouldUpdatePreferredOrganizationIfGuessedAnotherOne()
     {
+        $preferredOrganizationName = uniqid('OrganizationName');
+
         $user                  = $this->getUser();
         $organization          = $this->getOrganization(1);
         $preferredOrganization = $this->getOrganization(2);
         $repo                  = $this->getRepository();
         $userPreference        = new UserPreferredOrganization($user, $preferredOrganization);
 
+        $preferredOrganization->expects($this->any())->method('getName')->willReturn($preferredOrganizationName);
         $user->expects($this->any())->method('getOrganizations')->with($this->identicalTo(true))
             ->willReturn(new ArrayCollection([$organization]));
         $repo->expects($this->once())->method('findOneBy')->with(['user' => $user])->willReturn($userPreference);
@@ -114,7 +146,10 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
         $token->expects($this->once())->method('getUser')->willReturn($user);
         $token->expects($this->never())->method('setOrganizationContext');
 
-        // TODO test notification logic
+        $this->session->expects($this->at(0))->method('set')
+            ->with(AuthenticationListener::MULTIORG_LOGIN_UNPREFERRED, true);
+        $this->session->expects($this->at(1))->method('set')
+            ->with(AuthenticationListener::PREFERRED_ORGANIZATION_NAME, $preferredOrganizationName);
 
         $event = new AuthenticationEvent($token);
         $this->assertNull($this->listener->onAuthenticationSuccess($event));
