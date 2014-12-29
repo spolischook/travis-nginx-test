@@ -8,13 +8,13 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 use Oro\Bundle\SecurityBundle\Event\OrganizationSwitchAfter;
 
 use OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization;
 use OroPro\Bundle\OrganizationBundle\EventListener\AuthenticationListener;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 {
