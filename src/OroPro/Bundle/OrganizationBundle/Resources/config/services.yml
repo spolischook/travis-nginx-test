@@ -7,7 +7,9 @@ parameters:
     oropro_organization.system_mode_org_provider.class:    OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider
     oropro_organization.request.param_converter.class:     OroPro\Bundle\OrganizationBundle\Request\ParamConverter\RequestReportParamConverter
     oropro_organization.helper.class:                      OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper
-    oropro_organization.listener.zero_step_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ZeroStepOrganizationListener
+    oropro_organization.listener.organization_select_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\OrganizationSelectListener
+    oropro_organization.listener.system_org_grid_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\SystemModeOrganizationGridListener
+    oropro_organization.event_listener.workflow_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\WorkflowListener
 
     oropro_organization.exception.organization_aware_listener.class: OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareExceptionListener
     oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
@@ -43,6 +45,7 @@ services:
         arguments:
             - @oro_security.security_facade.link
             - @oro_entity_config.provider.organization
+            - @oropro_organization.system_mode_org_provider
         tags:
             - { name: oro_entity.exclusion_provider.default }
 
@@ -73,13 +76,37 @@ services:
         arguments:
             - @doctrine
 
-    oropro_organization.listener.zero_step_listener:
-        class: %oropro_organization.listener.zero_step_listener.class%
+    oropro_organization.listener.organization_select_listener:
+        class: %oropro_organization.listener.organization_select_listener.class%
         arguments:
             - @oropro_organization.system_mode_org_provider
             - @doctrine
+            - @oro_security.security_facade
+            - @router
+            - @oro_workflow.manager
+            - @oro_security.owner.ownership_metadata_provider
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest}
+
+    oropro_organization.event_listener.system_org_grid_listener:
+        class: %oropro_organization.listener.system_org_grid_listener.class%
+        arguments:
+            - @oropro_organization.system_mode_org_provider
+            - @doctrine
+            - @oro_security.security_facade
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before, method: onBuildBefore, priority: 1 }
+
+    oropro_organization.event_listener.workflow_listener:
+        class: %oropro_organization.event_listener.workflow_listener.class%
+        arguments:
+            - @oropro_organization.system_mode_org_provider
+            - @oro_security.security_facade
+            - @oro_entity.doctrine_helper
+            - @oro_security.owner.ownership_metadata_provider
+        tags:
+            - { name: kernel.event_listener, event: oro_workflow.action.handle_before, method: onBeforeAction }
+            - { name: kernel.event_listener, event: oro_workflow.start_transition.handle_before_render, method: onStartTransition }
 
     oropro_organization.exception.organization_aware_listener:
         class: %oropro_organization.exception.organization_aware_listener.class%

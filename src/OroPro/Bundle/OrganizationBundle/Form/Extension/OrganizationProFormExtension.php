@@ -6,10 +6,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Form\Extension\OrganizationFormExtension;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 use OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareException;
@@ -59,6 +61,8 @@ class OrganizationProFormExtension extends OrganizationFormExtension
     }
 
     /**
+     * Add readonly organization field if user works in system access organization
+     *
      * @param FormEvent $event
      * @throws OrganizationAwareException
      */
@@ -66,36 +70,32 @@ class OrganizationProFormExtension extends OrganizationFormExtension
     {
         if ($this->securityFacade->getOrganization() && $this->securityFacade->getOrganization()->getIsGlobal()) {
             if ($event->getForm()->getParent() === null && is_object($event->getData())) {
-                $entity            = $event->getData();
-                $entityClass = $this->doctrineHelper->getEntityClass($entity);
-                $organizationField = $this->getMetadataProvider()
-                    ->getMetadata($entityClass)
-                    ->getOrganizationFieldName();
+                $entity = $event->getData();
+                list ($organizationField, $entityId) = $this->getEntityInfo($entity);
                 if ($organizationField) {
-                    $entityId = $this->doctrineHelper->getSingleEntityIdentifier($entity);
                     if ($entityId === null && !$this->organizationProvider->getOrganizationId()) {
                         //we in create process without organization in organization Provider
-                        throw new OrganizationAwareException($entityClass);
+                        throw new OrganizationAwareException();
                     } else {
                         //we in edit process or in create process with organization id in parameter
                         if ($entityId) {
                             if (!$this->organizationProvider->getOrganizationId()) {
                                 //store current entity organization id if it was not set in param converter
                                 $this->organizationProvider->setOrganization(
-                                    $this->getPropertyAccessor()->getValue($entity, $organizationField)
+                                    $this->getOrganizationValue($entity, $organizationField)
                                 );
                             }
                         } else {
                             // on create entity we should set selected organization
                             $organization = $this->organizationProvider->getOrganization();
-                            $this->getPropertyAccessor()->setValue($entity, $organizationField, $organization);
+                            $this->setOrganizationData($entity, $organizationField, $organization);
                         }
 
                         //  - add readonly organization field
                         $form = $event->getForm();
                         $form->add(
                             $organizationField,
-                            'entity',
+                            'oropro_organization_selector',
                             [
                                 'class'                => 'OroOrganizationBundle:Organization',
                                 'property'             => 'name',
@@ -103,13 +103,91 @@ class OrganizationProFormExtension extends OrganizationFormExtension
                                 'label'                => 'Organization',
                                 'translatable_options' => false,
                                 'read_only'            => true,
-                                'disabled'             => true
+                                'disabled'             => true,
+                                'data'                 => $this->organizationProvider->getOrganization()
                             ]
                         );
                     }
                 }
             }
         }
+    }
+
+
+    /**
+     * Get entity organization field value
+     *
+     * @param object $entity
+     * @param string $organizationField
+     * @return mixed
+     */
+    protected function getOrganizationValue($entity, $organizationField)
+    {
+        if ($entity instanceof WorkflowData) {
+            $workflowData = $entity->getValues();
+            foreach ($workflowData as $entityData) {
+                $entity            = $entityData;
+                $organizationField = $this->getMetadataProvider()
+                    ->getMetadata($this->doctrineHelper->getEntityClass($entity))
+                    ->getOrganizationFieldName();
+            }
+        }
+
+        return $this->getPropertyAccessor()->getValue($entity, $organizationField);
+    }
+
+    /**
+     * Set organization to entity. In case of Workflow gata, we should not set organization
+     *
+     * @param object       $entity
+     * @param string       $organizationField
+     * @param Organization $organization
+     */
+    protected function setOrganizationData($entity, $organizationField, Organization $organization)
+    {
+        if ($entity instanceof WorkflowData) {
+            return;
+        }
+
+        $this->getPropertyAccessor()->setValue($entity, $organizationField, $organization);
+    }
+
+    /**
+     * Get entity organization field and entity id
+     *
+     * @param $entity
+     * @return array
+     */
+    protected function getEntityInfo($entity)
+    {
+        $organizationField = null;
+        $entityId          = null;
+
+        if ($entity instanceof WorkflowData) {
+            $workflowData   = $entity->getValues();
+            foreach ($workflowData as $key => $entityData) {
+                $entity            = $entityData;
+                $organizationField = $this->getMetadataProvider()
+                    ->getMetadata($this->doctrineHelper->getEntityClass($entity))
+                    ->getOrganizationFieldName();
+                if ($organizationField) {
+                    $organizationField = $key . '_' . $organizationField;
+
+                }
+            }
+
+        } else {
+            $entityClass       = $this->doctrineHelper->getEntityClass($entity);
+            $organizationField = $this->getMetadataProvider()
+                ->getMetadata($entityClass)
+                ->getOrganizationFieldName();
+        }
+
+        if ($organizationField) {
+            $entityId = $this->doctrineHelper->getSingleEntityIdentifier($entity);
+        }
+
+        return [$organizationField, $entityId];
     }
 
     /**

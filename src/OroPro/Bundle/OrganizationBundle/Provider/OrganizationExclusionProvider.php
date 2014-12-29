@@ -16,14 +16,22 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
     /** @var ConfigProvider */
     protected $organizationConfigProvider;
 
+    /** @var SystemAccessModeOrganizationProvider */
+    protected $organizationProvider;
+
     /**
-     * @param ServiceLink $securityFacadeLink
-     * @param ConfigProvider $organizationConfigProvider
+     * @param ServiceLink                          $securityFacadeLink
+     * @param ConfigProvider                       $organizationConfigProvider
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
-    public function __construct(ServiceLink $securityFacadeLink, ConfigProvider $organizationConfigProvider)
-    {
+    public function __construct(
+        ServiceLink $securityFacadeLink,
+        ConfigProvider $organizationConfigProvider,
+        SystemAccessModeOrganizationProvider $organizationProvider
+    ) {
         $this->securityFacadeLink         = $securityFacadeLink;
         $this->organizationConfigProvider = $organizationConfigProvider;
+        $this->organizationProvider       = $organizationProvider;
     }
 
     /**
@@ -63,9 +71,18 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
             if ($config->has('applicable')) {
                 $applicable = $config->get('applicable');
 
+                $facade = $this->securityFacadeLink->getService();
+                $organizationId = $facade->getOrganizationId();
+                if ($organizationId
+                    && $facade->getOrganization()->getIsGlobal()
+                    && $this->organizationProvider->getOrganizationId()
+                ) {
+                    $organizationId = $this->organizationProvider->getOrganizationId();
+                }
+
                 return !(
                     $applicable['all'] == true
-                    || in_array($this->securityFacadeLink->getService()->getOrganizationId(), $applicable['selective'])
+                    || in_array($organizationId, $applicable['selective'])
                 );
             }
         }

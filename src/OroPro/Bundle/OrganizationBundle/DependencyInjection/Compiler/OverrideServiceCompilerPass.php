@@ -69,5 +69,24 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
                 [new Reference('oropro_organization.system_mode_org_provider')]
             );
         }
+
+        $serviceId = 'oro_report.listener.navigation_listener';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->addMethodCall(
+                'setOrganizationProvider',
+                [new Reference('oropro_organization.system_mode_org_provider')]
+            );
+        }
+
+        $serviceId = 'oro_organization.form.type.business_unit';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Form\Type\BusinessUnitProType');
+            $definition->addMethodCall(
+                'setOrganizationProvider',
+                [new Reference('oropro_organization.system_mode_org_provider')]
+            );
+        }
     }
 }

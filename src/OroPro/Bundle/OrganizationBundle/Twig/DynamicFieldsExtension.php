@@ -54,7 +54,7 @@ class DynamicFieldsExtension extends BaseDynamicFieldsExtension
     {
         $organizationFieldName = null;
         if (null === $entityClass) {
-            $entityClass = ClassUtils::getRealClass($entity);
+            $entityClass = ClassUtils::getClass($entity);
         }
         if ($this->ownershipProvider->hasConfig($entityClass)) {
             $ownershipConfig = $this->ownershipProvider->getConfig($entityClass);

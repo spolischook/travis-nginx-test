@@ -6,8 +6,21 @@ use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\ReportBundle\EventListener\NavigationListener;
 
+use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
+
 class ReportNavigationListener extends NavigationListener
 {
+    /** @var SystemAccessModeOrganizationProvider */
+    protected $organizationProvider;
+
+    /**
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
+     */
+    public function setOrganizationProvider(SystemAccessModeOrganizationProvider $organizationProvider)
+    {
+        $this->organizationProvider = $organizationProvider;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -20,9 +33,14 @@ class ReportNavigationListener extends NavigationListener
         if ($organizationConfig->has('applicable')) {
             $applicable = $organizationConfig->get('applicable');
 
+            $facade = $this->securityFacade;
+            $organizationId = $facade->getOrganizationId();
+            if ($facade->getOrganization()->getIsGlobal() && $this->organizationProvider->getOrganizationId()) {
+                $organizationId = $this->organizationProvider->getOrganizationId();
+            }
             return (
                 $applicable['all'] == true
-                || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
+                || in_array($organizationId, $applicable['selective'])
             );
         }
 
