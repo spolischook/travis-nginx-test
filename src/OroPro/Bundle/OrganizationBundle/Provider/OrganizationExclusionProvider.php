@@ -72,14 +72,8 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
             if ($config->has('applicable')) {
                 $applicable = $config->get('applicable');
 
-                $facade = $this->securityFacadeLink->getService();
-                $organizationId = $facade->getOrganizationId();
-                if ($organizationId
-                    && $facade->getOrganization()->getIsGlobal()
-                    && $this->organizationProvider->getOrganizationId()
-                ) {
-                    $organizationId = $this->organizationProvider->getOrganizationId();
-                }
+                $organizationId = $this->organizationProvider->getOrganizationId() ? :
+                    $this->securityFacadeLink->getService()->getOrganizationId();
 
                 return !(
                     $applicable['all'] == true
