@@ -7,6 +7,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider;
+use OroPro\Bundle\OrganizationBundle\Tests\Unit\Fixture\GlobalOrganization;
 
 class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,6 +20,9 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|ConfigProvider */
     protected $configProvider;
 
+    /** @var \PHPUnit_Framework_MockObject_MockObject|ConfigProvider */
+    protected $organizationProvider;
+
     public function setUp()
     {
         $this->configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
@@ -30,7 +34,16 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->provider = new OrganizationExclusionProvider($this->securityFacadeLink, $this->configProvider);
+        $this->organizationProvider = $this
+            ->getMockBuilder('OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->provider = new OrganizationExclusionProvider(
+            $this->securityFacadeLink,
+            $this->configProvider,
+            $this->organizationProvider
+        );
     }
 
     /**
@@ -69,6 +82,13 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getOrganizationId')
             ->will($this->returnValue($organizationId));
 
+        $organization = new GlobalOrganization();
+        $organization->setIsGlobal(false);
+        $securityFacade
+            ->expects($this->any())
+            ->method('getOrganization')
+            ->will($this->returnValue($organization));
+
         $this->assertEquals($expected, $this->provider->isIgnoredEntity($className));
     }
 
@@ -100,7 +120,7 @@ class OrganizationExclusionProviderTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 1,
-                0,
+                1,
                 'Test\Entity\Entity3',
                 false,
                 $this->getEntityConfig(

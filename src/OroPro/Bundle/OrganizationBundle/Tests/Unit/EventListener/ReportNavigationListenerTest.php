@@ -6,6 +6,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 
 use OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener;
+use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
 
 class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -65,6 +66,13 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getOrganizationId')
             ->will($this->returnValue($organizationId));
         $this->getOrganizationConfig($config, $organizationConfig);
+        $organization = new GlobalOrganization();
+        $organization->setIsGlobal(false);
+
+        $this->securityFacade->expects($this->any())
+            ->method('getOrganization')
+            ->willReturn($organization);
+
         $this->assertEquals($expected, $this->listener->checkAvailability($config));
     }
 
@@ -101,7 +109,7 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
         );
         return [
             [1, 1, true, $config1, $orgConfig1],
-            [3, 0, true, $config2, $orgConfig2],
+            [3, 1, true, $config2, $orgConfig2],
             [3, 1, true, $config3, $orgConfig3],
             [4, 1, false, $config3, $orgConfig3],
             [1, 0, true, $config4, $orgConfig4]
@@ -136,7 +144,7 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
         return $organizationConfig;
     }
 
-    protected function getEntityConfig($entityClassName, $scope, $values = array())
+    protected function getEntityConfig($entityClassName, $scope, $values = [])
     {
         $entityConfigId = new EntityConfigId($scope, $entityClassName);
         $entityConfig   = new Config($entityConfigId);
