@@ -85,18 +85,19 @@ class DynamicFieldsExtension extends BaseDynamicFieldsExtension
 
             // skip field if it's not configured for current organization
             $applicable = $organizationConfig->get('applicable', false, false);
+            if ($applicable) {
+                if ($applicable['all']) {
+                    return true;
+                } else {
+                    if ($this->securityFacade->getOrganization()->getIsGlobal() && $this->entityOrganization !== null) {
+                        $organizationId = $this->entityOrganization->getId();
+                    } else {
+                        $organizationId = $this->securityFacade->getOrganizationId();
+                    }
 
-            return
-                $applicable
-                && (
-                    $applicable['all']
-                    || in_array(
-                        $this->securityFacade->getOrganization()->getIsGlobal() && $this->entityOrganization !== null
-                            ? $this->entityOrganization->getId()
-                            : $this->securityFacade->getOrganizationId(),
-                        $applicable['selective']
-                    )
-                );
+                    return in_array($organizationId, $applicable['selective']);
+                }
+            }
         }
 
         return false;
