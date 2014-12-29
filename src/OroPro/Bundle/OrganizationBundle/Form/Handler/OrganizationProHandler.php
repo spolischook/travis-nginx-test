@@ -23,9 +23,7 @@ class OrganizationProHandler
     /** @var EntityManager */
     protected $manager;
 
-    /**
-     * @var SecurityContextInterface
-     */
+    /** @var SecurityContextInterface */
     protected $securityContext;
 
     /**
@@ -54,6 +52,11 @@ class OrganizationProHandler
     public function process(Organization $entity)
     {
         $this->form->setData($entity);
+
+        $currentUser = $this->getUser();
+        if (!$entity->getId() && $currentUser) {
+            $this->form->get('appendUsers')->setData([$currentUser]);
+        }
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
             $this->form->submit($this->request);
@@ -108,5 +111,23 @@ class OrganizationProHandler
         foreach ($users as $user) {
             $organization->removeUser($user);
         }
+    }
+
+    /**
+     * Get the current authenticated user
+     *
+     * @return User|null
+     */
+    protected function getUser()
+    {
+        $token = $this->securityContext->getToken();
+        if ($token instanceof TokenInterface) {
+            $user = $token->getUser();
+            if ($user instanceof User) {
+                return $user;
+            }
+        }
+
+        return null;
     }
 }
