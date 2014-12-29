@@ -2,7 +2,6 @@
     {% set currOrganization = get_current_organization() %}
     {% set multiorgLoginFirstAttr = constant('OroPro\\Bundle\\OrganizationBundle\\EventListener\\AuthenticationListener::MULTIORG_LOGIN_FIRST') %}
     {% set multiorgLoginUnpreferredAttr = constant('OroPro\\Bundle\\OrganizationBundle\\EventListener\\AuthenticationListener::MULTIORG_LOGIN_UNPREFERRED') %}
-    {% set preferredOrganizationNameAttr = constant('OroPro\\Bundle\\OrganizationBundle\\EventListener\\AuthenticationListener::PREFERRED_ORGANIZATION_NAME') %}
 
     <div class="oropro-organization-notice-holder"></div>
     {% if (app.session.has(multiorgLoginFirstAttr) or app.session.has(multiorgLoginUnpreferredAttr)) %}
@@ -13,11 +12,7 @@
                         ? 'oropro.organization.controller.message.multiorg.login.first'
                         : 'oropro.organization.controller.message.multiorg.login.unpreferred'
                     %}
-                    {% set translationParams = {
-                            '%organization_name%': currOrganization.name,
-                            '%preferred_organization_name%': app.session.get(preferredOrganizationNameAttr)
-                        }
-                    %}
+                    {% set translationParams = { '%organization_name%': currOrganization.name } %}
                     {% set translatedMessage = message|trans(translationParams)|trim|striptags|raw %}
 
                     var $holder = $('div.oropro-organization-notice-holder');

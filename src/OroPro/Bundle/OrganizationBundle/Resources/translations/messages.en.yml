@@ -13,14 +13,13 @@ oropro:
             message:
                 saved: Organization saved
                 multiorg:
-                    notice_title: Logged into %organization_name%
+                    notice_title: Logged in to %organization_name%
                     login:
                         first: >
-                            You have been logged into "%organization_name%". If you want to work with different organization,
-                            change it in the top left corner.
+                            You logged in to "%organization_name%". To switch to another organization, use the selector at the top left corner.
                         unpreferred: >
-                            The "%preferred_organization_name%" organization you have last logged into is no longer available.
-                            You have been logged into "%organization_name%" instead.
+                            The latest organization used is no longer available. You are logged in to "%organization_name%".
+                            To switch to another organization, use the selector at the top left corner.
         entity_config:
             organization:
                 entity:

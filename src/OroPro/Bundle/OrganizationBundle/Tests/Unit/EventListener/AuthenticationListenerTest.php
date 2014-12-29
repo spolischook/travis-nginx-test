@@ -151,8 +151,6 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->session->expects($this->at(0))->method('set')
             ->with(AuthenticationListener::MULTIORG_LOGIN_UNPREFERRED, true);
-        $this->session->expects($this->at(1))->method('set')
-            ->with(AuthenticationListener::PREFERRED_ORGANIZATION_NAME, $preferredOrganizationName);
 
         $event = new AuthenticationEvent($token);
         $this->assertNull($this->listener->onAuthenticationSuccess($event));

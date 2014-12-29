@@ -22,8 +22,6 @@ class AuthenticationListener
     const MULTIORG_LOGIN_FIRST       = 'oropro_organization_mlf';
     const MULTIORG_LOGIN_UNPREFERRED = 'oropro_organization_mlu';
 
-    const PREFERRED_ORGANIZATION_NAME = 'oropro_organization_pon';
-
     /** @var ManagerRegistry */
     protected $registry;
 
@@ -74,7 +72,6 @@ class AuthenticationListener
 
             // notify user that organization context currently activated is not expected preferred one
             $this->session->set(self::MULTIORG_LOGIN_UNPREFERRED, true);
-            $this->session->set(self::PREFERRED_ORGANIZATION_NAME, $preferredOrg->getName());
         } elseif ($organization) {
             // case if it's first login, just save preferred
             $this->getPreferredOrganizationRepository()->savePreferredOrganization($user, $organization);
