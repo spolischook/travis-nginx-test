@@ -35,6 +35,5 @@
         {# unset session attributes #}
         {% do app.session.remove(multiorgLoginFirstAttr) %}
         {% do app.session.remove(multiorgLoginUnpreferredAttr) %}
-        {% do app.session.remove(preferredOrganizationNameAttr) %}
     {% endif %}
 {% endspaceless %}
