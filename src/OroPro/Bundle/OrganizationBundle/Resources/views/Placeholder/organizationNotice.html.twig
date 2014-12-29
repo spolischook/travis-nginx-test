@@ -4,33 +4,35 @@
     {% set multiorgLoginUnpreferredAttr = constant('OroPro\\Bundle\\OrganizationBundle\\EventListener\\AuthenticationListener::MULTIORG_LOGIN_UNPREFERRED') %}
     {% set preferredOrganizationNameAttr = constant('OroPro\\Bundle\\OrganizationBundle\\EventListener\\AuthenticationListener::PREFERRED_ORGANIZATION_NAME') %}
 
-    <span class="tddest" data-placement="bottom" data-toggle="manual" data-original-title="TestTitle"></span>
+    <div class="oropro-organization-notice-holder"></div>
     {% if(app.session.has(multiorgLoginFirstAttr) or app.session.has(multiorgLoginUnpreferredAttr)) %}
         <script type="text/javascript">
             require(['jquery', 'bootstrap'], function($) {
                 $(function(){
-                    {% if (app.session.has(multiorgLoginFirstAttr)) %}
-                        {% set message %}
-                            {{
-                                'oropro.organization.controller.message.multiorg.login.first'
-                                |trans({'%organization_name%': currOrganization.name })|trim|striptags|raw
-                            }}
-                        {% endset %}
-                    {% else %}
-                        {% set message %}
-                        {{
-                            'oropro.organization.controller.message.multiorg.login.unpreferred'
-                            |trans({'%organization_name%': currOrganization.name, '%preferred_organization_name%': app.session.get(preferredOrganizationNameAttr) })
-                            |trim|striptags|raw
-                        }}
-                        {% endset %}
-                    {% endif %}
+                    {% set message = app.session.has(multiorgLoginFirstAttr)
+                        ? 'oropro.organization.controller.message.multiorg.login.first'
+                        : 'oropro.organization.controller.message.multiorg.login.unpreferred'
+                    %}
+                    {% set translationParams = {
+                            '%organization_name%': currOrganization.name,
+                            '%preferred_organization_name%': app.session.get(preferredOrganizationNameAttr)
+                        }
+                    %}
+                    {% set translatedMessage = message|trans(translationParams)|trim|striptags|raw %}
 
-                    var msg = {{ message|json_encode|raw }};
-
-                    $('.tddest')
-                        .popover({content: msg})
-                        .popover('show');
+                    var $holder = $('div.oropro-organization-notice-holder');
+                    $holder.popover({
+                        content: {{ translatedMessage|json_encode|raw }} + '<i class="icon-remove popover-close"></i>',
+                        html: true,
+                        trigger: 'manual',
+                        placement: 'bottom',
+                        title: '<strong>{{ 'oropro.organization.controller.message.multiorg.notice_title'|trans(translationParams) }}</strong>',
+                        container: $holder
+                    });
+                    $holder.popover('show');
+                    $holder.find('.popover-close').click(function() {
+                        $holder.popover('hide');
+                    });
                 });
             });
         </script>

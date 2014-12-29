@@ -13,6 +13,7 @@ oropro:
             message:
                 saved: Organization saved
                 multiorg:
+                    notice_title: Logged into %organization_name%
                     login:
                         first: >
                             You have been logged into "%organization_name%". If you want to work with different organization,
