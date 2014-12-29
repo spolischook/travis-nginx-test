@@ -47,6 +47,10 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             $definition->addArgument(new Reference('oropro_organization.system_mode_org_provider'));
         }
 
+        /**
+         * Override Oro\Bundle\OrganizationBundle\Form\Extension\OrganizationFormExtension
+         * Add security facade, system access mode organization provider and doctrine helper
+         */
         $serviceId = 'oro_organization.form.extension.organization';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
@@ -64,6 +68,10 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             );
         }
 
+        /**
+         * Override Oro\Bundle\OrganizationBundle\Form\Extension\OwnerFormExtension
+         * Add system access mode organization provider
+         */
         $serviceId = 'oro_organization.form.extension.owner';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
@@ -74,6 +82,10 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             );
         }
 
+        /**
+         * Override Oro\Bundle\ReportBundle\EventListener\NavigationListener
+         * Add system access mode organization provider
+         */
         $serviceId = 'oro_report.listener.navigation_listener';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
@@ -83,6 +95,10 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             );
         }
 
+        /**
+         * Override Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitType.
+         * Add system access mode organization provider
+         */
         $serviceId = 'oro_organization.form.type.business_unit';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);

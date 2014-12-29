@@ -5,7 +5,7 @@ parameters:
     oropro_organization.form.type.organization_config_type.class: OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationConfigType
     oropro_organization.form.type.organization_choice.class: OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationChoiceType
     oropro_organization.form.type.is_global.class: OroPro\Bundle\OrganizationBundle\Form\Type\IsGlobalType
-    oropro_organization.form.type.organization_selector.class: OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationSelectorType
+    oropro_organization.form.type.organization_label.class: OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationLabelType
 
     oropro_organization.form.eventlistener.organization_field.class: OroPro\Bundle\OrganizationBundle\Form\EventListener\OrganizationFieldListener
 
@@ -39,10 +39,10 @@ services:
         tags:
             - { name: form.type, alias: oropro_organization_is_global }
 
-    oropro_organization.form.type.organization_selector:
-        class: %oropro_organization.form.type.organization_selector.class%
+    oropro_organization.form.type.organization_label:
+        class: %oropro_organization.form.type.organization_label.class%
         tags:
-            - { name: form.type, alias: oropro_organization_selector }
+            - { name: form.type, alias: oropro_organization_label }
 
 
     oropro_organization.form.eventlistener.organization_field:

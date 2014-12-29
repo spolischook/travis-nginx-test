@@ -121,9 +121,13 @@
     {% endfor %}
 {% endmacro %}
 
-{% block oropro_organization_selector_widget %}
+{% block oropro_organization_label_widget %}
     {% spaceless %}
-        {{ form_widget(form) }}
+        {% for choice in choices %}
+            {% if choice.value == value|default('NONE') %}
+                <div class="control-label">{{ choice.label }}</div>
+            {% endif %}
+        {% endfor %}
         <script type="text/javascript">
             require(['jquery'], function($) {
                 $(function() {

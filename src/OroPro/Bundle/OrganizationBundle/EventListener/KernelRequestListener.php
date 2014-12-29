@@ -4,18 +4,19 @@ namespace OroPro\Bundle\OrganizationBundle\EventListener;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Routing\Router;
 
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
-class OrganizationSelectListener
+class KernelRequestListener
 {
     /** @var SystemAccessModeOrganizationProvider */
     protected $organizationProvider;

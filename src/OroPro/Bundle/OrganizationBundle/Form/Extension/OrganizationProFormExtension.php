@@ -95,9 +95,10 @@ class OrganizationProFormExtension extends OrganizationFormExtension
                         $form = $event->getForm();
                         $form->add(
                             $organizationField,
-                            'oropro_organization_selector',
+                            'oropro_organization_label',
                             [
                                 'class'                => 'OroOrganizationBundle:Organization',
+                                'required'             => false,
                                 'property'             => 'name',
                                 'mapped'               => true,
                                 'label'                => 'Organization',
@@ -126,14 +127,22 @@ class OrganizationProFormExtension extends OrganizationFormExtension
         if ($entity instanceof WorkflowData) {
             $workflowData = $entity->getValues();
             foreach ($workflowData as $entityData) {
-                $entity            = $entityData;
-                $organizationField = $this->getMetadataProvider()
-                    ->getMetadata($this->doctrineHelper->getEntityClass($entity))
-                    ->getOrganizationFieldName();
+                if (is_object($entityData)) {
+                    $entity            = $entityData;
+                    $organizationField = $this->getMetadataProvider()
+                        ->getMetadata($this->doctrineHelper->getEntityClass($entity))
+                        ->getOrganizationFieldName();
+                    if ($organizationField) {
+                        return $this->getPropertyAccessor()->getValue($entity, $organizationField);
+                    }
+                }
+
             }
+        } else {
+            return $this->getPropertyAccessor()->getValue($entity, $organizationField);
         }
 
-        return $this->getPropertyAccessor()->getValue($entity, $organizationField);
+        return null;
     }
 
     /**
@@ -166,13 +175,15 @@ class OrganizationProFormExtension extends OrganizationFormExtension
         if ($entity instanceof WorkflowData) {
             $workflowData   = $entity->getValues();
             foreach ($workflowData as $key => $entityData) {
-                $entity            = $entityData;
-                $organizationField = $this->getMetadataProvider()
-                    ->getMetadata($this->doctrineHelper->getEntityClass($entity))
-                    ->getOrganizationFieldName();
-                if ($organizationField) {
-                    $organizationField = $key . '_' . $organizationField;
-
+                if (is_object($entityData)) {
+                    $entity            = $entityData;
+                    $organizationField = $this->getMetadataProvider()
+                        ->getMetadata($this->doctrineHelper->getEntityClass($entity))
+                        ->getOrganizationFieldName();
+                    if ($organizationField) {
+                        $organizationField = $key . '_' . $organizationField;
+                        break;
+                    }
                 }
             }
 

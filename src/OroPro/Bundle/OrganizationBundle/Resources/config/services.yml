@@ -7,7 +7,7 @@ parameters:
     oropro_organization.system_mode_org_provider.class:    OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider
     oropro_organization.request.param_converter.class:     OroPro\Bundle\OrganizationBundle\Request\ParamConverter\RequestReportParamConverter
     oropro_organization.helper.class:                      OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper
-    oropro_organization.listener.organization_select_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\OrganizationSelectListener
+    oropro_organization.listener.kernel_request_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\KernelRequestListener
     oropro_organization.listener.system_org_grid_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\SystemModeOrganizationGridListener
     oropro_organization.event_listener.workflow_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\WorkflowListener
 
@@ -76,8 +76,8 @@ services:
         arguments:
             - @doctrine
 
-    oropro_organization.listener.organization_select_listener:
-        class: %oropro_organization.listener.organization_select_listener.class%
+    oropro_organization.listener.kernel_request_listener:
+        class: %oropro_organization.listener.kernel_request_listener.class%
         arguments:
             - @oropro_organization.system_mode_org_provider
             - @doctrine
