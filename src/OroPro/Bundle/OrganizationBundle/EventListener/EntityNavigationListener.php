@@ -29,5 +29,7 @@ class EntityNavigationListener extends NavigationListener
                     || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
                 );
         }
+
+        return false;
     }
 }

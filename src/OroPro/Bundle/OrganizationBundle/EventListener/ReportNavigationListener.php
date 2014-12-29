@@ -26,25 +26,20 @@ class ReportNavigationListener extends NavigationListener
      */
     public function checkAvailability(Config $config)
     {
-        if (!parent::checkAvailability($config)) {
-            return false;
-        }
-        $organizationConfig = $this->getOrganizationConfig($config);
-        if ($organizationConfig->has('applicable')) {
-            $applicable = $organizationConfig->get('applicable');
+        if (parent::checkAvailability($config)) {
+            $applicable = $this->getOrganizationConfig($config)->get('applicable');
+            if ($applicable) {
+                $organizationId = $this->organizationProvider->getOrganizationId()
+                    ? : $this->securityFacade->getOrganizationId();
 
-            $facade = $this->securityFacade;
-            $organizationId = $facade->getOrganizationId();
-            if ($facade->getOrganization()->getIsGlobal() && $this->organizationProvider->getOrganizationId()) {
-                $organizationId = $this->organizationProvider->getOrganizationId();
+                return (
+                    $applicable['all'] == true
+                    || in_array($organizationId, $applicable['selective'])
+                );
             }
-            return (
-                $applicable['all'] == true
-                || in_array($organizationId, $applicable['selective'])
-            );
         }
 
-        return true;
+        return false;
     }
 
     /**

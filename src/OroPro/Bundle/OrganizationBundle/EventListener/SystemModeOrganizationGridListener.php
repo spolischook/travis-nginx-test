@@ -11,8 +11,6 @@ use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvid
 
 class SystemModeOrganizationGridListener
 {
-    const SA_ORG_PARAMETER = '_sa_org_id';
-
     /** @var SystemAccessModeOrganizationProvider */
     protected $organizationProvider;
 
@@ -47,7 +45,7 @@ class SystemModeOrganizationGridListener
     {
         $currentOrganization = $this->securityFacade->getOrganization();
         if ($currentOrganization && $currentOrganization->getIsGlobal()) {
-            $organizationId = $event->getDatagrid()->getParameters()->get(self::SA_ORG_PARAMETER);
+            $organizationId = $event->getDatagrid()->getParameters()->get('_sa_org_id');
             if ($organizationId) {
                 $organization = $this
                     ->doctrine
