@@ -6,6 +6,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -95,6 +97,23 @@ class AuthenticationListener
         $repo = $this->getPreferredOrganizationRepository();
 
         $repo->updatePreferredOrganization($event->getUser(), $event->getOrganization());
+    }
+
+    /**
+     * Listen `security.interactive_login` see if user logged in via remember me than force update part of the page
+     *
+     * @param InteractiveLoginEvent $event
+     */
+    public function onInteractiveLogin(InteractiveLoginEvent $event)
+    {
+        if ($event->getAuthenticationToken() instanceof RememberMeToken) {
+            $providers = $event->getRequest()->get('_enableContentProviders', '');
+
+            $providers   = array_filter(explode(',', $providers));
+            $providers[] = 'organization_switch';
+
+            $event->getRequest()->query->set('_enableContentProviders', implode(',', array_unique($providers)));
+        }
     }
 
     /**

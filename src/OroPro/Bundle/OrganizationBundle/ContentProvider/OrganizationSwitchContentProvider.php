@@ -6,7 +6,6 @@ use Oro\Bundle\UIBundle\ContentProvider\AbstractContentProvider;
 
 class OrganizationSwitchContentProvider extends AbstractContentProvider
 {
-
     /**
      * @var \Twig_Environment
      */
