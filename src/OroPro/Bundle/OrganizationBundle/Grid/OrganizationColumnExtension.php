@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 
@@ -32,9 +33,7 @@ class OrganizationColumnExtension extends AbstractExtension
     /** @var string|null */
     protected $entityClassName = null;
 
-    /**
-     * @var SystemAccessModeOrganizationProvider
-     */
+    /** @var SystemAccessModeOrganizationProvider */
     protected $organizationProvider;
 
     /**
@@ -60,9 +59,25 @@ class OrganizationColumnExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        return $this->securityFacade->getOrganization()->getIsGlobal()
-            && !$this->organizationProvider->getOrganizationId()
+        return
+            $this->securityFacade->getOrganization()->getIsGlobal()
             && (bool)$this->getOrganizationField($config);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
+    {
+        $providedSystemOrganizationId = $this->organizationProvider->getOrganizationId();
+        if ($providedSystemOrganizationId) {
+            $data->offsetAddToArrayByPath(
+                '[options][urlParams]',
+                [
+                    '_sa_org_id' => $providedSystemOrganizationId
+                ]
+            );
+        }
     }
 
     /**
@@ -91,15 +106,26 @@ class OrganizationColumnExtension extends AbstractExtension
             $qb->from($entityClassName, $alias);
         }
 
-        $qb->leftJoin(sprintf('%s.%s', $alias, $this->getOrganizationField($config)), 'org');
-        $qb->addSelect('org.name as ' . self::COLUMN_NAME);
+        $organizationId = $this->organizationProvider->getOrganizationId() ?: $this->parameters->get('_sa_org_id');
+        if (!$organizationId) {
+            $qb->leftJoin(sprintf('%s.%s', $alias, $this->getOrganizationField($config)), 'org');
+            $qb->addSelect('org.name as ' . self::COLUMN_NAME);
+        } else {
+            $qb->andWhere($alias . '.' . $this->getOrganizationField($config) . ' = ' . $organizationId);
+        }
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function processConfigs(DatagridConfiguration $config)
     {
+        if ($this->organizationProvider->getOrganizationId()) {
+            return;
+        }
+
         /**
          * add column
          */

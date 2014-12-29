@@ -123,7 +123,6 @@ class SearchResultOrganizationExtension extends \Twig_Extension
                     $organizationFieldName = $config->get('owner_field_name');
                 }
                 if ($organizationFieldName) {
-
                     return PropertyAccess::createPropertyAccessor()->getValue($entity, $organizationFieldName);
                 }
             }

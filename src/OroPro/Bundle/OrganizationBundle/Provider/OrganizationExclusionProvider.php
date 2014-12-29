@@ -16,14 +16,22 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
     /** @var ConfigProvider */
     protected $organizationConfigProvider;
 
+    /** @var  SystemAccessModeOrganizationProvider */
+    protected $systemAccessModeOrganizationProvider;
+
     /**
-     * @param ServiceLink $securityFacadeLink
-     * @param ConfigProvider $organizationConfigProvider
+     * @param ServiceLink                          $securityFacadeLink
+     * @param ConfigProvider                       $organizationConfigProvider
+     * @param SystemAccessModeOrganizationProvider $systemAccessModeOrganizationProvider
      */
-    public function __construct(ServiceLink $securityFacadeLink, ConfigProvider $organizationConfigProvider)
-    {
-        $this->securityFacadeLink         = $securityFacadeLink;
-        $this->organizationConfigProvider = $organizationConfigProvider;
+    public function __construct(
+        ServiceLink $securityFacadeLink,
+        ConfigProvider $organizationConfigProvider,
+        SystemAccessModeOrganizationProvider $systemAccessModeOrganizationProvider
+    ) {
+        $this->securityFacadeLink                   = $securityFacadeLink;
+        $this->organizationConfigProvider           = $organizationConfigProvider;
+        $this->systemAccessModeOrganizationProvider = $systemAccessModeOrganizationProvider;
     }
 
     /**
@@ -63,9 +71,12 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
             if ($config->has('applicable')) {
                 $applicable = $config->get('applicable');
 
+                $organizationId = $this->systemAccessModeOrganizationProvider->getOrganizationId() ? :
+                    $this->securityFacadeLink->getService()->getOrganizationId();
+
                 return !(
                     $applicable['all'] == true
-                    || in_array($this->securityFacadeLink->getService()->getOrganizationId(), $applicable['selective'])
+                    || in_array($organizationId, $applicable['selective'])
                 );
             }
         }

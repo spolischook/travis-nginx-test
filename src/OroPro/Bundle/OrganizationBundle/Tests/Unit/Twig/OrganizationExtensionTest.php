@@ -32,9 +32,10 @@ class OrganizationExtensionTest extends \PHPUnit_Framework_TestCase
         $this->organizationProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->organizationHelper = $this->getMockBuilder('OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->organizationHelper =
+            $this->getMockBuilder('OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper')
+                ->disableOriginalConstructor()
+                ->getMock();
 
         $this->extension = new OrganizationExtension(
             $this->organizationProvider,

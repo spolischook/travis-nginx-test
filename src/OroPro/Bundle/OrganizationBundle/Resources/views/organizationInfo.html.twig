@@ -1,2 +1,18 @@
 {{ organization.name }}
-<input type="hidden" value="{{ organization.id }}" name="_sa_org_id" class="_sa_org_id" />
+<input type="hidden" value="{{ organization.id }}" name="_sa_org_id" id="_sa_org_id" />
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        'use strict';
+        $(function() {
+            var _sa_org_id = $('input#_sa_org_id').val();
+            if (_sa_org_id) {
+                $('#container .navigation a[data-url]').each(function () {
+                    var url = $(this).data('url') +
+                            ($(this).data('url').indexOf('?') == -1 ? '?' : '&') +
+                            '_sa_org_id=' + _sa_org_id;
+                    $(this).data('url', url);
+                });
+            }
+        });
+    });
+</script>
