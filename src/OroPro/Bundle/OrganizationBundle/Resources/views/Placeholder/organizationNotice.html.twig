@@ -1,0 +1,45 @@
+{% spaceless %}
+    {% set currOrganization = get_current_organization() %}
+    {% set multiorgLoginFirstAttr = constant('OroPro\\Bundle\\OrganizationBundle\\EventListener\\AuthenticationListener::MULTIORG_LOGIN_FIRST') %}
+    {% set multiorgLoginUnpreferredAttr = constant('OroPro\\Bundle\\OrganizationBundle\\EventListener\\AuthenticationListener::MULTIORG_LOGIN_UNPREFERRED') %}
+    {% set preferredOrganizationNameAttr = constant('OroPro\\Bundle\\OrganizationBundle\\EventListener\\AuthenticationListener::PREFERRED_ORGANIZATION_NAME') %}
+
+    <div class="oropro-organization-notice-holder"></div>
+    {% if (app.session.has(multiorgLoginFirstAttr) or app.session.has(multiorgLoginUnpreferredAttr)) %}
+        <script type="text/javascript">
+            require(['jquery', 'bootstrap'], function($) {
+                $(function() {
+                    {% set message = app.session.has(multiorgLoginFirstAttr)
+                        ? 'oropro.organization.controller.message.multiorg.login.first'
+                        : 'oropro.organization.controller.message.multiorg.login.unpreferred'
+                    %}
+                    {% set translationParams = {
+                            '%organization_name%': currOrganization.name,
+                            '%preferred_organization_name%': app.session.get(preferredOrganizationNameAttr)
+                        }
+                    %}
+                    {% set translatedMessage = message|trans(translationParams)|trim|striptags|raw %}
+
+                    var $holder = $('div.oropro-organization-notice-holder');
+                    $holder.popover({
+                        content: {{ translatedMessage|json_encode|raw }} + '<i class="icon-remove popover-close"></i>',
+                        html: true,
+                        trigger: 'manual',
+                        placement: 'bottom',
+                        title: '<strong>{{ 'oropro.organization.controller.message.multiorg.notice_title'|trans(translationParams) }}</strong>',
+                        container: $holder
+                    });
+                    $holder.popover('show');
+                    $holder.find('.popover-close').click(function() {
+                        $holder.popover('hide');
+                    });
+                });
+            });
+        </script>
+
+        {# unset session attributes #}
+        {% do app.session.remove(multiorgLoginFirstAttr) %}
+        {% do app.session.remove(multiorgLoginUnpreferredAttr) %}
+        {% do app.session.remove(preferredOrganizationNameAttr) %}
+    {% endif %}
+{% endspaceless %}
