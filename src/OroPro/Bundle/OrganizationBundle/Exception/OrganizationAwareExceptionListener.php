@@ -33,8 +33,8 @@ class OrganizationAwareExceptionListener
             $event->setResponse(
                 new RedirectResponse(
                     $this->router->generate(
-                        'oropro_zero_step_form',
-                        ['oropro_zero_url' => $event->getRequest()->getUri()]
+                        'oropro_organization_selector_form',
+                        ['form_url' => $event->getRequest()->getUri()]
                     )
                 )
             );

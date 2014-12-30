@@ -29,6 +29,8 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
     const SECURITY_FACADE_SERVICE     = 'oro_security.security_facade';
     const OWNER_PROVIDER_SERVICE_LINK = 'oro_security.owner.ownership_metadata_provider.link';
 
+    const IMPORTEXPORT_ENTITY_READER_SERVICE = 'oro_importexport.reader.entity';
+    const IMPORTEXPORT_ENTITY_READER_CLASS   = 'OroPro\Bundle\SecurityBundle\ImportExport\Reader\EntityProReader';
 
     /**
      * @param ContainerBuilder $container
@@ -77,6 +79,16 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
             $definition->addMethodCall(
                 'setMetadataProviderLink',
                 [new Reference(self::OWNER_PROVIDER_SERVICE_LINK)]
+            );
+        }
+
+        // rewrite importexport entity reader
+        if ($container->hasDefinition(self::IMPORTEXPORT_ENTITY_READER_SERVICE)) {
+            $definition = $container->getDefinition(self::IMPORTEXPORT_ENTITY_READER_SERVICE);
+            $definition->setClass(self::IMPORTEXPORT_ENTITY_READER_CLASS);
+            $definition->addMethodCall(
+                'setSecurityFacade',
+                [new Reference(self::SECURITY_FACADE_SERVICE)]
             );
         }
     }

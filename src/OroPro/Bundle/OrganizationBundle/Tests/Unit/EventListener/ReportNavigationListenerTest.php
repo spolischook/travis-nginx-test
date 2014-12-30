@@ -48,6 +48,14 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
             $this->securityFacade,
             $this->aclHelper
         );
+
+        $organizationProvider = $this
+            ->getMock('OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider');
+        $organizationProvider->expects($this->any())
+            ->method('getOrganizationId')
+            ->will($this->returnValue(null));
+
+        $this->listener->setOrganizationProvider($organizationProvider);
     }
 
     /**
@@ -65,6 +73,7 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getOrganizationId')
             ->will($this->returnValue($organizationId));
         $this->getOrganizationConfig($config, $organizationConfig);
+
         $this->assertEquals($expected, $this->listener->checkAvailability($config));
     }
 
@@ -104,7 +113,7 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
             [3, 0, true, $config2, $orgConfig2],
             [3, 1, true, $config3, $orgConfig3],
             [4, 1, false, $config3, $orgConfig3],
-            [1, 0, true, $config4, $orgConfig4]
+            [1, 0, false, $config4, $orgConfig4]
         ];
     }
 
@@ -136,7 +145,7 @@ class ReportNavigationListenerTest extends \PHPUnit_Framework_TestCase
         return $organizationConfig;
     }
 
-    protected function getEntityConfig($entityClassName, $scope, $values = array())
+    protected function getEntityConfig($entityClassName, $scope, $values = [])
     {
         $entityConfigId = new EntityConfigId($scope, $entityClassName);
         $entityConfig   = new Config($entityConfigId);

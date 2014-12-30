@@ -2,8 +2,7 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Twig;
 
-use Doctrine\Common\Util\ClassUtils;
-
+use Symfony\Component\Security\Core\Util\ClassUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;

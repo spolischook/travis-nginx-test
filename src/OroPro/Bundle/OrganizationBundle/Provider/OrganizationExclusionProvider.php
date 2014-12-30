@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Oro\Bundle\EntityBundle\Provider\ExclusionProviderInterface;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
 class OrganizationExclusionProvider implements ExclusionProviderInterface
 {
@@ -16,22 +17,22 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
     /** @var ConfigProvider */
     protected $organizationConfigProvider;
 
-    /** @var  SystemAccessModeOrganizationProvider */
-    protected $systemAccessModeOrganizationProvider;
+    /** @var SystemAccessModeOrganizationProvider */
+    protected $organizationProvider;
 
     /**
      * @param ServiceLink                          $securityFacadeLink
      * @param ConfigProvider                       $organizationConfigProvider
-     * @param SystemAccessModeOrganizationProvider $systemAccessModeOrganizationProvider
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
     public function __construct(
         ServiceLink $securityFacadeLink,
         ConfigProvider $organizationConfigProvider,
-        SystemAccessModeOrganizationProvider $systemAccessModeOrganizationProvider
+        SystemAccessModeOrganizationProvider $organizationProvider
     ) {
-        $this->securityFacadeLink                   = $securityFacadeLink;
-        $this->organizationConfigProvider           = $organizationConfigProvider;
-        $this->systemAccessModeOrganizationProvider = $systemAccessModeOrganizationProvider;
+        $this->securityFacadeLink         = $securityFacadeLink;
+        $this->organizationConfigProvider = $organizationConfigProvider;
+        $this->organizationProvider       = $organizationProvider;
     }
 
     /**
@@ -71,7 +72,7 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
             if ($config->has('applicable')) {
                 $applicable = $config->get('applicable');
 
-                $organizationId = $this->systemAccessModeOrganizationProvider->getOrganizationId() ? :
+                $organizationId = $this->organizationProvider->getOrganizationId() ? :
                     $this->securityFacadeLink->getService()->getOrganizationId();
 
                 return !(

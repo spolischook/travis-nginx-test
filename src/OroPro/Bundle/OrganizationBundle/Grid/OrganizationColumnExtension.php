@@ -106,12 +106,15 @@ class OrganizationColumnExtension extends AbstractExtension
             $qb->from($entityClassName, $alias);
         }
 
-        $organizationId = $this->organizationProvider->getOrganizationId() ?: $this->parameters->get('_sa_org_id');
-        if (!$organizationId) {
+        // we should not add organization column if system access organization provider has organization
+        if (!$this->organizationProvider->getOrganizationId()) {
             $qb->leftJoin(sprintf('%s.%s', $alias, $this->getOrganizationField($config)), 'org');
             $qb->addSelect('org.name as ' . self::COLUMN_NAME);
-        } else {
-            $qb->andWhere($alias . '.' . $this->getOrganizationField($config) . ' = ' . $organizationId);
+
+            $groupBy = $qb->getDQLPart('groupBy');
+            if (!empty($groupBy)) {
+                $qb->addGroupBy('org.name');
+            }
         }
     }
 
@@ -122,6 +125,7 @@ class OrganizationColumnExtension extends AbstractExtension
      */
     public function processConfigs(DatagridConfiguration $config)
     {
+        // we should not add organization column if system access organization provider has organization
         if ($this->organizationProvider->getOrganizationId()) {
             return;
         }

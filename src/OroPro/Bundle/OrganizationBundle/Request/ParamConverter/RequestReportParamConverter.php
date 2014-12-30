@@ -72,7 +72,17 @@ class RequestReportParamConverter implements ParamConverterInterface
 
             if (!$isApplicable) {
                 $acl = $this->securityFacade->getRequestAcl($request);
-                if ($acl->getPermission() == BasicPermissionMap::PERMISSION_VIEW) {
+
+                /**
+                 * If entity has no "Applicable Organizations" - we should not allow to view/edit reports and segments
+                 * based on such entity.
+                 */
+                $hasPermission = !in_array(
+                    $acl->getPermission(),
+                    [BasicPermissionMap::PERMISSION_VIEW, BasicPermissionMap::PERMISSION_EDIT]
+                );
+
+                if (!$hasPermission) {
                     throw new AccessDeniedException(
                         'You do not get ' . $acl->getPermission() . ' permission for this object. ' .
                         'Entity is not applicable for current organization.'

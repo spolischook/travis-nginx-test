@@ -120,3 +120,23 @@
         {% endif %}
     {% endfor %}
 {% endmacro %}
+
+{% block oropro_organization_label_widget %}
+    {% spaceless %}
+        {% for choice in choices %}
+            {% if choice.value == value|default('NONE') %}
+                <div class="control-label">{{ choice.label }}</div>
+            {% endif %}
+        {% endfor %}
+        <script type="text/javascript">
+            require(['jquery'], function($) {
+                $(function() {
+                    var select2_fields = $('form#{{ form.parent.vars.id }} :input.select2');
+                    $.each(select2_fields, function(index, el) {
+                        $(el).data('select2_query_additional_params', {'_sa_org_id': {{ value }}});
+                    });
+                });
+            });
+        </script>
+    {% endspaceless %}
+{% endblock %}
