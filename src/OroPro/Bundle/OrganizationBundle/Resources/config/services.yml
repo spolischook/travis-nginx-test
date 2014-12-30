@@ -14,6 +14,9 @@ parameters:
     oropro_organization.exception.organization_aware_listener.class: OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareExceptionListener
     oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
 
+    oropro_organization.event_listener.authefication.class:                 OroPro\Bundle\OrganizationBundle\EventListener\AuthenticationListener
+    oropro_organization.content_provider.organization_switch.class:         OroPro\Bundle\OrganizationBundle\ContentProvider\OrganizationSwitchContentProvider
+
     # Overrides
     oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener
     oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
@@ -116,3 +119,20 @@ services:
            - @oropro_organization.system_mode_org_provider
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    oropro_organization.event_listener.authefication:
+        class: %oropro_organization.event_listener.authefication.class%
+        arguments:
+            - @doctrine
+            - @session
+        tags:
+            - { name: kernel.event_listener, event: security.authentication.success, method: onAuthenticationSuccess }
+            - { name: kernel.event_listener, event: oro_security.event.organization_switch.after, method: onOrganizationSwitchAfter }
+            - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
+
+    oropro_organization.content_provider.organization_switch:
+        class: %oropro_organization.content_provider.organization_switch.class%
+        arguments:
+            - @twig
+        tags:
+            - { name: oro_ui.content_provider, enabled: false }
