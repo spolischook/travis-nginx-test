@@ -1,7 +1,5 @@
 /*global require*/
-require([
-    'oroui/js/app/controllers/base/controller'
-], function (BaseController) {
+require(['oroui/js/app/controllers/base/controller'], function (BaseController) {
     'use strict';
 
     /**

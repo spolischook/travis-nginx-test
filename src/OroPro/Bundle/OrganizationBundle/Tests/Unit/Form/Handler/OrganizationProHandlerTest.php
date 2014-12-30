@@ -1,4 +1,5 @@
 <?php
+
 namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
@@ -11,7 +12,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use OroPro\Bundle\OrganizationBundle\Form\Handler\OrganizationProHandler;
 
-
 class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Request */
@@ -20,7 +20,7 @@ class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|FormInterface */
     protected $form;
 
-    /** @var BusinessUnitHandler */
+    /** @var OrganizationProHandler */
     protected $handler;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager */
@@ -29,27 +29,29 @@ class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager */
     protected $securityContext;
 
-    /**
-     * @var BusinessUnit
-     */
+    /** @var Organization */
     protected $entity;
 
     protected function setUp()
     {
-        $this->manager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->request = new Request();
-        $this->form = $this->getMockBuilder('Symfony\Component\Form\Form')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->securityContext = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContextInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->manager         = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()->getMock();
+        $this->request         = new Request();
+        $this->form            = $this->getMock('Symfony\Component\Form\Test\FormInterface');
+        $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
 
         $this->entity  = new Organization();
-        $this->handler = new OrganizationProHandler($this->form, $this->request, $this->manager, $this->securityContext);
+        $this->handler = new OrganizationProHandler(
+            $this->form,
+            $this->request,
+            $this->manager,
+            $this->securityContext
+        );
+    }
+
+    protected function tearDown()
+    {
+        unset($this->handler, $this->entity, $this->securityContext, $this->form, $this->request, $this->manager);
     }
 
     public function testProcessValidData()
@@ -64,51 +66,27 @@ class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
 
         $token = new Token($currentUser, uniqid(), uniqid());
 
-        $appendForm = $this->getMockBuilder('Symfony\Component\Form\Form')->disableOriginalConstructor()->getMock();
-        $removeForm = $this->getMockBuilder('Symfony\Component\Form\Form')->disableOriginalConstructor()->getMock();
-
-        $this->form->expects($this->once())->method('setData')->with($this->entity);
-
-        $this->securityContext->expects($this->once())
-            ->method('getToken')
-            ->willReturn($token);
-
-        $this->form->expects($this->at(1))
-            ->method('get')
-            ->with('appendUsers')
-            ->willReturn($appendForm);
+        $appendForm = $this->getMock('Symfony\Component\Form\Test\FormInterface');
+        $removeForm = $this->getMock('Symfony\Component\Form\Test\FormInterface');
 
         $appendForm->expects($this->once())->method('setData')->with([$currentUser]);
+        $this->form->expects($this->at(1))->method('get')->with('appendUsers')->willReturn($appendForm);
 
-        $this->form->expects($this->once())
-            ->method('submit')
-            ->with($this->request);
+        $this->securityContext->expects($this->once())->method('getToken')->willReturn($token);
+
+        $this->form->expects($this->once())->method('setData')->with($this->entity);
+        $this->form->expects($this->once())->method('submit')->with($this->request);
+        $this->form->expects($this->once())->method('isValid')->willReturn(true);
 
         $this->request->setMethod('POST');
 
-        $this->form->expects($this->once())
-            ->method('isValid')
-            ->willReturn(true);
+        $appendForm->expects($this->once())->method('getData')->willReturn([$currentUser]);
+        $this->form->expects($this->at(4))->method('get')->with('appendUsers')->willReturn($appendForm);
 
-        $appendForm->expects($this->once())
-            ->method('getData')
-            ->willReturn([$currentUser]);
+        $removeForm->expects($this->once())->method('getData')->willReturn([$removedUser]);
+        $this->form->expects($this->at(5))->method('get')->with('removeUsers')->willReturn($removeForm);
 
-        $this->form->expects($this->at(4))
-            ->method('get')
-            ->with('appendUsers')
-            ->willReturn($appendForm);
-
-        $removeForm->expects($this->once())
-            ->method('getData')
-            ->willReturn([$removedUser]);
-        $this->form->expects($this->at(5))
-            ->method('get')
-            ->with('removeUsers')
-            ->willReturn($removeForm);
-
-        $this->manager->expects($this->once())
-            ->method('flush');
+        $this->manager->expects($this->once())->method('flush');
 
         $this->assertTrue($this->handler->process($this->entity));
 

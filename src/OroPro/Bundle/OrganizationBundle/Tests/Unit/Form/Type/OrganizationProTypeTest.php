@@ -2,22 +2,25 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Form\Type;
 
-use OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationProType;
 use Symfony\Component\Form\FormBuilder;
+
+use OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationProType;
 
 class OrganizationProTypeTest extends \PHPUnit_Framework_TestCase
 {
-
-    /** @var OrganizationType */
+    /** @var OrganizationProType */
     protected $formType;
 
     protected function setUp()
     {
         $securityContext = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor()->getMock();
+        $this->formType  = new OrganizationProType($securityContext);
+    }
 
-        $this->formType = new OrganizationProType($securityContext);
+    protected function tearDown()
+    {
+        unset($this->formType);
     }
 
     public function testBuildForm()
