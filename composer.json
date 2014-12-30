@@ -65,7 +65,8 @@
         "rhumsaa/uuid": "2.7.*",
         "oro/doctrine-extensions": "1.0.*",
         "elasticsearch/elasticsearch": "1.2.2",
-        "zfr/zfr-mailchimp": "~2.0"
+        "zfr/zfr-mailchimp": "~2.0",
+        "tinymce/tinymce": "4.1.*"
     },
     "scripts": {
         "post-install-cmd": [
