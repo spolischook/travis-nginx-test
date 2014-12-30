@@ -1,0 +1,5 @@
+config:
+    paths:
+        'oropro_organization/js/app/modules/organization-module': 'bundles/oroproorganization/js/app/modules/organization-module.js'
+    appmodules:
+        - oropro_organization/js/app/modules/organization-module
