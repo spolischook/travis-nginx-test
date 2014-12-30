@@ -12,6 +12,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Event\ExecuteActionEvent;
 use Oro\Bundle\WorkflowBundle\Event\StartTransitionEvent;
+use Oro\Bundle\WorkflowBundle\Model\Action\CreateEntity;
 use Oro\Bundle\WorkflowBundle\Model\Action\CreateRelatedEntity;
 
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
@@ -57,10 +58,12 @@ class WorkflowListener
     public function onBeforeAction(ExecuteActionEvent $event)
     {
         $currentOrg = $this->securityFacade->getOrganization();
-        if ($currentOrg && $currentOrg->getIsGlobal()) {
+        if ($currentOrg && $currentOrg->getIsGlobal() && $this->organizationProvider->getOrganization()) {
             $action  = $event->getAction();
             $context = $event->getContext();
-            if ($action instanceof CreateRelatedEntity && $context instanceof WorkflowItem) {
+            if (($action instanceof CreateRelatedEntity || $action instanceof CreateEntity)
+                && $context instanceof WorkflowItem
+            ) {
                 $entity            = $context->getEntity();
                 $entityClass       = $this->doctrineHelper->getEntityClass($entity);
                 $organizationField = $this->metadataProvider

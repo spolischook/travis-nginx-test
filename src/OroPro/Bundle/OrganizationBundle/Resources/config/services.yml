@@ -85,6 +85,7 @@ services:
             - @router
             - @oro_workflow.manager
             - @oro_security.owner.ownership_metadata_provider
+            - @oro_entity.routing_helper
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest}
 
