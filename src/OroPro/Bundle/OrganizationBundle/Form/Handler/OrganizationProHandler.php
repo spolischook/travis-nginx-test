@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -21,16 +23,25 @@ class OrganizationProHandler
     /** @var EntityManager */
     protected $manager;
 
+    /** @var SecurityContextInterface */
+    protected $securityContext;
+
     /**
-     * @param FormInterface $form
-     * @param Request       $request
-     * @param EntityManager $manager
+     * @param FormInterface            $form
+     * @param Request                  $request
+     * @param EntityManager            $manager
+     * @param SecurityContextInterface $securityContext
      */
-    public function __construct(FormInterface $form, Request $request, EntityManager $manager)
-    {
-        $this->form    = $form;
-        $this->request = $request;
-        $this->manager = $manager;
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        EntityManager $manager,
+        SecurityContextInterface $securityContext
+    ) {
+        $this->form            = $form;
+        $this->request         = $request;
+        $this->manager         = $manager;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -42,11 +53,17 @@ class OrganizationProHandler
     {
         $this->form->setData($entity);
 
+        $currentUser = $this->getUser();
+        if (!$entity->getId() && $currentUser) {
+            $this->form->get('appendUsers')->setData([$currentUser]);
+        }
+
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
             $this->form->submit($this->request);
             if ($this->form->isValid()) {
                 $appendUsers = $this->form->get('appendUsers')->getData();
                 $removeUsers = $this->form->get('removeUsers')->getData();
+
                 $this->onSuccess($entity, $appendUsers, $removeUsers);
 
                 return true;
@@ -79,7 +96,7 @@ class OrganizationProHandler
     protected function appendUsers(Organization $organization, array $users)
     {
         foreach ($users as $user) {
-            $user->addOrganization($organization);
+            $organization->addUser($user);
         }
     }
 
@@ -92,7 +109,25 @@ class OrganizationProHandler
     protected function removeUsers(Organization $organization, array $users)
     {
         foreach ($users as $user) {
-            $user->removeOrganization($organization);
+            $organization->removeUser($user);
         }
+    }
+
+    /**
+     * Get the current authenticated user
+     *
+     * @return User|null
+     */
+    protected function getUser()
+    {
+        $token = $this->securityContext->getToken();
+        if ($token instanceof TokenInterface) {
+            $user = $token->getUser();
+            if ($user instanceof User) {
+                return $user;
+            }
+        }
+
+        return null;
     }
 }

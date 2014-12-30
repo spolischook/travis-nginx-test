@@ -5,8 +5,11 @@ namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\EventListener;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 use Oro\Bundle\SecurityBundle\Event\OrganizationSwitchAfter;
 
@@ -148,8 +151,6 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->session->expects($this->at(0))->method('set')
             ->with(AuthenticationListener::MULTIORG_LOGIN_UNPREFERRED, true);
-        $this->session->expects($this->at(1))->method('set')
-            ->with(AuthenticationListener::PREFERRED_ORGANIZATION_NAME, $preferredOrganizationName);
 
         $event = new AuthenticationEvent($token);
         $this->assertNull($this->listener->onAuthenticationSuccess($event));
@@ -168,6 +169,52 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 
         $event = new OrganizationSwitchAfter($user, $organization);
         $this->listener->onOrganizationSwitchAfter($event);
+    }
+
+    /**
+     * @dataProvider interactiveLoginDataProvider
+     *
+     * @param TokenInterface $token
+     * @param string         $actualProviders
+     * @param string         $expectedProviders
+     */
+    public function testOnInteractiveLogin($token, $actualProviders, $expectedProviders)
+    {
+        $request = Request::create('');
+        $request->query->set('_enableContentProviders', $actualProviders);
+
+        $event = new InteractiveLoginEvent($request, $token);
+        $this->listener->onInteractiveLogin($event);
+
+        $this->assertEquals($expectedProviders, $request->get('_enableContentProviders'));
+    }
+
+    /**
+     * @return array
+     */
+    public function interactiveLoginDataProvider()
+    {
+        $token   = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $RMToken = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\RememberMeToken')
+            ->disableOriginalConstructor()->getMock();
+
+        return [
+            'regular token should be ignored'                           => [
+                '$token'             => $token,
+                '$actualProviders'   => '',
+                '$expectedProviders' => '',
+            ],
+            'remember me token, should force enable content provider'   => [
+                '$token'             => $RMToken,
+                '$actualProviders'   => '',
+                '$expectedProviders' => 'organization_switch',
+            ],
+            'remember me token, should not override existing providers' => [
+                '$token'             => $RMToken,
+                '$actualProviders'   => 'menu',
+                '$expectedProviders' => 'menu,organization_switch',
+            ],
+        ];
     }
 
     /**

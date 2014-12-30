@@ -51,6 +51,9 @@
         ]
     }] %}
 
+    {% set gridParameters = entityId ? {} : {'_parameters': {'data_in': [app.user.id]}} %}
+    {% set gridParameters = gridParameters|merge({organization_id: entityId}) %}
+
     {% set dataBlocks = dataBlocks|merge([{
         'title' : 'oro.organization.users.label'|trans,
         'subblocks':
@@ -59,7 +62,7 @@
                 'title' :  null,
                 'useSpan': false,
                 'data' : [
-                    dataGrid.renderGrid('organization-users-grid', {organization_id: entityId}, {cssClass: 'inner-grid'})
+                    dataGrid.renderGrid('organization-users-grid', gridParameters)
                 ]
             }
         ]

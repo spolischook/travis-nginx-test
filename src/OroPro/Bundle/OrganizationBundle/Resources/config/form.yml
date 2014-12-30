@@ -37,3 +37,4 @@ services:
             - @oro_organization.form.organization
             - @request
             - @doctrine.orm.entity_manager
+            - @security.context

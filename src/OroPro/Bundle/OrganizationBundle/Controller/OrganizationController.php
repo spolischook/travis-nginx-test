@@ -97,8 +97,14 @@ class OrganizationController extends Controller
             );
 
             return $this->get('oro_ui.router')->redirectAfterSave(
-                ['route' => 'oropro_organization_update', 'parameters' => ['id' => $entity->getId()]],
-                ['route' => 'oropro_organization_view', 'parameters' => ['id' => $entity->getId()]],
+                [
+                    'route' => 'oropro_organization_update',
+                    'parameters' => ['id' => $entity->getId(), '_enableContentProviders' => 'organization_switch']
+                ],
+                [
+                    'route' => 'oropro_organization_view',
+                    'parameters' => ['id' => $entity->getId(), '_enableContentProviders' => 'organization_switch']
+                ],
                 $entity
             );
         }

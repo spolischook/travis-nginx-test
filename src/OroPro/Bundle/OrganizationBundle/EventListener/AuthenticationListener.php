@@ -6,6 +6,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -19,8 +21,6 @@ class AuthenticationListener
 {
     const MULTIORG_LOGIN_FIRST       = 'oropro_organization_mlf';
     const MULTIORG_LOGIN_UNPREFERRED = 'oropro_organization_mlu';
-
-    const PREFERRED_ORGANIZATION_NAME = 'oropro_organization_pon';
 
     /** @var ManagerRegistry */
     protected $registry;
@@ -72,7 +72,6 @@ class AuthenticationListener
 
             // notify user that organization context currently activated is not expected preferred one
             $this->session->set(self::MULTIORG_LOGIN_UNPREFERRED, true);
-            $this->session->set(self::PREFERRED_ORGANIZATION_NAME, $preferredOrg->getName());
         } elseif ($organization) {
             // case if it's first login, just save preferred
             $this->getPreferredOrganizationRepository()->savePreferredOrganization($user, $organization);
@@ -95,6 +94,23 @@ class AuthenticationListener
         $repo = $this->getPreferredOrganizationRepository();
 
         $repo->updatePreferredOrganization($event->getUser(), $event->getOrganization());
+    }
+
+    /**
+     * Listen `security.interactive_login` see if user logged in via remember me than force update part of the page
+     *
+     * @param InteractiveLoginEvent $event
+     */
+    public function onInteractiveLogin(InteractiveLoginEvent $event)
+    {
+        if ($event->getAuthenticationToken() instanceof RememberMeToken) {
+            $providers = $event->getRequest()->get('_enableContentProviders', '');
+
+            $providers   = array_filter(explode(',', $providers));
+            $providers[] = 'organization_switch';
+
+            $event->getRequest()->query->set('_enableContentProviders', implode(',', array_unique($providers)));
+        }
     }
 
     /**
