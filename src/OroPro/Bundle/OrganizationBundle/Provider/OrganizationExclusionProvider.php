@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Oro\Bundle\EntityBundle\Provider\ExclusionProviderInterface;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
 class OrganizationExclusionProvider implements ExclusionProviderInterface
 {
@@ -16,14 +17,22 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
     /** @var ConfigProvider */
     protected $organizationConfigProvider;
 
+    /** @var SystemAccessModeOrganizationProvider */
+    protected $organizationProvider;
+
     /**
-     * @param ServiceLink $securityFacadeLink
-     * @param ConfigProvider $organizationConfigProvider
+     * @param ServiceLink                          $securityFacadeLink
+     * @param ConfigProvider                       $organizationConfigProvider
+     * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
-    public function __construct(ServiceLink $securityFacadeLink, ConfigProvider $organizationConfigProvider)
-    {
+    public function __construct(
+        ServiceLink $securityFacadeLink,
+        ConfigProvider $organizationConfigProvider,
+        SystemAccessModeOrganizationProvider $organizationProvider
+    ) {
         $this->securityFacadeLink         = $securityFacadeLink;
         $this->organizationConfigProvider = $organizationConfigProvider;
+        $this->organizationProvider       = $organizationProvider;
     }
 
     /**
@@ -63,9 +72,12 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
             if ($config->has('applicable')) {
                 $applicable = $config->get('applicable');
 
+                $organizationId = $this->organizationProvider->getOrganizationId() ? :
+                    $this->securityFacadeLink->getService()->getOrganizationId();
+
                 return !(
                     $applicable['all'] == true
-                    || in_array($this->securityFacadeLink->getService()->getOrganizationId(), $applicable['selective'])
+                    || in_array($organizationId, $applicable['selective'])
                 );
             }
         }

@@ -1,0 +1,3 @@
+{% if form.organization is defined and form.organization.vars.value is not iterable %}
+    {{ form_row(form.organization, {'label': label is not same as(false) ? label : ''}) }}
+{% endif %}

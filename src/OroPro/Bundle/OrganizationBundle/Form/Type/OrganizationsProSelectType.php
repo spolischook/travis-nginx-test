@@ -46,7 +46,10 @@ class OrganizationsProSelectType extends OrganizationsSelectType
     {
         $view->vars['show_organizations_selector'] = true;
 
-        $buTree = $this->buManager->getBusinessUnitRepo()->getOrganizationBusinessUnitsTree();
+        $buTree = $this->buManager->getBusinessUnitRepo()->getOrganizationBusinessUnitsTree(
+            null,
+            ['is_global' => 'DESC']
+        );
 
         $view->vars['organization_tree_ids'] = $buTree;
 

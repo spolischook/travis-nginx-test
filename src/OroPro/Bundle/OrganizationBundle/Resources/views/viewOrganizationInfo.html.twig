@@ -1,0 +1,4 @@
+{% set organizationInfo = oropro_entity_organization_info(entity) %}
+{% if organizationInfo is not null %}
+    &nbsp;({{ organizationInfo|raw }})
+{% endif %}

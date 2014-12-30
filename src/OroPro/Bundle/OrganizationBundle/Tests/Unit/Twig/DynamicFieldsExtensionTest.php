@@ -4,6 +4,7 @@ namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Twig;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+use OroPro\Bundle\OrganizationBundle\Tests\Unit\Fixture\GlobalOrganization;
 use OroPro\Bundle\OrganizationBundle\Twig\DynamicFieldsExtension;
 
 class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
@@ -17,9 +18,7 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $fieldTypeHelper;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $eventDispatcher;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
@@ -63,6 +62,13 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
             ->expects($this->exactly($calls))
             ->method('getOrganizationId')
             ->will($this->returnValue($organizationId));
+
+        $organization = new GlobalOrganization();
+        $organization->setIsGlobal(false);
+        $this->securityFacade
+            ->expects($this->exactly($calls))
+            ->method('getOrganization')
+            ->will($this->returnValue($organization));
 
         $this->prepareConfigs($entityName, $organizationConfig);
         $this->twigExtension = new DynamicFieldsExtension(
@@ -197,7 +203,7 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
             );
     }
 
-    protected function getEntityConfig($entityClassName, $scope, $values = array())
+    protected function getEntityConfig($entityClassName, $scope, $values = [])
     {
         $entityConfigId = new FieldConfigId($scope, $entityClassName, 'testField', 'string');
         $entityConfig   = new Config($entityConfigId);

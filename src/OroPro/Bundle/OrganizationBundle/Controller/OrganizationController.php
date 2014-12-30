@@ -111,7 +111,7 @@ class OrganizationController extends Controller
 
         return [
             'entity' => $entity,
-            'form' => $this->get('oro_organization.form.organization')->createView(),
+            'form'   => $this->get('oro_organization.form.organization')->createView(),
         ];
     }
 
@@ -133,5 +133,31 @@ class OrganizationController extends Controller
     public function usersAction(Organization $entity)
     {
         return ['entity' => $entity];
+    }
+
+    /**
+     * Organization select for new entity creation process
+     *
+     * @Route("/selector", name="oropro_organization_selector_form")
+     * @Template
+     */
+    public function organizationSelectAction()
+    {
+        $form = $this->createFormBuilder(null, ['csrf_protection' => false])
+            ->add(
+                '_sa_org_id',
+                'oro_organization_choice_select2',
+                [
+                    'mapped'   => false,
+                    'label'    => 'Organization',
+                    'multiple' => false
+                ]
+            )
+            ->setMethod('GET')
+            ->getForm();
+        return [
+            'form'       => $form->createView(),
+            'formAction' => $this->getRequest()->get('form_url')
+        ];
     }
 }
