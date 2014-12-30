@@ -28,15 +28,12 @@ class ReportNavigationListener extends NavigationListener
     {
         if (parent::checkAvailability($config)) {
             $applicable = $this->getOrganizationConfig($config)->get('applicable');
-            if ($applicable) {
-                $organizationId = $this->organizationProvider->getOrganizationId()
-                    ? : $this->securityFacade->getOrganizationId();
-
-                return (
+            return
+                $applicable
+                && (
                     $applicable['all'] == true
-                    || in_array($organizationId, $applicable['selective'])
+                    || in_array($this->securityFacade->getOrganizationId(), $applicable['selective'])
                 );
-            }
         }
 
         return false;
