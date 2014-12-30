@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% oro_title_set({params : {"%organization.name%": entity.name, "%entityName%": 'oro.organization.entity_label'|trans }}) %}
 
@@ -42,11 +43,30 @@
                     form_row(form.enabled),
                     form_row(form.name),
                     form_row(form.description),
+                    form_widget(form.appendUsers, {'id': 'organizationAppendUsers'}),
+                    form_widget(form.removeUsers, {'id': 'organizationRemoveUsers'}),
                     form.owner is defined ? form_row(form.owner) : '',
                 ]
             }
         ]
     }] %}
+
+    {% set gridParameters = entityId ? {} : {'_parameters': {'data_in': [app.user.id]}} %}
+    {% set gridParameters = gridParameters|merge({organization_id: entityId}) %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'oro.organization.users.label'|trans,
+        'subblocks':
+        [
+            {
+                'title' :  null,
+                'useSpan': false,
+                'data' : [
+                    dataGrid.renderGrid('organization-users-grid', gridParameters)
+                ]
+            }
+        ]
+    }]) %}
 
     {% set additionalData = [] %}
     {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
