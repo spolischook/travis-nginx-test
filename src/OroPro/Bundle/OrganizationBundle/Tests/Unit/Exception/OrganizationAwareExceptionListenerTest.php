@@ -2,12 +2,12 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Exception;
 
-
-use OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareException;
-use OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareExceptionListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+
+use OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareException;
+use OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareExceptionListener;
 
 class OrganizationAwareExceptionListenerTest extends \PHPUnit_Framework_TestCase
 {

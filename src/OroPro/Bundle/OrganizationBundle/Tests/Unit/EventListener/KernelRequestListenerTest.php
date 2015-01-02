@@ -3,14 +3,15 @@
 namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\EventListener;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+
 use OroPro\Bundle\OrganizationBundle\EventListener\KernelRequestListener;
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 use OroPro\Bundle\OrganizationBundle\Tests\Unit\Fixture\EntityWithOrganization;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class KernelRequestListenerTest extends \PHPUnit_Framework_TestCase
 {
