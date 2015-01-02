@@ -5,7 +5,9 @@ namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\EventListener;
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+
 use OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener;
+use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
 
 class EntityNavigationListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -46,6 +48,25 @@ class EntityNavigationListenerTest extends \PHPUnit_Framework_TestCase
             $this->configManager,
             $this->translator
         );
+    }
+
+    public function testCheckAvailabilityInSystemAccessOrg()
+    {
+        $entityName = 'Test\Entity\Entity1';
+        $organizationConfig  = $this->getEntityConfig(
+            $entityName,
+            'organization',
+            [ 'applicable' => ['all' => false, 'selective' => [1]] ]
+        );
+
+        $organization = new GlobalOrganization();
+        $organization->setId(1);
+
+        $this->securityFacade->expects($this->any())
+            ->method('getOrganization')
+            ->will($this->returnValue($organization));
+
+        $this->assertEquals(true, $this->listener->checkAvailability($organizationConfig));
     }
 
     /**
@@ -117,7 +138,7 @@ class EntityNavigationListenerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($organizationConfigProvider));
     }
 
-    protected function getEntityConfig($entityClassName, $scope, $values = array())
+    protected function getEntityConfig($entityClassName, $scope, $values = [])
     {
         $extend = [
             'is_extend' => true,

@@ -11,7 +11,7 @@ class AclProVoter extends AclVoter
      */
     protected function checkOrganizationContext($result)
     {
-        // in global mode we should not check entity organization
+        // in system access mode we should not check entity organization
         if ($this->getSecurityToken()->getOrganizationContext()->getIsGlobal()) {
             return $result;
         }
