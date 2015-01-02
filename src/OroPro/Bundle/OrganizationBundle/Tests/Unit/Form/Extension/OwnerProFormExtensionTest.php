@@ -2,7 +2,6 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Form\Extension;
 
-
 use OroPro\Bundle\OrganizationBundle\Form\Extension\OwnerProFormExtension;
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 use OroPro\Bundle\OrganizationBundle\Tests\Unit\Fixture\GlobalOrganization;

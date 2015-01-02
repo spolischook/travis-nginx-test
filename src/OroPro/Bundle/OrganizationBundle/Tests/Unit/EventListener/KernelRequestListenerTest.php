@@ -56,7 +56,8 @@ class KernelRequestListenerTest extends \PHPUnit_Framework_TestCase
         $this->workflowManager      = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\WorkflowManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->metadataProvider     = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider')
+        $this->metadataProvider     = $this
+            ->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider')
             ->disableOriginalConstructor()
             ->getMock();
         $this->routingHelper        = $this->getMockBuilder('Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper')
