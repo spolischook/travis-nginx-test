@@ -16,6 +16,7 @@ class LoadSystemAccessModeOrganizationData extends AbstractFixture
     {
         $organization = new Organization();
         $organization->setName('test system access org');
+        $organization->setEnabled(true);
         $organization->setIsGlobal(true);
 
         $manager->persist($organization);
