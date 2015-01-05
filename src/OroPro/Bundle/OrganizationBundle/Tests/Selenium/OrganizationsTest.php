@@ -2,7 +2,7 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Tests\Selenium;
 
-use OroPro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
+use Oro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
 use OroPro\Bundle\OrganizationBundle\Tests\Selenium\Pages\Organizations;
 
 class OrganizationsTest extends Selenium2TestCase
