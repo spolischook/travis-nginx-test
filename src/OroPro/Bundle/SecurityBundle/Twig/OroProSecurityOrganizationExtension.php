@@ -4,6 +4,7 @@ namespace OroPro\Bundle\SecurityBundle\Twig;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\Twig\OroSecurityOrganizationExtension;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class OroProSecurityOrganizationExtension extends OroSecurityOrganizationExtension
 {
@@ -16,7 +17,7 @@ class OroProSecurityOrganizationExtension extends OroSecurityOrganizationExtensi
         $result = [];
         $token = $this->securityContext->getToken();
         $user = $token ? $token->getUser() : null;
-        if ($user) {
+        if (is_object($user) && $user instanceof User) {
             $userOrganizations = $user->getOrganizations(true)->toArray();
             if (!empty($userOrganizations)) {
                 usort(
