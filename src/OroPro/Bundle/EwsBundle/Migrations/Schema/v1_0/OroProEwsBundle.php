@@ -84,4 +84,3 @@ class OroProEwsBundle implements Migration
         $table->addColumn('ews_user_email', 'string', ['notnull' => false, 'length' => 255]);
     }
 }
-

@@ -90,8 +90,7 @@ class EntityAclProExtension extends EntityAclExtension
     protected function isGlobalMode()
     {
         $token = $this->contextLink->getService()->getToken();
-        if ($token instanceof OrganizationContextTokenInterface)
-        {
+        if ($token instanceof OrganizationContextTokenInterface) {
             return $token->getOrganizationContext()->getIsGlobal();
         }
 

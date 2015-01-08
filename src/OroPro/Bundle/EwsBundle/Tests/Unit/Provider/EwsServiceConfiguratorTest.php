@@ -67,4 +67,3 @@ class EwsServiceConfiguratorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->configurator->isIgnoreFailedResponseMessages());
     }
 }
-
