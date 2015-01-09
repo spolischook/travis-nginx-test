@@ -3,6 +3,12 @@
     "description": "OroCRM Enterprise",
     "homepage": "https://github.com/orocrm/crm-enterprise.git",
     "license": "Commercial",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocrm.com"
+        }
+    ],
     "autoload": {
         "psr-0": {
             "OroCRMPro\\Bundle": "src/",
