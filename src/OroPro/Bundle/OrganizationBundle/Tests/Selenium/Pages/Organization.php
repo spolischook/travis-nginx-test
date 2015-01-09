@@ -61,4 +61,63 @@ class Organization extends AbstractPageEntity
         $this->waitForAjax();
         return $this;
     }
+
+    /**
+     * @return $this
+     */
+    public function checkFirstLoginTooltip()
+    {
+        $this->assertElementPresent(
+            "//div[@class='oropro-organization-notice-holder']//div[@class='popover-content']".
+            "[contains(., 'You logged in to')]",
+            'First log-in tooltip are not displayed for user'
+        );
+
+        return $this;
+    }
+
+    /**
+     * @param $organization
+     * @return $this
+     */
+    public function switchOrganization($organization)
+    {
+        $this->test->byXpath(
+            "//div[@id='organization-switcher']/div/div[@class='dropdown header-utility-dropdown']/i"
+        )->click();
+        $this->waitForAjax();
+        $this->test->byXPath(
+            "//div[@id='organization-switcher']/div/div/ul[@class='dropdown-menu dropdown-organization-switcher']".
+            "/li[contains(., '{$organization}')]/a"
+        )->click();
+        $this->waitPageToLoad();
+        $this->waitForAjax();
+
+        return $this;
+    }
+
+    /**
+     * @param $organization
+     * @return $this
+     */
+    public function checkCurrentOrganization($organization)
+    {
+        $this->assertElementPresent("//div[@class='nav top-search fix_logo']//a[@title='{$organization}']");
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function checkOrganizationNotAvailableTooltip()
+    {
+        $this->assertElementPresent(
+            "//div[@class='oropro-organization-notice-holder']//div[@class='popover-content']".
+            "[contains(., 'The latest organization used is no longer available')]",
+            'Organization not available tooltip are not displayed for user'
+        );
+
+        return $this;
+    }
 }
