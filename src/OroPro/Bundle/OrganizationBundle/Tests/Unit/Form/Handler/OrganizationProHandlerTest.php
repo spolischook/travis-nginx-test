@@ -29,29 +29,46 @@ class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager */
     protected $securityContext;
 
+    /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager */
+    protected $stateProvider;
+
     /** @var Organization */
     protected $entity;
 
     protected function setUp()
     {
         $this->manager         = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->request         = new Request();
         $this->form            = $this->getMock('Symfony\Component\Form\Test\FormInterface');
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+
+        $this->stateProvider = $this->getMockBuilder('OroCRM\Bundle\ChannelBundle\Provider\StateProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->entity  = new Organization();
         $this->handler = new OrganizationProHandler(
             $this->form,
             $this->request,
             $this->manager,
-            $this->securityContext
+            $this->securityContext,
+            $this->stateProvider
         );
     }
 
     protected function tearDown()
     {
-        unset($this->handler, $this->entity, $this->securityContext, $this->form, $this->request, $this->manager);
+        unset(
+            $this->handler,
+            $this->entity,
+            $this->securityContext,
+            $this->form,
+            $this->request,
+            $this->manager,
+            $this->stateProvider
+        );
     }
 
     public function testProcessValidData()
@@ -87,6 +104,9 @@ class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
         $this->form->expects($this->at(5))->method('get')->with('removeUsers')->willReturn($removeForm);
 
         $this->manager->expects($this->once())->method('flush');
+        $this->stateProvider->expects($this->once())
+            ->method('clearOrganizationCache')
+            ->with($this->entity->getId());
 
         $this->assertTrue($this->handler->process($this->entity));
 

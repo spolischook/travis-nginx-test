@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
+use OroCRM\Bundle\ChannelBundle\Provider\StateProvider;
+
 class OrganizationProHandler
 {
     /** @var FormInterface */
@@ -26,22 +28,28 @@ class OrganizationProHandler
     /** @var SecurityContextInterface */
     protected $securityContext;
 
+    /** @var StateProvider */
+    protected $stateProvider;
+
     /**
      * @param FormInterface            $form
      * @param Request                  $request
      * @param EntityManager            $manager
      * @param SecurityContextInterface $securityContext
+     * @param StateProvider            $stateProvider
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         EntityManager $manager,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        StateProvider $stateProvider
     ) {
         $this->form            = $form;
         $this->request         = $request;
         $this->manager         = $manager;
         $this->securityContext = $securityContext;
+        $this->stateProvider   = $stateProvider;
     }
 
     /**
@@ -85,6 +93,9 @@ class OrganizationProHandler
 
         $this->manager->persist($entity);
         $this->manager->flush();
+
+        //clear channels entities state cache
+        $this->stateProvider->clearOrganizationCache($entity->getId());
     }
 
     /**

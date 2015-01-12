@@ -96,14 +96,18 @@ class OrganizationController extends Controller
                 $this->get('translator')->trans('oropro.organization.controller.message.saved')
             );
 
+            $urlParameters = [
+                'id' => $entity->getId(),
+                '_enableContentProviders' => 'organization_switch,mainMenu'
+            ];
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
                     'route' => 'oropro_organization_update',
-                    'parameters' => ['id' => $entity->getId(), '_enableContentProviders' => 'organization_switch']
+                    'parameters' => $urlParameters
                 ],
                 [
                     'route' => 'oropro_organization_view',
-                    'parameters' => ['id' => $entity->getId(), '_enableContentProviders' => 'organization_switch']
+                    'parameters' => $urlParameters
                 ],
                 $entity
             );

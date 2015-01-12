@@ -63,4 +63,5 @@ services:
             - @request
             - @doctrine.orm.entity_manager
             - @security.context
+            - @orocrm_channel.provider.state_provider
 
