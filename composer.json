@@ -66,7 +66,8 @@
         "oro/doctrine-extensions": "1.0.*",
         "elasticsearch/elasticsearch": "1.2.2",
         "zfr/zfr-mailchimp": "~2.0",
-        "tinymce/tinymce": "4.1.*"
+        "tinymce/tinymce": "4.1.*",
+        "ezyang/htmlpurifier": "4.6.0"
     },
     "scripts": {
         "post-install-cmd": [
