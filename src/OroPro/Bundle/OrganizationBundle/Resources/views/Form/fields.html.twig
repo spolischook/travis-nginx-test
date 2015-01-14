@@ -129,12 +129,26 @@
             {% endif %}
         {% endfor %}
         <script type="text/javascript">
-            require(['jquery'], function($) {
+            require(['jquery', 'oroui/js/mediator'], function($, mediator) {
                 $(function() {
                     var select2_fields = $('form#{{ form.parent.vars.id }} :input.select2');
                     $.each(select2_fields, function(index, el) {
                         $(el).data('select2_query_additional_params', {'_sa_org_id': {{ value }}});
                     });
+
+                    function checkFormLinks () {
+                        var form_links = $('form#{{ form.parent.vars.id }} a, form#{{ form.parent.vars.id }} :button');
+                        $.each(form_links, function(index, el) {
+                            if ($(el).data('purpose') == 'open-form-widget'
+                                || $(el).data('purpose') == 'open-dialog-widget'
+                            ) {
+                                $(el).data('route_additional_params', {'_sa_org_id': {{ value }}});
+                            }
+                        });
+                    }
+
+                    checkFormLinks();
+                    mediator.on('page:afterChange', checkFormLinks);
                 });
             });
         </script>
