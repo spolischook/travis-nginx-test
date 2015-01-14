@@ -1,0 +1,2 @@
+bundles:
+    - { name: OroPro\Bundle\NoteBundle\OroProNoteBundle, priority: 100}

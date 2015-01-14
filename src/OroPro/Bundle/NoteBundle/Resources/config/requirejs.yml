@@ -1,0 +1,8 @@
+config:
+    map:
+        '*':
+            'oronote/js/app/views/notes-view': 'oropronote/js/app/views/notes-view'
+        'oropronote/js/app/views/notes-view':
+            'oronote/js/app/views/notes-view': 'oronote/js/app/views/notes-view'
+    paths:
+        'oropronote/js/app/views/notes-view': 'bundles/oropronote/js/app/views/notes-view.js'
