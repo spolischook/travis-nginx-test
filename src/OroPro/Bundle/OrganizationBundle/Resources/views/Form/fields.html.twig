@@ -148,7 +148,7 @@
                     }
 
                     checkFormLinks();
-                    mediator.once('page:afterChange', checkFormLinks());
+                    mediator.on('page:afterChange', checkFormLinks);
                 });
             });
         </script>
