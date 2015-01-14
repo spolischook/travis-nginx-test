@@ -59,8 +59,11 @@ class OrganizationColumnExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
+        $organization = $this->securityFacade->getOrganization();
+
         return
-            $this->securityFacade->getOrganization()->getIsGlobal()
+            $organization
+            && $organization->getIsGlobal()
             && (bool)$this->getOrganizationField($config);
     }
 
