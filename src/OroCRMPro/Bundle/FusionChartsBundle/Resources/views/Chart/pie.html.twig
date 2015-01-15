@@ -44,8 +44,8 @@
 
         <script type="text/javascript">
             require(
-                    ['jquery', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
-                    function ($) {
+                    ['jquery', 'oroui/js/mediator', 'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'],
+                    function ($, mediator) {
                         $('#{{ containerId }}-chart').insertFusionCharts({
                             type: 'Pie3D',
                             renderer: 'JavaScript',
@@ -54,6 +54,9 @@
                             width: '100%',
                             height: 300,
                             id: '{{ containerId }}'
+                        });
+                        mediator.once('page:beforeChange', function () {
+                            $('#{{ containerId }}-chart').disposeFusionCharts();
                         });
                     }
             );

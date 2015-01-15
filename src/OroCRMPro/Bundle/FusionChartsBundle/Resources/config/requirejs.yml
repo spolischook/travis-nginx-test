@@ -23,6 +23,13 @@ config:
         'orocrmprofusioncharts/lib/FusionChartsExportComponent':
             deps:
                 - 'orocrmprofusioncharts/lib/FusionCharts'
+    map:
+        '*':
+            'orocrmprofusioncharts/lib/FusionCharts': 'orocrmprofusioncharts/lib/FusionCharts.extend'
+        'orocrmprofusioncharts/lib/FusionCharts.extend':
+            'orocrmprofusioncharts/lib/FusionCharts': 'orocrmprofusioncharts/lib/FusionCharts'
+        'orocrmprofusioncharts/lib/FusionCharts.HC':
+            'orocrmprofusioncharts/lib/FusionCharts': 'orocrmprofusioncharts/lib/FusionCharts'
     paths:
         'orocrmprofusioncharts/lib/FusionCharts.HC.Charts': 'bundles/orocrmprofusioncharts/lib/FusionCharts.HC.Charts.js'
         'orocrmprofusioncharts/lib/FusionCharts.HC.Widgets': 'bundles/orocrmprofusioncharts/lib/FusionCharts.HC.Widgets.js'

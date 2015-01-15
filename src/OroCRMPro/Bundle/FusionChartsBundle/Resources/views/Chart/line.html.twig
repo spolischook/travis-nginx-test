@@ -55,10 +55,11 @@
         require(
                 [
                     'jquery',
+                    'oroui/js/mediator',
                     'orocrmprofusioncharts/js/fusion-data-handler',
                     'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'
                 ],
-                function ($, dataHandler) {
+                function ($, mediator, dataHandler) {
                     var schema = {{ options.data_schema|json_encode|raw }};
                     var dataSource = {{ json|json_encode|raw }};
                     var isCurrencyPrepend = {{ oro_currency_symbol_prepend()|json_encode|raw }};
@@ -86,6 +87,9 @@
                         width: '100%',
                         height: 300,
                         id: '{{ containerId }}'
+                    });
+                    mediator.once('page:beforeChange', function () {
+                        $('#{{ containerId }}-chart').disposeFusionCharts();
                     });
                 }
         );
