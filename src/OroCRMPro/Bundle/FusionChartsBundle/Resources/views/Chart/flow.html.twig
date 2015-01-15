@@ -86,6 +86,9 @@
                         mediator.execute('showLoading');
                     });
                     chart.render();
+                    mediator.once('page:beforeChange', function () {
+                        chart.dispose();
+                    });
                 }
         );
     </script>
