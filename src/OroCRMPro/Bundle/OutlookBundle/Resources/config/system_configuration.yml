@@ -94,16 +94,14 @@ oro_system_configuration:
 
         oro_crm_pro_outlook.addin_download:
             ui_only: true
-            type: oro_link_type # @todo BAP-4696 use template
-            priority: 0
+            type: oro_download_links_type
             options:
                 label: orocrmpro_outlook.form.addin_label
                 required: false
                 resettable: false
-                route: /bundles/orocrmprooutlook/files/OroCRMOutlookAddin.msi
-                acl: ''
-                isPath: true
-                title: ''
+                source:
+                   path: '%assetic.read_from%/bundles/orocrmprooutlook/files/*.msi'
+                   url:  'bundles/orocrmprooutlook/files'
                 class: no-hash
                 tooltip: orocrmpro_outlook.form.tooltip.addin
 
