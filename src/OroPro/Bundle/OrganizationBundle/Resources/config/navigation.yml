@@ -16,6 +16,7 @@ oro_menu_config:
                                 oro_organization_list: ~
 
 oro_titles:
+    oropro_organization_selector_form: oropro.organization.select_organization_action.title
     oropro_organization_index:  ~
     oropro_organization_update: '%%organization.name%% - Edit'
     oropro_organization_create: 'Create Organization'
