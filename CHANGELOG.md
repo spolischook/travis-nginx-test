@@ -1,3 +1,14 @@
+CHANGELOG for 1.8.0
+===================
+This changelog references the relevant changes (new features, changes and bugs) done in 1.8.0 versions.
+* 1.8.0 (2015-01-19)
+ * Global access to data from multiple organizations.
+This feature provides the ability to access all existing data across all organizations through a specially designated "System access" organization. While in this organization, users will be able to view, edit, and delete any entity record from any organization, as well as create new ones.
+To designate an organization with the system access, go to System → User management → Organizations, and check the respective checkbox on the Edit form of desired organization. Only one System access organization is allowed.
+Please note that simply assigning users to the System access organization will not necessarily grant them access to all entity data. In order to access and manage entity records in the System access organization users have to have System level permissions on the respective actions in their role. If their permissions is lower than System (e.g. Organization, or Business Unit), they will be able to switch to the System access organization but won't have the access to entity records.
+ * Optimized user login experience in multi-organizational environment.
+The user login UI has been reorganized in order to provide more clean user experience. The organization selector has been removed, and the user is now logged in to the last used organization, which is remembered across sessions. If the organization is not available for some reason, or in case of the very first login, the user is logged in to the first organization available to him, and a prompt to use organization selector is displayed.
+
 CHANGELOG for 1.7.0
 ===================
 This changelog references the relevant changes (new features, changes and bugs) done in 1.7.0 versions.
