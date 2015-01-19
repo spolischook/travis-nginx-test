@@ -100,7 +100,7 @@ oro_system_configuration:
                 required: false
                 resettable: false
                 source:
-                   path: '%assetic.read_from%/bundles/orocrmprooutlook/files/*.msi'
+                   path: '%assetic.read_from%/bundles/orocrmprooutlook/files/*.*'
                    url:  'bundles/orocrmprooutlook/files'
                 class: no-hash
                 tooltip: orocrmpro_outlook.form.tooltip.addin
