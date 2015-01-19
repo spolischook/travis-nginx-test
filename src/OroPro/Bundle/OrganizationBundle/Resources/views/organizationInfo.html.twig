@@ -1,21 +1,32 @@
 ({{ organization.name }})
 <input type="hidden" value="{{ organization.id }}" name="_sa_org_id" id="_sa_org_id" />
 <script type="text/javascript">
-    require(['jquery'], function($) {
+    require(['jquery', 'underscore'], function($, _) {
         'use strict';
         $(function() {
-            var _sa_org_id = $('input#_sa_org_id').val();
-            if (_sa_org_id) {
+            var saOrgId = $('input#_sa_org_id').val();
+            if (saOrgId) {
+                var saOrgParam = {
+                    '_sa_org_id': saOrgId
+                };
+
                 $('#container .navigation a').each(function () {
                     if ($(this).data('url')) {
-                        var url = $(this).data('url') +
-                                ($(this).data('url').indexOf('?') == -1 ? '?' : '&') +
-                                '_sa_org_id=' + _sa_org_id;
+                        var url = $(this).data('url')
+                                + ($(this).data('url').indexOf('?') == -1 ? '?' : '&')
+                                + $.param(saOrgParam);
                         $(this).data('url', url);
-                    } else if ($(this).hasClass('action-link') && $(this).attr('href')) {
-                        var url = $(this).attr('href') +
-                                ($(this).attr('href').indexOf('?') == -1 ? '?' : '&') +
-                                '_sa_org_id=' + _sa_org_id;
+                    }
+                    else if ($(this).data('purpose') == 'open-dialog-widget') {
+                        $(this).data(
+                            'route_additional_params',
+                            _.extend($(this).data('route_additional_params') || {}, saOrgParam)
+                        );
+                    }
+                    else if ($(this).hasClass('action-link') && $(this).attr('href')) {
+                        var url = $(this).attr('href')
+                                + ($(this).attr('href').indexOf('?') == -1 ? '?' : '&')
+                                + $.param(saOrgParam);
                         $(this).attr('href', url);
                     }
                 });
