@@ -1,0 +1,4 @@
+oropro:
+    organization_config:
+        grid.config: Configure
+        organization_configuration.label : Organization configuration
