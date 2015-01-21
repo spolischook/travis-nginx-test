@@ -18,7 +18,7 @@ class OrganizationGridListener
             '[properties][config_link]',
             [
                 'type'   => 'url',
-                'route'  => 'oropro_config_configuration_organization',
+                'route'  => 'oropro_organization_config',
                 'params' => ['id']
             ]
         );

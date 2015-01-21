@@ -15,7 +15,7 @@ class ConfigurationController extends Controller
     /**
      * @Route(
      *      "/organization/{id}/{activeGroup}/{activeSubGroup}",
-     *      name="oropro_config_configuration_organization",
+     *      name="oropro_organization_config",
      *      requirements={"id"="\d+"},
      *      defaults={"activeGroup" = null, "activeSubGroup" = null}
      * )

@@ -29,7 +29,7 @@ class OrganizationGridListenerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             [
                 'type'   => 'url',
-                'route'  => 'oropro_config_configuration_organization',
+                'route'  => 'oropro_organization_config',
                 'params' => ['id']
             ],
             $gridConfig->offsetGetByPath('[properties][config_link]')

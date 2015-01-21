@@ -1,2 +1,2 @@
 oro_titles:
-    oropro_config_configuration_organization: '%%organization.name%% - Configuration'
+    oropro_organization_config: '%%organization.name%% - Configuration'
