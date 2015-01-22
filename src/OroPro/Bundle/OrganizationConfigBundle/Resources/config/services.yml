@@ -1,6 +1,7 @@
 parameters:
   oropro_organization_config.placeholder.filter.class: OroPro\Bundle\OrganizationConfigBundle\Placeholder\PlaceholderFilter
   oropro_organization_config.event_listener.organization_grid_listener.class: OroPro\Bundle\OrganizationConfigBundle\EventListener\OrganizationGridListener
+  oropro_organization_config.provider.organization_configuration.form_provider.class: OroPro\Bundle\OrganizationConfigBundle\Provider\OrganizationConfigurationFormProvider
 
 services:
   oropro_organization_config.placeholder.filter:
@@ -10,3 +11,13 @@ services:
       class: %oropro_organization_config.event_listener.organization_grid_listener.class%
       tags:
           - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.organization-grid, method: onBuildBefore }
+
+  oropro_organization_config.provider.form_provider:
+      class: %oropro_organization_config.provider.organization_configuration.form_provider.class%
+      arguments:
+          - []
+          - @form.factory
+          - @oro_security.security_facade
+      tags:
+          -  { name: oro_config.configuration_provider, scope: organization }
+      lazy: true
