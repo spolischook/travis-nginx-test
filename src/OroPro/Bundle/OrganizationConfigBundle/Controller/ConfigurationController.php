@@ -34,7 +34,13 @@ class ConfigurationController extends Controller
         if ($activeSubGroup !== null) {
             $form = $provider->getForm($activeSubGroup);
 
-            if ($this->get('oro_config.form.handler.config')->process($form, $this->getRequest())) {
+            $manager = $this->get('oro_config.organization');
+            $manager->setScopeId($entity->getId());
+
+            if ($this->get('oro_config.form.handler.config')
+                ->setConfigManager($manager)
+                ->process($form, $this->getRequest())
+            ) {
                 $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('oro.config.controller.config.saved.message')
@@ -46,6 +52,8 @@ class ConfigurationController extends Controller
 
                 $sender->send($sender->getGenerator()->generate($taggableData));
             }
+
+            $manager->setScopeId();
         }
 
         return array(

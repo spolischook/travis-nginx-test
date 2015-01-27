@@ -2,7 +2,7 @@ parameters:
   oropro_organization_config.placeholder.filter.class: OroPro\Bundle\OrganizationConfigBundle\Placeholder\PlaceholderFilter
   oropro_organization_config.event_listener.organization_grid_listener.class: OroPro\Bundle\OrganizationConfigBundle\EventListener\OrganizationGridListener
   oropro_organization_config.provider.organization_configuration.form_provider.class: OroPro\Bundle\OrganizationConfigBundle\Provider\OrganizationConfigurationFormProvider
-
+  oropro_organization_config.organization.class: OroPro\Bundle\OrganizationConfigBundle\Config\OrganizationScopeManager
 services:
   oropro_organization_config.placeholder.filter:
       class: %oropro_organization_config.placeholder.filter.class%
@@ -21,3 +21,23 @@ services:
       tags:
           -  { name: oro_config.configuration_provider, scope: organization }
       lazy: true
+
+  oropro_organization_config.scope.organization:
+      class:                      %oropro_organization_config.organization.class%
+      arguments:
+          - @event_dispatcher
+          - @doctrine.orm.entity_manager
+          - @oro_config.config_definition_bag
+      calls:
+          - [setSecurity, ["@oro_security.security_facade"]]
+      tags:
+          - { name: oro_config.scope, scope: organization, priority: 0 }
+
+#  oro_config.organization:
+#      class:                        %oro_config.organization.class%
+#      arguments:
+#         - @event_dispatcher
+#         - @doctrine.orm.entity_manager
+#         - @oro_config.config_definition_bag
+#      calls:
+#           - [setSecurity, ["@security.context"]]

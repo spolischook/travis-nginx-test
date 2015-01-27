@@ -44,6 +44,8 @@ oro_system_configuration:
                                   grid_settings:
                                       children:
                                           - oro_data_grid.default_per_page
+                                          - oro_entity_pagination.enabled
+                                          - oro_entity_pagination.limit
                                   calendar_settings:
                                       children:
                                           - oro_calendar.calendar_colors
