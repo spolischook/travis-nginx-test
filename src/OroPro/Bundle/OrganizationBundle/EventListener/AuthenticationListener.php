@@ -9,10 +9,13 @@ use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 use Oro\Bundle\SecurityBundle\Event\OrganizationSwitchAfter;
 use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
+
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Security\WsseToken;
 
 use OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization;
 use OroPro\Bundle\OrganizationBundle\Entity\Repository\UserPreferredOrganizationRepository;
@@ -53,6 +56,13 @@ class AuthenticationListener
         $token = $event->getAuthenticationToken();
         if (!$token instanceof OrganizationContextTokenInterface) {
             return false;
+        }
+
+        /**
+         * In case of API request organization should not be changed.
+         */
+        if ($token instanceof WsseToken) {
+            return true;
         }
 
         /** @var User $user */
