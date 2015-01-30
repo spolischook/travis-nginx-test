@@ -15,4 +15,12 @@ class OrganizationConfigurationFormProvider extends SystemConfigurationFormProvi
     {
         return $this->getTreeData(self::ORGANIZATION_TREE_NAME, self::CORRECT_FIELDS_NESTING_LEVEL);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getParentCheckboxLabel()
+    {
+        return 'oropro.organization_config.use_default';
+    }
 }
