@@ -19,25 +19,15 @@ services:
           - @form.factory
           - @oro_security.security_facade
       tags:
-          -  { name: oro_config.configuration_provider, scope: organization }
+          -  { name: oro_config.configuration_provider }
       lazy: true
 
   oropro_organization_config.scope.organization:
       class:                      %oropro_organization_config.organization.class%
       arguments:
-          - @event_dispatcher
           - @doctrine.orm.entity_manager
           - @oro_config.config_definition_bag
       calls:
           - [setSecurity, ["@oro_security.security_facade"]]
       tags:
           - { name: oro_config.scope, scope: organization, priority: 0 }
-
-#  oro_config.organization:
-#      class:                        %oro_config.organization.class%
-#      arguments:
-#         - @event_dispatcher
-#         - @doctrine.orm.entity_manager
-#         - @oro_config.config_definition_bag
-#      calls:
-#           - [setSecurity, ["@security.context"]]
