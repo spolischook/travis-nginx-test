@@ -8,10 +8,15 @@ use Symfony\Component\Form\FormEvents;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Form\Extension\OrganizationFormExtension;
+
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
+
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+
+use Oro\Bundle\UserBundle\Security\WsseToken;
 
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 use OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareException;
@@ -70,6 +75,17 @@ class OrganizationProFormExtension extends OrganizationFormExtension
     {
         $currentOrganization = $this->securityFacade->getOrganization();
         if ($currentOrganization && $currentOrganization->getIsGlobal()) {
+            /**
+             * In case of API request for SystemAccessMode organization we do not need defined organization for record.
+             * The organization from the token itself will be used.
+             */
+            $token = $this->securityFacade->getToken();
+            if ($token instanceof WsseToken) {
+                $this->organizationProvider->setOrganization($token->getOrganizationContext());
+
+                return;
+            }
+
             if ($event->getForm()->getParent() === null && is_object($event->getData())) {
                 $entity = $event->getData();
                 list ($organizationField, $entityId) = $this->getEntityInfo($entity);
