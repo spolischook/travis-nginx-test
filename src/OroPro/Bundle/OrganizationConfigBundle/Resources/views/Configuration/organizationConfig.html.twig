@@ -1,24 +1,25 @@
-{% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as macros %}
+{% extends 'OroConfigBundle::configPage.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 
-{% oro_title_set({params : {"%organization.name%": organization.name|default('N/A')} }) %}
+{% oro_title_set({params : {"%organization%": entity.name }}) %}
 
-{% block pageHeader %}
-    {% set breadcrumbs = {
-        'entity':       entity,
-        'indexPath':    path('oropro_organization_index'),
-        'indexLabel':   'oro.organization.entity_plural_label'|trans,
-        'entityTitle':  entity.name|default('N/A'),
-        'additional': [{
-            'indexLabel' : 'oropro.organization_config.organization_configuration.label'|trans
-        }]
-    } %}
-    {{ parent() }}
-{% endblock pageHeader %}
+{% set pageTitle = [
+        UI.link({
+            'path': path('oropro_organization_index'),
+            'label': 'oro.organization.entity_plural_label'|trans
+        }),
+        UI.link({
+            'path': path('oropro_organization_view', {id: entity.id}),
+            'label': entity.name
+        }),
+        'oropro.organization_config.organization_configuration.label'|trans
+    ]
+%}
 
-{% block stats %}
-{% endblock stats %}
-
-{% block content_data %}
-
-{% endblock content_data %}
+{% set formAction    = path(
+        'oropro_organization_config',
+        {id:entity.id, activeGroup: activeGroup, activeSubGroup: activeSubGroup}
+    )
+%}
+{% set routeName = 'oropro_organization_config' %}
+{% set routeParameters = {id: entity.id} %}

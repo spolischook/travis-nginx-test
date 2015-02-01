@@ -24,8 +24,44 @@ class ConfigurationController extends Controller
      */
     public function organizationConfigAction(Organization $entity, $activeGroup = null, $activeSubGroup = null)
     {
-        return [
-            'entity' => $entity
-        ];
+        $provider = $this->get('oropro_organization_config.provider.form_provider');
+
+        list($activeGroup, $activeSubGroup) = $provider->chooseActiveGroups($activeGroup, $activeSubGroup);
+
+        $tree = $provider->getTree();
+        $form = false;
+
+        if ($activeSubGroup !== null) {
+            $form = $provider->getForm($activeSubGroup);
+
+            $manager = $this->get('oro_config.organization');
+            $manager->setScopeId($entity->getId());
+
+            if ($this->get('oro_config.form.handler.config')
+                ->setConfigManager($manager)
+                ->process($form, $this->getRequest())
+            ) {
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.config.controller.config.saved.message')
+                );
+
+                // outdate content tags, it's only special case for generation that are not covered by NavigationBundle
+                $taggableData = ['name' => 'organization_configuration', 'params' => [$activeGroup, $activeSubGroup]];
+                $sender       = $this->get('oro_navigation.content.topic_sender');
+
+                $sender->send($sender->getGenerator()->generate($taggableData));
+            }
+
+            $manager->setScopeId();
+        }
+
+        return array(
+            'entity'         => $entity,
+            'data'           => $tree,
+            'form'           => $form ? $form->createView() : null,
+            'activeGroup'    => $activeGroup,
+            'activeSubGroup' => $activeSubGroup,
+        );
     }
 }
