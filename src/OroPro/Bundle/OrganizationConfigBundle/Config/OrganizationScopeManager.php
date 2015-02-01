@@ -25,7 +25,6 @@ class OrganizationScopeManager extends AbstractScopeManager
         return parent::getSettingValue($name, $full);
     }
 
-
     /**
      * @param SecurityFacade $securityFacade
      */
