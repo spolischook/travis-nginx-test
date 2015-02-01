@@ -47,7 +47,7 @@ services:
     oro_pro_ews.service_configurator:
         class: %oro_pro_ews.service_configurator.class%
         arguments:
-            - @oro_config.global
+            - @oro_config.user
             - @oro_security.encoder.mcrypt
             - %oro_pro_ews.wsdl_endpoint%
             - false                         # ignoreFailedResponseMessages
