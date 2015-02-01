@@ -18,7 +18,7 @@ class OrganizationScopeManager extends AbstractScopeManager
      */
     public function getSettingValue($name, $full = false)
     {
-        if (is_null($this->scopeId)) {
+        if (is_null($this->scopeId) || $this->scopeId == 0) {
             $this->setScopeId();
         }
 
