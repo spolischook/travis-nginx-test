@@ -455,7 +455,7 @@ class EwsEmailManager
      */
     protected function convertToEmail(EwsType\MessageType $msg)
     {
-        $email = new Email($this);
+        $email = new Email($this, $msg->IsRead);
         $email
             ->setId(new ItemId($msg->ItemId->Id, $msg->ItemId->ChangeKey))
             ->setSubject($msg->Subject)
@@ -465,6 +465,7 @@ class EwsEmailManager
             ->setInternalDate($this->convertToDateTime($msg->DateTimeCreated))
             ->setImportance($this->convertImportance($msg->Importance))
             ->setMessageId($msg->InternetMessageId)
+            ->setRefs($msg->References)
             ->setXMessageId($msg->ItemId->Id)
             ->setXThreadId($msg->ConversationId != null ? $msg->ConversationId->Id : null);
 

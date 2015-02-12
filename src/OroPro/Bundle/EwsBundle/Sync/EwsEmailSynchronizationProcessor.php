@@ -454,7 +454,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 );
                 $ewsEmail       = $this->createEwsEmail(
                     $email->getId(),
-                    $this->addEmail($email, $folder),
+                    $this->addEmail($email, $folder, $email->isSeen()),
                     $folderInfo->ewsFolder
                 );
                 $newEwsEmails[] = $ewsEmail;

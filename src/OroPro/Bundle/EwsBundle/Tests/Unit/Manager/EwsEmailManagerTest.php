@@ -105,6 +105,8 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $msg->Items->Message[0]->DateTimeSent = '2011-06-30 23:59:59 +0';
         $msg->Items->Message[0]->DateTimeReceived = '2012-06-30 23:59:59 +0';
         $msg->Items->Message[0]->DateTimeCreated = '2013-06-30 23:59:59 +0';
+        $msg->Items->Message[0]->IsRead = true;
+        $msg->Items->Message[0]->References = "<testId@test.tst>";
         $msg->Items->Message[0]->Importance = 'Normal';
         $msg->Items->Message[0]->InternetMessageId = 'MessageId';
         $msg->Items->Message[0]->ConversationId = new EwsType\ItemIdType();
@@ -244,6 +246,8 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('ChangeKey', $email->getId()->getChangeKey());
         $this->assertEquals('Subject', $email->getSubject());
         $this->assertEquals('fromEmail', $email->getFrom());
+        $this->assertEquals('<testId@test.tst>', $email->getRefs());
+        $this->assertTrue($email->isSeen());
         $this->assertEquals(
             new \DateTime('2011-06-30 23:59:59', new \DateTimeZone('UTC')),
             $email->getSentAt()
