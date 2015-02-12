@@ -480,15 +480,17 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $ewsFolder->setFolder($folder);
         $folderInfo = new FolderInfo($ewsFolder, true);
 
-        $email1 = new Email($this->manager, true);
+        $email1 = new Email($this->manager);
         $email1Id = new ItemId('test1', 'ck1');
         $email1->setId($email1Id);
+        $email1->setSeen(true);
         $email1->setMessageId('message_id');
 
-        $email2 = new Email($this->manager, false);
+        $email2 = new Email($this->manager);
         $email2Id = new ItemId('test2', 'ck2');
         $email2
             ->setId($email2Id)
+            ->setSeen(false)
             ->setSubject('subject2')
             ->setFrom('from_email')
             ->addToRecipient('to_email')

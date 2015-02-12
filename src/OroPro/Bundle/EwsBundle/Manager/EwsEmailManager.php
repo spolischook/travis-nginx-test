@@ -455,9 +455,10 @@ class EwsEmailManager
      */
     protected function convertToEmail(EwsType\MessageType $msg)
     {
-        $email = new Email($this, $msg->IsRead);
+        $email = new Email($this);
         $email
             ->setId(new ItemId($msg->ItemId->Id, $msg->ItemId->ChangeKey))
+            ->setSeen($msg->IsRead)
             ->setSubject($msg->Subject)
             ->setFrom($msg->From->Mailbox->EmailAddress)
             ->setSentAt($this->convertToDateTime($msg->DateTimeSent))
