@@ -19,9 +19,10 @@ class EmailTest extends \PHPUnit_Framework_TestCase
         $internalDate = new \DateTime('now');
         $seen = true;
 
-        $obj = new Email($manager, $seen);
+        $obj = new Email($manager);
         $obj
             ->setId($id)
+            ->setSeen($seen)
             ->setSubject('testSubject')
             ->setFrom('testFrom')
             ->addToRecipient('testToRecipient')

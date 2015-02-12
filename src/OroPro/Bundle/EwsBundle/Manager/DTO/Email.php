@@ -41,12 +41,10 @@ class Email extends EmailHeader
      * Constructor
      *
      * @param EwsEmailManager $manager
-     * @param bool $seen
      */
-    public function __construct(EwsEmailManager $manager, $seen = false)
+    public function __construct(EwsEmailManager $manager)
     {
         $this->manager = $manager;
-        $this->seen = (bool)$seen;
     }
 
     /**
@@ -139,6 +137,20 @@ class Email extends EmailHeader
         }
 
         return $this->attachments;
+    }
+
+    /**
+     * Set seen status
+     *
+     * @param bool $seen
+     *
+     * @return self
+     */
+    public function setSeen($seen)
+    {
+        $this->seen = (bool)$seen;
+
+        return $this;
     }
 
     /**
