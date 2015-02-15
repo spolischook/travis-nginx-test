@@ -356,6 +356,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $folder             = $folderInfo->ewsFolder->getFolder();
         $folderType         = $folderInfo->folderType;
         $lastSynchronizedAt = $folder->getSynchronizedAt();
+        $userId             = $this->getUserId($folder->getOrigin());
 
         $this->logger->notice(sprintf('Loading emails from "%s" folder ...', $folder->getFullName()));
         $this->logger->notice(sprintf('Query: "%s".', $searchQuery->convertToString()));
@@ -363,8 +364,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $emails = new EwsEmailIterator($this->manager, $searchQuery);
         $emails->setBatchSize(self::READ_BATCH_SIZE);
         $emails->setBatchCallback(
-            function ($batch) use ($folderType) {
-                $this->registerEmailsInKnownEmailAddressChecker($batch, $folderType);
+            function ($batch) {
+                $this->registerEmailsInKnownEmailAddressChecker($batch);
             }
         );
 
@@ -378,7 +379,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $this->logger->notice(sprintf('Processed %d emails ...', $processed));
             }
 
-            if (!$this->isApplicableEmail($email, $folderType)) {
+            if (!$this->isApplicableEmail($email, $folderType, $userId)) {
                 continue;
             }
 
@@ -424,7 +425,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
         foreach ($emails as $email) {
             if (in_array($email->getId()->getId(), $existingEwsIds)) {
-                $this->logger->notice(
+                $this->logger->info(
                     sprintf(
                         'Skip "%s" (EWS ID: %s) email, because it is already synchronised.',
                         $email->getSubject(),
@@ -449,17 +450,31 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             if ($existingEwsEmail) {
                 $this->moveEmailToOtherFolder($existingEwsEmail, $folderInfo->ewsFolder, $email->getId());
             } else {
-                $this->logger->notice(
-                    sprintf('Persisting "%s" email (EWS ID: %s) ...', $email->getSubject(), $email->getId()->getId())
-                );
-                $ewsEmail       = $this->createEwsEmail(
-                    $email->getId(),
-                    $this->addEmail($email, $folder),
-                    $folderInfo->ewsFolder
-                );
-                $newEwsEmails[] = $ewsEmail;
-                $this->em->persist($ewsEmail);
-                $this->logger->notice(sprintf('The "%s" email was persisted.', $email->getSubject()));
+                try {
+                    $ewsEmail       = $this->createEwsEmail(
+                        $email->getId(),
+                        $this->addEmail($email, $folder),
+                        $folderInfo->ewsFolder
+                    );
+                    $newEwsEmails[] = $ewsEmail;
+                    $this->em->persist($ewsEmail);
+                    $this->logger->notice(
+                        sprintf(
+                            'The "%s" (EWS ID: %s) email was persisted.',
+                            $email->getSubject(),
+                            $email->getId()->getId()
+                        )
+                    );
+                } catch (\Exception $e) {
+                    $this->logger->warning(
+                        sprintf(
+                            'Failed to persist "%s" (EWS ID: %s) email. Error: %s',
+                            $email->getSubject(),
+                            $email->getId()->getId(),
+                            $e->getMessage()
+                        )
+                    );
+                }
             }
         }
 
