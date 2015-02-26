@@ -12,6 +12,28 @@ use OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization;
 class UserPreferredOrganizationRepository extends EntityRepository
 {
     /**
+     * Returns user preferred organization
+     *
+     * @param User $user
+     * @param Organization $organization
+     * @return UserPreferredOrganization
+     */
+    public function getPreferredOrganization(User $user, Organization $organization)
+    {
+        $queryBuilder = $this->createQueryBuilder('e')
+            ->select('e')
+            ->where('e.user = :user')
+            ->andWhere('e.organization = :organization')
+            ->setParameter('user', $user)
+            ->setParameter('organization', $organization);
+        $queryBuilder->getMaxResults(1);
+        $result = $queryBuilder->getQuery()->getResult();
+        if (count($result) > 0) {
+            return $result[0];
+        }
+    }
+
+    /**
      * Removes existing entry and creates new one for the user
      *
      * @param User         $user
