@@ -483,12 +483,14 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $email1 = new Email($this->manager);
         $email1Id = new ItemId('test1', 'ck1');
         $email1->setId($email1Id);
+        $email1->setSeen(true);
         $email1->setMessageId('message_id');
 
         $email2 = new Email($this->manager);
         $email2Id = new ItemId('test2', 'ck2');
         $email2
             ->setId($email2Id)
+            ->setSeen(false)
             ->setSubject('subject2')
             ->setFrom('from_email')
             ->addToRecipient('to_email')
@@ -499,6 +501,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->setInternalDate(new \DateTime('2014-04-15 12:00:00'))
             ->setImportance(1)
             ->setMessageId('message_id')
+            ->setRefs("<testRef@test.tst>")
             ->setXMessageId('x_message_id')
             ->setXThreadId('x_thread_id');
 
@@ -579,6 +582,8 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($email2->getMessageId(), $newEmailEntity->getMessageId());
         $this->assertEquals($email2->getXMessageId(), $newEmailEntity->getXMessageId());
         $this->assertEquals($email2->getXThreadId(), $newEmailEntity->getXThreadId());
+        $this->assertEquals($email2->isSeen(), $newEmailEntity->isSeen());
+        $this->assertEquals($email2->getRefs(), $newEmailEntity->getRefs());
         $this->assertEquals($folder, $newEmailEntity->getFolders()->first());
     }
 

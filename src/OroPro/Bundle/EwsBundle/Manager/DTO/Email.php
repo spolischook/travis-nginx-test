@@ -33,6 +33,11 @@ class Email extends EmailHeader
     protected $attachments;
 
     /**
+     * @var bool
+     */
+    protected $seen;
+
+    /**
      * Constructor
      *
      * @param EwsEmailManager $manager
@@ -132,5 +137,29 @@ class Email extends EmailHeader
         }
 
         return $this->attachments;
+    }
+
+    /**
+     * Set seen status
+     *
+     * @param bool $seen
+     *
+     * @return self
+     */
+    public function setSeen($seen)
+    {
+        $this->seen = (bool)$seen;
+
+        return $this;
+    }
+
+    /**
+     * Get seen status
+     *
+     * @return bool
+     */
+    public function isSeen()
+    {
+        return $this->seen;
     }
 }
