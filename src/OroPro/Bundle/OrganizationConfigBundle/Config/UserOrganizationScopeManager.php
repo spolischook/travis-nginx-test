@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Oro\Bundle\ConfigBundle\Config\UserScopeManager;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\UserBundle\Entity\User;
 use OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization;
 
 class UserOrganizationScopeManager extends UserScopeManager
@@ -16,6 +17,11 @@ class UserOrganizationScopeManager extends UserScopeManager
      * @var UserPreferredOrganization
      */
     protected $preferredOrg;
+
+    /**
+     * @var User
+     */
+    protected $user;
 
     /**
      * {@inheritdoc}
@@ -69,19 +75,24 @@ class UserOrganizationScopeManager extends UserScopeManager
     }
 
     /**
-     * @param $user
-     * @param $organization
+     * @param User $user
+     * @param Organization $organization
      * @return int
      */
-    protected function getPreferredOrganizationId($user, $organization)
+    public function getPreferredOrganizationId(User $user, Organization $organization = null)
     {
         $id = 0;
-        if (is_null($this->preferredOrg)) {
-            $this->preferredOrg = $this->om->getRepository('OroProOrganizationBundle:UserPreferredOrganization')
-                ->getPreferredOrganization($user, $organization);
-        }
-        if (is_object($this->preferredOrg) && $this->preferredOrg->getId()) {
-            $id = $this->preferredOrg->getId();
+        if ($organization) {
+            if (is_null($this->preferredOrg)
+                || $this->preferredOrg->getOrganization()->getId() != $organization->getId()
+                || $this->user->getId() != $user->getId()) {
+                $this->preferredOrg = $this->om->getRepository('OroProOrganizationBundle:UserPreferredOrganization')
+                    ->getPreferredOrganization($user, $organization);
+                $this->user = $user;
+            }
+            if (is_object($this->preferredOrg) && $this->preferredOrg->getId()) {
+                $id = $this->preferredOrg->getId();
+            }
         }
 
         return $id;
