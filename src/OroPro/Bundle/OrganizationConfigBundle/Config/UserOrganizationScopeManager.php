@@ -2,10 +2,10 @@
 
 namespace OroPro\Bundle\OrganizationConfigBundle\Config;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Oro\Bundle\ConfigBundle\Config\UserScopeManager;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization;
 
 class UserOrganizationScopeManager extends UserScopeManager
@@ -34,7 +34,7 @@ class UserOrganizationScopeManager extends UserScopeManager
 
         // if we have a user - try to merge his scoped settings into global settings array
         if ($token = $this->security->getToken()) {
-            /** @var Organization $token */
+            /** @var TokenInterface $token */
             if (is_object($user = $token->getUser()) && is_object($organization = $token->getOrganizationContext())) {
                 foreach ($user->getGroups() as $group) {
                     $this->loadStoredSettings('group', $group->getId());
