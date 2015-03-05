@@ -27,11 +27,7 @@ class UserPreferredOrganizationRepository extends EntityRepository
             ->andWhere('e.organization = :organization')
             ->setParameter('user', $user)
             ->setParameter('organization', $organization);
-        $queryBuilder->getMaxResults(1);
-        $result = $queryBuilder->getQuery()->getResult();
-        if (count($result) > 0) {
-            return $result[0];
-        }
+        return $queryBuilder->getQuery()->getSingleResult();
     }
 
     /**
