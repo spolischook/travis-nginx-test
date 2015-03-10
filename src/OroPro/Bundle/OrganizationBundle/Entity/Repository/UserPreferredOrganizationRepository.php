@@ -27,7 +27,11 @@ class UserPreferredOrganizationRepository extends EntityRepository
             ->andWhere('e.organization = :organization')
             ->setParameter('user', $user)
             ->setParameter('organization', $organization);
-        return $queryBuilder->getQuery()->getSingleResult();
+        $queryBuilder->getMaxResults(1);
+        $result = $queryBuilder->getQuery()->getResult();
+        if (count($result) > 0) {
+            return $result[0];
+        }
     }
 
     /**
@@ -62,6 +66,7 @@ class UserPreferredOrganizationRepository extends EntityRepository
      * @param User $user
      * @param Organization $organization
      * @param array $preferredOrgIds
+     * @return UserPreferredOrganization
      */
     public function savePreferredOrganization(User $user, Organization $organization, $preferredOrgIds = [])
     {
@@ -81,5 +86,7 @@ class UserPreferredOrganizationRepository extends EntityRepository
                 ->getQuery()
                 ->execute();
         }
+
+        return $entry;
     }
 }

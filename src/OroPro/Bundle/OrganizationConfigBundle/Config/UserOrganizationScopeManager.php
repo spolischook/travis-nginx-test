@@ -89,6 +89,10 @@ class UserOrganizationScopeManager extends UserScopeManager
                 || $this->user->getId() != $user->getId()) {
                 $this->preferredOrg = $this->om->getRepository('OroProOrganizationBundle:UserPreferredOrganization')
                     ->getPreferredOrganization($user, $organization);
+                if (!$this->preferredOrg) {
+                    $this->preferredOrg = $this->om->getRepository('OroProOrganizationBundle:UserPreferredOrganization')
+                        ->savePreferredOrganization($user, $organization);
+                }
                 $this->user = $user;
             }
             if (is_object($this->preferredOrg) && $this->preferredOrg->getId()) {
