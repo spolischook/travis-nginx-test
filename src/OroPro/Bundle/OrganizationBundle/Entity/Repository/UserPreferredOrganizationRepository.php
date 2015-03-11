@@ -8,6 +8,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization;
+use OroPro\Bundle\OrganizationConfigBundle\Config\UserOrganizationScopeManager;
 
 class UserPreferredOrganizationRepository extends EntityRepository
 {
@@ -26,7 +27,11 @@ class UserPreferredOrganizationRepository extends EntityRepository
             ->andWhere('e.organization = :organization')
             ->setParameter('user', $user)
             ->setParameter('organization', $organization);
-        return $queryBuilder->getQuery()->getSingleResult();
+        $queryBuilder->getMaxResults(1);
+        $result = $queryBuilder->getQuery()->getResult();
+        if (count($result) > 0) {
+            return $result[0];
+        }
     }
 
     /**
@@ -40,26 +45,48 @@ class UserPreferredOrganizationRepository extends EntityRepository
         $em = $this->getEntityManager();
 
         $removeQB = $em->createQueryBuilder()
-            ->delete($this->getEntityName(), 'e')
+            ->select('e')
+            ->from($this->getEntityName(), 'e')
             ->where('e.user = :user')
             ->setParameter('user', $user);
-        $removeQB->getQuery()->execute();
+        $rows = $removeQB->getQuery()->execute();
+        $preferredOrgIds = [];
+        foreach ($rows as $row) {
+            $preferredOrgIds[] = $row->getId();
+            $em->remove($row);
+        }
+        $em->flush();
 
-        $this->savePreferredOrganization($user, $organization);
+        $this->savePreferredOrganization($user, $organization, $preferredOrgIds);
     }
 
     /**
      * Creates entry for user preferred organization
      *
-     * @param User         $user
+     * @param User $user
      * @param Organization $organization
+     * @param array $preferredOrgIds
+     * @return UserPreferredOrganization
      */
-    public function savePreferredOrganization(User $user, Organization $organization)
+    public function savePreferredOrganization(User $user, Organization $organization, $preferredOrgIds = [])
     {
         $em = $this->getEntityManager();
 
         $entry = new UserPreferredOrganization($user, $organization);
         $em->persist($entry);
         $em->flush($entry);
+
+        if (count($preferredOrgIds) > 0) {
+            $queryBuilder = $em->getRepository('OroConfigBundle:Config')->createQueryBuilder('e');
+            $queryBuilder->update()
+                ->set('e.recordId', $entry->getId())
+                ->where('e.scopedEntity = :scopedEntity')
+                ->andWhere($queryBuilder->expr()->in('e.recordId', $preferredOrgIds))
+                ->setParameter('scopedEntity', UserOrganizationScopeManager::SCOPED_ENTITY_NAME)
+                ->getQuery()
+                ->execute();
+        }
+
+        return $entry;
     }
 }
