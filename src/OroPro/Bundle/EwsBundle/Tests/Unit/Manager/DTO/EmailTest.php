@@ -17,10 +17,12 @@ class EmailTest extends \PHPUnit_Framework_TestCase
         $sentAt = new \DateTime('now');
         $receivedAt = new \DateTime('now');
         $internalDate = new \DateTime('now');
+        $seen = true;
 
         $obj = new Email($manager);
         $obj
             ->setId($id)
+            ->setSeen($seen)
             ->setSubject('testSubject')
             ->setFrom('testFrom')
             ->addToRecipient('testToRecipient')
@@ -53,6 +55,7 @@ class EmailTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('testXThreadId', $obj->getXThreadId());
         $attIds = $obj->getAttachmentIds();
         $this->assertEquals('attId', $attIds[0]);
+        $this->assertTrue($obj->isSeen());
 
         $body = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Manager\DTO\Email')
             ->disableOriginalConstructor()
