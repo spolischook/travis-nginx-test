@@ -42,7 +42,7 @@ services:
       calls:
           - [setSecurity, ["@security.context"]]
       tags:
-          - { name: oro_config.scope, scope: pro_organization_user_pref, priority: 256 }
+          - { name: oro_config.scope, scope: user, priority: 256 }
 
   oro_config.global_config_manager:
       class: %oropro_organization_config.global_config_manager.class%
