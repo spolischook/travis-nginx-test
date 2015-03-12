@@ -12,12 +12,7 @@ use OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization;
 
 class UserOrganizationScopeManager extends UserScopeManager
 {
-    const SCOPED_ENTITY_NAME = 'pro_organization_user_pref';
-
-    /**
-     * @var UserPreferredOrganization
-     */
-    protected $preferredOrg;
+    const SCOPED_ENTITY_NAME = 'organization_user';
 
     /**
      * @var User
@@ -49,7 +44,7 @@ class UserOrganizationScopeManager extends UserScopeManager
 
                 $this->loadStoredSettings(
                     self::SCOPED_ENTITY_NAME,
-                    $this->getPreferredOrganizationId($user, $organization)
+                    $this->getUserOrganizationId($user, $organization)
                 );
             }
         }
@@ -60,11 +55,11 @@ class UserOrganizationScopeManager extends UserScopeManager
      */
     public function setScopeId($scopeId = null)
     {
-        if (is_null($scopeId)) {
+        if ($scopeId === null) {
             if ($token = $this->security->getToken()) {
                 if (is_object($user = $token->getUser()) &&
                     is_object($organization = $token->getOrganizationContext())) {
-                    $scopeId = $this->getPreferredOrganizationId($user, $organization);
+                    $scopeId = $this->getUserOrganizationId($user, $organization);
                 }
             }
         }
@@ -80,26 +75,10 @@ class UserOrganizationScopeManager extends UserScopeManager
      * @param Organization $organization
      * @return int
      */
-    public function getPreferredOrganizationId(User $user, Organization $organization = null)
+    public function getUserOrganizationId(User $user, Organization $organization)
     {
-        $id = 0;
-        if ($organization) {
-            if (is_null($this->preferredOrg)
-                || $this->preferredOrg->getOrganization()->getId() != $organization->getId()
-                || $this->user->getId() != $user->getId()) {
-                $this->preferredOrg = $this->om->getRepository('OroProOrganizationBundle:UserPreferredOrganization')
-                    ->getPreferredOrganization($user, $organization);
-                if (!$this->preferredOrg) {
-                    $this->preferredOrg = $this->om->getRepository('OroProOrganizationBundle:UserPreferredOrganization')
-                        ->savePreferredOrganization($user, $organization);
-                }
-                $this->user = $user;
-            }
-            if (is_object($this->preferredOrg) && $this->preferredOrg->getId()) {
-                $id = $this->preferredOrg->getId();
-            }
-        }
-
-        return $id;
+        return $this->om->getRepository('OroProOrganizationBundle:UserOrganization')
+            ->findOneBy(['user' => $user, 'organization' => $organization])
+            ->getId();
     }
 }
