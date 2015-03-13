@@ -458,6 +458,7 @@ class EwsEmailManager
         $email = new Email($this);
         $email
             ->setId(new ItemId($msg->ItemId->Id, $msg->ItemId->ChangeKey))
+            ->setSeen($msg->IsRead)
             ->setSubject($msg->Subject)
             ->setFrom($msg->From->Mailbox->EmailAddress)
             ->setSentAt($this->convertToDateTime($msg->DateTimeSent))
@@ -465,6 +466,7 @@ class EwsEmailManager
             ->setInternalDate($this->convertToDateTime($msg->DateTimeCreated))
             ->setImportance($this->convertImportance($msg->Importance))
             ->setMessageId($msg->InternetMessageId)
+            ->setRefs($msg->References)
             ->setXMessageId($msg->ItemId->Id)
             ->setXThreadId($msg->ConversationId != null ? $msg->ConversationId->Id : null);
 
