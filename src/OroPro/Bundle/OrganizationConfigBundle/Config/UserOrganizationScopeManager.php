@@ -78,7 +78,7 @@ class UserOrganizationScopeManager extends UserScopeManager
     public function getUserOrganizationId(User $user, Organization $organization)
     {
         return $this->om->getRepository('OroProOrganizationBundle:UserOrganization')
-            ->findOneBy(['user' => $user, 'organization' => $organization])
+            ->getUserOrganization($user, $organization)
             ->getId();
     }
 }

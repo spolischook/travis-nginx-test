@@ -8,7 +8,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="OroPro\Bundle\OrganizationBundle\Entity\Repository\UserOrganizationRepository")
  * @ORM\Table(
  *      name="oro_pro_organization_user",
  *      uniqueConstraints={
