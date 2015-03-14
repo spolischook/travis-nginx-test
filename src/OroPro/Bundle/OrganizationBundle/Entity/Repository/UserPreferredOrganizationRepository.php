@@ -8,27 +8,10 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization;
+use OroPro\Bundle\OrganizationBundle\Entity\UserOrganization;
 
 class UserPreferredOrganizationRepository extends EntityRepository
 {
-    /**
-     * Returns user preferred organization
-     *
-     * @param User $user
-     * @param Organization $organization
-     * @return UserPreferredOrganization
-     */
-    public function getPreferredOrganization(User $user, Organization $organization)
-    {
-        $queryBuilder = $this->createQueryBuilder('e')
-            ->select('e')
-            ->where('e.user = :user')
-            ->andWhere('e.organization = :organization')
-            ->setParameter('user', $user)
-            ->setParameter('organization', $organization);
-        return $queryBuilder->getQuery()->getSingleResult();
-    }
-
     /**
      * Removes existing entry and creates new one for the user
      *
@@ -60,6 +43,12 @@ class UserPreferredOrganizationRepository extends EntityRepository
 
         $entry = new UserPreferredOrganization($user, $organization);
         $em->persist($entry);
+
+        $queryBuilder = $em->getRepository('OroProOrganizationBundle:UserOrganization');
+        if (!$queryBuilder->findOneBy(['user' => $user, 'organization' => $organization])) {
+            $em->persist(new UserOrganization($user, $organization));
+        }
+
         $em->flush($entry);
     }
 }

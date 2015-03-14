@@ -41,4 +41,9 @@ services:
       calls:
           - [setSecurity, ["@security.context"]]
       tags:
-          - { name: oro_config.scope, scope: user, priority: 255 }
+          - { name: oro_config.scope, scope: user, priority: 256 }
+
+  oro_config.user_config_manager:
+      class: %oro_config.user_config_manager.class%
+      arguments:
+          - @oropro_organization_config.scope.user

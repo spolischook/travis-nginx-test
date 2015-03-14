@@ -6,16 +6,18 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Oro\Bundle\ConfigBundle\Config\UserScopeManager;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\UserBundle\Entity\User;
 use OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization;
 
 class UserOrganizationScopeManager extends UserScopeManager
 {
-    const SCOPED_ENTITY_NAME = 'pro_organization_user_pref';
+    const SCOPED_ENTITY_NAME = 'organization_user';
 
     /**
-     * @var UserPreferredOrganization
+     * @var User
      */
-    protected $preferredOrg;
+    protected $user;
 
     /**
      * {@inheritdoc}
@@ -42,7 +44,7 @@ class UserOrganizationScopeManager extends UserScopeManager
 
                 $this->loadStoredSettings(
                     self::SCOPED_ENTITY_NAME,
-                    $this->getPreferredOrganizationId($user, $organization)
+                    $this->getUserOrganizationId($user, $organization)
                 );
             }
         }
@@ -53,11 +55,11 @@ class UserOrganizationScopeManager extends UserScopeManager
      */
     public function setScopeId($scopeId = null)
     {
-        if (is_null($scopeId)) {
+        if ($scopeId === null) {
             if ($token = $this->security->getToken()) {
                 if (is_object($user = $token->getUser()) &&
                     is_object($organization = $token->getOrganizationContext())) {
-                    $scopeId = $this->getPreferredOrganizationId($user, $organization);
+                    $scopeId = $this->getUserOrganizationId($user, $organization);
                 }
             }
         }
@@ -69,21 +71,14 @@ class UserOrganizationScopeManager extends UserScopeManager
     }
 
     /**
-     * @param $user
-     * @param $organization
+     * @param User $user
+     * @param Organization $organization
      * @return int
      */
-    protected function getPreferredOrganizationId($user, $organization)
+    public function getUserOrganizationId(User $user, Organization $organization)
     {
-        $id = 0;
-        if (is_null($this->preferredOrg)) {
-            $this->preferredOrg = $this->om->getRepository('OroProOrganizationBundle:UserPreferredOrganization')
-                ->getPreferredOrganization($user, $organization);
-        }
-        if (is_object($this->preferredOrg) && $this->preferredOrg->getId()) {
-            $id = $this->preferredOrg->getId();
-        }
-
-        return $id;
+        return $this->om->getRepository('OroProOrganizationBundle:UserOrganization')
+            ->getUserOrganization($user, $organization)
+            ->getId();
     }
 }
