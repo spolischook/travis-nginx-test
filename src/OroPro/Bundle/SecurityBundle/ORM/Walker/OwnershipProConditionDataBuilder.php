@@ -74,11 +74,16 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
             return $this->organizationProvider->getOrganizationId();
         }
 
-        if($this->hasGlobalAccess($metadata)) {
-            return [
-                $this->getGlobalOrganizationId(),
-                parent::getOrganizationId()
-            ];
+        if ($this->hasGlobalAccess($metadata)) {
+            $globalOrganization = $this->getGlobalOrganizationId();
+
+            if (!empty($globalOrganization)) {
+                $result = [];
+                array_push($result, $globalOrganization);
+                array_push($result, parent::getOrganizationId());
+
+                return $result;
+            }
         }
 
         return parent::getOrganizationId();
