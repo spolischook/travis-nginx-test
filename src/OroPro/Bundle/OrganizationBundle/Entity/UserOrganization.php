@@ -13,7 +13,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      name="oro_pro_organization_user",
  *      uniqueConstraints={
  *          @ORM\UniqueConstraint(
- *              name="IDX_pro_user_organization",
+ *              name="UNQ_pro_user_organization",
  *              columns={"user_id", "organization_id"}
  *          )
  *      }
