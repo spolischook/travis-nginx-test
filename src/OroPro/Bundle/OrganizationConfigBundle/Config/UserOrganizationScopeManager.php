@@ -55,10 +55,12 @@ class UserOrganizationScopeManager extends UserScopeManager
      */
     public function setScopeId($scopeId = null)
     {
-        if ($scopeId === null) {
+        if (is_null($scopeId)) {
+            $scopeId = 0;
             if ($token = $this->security->getToken()) {
-                if (is_object($user = $token->getUser()) &&
-                    is_object($organization = $token->getOrganizationContext())) {
+                if (is_object($user = $token->getUser())
+                    && is_object($organization = $token->getOrganizationContext())
+                    && !is_null($organization->getId())) {
                     $scopeId = $this->getUserOrganizationId($user, $organization);
                 }
             }
