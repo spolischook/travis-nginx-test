@@ -58,9 +58,9 @@ class UserOrganizationScopeManager extends UserScopeManager
         if (is_null($scopeId)) {
             $scopeId = 0;
             if ($token = $this->security->getToken()) {
-                if (is_object($user = $token->getUser()) &&
-                    is_object($organization = $token->getOrganizationContext()) &&
-                    !is_null($organization->getId())) {
+                if (is_object($user = $token->getUser())
+                    && is_object($organization = $token->getOrganizationContext())
+                    && !is_null($organization->getId())) {
                     $scopeId = $this->getUserOrganizationId($user, $organization);
                 }
             }
