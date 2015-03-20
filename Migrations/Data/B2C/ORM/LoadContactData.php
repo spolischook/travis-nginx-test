@@ -1,15 +1,45 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\File as ComponentFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Oro\Bundle\AttachmentBundle\Entity\File;
+use Oro\Bundle\AddressBundle\Entity\Country;
+use Oro\Bundle\AddressBundle\Entity\Region;
+
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
+use OroCRM\Bundle\ContactBundle\Entity\ContactEmail;
+use OroCRM\Bundle\ContactBundle\Entity\ContactPhone;
+use OroCRM\Bundle\ContactBundle\Entity\ContactAddress;
 
 class LoadContactData extends AbstractFixture implements DependentFixtureInterface
 {
+    /**
+     * @var Country[]
+     */
+    protected $countries;
+
+    /** @var  EntityRepository */
+    protected $contactSources;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        parent::setContainer($container);
+        $this->contactSources = $this->em->getRepository('OroCRMContactBundle:Source');
+        $this->removeEventListener('OroCRM\Bundle\ContactBundle\EventListener\ContactListener');
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -17,16 +47,20 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
     {
         return [
             'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadTagsData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadTagData',
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getData()
     {
         return [
-            'contacts' => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'contacts.csv'),
-            'phones' => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'phones.csv'),
             'addresses' => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'addresses.csv'),
+            'contacts' => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'contacts.csv'),
+            'emails' => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'emails.csv'),
+            'phones' => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'phones.csv'),
         ];
     }
 
@@ -35,25 +69,165 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
      */
     public function load(ObjectManager $manager)
     {
-        $this->removeOldData('OroCRMContactBundle:Contact');
-
+        $this->countries = $manager->getRepository('OroAddressBundle:Country')->findAll();
         $data = $this->getData();
 
         foreach ($data['contacts'] as $contactData) {
+
+            $account = $this->getAccountReference($contactData['account uid']);
+
             $contact = new Contact();
-            $contactData['assignedTo'] = $this->getMainUser();
+
+            $contact->setCreatedAt($this->generateCreatedDate());
+            $contact->setUpdatedAt($this->generateUpdatedDate($contact->getCreatedAt()));
+            $contact->setFirstName($contactData['firstname']);
+            $contact->setLastName($contactData['lastname']);
+
+            $contactData['assignedTo'] = $account->getOwner();
             $contactData['reportsTo'] = $contact;
-            $contactData['owner'] = $this->getMainUser();
+            $contactData['owner'] = $account->getOwner();
+            $contactData['updatedBy'] = $account->getOwner();
+            $contactData['createdBy'] = $account->getOwner();
             $contactData['birthday'] = new \DateTime($contactData['birthday']);
             $contactData['organization'] = $this->getMainOrganization();
 
-            $account = $this->getAccountReference($contactData['account uid']);
-            unset($contactData['uid'], $contactData['account uid']);
+            if (!empty($contactData['photo'])) {
+                $file = new File();
+                $path = dirname(__FILE__) . '/data/contacts/photos/' . $contactData['photo'];
+                if(!file_exists($path))
+                {
+                    throw new FileNotFoundException($path);
+                }
+                $file->setFile(new ComponentFile($path));
+                $contact->setPicture($file);
+            }
+
+            if (!empty($contactData['source'])) {
+                $source = $this->contactSources->findOneByName($contactData['source']);
+                if ($source) {
+                    $contact->setSource($source);
+                }
+            }
+
+            $uid = $contactData['uid'];
+            unset($contactData['account uid'], $contactData['uid'], $contactData['photo'], $contactData['source']);
+
             $this->setObjectValues($contact, $contactData);
-            $contact->addAccount($account);
+            $account->setDefaultContact($contact);
+            $this->loadPhones($contact, $uid);
+            $this->loadEmails($contact, $uid);
+            $this->loadAddresses($contact, $uid);
+
+
+            $this->setReference('Contact:' . $uid, $contact);
+
             $manager->persist($contact);
+            $manager->persist($account);
+
         }
         $manager->flush();
+    }
+
+    /**
+     * Load Contact phones
+     * @param Contact $contact
+     * @param $uid
+     */
+    public function loadPhones(Contact $contact, $uid)
+    {
+        $data = $this->getData();
+
+        $phones = array_filter(
+            $data['phones'],
+            function ($phoneData) use ($uid) {
+                return $phoneData['contact uid'] == $uid;
+            }
+        );
+
+        foreach ($phones as $phoneData) {
+            $phone = new ContactPhone($phoneData['phone']);
+            if(!$contact->getPhones()->count()) {
+                $phone->setPrimary(true);
+            }
+            $contact->addPhone($phone);
+        }
+    }
+
+    /**
+     * Load Contact emails
+     * @param Contact $contact
+     * @param $uid
+     */
+    public function loadEmails(Contact $contact, $uid)
+    {
+        $data = $this->getData();
+
+        $emails = array_filter(
+            $data['emails'],
+            function ($emailData) use ($uid) {
+                return $emailData['contact uid'] == $uid;
+            }
+        );
+
+        foreach ($emails as $emailData) {
+            $email = new ContactEmail($emailData['email']);
+            if(!$contact->getEmails()->count()) {
+                $email->setPrimary(true);
+            }
+            $contact->addEmail($email);
+        }
+    }
+
+    /**
+     * Load Contact addresses
+     * @param Contact $contact
+     * @param $uid
+     */
+    public function loadAddresses(Contact $contact, $uid)
+    {
+        $data = $this->getData();
+
+        $addresses = array_filter(
+            $data['addresses'],
+            function ($addressData) use ($uid) {
+                return $addressData['contact uid'] == $uid;
+            }
+        );
+
+        foreach ($addresses as $addressData) {
+            $isoCode = $addressData['country'];
+            $country = array_filter(
+                $this->countries,
+                function (Country $country) use ($isoCode) {
+                    return $country->getIso2Code() == $isoCode;
+                }
+            );
+            /** @var Country $country */
+            $country = array_values($country)[0];
+
+            $regions = $country->getRegions();
+            $region = $regions->filter(
+                function (Region $region) use ($addressData) {
+                    return $region->getCode() == $addressData['region'];
+                }
+            );
+
+            /** @var ContactAddress $address */
+            $address = new ContactAddress();
+            $address->setOwner($contact);
+
+            unset($addressData['contact uid'], $addressData['uid']);
+            $this->setObjectValues($address, $addressData);
+
+            $address->setCountry($country);
+            if (!$region->isEmpty()) {
+                $address->setRegion($region->first());
+            }
+            if (!$contact->getAddresses()->count()) {
+                $address->setPrimary(true);
+            }
+            $contact->addAddress($address);
+        }
     }
 
     /**
@@ -63,54 +237,7 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
      */
     public function getAccountReference($uid)
     {
-        $reference = 'OroCRMLiveDemoBundle:Account:' . $uid;
-        if ($this->hasReference($reference)) {
-            return $this->getReference($reference);
-        } else {
-            echo 'Reference to account' . $uid . 'not found.';
-            /**
-             * TODO:refactoring
-             */
-            throw new EntityNotFoundException('Reference to account ' . $uid . ' not found.');
-        }
+        $reference = 'Account:' . $uid;
+        return $this->getReferenceByName($reference);
     }
-
-    /*
-       private function createContact(array $data)
-       {
-        /*
-           $contact = new Contact();
-
-
-           //Phone
-           $phone = new ContactPhone($data['TelephoneNumber']);
-           $phone->setPrimary(true);
-           $contact->addPhone($phone);
-
-           //Email
-           $email = new ContactEmail($data['EmailAddress']);
-           $email->setPrimary(true);
-           $contact->addEmail($email);
-
-           $date = \DateTime::createFromFormat('m/d/Y', $data['Birthday']);
-           $contact->setBirthday($date);
-
-           //Address
-           $address = new ContactAddress();
-           $address->setLabel('Primary Address');
-           $address->setCity($data['City']);
-           $address->setStreet($data['StreetAddress']);
-           $address->setPostalCode($data['ZipCode']);
-           $address->setFirstName($data['GivenName']);
-           $address->setLastName($data['Surname']);
-           $address->setPrimary(true);
-           $address->setOwner($contact);
-
-           //Address country + region
-            $contact->addAddress($address);
-
-           return $contact;
-
-    }
-    */
 }

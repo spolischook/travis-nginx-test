@@ -2,10 +2,11 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use OroCRM\Bundle\AccountBundle\Entity\Account;
@@ -19,13 +20,18 @@ class LoadAccountData extends AbstractFixture implements DependentFixtureInterfa
     {
         return [
             'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadBusinessUnitData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadTagData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadDefaultUserData',
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getData()
     {
         return [
-            'accounts' => $this->loadData('accounts.csv')
+            'accounts' => $this->loadData('accounts.csv'),
         ];
     }
 
@@ -37,35 +43,29 @@ class LoadAccountData extends AbstractFixture implements DependentFixtureInterfa
         /** @var Organization $organization */
         $organization = $this->getMainOrganization();
 
-        /** @var User $user */
-        $user = $this->getMainUser();
-
         $data = $this->getData();
 
         $names = [];
 
-        /**
-         * TODO:Move to reset command
-         */
-        $this->removeOldData('OroCRMAccountBundle:Account');
-
-        foreach($data['accounts'] as $accountData)
-        {
-            if(!isset($names[$accountData['name']]))
-            {
+        foreach ($data['accounts'] as $accountData) {
+            if (!isset($names[$accountData['name']])) {
                 $account = new Account();
-                $accountData['owner'] = $user;
+                $accountData['owner'] = $this->getReferenceByName('User:' . $accountData['user uid']);
                 $accountData['organization'] = $organization;
+                $accountData['CreatedAt'] = $this->generateCreatedDate();
+                $accountData['UpdatedAt'] = $this->generateUpdatedDate($accountData['CreatedAt']);
                 $uid = $accountData['uid'];
-                unset($accountData['uid']);
+                unset($accountData['uid'], $accountData['user uid']);
                 $this->setObjectValues($account, $accountData);
-                $this->em->persist($account);
+
+                $manager->getClassMetadata(get_class($account))->setLifecycleCallbacks([]);
 
                 $names[$accountData['name']] = $accountData['name'];
 
-                $this->setReference('OroCRMLiveDemoBundle:Account:' . $uid, $account);
+                $this->setReference('Account:' . $uid, $account);
+                $manager->persist($account);
             }
         }
-        $this->em->flush();
+        $manager->flush();
     }
 }

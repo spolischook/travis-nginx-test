@@ -5,25 +5,36 @@ Table of content
 -----------------
 
 - [Requirements](#requirements)
+- [Disable email delivery](#disable-email-delivery)
 - [Use as dependency in composer](#use-as-dependency-in-composer)
 - [Usage](#usage)
 
 Requirements
 ------------
 
+
+Disable email delivery
+-----------------
+```yaml
+# app/config/config.yml
+
+swiftmailer:
+    disable_delivery:  true
+```
+
 Use as dependency in composer
 -----------------------------
 
 ```yaml
-	"repositories": [
-		...
+    "repositories": [
+        ...
         {
             "type": "vcs",
             "url": "https://github.com/laboro/OroCRMProDemoDataBundle"
         }
         ...
     ],
-	...
+    ...
     "require": {
         "orocrmpro/demo-data-bundle": "dev-master"
     }
@@ -32,10 +43,10 @@ Use as dependency in composer
 Usage
 -----------------------------
 
-Loading demo data fixtures for different scenarios(b2c,b2b,multi):
+Loading demo data fixtures for different scenarios(B2C,B2B,Multi):
 
 
 ```bash
-app/console oro:migration:live:data:load --fixtures-type=b2c
+app/console oro:migration:live:data:load --fixtures-type=B2C
 ```
 

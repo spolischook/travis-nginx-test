@@ -38,21 +38,15 @@ class LoadBusinessUnitData extends AbstractFixture implements ContainerAwareInte
         /** @var BusinessUnit $mainBusinessUnit */
         $entity = $businessRepository->findOneBy(['name' => 'Main']);
         if (!$entity) {
-            $entity = $businessRepository->findOneBy(['name' => 'Acme, General']);
+            $entity = $businessRepository->find(1);
         }
 
         if (!$entity) {
             throw new EntityNotFoundException('Main business unit is not defined.');
         }
-
-        /**
-         * TODO:Move to reset command
-         */
-        $this->removeOldData('OroOrganizationBundle:BusinessUnit', $entity);
-
         $this->setObjectValues($entity, $data);
         $manager->persist($entity);
-        $this->addReference('OroCRMLiveDemoBundle:mainBusiness', $entity);
+        $this->addReference('BusinessUnit:0', $entity);
 
         return $entity;
     }
@@ -85,7 +79,7 @@ class LoadBusinessUnitData extends AbstractFixture implements ContainerAwareInte
             $this->setObjectValues($businessUnit, $businessUnitData);
 
             $manager->persist($businessUnit);
-            $this->addReference('OroCRMLiveDemoBundle:businessUnit:' . $uid, $businessUnit);
+            $this->addReference('BusinessUnit:' . $uid, $businessUnit);
         }
         $manager->flush();
     }

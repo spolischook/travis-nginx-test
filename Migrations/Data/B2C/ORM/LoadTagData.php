@@ -5,8 +5,11 @@ use Oro\Bundle\TagBundle\Entity\Tag;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadTagsData extends AbstractFixture
+class LoadTagData extends AbstractFixture
 {
+    /**
+     * @return array
+     */
     public function getData()
     {
         return [
@@ -21,11 +24,6 @@ class LoadTagsData extends AbstractFixture
     {
         $data = $this->getData();
 
-        /**
-         * TODO:Move to reset command
-         */
-        $this->removeOldData('OroTagBundle:Tag');
-
         foreach ($data['tags'] as $tagData) {
             $tagData['organization'] = $this->getMainOrganization();
             $tagData['owner'] = $this->getMainUser();
@@ -35,7 +33,7 @@ class LoadTagsData extends AbstractFixture
             $this->setObjectValues($tag, $tagData);
             $manager->persist($tag);
 
-            $this->setReference('OroCRMLiveDemoBundle:Tag:' . $uid, $tag);
+            $this->setReference('Tag:' . $uid, $tag);
         }
         $manager->flush();
     }

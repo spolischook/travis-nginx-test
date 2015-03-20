@@ -5,6 +5,7 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -13,8 +14,10 @@ use Doctrine\Common\DataFixtures\AbstractFixture as DoctrineAbstractFixture;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
 
 use OroCRMPro\Bundle\DemoDataBundle\Field\FieldHelper;
+use OroCRMPro\Bundle\DemoDataBundle\EventListener\ActivityListSubscriber;
 
 
 abstract class AbstractFixture extends DoctrineAbstractFixture implements ContainerAwareInterface
@@ -48,6 +51,9 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
 
         $this->userRepository = $this->em->getRepository('OroUserBundle:User');
         $this->organizationRepository = $this->em->getRepository('OroOrganizationBundle:Organization');
+
+        $subscriber = new ActivityListSubscriber();
+        $this->em->getEventManager()->addEventSubscriber($subscriber);
     }
 
     /**
@@ -56,8 +62,8 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
      */
     public function getMainUser()
     {
-        if ($this->hasReference('OroCRMLiveDemoBundle:mainUser')) {
-            $entity = $this->getReference('OroCRMLiveDemoBundle:mainUser');
+        if ($this->hasReference('MainUser')) {
+            $entity = $this->getReference('MainUser');
             if ($entity instanceof User) {
                 return $entity;
             }
@@ -68,7 +74,7 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
             throw new EntityNotFoundException('Main user does not exist.');
         }
 
-        $this->addReference('OroCRMLiveDemoBundle:mainUser', $entity);
+        $this->addReference('MainUser', $entity);
 
         return $entity;
     }
@@ -79,22 +85,11 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
      */
     protected function getMainOrganization()
     {
-
-        if ($this->hasReference('OroCRMLiveDemoBundle:defaultOrganization')) {
-            $entity = $this->getReference('OroCRMLiveDemoBundle:defaultOrganization');
-            if ($entity instanceof Organization) {
-                return $entity;
-            }
-        }
-
         $entity = $this->organizationRepository->getFirst();
 
         if (!$entity) {
             throw new EntityNotFoundException('Main organization is not defined.');
         }
-
-        $this->setReference('OroCRMLiveDemoBundle:defaultOrganization', $entity);
-
         return $entity;
     }
 
@@ -114,29 +109,16 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
     }
 
     /**
-     * TODO:Move to reset command
-     * @param $repository
-     * @param null $except
-     */
-    protected function removeOldData($repository, $except = null)
-    {
-    $entities = $this->em->getRepository($repository)->findAll();
-    foreach ($entities as $entity)
-    {
-        if($entity == $except)
-        {
-            continue;
-        }
-        $this->em->remove($entity);
-    }
-}
-
-    /**
      * @param $path
      * @return array
      */
     protected function loadDataFromCSV($path)
     {
+        if(!file_exists($path))
+        {
+            throw new FileNotFoundException($path);
+        }
+
         $data = [];
         $handle = fopen($path, 'r');
         $headers = fgetcsv($handle, 1000, ',');
@@ -149,6 +131,10 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
             throw new NoSuchPropertyException('Property: "uid" does not exists');
         }
         while ($info = fgetcsv($handle, 1000, ',')) {
+            if(count($info) !== count($headers))
+            {
+                continue;
+            }
             $tempData = array_combine($headers, array_values($info));
             if ($tempData) {
                 $data[] = $tempData;
@@ -182,6 +168,91 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
     {
         foreach ($values as $fieldName => $value) {
             $this->setObjectValue($object, $fieldName, $value);
+        }
+    }
+
+    /**
+     * @param User $user
+     */
+    protected function setSecurityContext($user)
+    {
+        $securityContext = $this->container->get('security.context');
+        $token = new UsernamePasswordOrganizationToken($user, $user->getUsername(), 'main', $this->getMainOrganization());
+        $securityContext->setToken($token);
+    }
+
+    /**
+     * @param $reference
+     * @return object
+     * @throws EntityNotFoundException
+     */
+    public function getReferenceByName($reference)
+    {
+        if ($this->hasReference($reference)) {
+            return $this->getReference($reference);
+        }
+        throw new EntityNotFoundException('Reference ' . $reference . ' not found.');
+    }
+
+    /**
+     * Generate Created date
+     * @return \DateTime
+     */
+    protected function generateCreatedDate()
+    {
+        // Convert to timetamps
+        $min = strtotime('now - 1 month');
+        $max = strtotime('now - 1 day');
+        $val = rand($min, $max);
+
+        // Convert to timetamps
+        $minTime = strtotime('12:00:00');
+        $maxTime = strtotime('19:00:00');
+
+        $valTime = rand($minTime, $maxTime);
+
+        $date = date('Y-m-d', $val) . ' ' . date('H:i:s', $valTime);
+        return new \DateTime($date, new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * Generate Updated date
+     * @param \DateTime $created
+     * @return \DateTime
+     */
+    protected function generateUpdatedDate(\DateTime $created)
+    {
+        // Convert to timetamps
+        $min = strtotime($created->format('Y-M-d H:i:s'));
+        $max = strtotime('now - 1 day');
+        $val = rand($min, $max);
+
+        // Convert to timetamps
+        $minTime = strtotime($created->format('H:i:s'));
+        $maxTime = strtotime('19:00:00');
+
+        $valTime = rand($minTime, $maxTime);
+
+        $date = date('Y-m-d', $val) . ' ' . date('H:i:s', $valTime);
+        return new \DateTime($date, new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * Remove event $instance listener (for manual set created/updated dates)
+     *
+     * @param $instance
+     * @param array $events
+     */
+    protected function removeEventListener($instance, $events = ['prePersist', 'postPersist'])
+    {
+        foreach ($this->em->getEventManager()->getListeners() as $event => $listeners) {
+            foreach ($listeners as $hash => $listener) {
+                if ($listener instanceof $instance) {
+                    $this->em->getEventManager()->removeEventListener($events, $listener);
+                    $this->em->getEventManager();
+                    break 2;
+                }
+            }
         }
     }
 }
