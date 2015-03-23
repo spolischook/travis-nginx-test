@@ -69,9 +69,7 @@ class LoadContactTagData extends AbstractFixture  implements DependentFixtureInt
         /**
          * Need for saveTagging
          */
-        $securityContext = $this->container->get('security.context');
-        $token = new UsernamePasswordOrganizationToken($user, $user->getUsername(), 'main', $this->getMainOrganization());
-        $securityContext->setToken($token);
+        $this->setSecurityContext($user);
 
         foreach ($info as $contactUid => $contactData) {
             /** @var Contact $contact */

@@ -1,2 +1,2 @@
-Uid,Username,Group uid,PlainPassword,FirstName,LastName,Email,Created
-2001,sale,4,sale,Ellen,Rowell,Ellen.Rowell@gmail.com,2014-01-04 14:14:20
+Uid,Organization uid,Username,Group uid,PlainPassword,FirstName,LastName,Email,Created
+2001,1,sale,4,sale,Ellen,Rowell,Ellen.Rowell@gmail.com,2014-01-04 14:14:20

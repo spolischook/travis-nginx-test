@@ -89,7 +89,7 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
             $contactData['updatedBy'] = $account->getOwner();
             $contactData['createdBy'] = $account->getOwner();
             $contactData['birthday'] = new \DateTime($contactData['birthday']);
-            $contactData['organization'] = $this->getMainOrganization();
+            $contactData['organization'] = $account->getOrganization();
 
             if (!empty($contactData['photo'])) {
                 $file = new File();

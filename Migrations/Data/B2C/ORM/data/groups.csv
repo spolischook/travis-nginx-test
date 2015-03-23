@@ -3,5 +3,5 @@ Uid,Business unit uid,Name
 2,1,Executive Marketing
 3,2,Sales Manager
 4,2,Executive Sales
-5,0,Promotion Manager
-6,0,Executive Director
+5,1000,Promotion Manager
+6,1000,Executive Director

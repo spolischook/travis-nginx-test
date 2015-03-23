@@ -62,8 +62,6 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
 
     public function load(ObjectManager $manager)
     {
-        $organization = $this->getMainOrganization();
-
         /** @var Role $marketingRole */
         $marketingRole = $this->roleRepository->findOneBy(['role' => 'ROLE_MARKETING_MANAGER']);
         /** @var Role $saleRole */
@@ -74,26 +72,19 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
         $data = $this->getData();
         foreach ($data['sales'] as $userData) {
             $userData['created'] = new \DateTime($userData['created'], new \DateTimeZone('UTC'));
-            $user = $this->createUser($manager, $userData, $saleRole, $organization, $businessUnits);
-            $this->userManager->updateUser($user);
-            $this->setReference('User:' . $userData['uid'], $user);
+            $this->createUser($manager, $userData, $saleRole, $businessUnits);
         }
 
         foreach ($data['marketing'] as $userData) {
             $userData['created'] = new \DateTime($userData['created'], new \DateTimeZone('UTC'));
-            $user = $this->createUser($manager, $userData, $marketingRole, $organization, $businessUnits);
-            $this->userManager->updateUser($user);
-            $this->setReference('User:' . $userData['uid'], $user);
+            $this->createUser($manager, $userData, $marketingRole, $businessUnits);
         }
 
-        $mainBusinessUnit = new ArrayCollection([$this->getReferenceByName('BusinessUnit:0')]);
         foreach ($data['users'] as $userData) {
             $userData['created'] = $this->generateCreatedDate();
-            $user = $this->createUser($manager, $userData, $saleRole, $organization, $mainBusinessUnit);
-            $user->setPlainPassword($userData['username']);
-            $this->userManager->updatePassword($user);
-            $this->userManager->updateUser($user);
-            $this->setReference('User:' . $userData['uid'], $user);
+            $uid = $userData['business unit uid'];
+            $businessUnit = new ArrayCollection([$this->getReferenceByName('BusinessUnit:'. $uid)]);
+            $this->createUser($manager, $userData, $saleRole, $businessUnit);
         }
     }
 
@@ -101,59 +92,46 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
      * @param ObjectManager $manager
      * @param array $userData
      * @param Role $role
-     * @param Organization $organization
      * @param ArrayCollection $businessUnits
-     * @return User
      */
     protected function createUser(
         ObjectManager $manager,
         $userData = [],
         Role $role,
-        Organization $organization,
         ArrayCollection $businessUnits
     ) {
+        $organization = $this->getOrganizationReference($userData['organization uid']);
         /** @var User $user */
         $user = $this->userManager->createUser();
         if (!empty($userData['group uid'])) {
             $user->addGroup($this->getGroupReference($userData['group uid']));
         }
         if (!empty($userData['birthday'])) {
-            $userData['birthday'] = new \DateTime($userData['birthday'], new \DateTimeZone('UTC'));
+            $birthday = new \DateTime($userData['birthday'], new \DateTimeZone('UTC'));
+            $user->setBirthday($birthday);
+
         }
         $user->addRole($role);
-        $uid = $userData['uid'];
-        $userData['updated'] = $this->generateUpdatedDate($userData['created']);
-
         /**
          * Setup manual properties(Created, Updated, LoginCount) for entity
          */
         $manager->getClassMetadata(get_class($user))->setLifecycleCallbacks([]);
-        $user->setCreatedAt($userData['created']);
-        $user->setUpdatedAt($userData['updated']);
+        $user->setCreatedAt($this->generateCreatedDate());
+        $user->setUpdatedAt($this->generateUpdatedDate($user->getCreatedAt()));
         $user->setLoginCount(0);
-
-        unset($userData['uid'], $userData['group uid'], $userData['group'], $userData['created'], $userData['updated']);
-        $this->setObjectValues($user, $userData);
 
         $user->setOrganization($organization);
         $user->addOrganization($organization);
         $user->setBusinessUnits($businessUnits);
+        $user->setFirstName($userData['firstname']);
+        $user->setLastName($userData['lastname']);
+        $user->setEmail($userData['email']);
+        $user->setUsername($userData['username']);
 
-        $user->setOwner($this->getBusinessUnitReference());
-        $this->setReference('DefaultUser:' . $uid, $user);
-
-        return $user;
-    }
-
-    /**
-     * @param $uid
-     * @return BusinessUnit
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getBusinessUnitReference($uid = 0)
-    {
-        $reference = 'BusinessUnit:' . $uid;
-        return $this->getReferenceByName($reference);
+        $user->setPlainPassword($userData['username']);
+        $this->userManager->updatePassword($user);
+        $this->userManager->updateUser($user);
+        $this->setReference('User:' . $userData['uid'], $user);
     }
 
     /**
@@ -164,6 +142,17 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
     protected function getGroupReference($uid)
     {
         $reference = 'Group:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @return BusinessUnit
+     * @throws \Doctrine\ORM\EntityNotFoundException
+     */
+    protected function getBusinessUnitReference($uid)
+    {
+        $reference = 'BusinessUnit:' . $uid;
         return $this->getReferenceByName($reference);
     }
 }

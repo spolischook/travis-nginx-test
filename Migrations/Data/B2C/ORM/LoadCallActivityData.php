@@ -78,7 +78,7 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
             $phone = $contact->getPhones()->first();
             if ($phone) {
                 $call = new Call();
-                $call->setOrganization($this->getMainOrganization());
+                $call->setOrganization($contact->getOrganization());
                 if ($call->supportActivityTarget(get_class($entity->getOwner()))) {
                     $call->setOwner($entity->getOwner());
                 }

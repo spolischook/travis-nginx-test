@@ -77,7 +77,7 @@ class LoadNoteActivityData extends AbstractFixture implements DependentFixtureIn
 
         $note = new Note();
         $note->setTarget($entity);
-        $note->setOrganization($this->getMainOrganization());
+        $note->setOrganization($entity->getOrganization());
         $note->setOwner($entity->getOwner());
         $note->setCreatedAt($this->generateUpdatedDate($entity->getCreatedAt()));
         $note->setUpdatedAt($note->getCreatedAt());

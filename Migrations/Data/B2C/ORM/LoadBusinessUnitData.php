@@ -2,36 +2,42 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-class LoadBusinessUnitData extends AbstractFixture implements ContainerAwareInterface
+class LoadBusinessUnitData extends AbstractFixture implements DependentFixtureInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
+        ];
+    }
+
     /**
      * @return array
      */
     protected function getData()
     {
-        return
-        [
-            'main' => current($this->loadData('business_units/main_business_units.csv')),
-            'children'  => $this->loadData('business_units/children_business_units.csv'),
+        return [
+            'main' => $this->loadData('business_units/main_business_units.csv'),
+            'children' => $this->loadData('business_units/children_business_units.csv'),
         ];
     }
 
     /**
      * Update and return Main Business Unit
-     * @param ObjectManager $manager
-     * @param array $data
      * @return BusinessUnit
      * @throws EntityNotFoundException
      */
-    protected function getMainBusinessUnit(ObjectManager $manager, $data = [])
+    protected function getMainBusinessUnit()
     {
         $businessRepository = $this->em->getRepository('OroOrganizationBundle:BusinessUnit');
 
@@ -44,10 +50,6 @@ class LoadBusinessUnitData extends AbstractFixture implements ContainerAwareInte
         if (!$entity) {
             throw new EntityNotFoundException('Main business unit is not defined.');
         }
-        $this->setObjectValues($entity, $data);
-        $manager->persist($entity);
-        $this->addReference('BusinessUnit:0', $entity);
-
         return $entity;
     }
 
@@ -57,24 +59,32 @@ class LoadBusinessUnitData extends AbstractFixture implements ContainerAwareInte
     public function load(ObjectManager $manager)
     {
         $data = $this->getData();
+        $main = true;
+        foreach ($data['main'] as $mainBusinessUnitData) {
+            if ($main) {
+                $businessUnit = $this->getMainBusinessUnit();
+                $main = false;
+            } else {
+                $businessUnit = new Organization();
+            }
 
-        /** @var Organization $organization */
-        $organization = $this->getMainOrganization();
+            $uid = $mainBusinessUnitData['uid'];
+            $organization = $this->getOrganizationReference($mainBusinessUnitData['organization uid']);
+            unset($mainBusinessUnitData['uid'], $mainBusinessUnitData['organization uid']);
+            $this->setObjectValues($businessUnit, $mainBusinessUnitData);
+            $businessUnit->setOrganization($organization);
+            $this->setReference('BusinessUnit:' . $uid, $businessUnit);
+            $manager->persist($businessUnit);
+        }
 
-        /** @var BusinessUnit $mainBusinessUnit */
-        unset($data['main']['uid']);
-        $mainBusinessUnit = $this->getMainBusinessUnit($manager, $data['main']);
-
-        foreach($data['children'] as $businessUnitData)
-        {
-            /** @var BusinessUnit $oroUnit */
+        foreach ($data['children'] as $businessUnitData) {
+            $mainBusinessUnit = $this->getBusinessUnitReference($businessUnitData['main business unit uid']);
             $businessUnit = new BusinessUnit();
-
             $businessUnitData['owner'] = $mainBusinessUnit;
-            $businessUnitData['organization'] = $organization;
+            $businessUnitData['organization'] = $mainBusinessUnit->getOrganization();
 
             $uid = $businessUnitData['uid'];
-            unset($businessUnitData['uid']);
+            unset($businessUnitData['uid'], $businessUnitData['main business unit uid']);
 
             $this->setObjectValues($businessUnit, $businessUnitData);
 
@@ -82,5 +92,16 @@ class LoadBusinessUnitData extends AbstractFixture implements ContainerAwareInte
             $this->addReference('BusinessUnit:' . $uid, $businessUnit);
         }
         $manager->flush();
+    }
+
+    /**
+     * @param $uid
+     * @return BusinessUnit
+     * @throws EntityNotFoundException
+     */
+    public function getBusinessUnitReference($uid)
+    {
+        $reference = 'BusinessUnit:' . $uid;
+        return $this->getReferenceByName($reference);
     }
 }

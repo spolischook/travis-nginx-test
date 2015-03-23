@@ -96,13 +96,13 @@ class LoadPinBarData extends AbstractFixture implements DependentFixtureInterfac
                 "remove" => false
             ]
         ];
-        $organization = $this->getMainOrganization();
+        /** @var User $user */
         foreach ($users as $user) {
             $this->setSecurityContext($user);
             foreach ($params as $param) {
                 $param['user'] = $user;
                 $pinTab = $this->navigationFactory->createItem($param['type'], $param);
-                $pinTab->getItem()->setOrganization($organization);
+                $pinTab->getItem()->setOrganization($user->getOrganization());
                 $manager->persist($pinTab);
             }
         }

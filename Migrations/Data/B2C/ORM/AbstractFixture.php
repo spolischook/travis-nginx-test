@@ -177,7 +177,9 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
     protected function setSecurityContext($user)
     {
         $securityContext = $this->container->get('security.context');
-        $token = new UsernamePasswordOrganizationToken($user, $user->getUsername(), 'main', $this->getMainOrganization());
+        /** @var Organization $organization */
+        $organization = $user->getOrganization();
+        $token = new UsernamePasswordOrganizationToken($user, $user->getUsername(), 'main', $organization);
         $securityContext->setToken($token);
     }
 
@@ -254,5 +256,16 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
                 }
             }
         }
+    }
+
+    /**
+     * @param $uid
+     * @return Organization
+     * @throws EntityNotFoundException
+     */
+    public function getOrganizationReference($uid)
+    {
+        $reference = 'Organization:' . $uid;
+        return $this->getReferenceByName($reference);
     }
 }
