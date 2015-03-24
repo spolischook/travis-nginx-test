@@ -29,6 +29,7 @@ oro_system_configuration:
                                       children:
                                           - oro_locale.language
                           look_and_feel:
+                              priority: 220
                               children:
                                   navbar_settings:
                                       children:
@@ -54,6 +55,13 @@ oro_system_configuration:
                                       children:
                                           - oro_sidebar.sidebar_left_active
                                           - oro_sidebar.sidebar_right_active
+                          email_configuration:
+                              priority: 210
+                              children:
+                                  signature_configuration:
+                                      children:
+                                          - oro_email.signature
+
                           attachment_settings:
                               priority: -10
                               children:

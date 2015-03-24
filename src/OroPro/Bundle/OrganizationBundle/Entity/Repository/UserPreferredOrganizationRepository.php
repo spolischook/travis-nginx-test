@@ -8,6 +8,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization;
+use OroPro\Bundle\OrganizationBundle\Entity\UserOrganization;
 
 class UserPreferredOrganizationRepository extends EntityRepository
 {
@@ -42,6 +43,12 @@ class UserPreferredOrganizationRepository extends EntityRepository
 
         $entry = new UserPreferredOrganization($user, $organization);
         $em->persist($entry);
+
+        $queryBuilder = $em->getRepository('OroProOrganizationBundle:UserOrganization');
+        if (!$queryBuilder->findOneBy(['user' => $user, 'organization' => $organization])) {
+            $em->persist(new UserOrganization($user, $organization));
+        }
+
         $em->flush($entry);
     }
 }
