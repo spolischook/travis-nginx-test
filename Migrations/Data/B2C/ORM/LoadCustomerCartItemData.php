@@ -1,0 +1,91 @@
+<?php
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+
+use OroCRM\Bundle\MagentoBundle\Entity\Cart;
+use OroCRM\Bundle\MagentoBundle\Entity\CartItem;
+
+class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtureInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadCustomerCartData'
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'carts_items' => $this->loadData('carts_items.csv')
+        ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function load(ObjectManager $manager)
+    {
+        $data = $this->getData();
+
+        foreach ($data['carts_items'] as $cartItemData) {
+
+            $cart = $this->getCartReference($cartItemData['cart uid']);
+            $cartItem = new CartItem();
+
+            $taxAmount = $cartItemData['price'] * $cartItemData['taxpercent'];
+            $total = $cartItemData['price'] + $taxAmount;
+
+            unset($cartItemData['uid'], $cartItemData['cart uid']);
+            $cartItem->setProductId(rand(1, 100));
+            $cartItem->setFreeShipping((string)0);
+            $cartItem->setIsVirtual(0);
+
+            $cartItem->setRowTotal($total);
+            $cartItem->setPriceInclTax($total);
+            $cartItem->setTaxAmount($taxAmount);
+
+            $cartItem->setSku($cartItemData['sku']);
+            $cartItem->setProductType($cartItemData['producttype']);
+            $cartItem->setName($cartItemData['name']);
+            $cartItem->setQty(1);
+            $cartItem->setPrice($cartItemData['price']);
+            $cartItem->setDiscountAmount(0);
+            $cartItem->setTaxPercent($cartItemData['taxpercent']);
+            $cartItem->setCreatedAt($this->generateUpdatedDate($cart->getCreatedAt()));
+            $cartItem->setUpdatedAt($this->generateUpdatedDate($cartItem->getCreatedAt()));
+            $cartItem->setCart($cart);
+
+            $cart->getCartItems()->add($cartItem);
+            $cart->setItemsQty($cart->getItemsQty() + $cartItemData['qty']);
+            $cart->setItemsCount($cart->getItemsCount() + 1);
+
+            $cart->setSubTotal($total);
+            $cart->setGrandTotal($cart->getGrandTotal() + $total);
+            $cart->setTaxAmount($cart->getTaxAmount() + $taxAmount);
+
+            $manager->persist($cart);
+
+        }
+        $manager->flush();
+    }
+
+    /**
+     * @param $uid
+     * @return Cart
+     * @throws \Doctrine\ORM\EntityNotFoundException
+     */
+    protected function getCartReference($uid)
+    {
+        $reference = 'Cart:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+}

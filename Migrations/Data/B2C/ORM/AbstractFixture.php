@@ -207,13 +207,7 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
         $max = strtotime('now - 1 day');
         $val = rand($min, $max);
 
-        // Convert to timetamps
-        $minTime = strtotime('12:00:00');
-        $maxTime = strtotime('19:00:00');
-
-        $valTime = rand($minTime, $maxTime);
-
-        $date = date('Y-m-d', $val) . ' ' . date('H:i:s', $valTime);
+        $date = date('Y-m-d H:i:s', $val);
         return new \DateTime($date, new \DateTimeZone('UTC'));
     }
 
@@ -229,13 +223,7 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
         $max = strtotime('now - 1 day');
         $val = rand($min, $max);
 
-        // Convert to timetamps
-        $minTime = strtotime($created->format('H:i:s'));
-        $maxTime = strtotime('19:00:00');
-
-        $valTime = rand($minTime, $maxTime);
-
-        $date = date('Y-m-d', $val) . ' ' . date('H:i:s', $valTime);
+        $date = date('Y-m-d H:i:s', $val);
         return new \DateTime($date, new \DateTimeZone('UTC'));
     }
 

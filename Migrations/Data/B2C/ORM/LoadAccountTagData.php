@@ -12,7 +12,7 @@ use Oro\Bundle\TagBundle\Entity\TagManager;
 
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 
-class LoadAccountTagData extends AbstractFixture  implements DependentFixtureInterface
+class LoadAccountTagData extends AbstractFixture implements DependentFixtureInterface
 {
     /** @var  TagManager */
     protected $tagManager;
