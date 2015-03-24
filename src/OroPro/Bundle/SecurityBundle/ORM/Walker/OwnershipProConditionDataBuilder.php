@@ -2,10 +2,15 @@
 
 namespace OroPro\Bundle\SecurityBundle\ORM\Walker;
 
+use Symfony\Bridge\Doctrine\RegistryInterface;
+
+use Doctrine\Common\Persistence\ObjectManager;
+
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipConditionDataBuilder;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
@@ -14,12 +19,26 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
     /** @var SystemAccessModeOrganizationProvider */
     protected $organizationProvider;
 
+    /** @var Organization */
+    protected $globalOrganization;
+
+    /** @var RegistryInterface */
+    protected $registry;
+
     /**
      * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
     public function setOrganizationProvider(SystemAccessModeOrganizationProvider $organizationProvider)
     {
         $this->organizationProvider = $organizationProvider;
+    }
+
+    /**
+     * @param RegistryInterface $registry
+     */
+    public function setRegistry(RegistryInterface $registry)
+    {
+        $this->registry = $registry;
     }
 
     /**
@@ -36,7 +55,7 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
             && $token->getOrganizationContext()->getIsGlobal()
             && $this->organizationProvider->getOrganizationId()
         ) {
-                $accessLevel = AccessLevel::GLOBAL_LEVEL;
+            $accessLevel = AccessLevel::GLOBAL_LEVEL;
         }
 
         return parent::buildConstraintIfAccessIsGranted($targetEntityClassName, $accessLevel, $metadata);
@@ -45,7 +64,7 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
     /**
      * {@inheritdoc}
      */
-    protected function getOrganizationId()
+    protected function getOrganizationId(OwnershipMetadata $metadata = null)
     {
         $token = $this->getSecurityContext()->getToken();
         if ($token instanceof OrganizationContextTokenInterface
@@ -55,6 +74,55 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
             return $this->organizationProvider->getOrganizationId();
         }
 
+        if($this->hasGlobalAccess($metadata)) {
+            return [
+                $this->getGlobalOrganizationId(),
+                parent::getOrganizationId()
+            ];
+        }
+
         return parent::getOrganizationId();
+    }
+
+    /**
+     * @param OwnershipMetadata $metadata
+     *
+     * @return bool
+     */
+    protected function hasGlobalAccess(OwnershipMetadata $metadata = null)
+    {
+        if (null !== $metadata) {
+            $parameters = $metadata->getAdditionalParameters();
+            return (array_key_exists('global_view', $parameters) && 'true' === $parameters['global_view']);
+        }
+
+        return false;
+    }
+
+    /**
+     * @return int|null
+     */
+    protected function getGlobalOrganizationId()
+    {
+        if (!$this->globalOrganization instanceof Organization) {
+            $globalOrganization       = $this->getObjectManager()
+                ->getRepository('OroOrganizationBundle:Organization')
+                ->findOneBy(['is_global' => 1]);
+            $this->globalOrganization = $globalOrganization;
+        }
+
+        if ($this->globalOrganization instanceof Organization) {
+            return $this->globalOrganization->getId();
+        }
+
+        return null;
+    }
+
+    /**
+     * @return ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return $this->registry->getManager();
     }
 }
