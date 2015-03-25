@@ -74,7 +74,7 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
             return $this->organizationProvider->getOrganizationId();
         }
 
-        if (!$token->getOrganizationContext()->getIsGlobal() && $this->hasGlobalAccess($metadata)) {
+        if ($this->hasGlobalAccess($metadata)) {
             $globalOrganizationId = $this->getGlobalOrganizationId();
 
             if (!empty($globalOrganizationId)) {

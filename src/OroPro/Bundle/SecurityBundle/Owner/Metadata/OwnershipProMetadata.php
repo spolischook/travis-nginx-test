@@ -41,7 +41,7 @@ class OwnershipProMetadata extends OwnershipMetadata
      */
     public function isGlobalView()
     {
-        return 'true' === $this->globalView;
+        return 'true' === $this->globalView || true === $this->globalView;
     }
 
     /**
@@ -81,7 +81,7 @@ class OwnershipProMetadata extends OwnershipMetadata
      */
     public static function __set_state($data)
     {
-        $result                         = new OwnershipMetadata();
+        $result                         = new OwnershipProMetadata();
         $result->ownerType              = $data['ownerType'];
         $result->ownerFieldName         = $data['ownerFieldName'];
         $result->ownerColumnName        = $data['ownerColumnName'];

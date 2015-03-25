@@ -2,9 +2,6 @@
 
 namespace OroPro\Bundle\SecurityBundle\EventListener;
 
-use Symfony\Component\PropertyAccess\PropertyAccess;
-
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SearchBundle\Event\BeforeSearchEvent;
 use Oro\Bundle\SearchBundle\Event\PrepareEntityMapEvent;
 use Oro\Bundle\SecurityBundle\EventListener\SearchListener;

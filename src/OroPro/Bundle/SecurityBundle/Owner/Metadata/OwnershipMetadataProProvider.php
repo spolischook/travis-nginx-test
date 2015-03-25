@@ -12,7 +12,9 @@ use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 
 class OwnershipMetadataProProvider extends OwnershipMetadataProvider
 {
-
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(
         array $owningEntityNames,
         ConfigProvider $configProvider,

@@ -37,6 +37,8 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
 
     /**
      * @param ContainerBuilder $container
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function process(ContainerBuilder $container)
     {
@@ -97,6 +99,7 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
             );
         }
 
+        // rewrite ownership_metadata_provider
         if ($container->hasDefinition(self::OWNERSHIP_METADATA_SERVICE)) {
             $definition = $container->getDefinition(self::OWNERSHIP_METADATA_SERVICE);
             $definition->setClass(self::OWNERSHIP_METADATA_CLASS);
