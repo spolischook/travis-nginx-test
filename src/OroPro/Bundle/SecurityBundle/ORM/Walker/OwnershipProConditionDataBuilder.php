@@ -19,8 +19,8 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
     /** @var SystemAccessModeOrganizationProvider */
     protected $organizationProvider;
 
-    /** @var Organization */
-    protected $globalOrganization;
+    /** @var int */
+    protected $globalOrganizationId;
 
     /** @var RegistryInterface */
     protected $registry;
@@ -75,11 +75,11 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
         }
 
         if (!$token->getOrganizationContext()->getIsGlobal() && $this->hasGlobalAccess($metadata)) {
-            $globalOrganization = $this->getGlobalOrganizationId();
+            $globalOrganizationId = $this->getGlobalOrganizationId();
 
-            if (!empty($globalOrganization)) {
+            if (!empty($globalOrganizationId)) {
                 $result = [];
-                array_push($result, $globalOrganization);
+                array_push($result, $globalOrganizationId);
                 array_push($result, parent::getOrganizationId());
 
                 return $result;
@@ -108,18 +108,14 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
      */
     protected function getGlobalOrganizationId()
     {
-        if (!$this->globalOrganization instanceof Organization) {
+        if (!$this->globalOrganizationId) {
             $globalOrganization       = $this->getObjectManager()
                 ->getRepository('OroOrganizationBundle:Organization')
                 ->findOneBy(['is_global' => 1]);
-            $this->globalOrganization = $globalOrganization;
+            $this->globalOrganizationId = $globalOrganization->getid();
         }
 
-        if ($this->globalOrganization instanceof Organization) {
-            return $this->globalOrganization->getId();
-        }
-
-        return null;
+        return $this->globalOrganizationId;
     }
 
     /**
