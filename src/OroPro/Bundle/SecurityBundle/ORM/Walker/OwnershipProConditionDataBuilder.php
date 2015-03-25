@@ -74,7 +74,7 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
             return $this->organizationProvider->getOrganizationId();
         }
 
-        if ($this->hasGlobalAccess($metadata)) {
+        if (!$token->getOrganizationContext()->getIsGlobal() && $this->hasGlobalAccess($metadata)) {
             $globalOrganization = $this->getGlobalOrganizationId();
 
             if (!empty($globalOrganization)) {
@@ -97,8 +97,7 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
     protected function hasGlobalAccess(OwnershipMetadata $metadata = null)
     {
         if (null !== $metadata) {
-            $parameters = $metadata->getAdditionalParameters();
-            return (array_key_exists('global_view', $parameters) && 'true' === $parameters['global_view']);
+            return $metadata->isGlobalView();
         }
 
         return false;

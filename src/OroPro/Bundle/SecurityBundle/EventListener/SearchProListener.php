@@ -29,43 +29,17 @@ class SearchProListener extends SearchListener
      */
     public function prepareEntityMapEvent(PrepareEntityMapEvent $event)
     {
-        $data           = $event->getData();
-        $className      = $event->getClassName();
-        $entity         = $event->getEntity();
-        $organizationId = self::EMPTY_ORGANIZATION_ID;
-        $metadata       = $this->metadataProvider->getMetadata($className);
+        $className = $event->getClassName();
+        $metadata  = $this->metadataProvider->getMetadata($className);
 
-        if ($metadata) {
-            $additionalData = $metadata->getAdditionalParameters();
-
-            if (!empty($additionalData['global_view']) && 'true' === $additionalData['global_view']) {
-                $data['integer']['organization'] = $organizationId;
-                $event->setData($data);
-                return null;
-            }
-
-            $organizationField = null;
-            if ($metadata->getOrganizationFieldName()) {
-                $organizationField = $metadata->getOrganizationFieldName();
-            }
-
-            if ($metadata->isOrganizationOwned()) {
-                $organizationField = $metadata->getOwnerFieldName();
-            }
-
-            if ($organizationField) {
-                $propertyAccessor = PropertyAccess::createPropertyAccessor();
-                /** @var Organization $organization */
-                $organization = $propertyAccessor->getValue($entity, $organizationField);
-                if ($organization && null !== $organization->getId()) {
-                    $organizationId = $organization->getId();
-                }
-            }
+        if ($metadata && $metadata->isGlobalView()) {
+            $data                            = $event->getData();
+            $data['integer']['organization'] = self::EMPTY_ORGANIZATION_ID;
+            $event->setData($data);
+            return null;
         }
 
-        $data['integer']['organization'] = $organizationId;
-
-        $event->setData($data);
+        parent::prepareEntityMapEvent($event);
     }
 
     /**
