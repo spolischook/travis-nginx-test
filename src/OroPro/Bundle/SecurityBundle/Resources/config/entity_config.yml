@@ -1,0 +1,8 @@
+oro_entity_config:
+    security:
+        entity:
+            items:
+                # This attribute is allow to show entities from organization with system access for other organization
+                ownership: # boolean
+                    options:
+                        global_view: false

@@ -17,13 +17,13 @@ use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadat
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
 use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipProMetadata;
 
-
 class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
 {
     const BUSINESS_UNIT = 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\BusinessUnit';
     const ORGANIZATION = 'OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization';
     const USER = 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User';
     const TEST_ENTITY = 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity';
+    const GLOBAL_ORGANIZATION_ID = 'globOrg';
 
     /**
      * @var OwnershipConditionDataBuilder
@@ -41,6 +41,9 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
 
     /** @var OwnerTree */
     private $tree;
+
+    /** @var Organization */
+    private $globalOrganization;
 
     protected function setUp()
     {
@@ -96,9 +99,24 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
             $this->aclVoter
         );
 
+        $organizationProviderClass = 'OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider';
+        $organizationProvider      = $this->getMockBuilder($organizationProviderClass)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $organizationProvider->expects(static::any())
+            ->method('getOrganizationId')
+            ->will(static::returnValue(null));
+
+        $organizationProvider->expects(static::any())
+            ->method('getOrganization')
+            ->will(static::returnValue($this->globalOrganization));
+
+        $this->builder->setOrganizationProvider($organizationProvider);
+
         $registry = $this->getMockBuilder('Symfony\Bridge\Doctrine\RegistryInterface')
-                ->disableOriginalConstructor()
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $om = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
             ->disableOriginalConstructor()
@@ -235,6 +253,11 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
 
         $user         = new User($userId);
         $organization = new Organization($organizationId);
+
+        if ($accessLevel === AccessLevel::SYSTEM_LEVEL) {
+            $organization->setIsGlobal(true);
+        }
+
         $user->addOrganization($organization);
         $token =
             $this->getMockBuilder('Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken')
@@ -281,7 +304,7 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
     public static function buildFilterConstraintProvider()
     {
         return array(
-            '1. for the TEST entity without userId, grant, ownerType; with NONE ACL'            => array(
+            '1. for the TEST entity without userId, grant, ownerType; with NONE ACL'             => array(
                 '',
                 '',
                 false,
@@ -290,7 +313,7 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
                 self::TEST_ENTITY,
                 []
             ),
-            '2. for the stdClass entity without userId, grant, ownerType; with NONE ACL'        => array(
+            '2. for the stdClass entity without userId, grant, ownerType; with NONE ACL'         => array(
                 '',
                 '',
                 false,
@@ -299,7 +322,7 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
                 '\stdClass',
                 []
             ),
-            '3. for the stdClass entity without userId, ownerType; with grant and NONE ACL'     => array(
+            '3. for the stdClass entity without userId, ownerType; with grant and NONE ACL'      => array(
                 '',
                 '',
                 true,
@@ -308,7 +331,7 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
                 '\stdClass',
                 []
             ),
-            '4. for the TEST entity without ownerType; with SYSTEM ACL, userId, grant'          => array(
+            '4. for the TEST entity without ownerType; with SYSTEM ACL, userId, grant'           => array(
                 'user4',
                 '',
                 true,
@@ -317,7 +340,7 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
                 self::TEST_ENTITY,
                 []
             ),
-            '5. for the TEST entity with SYSTEM ACL, userId, grant and ORGANIZATION ownerType'  => array(
+            '5. for the TEST entity with SYSTEM ACL, userId, grant and ORGANIZATION ownerType'   => array(
                 'user4',
                 '',
                 true,
@@ -326,7 +349,7 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
                 self::TEST_ENTITY,
                 []
             ),
-            '6. for the TEST entity with SYSTEM ACL, userId, grant and BUSINESS_UNIT ownerType' => array(
+            '6. for the TEST entity with SYSTEM ACL, userId, grant and BUSINESS_UNIT ownerType'  => array(
                 'user4',
                 '',
                 true,
@@ -335,7 +358,7 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
                 self::TEST_ENTITY,
                 []
             ),
-            '7. for the TEST entity with SYSTEM ACL, userId, grant and USER ownerType'          => array(
+            '7. for the TEST entity with SYSTEM ACL, userId, grant and USER ownerType'           => array(
                 'user4',
                 '',
                 true,
@@ -344,7 +367,7 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
                 self::TEST_ENTITY,
                 []
             ),
-            '8. for the TEST entity without ownerType; with GLOBAL ACL, userId, grant'          => array(
+            '8. for the TEST entity without ownerType; with GLOBAL ACL, userId, grant'           => array(
                 'user4',
                 '',
                 true,
@@ -353,7 +376,7 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
                 self::TEST_ENTITY,
                 []
             ),
-            '9. for the TEST entity with GLOBAL ACL, userId, grant and ORGANIZATION ownerType'  => array(
+            '9. for the TEST entity with GLOBAL ACL, userId, grant and ORGANIZATION ownerType'   => array(
                 'user4',
                 'org4',
                 true,
@@ -394,14 +417,9 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
                 AccessLevel::GLOBAL_LEVEL,
                 null,
                 self::ORGANIZATION,
-                array(
-                    'id',
-                    array('org4'),
-                    PathExpression::TYPE_STATE_FIELD,
-                    null,
-                    null,
-                    false
-                )
+                [
+
+                ]
             ),
             '13. for the TEST entity without ownerType; with DEEP ACL, userId, grant'            => array(
                 'user4',
