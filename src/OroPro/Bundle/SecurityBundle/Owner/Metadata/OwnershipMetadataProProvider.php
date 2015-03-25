@@ -39,6 +39,7 @@ class OwnershipMetadataProProvider extends OwnershipMetadataProvider
             $organizationFieldName,
             $organizationColumnName
         );
+
         return $data;
     }
 }
