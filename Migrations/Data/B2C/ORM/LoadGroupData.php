@@ -37,6 +37,7 @@ class LoadGroupData extends AbstractFixture implements DependentFixtureInterface
             $businessUnit = $this->getBusinessUnitReference($groupData['business unit uid']);
             $group = new Group($groupData['name']);
             $group->setOwner($businessUnit);
+            $group->setOrganization($businessUnit->getOrganization());
             $manager->persist($group);
             $this->setReference('Group:' . $groupData['uid'], $group);
         }
