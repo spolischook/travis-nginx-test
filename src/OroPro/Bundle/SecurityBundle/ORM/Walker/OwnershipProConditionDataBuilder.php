@@ -112,7 +112,10 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
             $globalOrganization       = $this->getObjectManager()
                 ->getRepository('OroOrganizationBundle:Organization')
                 ->findOneBy(['is_global' => 1]);
-            $this->globalOrganizationId = $globalOrganization->getid();
+
+            if ($globalOrganization instanceof Organization) {
+                $this->globalOrganizationId = $globalOrganization->getid();
+            }
         }
 
         return $this->globalOrganizationId;
