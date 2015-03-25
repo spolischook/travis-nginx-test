@@ -62,8 +62,8 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
      */
     public function getMainUser()
     {
-        if ($this->hasReference('MainUser')) {
-            $entity = $this->getReference('MainUser');
+        if ($this->hasReference('User:main')) {
+            $entity = $this->getReference('User:main');
             if ($entity instanceof User) {
                 return $entity;
             }
@@ -74,7 +74,7 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
             throw new EntityNotFoundException('Main user does not exist.');
         }
 
-        $this->addReference('MainUser', $entity);
+        $this->addReference('User:main', $entity);
 
         return $entity;
     }
@@ -111,6 +111,8 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
     /**
      * @param $path
      * @return array
+     * @throws FileNotFoundException
+     * @throws NoSuchPropertyException
      */
     protected function loadDataFromCSV($path)
     {

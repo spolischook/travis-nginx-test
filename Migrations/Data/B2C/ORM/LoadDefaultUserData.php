@@ -85,6 +85,9 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
             $businessUnit = new ArrayCollection([$this->getReferenceByName('BusinessUnit:'. $uid)]);
             $this->createUser($manager, $userData, $saleRole, $businessUnit);
         }
+
+        //Set reference fo main user
+        $this->setReference('User:main', $this->getMainUser());
     }
 
     /**

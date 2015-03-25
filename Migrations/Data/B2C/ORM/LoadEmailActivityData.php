@@ -10,6 +10,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Mailer\Processor;
+use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
@@ -91,6 +92,7 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
     {
         if ($entity->getEmail() !== null) {
             $user = $entity->getOwner();
+            $origin = $this->mailerProcessor->getEmailOrigin($user->getEmail());
             $createdAt = $this->generateUpdatedDate($entity->getCreatedAt());
 
             /** @var Email $email */
@@ -120,6 +122,7 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
                 true
             );
             $email->setEmailBody($emailBody);
+            $email->addFolder($origin->getFolder(FolderType::SENT));
             $email->setMessageId(sprintf('id.%s@%s', uniqid(), '@orocrm-pro.demo-data.generated'));
             $manager->getClassMetadata(get_class($email))->setLifecycleCallbacks([]);
             $this->emailEntityBuilder->getBatch()->persist($manager);
