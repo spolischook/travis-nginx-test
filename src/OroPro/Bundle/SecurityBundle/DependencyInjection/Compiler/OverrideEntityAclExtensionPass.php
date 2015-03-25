@@ -32,6 +32,9 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
     const IMPORTEXPORT_ENTITY_READER_SERVICE = 'oro_importexport.reader.entity';
     const IMPORTEXPORT_ENTITY_READER_CLASS   = 'OroPro\Bundle\SecurityBundle\ImportExport\Reader\EntityProReader';
 
+    const OWNERSHIP_METADATA_SERVICE = 'oro_security.owner.ownership_metadata_provider';
+    const OWNERSHIP_METADATA_CLASS   = 'OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProProvider';
+
     /**
      * @param ContainerBuilder $container
      */
@@ -92,6 +95,11 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
                 'setSecurityFacade',
                 [new Reference(self::SECURITY_FACADE_SERVICE)]
             );
+        }
+
+        if ($container->hasDefinition(self::OWNERSHIP_METADATA_SERVICE)) {
+            $definition = $container->getDefinition(self::OWNERSHIP_METADATA_SERVICE);
+            $definition->setClass(self::OWNERSHIP_METADATA_CLASS);
         }
     }
 
