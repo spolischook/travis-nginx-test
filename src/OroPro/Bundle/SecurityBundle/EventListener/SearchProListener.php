@@ -3,6 +3,7 @@
 namespace OroPro\Bundle\SecurityBundle\EventListener;
 
 use Oro\Bundle\SearchBundle\Event\BeforeSearchEvent;
+use Oro\Bundle\SearchBundle\Event\PrepareEntityMapEvent;
 use Oro\Bundle\SecurityBundle\EventListener\SearchListener;
 
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
@@ -18,6 +19,24 @@ class SearchProListener extends SearchListener
     public function setOrganizationProvider(SystemAccessModeOrganizationProvider $organizationProvider)
     {
         $this->organizationProvider = $organizationProvider;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepareEntityMapEvent(PrepareEntityMapEvent $event)
+    {
+        $className = $event->getClassName();
+        $metadata  = $this->metadataProvider->getMetadata($className);
+
+        if ($metadata && $metadata->isGlobalView()) {
+            $data                            = $event->getData();
+            $data['integer']['organization'] = self::EMPTY_ORGANIZATION_ID;
+            $event->setData($data);
+            return null;
+        }
+
+        parent::prepareEntityMapEvent($event);
     }
 
     /**
