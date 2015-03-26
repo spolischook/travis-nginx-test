@@ -17,7 +17,9 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadCustomerData'
+            __NAMESPACE__ . '\\LoadCustomerData',
+            __NAMESPACE__ . '\\LoadCustomerCartData',
+            __NAMESPACE__ . '\\LoadCustomerCartItemData'
         ];
     }
 
@@ -40,11 +42,9 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
 
         foreach ($data['orders'] as $orderData) {
             $cart = $this->getCartReference($orderData['cart uid']);
+            $customer = $cart->getCustomer();
             $order = new Order();
 
-            /**
-             * Store/Integration/Cart(Customer,Store)
-             */
             $order->setOrganization($cart->getOrganization());
             $order->setChannel($cart->getChannel());
             $order->setCustomer($cart->getCustomer());
@@ -65,6 +65,7 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
             if ($orderData['status'] == 'Completed') {
                 $order->setTotalPaidAmount($cart->getGrandTotal());
             }
+
             $order->setSubtotalAmount($cart->getSubTotal());
             $order->setShippingAmount(rand(5, 10));
             $order->setPaymentMethod($orderData['paymentmethod']);
@@ -93,6 +94,7 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
             }
             $order->setItems($orderItems);
 
+            $manager->persist($customer);
             $manager->persist($order);
         }
         $manager->flush();

@@ -6,7 +6,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 
 use OroCRM\Bundle\ChannelBundle\Builder\BuilderFactory;
@@ -78,7 +77,15 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
             $builder->setOwner($integration->getOrganization());
             $builder->setDataSource($integration);
             $builder->setStatus($integration->isEnabled() ? Channel::STATUS_ACTIVE : Channel::STATUS_INACTIVE);
+
+            /**
+             * Enable RFM Metrics for $dataChanel
+             */
             $dataChannel = $builder->getChannel();
+            $data = $dataChannel->getData();
+            $data['rfm_enabled'] = true;
+            $dataChannel->setData($data);
+
             $this->setReference('IntegrationDataChannel:' . $integrationData['uid'], $dataChannel);
             $manager->persist($dataChannel);
         }

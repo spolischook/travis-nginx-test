@@ -109,7 +109,7 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
             $email->addActivityTarget($entity);
 
             /**
-             * TODO: Remove access via reflection
+             * @todo: should be refactored in BAP-7856
              */
             $class = new \ReflectionClass($email);
             $created = $class->getProperty('created');
