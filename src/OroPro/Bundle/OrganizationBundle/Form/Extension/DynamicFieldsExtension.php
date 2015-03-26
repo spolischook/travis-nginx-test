@@ -6,13 +6,11 @@ use Symfony\Component\Routing\Router;
 use Symfony\Component\Translation\Translator;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Form\Extension\DynamicFieldsExtension as BaseDynamicFieldsExtension;
-
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
 class DynamicFieldsExtension extends BaseDynamicFieldsExtension
@@ -34,10 +32,11 @@ class DynamicFieldsExtension extends BaseDynamicFieldsExtension
         ConfigManager $configManager,
         Router $router,
         Translator $translator,
+        DoctrineHelper $doctrineHelper,
         SecurityFacade $securityFacade,
         SystemAccessModeOrganizationProvider $systemAccessModeOrganizationProvider
     ) {
-        parent::__construct($configManager, $router, $translator);
+        parent::__construct($configManager, $router, $translator, $doctrineHelper);
 
         $this->securityFacade                       = $securityFacade;
         $this->systemAccessModeOrganizationProvider = $systemAccessModeOrganizationProvider;
