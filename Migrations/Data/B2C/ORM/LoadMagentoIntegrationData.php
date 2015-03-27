@@ -19,12 +19,21 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
     protected $factory;
 
     /**
+     * {@inheritDoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        parent::setContainer($container);
+        $this->factory = $container->get('orocrm_channel.builder.factory');
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadWebsiteData',
+            __NAMESPACE__ . '\\LoadWebsiteData',
         ];
     }
 
@@ -34,17 +43,8 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
     public function getData()
     {
         return [
-            'magento_integration' => $this->loadData('magento_integration.csv')
+            'magento_integration' => $this->loadData('magento_integration.csv'),
         ];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        parent::setContainer($container);
-        $this->factory = $container->get('orocrm_channel.builder.factory');
     }
 
     /**
@@ -70,7 +70,7 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
             $organization = $this->getOrganizationReference($integrationData['organization uid']);
             $integration->setOrganization($organization);
 
-            $this->setReference('Integration:' . $integrationData['uid'], $integration);
+            $this->setIntegrationReference($integrationData['uid'], $integration);
             $manager->persist($integration);
 
             $builder = $this->factory->createBuilderForIntegration($integration);
@@ -78,17 +78,23 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
             $builder->setDataSource($integration);
             $builder->setStatus($integration->isEnabled() ? Channel::STATUS_ACTIVE : Channel::STATUS_INACTIVE);
 
-            /**
-             * Enable RFM Metrics for $dataChanel
-             */
             $dataChannel = $builder->getChannel();
-            $data = $dataChannel->getData();
-            $data['rfm_enabled'] = true;
-            $dataChannel->setData($data);
+            $this->enableRFMMetric($dataChannel);
 
-            $this->setReference('IntegrationDataChannel:' . $integrationData['uid'], $dataChannel);
+            $this->setIntegrationDataChannelReference($integrationData['uid'], $dataChannel);
             $manager->persist($dataChannel);
         }
         $manager->flush();
+    }
+
+    /**
+     * Enable RFM Metrics for $dataChannel
+     * @param Channel $dataChannel
+     */
+    protected function enableRFMMetric(Channel $dataChannel)
+    {
+        $data = $dataChannel->getData();
+        $data['rfm_enabled'] = true;
+        $dataChannel->setData($data);
     }
 }

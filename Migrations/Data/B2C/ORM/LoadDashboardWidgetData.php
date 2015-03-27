@@ -3,11 +3,9 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Oro\Bundle\DashboardBundle\Entity\Dashboard;
 use Oro\Bundle\DashboardBundle\Model\Manager;
 use Oro\Bundle\DashboardBundle\Model\WidgetModel;
 
@@ -31,7 +29,7 @@ class LoadDashboardWidgetData extends AbstractFixture implements DependentFixtur
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadDashboardData',
+            __NAMESPACE__ . '\\LoadDashboardData',
         ];
     }
 
@@ -79,16 +77,5 @@ class LoadDashboardWidgetData extends AbstractFixture implements DependentFixtur
             $widget->setLayoutPosition($layoutPosition);
         }
         return $widget;
-    }
-
-    /**
-     * @param $uid
-     * @return Dashboard
-     * @throws EntityNotFoundException
-     */
-    public function getDashboardReference($uid)
-    {
-        $reference = 'Dashboard:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

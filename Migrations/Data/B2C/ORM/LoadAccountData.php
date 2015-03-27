@@ -15,10 +15,24 @@ class LoadAccountData extends AbstractFixture implements DependentFixtureInterfa
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadBusinessUnitData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadTagData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadDefaultUserData',
+            __NAMESPACE__ . '\\LoadBusinessUnitData',
+            __NAMESPACE__ . '\\LoadTagData',
+            __NAMESPACE__ . '\\LoadDefaultUserData',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getExcludeProperties()
+    {
+        return array_merge(
+            parent::getExcludeProperties(),
+            [
+                'user uid',
+                'organization uid',
+            ]
+        );
     }
 
     /**
@@ -30,6 +44,7 @@ class LoadAccountData extends AbstractFixture implements DependentFixtureInterfa
             'accounts' => $this->loadData('accounts.csv'),
         ];
     }
+
 
     /**
      * {@inheritDoc}
@@ -46,15 +61,13 @@ class LoadAccountData extends AbstractFixture implements DependentFixtureInterfa
                 $accountData['organization'] = $this->getReferenceByName('Organization:' . $accountData['organization uid']);
                 $accountData['CreatedAt'] = $this->generateCreatedDate();
                 $accountData['UpdatedAt'] = $this->generateUpdatedDate($accountData['CreatedAt']);
-                $uid = $accountData['uid'];
-                unset($accountData['uid'], $accountData['user uid'], $accountData['organization uid']);
+
                 $this->setObjectValues($account, $accountData);
 
                 $manager->getClassMetadata(get_class($account))->setLifecycleCallbacks([]);
-
                 $names[$accountData['name']] = $accountData['name'];
 
-                $this->setReference('Account:' . $uid, $account);
+                $this->setAccountReference($accountData['uid'], $account);
                 $manager->persist($account);
             }
         }

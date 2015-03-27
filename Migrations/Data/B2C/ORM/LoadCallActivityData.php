@@ -6,24 +6,30 @@ use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use OroCRM\Bundle\CallBundle\Entity\Call;
+use OroCRM\Bundle\CallBundle\Entity\CallDirection;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\ContactBundle\Entity\ContactPhone;
-use OroCRM\Bundle\CallBundle\Entity\Call;
 
 class LoadCallActivityData extends AbstractFixture implements DependentFixtureInterface
 {
+    /** @var  CallDirection[] */
     protected $directions;
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
-    public function getData()
+    protected function getExcludeProperties()
     {
-        return [
-            'account_calls' => $this->loadData('activities/account/calls.csv'),
-            'contact_calls' => $this->loadData('activities/contact/calls.csv')
-        ];
+        return array_merge(
+            parent::getExcludeProperties(),
+            [
+                'user uid',
+                'account uid',
+                'contact uid',
+            ]
+        );
     }
 
     /**
@@ -32,8 +38,19 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadContactData',
+            __NAMESPACE__ . '\\LoadAccountData',
+            __NAMESPACE__ . '\\LoadContactData',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'account_calls' => $this->loadData('activities/account/calls.csv'),
+            'contact_calls' => $this->loadData('activities/contact/calls.csv'),
         ];
     }
 
@@ -51,14 +68,12 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
 
         foreach ($data['account_calls'] as $callData) {
             $account = $this->getAccountReference($callData['account uid']);
-            unset($callData['uid'], $callData['account uid']);
             $defaultContact = $account->getDefaultContact();
             $this->loadActivity($manager, $account, $defaultContact, $callData);
         }
 
         foreach ($data['contact_calls'] as $callData) {
             $contact = $this->getContactReference($callData['contact uid']);
-            unset($callData['uid'], $callData['contact uid']);
             $this->loadActivity($manager, $contact, $contact, $callData);
         }
         $manager->flush();
@@ -88,7 +103,7 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
                 if (isset($this->directions[$data['direction']])) {
                     $data['direction'] = $this->directions[$data['direction']];
                 } else {
-                    unset($data['direction']);
+                    $data['direction'] = null;
                 }
 
                 $created = $this->generateCreatedDate();
@@ -107,27 +122,4 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
             }
         }
     }
-
-    /**
-     * @param $uid
-     * @return Account
-     * @throws EntityNotFoundException
-     */
-    public function getAccountReference($uid)
-    {
-        $reference = 'Account:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return Contact
-     * @throws EntityNotFoundException
-     */
-    public function getContactReference($uid)
-    {
-        $reference = 'Contact:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
 }

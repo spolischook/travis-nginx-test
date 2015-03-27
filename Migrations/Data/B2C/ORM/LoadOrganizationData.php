@@ -12,7 +12,7 @@ class LoadOrganizationData extends AbstractFixture
     public function getData()
     {
         return [
-            'organizations' => $this->loadData('organizations.csv')
+            'organizations' => $this->loadData('organizations.csv'),
         ];
     }
 
@@ -33,13 +33,10 @@ class LoadOrganizationData extends AbstractFixture
             else {
                 $organization = new Organization();
             }
-
-            $uid = $organizationData['uid'];
-            unset($organizationData['uid']);
-
             $organization->setEnabled(true);
             $this->setObjectValues($organization, $organizationData);
-            $this->setReference('Organization:'. $uid, $organization);
+
+            $this->setOrganizationReference($organizationData['uid'], $organization);
             $manager->persist($organization);
         }
         $manager->flush();

@@ -4,7 +4,6 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use OroCRM\Bundle\MagentoBundle\Entity\Cart;
 use OroCRM\Bundle\MagentoBundle\Entity\CartItem;
 
 class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtureInterface
@@ -12,10 +11,23 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
     /**
      * {@inheritdoc}
      */
+    protected function getExcludeProperties()
+    {
+        return array_merge(
+            parent::getExcludeProperties(),
+            [
+                'cart uid',
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadCustomerCartData'
+            __NAMESPACE__ . '\\LoadCustomerCartData',
         ];
     }
 
@@ -25,7 +37,7 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
     public function getData()
     {
         return [
-            'carts_items' => $this->loadData('carts_items.csv')
+            'carts_items' => $this->loadData('carts_items.csv'),
         ];
     }
 
@@ -44,7 +56,6 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
             $taxAmount = $cartItemData['price'] * $cartItemData['taxpercent'];
             $total = $cartItemData['price'] + $taxAmount;
 
-            unset($cartItemData['uid'], $cartItemData['cart uid']);
             $cartItem->setProductId(rand(1, 100));
             $cartItem->setFreeShipping((string)0);
             $cartItem->setIsVirtual(0);
@@ -76,16 +87,5 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
 
         }
         $manager->flush();
-    }
-
-    /**
-     * @param $uid
-     * @return Cart
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getCartReference($uid)
-    {
-        $reference = 'Cart:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

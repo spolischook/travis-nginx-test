@@ -4,7 +4,6 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
@@ -24,14 +23,17 @@ class LoadNoteActivityData extends AbstractFixture implements DependentFixtureIn
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
-    public function getData()
+    protected function getExcludeProperties()
     {
-        return [
-            'account_notes' => $this->loadData('activities/account/notes.csv'),
-            'contact_notes' => $this->loadData('activities/contact/notes.csv')
-        ];
+        return array_merge(
+            parent::getExcludeProperties(),
+            [
+                'contact uid',
+                'account uid',
+            ]
+        );
     }
 
     /**
@@ -40,8 +42,19 @@ class LoadNoteActivityData extends AbstractFixture implements DependentFixtureIn
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadContactData',
+            __NAMESPACE__ . '\\LoadAccountData',
+            __NAMESPACE__ . '\\LoadContactData',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'account_notes' => $this->loadData('activities/account/notes.csv'),
+            'contact_notes' => $this->loadData('activities/contact/notes.csv'),
         ];
     }
 
@@ -73,8 +86,6 @@ class LoadNoteActivityData extends AbstractFixture implements DependentFixtureIn
      */
     protected function addActivity(ObjectManager $manager, $entity, $data)
     {
-        unset($data['uid'], $data['account uid'], $data['contact uid']);
-
         $note = new Note();
         $note->setTarget($entity);
         $note->setOrganization($entity->getOrganization());
@@ -85,28 +96,6 @@ class LoadNoteActivityData extends AbstractFixture implements DependentFixtureIn
         $this->setObjectValues($note, $data);
 
         $manager->persist($note);
-    }
-
-    /**
-     * @param $uid
-     * @return Account
-     * @throws EntityNotFoundException
-     */
-    public function getAccountReference($uid)
-    {
-        $reference = 'Account:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return Contact
-     * @throws EntityNotFoundException
-     */
-    public function getContactReference($uid)
-    {
-        $reference = 'Contact:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }
 

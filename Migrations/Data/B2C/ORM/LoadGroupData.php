@@ -5,7 +5,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 
 class LoadGroupData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -14,7 +13,9 @@ class LoadGroupData extends AbstractFixture implements DependentFixtureInterface
      */
     public function getDependencies()
     {
-        return ['OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadBusinessUnitData'];
+        return [
+            __NAMESPACE__ . '\\LoadBusinessUnitData',
+        ];
     }
 
     /**
@@ -23,7 +24,7 @@ class LoadGroupData extends AbstractFixture implements DependentFixtureInterface
     protected function getData()
     {
         return [
-            'groups' => $this->loadData('groups.csv')
+            'groups' => $this->loadData('groups.csv'),
         ];
     }
 
@@ -39,19 +40,8 @@ class LoadGroupData extends AbstractFixture implements DependentFixtureInterface
             $group->setOwner($businessUnit);
             $group->setOrganization($businessUnit->getOrganization());
             $manager->persist($group);
-            $this->setReference('Group:' . $groupData['uid'], $group);
+            $this->setGroupReference($groupData['uid'], $group);
         }
         $manager->flush();
-    }
-
-    /**
-     * @param $uid
-     * @return BusinessUnit
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getBusinessUnitReference($uid)
-    {
-        $reference = 'BusinessUnit:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

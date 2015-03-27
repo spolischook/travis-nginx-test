@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\File\File as ComponentFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
@@ -14,7 +13,6 @@ use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 
-use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\ContactBundle\Entity\ContactEmail;
 use OroCRM\Bundle\ContactBundle\Entity\ContactPhone;
@@ -43,11 +41,27 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
     /**
      * {@inheritdoc}
      */
+    protected function getExcludeProperties()
+    {
+        return array_merge(
+            parent::getExcludeProperties(),
+            [
+                'contact uid',
+                'account uid',
+                'photo',
+                'source',
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadTagData',
+            __NAMESPACE__ . '\\LoadAccountData',
+            __NAMESPACE__ . '\\LoadTagData',
         ];
     }
 
@@ -110,7 +124,6 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
             }
 
             $uid = $contactData['uid'];
-            unset($contactData['account uid'], $contactData['uid'], $contactData['photo'], $contactData['source']);
 
             $this->setObjectValues($contact, $contactData);
             $account->setDefaultContact($contact);
@@ -118,8 +131,7 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
             $this->loadEmails($contact, $uid);
             $this->loadAddresses($contact, $uid);
 
-
-            $this->setReference('Contact:' . $uid, $contact);
+            $this->setContactReference($uid, $contact);
 
             $manager->persist($contact);
             $manager->persist($account);
@@ -215,8 +227,6 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
             /** @var ContactAddress $address */
             $address = new ContactAddress();
             $address->setOwner($contact);
-
-            unset($addressData['contact uid'], $addressData['uid']);
             $this->setObjectValues($address, $addressData);
 
             $address->setCountry($country);
@@ -228,16 +238,5 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
             }
             $contact->addAddress($address);
         }
-    }
-
-    /**
-     * @param $uid
-     * @return Account
-     * @throws EntityNotFoundException
-     */
-    public function getAccountReference($uid)
-    {
-        $reference = 'Account:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

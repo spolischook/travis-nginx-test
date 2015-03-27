@@ -4,14 +4,11 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
-
-use OroCRM\Bundle\ChannelBundle\Entity\Channel;
-use OroCRM\Bundle\MagentoBundle\Entity\Store;
-use OroCRM\Bundle\MagentoBundle\Entity\Website;
-use OroCRM\Bundle\MagentoBundle\Entity\CustomerGroup;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
+use OroCRM\Bundle\MagentoBundle\Entity\Address;
 use OroCRM\Bundle\MagentoBundle\Entity\Customer;
+
+use OroCRM\Bundle\ContactBundle\Entity\ContactAddress;
 
 class LoadCustomerData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -21,8 +18,8 @@ class LoadCustomerData extends AbstractFixture implements DependentFixtureInterf
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadStoreData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadMagentoIntegrationData'
+            __NAMESPACE__ . '\\LoadStoreData',
+            __NAMESPACE__ . '\\LoadMagentoIntegrationData',
         ];
     }
 
@@ -32,7 +29,7 @@ class LoadCustomerData extends AbstractFixture implements DependentFixtureInterf
     public function getData()
     {
         return [
-            'customers' => $this->loadData('customers.csv')
+            'customers' => $this->loadData('customers.csv'),
         ];
     }
 
@@ -67,78 +64,33 @@ class LoadCustomerData extends AbstractFixture implements DependentFixtureInterf
                 ->setOrganization($contact->getOrganization())
                 ->setOwner($contact->getOwner());
             $customer->setDataChannel($dataChannel);
+            $this->addCustomerAddress($customer, $contact);
 
-            $this->setReference('Customer:' . $customerData['uid'], $customer);
-
+            $this->setCustomerReference($customerData['uid'], $customer);
             $manager->persist($customer);
         }
         $manager->flush();
     }
 
     /**
-     * @param $uid
-     * @return Website
-     * @throws \Doctrine\ORM\EntityNotFoundException
+     * @param Customer $customer
+     * @param Contact $contact
      */
-    protected function getWebsiteReference($uid)
+    protected function addCustomerAddress(Customer $customer, Contact $contact)
     {
-        $reference = 'Website:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return Contact
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getContactReference($uid)
-    {
-        $reference = 'Contact:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-
-    /**
-     * @param $uid
-     * @return Store
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getStoreReference($uid)
-    {
-        $reference = 'Store:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return CustomerGroup
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getCustomerGroupReference($uid)
-    {
-        $reference = 'CustomerGroup:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return Integration
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getIntegrationReference($uid)
-    {
-        $reference = 'Integration:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return Channel
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getIntegrationDataChannelReference($uid)
-    {
-        $reference = 'IntegrationDataChannel:' . $uid;
-        return $this->getReferenceByName($reference);
+        if($contact->getAddresses()->count())
+        {
+            /** @var ContactAddress $contactAddress */
+            $contactAddress = $contact->getAddresses()->first();
+            $address = new Address();
+            $address->setLabel($contactAddress->getLabel());
+            $address->setCountry($contactAddress->getCountry());
+            $address->setRegion($contactAddress->getRegion());
+            $address->setStreet($contactAddress->getStreet());
+            $address->setPostalCode($contactAddress->getPostalCode());
+            $address->setCity($contactAddress->getCity());
+            $address->setPrimary(true);
+            $customer->addAddress($address);
+        }
     }
 }

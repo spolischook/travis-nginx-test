@@ -16,7 +16,9 @@ class LoadChannelData extends AbstractFixture implements DependentFixtureInterfa
      */
     public function getDependencies()
     {
-        return ['OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadBusinessUnitData'];
+        return [
+            __NAMESPACE__ . '\\LoadBusinessUnitData',
+        ];
     }
 
     /**
@@ -25,7 +27,7 @@ class LoadChannelData extends AbstractFixture implements DependentFixtureInterfa
     public function getData()
     {
         return [
-            'channels' => $this->loadData('channels.csv')
+            'channels' => $this->loadData('channels.csv'),
         ];
     }
 

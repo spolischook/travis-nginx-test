@@ -11,10 +11,23 @@ class LoadTagData extends AbstractFixture implements DependentFixtureInterface
     /**
      * {@inheritdoc}
      */
+    protected function getExcludeProperties()
+    {
+        return array_merge(
+            parent::getExcludeProperties(),
+            [
+                'organization uid',
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData'
+            __NAMESPACE__ . '\\LoadOrganizationData',
         ];
     }
 
@@ -24,9 +37,10 @@ class LoadTagData extends AbstractFixture implements DependentFixtureInterface
     public function getData()
     {
         return [
-            'tags' => $this->loadData('tags/tags.csv')
+            'tags' => $this->loadData('tags/tags.csv'),
         ];
     }
+
 
     /**
      * {@inheritDoc}
@@ -38,13 +52,12 @@ class LoadTagData extends AbstractFixture implements DependentFixtureInterface
         foreach ($data['tags'] as $tagData) {
             $tagData['organization'] = $this->getOrganizationReference($tagData['organization uid']);
             $tagData['owner'] = $this->getMainUser();
-            $uid = $tagData['uid'];
-            unset($tagData['uid'], $tagData['organization uid']);
+
             $tag = new Tag();
             $this->setObjectValues($tag, $tagData);
             $manager->persist($tag);
 
-            $this->setReference('Tag:' . $uid, $tag);
+            $this->setTagReference($tagData['uid'], $tag);
         }
         $manager->flush();
     }

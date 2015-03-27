@@ -11,13 +11,29 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadBusinessUnitData extends AbstractFixture implements DependentFixtureInterface
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getExcludeProperties()
+    {
+        return array_merge(
+            parent::getExcludeProperties(),
+            [
+                'user uid',
+                'organization uid',
+                'main business unit uid',
+            ]
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
+            __NAMESPACE__ . '\\LoadOrganizationData',
         ];
     }
 
@@ -68,12 +84,11 @@ class LoadBusinessUnitData extends AbstractFixture implements DependentFixtureIn
                 $businessUnit = new Organization();
             }
 
-            $uid = $mainBusinessUnitData['uid'];
             $organization = $this->getOrganizationReference($mainBusinessUnitData['organization uid']);
-            unset($mainBusinessUnitData['uid'], $mainBusinessUnitData['organization uid']);
-            $this->setObjectValues($businessUnit, $mainBusinessUnitData);
             $businessUnit->setOrganization($organization);
-            $this->setReference('BusinessUnit:' . $uid, $businessUnit);
+            $this->setObjectValues($businessUnit, $mainBusinessUnitData);
+
+            $this->setBusinessUnitReference($mainBusinessUnitData['uid'], $businessUnit);
             $manager->persist($businessUnit);
         }
 
@@ -83,25 +98,11 @@ class LoadBusinessUnitData extends AbstractFixture implements DependentFixtureIn
             $businessUnitData['owner'] = $mainBusinessUnit;
             $businessUnitData['organization'] = $mainBusinessUnit->getOrganization();
 
-            $uid = $businessUnitData['uid'];
-            unset($businessUnitData['uid'], $businessUnitData['main business unit uid']);
-
             $this->setObjectValues($businessUnit, $businessUnitData);
 
             $manager->persist($businessUnit);
-            $this->addReference('BusinessUnit:' . $uid, $businessUnit);
+            $this->setBusinessUnitReference($businessUnitData['uid'], $businessUnit);
         }
         $manager->flush();
-    }
-
-    /**
-     * @param $uid
-     * @return BusinessUnit
-     * @throws EntityNotFoundException
-     */
-    public function getBusinessUnitReference($uid)
-    {
-        $reference = 'BusinessUnit:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

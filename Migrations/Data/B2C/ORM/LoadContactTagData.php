@@ -3,11 +3,9 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\TagBundle\Entity\TagManager;
 
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
@@ -17,27 +15,27 @@ class LoadContactTagData extends AbstractFixture  implements DependentFixtureInt
     /** @var  TagManager */
     protected $tagManager;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadContactData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadTagData',
-        ];
-    }
-
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
         $this->tagManager = $container->get('oro_tag.tag.manager');
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            __NAMESPACE__ . '\\LoadContactData',
+            __NAMESPACE__ . '\\LoadTagData',
+        ];
+    }
+
     public function getData()
     {
         return [
-            'contactTags' => $this->loadData('tags/contact_tags.csv')
+            'contactTags' => $this->loadData('tags/contact_tags.csv'),
         ];
     }
 
@@ -79,27 +77,5 @@ class LoadContactTagData extends AbstractFixture  implements DependentFixtureInt
             $this->tagManager->saveTagging($contact, false);
         }
         $manager->flush();
-    }
-
-    /**
-     * @param $uid
-     * @return Tag
-     * @throws EntityNotFoundException
-     */
-    public function getTagReference($uid)
-    {
-        $reference = 'Tag:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return Contact
-     * @throws EntityNotFoundException
-     */
-    public function getContactReference($uid)
-    {
-        $reference = 'Contact:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

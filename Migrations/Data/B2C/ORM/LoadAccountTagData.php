@@ -3,11 +3,9 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\TagBundle\Entity\TagManager;
 
 use OroCRM\Bundle\AccountBundle\Entity\Account;
@@ -18,23 +16,23 @@ class LoadAccountTagData extends AbstractFixture implements DependentFixtureInte
     protected $tagManager;
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadTagData',
-        ];
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
         $this->tagManager = $container->get('oro_tag.tag.manager');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            __NAMESPACE__ . '\\LoadAccountData',
+            __NAMESPACE__ . '\\LoadTagData',
+        ];
     }
 
     /**
@@ -86,27 +84,5 @@ class LoadAccountTagData extends AbstractFixture implements DependentFixtureInte
             $this->tagManager->saveTagging($account, false);
         }
         $manager->flush();
-    }
-
-    /**
-     * @param $uid
-     * @return Tag
-     * @throws EntityNotFoundException
-     */
-    public function getTagReference($uid)
-    {
-        $reference = 'Tag:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return Account
-     * @throws EntityNotFoundException
-     */
-    public function getAccountReference($uid)
-    {
-        $reference = 'Account:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

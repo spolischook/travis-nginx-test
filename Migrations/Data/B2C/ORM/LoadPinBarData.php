@@ -26,16 +26,6 @@ class LoadPinBarData extends AbstractFixture implements DependentFixtureInterfac
     protected $navigationFactory;
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadDefaultUserData'
-        ];
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function setContainer(ContainerInterface $container = null)
@@ -43,6 +33,16 @@ class LoadPinBarData extends AbstractFixture implements DependentFixtureInterfac
         parent::setContainer($container);
         $this->navigationFactory = $container->get('oro_navigation.item.factory');
         $this->userManager = $container->get('oro_user.manager');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            __NAMESPACE__ . '\\LoadDefaultUserData',
+        ];
     }
 
     /**

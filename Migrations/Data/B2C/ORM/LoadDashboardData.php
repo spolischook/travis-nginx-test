@@ -30,7 +30,7 @@ class LoadDashboardData extends AbstractFixture implements DependentFixtureInter
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadDefaultUserData',
+            __NAMESPACE__ . '\\LoadDefaultUserData',
         ];
     }
 
@@ -65,7 +65,7 @@ class LoadDashboardData extends AbstractFixture implements DependentFixtureInter
                 $isDefault = false;
             }
             $this->dashboardManager->save($dashboardModel);
-            $this->setReference('Dashboard:' . $dashboardData['uid'], $dashboardModel->getEntity());
+            $this->setDashboardReference($dashboardData['uid'], $dashboardModel->getEntity());
         }
         $manager->flush();
     }

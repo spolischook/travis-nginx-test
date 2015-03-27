@@ -2,42 +2,47 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\Common\DataFixtures\AbstractFixture as DoctrineAbstractFixture;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
 
-use OroCRMPro\Bundle\DemoDataBundle\Field\FieldHelper;
 use OroCRMPro\Bundle\DemoDataBundle\EventListener\ActivityListSubscriber;
 
-
-abstract class AbstractFixture extends DoctrineAbstractFixture implements ContainerAwareInterface
+abstract class AbstractFixture extends EntityReferences implements ContainerAwareInterface
 {
+    use FileLoader;
+    use GenerateDate;
+
     const DATA_FOLDER = 'data';
 
     /** @var  EntityManager */
     protected $em;
 
+    /** @var PropertyAccessor */
+    protected $accessor;
+
     /** @var ContainerInterface */
     protected $container;
-
-    /** @var FieldHelper */
-    protected $fieldHelper;
 
     /** @var  EntityRepository */
     protected $userRepository;
 
     /** @var  EntityRepository */
     protected $organizationRepository;
+
+    protected function getDataDirectory()
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . static::DATA_FOLDER . DIRECTORY_SEPARATOR;
+    }
 
     /**
      * {@inheritDoc}
@@ -47,13 +52,13 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
         $this->em = $container->get('doctrine')->getManager();
         $this->container = $container;
 
-        $this->fieldHelper = new FieldHelper();
-
         $this->userRepository = $this->em->getRepository('OroUserBundle:User');
         $this->organizationRepository = $this->em->getRepository('OroOrganizationBundle:Organization');
 
         $subscriber = new ActivityListSubscriber();
         $this->em->getEventManager()->addEventSubscriber($subscriber);
+
+        $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -62,19 +67,16 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
      */
     public function getMainUser()
     {
-        if ($this->hasReference('User:main')) {
-            $entity = $this->getReference('User:main');
-            if ($entity instanceof User) {
-                return $entity;
+        if ($this->hasUserReference('main')) {
+            return $this->getUserReference('main');
+        } else {
+            /** @var User $entity */
+            $entity = $this->userRepository->find(1);
+            if (!$entity) {
+                throw new EntityNotFoundException('Main user does not exist.');
             }
         }
-
-        $entity = $this->userRepository->find(1);
-        if (!$entity) {
-            throw new EntityNotFoundException('Main user does not exist.');
-        }
-
-        $this->addReference('User:main', $entity);
+        $this->setUserReference('main', $entity);
 
         return $entity;
     }
@@ -94,81 +96,37 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
     }
 
     /**
-     * @param $name
-     * @return mixed
-     */
-    protected function loadData($name)
-    {
-        static $data = [];
-        if (!isset($data[$name])) {
-            $path = __DIR__ . DIRECTORY_SEPARATOR . static::DATA_FOLDER . DIRECTORY_SEPARATOR . $name;
-            $data[$name] = $this->loadDataFromCSV($path);
-        }
-
-        return $data[$name];
-    }
-
-    /**
-     * @param $path
-     * @return array
-     * @throws FileNotFoundException
-     * @throws NoSuchPropertyException
-     */
-    protected function loadDataFromCSV($path)
-    {
-        if(!file_exists($path))
-        {
-            throw new FileNotFoundException($path);
-        }
-
-        $data = [];
-        $handle = fopen($path, 'r');
-        $headers = fgetcsv($handle, 1000, ',');
-
-        if (empty($headers)) {
-            return [];
-        }
-        $headers = array_map('strtolower', $headers);
-        if (!in_array('uid', $headers)) {
-            throw new NoSuchPropertyException('Property: "uid" does not exists');
-        }
-        while ($info = fgetcsv($handle, 1000, ',')) {
-            if(count($info) !== count($headers))
-            {
-                continue;
-            }
-            $tempData = array_combine($headers, array_values($info));
-            if ($tempData) {
-                $data[] = $tempData;
-            }
-        }
-        fclose($handle);
-
-        return $data;
-    }
-
-    /**
      * @param $object
      * @param $fieldName
      * @param $value
-     * @throws \Exception
      */
     protected function setObjectValue($object, $fieldName, $value)
     {
-        try {
-            $this->fieldHelper->setObjectValue($object, $fieldName, $value);
-        } catch (\Exception $e) {
-            echo $e->getMessage(), "\n";
-        }
+        $this->accessor->setValue($object, $fieldName, $value);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getExcludeProperties()
+    {
+        return [
+            'uid',
+        ];
     }
 
     /**
      * @param $object
      * @param array $values
+     * @param array $exclude
      */
-    protected function setObjectValues($object, $values = [])
+    protected function setObjectValues($object, $values = [], $exclude = [])
     {
+        $exclude = array_merge($this->getExcludeProperties(), $exclude);
         foreach ($values as $fieldName => $value) {
+            if (in_array($fieldName, $exclude)) {
+                continue;
+            }
             $this->setObjectValue($object, $fieldName, $value);
         }
     }
@@ -183,50 +141,6 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
         $organization = $user->getOrganization();
         $token = new UsernamePasswordOrganizationToken($user, $user->getUsername(), 'main', $organization);
         $securityContext->setToken($token);
-    }
-
-    /**
-     * @param $reference
-     * @return object
-     * @throws EntityNotFoundException
-     */
-    public function getReferenceByName($reference)
-    {
-        if ($this->hasReference($reference)) {
-            return $this->getReference($reference);
-        }
-        throw new EntityNotFoundException('Reference ' . $reference . ' not found.');
-    }
-
-    /**
-     * Generate Created date
-     * @return \DateTime
-     */
-    protected function generateCreatedDate()
-    {
-        // Convert to timetamps
-        $min = strtotime('now - 1 month');
-        $max = strtotime('now - 1 day');
-        $val = rand($min, $max);
-
-        $date = date('Y-m-d H:i:s', $val);
-        return new \DateTime($date, new \DateTimeZone('UTC'));
-    }
-
-    /**
-     * Generate Updated date
-     * @param \DateTime $created
-     * @return \DateTime
-     */
-    protected function generateUpdatedDate(\DateTime $created)
-    {
-        // Convert to timetamps
-        $min = strtotime($created->format('Y-M-d H:i:s'));
-        $max = strtotime('now - 1 day');
-        $val = rand($min, $max);
-
-        $date = date('Y-m-d H:i:s', $val);
-        return new \DateTime($date, new \DateTimeZone('UTC'));
     }
 
     /**
@@ -246,16 +160,5 @@ abstract class AbstractFixture extends DoctrineAbstractFixture implements Contai
                 }
             }
         }
-    }
-
-    /**
-     * @param $uid
-     * @return Organization
-     * @throws EntityNotFoundException
-     */
-    public function getOrganizationReference($uid)
-    {
-        $reference = 'Organization:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

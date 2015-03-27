@@ -10,9 +10,9 @@ use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\AnalyticsBundle\Command\CalculateAnalyticsCommand;
 use OroCRM\Bundle\AnalyticsBundle\Entity\RFMMetricCategory;
 
-
 class LoadRFMMetricData extends AbstractFixture implements DependentFixtureInterface
 {
+    /** @var  Channel */
     protected $dataChannel;
 
     /**
@@ -59,22 +59,11 @@ class LoadRFMMetricData extends AbstractFixture implements DependentFixtureInter
     }
 
     /**
-     * Add RFM Metric Job for update customer RFM statistic
+     * Add RFM Metric Job for update customers RFM statistic
      */
     protected function addRFMMetricJob()
     {
        $job = new Job(CalculateAnalyticsCommand::COMMAND_NAME);
        $this->em->persist($job);
-    }
-
-    /**
-     * @param $uid
-     * @return Channel
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getIntegrationDataChannelReference($uid)
-    {
-        $reference = 'IntegrationDataChannel:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

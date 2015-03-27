@@ -13,7 +13,7 @@ class LoadWebsiteData extends AbstractFixture
     public function getData()
     {
         return [
-            'websites' => $this->loadData('websites.csv')
+            'websites' => $this->loadData('websites.csv'),
         ];
     }
 
@@ -25,13 +25,11 @@ class LoadWebsiteData extends AbstractFixture
         $data = $this->getData();
 
         foreach ($data['websites'] as $websiteData) {
-            $uid = $websiteData['uid'];
-            unset($websiteData['uid']);
             $website = new Website();
             $this->setObjectValues($website, $websiteData);
             $manager->persist($website);
 
-            $this->setReference('Website:' . $uid, $website);
+            $this->setWebsiteReference($websiteData['uid'], $website);
         }
         $manager->flush();
     }

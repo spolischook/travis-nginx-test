@@ -5,8 +5,6 @@ use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\NotificationBundle\Entity\Event;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\NotificationBundle\Entity\RecipientList;
@@ -20,7 +18,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadEmailTemplateData'
+            __NAMESPACE__ . '\\LoadEmailTemplateData',
         ];
     }
 
@@ -141,27 +139,5 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
             throw new EntityNotFoundException('EmailTemplate ' . $name . ' not found.');
         }
         return $entity;
-    }
-
-    /**
-     * @param $uid
-     * @return Group
-     * @throws EntityNotFoundException
-     */
-    public function getGroupReference($uid)
-    {
-        $reference = 'Group:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return User
-     * @throws EntityNotFoundException
-     */
-    public function getUserReference($uid)
-    {
-        $reference = 'User:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

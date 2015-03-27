@@ -1,22 +1,33 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use OroCRM\Bundle\MagentoBundle\Entity\Store;
-use OroCRM\Bundle\MagentoBundle\Entity\Website;
 
 class LoadStoreData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * {@inheritdoc}
      */
+    protected function getExcludeProperties()
+    {
+        return array_merge(
+            parent::getExcludeProperties(),
+            [
+                'website uid',
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDependencies()
     {
         return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadWebsiteData',
+            __NAMESPACE__ . '\\LoadWebsiteData',
         ];
     }
 
@@ -26,7 +37,7 @@ class LoadStoreData extends AbstractFixture implements DependentFixtureInterface
     public function getData()
     {
         return [
-            'stores' => $this->loadData('stores.csv')
+            'stores' => $this->loadData('stores.csv'),
         ];
     }
 
@@ -38,26 +49,13 @@ class LoadStoreData extends AbstractFixture implements DependentFixtureInterface
         $data = $this->getData();
 
         foreach ($data['stores'] as $storeData) {
-            $uid = $storeData['uid'];
             $storeData['website'] = $this->getWebsiteReference($storeData['website uid']);
-            unset($storeData['uid'], $storeData['website uid']);
             $store = new Store();
             $this->setObjectValues($store, $storeData);
             $manager->persist($store);
 
-            $this->setReference('Store:' . $uid, $store);
+            $this->setStoreReference($storeData['uid'], $store);
         }
         $manager->flush();
-    }
-
-    /**
-     * @param $uid
-     * @return Website
-     * @throws EntityNotFoundException
-     */
-    protected function getWebsiteReference($uid)
-    {
-        $reference = 'Website:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

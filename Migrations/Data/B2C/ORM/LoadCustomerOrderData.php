@@ -4,8 +4,6 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use OroCRM\Bundle\MagentoBundle\Entity\Cart;
-use OroCRM\Bundle\MagentoBundle\Entity\Customer;
 use OroCRM\Bundle\MagentoBundle\Entity\Order;
 use OroCRM\Bundle\MagentoBundle\Entity\OrderItem;
 
@@ -19,7 +17,7 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
         return [
             __NAMESPACE__ . '\\LoadCustomerData',
             __NAMESPACE__ . '\\LoadCustomerCartData',
-            __NAMESPACE__ . '\\LoadCustomerCartItemData'
+            __NAMESPACE__ . '\\LoadCustomerCartItemData',
         ];
     }
 
@@ -29,7 +27,7 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
     public function getData()
     {
         return [
-            'orders' => $this->loadData('orders.csv')
+            'orders' => $this->loadData('orders.csv'),
         ];
     }
 
@@ -98,27 +96,5 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
             $manager->persist($order);
         }
         $manager->flush();
-    }
-
-    /**
-     * @param $uid
-     * @return Customer
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getCustomerReference($uid)
-    {
-        $reference = 'Customer:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return Cart
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getCartReference($uid)
-    {
-        $reference = 'Cart:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

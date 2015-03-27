@@ -13,7 +13,7 @@ class LoadCustomerGroupData extends AbstractFixture
     public function getData()
     {
         return [
-            'customer_groups' => $this->loadData('customer_groups.csv')
+            'customer_groups' => $this->loadData('customer_groups.csv'),
         ];
     }
 
@@ -25,13 +25,11 @@ class LoadCustomerGroupData extends AbstractFixture
         $data = $this->getData();
 
         foreach ($data['customer_groups'] as $groupData) {
-            $uid = $groupData['uid'];
-            unset($groupData['uid']);
             $group = new CustomerGroup();
             $this->setObjectValues($group, $groupData);
             $manager->persist($group);
 
-            $this->setReference('CustomerGroup:' . $uid, $group);
+            $this->setCustomerGroupReference($groupData['uid'], $group);
         }
         $manager->flush();
     }

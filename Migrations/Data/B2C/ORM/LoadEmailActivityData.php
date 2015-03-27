@@ -4,7 +4,6 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
@@ -39,6 +38,16 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
         $this->mailerProcessor = $container->get('oro_email.mailer.processor');
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            __NAMESPACE__ . '\\LoadAccountData',
+            __NAMESPACE__ . '\\LoadContactData',
+        ];
+    }
 
     /**
      * @return array
@@ -47,18 +56,7 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
     {
         return [
             'contact_emails' => $this->loadData('activities/contact/emails.csv'),
-            'account_emails' => $this->loadData('activities/account/emails.csv')
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadContactData',
+            'account_emails' => $this->loadData('activities/account/emails.csv'),
         ];
     }
 
@@ -127,27 +125,5 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
             $manager->getClassMetadata(get_class($email))->setLifecycleCallbacks([]);
             $this->emailEntityBuilder->getBatch()->persist($manager);
         }
-    }
-
-    /**
-     * @param $uid
-     * @return Contact
-     * @throws EntityNotFoundException
-     */
-    public function getContactReference($uid)
-    {
-        $reference = 'Contact:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return Account
-     * @throws EntityNotFoundException
-     */
-    public function getAccountReference($uid)
-    {
-        $reference = 'Account:' . $uid;
-        return $this->getReferenceByName($reference);
     }
 }

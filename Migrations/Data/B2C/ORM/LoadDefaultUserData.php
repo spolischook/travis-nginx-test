@@ -9,11 +9,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadRolesData;
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 
 class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -26,27 +24,6 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
     /** @var  UserManager */
     protected $userManager;
 
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadGroupData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadBusinessUnitData'
-        ];
-    }
-
-    public function getData()
-    {
-        return [
-            'users' => $this->loadData('users/users.csv'),
-            'sales' => $this->loadData('users/default_sales.csv'),
-            'marketing' => $this->loadData('users/default_marketing.csv')
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -58,6 +35,27 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
         $this->businessRepository = $this->em->getRepository('OroOrganizationBundle:BusinessUnit');
         $this->userManager = $this->container->get('oro_user.manager');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            __NAMESPACE__ . '\\LoadGroupData',
+            __NAMESPACE__ . '\\LoadBusinessUnitData',
+        ];
+    }
+
+    public function getData()
+    {
+        return [
+            'users' => $this->loadData('users/users.csv'),
+            'sales' => $this->loadData('users/default_sales.csv'),
+            'marketing' => $this->loadData('users/default_marketing.csv'),
+        ];
+    }
+
 
     public function load(ObjectManager $manager)
     {
@@ -85,9 +83,6 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
             $businessUnit = new ArrayCollection([$this->getReferenceByName('BusinessUnit:'. $uid)]);
             $this->createUser($manager, $userData, $saleRole, $businessUnit);
         }
-
-        //Set reference fo main user
-        $this->setReference('User:main', $this->getMainUser());
     }
 
     /**
@@ -96,12 +91,8 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
      * @param Role $role
      * @param ArrayCollection $businessUnits
      */
-    protected function createUser(
-        ObjectManager $manager,
-        $userData = [],
-        Role $role,
-        ArrayCollection $businessUnits
-    ) {
+    protected function createUser(ObjectManager $manager, $userData = [], Role $role, ArrayCollection $businessUnits)
+    {
         $organization = $this->getOrganizationReference($userData['organization uid']);
         /** @var User $user */
         $user = $this->userManager->createUser();
@@ -133,28 +124,7 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
         $user->setPlainPassword($userData['username']);
         $this->userManager->updatePassword($user);
         $this->userManager->updateUser($user);
-        $this->setReference('User:' . $userData['uid'], $user);
-    }
 
-    /**
-     * @param $uid
-     * @return Group
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getGroupReference($uid)
-    {
-        $reference = 'Group:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param $uid
-     * @return BusinessUnit
-     * @throws \Doctrine\ORM\EntityNotFoundException
-     */
-    protected function getBusinessUnitReference($uid)
-    {
-        $reference = 'BusinessUnit:' . $uid;
-        return $this->getReferenceByName($reference);
+        $this->setUserReference($userData['uid'], $user);
     }
 }
