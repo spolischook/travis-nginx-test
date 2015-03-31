@@ -1,0 +1,153 @@
+Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
+1,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/index.php?pk_campaign=second, Home page,home
+2,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+3,1, registration,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+4,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
+5,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+6,1, order placed,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+7,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,product
+8,1, user entered checkout,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+9,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+10,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,home
+11,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/, Home page,home
+12,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/, Home page,home
+13,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1""",product
+14,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/electronics.html, Electronics,category
+15,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/apparel.html, Apparel,category
+16,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
+17,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/apparel.html?cat=5, Apparel,category
+18,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/electronics.html, Electronics,category
+19,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/cn-clogs-beach-garden-clog.html, CN Clogs Beach/Garden Clog,product
+20,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,category
+21,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+22,1, cart item added,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+23,1, user entered checkout,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+24,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/furniture.html, Furniture,category
+25,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+26,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,home
+27,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,category
+28,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,category
+29,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html?price=2000-, Furniture,category
+30,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/barcelona-bamboo-platform-bed.html, Barcelona Bamboo Platform Bed,category
+31,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,category
+32,1, cart item added,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+33,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+34,1, user entered checkout,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+35,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+36,1, registration,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+37,1, user logged in,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+38,1, order placed,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+39,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+40,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/, Home page,home
+41,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,category
+42,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html?manufacturer=2, Cell Phones - Electronics,category
+43,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,category
+44,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apparel.html, Apparel,category
+45,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,category
+46,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/electronics.html, Electronics,category
+47,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html?manufacturer=2, Cell Phones - Electronics,category
+48,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,category
+49,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/, Home page,home
+50,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html?color=26, Shirts - Apparel,category
+51,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/olympus-stylus-750-7-1mp-digital-camera.html, Olympus Stylus 750 7.1MP Digital Camera with Digital Image Stabilized 5x Optical Zoom and CCD Shift Stabilization (Silver),product
+52,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts/zolof-the-rock-and-roll-destroyer-lol-cat-t-shirt.html, Zolof The Rock And Roll Destroyer: LOL Cat T-shirt,product
+53,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,category
+54,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,category
+55,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html?color=60, Shirts - Apparel,category
+56,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,product
+57,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,product
+58,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/electronics.html, Electronics,category
+59,1, cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+60,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+61,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,category
+62,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,category
+63,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,category
+64,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,product
+65,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+66,1, cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+67,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+68,1, cart item added,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+69,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+70,1, cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+71,1, user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+72,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+73,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+74,1, user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+75,1, user entered checkout,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+76,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+77,1, order placed,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+78,1, order placed,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+79,1, user logged in,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+80,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+81,1, registration,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+82,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+83,1, user logged out,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+84,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+85,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,home
+86,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+87,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+88,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+89,1, user logged in,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+90,1, order placed,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+91,1, registration,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+92,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/, Home page,home
+93,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+94,1, user logged out,1, id=guest; visitor-id=86, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+95,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,category
+96,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/electronics/cell-phones/blackberry-8100-pearl.html, BlackBerry 8100 Pearl,product
+97,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,category
+98,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts/coalesce-functioning-on-impatience-t-shirt.html, Coalesce: Functioning On Impatience T-Shirt,product
+99,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/furniture.html, Furniture,category
+100,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/?pk_campaign=test_campaign, Home page,home
+101,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/?pk_campaign=test_campaign, Home page,home
+102,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/acer-ferrari-3200-notebook-computer-pc.html, Acer Ferrari 3200 Notebook Computer PC,product
+103,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
+104,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/universal-camera-charger.html, Universal Camera Charger,product
+105,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,category
+106,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+107,1, cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+108,1, cart item added,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+109,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+110,1, user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+111,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+112,1, user entered checkout,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+113,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+114,1, registration,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+115,1, user logged in,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+116,1, order placed,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+117,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+118,1, user logged in,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+119,1, order placed,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+120,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+121,1, registration,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+122,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,category
+123,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+124,1, user logged out,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+125,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+126,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/apparel/shirts/coalesce-functioning-on-impatience-t-shirt.html, Coalesce: Functioning On Impatience T-Shirt,product
+127,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+128,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+129,1, cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+130,1, user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+131,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+132,1, order placed,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+133,1, registration,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+134,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+135,1, user logged in,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+136,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/?pk_campaign=test_campaign, Home page,home
+137,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/index.php?pk_campaign=test_campaign, Home page,home
+138,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
+139,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,category
+140,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+141,1, cart item added,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+142,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+143,1, user entered checkout,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/onepage/, Checkout,checkout
+144,1, registration,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+145,1, user logged in,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+146,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+147,1, order placed,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
+148,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,category
+149,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+150,1, user logged out,1, id=guest; visitor-id=89, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
+151,1, cart item added,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
+152,1, user logged in,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce

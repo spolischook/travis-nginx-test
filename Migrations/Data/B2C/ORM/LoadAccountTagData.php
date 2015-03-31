@@ -67,22 +67,17 @@ class LoadAccountTagData extends AbstractFixture implements DependentFixtureInte
             }
         }
 
-        $user = $this->getMainUser();
-
         /**
          * Need for saveTagging
          */
-
-        $this->setSecurityContext($user);
-
         foreach ($info as $accountUid => $accountData) {
             /** @var Account $account */
             $account = $accountData['account'];
             $account->setTags(['owner' => $accountData['tags'], 'all' => []]);
             $manager->persist($account);
 
-            $this->tagManager->saveTagging($account, false);
+            $this->setSecurityContext($account->getOwner());
+            $this->tagManager->saveTagging($account);
         }
-        $manager->flush();
     }
 }

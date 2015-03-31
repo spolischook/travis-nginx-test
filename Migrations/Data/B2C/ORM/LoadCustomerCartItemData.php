@@ -37,7 +37,7 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
     public function getData()
     {
         return [
-            'carts_items' => $this->loadData('carts_items.csv'),
+            'carts_items' => $this->loadData('magento/carts_items.csv'),
         ];
     }
 

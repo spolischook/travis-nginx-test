@@ -13,7 +13,7 @@ class LoadCustomerGroupData extends AbstractFixture
     public function getData()
     {
         return [
-            'customer_groups' => $this->loadData('customer_groups.csv'),
+            'customer_groups' => $this->loadData('magento/customer_groups.csv'),
         ];
     }
 

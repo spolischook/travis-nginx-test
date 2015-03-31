@@ -29,7 +29,7 @@ class LoadCustomerData extends AbstractFixture implements DependentFixtureInterf
     public function getData()
     {
         return [
-            'customers' => $this->loadData('customers.csv'),
+            'customers' => $this->loadData('magento/customers.csv'),
         ];
     }
 

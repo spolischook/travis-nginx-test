@@ -16,7 +16,6 @@ class LoadAccountData extends AbstractFixture implements DependentFixtureInterfa
     {
         return [
             __NAMESPACE__ . '\\LoadBusinessUnitData',
-            __NAMESPACE__ . '\\LoadTagData',
             __NAMESPACE__ . '\\LoadDefaultUserData',
         ];
     }
@@ -57,17 +56,16 @@ class LoadAccountData extends AbstractFixture implements DependentFixtureInterfa
         foreach ($data['accounts'] as $accountData) {
             if (!isset($names[$accountData['name']])) {
                 $account = new Account();
-                $accountData['owner'] = $this->getReferenceByName('User:' . $accountData['user uid']);
-                $accountData['organization'] = $this->getReferenceByName('Organization:' . $accountData['organization uid']);
-                $accountData['CreatedAt'] = $this->generateCreatedDate();
-                $accountData['UpdatedAt'] = $this->generateUpdatedDate($accountData['CreatedAt']);
-
+                $account->setOwner($this->getUserReference($accountData['user uid']));
+                $account->setOrganization($this->getOrganizationReference($accountData['organization uid']));
+                $account->setCreatedAt($this->generateCreatedDate());
+                $account->setUpdatedAt($this->generateUpdatedDate($account->getCreatedAt()));
                 $this->setObjectValues($account, $accountData);
 
-                $manager->getClassMetadata(get_class($account))->setLifecycleCallbacks([]);
                 $names[$accountData['name']] = $accountData['name'];
 
                 $this->setAccountReference($accountData['uid'], $account);
+                $manager->getClassMetadata(get_class($account))->setLifecycleCallbacks([]);
                 $manager->persist($account);
             }
         }

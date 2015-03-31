@@ -32,7 +32,7 @@ class LoadRFMMetricData extends AbstractFixture implements DependentFixtureInter
     public function getData()
     {
         return [
-            'rmf_metrics' => $this->loadData('rfm_metrics.csv'),
+            'rmf_metrics' => $this->loadData('magento/rfm_metrics.csv'),
         ];
     }
 

@@ -8,6 +8,7 @@ use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\DashboardBundle\Entity\Dashboard;
+use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
@@ -20,6 +21,7 @@ use OroCRM\Bundle\MagentoBundle\Entity\Customer;
 use OroCRM\Bundle\MagentoBundle\Entity\Store;
 use OroCRM\Bundle\MagentoBundle\Entity\Website;
 use OroCRM\Bundle\MagentoBundle\Entity\CustomerGroup;
+use OroCRM\Bundle\MarketingListBundle\Entity\MarketingList;
 
 abstract class EntityReferences extends DoctrineAbstractFixture
 {
@@ -324,6 +326,27 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     * @return TrackingWebsite
+     * @throws \Doctrine\ORM\EntityNotFoundException
+     */
+    protected function getTrackingWebsiteReference($uid)
+    {
+        $reference = 'TrackingWebsite:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param TrackingWebsite $website
+     */
+    protected function setTrackingWebsiteReference($uid, TrackingWebsite $website)
+    {
+        $reference = 'TrackingWebsite:' . $uid;
+        $this->setReference($reference, $website);
+    }
+
+    /**
+     * @param $uid
      * @return Dashboard
      * @throws EntityNotFoundException
      */
@@ -362,5 +385,26 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     {
         $reference = 'Group:' . $uid;
         $this->setReference($reference, $group);
+    }
+
+    /**
+     * @param $uid
+     * @return object
+     * @throws EntityNotFoundException
+     */
+    protected function getMarketingListReference($uid)
+    {
+        $reference = 'MarketingList:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param MarketingList $list
+     */
+    protected function setMarketingListReference($uid, MarketingList $list)
+    {
+        $reference = 'MarketingList:' . $uid;
+        $this->setReference($reference, $list);
     }
 }

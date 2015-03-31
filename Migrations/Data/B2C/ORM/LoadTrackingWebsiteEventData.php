@@ -4,9 +4,9 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use OroCRM\Bundle\MagentoBundle\Entity\Store;
+use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 
-class LoadStoreData extends AbstractFixture implements DependentFixtureInterface
+class LoadTrackingWebsiteEventData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * {@inheritdoc}
@@ -27,7 +27,7 @@ class LoadStoreData extends AbstractFixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\\LoadWebsiteData',
+            __NAMESPACE__ . '\\LoadTrackingWebsiteData',
         ];
     }
 
@@ -37,7 +37,7 @@ class LoadStoreData extends AbstractFixture implements DependentFixtureInterface
     public function getData()
     {
         return [
-            'stores' => $this->loadData('magento/stores.csv'),
+            'events' => $this->loadData('marketing/tracking_websites_events.csv'),
         ];
     }
 
@@ -48,13 +48,15 @@ class LoadStoreData extends AbstractFixture implements DependentFixtureInterface
     {
         $data = $this->getData();
 
-        foreach ($data['stores'] as $storeData) {
-            $storeData['website'] = $this->getWebsiteReference($storeData['website uid']);
-            $store = new Store();
-            $this->setObjectValues($store, $storeData);
-            $manager->persist($store);
+        foreach ($data['events'] as $eventData) {
+            $event = new TrackingEvent();
+            $this->setObjectValues($event, $eventData);
+            $event->setWebsite($this->getTrackingWebsiteReference($eventData['website uid']));
+            $event->setCreatedAt($this->generateCreatedDate());
+            $event->setLoggedAt($event->getCreatedAt());
 
-            $this->setStoreReference($storeData['uid'], $store);
+            $manager->getClassMetadata(get_class($event))->setLifecycleCallbacks([]);
+            $manager->persist($event);
         }
         $manager->flush();
     }

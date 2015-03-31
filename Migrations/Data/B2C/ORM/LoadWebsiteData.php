@@ -13,7 +13,7 @@ class LoadWebsiteData extends AbstractFixture
     public function getData()
     {
         return [
-            'websites' => $this->loadData('websites.csv'),
+            'websites' => $this->loadData('magento/websites.csv'),
         ];
     }
 

@@ -1,2 +1,2 @@
-Uid,Organization uid,Username,Group uid,PlainPassword,FirstName,LastName,Email,Created
-1001,1,marketing,2,marketing,Michael,Buckley,Michael.Buckley@gmail.com,2014-01-04 14:23:13
+Uid,Organization uid,Username,Group uid,PlainPassword,FirstName,LastName,Email
+1001,1,marketing,2,marketing,Michael,Buckley,Michael.Buckley@gmail.com

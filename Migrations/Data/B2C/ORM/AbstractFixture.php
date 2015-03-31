@@ -76,8 +76,6 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
                 throw new EntityNotFoundException('Main user does not exist.');
             }
         }
-        $this->setUserReference('main', $entity);
-
         return $entity;
     }
 
@@ -139,6 +137,14 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
         $securityContext = $this->container->get('security.context');
         /** @var Organization $organization */
         $organization = $user->getOrganization();
+        /**
+         * Fix: for admin user
+         */
+        if($organization->getName() === null)
+        {
+            $this->em->refresh($user);
+            $organization = $user->getOrganization();
+        }
         $token = new UsernamePasswordOrganizationToken($user, $user->getUsername(), 'main', $organization);
         $securityContext->setToken($token);
     }

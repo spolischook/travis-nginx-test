@@ -43,7 +43,7 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
     public function getData()
     {
         return [
-            'magento_integration' => $this->loadData('magento_integration.csv'),
+            'magento_integration' => $this->loadData('magento/integration.csv'),
         ];
     }
 

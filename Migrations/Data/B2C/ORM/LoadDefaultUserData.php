@@ -67,21 +67,28 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
         $businessUnits = new ArrayCollection($this->businessRepository->findAll());
 
         $data = $this->getData();
-        foreach ($data['sales'] as $userData) {
-            $userData['created'] = new \DateTime($userData['created'], new \DateTimeZone('UTC'));
-            $this->createUser($manager, $userData, $saleRole, $businessUnits);
-        }
 
-        foreach ($data['marketing'] as $userData) {
-            $userData['created'] = new \DateTime($userData['created'], new \DateTimeZone('UTC'));
-            $this->createUser($manager, $userData, $marketingRole, $businessUnits);
-        }
+        $this->addUsers($data['sales'], $saleRole, $businessUnits);
+        $this->addUsers($data['marketing'], $marketingRole, $businessUnits);
 
         foreach ($data['users'] as $userData) {
-            $userData['created'] = $this->generateCreatedDate();
-            $uid = $userData['business unit uid'];
-            $businessUnit = new ArrayCollection([$this->getReferenceByName('BusinessUnit:'. $uid)]);
-            $this->createUser($manager, $userData, $saleRole, $businessUnit);
+            $businessUnit = new ArrayCollection([$this->getBusinessUnitReference($userData['business unit uid'])]);
+            $this->createUser($this->em, $userData, $saleRole, $businessUnit);
+        }
+
+        $mainUser = $this->getMainUser();
+        $this->setUserReference('main', $mainUser);
+    }
+
+    /**
+     * @param array $data
+     * @param Role $role
+     * @param ArrayCollection $businessUnits
+     */
+    protected function addUsers($data = [],Role $role, ArrayCollection $businessUnits)
+    {
+        foreach ($data as $userData) {
+            $this->createUser($this->em, $userData, $role, $businessUnits);
         }
     }
 
@@ -102,9 +109,9 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
         if (!empty($userData['birthday'])) {
             $birthday = new \DateTime($userData['birthday'], new \DateTimeZone('UTC'));
             $user->setBirthday($birthday);
-
         }
         $user->addRole($role);
+
         /**
          * Setup manual properties(Created, Updated, LoginCount) for entity
          */
@@ -126,5 +133,6 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
         $this->userManager->updateUser($user);
 
         $this->setUserReference($userData['uid'], $user);
+        $manager->flush();
     }
 }
