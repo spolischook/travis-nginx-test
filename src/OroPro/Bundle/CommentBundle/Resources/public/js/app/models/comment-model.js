@@ -3,7 +3,7 @@ define(function (require) {
     'use strict';
 
     var CommentModel,
-        PreviousCommentModel = require('orocomment/js/app/models/comment-model-previous');
+        PreviousCommentModel = require('orocomment/js/app/models/previous-comment-model');
 
     CommentModel = PreviousCommentModel.extend({
         /**
