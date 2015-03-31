@@ -1,0 +1,2 @@
+Uid,Organization uid,Business unit uid,Type,Name,Description,Entity
+1,1,1,TABLE,Tracking website report,Tracking website report,Oro\Bundle\TrackingBundle\Entity\TrackingEvent

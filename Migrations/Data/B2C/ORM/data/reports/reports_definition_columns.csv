@@ -1,0 +1,4 @@
+Uid,Report uid,Name,Label
+1,1,website+Oro\Bundle\TrackingBundle\Entity\TrackingWebsite::name,Website
+2,1,name,Name
+3,1,url,Url
