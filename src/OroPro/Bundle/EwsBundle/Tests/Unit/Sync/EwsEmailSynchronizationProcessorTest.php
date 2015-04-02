@@ -583,7 +583,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($email2->getXMessageId(), $newEmailEntity->getXMessageId());
         $this->assertEquals($email2->getXThreadId(), $newEmailEntity->getXThreadId());
         $this->assertEquals($email2->isSeen(), $newEmailEntity->isSeen());
-        $this->assertEquals($email2->getRefs(), $newEmailEntity->getRefs());
+        $this->assertEquals($email2->getRefs(), implode('', $newEmailEntity->getRefs()));
         $this->assertEquals($folder, $newEmailEntity->getFolders()->first());
     }
 
