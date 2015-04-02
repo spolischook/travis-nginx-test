@@ -15,8 +15,9 @@ class LoadAccountData extends AbstractFixture implements DependentFixtureInterfa
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\\LoadBusinessUnitData',
             __NAMESPACE__ . '\\LoadDefaultUserData',
+            __NAMESPACE__ . '\\LoadOrganizationData',
+            __NAMESPACE__ . '\\LoadPinBarData',
         ];
     }
 

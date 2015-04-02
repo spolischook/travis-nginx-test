@@ -1,11 +1,13 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use OroCRM\Bundle\MagentoBundle\Entity\Order;
 use OroCRM\Bundle\MagentoBundle\Entity\OrderItem;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -15,9 +17,7 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\\LoadCustomerData',
             __NAMESPACE__ . '\\LoadCustomerCartData',
-            __NAMESPACE__ . '\\LoadCustomerCartItemData',
         ];
     }
 

@@ -1,5 +1,5 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Model;
 
 trait GenerateDate {
 

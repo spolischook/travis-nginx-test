@@ -1,11 +1,13 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
 use OroCRM\Bundle\MagentoBundle\Entity\CartStatus;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadCustomerCartData extends AbstractFixture implements DependentFixtureInterface
 {

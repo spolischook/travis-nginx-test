@@ -1,5 +1,5 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -10,6 +10,8 @@ use OroCRM\Bundle\MagentoBundle\Entity\Customer;
 
 use OroCRM\Bundle\ContactBundle\Entity\ContactAddress;
 
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
+
 class LoadCustomerData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
@@ -18,7 +20,10 @@ class LoadCustomerData extends AbstractFixture implements DependentFixtureInterf
     public function getDependencies()
     {
         return [
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadContactData',
+            __NAMESPACE__ . '\\LoadWebsiteData',
             __NAMESPACE__ . '\\LoadStoreData',
+            __NAMESPACE__ . '\\LoadCustomerGroupData',
             __NAMESPACE__ . '\\LoadMagentoIntegrationData',
         ];
     }

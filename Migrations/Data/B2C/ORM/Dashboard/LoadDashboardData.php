@@ -1,5 +1,5 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Dashboard;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -8,6 +8,8 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Oro\Bundle\DashboardBundle\Model\Manager;
 use Oro\Bundle\DashboardBundle\Model\DashboardModel;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadDashboardData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -30,7 +32,7 @@ class LoadDashboardData extends AbstractFixture implements DependentFixtureInter
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\\LoadDefaultUserData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
         ];
     }
 

@@ -18,6 +18,8 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
     public function getDependencies()
     {
         return [
+            __NAMESPACE__ . '\\LoadGroupData',
+            __NAMESPACE__ . '\\LoadDefaultUserData',
             __NAMESPACE__ . '\\LoadEmailTemplateData',
         ];
     }

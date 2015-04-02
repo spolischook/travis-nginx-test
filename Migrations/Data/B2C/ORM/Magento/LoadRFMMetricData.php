@@ -1,5 +1,5 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
 use JMS\JobQueueBundle\Entity\Job;
 
@@ -9,6 +9,8 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\AnalyticsBundle\Command\CalculateAnalyticsCommand;
 use OroCRM\Bundle\AnalyticsBundle\Entity\RFMMetricCategory;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadRFMMetricData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -21,8 +23,8 @@ class LoadRFMMetricData extends AbstractFixture implements DependentFixtureInter
     public function getDependencies()
     {
         return [
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
             __NAMESPACE__ . '\\LoadMagentoIntegrationData',
-            __NAMESPACE__ . '\\LoadCustomerOrderData',
         ];
     }
 

@@ -43,6 +43,7 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
     {
         return [
             __NAMESPACE__ . '\\LoadGroupData',
+            __NAMESPACE__ . '\\LoadOrganizationData',
             __NAMESPACE__ . '\\LoadBusinessUnitData',
         ];
     }

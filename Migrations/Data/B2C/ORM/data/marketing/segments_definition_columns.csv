@@ -10,3 +10,7 @@ Uid,Segment uid,Name,Label
 9,3,lastName,Last name
 10,3,email,Email
 11,3,grandTotal,Grand total
+12,4,email,Email
+13,4,firstName,First name
+14,4,lastName,Last name
+15,4,memberRating,Member Rating

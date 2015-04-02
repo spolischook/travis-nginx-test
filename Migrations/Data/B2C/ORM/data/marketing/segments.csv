@@ -1,4 +1,5 @@
-Uid,Marketing list uid,Business unit uid,Type,Description
-1,1,1,dynamic,Customer list segment
-2,2,1,dynamic,Contact list segment
-3,3,1,dynamic,Shopping Cart list segment
+Uid,Organization uid,Business unit uid,Type,Name,Definition,Entity
+1,1,1,dynamic,Customer List Segment,Customer List Segment,OroCRM\Bundle\MagentoBundle\Entity\Customer
+2,1,1,dynamic,Contact List Segment,Contact List Segment,OroCRM\Bundle\ContactBundle\Entity\Contact
+3,1,1,dynamic,Shopping Cart List Segment,Shopping Cart List Segment,OroCRM\Bundle\MagentoBundle\Entity\Cart
+4,1,1,dynamic,MailChimp Member Segment,MailChimp Member Segment,OroCRM\Bundle\MailChimpBundle\Entity\Member

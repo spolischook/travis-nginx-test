@@ -1,2 +1,4 @@
 Uid,Organization uid,Business unit uid,Type,Name,Description,Entity
 1,1,1,TABLE,Tracking website report,Tracking website report,Oro\Bundle\TrackingBundle\Entity\TrackingEvent
+2,1,1,TABLE,"MailChimp Member report","MailChimp Member report",OroCRM\Bundle\MailChimpBundle\Entity\Member
+3,1,1,TABLE,MailChimp Campaign report,MailChimp Campaign report,OroCRM\Bundle\MailChimpBundle\Entity\Campaign

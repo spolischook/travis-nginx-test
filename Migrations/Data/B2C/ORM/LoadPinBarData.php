@@ -10,7 +10,7 @@ use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
 
-class LoadPinBarData extends AbstractFixture implements DependentFixtureInterface
+class LoadPinBarData extends AbstractFixture  implements DependentFixtureInterface
 {
     /**
      * @var UserManager
@@ -98,7 +98,7 @@ class LoadPinBarData extends AbstractFixture implements DependentFixtureInterfac
         ];
         /** @var User $user */
         foreach ($users as $user) {
-            $this->setSecurityContext($user);
+            $this->setSecurityContext($this->getMainUser());
             foreach ($params as $param) {
                 $param['user'] = $user;
                 $pinTab = $this->navigationFactory->createItem($param['type'], $param);

@@ -21,6 +21,8 @@ use OroCRM\Bundle\MagentoBundle\Entity\Customer;
 use OroCRM\Bundle\MagentoBundle\Entity\Store;
 use OroCRM\Bundle\MagentoBundle\Entity\Website;
 use OroCRM\Bundle\MagentoBundle\Entity\CustomerGroup;
+use OroCRM\Bundle\CampaignBundle\Entity\EmailCampaign;
+use OroCRM\Bundle\MailChimpBundle\Entity\SubscribersList;
 use OroCRM\Bundle\MarketingListBundle\Entity\MarketingList;
 
 abstract class EntityReferences extends DoctrineAbstractFixture
@@ -36,6 +38,7 @@ abstract class EntityReferences extends DoctrineAbstractFixture
         if ($this->hasReference($reference)) {
             return $this->getReference($reference);
         }
+        echo $reference, "\n";
         throw new EntityNotFoundException('Reference ' . $reference . ' not found.');
     }
 
@@ -284,6 +287,48 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     * @return Integration
+     * @throws EntityNotFoundException
+     */
+    protected function getMailChimpIntegrationReference($uid)
+    {
+        $reference = 'MailChimpIntegration:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param Integration $integration
+     */
+    protected function setMailChimpIntegrationReference($uid, Integration $integration)
+    {
+        $reference = 'MailChimpIntegration:' . $uid;
+        $this->setReference($reference, $integration);
+    }
+
+    /**
+     * @param $uid
+     * @return SubscribersList
+     * @throws EntityNotFoundException
+     */
+    protected function getMailChimpSubscriberListReference($uid)
+    {
+        $reference = 'MailChimpSubscribersList:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param SubscribersList $list
+     */
+    protected function setMailChimpSubscriberListReference($uid, SubscribersList $list)
+    {
+        $reference = 'MailChimpSubscribersList:' . $uid;
+        $this->setReference($reference, $list);
+    }
+
+    /**
+     * @param $uid
      * @return Channel
      * @throws EntityNotFoundException
      */
@@ -389,7 +434,7 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
-     * @return object
+     * @return MarketingList
      * @throws EntityNotFoundException
      */
     protected function getMarketingListReference($uid)
@@ -406,5 +451,26 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     {
         $reference = 'MarketingList:' . $uid;
         $this->setReference($reference, $list);
+    }
+
+    /**
+     * @param $uid
+     * @return EmailCampaign
+     * @throws EntityNotFoundException
+     */
+    protected function getEmailCampaignReference($uid)
+    {
+        $reference = 'EmailCampaign:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param EmailCampaign $emailCampaign
+     */
+    protected function setCampaignEmailReference($uid, EmailCampaign $emailCampaign)
+    {
+        $reference = 'EmailCampaign:' . $uid;
+        $this->setReference($reference, $emailCampaign);
     }
 }

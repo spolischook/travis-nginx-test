@@ -1,5 +1,5 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Dashboard;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -8,6 +8,8 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Oro\Bundle\DashboardBundle\Model\Manager;
 use Oro\Bundle\DashboardBundle\Model\WidgetModel;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadDashboardWidgetData extends AbstractFixture implements DependentFixtureInterface
 {

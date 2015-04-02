@@ -61,7 +61,6 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
     {
         return [
             __NAMESPACE__ . '\\LoadAccountData',
-            __NAMESPACE__ . '\\LoadTagData',
         ];
     }
 

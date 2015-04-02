@@ -1,5 +1,5 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -12,6 +12,7 @@ use OroCRM\Bundle\ChannelBundle\Builder\BuilderFactory;
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\MagentoBundle\Entity\MagentoSoapTransport;
 
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadMagentoIntegrationData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -33,6 +34,7 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
     public function getDependencies()
     {
         return [
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
             __NAMESPACE__ . '\\LoadWebsiteData',
         ];
     }
@@ -43,7 +45,7 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
     public function getData()
     {
         return [
-            'magento_integration' => $this->loadData('magento/integration.csv'),
+            'magento_integration' => $this->loadData('magento/integrations.csv'),
         ];
     }
 
@@ -62,6 +64,7 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
             $manager->persist($transport);
 
             $integration = new Integration();
+            $integration->setDefaultUserOwner($this->getMainUser());
             $integration->setType('magento');
             $integration->setConnectors(['customer', 'cart', 'order']);
 

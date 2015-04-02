@@ -15,6 +15,9 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
 
+use OroCRMPro\Bundle\DemoDataBundle\Model\FileLoader;
+use OroCRMPro\Bundle\DemoDataBundle\Model\GenerateDate;
+
 use OroCRMPro\Bundle\DemoDataBundle\EventListener\ActivityListSubscriber;
 
 abstract class AbstractFixture extends EntityReferences implements ContainerAwareInterface
@@ -140,7 +143,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
         /**
          * Fix: for admin user
          */
-        if($organization->getName() === null)
+        if($organization && $organization->getName() === null)
         {
             $this->em->refresh($user);
             $organization = $user->getOrganization();

@@ -1,6 +1,6 @@
 <?php
 
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -11,6 +11,8 @@ use OroCRM\Bundle\CallBundle\Entity\CallDirection;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\ContactBundle\Entity\ContactPhone;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadCallActivityData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -38,8 +40,8 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\\LoadAccountData',
-            __NAMESPACE__ . '\\LoadContactData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadContactData',
         ];
     }
 

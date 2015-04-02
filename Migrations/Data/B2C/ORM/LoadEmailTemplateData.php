@@ -14,6 +14,6 @@ class LoadEmailTemplateData extends AbstractEmailFixture
     {
         return $this->container
             ->get('kernel')
-            ->locateResource('@OroCRMProDemoDataBundle/Migrations/Data/B2C/ORM/emails');
+            ->locateResource('@OroCRMProDemoDataBundle/Migrations/Data/B2C/ORM/data/emails');
     }
 }

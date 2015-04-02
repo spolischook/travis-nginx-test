@@ -2,3 +2,10 @@ Uid,Report uid,Name,Label
 1,1,website+Oro\Bundle\TrackingBundle\Entity\TrackingWebsite::name,Website
 2,1,name,Name
 3,1,url,Url
+4,2,email,Email
+5,2,firstName,First Name
+6,2,lastName,Last Name
+7,2,memberRating,Member Rating
+8,3,emailsSent,Emails Sent
+9,3,clicks,Clicks
+10,3,forwards,Forwards

@@ -1,6 +1,6 @@
 <?php
 
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -10,6 +10,8 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Oro\Bundle\NoteBundle\Entity\Note;
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadNoteActivityData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -42,8 +44,8 @@ class LoadNoteActivityData extends AbstractFixture implements DependentFixtureIn
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\\LoadAccountData',
-            __NAMESPACE__ . '\\LoadContactData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadContactData',
         ];
     }
 

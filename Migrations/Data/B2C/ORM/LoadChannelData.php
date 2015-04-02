@@ -3,24 +3,13 @@
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\ChannelBundle\Builder\BuilderFactory;
 use OroCRM\Bundle\SalesBundle\Migrations\Data\ORM\DefaultChannelData;
 
-class LoadChannelData extends AbstractFixture implements DependentFixtureInterface
+class LoadChannelData extends AbstractFixture
 {
-        /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadBusinessUnitData',
-        ];
-    }
-
     /**
      * @return array
      */

@@ -1,6 +1,6 @@
 <?php
 
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -14,6 +14,8 @@ use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\AccountBundle\Entity\Account;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadEmailActivityData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -44,8 +46,8 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\\LoadAccountData',
-            __NAMESPACE__ . '\\LoadContactData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadContactData',
         ];
     }
 

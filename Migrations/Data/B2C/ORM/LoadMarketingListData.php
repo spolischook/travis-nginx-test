@@ -49,7 +49,6 @@ class LoadMarketingListData extends AbstractFixture implements DependentFixtureI
         return [
             __NAMESPACE__ . '\\LoadDefaultUserData',
             __NAMESPACE__ . '\\LoadOrganizationData',
-            __NAMESPACE__ . '\\LoadCustomerData',
         ];
     }
 

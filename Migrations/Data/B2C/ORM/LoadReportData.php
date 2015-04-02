@@ -48,7 +48,8 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\\LoadTrackingWebsiteEventData',
+            __NAMESPACE__ . '\\LoadOrganizationData',
+            __NAMESPACE__ . '\\LoadBusinessUnitData',
         ];
     }
 

@@ -1,9 +1,11 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
 use OroCRM\Bundle\MagentoBundle\Entity\Website;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadWebsiteData extends AbstractFixture
 {

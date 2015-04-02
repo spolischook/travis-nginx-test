@@ -35,8 +35,8 @@ class LoadMarketingSegmentData extends AbstractFixture implements DependentFixtu
             parent::getExcludeProperties(),
             [
                 'type',
+                'organization uid',
                 'business unit uid',
-                'marketing list uid'
             ]
         );
     }
@@ -48,6 +48,8 @@ class LoadMarketingSegmentData extends AbstractFixture implements DependentFixtu
     {
         return [
             __NAMESPACE__ . '\\LoadMarketingListData',
+            __NAMESPACE__ . '\\LoadOrganizationData',
+            __NAMESPACE__ . '\\LoadBusinessUnitData',
         ];
     }
 
@@ -70,19 +72,13 @@ class LoadMarketingSegmentData extends AbstractFixture implements DependentFixtu
         $data = $this->getData();
 
         foreach ($data['segments'] as $segmentData) {
-            $list = $this->getMarketingListReference($segmentData['marketing list uid']);
-
             $segment = new Segment();
-            $segment->setEntity($list->getEntity());
-            $segment->setName('Marketing List ' . $list->getName() . ' segment');
-            $segment->setDefinition($segmentData['description']);
-
+            $this->setObjectValues($segment, $segmentData);
             $this->addDefinition($segment, $segmentData['uid']);
+            $segment->setOrganization($this->getOrganizationReference($segmentData['organization uid']));
             $segment->setOwner($this->getBusinessUnitReference($segmentData['business unit uid']));
-            $segment->setOrganization($list->getOrganization());
             $segment->setType($this->getSegmentType($segmentData['type']));
-            $list->setSegment($segment);
-            $manager->persist($list);
+            $manager->persist($segment);
         }
         $manager->flush();
     }

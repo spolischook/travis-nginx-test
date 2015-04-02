@@ -1,5 +1,5 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Tag;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -9,6 +9,8 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Oro\Bundle\TagBundle\Entity\TagManager;
 
 use OroCRM\Bundle\AccountBundle\Entity\Account;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadAccountTagData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -30,7 +32,7 @@ class LoadAccountTagData extends AbstractFixture implements DependentFixtureInte
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\\LoadAccountData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
             __NAMESPACE__ . '\\LoadTagData',
         ];
     }
