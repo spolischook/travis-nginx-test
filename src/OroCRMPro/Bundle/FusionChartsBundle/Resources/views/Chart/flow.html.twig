@@ -12,19 +12,21 @@
 {% endif %}
 
 {% if hasData and emptyData == false %}
+    {% set valueFormat = options.data_schema.value.type %}
     {% for item in data %}
+        {% set itemValue = valueFormat == 'currency' ? item.value|oro_format_currency : item.value %}
         {% if item.isNozzle is defined and item.isNozzle %}
             {% if isMobileVersion %}
-                {% set label = item.label ~ ': ' ~ item.value|oro_format_currency ~ '{br}(' ~ 'from'|trans ~ ' '
+                {% set label = item.label ~ ': ' ~ itemValue ~ '{br}(' ~ 'from'|trans ~ ' '
                 ~ options.settings.quarterDate|oro_format_date ~ ')' %}
             {% else %}
                 {% set label = item.label ~ ' (' ~ 'from'|trans ~ ' ' ~ options.settings.quarterDate|oro_format_date
-                ~ '): ' ~ item.value|oro_format_currency %}
+                ~ '): ' ~ itemValue %}
             {% endif %}
 
             {% set chartItem = {label: label, toolText: label, value: item.value, showValue: 0} %}
         {% else %}
-            {% set label = item.label ~ ': ' ~ item.value|oro_format_currency %}
+            {% set label = item.label ~ ': ' ~ itemValue %}
             {% set chartItem = {label: label, toolText: label, value: item.value} %}
         {% endif %}
 
