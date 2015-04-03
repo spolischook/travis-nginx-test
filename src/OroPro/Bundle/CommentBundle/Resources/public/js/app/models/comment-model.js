@@ -2,17 +2,17 @@
 define(function (require) {
     'use strict';
 
-    var CommentModel,
-        PreviousCommentModel = require('orocomment/js/app/models/previous-comment-model');
+    var ProCommentModel,
+        CommentModel = require('orocomment/js/app/models/comment-model');
 
-    CommentModel = PreviousCommentModel.extend({
+    ProCommentModel = CommentModel.extend({
         /**
          * @inheritDoc
          */
         url: function () {
             var url, _sa_org_id;
 
-            url = CommentModel.__super__.url.call(this, arguments);
+            url = ProCommentModel.__super__.url.call(this, arguments);
 
             // Need to add organization id to url
             _sa_org_id = $('input#_sa_org_id').val();
@@ -24,5 +24,5 @@ define(function (require) {
         }
     });
 
-    return CommentModel;
+    return ProCommentModel;
 });
