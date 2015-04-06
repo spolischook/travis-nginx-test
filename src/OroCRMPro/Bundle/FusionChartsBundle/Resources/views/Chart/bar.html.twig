@@ -53,7 +53,6 @@
                     'orocrmprofusioncharts/lib/FusionCharts'
                 ],
                 function ($, dataHandler, mediator) {
-
                     $(document).ready(function(){
                         var dataSource = {{ json|json_encode|raw }};
                         var schema = {{ options.data_schema|json_encode|raw }};
@@ -77,21 +76,11 @@
                             renderAt: '{{ containerId }}-chart'
                         });
 
-                        var isDrawFirstCall = true;
-
                         mediator.once('page:beforeChange', function () {
                             chartObj.dispose();
                         });
-                        var drawComplete = function () {
 
-                            if (isDrawFirstCall) {
-                                isDrawFirstCall = false;
-                                return;
-                            }
-                            chartObj.removeEventListener ("DrawComplete", drawComplete);
-                            chartObj.setJSONData(dataSource);
-                        };
-                        FusionCharts('{{ containerId }}').addEventListener ("DrawComplete" ,  drawComplete);
+                        chartObj.setJSONData(dataSource);
                         chartObj.render();
                     });
                 }
