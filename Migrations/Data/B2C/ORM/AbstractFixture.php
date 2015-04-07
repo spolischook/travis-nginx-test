@@ -20,10 +20,10 @@ use OroCRMPro\Bundle\DemoDataBundle\Model\GenerateDate;
 
 use OroCRMPro\Bundle\DemoDataBundle\EventListener\ActivityListSubscriber;
 
+
 abstract class AbstractFixture extends EntityReferences implements ContainerAwareInterface
 {
-    use FileLoader;
-    use GenerateDate;
+    use FileLoader, GenerateDate;
 
     const DATA_FOLDER = 'data';
 

@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use OroCRM\Bundle\MagentoBundle\Entity\CartItem;
 
+use OroCRMPro\Bundle\DemoDataBundle\EventListener\CartSubscriber;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtureInterface
@@ -48,6 +49,9 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
      */
     public function load(ObjectManager $manager)
     {
+        $subscriber = new CartSubscriber();
+        $this->em->getEventManager()->addEventSubscriber($subscriber);
+
         $data = $this->getData();
 
         foreach ($data['carts_items'] as $cartItemData) {

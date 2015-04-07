@@ -4,8 +4,12 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
+
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
+use OroCRM\Bundle\MagentoBundle\Entity\Customer;
 use OroCRM\Bundle\MagentoBundle\Entity\CartStatus;
+use OroCRM\Bundle\MagentoBundle\Entity\CartAddress;
 
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
@@ -38,10 +42,11 @@ class LoadCustomerCartData extends AbstractFixture implements DependentFixtureIn
     {
         $data = $this->getData();
 
-        /** @var CartStatus $status */
-        $status = $manager->getRepository('OroCRMMagentoBundle:CartStatus')->findOneBy(['name' => 'open']);
-
         foreach ($data['carts'] as $cartData) {
+
+            /** @var CartStatus $status */
+            $status = $manager->getRepository('OroCRMMagentoBundle:CartStatus')->findOneBy(['name' => $cartData['status']]);
+
             $customer = $this->getCustomerReference($cartData['customer uid']);
             $cart = new Cart();
 
@@ -65,9 +70,33 @@ class LoadCustomerCartData extends AbstractFixture implements DependentFixtureIn
             $cart->setUpdatedAt($this->generateUpdatedDate($cart->getCreatedAt()));
             $cart->setDataChannel($customer->getDataChannel());
 
+            if ($cartData['status'] == 'purchased') {
+                $this->addCartAddress($cart, $customer);
+            }
+
             $this->setCartReference($cartData['uid'], $cart);
             $manager->persist($cart);
         }
         $manager->flush();
     }
+
+    /**
+     * Add cart address
+     * @param Cart $cart
+     * @param Customer $customer
+     */
+    protected function addCartAddress(Cart $cart, Customer $customer)
+    {
+        if ($customer->getAddresses()->count()) {
+            /** @var AbstractAddress $customerAddress */
+            $customerAddress = $customer->getAddresses()->first();
+            $address = new CartAddress();
+            $address->setCity($customerAddress->getCity());
+            $address->setCountry($customerAddress->getCountry());
+            $address->setRegion($customerAddress->getRegion());
+            $address->setPostalCode($customerAddress->getPostalCode());
+            $cart->setBillingAddress($address);
+        }
+    }
 }
+

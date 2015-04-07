@@ -98,6 +98,7 @@ class LoadNoteActivityData extends AbstractFixture implements DependentFixtureIn
         $this->setObjectValues($note, $data);
 
         $manager->persist($note);
+
     }
 }
 

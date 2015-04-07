@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture as DoctrineAbstractFixture;
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Group;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\DashboardBundle\Entity\Dashboard;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
@@ -472,5 +473,26 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     {
         $reference = 'EmailCampaign:' . $uid;
         $this->setReference($reference, $emailCampaign);
+    }
+
+    /**
+     * @param $uid
+     * @return Segment
+     * @throws EntityNotFoundException
+     */
+    protected function getSegmentReference($uid)
+    {
+        $reference = 'Segment:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param Segment $segment
+     */
+    protected function setSegmentReference($uid, Segment $segment)
+    {
+        $reference = 'Segment:' . $uid;
+        $this->setReference($reference, $segment);
     }
 }

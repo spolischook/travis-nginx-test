@@ -4,10 +4,14 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Oro\Bundle\EmailBundle\Entity\Email;
+use Oro\Bundle\EmailBundle\Entity\EmailFolder;
+use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
+use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
@@ -58,6 +62,7 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
     {
         return [
             'contact_emails' => $this->loadData('activities/contact/emails.csv'),
+            'incoming_emails' => $this->loadData('activities/contact/incoming_emails.csv'),
             'account_emails' => $this->loadData('activities/account/emails.csv'),
         ];
     }
@@ -71,12 +76,17 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
 
         foreach ($data['account_emails'] as $emailData) {
             $account = $this->getAccountReference($emailData['account uid']);
-            $this->addActivity($manager, $account, $emailData);
+            $this->addEmail($account, $emailData);
         }
 
         foreach ($data['contact_emails'] as $emailData) {
             $contact = $this->getContactReference($emailData['contact uid']);
-            $this->addActivity($manager, $contact, $emailData);
+            $this->addEmail($contact, $emailData);
+        }
+
+        foreach ($data['incoming_emails'] as $emailData) {
+            $contact = $this->getContactReference($emailData['contact uid']);
+            $this->addEmail($contact, $emailData, FolderType::INBOX);
         }
         $manager->flush();
     }
@@ -84,48 +94,115 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
     /**
      * Create Email activity for $entity
      *
-     * @param ObjectManager $manager
      * @param Account|Contact $entity
      * @param $data
+     * @param string $type
+     * @throws EntityNotFoundException
      */
-    protected function addActivity(ObjectManager $manager, $entity, $data)
+    protected function addEmail($entity, $data, $type = FolderType::SENT)
     {
         if ($entity->getEmail() !== null) {
             $user = $entity->getOwner();
             $origin = $this->mailerProcessor->getEmailOrigin($user->getEmail());
-            $createdAt = $this->generateUpdatedDate($entity->getCreatedAt());
 
-            /** @var Email $email */
-            $email = $this->emailEntityBuilder->email(
-                $data['subject'],
-                $user->getEmail(),
-                $entity->getEmail(),
-                $createdAt,
-                $createdAt,
-                $createdAt,
-                Email::NORMAL_IMPORTANCE
-            );
+            $email = $this->createEmail($entity, $data['subject'], $type);
+            $email->setEmailBody($this->createEmailBody($data['body']));
+            $email->addFolder($this->getFolder($origin, $type));
 
             $email->addActivityTarget($entity);
-
-            /**
-             * @todo: should be refactored in BAP-7856
-             */
-            $class = new \ReflectionClass($email);
-            $created = $class->getProperty('created');
-            $created->setAccessible(true);
-            $created->setValue($email, $createdAt);
-
-            $emailBody = $this->emailEntityBuilder->body(
-                $data['body'],
-                false,
-                true
-            );
-            $email->setEmailBody($emailBody);
-            $email->addFolder($origin->getFolder(FolderType::SENT));
             $email->setMessageId(sprintf('id.%s@%s', uniqid(), '@orocrm-pro.demo-data.generated'));
-            $manager->getClassMetadata(get_class($email))->setLifecycleCallbacks([]);
-            $this->emailEntityBuilder->getBatch()->persist($manager);
+            $this->em->getClassMetadata(get_class($email))->setLifecycleCallbacks([]);
+            $this->emailEntityBuilder->getBatch()->persist($this->em);
         }
+    }
+
+    /**
+     * Create Email
+     *
+     * @param Account|Contact $entity
+     * @param $subject
+     * @param string $type
+     * @return Email
+     */
+    protected function createEmail($entity, $subject, $type = FolderType::SENT)
+    {
+        $from = $entity->getOwner()->getEmail();
+        $to = $entity->getEmail();
+        if($type === FolderType::INBOX) {
+            $from = $entity->getEmail();
+            $to = $entity->getOwner()->getEmail();
+        }
+
+        $createdAt = $this->generateUpdatedDate($entity->getCreatedAt());
+
+        /** @var Email $email */
+        $email = $this->emailEntityBuilder->email(
+            $subject,
+            $from,
+            $to,
+            $createdAt,
+            $createdAt,
+            $createdAt,
+            Email::NORMAL_IMPORTANCE
+        );
+        $this->setProtectedCreatedAtDate($email, $createdAt);
+        return $email;
+    }
+
+    /**
+     * Create Email Body
+     * @param $body
+     * @return EmailBody
+     */
+    protected function createEmailBody($body)
+    {
+        return $this->emailEntityBuilder->body(
+            $body,
+            false,
+            true
+        );
+    }
+
+    /**
+     * Add incoming folder for origin
+     *
+     * @param EmailOrigin $origin
+     * @param $type
+     * @return EmailFolder
+     * @throws EntityNotFoundException
+     */
+    protected function getFolder(EmailOrigin $origin, $type)
+    {
+        if ($origin->getFolder($type)) {
+            return $origin->getFolder($type);
+        }
+
+        if ($type === FolderType::INBOX)
+        {
+            $folder = new EmailFolder();
+            $folder
+                ->setType($type)
+                ->setFullName('inbox')
+                ->setOrigin($origin)
+                ->setName('inbox');
+            $origin->addFolder($folder);
+            $this->em->persist($origin);
+            return $folder;
+        } else {
+            throw new EntityNotFoundException('Folder ' . $type . ' not found');
+        }
+    }
+
+    /**
+     * @todo: should be refactored in BAP-7856
+     * @param Email $email
+     * @param \DateTime $createdAt
+     */
+    protected function setProtectedCreatedAtDate(Email $email, \DateTime $createdAt)
+    {
+        $class = new \ReflectionClass($email);
+        $created = $class->getProperty('created');
+        $created->setAccessible(true);
+        $created->setValue($email, $createdAt);
     }
 }

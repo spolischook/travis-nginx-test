@@ -36,7 +36,8 @@ class LoadMarketingListData extends AbstractFixture implements DependentFixtureI
             [
                 'type',
                 'user uid',
-                'organization uid'
+                'segment uid',
+                'organization uid',
             ]
         );
     }
@@ -49,6 +50,7 @@ class LoadMarketingListData extends AbstractFixture implements DependentFixtureI
         return [
             __NAMESPACE__ . '\\LoadDefaultUserData',
             __NAMESPACE__ . '\\LoadOrganizationData',
+            __NAMESPACE__ . '\\LoadMarketingSegmentData',
         ];
     }
 
@@ -72,6 +74,7 @@ class LoadMarketingListData extends AbstractFixture implements DependentFixtureI
         foreach ($data['marketing_lists'] as $listData) {
             $list = new MarketingList();
             $this->setObjectValues($list, $listData);
+
             $list->setOrganization($this->getOrganizationReference($listData['organization uid']));
             $list->setOwner($this->getUserReference($listData['user uid']));
             $list->setType($this->getMarketingListType($listData['type']));
@@ -79,12 +82,12 @@ class LoadMarketingListData extends AbstractFixture implements DependentFixtureI
             $list->setCreatedAt($this->generateCreatedDate());
             $list->setUpdatedAt($list->getCreatedAt());
 
+            $list->setSegment($this->getSegmentReference($listData['segment uid']));
             $manager->getClassMetadata(get_class($list))->setLifecycleCallbacks([]);
             $manager->persist($list);
         }
         $manager->flush();
     }
-
 
     /**
      * @param $name

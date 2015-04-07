@@ -47,7 +47,6 @@ class LoadMarketingSegmentData extends AbstractFixture implements DependentFixtu
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\\LoadMarketingListData',
             __NAMESPACE__ . '\\LoadOrganizationData',
             __NAMESPACE__ . '\\LoadBusinessUnitData',
         ];
@@ -78,6 +77,7 @@ class LoadMarketingSegmentData extends AbstractFixture implements DependentFixtu
             $segment->setOrganization($this->getOrganizationReference($segmentData['organization uid']));
             $segment->setOwner($this->getBusinessUnitReference($segmentData['business unit uid']));
             $segment->setType($this->getSegmentType($segmentData['type']));
+            $this->setSegmentReference($segmentData['uid'], $segment);
             $manager->persist($segment);
         }
         $manager->flush();

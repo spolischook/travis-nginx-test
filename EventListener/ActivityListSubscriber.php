@@ -9,8 +9,6 @@ use Oro\Bundle\ActivityListBundle\Entity\ActivityList;
 
 class ActivityListSubscriber implements EventSubscriber
 {
-    const ACTIVITY_LIST_CLASS = 'Oro\Bundle\ActivityListBundle\Entity\ActivityList';
-
     /**
      * {@inheritdoc}
      */
@@ -30,9 +28,8 @@ class ActivityListSubscriber implements EventSubscriber
         $unitOfWork = $entityManager->getUnitOfWork();
         $entity = $args->getEntity();
 
-        $activityListClass = self::ACTIVITY_LIST_CLASS;
         /** @var ActivityList $entity */
-        if ($entity instanceof $activityListClass) {
+        if ($entity instanceof ActivityList) {
             $identityMap = $unitOfWork->getIdentityMap();
             $relatedClass = $entity->getRelatedActivityClass();
             foreach ($identityMap[$relatedClass] as $activity) {

@@ -207,14 +207,15 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
 
         foreach ($addresses as $addressData) {
             $isoCode = $addressData['country'];
-            $country = array_filter(
+            $countries = array_filter(
                 $this->countries,
                 function (Country $country) use ($isoCode) {
                     return $country->getIso2Code() == $isoCode;
                 }
             );
+
             /** @var Country $country */
-            $country = array_values($country)[0];
+            $country = array_values($countries)[0];
 
             $regions = $country->getRegions();
             $region = $regions->filter(
