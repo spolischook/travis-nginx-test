@@ -60,7 +60,6 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
     {
         return [
             'reports' => $this->loadData('reports/reports.csv'),
-            'columns' => $this->loadData('reports/reports_definition_columns.csv'),
         ];
     }
 
@@ -74,7 +73,6 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
         foreach ($data['reports'] as $reportData) {
             $report = new Report();
             $this->setObjectValues($report, $reportData);
-            $this->addDefinition($report, $reportData['uid']);
 
             $report->setType($this->getReportType($reportData['type']));
             $report->setOrganization($this->getOrganizationReference($reportData['organization uid']));
@@ -82,36 +80,6 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
             $manager->persist($report);
         }
         $manager->flush();
-    }
-
-    /**
-     * @param Report $report
-     * @param $uid
-     */
-    protected function addDefinition(Report $report, $uid)
-    {
-        $data = $this->getData();
-
-        $columns = array_filter(
-            $data['columns'],
-            function ($columnData) use ($uid) {
-                return $columnData['report uid'] == $uid;
-            }
-        );
-
-        $definition = [
-            'columns' => []
-        ];
-
-        foreach ($columns as $column) {
-            $definition['columns'][] = [
-                'name' => $column['name'],
-                'label' => $column['label'],
-                'sorting' => '',
-                'func' => null,
-            ];
-        }
-        $report->setDefinition(json_encode($definition));
     }
 
     /**
