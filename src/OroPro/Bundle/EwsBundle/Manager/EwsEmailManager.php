@@ -459,7 +459,7 @@ class EwsEmailManager
         $email
             ->setId(new ItemId($msg->ItemId->Id, $msg->ItemId->ChangeKey))
             ->setSeen($msg->IsRead)
-            ->setSubject($msg->Subject)
+            ->setSubject(empty($msg->Subject) ? '' : $msg->Subject)
             ->setFrom($msg->From->Mailbox->EmailAddress)
             ->setSentAt($this->convertToDateTime($msg->DateTimeSent))
             ->setReceivedAt($this->convertToDateTime($msg->DateTimeReceived))
