@@ -47,7 +47,7 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
         $format = static::DATE_TIME_FORMAT;
         foreach ($data['events'] as $event) {
             $calendarEvent = new CalendarEvent();
-            $calendar = $this->getCalendar($event);
+            $calendar = $this->getCalendar($event['user uid'], $event['organization uid']);
             $calendarEvent
                 ->setTitle($event['title'])
                 ->setDescription($event['description'])
@@ -61,19 +61,24 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
         }
 
         foreach ($data['connections'] as $connection) {
-            $user = $this->getUserReference($connection['calendar user uid']);
-            $targetUser = $this->getUserReference($connection['target calendar user uid']);
-            $userCalendar = $this->calendars->findDefaultCalendar($user->getId(), $user->getOrganization()->getId());
-            $targetUserCalendar = $this->calendars->findDefaultCalendar(
-                $targetUser->getId(),
-                $targetUser->getOrganization()->getId()
+            $calendar = $this->getCalendar(
+                $connection['calendar user uid'],
+                $connection['calendar organization uid']
             );
-            if ($user->getId() !== $targetUser->getId()) {
+            $targetCalendar = $this->getCalendar(
+                $connection['target calendar user uid'],
+                $connection['target calendar organization uid']
+            );
+
+            if ($calendar->getOwner()->getId() !== $targetCalendar->getOwner()->getId()) {
                 $calendarProperty = new CalendarProperty();
                 $calendarProperty
-                    ->setTargetCalendar($targetUserCalendar)
+                    ->setTargetCalendar($targetCalendar)
                     ->setCalendarAlias($connection['alias'])
-                    ->setCalendar($userCalendar->getId());
+                    ->setCalendar($calendar->getId())
+                    ->setPosition($connection['position'])
+                    ->setVisible($connection['visible'])
+                    ->setBackgroundColor($connection['background_color']);
                 $this->em->persist($calendarProperty);
                 $this->setCalendarPropertyReference($connection['uid'], $calendarProperty);
             }
@@ -94,19 +99,20 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
     }
 
     /**
-     * @param array $event
+     * @param $userUid
+     * @param $organizationUid
      * @return null|Calendar
-     * @throws EntityNotFoundException
      */
-    protected function getCalendar(array $event)
+    protected function getCalendar($userUid, $organizationUid)
     {
-        $user = $this->getUserReference($event['user uid']);
-        $calendar = $this->calendars->findDefaultCalendar($user->getId(), $event['organization uid']);
+        $user = $this->getUserReference($userUid);
+        $organization = $this->getOrganizationReference($organizationUid);
+        $calendar = $this->calendars->findDefaultCalendar($user->getId(), $organization->getId());
         if ($calendar === null) {
             throw new \InvalidArgumentException(sprintf(
                 'Calendar not found with parameters user_owner_id = %s and organization_id = %s',
                 $user->getId(),
-                $event['organization uid']
+                $organizationUid
             ));
         }
         return $calendar;
