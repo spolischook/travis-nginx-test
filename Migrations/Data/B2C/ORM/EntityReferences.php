@@ -4,8 +4,6 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\DataFixtures\AbstractFixture as DoctrineAbstractFixture;
 
-use Oro\Bundle\CalendarBundle\Entity\CalendarEvent;
-use Oro\Bundle\CalendarBundle\Entity\CalendarProperty;
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Group;
@@ -474,25 +472,5 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     {
         $reference = 'EmailCampaign:' . $uid;
         $this->setReference($reference, $emailCampaign);
-    }
-
-    /**
-     * @param               $uid
-     * @param CalendarEvent $calendarEvent
-     */
-    protected function setCalendarEventReference($uid, CalendarEvent $calendarEvent)
-    {
-        $reference = 'CalendarEvent:' . $uid;
-        $this->setReference($reference, $calendarEvent);
-    }
-
-    /**
-     * @param                  $uid
-     * @param CalendarProperty $calendarProperty
-     */
-    protected function setCalendarPropertyReference($uid, CalendarProperty $calendarProperty)
-    {
-        $reference = 'CalendarProperty:' . $uid;
-        $this->setReference($reference, $calendarProperty);
     }
 }

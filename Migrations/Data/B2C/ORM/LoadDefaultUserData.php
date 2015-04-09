@@ -65,6 +65,9 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
         /** @var Role $saleRole */
         $saleRole = $this->roleRepository->findOneBy(['role' => LoadRolesData::ROLE_MANAGER]);
 
+        /** @var Role $userRole */
+        $userRole = $this->roleRepository->findOneBy(['role' => LoadRolesData::ROLE_USER]);
+
         $businessUnits = new ArrayCollection($this->businessRepository->findAll());
 
         $data = $this->getData();
@@ -74,11 +77,14 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
 
         foreach ($data['users'] as $userData) {
             $businessUnit = new ArrayCollection([$this->getBusinessUnitReference($userData['business unit uid'])]);
-            $this->createUser($this->em, $userData, $saleRole, $businessUnit);
+            $this->createUser($this->em, $userData, $userRole, $businessUnit);
         }
 
         $mainUser = $this->getMainUser();
+        $mainUser->setCreatedAt(new \DateTime('now - 1 month'));
         $this->setUserReference('main', $mainUser);
+        $manager->persist($mainUser);
+        $manager->flush();
     }
 
     /**

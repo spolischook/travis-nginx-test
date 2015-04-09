@@ -1,13 +1,26 @@
-uid,"user uid",title,"organization uid",description,start,end,all_day
-1,1,Lunch,1,,"2015-04-08 12:00:00","2015-04-08 12:30:00",
-2,5,"Work Reminder",1,,"2015-04-09 08:00:00","2015-04-09 18:00:00",1
-3,10,Lunch,1,,"2015-04-10 12:00:00","2015-04-10 12:30:00",
-4,18,Weekend,1,,"2015-04-11 08:00:00","2015-04-11 18:00:00",1
-5,19,Weekend,1,,"2015-04-12 08:00:00","2015-04-12 18:00:00",1
-6,22,"Work Reminder",1,,"2015-04-13 08:00:00","2015-04-13 18:00:00",1
-7,25,"Business trip",1,,"2015-04-14 00:00:00","2015-04-14 00:00:00",
-8,34,Meeting,1,,"2015-04-15 08:00:00","2015-04-15 10:00:00",
-9,36,"Client Call",1,,"2015-04-16 09:00:00","2015-04-16 10:00:00",
-10,38,"Client Call",1,,"2015-04-17 16:00:00","2015-04-17 17:00:00",
-11,44,Weekend,1,,"2015-04-18 08:00:00","2015-04-18 18:00:00",1
-12,47,Weekend,1,,"2015-04-19 08:00:00","2015-04-19 18:00:00",1
+Uid,Day,Title,Description,Start time,End time,All_day
+1,Monday,Weekend,Weekend,09:00,19:00,1
+2,Tuesday,Work Reminder,Work Reminder,09:00,12:00,
+3,Tuesday,Lunch,Lunch,12:30,13:00,
+4,Tuesday,Client Call,Client Call,13:00,16:00,
+5,Tuesday,Meeting,Meeting,16:00,17:00,
+6,Tuesday,Client Call,Client Call,17:00,19:00,
+7,Wednesday,Meeting,Meeting,09:00,10:00,
+8,Wednesday,Work Reminder,Work Reminder,10:00,12:00,
+9,Wednesday,Lunch,Lunch,12:00,12:30,
+10,Wednesday,Work Reminder,Work Reminder,12:30,19:00,
+11,Thursday,Work Reminder,Work Reminder,09:00,12:00,
+12,Thursday,Lunch,Lunch,12:00,12:30,
+13,Thursday,Client Call,Client Call,12:30,13:00,
+14,Thursday,Meeting,Meeting,13:00,14:00,
+15,Thursday,Client Call,Client Call,14:00,18:00,
+16,Thursday,Meeting,Meeting,18:00,19:00,
+17,Friday,Work Reminder,Work Reminder,09:00,12:00,
+18,Friday,Lunch,Lunch,12:00,12:30,
+19,Friday,Client Call,Client Call,12:30,17:00,
+20,Friday,Meeting,Meeting,17:00,17:30,
+21,Friday,Client Call,Client Call,17:30,19:00,
+22,Saturday,Work Reminder,Work Reminder,09:00,12:00,
+23,Tuesday,Meeting,Meeting,16:00,17:00,
+24,Wednesday,Client Call,Client Call,17:00,19:00,
+25,Sunday,Weekend,Weekend,09:00,19:00,1

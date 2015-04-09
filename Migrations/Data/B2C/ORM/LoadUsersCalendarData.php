@@ -1,23 +1,50 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityNotFoundException;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+
+use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\CalendarBundle\Entity\Calendar;
 use Oro\Bundle\CalendarBundle\Entity\CalendarEvent;
-use Oro\Bundle\CalendarBundle\Entity\CalendarProperty;
+use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadRolesData;
 use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarRepository;
 
 class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureInterface
 {
-    const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
-
     /** @var CalendarRepository */
-    protected $calendars;
+    protected $calendarRepository;
+
+    /** @var  EntityRepository */
+    protected $roleRepository;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        parent::setContainer($container);
+        $this->calendarRepository = $this->em->getRepository('OroCalendarBundle:Calendar');
+        $this->roleRepository = $this->em->getRepository('OroUserBundle:Role');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getExcludeProperties()
+    {
+        return array_merge(
+            parent::getExcludeProperties(),
+            [
+                'day',
+                'start time',
+                'end time'
+            ]
+        );
+    }
 
     /**
      * {@inheritdoc}
@@ -30,12 +57,13 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
     }
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
-    public function setContainer(ContainerInterface $container = null)
+    protected function getData()
     {
-        parent::setContainer($container);
-        $this->calendars = $this->em->getRepository('OroCalendarBundle:Calendar');
+        return [
+            'events' => $this->loadData('calendar/events.csv'),
+        ];
     }
 
     /**
@@ -44,77 +72,41 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
     public function load(ObjectManager $manager)
     {
         $data = $this->getData();
-        $format = static::DATE_TIME_FORMAT;
-        foreach ($data['events'] as $event) {
-            $calendarEvent = new CalendarEvent();
-            $calendar = $this->getCalendar($event['user uid'], $event['organization uid']);
-            $calendarEvent
-                ->setTitle($event['title'])
-                ->setDescription($event['description'])
-                ->setStart(\DateTime::createFromFormat($format, $event['start']))
-                ->setEnd(\DateTime::createFromFormat($format, $event['end']))
-                ->setAllDay($event['all_day']);
-            $calendar->addEvent($calendarEvent);
-            $this->setSecurityContext($calendar->getOwner());
-            $this->em->persist($calendarEvent);
-            $this->setCalendarEventReference($event['uid'], $calendarEvent);
-        }
+        $calendars = $this->calendarRepository->findAll();
 
-        foreach ($data['connections'] as $connection) {
-            $calendar = $this->getCalendar(
-                $connection['calendar user uid'],
-                $connection['calendar organization uid']
-            );
-            $targetCalendar = $this->getCalendar(
-                $connection['target calendar user uid'],
-                $connection['target calendar organization uid']
-            );
+        /** @var Role $userRole */
+        $userRole = $this->roleRepository->findOneBy(['role' => LoadRolesData::ROLE_USER]);
 
-            if ($calendar->getOwner()->getId() !== $targetCalendar->getOwner()->getId()) {
-                $calendarProperty = new CalendarProperty();
-                $calendarProperty
-                    ->setTargetCalendar($targetCalendar)
-                    ->setCalendarAlias($connection['alias'])
-                    ->setCalendar($calendar->getId())
-                    ->setPosition($connection['position'])
-                    ->setVisible($connection['visible'])
-                    ->setBackgroundColor($connection['background_color']);
-                $this->em->persist($calendarProperty);
-                $this->setCalendarPropertyReference($connection['uid'], $calendarProperty);
+        /** @var Calendar $calendar */
+        foreach($calendars as $calendar) {
+            /**
+             * Skip user with ROLE_USER
+             */
+            if($calendar->getOwner()->hasRole($userRole))
+            {
+                continue;
+            }
+
+            $now = new \DateTime('now');
+            $created = $calendar->getOwner()->getCreatedAt();
+            for(;$created->format('Y-m-d') <= $now->format('Y-m-d'); $created->add(new \DateInterval('P1D')))
+            {
+                foreach ($data['events'] as $eventData) {
+                    if($eventData['day'] == $created->format('l')) {
+                        $event = new CalendarEvent();
+                        $this->setObjectValues($event, $eventData);
+                        $event
+                            ->setStart(new \DateTime($created->format('Y-m-d') . ' ' . $eventData['start time']))
+                            ->setEnd(new \DateTime($created->format('Y-m-d') . ' ' . $eventData['end time']));
+
+                        $calendar->addEvent($event);
+                        $this->setSecurityContext($calendar->getOwner());
+                        $manager->persist($calendar);
+                    }
+                }
             }
         }
-
-        $this->em->flush();
+        $manager->flush();
     }
 
-    /**
-     * @return array
-     */
-    protected function getData()
-    {
-        return [
-            'events' => $this->loadData('calendar/events.csv'),
-            'connections' => $this->loadData('calendar/connections.csv'),
-        ];
-    }
-
-    /**
-     * @param $userUid
-     * @param $organizationUid
-     * @return null|Calendar
-     */
-    protected function getCalendar($userUid, $organizationUid)
-    {
-        $user = $this->getUserReference($userUid);
-        $organization = $this->getOrganizationReference($organizationUid);
-        $calendar = $this->calendars->findDefaultCalendar($user->getId(), $organization->getId());
-        if ($calendar === null) {
-            throw new \InvalidArgumentException(sprintf(
-                'Calendar not found with parameters user_owner_id = %s and organization_id = %s',
-                $user->getId(),
-                $organizationUid
-            ));
-        }
-        return $calendar;
-    }
 }
