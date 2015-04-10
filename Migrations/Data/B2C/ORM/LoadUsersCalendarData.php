@@ -77,6 +77,7 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
             $carry[$item['day']][] = $item;
             return $carry;
         }, []);
+
         /** @var Role $userRole */
         $userRole = $this->roleRepository->findOneBy(['role' => LoadRolesData::ROLE_USER]);
 
@@ -89,13 +90,12 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
                 continue;
             }
 
-            $end = (new \DateTime('now'))->add(new \DateInterval('P3W'));
             $created = $calendar->getOwner()->getCreatedAt();
-            for (; $created->format('Y-m-d') <= $end->format('Y-m-d'); $created->add(new \DateInterval('P1D'))) {
-                foreach ($events[$created->format('l')] as $eventData) {
-                    if (array_rand([0, 1, 2]) &&
-                        $this->isCanAddEventToCalendar($calendar, $eventData, $created)
-                    ) {
+
+            for ($i = 0; array_key_exists($i, $data['events']); $created->add(new \DateInterval('P1D'))) {
+                $dayEvents = array_key_exists($i, $events) ? $events[$i]: [];
+                if (!$this->isWeekEnd($created)) {
+                    foreach ($dayEvents as $eventData) {
                         $event = new CalendarEvent();
                         $this->setObjectValues($event, $eventData);
                         $event
@@ -106,27 +106,15 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
                         $this->setSecurityContext($calendar->getOwner());
                         $manager->persist($calendar);
                     }
+                    $i++;
                 }
             }
         }
         $manager->flush();
     }
 
-    protected function isCanAddEventToCalendar(Calendar $calendar, array $eventData, \DateTime $currentDate)
+    protected function isWeekEnd(\DateTime $date)
     {
-        $result = true;
-        $eventStart = new \DateTime($currentDate->format('Y-m-d') . ' ' . $eventData['start time']);
-        $eventEnd = new \DateTime($currentDate->format('Y-m-d') . ' ' . $eventData['end time']);
-        foreach ($calendar->getEvents() as $event) {
-            $start = $event->getStart();
-            $end = $event->getEnd();
-            if ($start->getTimestamp() > $eventEnd->getTimestamp() ||
-                $end->getTimestamp() < $eventStart->getTimestamp() ||
-                $start->format('Y-m-d') !== $currentDate->format('Y-m-d')) {
-                continue;
-            }
-            $result = false;
-        }
-        return $result;
+        return in_array($date->format('w'), [0, 6]);
     }
 }
