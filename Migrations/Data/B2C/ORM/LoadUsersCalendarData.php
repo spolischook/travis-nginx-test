@@ -73,26 +73,29 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
     {
         $data = $this->getData();
         $calendars = $this->calendarRepository->findAll();
-
+        $events = array_reduce($data['events'], function ($carry, $item) {
+            $carry[$item['day']][] = $item;
+            return $carry;
+        }, []);
         /** @var Role $userRole */
         $userRole = $this->roleRepository->findOneBy(['role' => LoadRolesData::ROLE_USER]);
 
         /** @var Calendar $calendar */
-        foreach($calendars as $calendar) {
+        foreach ($calendars as $calendar) {
             /**
              * Skip user with ROLE_USER
              */
-            if($calendar->getOwner()->hasRole($userRole))
-            {
+            if ($calendar->getOwner()->hasRole($userRole)) {
                 continue;
             }
 
-            $now = new \DateTime('now');
+            $end = (new \DateTime('now'))->add(new \DateInterval('P3W'));
             $created = $calendar->getOwner()->getCreatedAt();
-            for(;$created->format('Y-m-d') <= $now->format('Y-m-d'); $created->add(new \DateInterval('P1D')))
-            {
-                foreach ($data['events'] as $eventData) {
-                    if($eventData['day'] == $created->format('l')) {
+            for (; $created->format('Y-m-d') <= $end->format('Y-m-d'); $created->add(new \DateInterval('P1D'))) {
+                foreach ($events[$created->format('l')] as $eventData) {
+                    if (array_rand([0, 1, 2]) &&
+                        $this->isCanAddEventToCalendar($calendar, $eventData, $created)
+                    ) {
                         $event = new CalendarEvent();
                         $this->setObjectValues($event, $eventData);
                         $event
@@ -109,4 +112,21 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
         $manager->flush();
     }
 
+    protected function isCanAddEventToCalendar(Calendar $calendar, array $eventData, \DateTime $currentDate)
+    {
+        $result = true;
+        $eventStart = new \DateTime($currentDate->format('Y-m-d') . ' ' . $eventData['start time']);
+        $eventEnd = new \DateTime($currentDate->format('Y-m-d') . ' ' . $eventData['end time']);
+        foreach ($calendar->getEvents() as $event) {
+            $start = $event->getStart();
+            $end = $event->getEnd();
+            if ($start->getTimestamp() > $eventEnd->getTimestamp() ||
+                $end->getTimestamp() < $eventStart->getTimestamp() ||
+                $start->format('Y-m-d') !== $currentDate->format('Y-m-d')) {
+                continue;
+            }
+            $result = false;
+        }
+        return $result;
+    }
 }
