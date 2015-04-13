@@ -68,6 +68,9 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
+
+        $this->removeReports();
+
         $data = $this->getData();
 
         foreach ($data['reports'] as $reportData) {
@@ -95,5 +98,16 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
             throw new EntityNotFoundException('Report type ' . $name . ' not found!');
         }
         return $type;
+    }
+
+    /**
+     * Remove all reports
+     */
+    protected function removeReports()
+    {
+        $reportRepository = $this->em->getRepository('OroReportBundle:Report');
+        foreach ($reportRepository->findAll() as $entity) {
+            $this->em->remove($entity);
+        }
     }
 }
