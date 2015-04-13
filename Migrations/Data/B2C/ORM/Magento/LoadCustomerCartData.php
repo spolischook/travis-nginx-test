@@ -92,6 +92,7 @@ class LoadCustomerCartData extends AbstractFixture implements DependentFixtureIn
             $customerAddress = $customer->getAddresses()->first();
             $address = new CartAddress();
             $address->setCity($customerAddress->getCity());
+            $address->setStreet($customerAddress->getStreet());
             $address->setCountry($customerAddress->getCountry());
             $address->setRegion($customerAddress->getRegion());
             $address->setPostalCode($customerAddress->getPostalCode());

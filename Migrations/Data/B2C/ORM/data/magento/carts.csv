@@ -172,7 +172,7 @@ Uid,Customer uid,Currency,Rate,Status
 171,41,USD,1,open
 172,42,USD,1,expired
 173,43,USD,1,lost
-174,44,USD,1,purchased
+174,44,USD,1,lost
 175,45,USD,1,converted_to_opportunity
 176,46,USD,1,open
 177,47,USD,1,expired
@@ -192,7 +192,7 @@ Uid,Customer uid,Currency,Rate,Status
 191,50,USD,1,open
 192,51,USD,1,expired
 193,52,USD,1,lost
-194,53,USD,1,purchased
+194,53,USD,1,lost
 195,54,USD,1,converted_to_opportunity
 196,55,USD,1,open
 197,56,USD,1,expired
@@ -212,7 +212,7 @@ Uid,Customer uid,Currency,Rate,Status
 211,59,USD,1,open
 212,60,USD,1,expired
 213,50,USD,1,lost
-214,51,USD,1,purchased
+214,51,USD,1,lost
 215,52,USD,1,converted_to_opportunity
 216,53,USD,1,open
 217,54,USD,1,expired

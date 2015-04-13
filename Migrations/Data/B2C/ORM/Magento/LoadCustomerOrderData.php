@@ -1,11 +1,16 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Oro\Bundle\AddressBundle\Entity\AddressType;
+
+use OroCRM\Bundle\MagentoBundle\Entity\Cart;
 use OroCRM\Bundle\MagentoBundle\Entity\Order;
 use OroCRM\Bundle\MagentoBundle\Entity\OrderItem;
+use OroCRM\Bundle\MagentoBundle\Entity\OrderAddress;
 
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
@@ -37,6 +42,7 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
     public function load(ObjectManager $manager)
     {
         $data = $this->getData();
+        $addressType = $this->getBillingAddressType();
 
         foreach ($data['orders'] as $orderData) {
             $cart = $this->getCartReference($orderData['cart uid']);
@@ -62,6 +68,7 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
 
             if ($orderData['status'] == 'Completed') {
                 $order->setTotalPaidAmount($cart->getGrandTotal());
+                $this->addOrderAddress($order, $cart, $addressType);
             }
 
             $order->setSubtotalAmount($cart->getSubTotal());
@@ -96,5 +103,47 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
             $manager->persist($order);
         }
         $manager->flush();
+    }
+
+    /**
+     * Add cart address
+     * @param Order $order
+     * @param Cart $cart
+     * @param AddressType $addressType
+     */
+    protected function addOrderAddress(Order $order, Cart $cart, AddressType $addressType)
+    {
+        if ($cart->getBillingAddress() && $cart->getBillingAddress()->getCountry()) {
+
+            $address = new OrderAddress();
+
+            $cartAddress = $cart->getBillingAddress();
+            $address->setOwner($order);
+            $address->setOrganization($cart->getOrganization());
+            $address->setCity($cartAddress->getCity());
+            $address->setStreet($cartAddress->getStreet());
+            $address->setCountry($cartAddress->getCountry());
+            $address->setRegion($cartAddress->getRegion());
+            $address->setPostalCode($cartAddress->getPostalCode());
+            $address->setPrimary(true);
+
+            $address->addType($addressType);
+            $order->addAddress($address);
+        }
+    }
+
+    /**
+     * @return AddressType
+     * @throws EntityNotFoundException
+     */
+    protected function getBillingAddressType()
+    {
+        $repository = $this->em->getRepository('OroAddressBundle:AddressType');
+        $type = $repository->findOneBy(['name' => AddressType::TYPE_BILLING]);
+        if(!$type)
+        {
+            throw new EntityNotFoundException('Address type ' . AddressType::TYPE_BILLING . ' not found!');
+        }
+        return $type;
     }
 }
