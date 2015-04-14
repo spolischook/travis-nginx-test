@@ -58,8 +58,9 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
 
             $cart = $this->getCartReference($cartItemData['cart uid']);
             $cartItem = new CartItem();
+            $this->setObjectValues($cartItem, $cartItemData);
 
-            $taxAmount = $cartItemData['price'] * $cartItemData['taxpercent'];
+            $taxAmount = $cartItemData['price'] * $cartItem->getTaxAmount();
             $total = $cartItemData['price'] + $taxAmount;
 
             $cartItem->setProductId(rand(1, 100));
@@ -70,13 +71,6 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
             $cartItem->setPriceInclTax($total);
             $cartItem->setTaxAmount($taxAmount);
 
-            $cartItem->setSku($cartItemData['sku']);
-            $cartItem->setProductType($cartItemData['producttype']);
-            $cartItem->setName($cartItemData['name']);
-            $cartItem->setQty(1);
-            $cartItem->setPrice($cartItemData['price']);
-            $cartItem->setDiscountAmount(0);
-            $cartItem->setTaxPercent($cartItemData['taxpercent']);
             $cartItem->setCreatedAt($this->generateUpdatedDate($cart->getCreatedAt()));
             $cartItem->setUpdatedAt($this->generateUpdatedDate($cartItem->getCreatedAt()));
             $cartItem->setCart($cart);
@@ -90,7 +84,6 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
             $cart->setTaxAmount($cart->getTaxAmount() + $taxAmount);
 
             $manager->persist($cart);
-
         }
         $manager->flush();
     }

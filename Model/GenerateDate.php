@@ -9,7 +9,7 @@ trait GenerateDate {
      */
     protected function generateCreatedDate()
     {
-        // Convert to timetamps
+        // Convert to timetamp
         $min = strtotime('now - 1 month');
         $max = strtotime('now - 1 day');
         $val = rand($min, $max);
@@ -25,7 +25,7 @@ trait GenerateDate {
      */
     protected function generateUpdatedDate(\DateTime $created)
     {
-        // Convert to timetamps
+        // Convert to timetamp
         $min = strtotime($created->format('Y-M-d H:i:s'));
         $max = strtotime('now - 1 day');
         $val = rand($min, $max);

@@ -1,4 +1,4 @@
-Uid,Cart uid,Status,paymentMethod,paymentMethodDetails
+Uid,Cart uid,Status,Payment_Method,Payment_Method_Details
 1,1,Processing,Ccsave,Card[MC]
 2,2,Canceled,Checkmo,Card[AE]
 3,3,Canceled,Ccsave,N/A

@@ -37,6 +37,22 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
     }
 
     /**
+     * @return array
+     */
+    protected function getExcludeProperties()
+    {
+        return array_merge(
+            parent::getExcludeProperties(),
+            [
+                'organization uid',
+                'business unit uid',
+                'birthday',
+                'group uid',
+            ]
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getDependencies()
@@ -124,11 +140,8 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
         $user->setOrganization($organization);
         $user->addOrganization($organization);
         $user->setBusinessUnits($businessUnits);
-        $user->setFirstName($userData['firstname']);
-        $user->setLastName($userData['lastname']);
-        $user->setEmail($userData['email']);
-        $user->setUsername($userData['username']);
 
+        $this->setObjectValues($user, $userData);
         $user->setPlainPassword($userData['username']);
         $this->userManager->updatePassword($user);
         $this->userManager->updateUser($user);

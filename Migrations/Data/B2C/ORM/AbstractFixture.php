@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityNotFoundException;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository;
 use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
 
 use OroCRMPro\Bundle\DemoDataBundle\Model\FileLoader;
@@ -39,7 +40,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
     /** @var  EntityRepository */
     protected $userRepository;
 
-    /** @var  EntityRepository */
+    /** @var  OrganizationRepository */
     protected $organizationRepository;
 
     protected function getDataDirectory()

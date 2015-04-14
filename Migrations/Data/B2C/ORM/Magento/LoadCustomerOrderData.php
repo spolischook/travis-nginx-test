@@ -73,8 +73,8 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
 
             $order->setSubtotalAmount($cart->getSubTotal());
             $order->setShippingAmount(rand(5, 10));
-            $order->setPaymentMethod($orderData['paymentmethod']);
-            $order->setPaymentDetails($orderData['paymentmethoddetails']);
+            $order->setPaymentMethod($orderData['payment_method']);
+            $order->setPaymentDetails($orderData['payment_method_details']);
             $order->setShippingMethod('flatrate_flatrate');
 
             $cartItems = $cart->getCartItems();

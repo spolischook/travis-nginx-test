@@ -38,7 +38,7 @@ class LoadNavigationHistoryItemData extends AbstractFixture implements Dependent
                 'user uid',
                 'account uid',
                 'contact uid',
-                'organziation uid',
+                'organization uid',
             ]
         );
     }

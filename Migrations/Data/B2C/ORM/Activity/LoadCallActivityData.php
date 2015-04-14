@@ -111,7 +111,7 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
                 $created = $this->generateCreatedDate();
                 $call->setCreatedAt($created);
                 $call->setUpdatedAt($created);
-                $data['calldatetime'] = $created;
+                $call->setCallDateTime($created);
 
                 $call->setDirection($this->directions['Outgoing']);
                 $data['phoneNumber'] = $phone->getPhone();

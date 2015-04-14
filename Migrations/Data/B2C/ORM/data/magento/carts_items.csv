@@ -1,4 +1,4 @@
-Uid,Cart uid,Sku,Name,Qty,Price,DiscountAmount,TaxPercent,ProductType
+Uid,Cart uid,Sku,Name,Qty,Price,DiscountAmount,TaxAmount,ProductType
 1,1,sku-Notebook,Notebook,5,1729.95,0,0.0838,simple
 2,2,sku-Gaming Computer,Gaming Computer,2,1780,0,0.0838,simple
 3,3,sku-Netbook,Netbook,2,601.98,0,0.0838,simple

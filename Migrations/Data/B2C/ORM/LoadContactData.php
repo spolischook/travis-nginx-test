@@ -93,8 +93,6 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
 
             $contact->setCreatedAt($this->generateCreatedDate());
             $contact->setUpdatedAt($this->generateUpdatedDate($contact->getCreatedAt()));
-            $contact->setFirstName($contactData['firstname']);
-            $contact->setLastName($contactData['lastname']);
 
             $contactData['assignedTo'] = $account->getOwner();
             $contactData['reportsTo'] = $contact;

@@ -4,8 +4,6 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Model;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
-use OroCRMPro\Bundle\DemoDataBundle\EventListener\ActivityListSubscriber;
-
 trait FileLoader {
 
     /**

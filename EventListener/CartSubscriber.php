@@ -39,7 +39,7 @@ class CartSubscriber implements EventSubscriber
         'expired' => 'abandoned',
         'lost' => 'abandoned',
         'purchased' => 'converted',
-        'converted_to_opportunity' => 'converted_to_opportunity',
+        'converted_to_opportunity' => 'converted',
     ];
 
 
