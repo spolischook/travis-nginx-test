@@ -3,6 +3,7 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\DBAL\Events;
 use Oro\Bundle\CalendarBundle\Entity\CalendarProperty;
+use OroCRMPro\Bundle\DemoDataBundle\Model\WeekendChecker;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Doctrine\ORM\EntityRepository;
@@ -17,6 +18,8 @@ use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarRepository;
 
 class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureInterface
 {
+    use WeekendChecker;
+
     /** @var CalendarRepository */
     protected $calendarRepository;
 
@@ -142,10 +145,5 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
         }
 
         $manager->flush();
-    }
-
-    protected function isWeekEnd(\DateTime $date)
-    {
-        return in_array($date->format('w'), [0, 6]);
     }
 }
