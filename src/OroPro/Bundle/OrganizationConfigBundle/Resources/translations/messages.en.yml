@@ -3,3 +3,5 @@ oropro:
         grid.action.config: Configuration
         organization_configuration.label : Configuration
         use_default: Use System
+        menu:
+            organization_configuration.label: Organization Configuration
