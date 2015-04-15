@@ -79,8 +79,8 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
             $cart->setItemsQty($cart->getItemsQty() + $cartItemData['qty']);
             $cart->setItemsCount($cart->getItemsCount() + 1);
 
-            $cart->setSubTotal($total);
             $cart->setGrandTotal($cart->getGrandTotal() + $total);
+            $cart->setSubTotal($cart->getGrandTotal());
             $cart->setTaxAmount($cart->getTaxAmount() + $taxAmount);
 
             $manager->persist($cart);

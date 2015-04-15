@@ -69,9 +69,9 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
             if ($orderData['status'] == 'Completed') {
                 $order->setTotalPaidAmount($cart->getGrandTotal());
                 $this->addOrderAddress($order, $cart, $addressType);
+                $order->setSubtotalAmount($cart->getSubTotal());
             }
 
-            $order->setSubtotalAmount($cart->getSubTotal());
             $order->setShippingAmount(rand(5, 10));
             $order->setPaymentMethod($orderData['payment_method']);
             $order->setPaymentDetails($orderData['payment_method_details']);
