@@ -4,4 +4,4 @@ oropro:
         organization_configuration.label : Configuration
         use_default: Use System
         menu:
-          organization_configuration.label: Configuration
+            organization_configuration.label: Configuration
