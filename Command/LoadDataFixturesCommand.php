@@ -4,30 +4,31 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Command;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ExpressionBuilder;
-
 use Doctrine\ORM\EntityRepository;
-use OroCRM\Bundle\AnalyticsBundle\Command\CalculateAnalyticsCommand;
+use Doctrine\ORM\EntityManager;
+
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Doctrine\ORM\EntityManager;
-
 use Oro\Bundle\MigrationBundle\Command\LoadDataFixturesCommand as BaseDataFixturesCommand;
+use OroCRM\Bundle\AnalyticsBundle\Command\CalculateAnalyticsCommand;
 
 class LoadDataFixturesCommand extends BaseDataFixturesCommand
 {
+    const COMMAND_NAME = 'oro:migration:live:demo:data:load';
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         parent::configure();
-        $this->setName('oro:migration:live:demo:data:load')
+        $this->setName(self::COMMAND_NAME)
             ->setDescription('Load live demo data fixtures.')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
-            ->addOption('reload', null, InputOption::VALUE_NONE, 'Reload data');
+            ->addOption('clean', null, InputOption::VALUE_NONE, 'Clean demo data');
     }
 
     /**
@@ -51,15 +52,11 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $force = $input->getOption('force');
-        $reload = $input->getOption('reload');
+        $clean = $input->getOption('clean');
         $fixturesType = $this->getTypeOfFixtures($input);
-        if (!$force) {
-            $this->writeDescription($output, $fixturesType);
-        } else {
-            if ($reload) {
-                $this->removeOldData($output);
-            }
-            //die();
+        if ($clean && $force) {
+            return $output->writeln('<error>Use one of two options: --clean or --force</error>');
+        } elseif ($force) {
             $parentReturnCode = parent::execute($input, $output);
             if ($parentReturnCode === 0) {
                 $commandName = CalculateAnalyticsCommand::COMMAND_NAME;
@@ -68,13 +65,16 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
                 $command->run($input, $output);
             }
             return $parentReturnCode;
+        } elseif ($clean) {
+            $output->writeln('  <comment>></comment> <info>Removing demo data</info>');
+            $this->removeOldData($output);
+            return $output->writeln('  <comment>></comment> <info>Demo data removed</info>');
+        } else {
+            return $this->writeDescription($output, $fixturesType);
         }
     }
 
-    /**
-     * @param OutputInterface $output
-     */
-    protected function removeOldData(OutputInterface $output)
+    protected function removeOldData()
     {
         $container = $this->getContainer();
         /** @var EntityManager $manager */
@@ -82,13 +82,7 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
 
         $criteria = new Criteria((new ExpressionBuilder())->gt('id', 1));
         $accessGroupCriteria = new Criteria((new ExpressionBuilder())->gt('id', 3));
-
-        $migrationsCriteria = new Criteria(
-            (new ExpressionBuilder())->orX(
-                (new ExpressionBuilder())->contains('className', 'LoadTestContactData'),
-                (new ExpressionBuilder())->contains('className', 'Demo')
-            )
-        );
+        $migrationsCriteria = new Criteria((new ExpressionBuilder())->contains('className', 'Demo'));
 
         $repositories = [
             'OroCalendarBundle:Calendar' => $criteria,
@@ -159,7 +153,6 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
                 'criteria' => null
             ],
         ];
-        $output->writeln('  <comment>></comment> <info>Removing entities</info>');
 
         foreach ($repositories as $repository => $repositoryCriteria) {
             $this->removeAll($manager, $repository, $repositoryCriteria);
@@ -209,9 +202,9 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
         $output->writeln($fixturesPart);
 
         $output->writeln(
-            'To reload data - run command with <info>--force --reload</info> options:'
+            'To clean data - run command with <info> --clean</info> options:'
         );
-        $output->write(sprintf('    <info>%s --force --reload</info>', $this->getName()));
+        $output->write(sprintf('    <info>%s --clean</info>', $this->getName()));
         $output->writeln($fixturesPart);
     }
 
