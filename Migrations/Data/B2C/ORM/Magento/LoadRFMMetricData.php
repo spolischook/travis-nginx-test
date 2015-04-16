@@ -56,16 +56,6 @@ class LoadRFMMetricData extends AbstractFixture implements DependentFixtureInter
                 ->setOwner($this->getOrganizationReference($metricData['organization uid']));
             $manager->persist($category);
         }
-        $this->addRFMMetricJob();
         $manager->flush();
-    }
-
-    /**
-     * Add RFM Metric Job for update customers RFM statistic
-     */
-    protected function addRFMMetricJob()
-    {
-       $job = new Job(CalculateAnalyticsCommand::COMMAND_NAME);
-       $this->em->persist($job);
     }
 }

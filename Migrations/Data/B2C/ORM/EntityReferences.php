@@ -562,3 +562,4 @@ abstract class EntityReferences extends DoctrineAbstractFixture
         $this->setReference($reference, $segment);
     }
 }
+
