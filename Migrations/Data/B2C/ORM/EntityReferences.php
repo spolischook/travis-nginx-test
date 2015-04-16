@@ -9,7 +9,10 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\DashboardBundle\Entity\Dashboard;
+use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
+use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
+use Oro\Bundle\TrackingBundle\Entity\TrackingEventDictionary;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
@@ -373,7 +376,7 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     /**
      * @param $uid
      * @return TrackingWebsite
-     * @throws \Doctrine\ORM\EntityNotFoundException
+     * @throws EntityNotFoundException
      */
     protected function getTrackingWebsiteReference($uid)
     {
@@ -389,6 +392,69 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     {
         $reference = 'TrackingWebsite:' . $uid;
         $this->setReference($reference, $website);
+    }
+
+    /**
+     * @param $uid
+     * @return TrackingEventDictionary
+     * @throws EntityNotFoundException
+     */
+    protected function getTrackingEventDictionaryReference($uid)
+    {
+        $reference = 'TrackingEventDictionary:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param TrackingEventDictionary $dictionary
+     */
+    protected function setTrackingEventDictionaryReference($uid, TrackingEventDictionary $dictionary)
+    {
+        $reference = 'TrackingEventDictionary:' . $uid;
+        $this->setReference($reference, $dictionary);
+    }
+
+    /**
+     * @param $uid
+     * @return TrackingVisit
+     * @throws EntityNotFoundException
+     */
+    protected function getTrackingVisitReference($uid)
+    {
+        $reference = 'TrackingVisit:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param TrackingVisit $visit
+     */
+    protected function setTrackingVisitReference($uid, $visit)
+    {
+        $reference = 'TrackingVisit:' . $uid;
+        $this->setReference($reference, $visit);
+    }
+
+    /**
+     * @param $uid
+     * @return TrackingEvent
+     * @throws EntityNotFoundException
+     */
+    protected function getTrackingEventReference($uid)
+    {
+        $reference = 'TrackingEvent:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param TrackingEvent $event
+     */
+    protected function setTrackingEventReference($uid, TrackingEvent $event)
+    {
+        $reference = 'TrackingEvent:' . $uid;
+        $this->setReference($reference, $event);
     }
 
     /**

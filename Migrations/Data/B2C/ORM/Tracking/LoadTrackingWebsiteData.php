@@ -1,10 +1,12 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Tracking;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadTrackingWebsiteData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -28,8 +30,8 @@ class LoadTrackingWebsiteData extends AbstractFixture implements DependentFixtur
     public function getDependencies()
     {
         return [
-            __NAMESPACE__ . '\\LoadOrganizationData',
-            __NAMESPACE__ . '\\LoadDefaultUserData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadDefaultUserData',
         ];
     }
 
@@ -39,7 +41,7 @@ class LoadTrackingWebsiteData extends AbstractFixture implements DependentFixtur
     public function getData()
     {
         return [
-            'websites' => $this->loadData('marketing/tracking_websites.csv'),
+            'websites' => $this->loadData('tracking/tracking_websites.csv'),
         ];
     }
 
@@ -55,6 +57,11 @@ class LoadTrackingWebsiteData extends AbstractFixture implements DependentFixtur
             $this->setObjectValues($website, $websiteData);
             $website->setOrganization($this->getOrganizationReference($websiteData['organization uid']));
             $website->setOwner($this->getUserReference($websiteData['user uid']));
+
+            $website->setCreatedAt($this->generateCreatedDate());
+            $website->setUpdatedAt($website->getCreatedAt());
+
+            $manager->getClassMetadata(get_class($website))->setLifecycleCallbacks([]);
             $manager->persist($website);
 
             $this->setTrackingWebsiteReference($websiteData['uid'], $website);

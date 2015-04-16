@@ -1,10 +1,12 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Tracking;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
+
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadTrackingWebsiteEventData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -37,7 +39,7 @@ class LoadTrackingWebsiteEventData extends AbstractFixture implements DependentF
     public function getData()
     {
         return [
-            'events' => $this->loadData('marketing/tracking_websites_events.csv'),
+            'events' => $this->loadData('tracking/tracking_websites_events.csv'),
         ];
     }
 
@@ -56,6 +58,8 @@ class LoadTrackingWebsiteEventData extends AbstractFixture implements DependentF
             $event->setLoggedAt($event->getCreatedAt());
 
             $manager->getClassMetadata(get_class($event))->setLifecycleCallbacks([]);
+
+            $this->setTrackingEventReference($eventData['uid'], $event);
             $manager->persist($event);
         }
         $manager->flush();
