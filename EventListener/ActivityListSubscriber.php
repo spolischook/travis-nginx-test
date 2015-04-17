@@ -1,9 +1,9 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\EventListener;
 
-use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 
 use Oro\Bundle\ActivityListBundle\Entity\ActivityList;
 
@@ -14,9 +14,9 @@ class ActivityListSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return [
-            Events::prePersist
-        ];
+        // @codingStandardsIgnoreStart
+        return [Events::prePersist];
+        // @codingStandardsIgnoreEnd
     }
 
     /**

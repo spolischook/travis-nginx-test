@@ -2,12 +2,12 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\EntityRepository;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\SegmentBundle\Entity\SegmentType;

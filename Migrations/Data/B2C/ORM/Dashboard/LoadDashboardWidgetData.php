@@ -1,14 +1,13 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Dashboard;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\DashboardBundle\Model\Manager;
 use Oro\Bundle\DashboardBundle\Model\WidgetModel;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadDashboardWidgetData extends AbstractFixture implements DependentFixtureInterface
@@ -56,13 +55,15 @@ class LoadDashboardWidgetData extends AbstractFixture implements DependentFixtur
             $dashboard = $this->getDashboardReference($widgetData['dashboard uid']);
             $dashboardModel = $this->dashboardManager->getDashboardModel($dashboard);
 
-            $widget = $this->createWidgetModel($widgetData['widget'],[$widgetData['position x'], $widgetData['position y']]);
+            $widget = $this->createWidgetModel(
+                $widgetData['widget'],
+                [$widgetData['position x'], $widgetData['position y']]
+            );
             $dashboardModel->addWidget($widget);
             $this->dashboardManager->save($widget);
         }
         $manager->flush();
     }
-
 
     /**
      * Create dashboard entity with admin user

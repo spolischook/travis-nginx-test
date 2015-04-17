@@ -1,15 +1,14 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\EventListener;
 
-use Doctrine\ORM\Events;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Events;
 
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
-
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
 
 class CartSubscriber implements EventSubscriber
@@ -19,9 +18,9 @@ class CartSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return [
-            Events::preUpdate
-        ];
+        // @codingStandardsIgnoreStart
+        return [Events::preUpdate];
+        // @codingStandardsIgnoreEnd
     }
 
     /** @var EntityManager */
@@ -33,7 +32,7 @@ class CartSubscriber implements EventSubscriber
     /** @var  WorkflowDefinition */
     protected $definition;
 
-    /** @var array  */
+    /** @var array */
     protected $statuses = [
         'open' => 'open',
         'expired' => 'abandoned',
@@ -41,7 +40,6 @@ class CartSubscriber implements EventSubscriber
         'purchased' => 'converted',
         'converted_to_opportunity' => 'converted',
     ];
-
 
     /**
      * @param PreUpdateEventArgs $args
@@ -90,8 +88,7 @@ class CartSubscriber implements EventSubscriber
 
         $steps = array_values($steps);
 
-        if(empty($steps))
-        {
+        if (empty($steps)) {
             throw new EntityNotFoundException('WorkflowStep by cart status ' . $name . 'not found');
         }
 
@@ -106,16 +103,14 @@ class CartSubscriber implements EventSubscriber
      */
     protected function getWorkflowStepName($name)
     {
-        if(empty($this->statuses[$name]))
-        {
+        if (empty($this->statuses[$name])) {
             throw new \InvalidArgumentException('Invalid cart status ' . $name);
         }
 
         $workflowName = $this->statuses[$name];
 
         /** Random set for open WorkflowStep */
-        if($name == 'open' && rand(0,1))
-        {
+        if ($name == 'open' && rand(0, 1)) {
             $workflowName = 'contacted';
         }
 
@@ -127,8 +122,8 @@ class CartSubscriber implements EventSubscriber
      */
     protected function getCartWorkflowDefinition()
     {
-        return $this->em->getRepository('OroWorkflowBundle:WorkflowDefinition')->findOneBy([
-            'name' => 'b2c_flow_abandoned_shopping_cart'
-        ]);
+        return $this->em->getRepository('OroWorkflowBundle:WorkflowDefinition')->findOneBy(
+            ['name' => 'b2c_flow_abandoned_shopping_cart']
+        );
     }
 }

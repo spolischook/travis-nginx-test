@@ -1,7 +1,9 @@
 <?php
+
 namespace OroCRMPro\Bundle\DemoDataBundle\Model;
 
-trait GenerateDate {
+trait GenerateDate
+{
 
     /**
      * Generate Created date
@@ -33,5 +35,4 @@ trait GenerateDate {
         $date = date('Y-m-d H:i:s', $val);
         return new \DateTime($date, new \DateTimeZone('UTC'));
     }
-
 }

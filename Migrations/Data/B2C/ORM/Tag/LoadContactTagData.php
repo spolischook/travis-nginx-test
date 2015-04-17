@@ -1,18 +1,16 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Tag;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
 use Oro\Bundle\TagBundle\Entity\TagManager;
-
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadContactTagData extends AbstractFixture  implements DependentFixtureInterface
+class LoadContactTagData extends AbstractFixture implements DependentFixtureInterface
 {
     /** @var  TagManager */
     protected $tagManager;

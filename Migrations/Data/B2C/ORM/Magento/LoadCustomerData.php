@@ -1,15 +1,13 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
+use OroCRM\Bundle\ContactBundle\Entity\ContactAddress;
 use OroCRM\Bundle\MagentoBundle\Entity\Address;
 use OroCRM\Bundle\MagentoBundle\Entity\Customer;
-
-use OroCRM\Bundle\ContactBundle\Entity\ContactAddress;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadCustomerData extends AbstractFixture implements DependentFixtureInterface
@@ -83,8 +81,7 @@ class LoadCustomerData extends AbstractFixture implements DependentFixtureInterf
      */
     protected function addCustomerAddress(Customer $customer, Contact $contact)
     {
-        if($contact->getAddresses()->count())
-        {
+        if ($contact->getAddresses()->count()) {
             /** @var ContactAddress $contactAddress */
             $contactAddress = $contact->getAddresses()->first();
             $address = new Address();

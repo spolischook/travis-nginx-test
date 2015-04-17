@@ -1,22 +1,22 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\File\File as ComponentFile;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-
-use Doctrine\ORM\EntityRepository;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityRepository;
 
-use Oro\Bundle\AttachmentBundle\Entity\File;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Symfony\Component\HttpFoundation\File\File as ComponentFile;
+
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
+use Oro\Bundle\AttachmentBundle\Entity\File;
 
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
+use OroCRM\Bundle\ContactBundle\Entity\ContactAddress;
 use OroCRM\Bundle\ContactBundle\Entity\ContactEmail;
 use OroCRM\Bundle\ContactBundle\Entity\ContactPhone;
-use OroCRM\Bundle\ContactBundle\Entity\ContactAddress;
 
 class LoadContactData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -105,8 +105,7 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
             if (!empty($contactData['photo'])) {
                 $file = new File();
                 $path = dirname(__FILE__) . '/data/contacts/photos/' . $contactData['photo'];
-                if(!file_exists($path))
-                {
+                if (!file_exists($path)) {
                     throw new FileNotFoundException($path);
                 }
                 $file->setFile(new ComponentFile($path));
@@ -155,7 +154,7 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
 
         foreach ($phones as $phoneData) {
             $phone = new ContactPhone($phoneData['phone']);
-            if(!$contact->getPhones()->count()) {
+            if (!$contact->getPhones()->count()) {
                 $phone->setPrimary(true);
             }
             $contact->addPhone($phone);
@@ -180,7 +179,7 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
 
         foreach ($emails as $emailData) {
             $email = new ContactEmail($emailData['email']);
-            if(!$contact->getEmails()->count()) {
+            if (!$contact->getEmails()->count()) {
                 $email->setPrimary(true);
             }
             $contact->addEmail($email);

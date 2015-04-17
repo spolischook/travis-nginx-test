@@ -1,13 +1,11 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\MailChimp;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
-
 use OroCRM\Bundle\MailChimpBundle\Entity\MailChimpTransport;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadMailChimpIntegrationData extends AbstractFixture implements DependentFixtureInterface
@@ -40,8 +38,7 @@ class LoadMailChimpIntegrationData extends AbstractFixture implements DependentF
     {
         $data = $this->getData();
 
-        foreach($data['integrations'] as $integrationData) {
-
+        foreach ($data['integrations'] as $integrationData) {
             $transport = new MailChimpTransport();
             $transport->setApiKey($integrationData['api key']);
             $manager->persist($transport);
@@ -52,16 +49,18 @@ class LoadMailChimpIntegrationData extends AbstractFixture implements DependentF
             $integration->setName($integrationData['name']);
             $integration->setTransport($transport);
             $integration->setOrganization($this->getOrganizationReference($integrationData['organization uid']));
-            $integration->setConnectors([
-                'list',
-                'campaign',
-                'static_segment',
-                'member',
-                'member_activity',
-                'member_activity_send',
-                'member_activity_abuse',
-                'member_activity_unsubscribe'
-            ]);
+            $integration->setConnectors(
+                [
+                    'list',
+                    'campaign',
+                    'static_segment',
+                    'member',
+                    'member_activity',
+                    'member_activity_send',
+                    'member_activity_abuse',
+                    'member_activity_unsubscribe'
+                ]
+            );
             $integration->setEnabled(true);
 
             $this->setMailChimpIntegrationReference($integrationData['uid'], $integration);

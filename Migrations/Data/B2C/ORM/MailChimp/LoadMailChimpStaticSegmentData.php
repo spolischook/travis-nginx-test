@@ -1,11 +1,10 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\MailChimp;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use OroCRM\Bundle\MailChimpBundle\Entity\StaticSegment;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadMailChimpStaticSegmentData extends AbstractFixture implements DependentFixtureInterface
@@ -58,7 +57,9 @@ class LoadMailChimpStaticSegmentData extends AbstractFixture implements Dependen
             $segment = new StaticSegment();
             $this->setObjectValues($segment, $segmentData);
             $segment->setOwner($this->getOrganizationReference($segmentData['organization uid']));
-            $segment->setSubscribersList($this->getMailChimpSubscriberListReference($segmentData['mailchimp subscriber list uid']));
+            $segment->setSubscribersList(
+                $this->getMailChimpSubscriberListReference($segmentData['mailchimp subscriber list uid'])
+            );
             $segment->setMarketingList($this->getMarketingListReference($segmentData['marketing list uid']));
             $segment->setRemoteRemove(false);
             $segment->setLastSynced($this->generateUpdatedDate(new \DateTime('now - 1 week')));

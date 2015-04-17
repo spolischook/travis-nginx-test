@@ -2,23 +2,22 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityNotFoundException;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
+use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\Email;
+use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
-use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Model\FolderType;
-use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\AccountBundle\Entity\Account;
-
+use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadEmailActivityData extends AbstractFixture implements DependentFixtureInterface
@@ -128,7 +127,7 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
     {
         $from = $entity->getOwner()->getEmail();
         $to = $entity->getEmail();
-        if($type === FolderType::INBOX) {
+        if ($type === FolderType::INBOX) {
             $from = $entity->getEmail();
             $to = $entity->getOwner()->getEmail();
         }
@@ -177,8 +176,7 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
             return $origin->getFolder($type);
         }
 
-        if ($type === FolderType::INBOX)
-        {
+        if ($type === FolderType::INBOX) {
             $folder = new EmailFolder();
             $folder
                 ->setType($type)

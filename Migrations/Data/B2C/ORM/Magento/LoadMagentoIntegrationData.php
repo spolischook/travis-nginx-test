@@ -1,17 +1,15 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
-
 use OroCRM\Bundle\ChannelBundle\Builder\BuilderFactory;
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\MagentoBundle\Entity\MagentoSoapTransport;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadMagentoIntegrationData extends AbstractFixture implements DependentFixtureInterface
@@ -56,7 +54,7 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
     {
         $data = $this->getData();
 
-        foreach($data['magento_integration'] as $integrationData) {
+        foreach ($data['magento_integration'] as $integrationData) {
             $transport = new MagentoSoapTransport();
             $transport->setApiUser($integrationData['api user']);
             $transport->setApiKey($integrationData['api key']);

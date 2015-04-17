@@ -1,16 +1,14 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
-
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
-use OroCRM\Bundle\MagentoBundle\Entity\Customer;
-use OroCRM\Bundle\MagentoBundle\Entity\CartStatus;
 use OroCRM\Bundle\MagentoBundle\Entity\CartAddress;
-
+use OroCRM\Bundle\MagentoBundle\Entity\CartStatus;
+use OroCRM\Bundle\MagentoBundle\Entity\Customer;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadCustomerCartData extends AbstractFixture implements DependentFixtureInterface
@@ -43,9 +41,9 @@ class LoadCustomerCartData extends AbstractFixture implements DependentFixtureIn
         $data = $this->getData();
 
         foreach ($data['carts'] as $cartData) {
-
             /** @var CartStatus $status */
-            $status = $manager->getRepository('OroCRMMagentoBundle:CartStatus')->findOneBy(['name' => $cartData['status']]);
+            $status = $manager->getRepository('OroCRMMagentoBundle:CartStatus')
+                ->findOneBy(['name' => $cartData['status']]);
 
             $customer = $this->getCustomerReference($cartData['customer uid']);
             $cart = new Cart();
@@ -100,4 +98,3 @@ class LoadCustomerCartData extends AbstractFixture implements DependentFixtureIn
         }
     }
 }
-

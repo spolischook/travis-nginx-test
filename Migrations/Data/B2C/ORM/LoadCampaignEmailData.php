@@ -1,8 +1,8 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use OroCRM\Bundle\CampaignBundle\Entity\EmailCampaign;
 
@@ -65,4 +65,3 @@ class LoadCampaignEmailData extends AbstractFixture implements DependentFixtureI
 
     }
 }
-

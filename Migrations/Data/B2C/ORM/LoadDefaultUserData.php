@@ -1,15 +1,15 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Doctrine\ORM\EntityRepository;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityRepository;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadRolesData;
 
@@ -88,12 +88,12 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
 
         $data = $this->getData();
 
-        $this->addUsers($data['sales'], $saleRole, $businessUnits);
-        $this->addUsers($data['marketing'], $marketingRole, $businessUnits);
+        $this->addUsers($saleRole, $businessUnits, $data['sales']);
+        $this->addUsers($marketingRole, $businessUnits, $data['marketing']);
 
         foreach ($data['users'] as $userData) {
             $businessUnit = new ArrayCollection([$this->getBusinessUnitReference($userData['business unit uid'])]);
-            $this->createUser($this->em, $userData, $userRole, $businessUnit);
+            $this->createUser($this->em, $userRole, $businessUnit, $userData);
         }
 
         $mainUser = $this->getMainUser();
@@ -108,10 +108,10 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
      * @param Role $role
      * @param ArrayCollection $businessUnits
      */
-    protected function addUsers($data = [],Role $role, ArrayCollection $businessUnits)
+    protected function addUsers(Role $role, ArrayCollection $businessUnits, array $data = [])
     {
         foreach ($data as $userData) {
-            $this->createUser($this->em, $userData, $role, $businessUnits);
+            $this->createUser($this->em, $role, $businessUnits, $userData);
         }
     }
 
@@ -121,8 +121,12 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
      * @param Role $role
      * @param ArrayCollection $businessUnits
      */
-    protected function createUser(ObjectManager $manager, $userData = [], Role $role, ArrayCollection $businessUnits)
-    {
+    protected function createUser(
+        ObjectManager $manager,
+        Role $role,
+        ArrayCollection $businessUnits,
+        array $userData = []
+    ) {
         $organization = $this->getOrganizationReference($userData['organization uid']);
         /** @var User $user */
         $user = $this->userManager->createUser();

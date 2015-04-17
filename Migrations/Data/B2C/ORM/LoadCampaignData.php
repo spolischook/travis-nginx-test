@@ -2,8 +2,8 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use OroCRM\Bundle\CampaignBundle\Entity\Campaign;
 
@@ -50,8 +50,7 @@ class LoadCampaignData extends AbstractFixture implements DependentFixtureInterf
     public function load(ObjectManager $manager)
     {
         $data = $this->getData();
-        foreach($data['campaigns'] as $campaignData)
-        {
+        foreach ($data['campaigns'] as $campaignData) {
             $user = $this->getUserReference($campaignData['user uid']);
             $this->setSecurityContext($user);
             $campaign = new Campaign();

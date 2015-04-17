@@ -1,20 +1,19 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\DBAL\Events;
-use Oro\Bundle\CalendarBundle\Entity\CalendarProperty;
-use OroCRMPro\Bundle\DemoDataBundle\Model\WeekendChecker;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityRepository;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
-use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\CalendarBundle\Entity\Calendar;
 use Oro\Bundle\CalendarBundle\Entity\CalendarEvent;
-use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadRolesData;
+use Oro\Bundle\CalendarBundle\Entity\CalendarProperty;
 use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarRepository;
+use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadRolesData;
+use OroCRMPro\Bundle\DemoDataBundle\Model\WeekendChecker;
 
 class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -79,10 +78,14 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
     {
         $data = $this->getData();
         $calendars = $this->calendarRepository->findAll();
-        $events = array_reduce($data['events'], function ($carry, $item) {
-            $carry[$item['day']][] = $item;
-            return $carry;
-        }, []);
+        $events = array_reduce(
+            $data['events'],
+            function ($carry, $item) {
+                $carry[$item['day']][] = $item;
+                return $carry;
+            },
+            []
+        );
 
         /** @var Role $userRole */
         $userRole = $this->roleRepository->findOneBy(['role' => LoadRolesData::ROLE_USER]);
@@ -100,7 +103,7 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
             $this->em->getClassMetadata('Oro\Bundle\CalendarBundle\Entity\CalendarEvent')->setLifecycleCallbacks([]);
 
             for ($i = 0; array_key_exists($i, $data['events']); $created->add(new \DateInterval('P1D'))) {
-                $dayEvents = array_key_exists($i, $events) ? $events[$i]: [];
+                $dayEvents = array_key_exists($i, $events) ? $events[$i] : [];
                 if (!$this->isWeekEnd($created)) {
                     foreach ($dayEvents as $eventData) {
                         $event = new CalendarEvent();

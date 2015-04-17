@@ -1,14 +1,14 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityNotFoundException;
 
-use Oro\Bundle\NotificationBundle\Entity\Event;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
-use Oro\Bundle\NotificationBundle\Entity\RecipientList;
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
+use Oro\Bundle\NotificationBundle\Entity\Event;
+use Oro\Bundle\NotificationBundle\Entity\RecipientList;
 
 class LoadEmailNotificationData extends AbstractFixture implements DependentFixtureInterface
 {

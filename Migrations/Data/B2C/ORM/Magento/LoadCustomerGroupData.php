@@ -4,7 +4,6 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use OroCRM\Bundle\MagentoBundle\Entity\CustomerGroup;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadCustomerGroupData extends AbstractFixture

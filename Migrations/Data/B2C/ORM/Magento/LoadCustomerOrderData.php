@@ -1,17 +1,15 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
-use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityNotFoundException;
 
 use Oro\Bundle\AddressBundle\Entity\AddressType;
-
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
 use OroCRM\Bundle\MagentoBundle\Entity\Order;
-use OroCRM\Bundle\MagentoBundle\Entity\OrderItem;
 use OroCRM\Bundle\MagentoBundle\Entity\OrderAddress;
-
+use OroCRM\Bundle\MagentoBundle\Entity\OrderItem;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureInterface
@@ -140,8 +138,7 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
     {
         $repository = $this->em->getRepository('OroAddressBundle:AddressType');
         $type = $repository->findOneBy(['name' => AddressType::TYPE_BILLING]);
-        if(!$type)
-        {
+        if (!$type) {
             throw new EntityNotFoundException('Address type ' . AddressType::TYPE_BILLING . ' not found!');
         }
         return $type;
