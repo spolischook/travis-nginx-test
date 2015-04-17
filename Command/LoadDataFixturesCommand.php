@@ -4,16 +4,14 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Command;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ExpressionBuilder;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
-
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
+use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\MigrationBundle\Command\LoadDataFixturesCommand as BaseDataFixturesCommand;
 use OroCRM\Bundle\AnalyticsBundle\Command\CalculateAnalyticsCommand;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class LoadDataFixturesCommand extends BaseDataFixturesCommand
 {

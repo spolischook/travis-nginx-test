@@ -3,13 +3,13 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityNotFoundException;
 
 use Oro\Bundle\AddressBundle\Entity\AddressType;
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
 use OroCRM\Bundle\MagentoBundle\Entity\Order;
 use OroCRM\Bundle\MagentoBundle\Entity\OrderAddress;
 use OroCRM\Bundle\MagentoBundle\Entity\OrderItem;
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureInterface
@@ -64,7 +64,7 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
             $order->setTotalInvoicedAmount($cart->getGrandTotal());
             $order->setDataChannel($cart->getDataChannel());
 
-            if ($orderData['status'] == 'Completed') {
+            if ($orderData['status'] === 'Completed') {
                 $order->setTotalPaidAmount($cart->getGrandTotal());
                 $this->addOrderAddress($order, $cart, $addressType);
                 $order->setSubtotalAmount($cart->getSubTotal());
@@ -112,7 +112,6 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
     protected function addOrderAddress(Order $order, Cart $cart, AddressType $addressType)
     {
         if ($cart->getBillingAddress() && $cart->getBillingAddress()->getCountry()) {
-
             $address = new OrderAddress();
 
             $cartAddress = $cart->getBillingAddress();

@@ -4,9 +4,9 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\EntityRepository;
 
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use OroCRM\Bundle\MarketingListBundle\Entity\MarketingList;

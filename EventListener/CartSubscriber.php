@@ -3,13 +3,13 @@ namespace OroCRMPro\Bundle\DemoDataBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 class CartSubscriber implements EventSubscriber
 {
@@ -87,7 +87,6 @@ class CartSubscriber implements EventSubscriber
         );
 
         $steps = array_values($steps);
-
         if (empty($steps)) {
             throw new EntityNotFoundException('WorkflowStep by cart status ' . $name . 'not found');
         }
@@ -110,7 +109,7 @@ class CartSubscriber implements EventSubscriber
         $workflowName = $this->statuses[$name];
 
         /** Random set for open WorkflowStep */
-        if ($name == 'open' && rand(0, 1)) {
+        if ($name === 'open' && rand(0, 1)) {
             $workflowName = 'contacted';
         }
 

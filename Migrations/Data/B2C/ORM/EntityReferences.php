@@ -2,7 +2,6 @@
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture as DoctrineAbstractFixture;
-use Doctrine\ORM\EntityNotFoundException;
 
 use Oro\Bundle\DashboardBundle\Entity\Dashboard;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
@@ -28,6 +27,7 @@ use OroCRM\Bundle\MagentoBundle\Entity\Store;
 use OroCRM\Bundle\MagentoBundle\Entity\Website;
 use OroCRM\Bundle\MailChimpBundle\Entity\SubscribersList;
 use OroCRM\Bundle\MarketingListBundle\Entity\MarketingList;
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -358,7 +358,7 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     /**
      * @param $uid
      * @return Website
-     * @throws \Doctrine\ORM\EntityNotFoundException
+     * @throws EntityNotFoundException
      */
     protected function getWebsiteReference($uid)
     {

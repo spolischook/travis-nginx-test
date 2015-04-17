@@ -4,10 +4,10 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityNotFoundException;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 class LoadBusinessUnitData extends AbstractFixture implements DependentFixtureInterface
 {

@@ -4,13 +4,13 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\SegmentBundle\Entity\SegmentType;
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 class LoadMarketingSegmentData extends AbstractFixture implements DependentFixtureInterface
 {

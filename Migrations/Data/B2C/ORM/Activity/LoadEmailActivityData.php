@@ -4,7 +4,6 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityNotFoundException;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -19,6 +18,7 @@ use Oro\Bundle\EmailBundle\Model\FolderType;
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 class LoadEmailActivityData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -96,7 +96,6 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
      * @param Account|Contact $entity
      * @param $data
      * @param string $type
-     * @throws EntityNotFoundException
      */
     protected function addEmail($entity, $data, $type = FolderType::SENT)
     {

@@ -3,7 +3,6 @@
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -19,6 +18,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use OroCRMPro\Bundle\DemoDataBundle\EventListener\ActivityListSubscriber;
 use OroCRMPro\Bundle\DemoDataBundle\Model\FileLoader;
 use OroCRMPro\Bundle\DemoDataBundle\Model\GenerateDate;
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 abstract class AbstractFixture extends EntityReferences implements ContainerAwareInterface
 {
