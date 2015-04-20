@@ -141,27 +141,13 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
             ->get('oro_email.email.address.manager')
             ->getEmailAddressRepository($manager);
 
-        $specialRepositories = [
-            [
-                'repository' => 'OroEmailBundle:EmailTemplate',
-                'criteria' => null
-            ],
-            [
-                'repository' => $emailAddressRepository,
-                'criteria' => null
-            ],
-        ];
-
         foreach ($repositories as $repository => $repositoryCriteria) {
             $this->removeAll($manager, $repository, $repositoryCriteria);
         }
         $manager->flush();
-
-        foreach ($specialRepositories as $attributes) {
-            $this->removeSpecial($manager, $attributes);
-        }
+        $this->removeAll($manager, 'OroEmailBundle:EmailTemplate');
+        $this->removeEntities($manager, $emailAddressRepository);
         $manager->flush();
-        $manager->clear();
     }
 
     /**
@@ -173,14 +159,6 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
     {
         $entityRepository = $manager->getRepository($repository);
         $this->removeEntities($manager, $entityRepository, $criteria);
-    }
-
-    protected function removeSpecial(EntityManager $manager, array $attributes)
-    {
-        $repository = $attributes['repository'] instanceof EntityRepository
-            ? $attributes['repository']
-            : $manager->getRepository($attributes['repository']);
-        $this->removeEntities($manager, $repository, $attributes['criteria']);
     }
 
     /**
@@ -211,7 +189,7 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
      * @param EntityRepository $repository
      * @param $criteria
      */
-    protected function removeEntities(EntityManager $manager, EntityRepository $repository, $criteria)
+    protected function removeEntities(EntityManager $manager, EntityRepository $repository, $criteria = null)
     {
         $entities = $criteria === null
             ? $repository->findAll()
