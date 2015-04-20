@@ -68,7 +68,8 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
             $this->removeOldData($output);
             return $output->writeln('  <comment>></comment> <info>Demo data removed</info>');
         } else {
-            return $this->writeDescription($output, $fixturesType);
+            $this->writeDescription($output, $fixturesType);
+            return 0;
         }
     }
 
