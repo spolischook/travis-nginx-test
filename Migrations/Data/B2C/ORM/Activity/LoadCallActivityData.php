@@ -92,8 +92,7 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
             $phone = $contact->getPhones()->first();
             if ($phone) {
                 $call = new Call();
-                $call->setOrganization($contact->getOrganization())
-                    ->setDuration(new \DateTime($data['duration'], new \DateTimeZone('UTC')));
+                $call->setOrganization($contact->getOrganization());
 
                 if ($call->supportActivityTarget(get_class($entity->getOwner()))) {
                     $call->setOwner($entity->getOwner());
@@ -104,7 +103,7 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
                 } else {
                     $data['direction'] = null;
                 }
-
+                $data['duration'] = new \DateTime($data['duration'], new \DateTimeZone('UTC'));
                 $created = $this->generateCreatedDate();
                 $call->setCreatedAt($created);
                 $call->setUpdatedAt($created);
