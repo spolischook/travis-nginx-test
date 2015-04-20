@@ -1,16 +1,16 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
-use Oro\Bundle\UserBundle\Entity\UserManager;
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\UserManager;
 
-class LoadPinBarData extends AbstractFixture  implements DependentFixtureInterface
+class LoadPinBarData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * @var UserManager

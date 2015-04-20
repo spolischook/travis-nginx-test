@@ -1,11 +1,10 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\MailChimp;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use OroCRM\Bundle\MailChimpBundle\Entity\SubscribersList;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadMailChimpSubscriberListData extends AbstractFixture implements DependentFixtureInterface
@@ -58,47 +57,49 @@ class LoadMailChimpSubscriberListData extends AbstractFixture implements Depende
             $list->setEmailTypeOption(false);
             $list->setEmailTypeOption(true);
             $list->setUseAwesomeBar(true);
-            $list->setMergeVarConfig([
+            $list->setMergeVarConfig(
                 [
-                    "name" => "Email Address",
-                    "req" => true,
-                    "field_type" => "email",
-                    "public" => true,
-                    "show" => true,
-                    "order" => "1",
-                    "default" => null,
-                    "helptext" => null,
-                    "size" => "25",
-                    "tag" => "EMAIL",
-                    "id" => 0
-                ],
-                [
-                    "name" => "First Name",
-                    "req" => false,
-                    "field_type" => "text",
-                    "public" => true,
-                    "show" => true,
-                    "order" => "2",
-                    "default" => "",
-                    "helptext" => "",
-                    "size" => "25",
-                    "tag" => "FNAME",
-                    "id" => 1
-                ],
-                [
-                    "name" => "Last Name",
-                    "req" => false,
-                    "field_type" => "text",
-                    "public" => true,
-                    "show" => true,
-                    "order" => "3",
-                    "default" => "",
-                    "helptext" => "",
-                    "size" => "25",
-                    "tag" => "LNAME",
-                    "id" => 2
+                    [
+                        'name' => 'Email Address',
+                        'req' => true,
+                        'field_type' => 'email',
+                        'public' => true,
+                        'show' => true,
+                        'order' => '1',
+                        'default' => null,
+                        'helptext' => null,
+                        'size' => '25',
+                        'tag' => 'EMAIL',
+                        'id' => 0
+                    ],
+                    [
+                        'name' => 'First Name',
+                        'req' => false,
+                        'field_type' => 'text',
+                        'public' => true,
+                        'show' => true,
+                        'order' => '2',
+                        'default' => '',
+                        'helptext' => '',
+                        'size' => '25',
+                        'tag' => 'FNAME',
+                        'id' => 1
+                    ],
+                    [
+                        'name' => 'Last Name',
+                        'req' => false,
+                        'field_type' => 'text',
+                        'public' => true,
+                        'show' => true,
+                        'order' => '3',
+                        'default' => '',
+                        'helptext' => '',
+                        'size' => '25',
+                        'tag' => 'LNAME',
+                        'id' => 2
+                    ]
                 ]
-            ]);
+            );
 
             $list->setOwner($this->getOrganizationReference($listData['organization uid']));
             $list->setChannel($this->getMailChimpIntegrationReference($listData['integration uid']));

@@ -2,16 +2,14 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 
-use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
+use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\CallBundle\Entity\Call;
 use OroCRM\Bundle\CallBundle\Entity\CallDirection;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
-use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\ContactBundle\Entity\ContactPhone;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadCallActivityData extends AbstractFixture implements DependentFixtureInterface
@@ -86,7 +84,6 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
      * @param Account|Contact $entity
      * @param Contact $contact
      * @param $data
-     * @throws EntityNotFoundException
      */
     protected function loadActivity(ObjectManager $manager, $entity, Contact $contact, $data)
     {
@@ -96,25 +93,24 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
             if ($phone) {
                 $call = new Call();
                 $call->setOrganization($contact->getOrganization());
+
                 if ($call->supportActivityTarget(get_class($entity->getOwner()))) {
                     $call->setOwner($entity->getOwner());
                 }
 
-
-                $data['duration'] = new \DateTime($data['duration'], new \DateTimeZone('UTC'));
                 if (isset($this->directions[$data['direction']])) {
                     $data['direction'] = $this->directions[$data['direction']];
                 } else {
                     $data['direction'] = null;
                 }
-
+                $data['duration'] = new \DateTime($data['duration'], new \DateTimeZone('UTC'));
                 $created = $this->generateCreatedDate();
                 $call->setCreatedAt($created);
                 $call->setUpdatedAt($created);
                 $call->setCallDateTime($created);
 
                 $call->setDirection($this->directions['Outgoing']);
-                $data['phoneNumber'] = $phone->getPhone();
+                $call->setPhoneNumber($phone->getPhone());
                 $this->setObjectValues($call, $data);
 
                 $call->addActivityTarget($entity);

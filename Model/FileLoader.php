@@ -1,10 +1,12 @@
 <?php
+
 namespace OroCRMPro\Bundle\DemoDataBundle\Model;
 
-use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
-trait FileLoader {
+trait FileLoader
+{
 
     /**
      * Get Data path directory
@@ -35,8 +37,7 @@ trait FileLoader {
      */
     protected function loadDataFromCSV($path)
     {
-        if(!file_exists($path))
-        {
+        if (!file_exists($path)) {
             throw new FileNotFoundException($path);
         }
 
@@ -52,8 +53,7 @@ trait FileLoader {
             throw new NoSuchPropertyException('Property: "uid" does not exists');
         }
         while ($info = fgetcsv($handle, 1000, ',')) {
-            if(count($info) !== count($headers))
-            {
+            if (count($info) !== count($headers)) {
                 continue;
             }
             $tempData = array_combine($headers, array_values($info));

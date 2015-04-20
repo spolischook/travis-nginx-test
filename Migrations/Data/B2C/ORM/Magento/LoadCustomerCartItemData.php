@@ -1,11 +1,10 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use OroCRM\Bundle\MagentoBundle\Entity\CartItem;
-
 use OroCRMPro\Bundle\DemoDataBundle\EventListener\CartSubscriber;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 

@@ -4,8 +4,8 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\ChannelBundle\Builder\BuilderFactory;
+use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\SalesBundle\Migrations\Data\ORM\DefaultChannelData;
 
 class LoadChannelData extends AbstractFixture
@@ -29,14 +29,14 @@ class LoadChannelData extends AbstractFixture
         $factory = $this->container->get('orocrm_channel.builder.factory');
 
         $data = $this->getData();
-        foreach($data['channels'] as $channelData) {
+        foreach ($data['channels'] as $channelData) {
             $channel = $factory->createBuilder()
                 ->setStatus(Channel::STATUS_ACTIVE)
                 ->setEntities()
                 ->setChannelType(DefaultChannelData::B2B_CHANNEL_TYPE)
                 ->setName($channelData['name'])
                 ->getChannel();
-            $this->addReference('Chanel:' .$channelData['uid'] , $channel);
+            $this->addReference('Chanel:' . $channelData['uid'], $channel);
             $manager->persist($channel);
         }
         $manager->flush();

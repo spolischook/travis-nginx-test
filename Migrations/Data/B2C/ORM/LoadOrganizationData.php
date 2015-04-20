@@ -2,6 +2,7 @@
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadOrganizationData extends AbstractFixture
@@ -23,14 +24,11 @@ class LoadOrganizationData extends AbstractFixture
     {
         $data = $this->getData();
         $main = true;
-        foreach($data['organizations'] as $organizationData)
-        {
-            if($main)
-            {
+        foreach ($data['organizations'] as $organizationData) {
+            if ($main) {
                 $organization = $this->getMainOrganization();
                 $main = false;
-            }
-            else {
+            } else {
                 $organization = new Organization();
             }
             $organization->setEnabled(true);

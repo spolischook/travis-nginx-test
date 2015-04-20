@@ -1,11 +1,10 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Tracking;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadTrackingWebsiteVisitData extends AbstractFixture implements DependentFixtureInterface
@@ -58,7 +57,7 @@ class LoadTrackingWebsiteVisitData extends AbstractFixture implements DependentF
             $visit->setFirstActionTime($this->generateCreatedDate());
             $visit->setLastActionTime($visit->getFirstActionTime());
 
-            if(!empty($visitData['customer uid'])) {
+            if (!empty($visitData['customer uid'])) {
                 $customer = $this->getCustomerReference($visitData['customer uid']);
                 $visit->setIdentifierTarget($customer);
             }

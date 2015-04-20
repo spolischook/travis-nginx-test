@@ -2,12 +2,13 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
 use Oro\Bundle\NoteBundle\Entity\Note;
+
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
@@ -98,7 +99,5 @@ class LoadNoteActivityData extends AbstractFixture implements DependentFixtureIn
         $this->setObjectValues($note, $data);
 
         $manager->persist($note);
-
     }
 }
-

@@ -2,11 +2,10 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\NavigationHistory;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadNavigationHistoryItemData extends AbstractFixture implements DependentFixtureInterface

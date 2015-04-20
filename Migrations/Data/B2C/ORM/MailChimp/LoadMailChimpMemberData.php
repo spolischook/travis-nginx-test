@@ -1,11 +1,10 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\MailChimp;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use OroCRM\Bundle\MailChimpBundle\Entity\Member;
-
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadMailChimpMemberData extends AbstractFixture implements DependentFixtureInterface
@@ -56,7 +55,9 @@ class LoadMailChimpMemberData extends AbstractFixture implements DependentFixtur
         foreach ($data['members'] as $memberData) {
             $member = new Member();
             $member->setOwner($this->getOrganizationReference($memberData['organization uid']));
-            $member->setSubscribersList($this->getMailChimpSubscriberListReference($memberData['mailchimp subscriber list uid']));
+            $member->setSubscribersList(
+                $this->getMailChimpSubscriberListReference($memberData['mailchimp subscriber list uid'])
+            );
             $member->setChannel($this->getMailChimpIntegrationReference($memberData['integration uid']));
             $this->setObjectValues($member, $memberData);
             $manager->persist($member);

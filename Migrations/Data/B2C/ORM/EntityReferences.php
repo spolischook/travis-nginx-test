@@ -1,34 +1,37 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\Common\DataFixtures\AbstractFixture as DoctrineAbstractFixture;
 
-use Oro\Bundle\TagBundle\Entity\Tag;
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\DashboardBundle\Entity\Dashboard;
-use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
-use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
-use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
-use Oro\Bundle\TrackingBundle\Entity\TrackingEventDictionary;
+use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
+use Oro\Bundle\SegmentBundle\Entity\Segment;
+use Oro\Bundle\TagBundle\Entity\Tag;
+use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
+use Oro\Bundle\TrackingBundle\Entity\TrackingEventDictionary;
+use Oro\Bundle\TrackingBundle\Entity\TrackingVisit;
+use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
+use Oro\Bundle\UserBundle\Entity\Group;
+use Oro\Bundle\UserBundle\Entity\User;
 
 use OroCRM\Bundle\AccountBundle\Entity\Account;
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
+use OroCRM\Bundle\CampaignBundle\Entity\EmailCampaign;
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
+use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
 use OroCRM\Bundle\MagentoBundle\Entity\Customer;
+use OroCRM\Bundle\MagentoBundle\Entity\CustomerGroup;
 use OroCRM\Bundle\MagentoBundle\Entity\Store;
 use OroCRM\Bundle\MagentoBundle\Entity\Website;
-use OroCRM\Bundle\MagentoBundle\Entity\CustomerGroup;
-use OroCRM\Bundle\CampaignBundle\Entity\EmailCampaign;
 use OroCRM\Bundle\MailChimpBundle\Entity\SubscribersList;
 use OroCRM\Bundle\MarketingListBundle\Entity\MarketingList;
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 abstract class EntityReferences extends DoctrineAbstractFixture
 {
 
@@ -355,7 +358,7 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     /**
      * @param $uid
      * @return Website
-     * @throws \Doctrine\ORM\EntityNotFoundException
+     * @throws EntityNotFoundException
      */
     protected function getWebsiteReference($uid)
     {
@@ -562,4 +565,3 @@ abstract class EntityReferences extends DoctrineAbstractFixture
         $this->setReference($reference, $segment);
     }
 }
-

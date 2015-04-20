@@ -2,25 +2,23 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\EntityNotFoundException;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository;
 use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
-
-use OroCRMPro\Bundle\DemoDataBundle\Model\FileLoader;
-use OroCRMPro\Bundle\DemoDataBundle\Model\GenerateDate;
+use Oro\Bundle\UserBundle\Entity\User;
 
 use OroCRMPro\Bundle\DemoDataBundle\EventListener\ActivityListSubscriber;
-
+use OroCRMPro\Bundle\DemoDataBundle\Model\FileLoader;
+use OroCRMPro\Bundle\DemoDataBundle\Model\GenerateDate;
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 abstract class AbstractFixture extends EntityReferences implements ContainerAwareInterface
 {
