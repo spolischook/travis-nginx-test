@@ -68,7 +68,6 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-
         $this->removeReports();
 
         $data = $this->getData();

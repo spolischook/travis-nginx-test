@@ -43,9 +43,20 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
     /** @var  OrganizationRepository */
     protected $organizationRepository;
 
+    /**
+     * @return string
+     */
     protected function getDataDirectory()
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . static::DATA_FOLDER . DIRECTORY_SEPARATOR;
+        $classData = new \ReflectionClass($this);
+        $dir = __DIR__ . DIRECTORY_SEPARATOR;
+
+        preg_match('/Migrations\/Data\/(\w*\/ORM)/', $classData->getFilename(), $matches);
+        if(!empty($matches[1])) {
+            $dir .=  '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $matches[1] . DIRECTORY_SEPARATOR ;
+        }
+        $dir .= static::DATA_FOLDER . DIRECTORY_SEPARATOR;
+        return $dir;
     }
 
     /**
@@ -144,8 +155,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
         /**
          * Fix: for admin user
          */
-        if($organization && $organization->getName() === null)
-        {
+        if ($organization && $organization->getName() === null) {
             $this->em->refresh($user);
             $organization = $user->getOrganization();
         }
