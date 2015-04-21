@@ -84,6 +84,7 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
         $migrationsCriteria = new Criteria((new ExpressionBuilder())->contains('className', 'Demo'));
 
         $repositories = [
+            'OroAddressBundle:Address' => null,
             'OroCalendarBundle:Calendar' => $criteria,
             'OroCalendarBundle:CalendarEvent' => null,
             'OroCalendarBundle:CalendarProperty' => $criteria,
@@ -136,6 +137,7 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
             'OroCRMCampaignBundle:Campaign' => null,
             'OroCRMAccountBundle:Account' => null,
             'OroCRMChannelBundle:Channel' => null,
+            'OroCRMSalesBundle:B2bCustomer' => null,
         ];
 
         $emailAddressRepository = $container

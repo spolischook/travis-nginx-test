@@ -3,6 +3,7 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture as DoctrineAbstractFixture;
 
+use Oro\Bundle\AddressBundle\Entity\Address;
 use Oro\Bundle\DashboardBundle\Entity\Dashboard;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
@@ -563,5 +564,26 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     {
         $reference = 'Segment:' . $uid;
         $this->setReference($reference, $segment);
+    }
+
+    /**
+     * @param $uid
+     * @param Address $address
+     */
+    protected function setAddressReference($uid, Address $address)
+    {
+        $reference = 'Address:' . $uid;
+        $this->setReference($reference, $address);
+    }
+
+    /**
+     * @param $uid
+     * @return Address
+     * @throws EntityNotFoundException
+     */
+    protected function getAddressReference($uid)
+    {
+        $reference = 'Address:' . $uid;
+        return $this->getReferenceByName($reference);
     }
 }
