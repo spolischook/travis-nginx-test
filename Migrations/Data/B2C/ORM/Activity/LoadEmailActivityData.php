@@ -106,7 +106,7 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
             $email = $this->createEmail($entity, $data['subject'], $type);
             $email->setEmailBody($this->createEmailBody($data['body']));
             $email->addFolder($this->getFolder($origin, $type));
-
+            $email->addActivityTarget($user);
             $email->addActivityTarget($entity);
             $email->setMessageId(sprintf('id.%s@%s', uniqid(), '@orocrm-pro.demo-data.generated'));
             $this->em->getClassMetadata(get_class($email))->setLifecycleCallbacks([]);
