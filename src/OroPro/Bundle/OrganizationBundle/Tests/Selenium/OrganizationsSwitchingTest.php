@@ -25,7 +25,7 @@ class OrganizationsSwitchingTest extends Selenium2TestCase
         $login = $this->login();
         /** @var Organizations $login */
         $login->openOrganizations('OroPro\Bundle\OrganizationBundle')
-            ->assertTitle('Organizations - User Management - System')
+            ->assertTitle('All - Organizations - User Management - System')
             ->add()
             ->assertTitle('Create Organization - Organizations - User Management - System')
             ->setStatus('Active')
@@ -37,7 +37,7 @@ class OrganizationsSwitchingTest extends Selenium2TestCase
             ->checkEntityFieldData('Description', $description)
             ->toGrid()
             ->close()
-            ->assertTitle('Organizations - User Management - System');
+            ->assertTitle('All - Organizations - User Management - System');
 
         return $fields;
     }
@@ -56,7 +56,7 @@ class OrganizationsSwitchingTest extends Selenium2TestCase
             ->assertTitle('Create User - Users - User Management - System')
             ->setUsername($fields['username'])
             ->enable()
-            ->setOwner('Main')
+            //->setOwner('Main') //not necessary, because Owner will be preselected and 'Main' may NOT be present.
             ->setFirstpassword('123123q')
             ->setSecondpassword('123123q')
             ->setFirstName('First_'.$fields['username'])
