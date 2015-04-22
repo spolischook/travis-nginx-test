@@ -5,12 +5,8 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Oro\Bundle\AddressBundle\Entity\Country;
-use Oro\Bundle\AddressBundle\Entity\Region;
-use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
-use Oro\Bundle\AddressBundle\Entity\Address;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
+use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadB2bCustomerData extends AbstractFixture implements DependentFixtureInterface
@@ -23,6 +19,7 @@ class LoadB2bCustomerData extends AbstractFixture implements DependentFixtureInt
         return [
             __NAMESPACE__ . '\\LoadMainData',
             __NAMESPACE__ . '\\LoadAddressesData',
+            __NAMESPACE__ . '\\LoadChannelData',
         ];
     }
 
@@ -46,9 +43,12 @@ class LoadB2bCustomerData extends AbstractFixture implements DependentFixtureInt
             } else {
                 $billingAddress = $this->getAddressReference($customerData['billing address uid']);
             }
+            $contact = $this->getContactReference($customerData['contact uid']);
+
             $customer->setName($customerData['company']);
             $customer->setOwner($this->getUserReference($customerData['owner uid']));
-            $customer->setAccount($this->getAccountReference($customerData['account uid']));
+            $customer->setContact($contact);
+            $customer->setAccount($contact->getAccounts()->first());
             $customer->setOrganization($organization);
             $customer->setShippingAddress($shippingAddress);
             $customer->setBillingAddress($billingAddress);
@@ -66,11 +66,17 @@ class LoadB2bCustomerData extends AbstractFixture implements DependentFixtureInt
 
     }
 
-    protected function getChannel(array $channelData = [])
+    /**
+     * @param array $data
+     * @return null|Channel
+     */
+    protected function getChannel(array $data = [])
     {
         $channel = null;
-        if (array_key_exists('channel uid', $channelData)) {
-            $channel = $this->getIntegrationDataChannelReference($channelData['channel uid']);
+        if (array_key_exists('channel uid', $data)
+            && $this->hasReference('Channel:' . $data['channel uid'])
+        ) {
+            $channel = $this->getReference('Channel:' . $data['channel uid']);
         }
         return $channel;
     }

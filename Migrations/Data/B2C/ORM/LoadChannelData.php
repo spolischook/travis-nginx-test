@@ -36,7 +36,7 @@ class LoadChannelData extends AbstractFixture
                 ->setChannelType(DefaultChannelData::B2B_CHANNEL_TYPE)
                 ->setName($channelData['name'])
                 ->getChannel();
-            $this->addReference('Chanel:' . $channelData['uid'], $channel);
+            $this->addReference('Channel:' . $channelData['uid'], $channel);
             $manager->persist($channel);
         }
         $manager->flush();

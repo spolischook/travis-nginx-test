@@ -3,6 +3,7 @@
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Oro\Bundle\AddressBundle\Entity\Address;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
