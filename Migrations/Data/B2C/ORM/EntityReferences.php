@@ -5,6 +5,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture as DoctrineAbstractFixture;
 
 use Oro\Bundle\AddressBundle\Entity\Address;
 use Oro\Bundle\DashboardBundle\Entity\Dashboard;
+use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -28,6 +29,7 @@ use OroCRM\Bundle\MagentoBundle\Entity\Store;
 use OroCRM\Bundle\MagentoBundle\Entity\Website;
 use OroCRM\Bundle\MailChimpBundle\Entity\SubscribersList;
 use OroCRM\Bundle\MarketingListBundle\Entity\MarketingList;
+use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 /**
@@ -584,6 +586,48 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     protected function getAddressReference($uid)
     {
         $reference = 'Address:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param AbstractEnumValue $leadSourceValue
+     */
+    protected function setLeadSourceReference($uid, AbstractEnumValue $leadSourceValue)
+    {
+        $reference = 'LeadSource:' . $uid;
+        $this->setReference($reference, $leadSourceValue);
+    }
+
+    /**
+     * @param $uid
+     * @return AbstractEnumValue
+     * @throws EntityNotFoundException
+     */
+    protected function getLeadSourceReference($uid)
+    {
+        $reference = 'LeadSource:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param B2BCustomer $customer
+     */
+    protected function setB2bCustomerReference($uid, B2bCustomer $customer)
+    {
+        $reference = 'B2bCustomer:' . $uid;
+        $this->setReference($reference, $customer);
+    }
+
+    /**
+     * @param $uid
+     * @return B2bCustomer
+     * @throws EntityNotFoundException
+     */
+    protected function getB2bCustomerReference($uid)
+    {
+        $reference = 'B2bCustomer:' . $uid;
         return $this->getReferenceByName($reference);
     }
 }

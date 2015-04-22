@@ -6,12 +6,16 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ExpressionBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Oro\Bundle\MigrationBundle\Command\LoadDataFixturesCommand as BaseDataFixturesCommand;
-use OroCRM\Bundle\AnalyticsBundle\Command\CalculateAnalyticsCommand;
+
+use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\MigrationBundle\Command\LoadDataFixturesCommand as BaseDataFixturesCommand;
+use OroCRM\Bundle\AnalyticsBundle\Command\CalculateAnalyticsCommand;
 
 class LoadDataFixturesCommand extends BaseDataFixturesCommand
 {
@@ -82,6 +86,7 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
         $criteria = new Criteria((new ExpressionBuilder())->gt('id', 1));
         $accessGroupCriteria = new Criteria((new ExpressionBuilder())->gt('id', 3));
         $migrationsCriteria = new Criteria((new ExpressionBuilder())->contains('className', 'Demo'));
+        $leadSourceCriteria = new Criteria((new ExpressionBuilder())->neq('id', 'demand_generation'));
 
         $repositories = [
             'OroAddressBundle:Address' => null,
@@ -136,13 +141,18 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
             'OroCRMTaskBundle:Task' => null,
             'OroCRMCampaignBundle:Campaign' => null,
             'OroCRMAccountBundle:Account' => null,
-            'OroCRMChannelBundle:Channel' => null,
             'OroCRMSalesBundle:B2bCustomer' => null,
+            'OroCRMChannelBundle:Channel' => null,
+            'OroCRMSalesBundle:Lead' => null,
         ];
 
         $emailAddressRepository = $container
             ->get('oro_email.email.address.manager')
             ->getEmailAddressRepository($manager);
+
+        $className = ExtendHelper::buildEnumValueClassName('lead_source');
+        /** @var EnumValueRepository $enumRepo */
+        $leadSourceRepository = $manager->getRepository($className);
 
         foreach ($repositories as $repository => $repositoryCriteria) {
             $this->removeAll($manager, $repository, $repositoryCriteria);
@@ -150,6 +160,7 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
         $manager->flush();
         $this->removeAll($manager, 'OroEmailBundle:EmailTemplate');
         $this->removeEntities($manager, $emailAddressRepository);
+        $this->removeEntities($manager, $leadSourceRepository, $leadSourceCriteria);
         $manager->flush();
     }
 
