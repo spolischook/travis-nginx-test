@@ -46,7 +46,6 @@ class LoadB2bCustomerData extends AbstractFixture implements DependentFixtureInt
             } else {
                 $billingAddress = $this->getAddressReference($customerData['billing address uid']);
             }
-            //$billingAddress = $this->getAddressReference($customerData['billing address uid']);
             $customer->setName($customerData['company']);
             $customer->setOwner($this->getUserReference($customerData['owner uid']));
             $customer->setAccount($this->getAccountReference($customerData['account uid']));
