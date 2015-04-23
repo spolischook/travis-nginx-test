@@ -2,16 +2,15 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
-class LoadBusinessUnitData extends AbstractFixture implements DependentFixtureInterface
+class LoadBusinessUnitData extends AbstractFixture implements OrderedFixtureInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -25,16 +24,6 @@ class LoadBusinessUnitData extends AbstractFixture implements DependentFixtureIn
                 'main business unit uid',
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadOrganizationData',
-        ];
     }
 
     /**
@@ -104,5 +93,13 @@ class LoadBusinessUnitData extends AbstractFixture implements DependentFixtureIn
             $this->setBusinessUnitReference($businessUnitData['uid'], $businessUnit);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 2;
     }
 }

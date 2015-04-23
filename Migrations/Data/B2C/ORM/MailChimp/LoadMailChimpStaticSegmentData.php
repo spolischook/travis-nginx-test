@@ -1,13 +1,14 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\MailChimp;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\MailChimpBundle\Entity\StaticSegment;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadMailChimpStaticSegmentData extends AbstractFixture implements DependentFixtureInterface
+class LoadMailChimpStaticSegmentData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @return array
@@ -66,5 +67,13 @@ class LoadMailChimpStaticSegmentData extends AbstractFixture implements Dependen
             $manager->persist($segment);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 37;
     }
 }

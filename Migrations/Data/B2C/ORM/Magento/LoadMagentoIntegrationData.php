@@ -1,18 +1,20 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
+
 use OroCRM\Bundle\ChannelBundle\Builder\BuilderFactory;
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\MagentoBundle\Entity\MagentoSoapTransport;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadMagentoIntegrationData extends AbstractFixture implements DependentFixtureInterface
+class LoadMagentoIntegrationData extends AbstractFixture implements OrderedFixtureInterface
 {
     /** @var BuilderFactory */
     protected $factory;
@@ -24,17 +26,6 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
     {
         parent::setContainer($container);
         $this->factory = $container->get('orocrm_channel.builder.factory');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
-            __NAMESPACE__ . '\\LoadWebsiteData',
-        ];
     }
 
     /**
@@ -97,5 +88,13 @@ class LoadMagentoIntegrationData extends AbstractFixture implements DependentFix
         $data = $dataChannel->getData();
         $data['rfm_enabled'] = true;
         $dataChannel->setData($data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 27;
     }
 }

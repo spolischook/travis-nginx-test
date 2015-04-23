@@ -2,12 +2,12 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\CampaignBundle\Entity\Campaign;
 
-class LoadCampaignData extends AbstractFixture implements DependentFixtureInterface
+class LoadCampaignData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @return array
@@ -21,17 +21,6 @@ class LoadCampaignData extends AbstractFixture implements DependentFixtureInterf
                 'organization uid'
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadDefaultUserData',
-            __NAMESPACE__ . '\\LoadOrganizationData',
-        ];
     }
 
     /**
@@ -61,5 +50,13 @@ class LoadCampaignData extends AbstractFixture implements DependentFixtureInterf
             $manager->persist($campaign);
             $manager->flush();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 13;
     }
 }

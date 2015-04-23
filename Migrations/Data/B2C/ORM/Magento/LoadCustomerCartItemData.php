@@ -1,14 +1,15 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\MagentoBundle\Entity\CartItem;
+
 use OroCRMPro\Bundle\DemoDataBundle\EventListener\CartSubscriber;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtureInterface
+class LoadCustomerCartItemData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritdoc}
@@ -23,15 +24,7 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadCustomerCartData',
-        ];
-    }
+
 
     /**
      * @return array
@@ -54,7 +47,6 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
         $data = $this->getData();
 
         foreach ($data['carts_items'] as $cartItemData) {
-
             $cart = $this->getCartReference($cartItemData['cart uid']);
             $cartItem = new CartItem();
             $this->setObjectValues($cartItem, $cartItemData);
@@ -85,5 +77,13 @@ class LoadCustomerCartItemData extends AbstractFixture implements DependentFixtu
             $manager->persist($cart);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 31;
     }
 }

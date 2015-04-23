@@ -3,12 +3,13 @@
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\ChannelBundle\Builder\BuilderFactory;
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\SalesBundle\Migrations\Data\ORM\DefaultChannelData;
 
-class LoadChannelData extends AbstractFixture
+class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @return array
@@ -40,5 +41,13 @@ class LoadChannelData extends AbstractFixture
             $manager->persist($channel);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 3;
     }
 }

@@ -2,17 +2,18 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityRepository;
-
-use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\MarketingListBundle\Entity\MarketingList;
 use OroCRM\Bundle\MarketingListBundle\Entity\MarketingListType;
 
-class LoadMarketingListData extends AbstractFixture implements DependentFixtureInterface
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
+
+class LoadMarketingListData extends AbstractFixture implements OrderedFixtureInterface
 {
     /** @var EntityRepository */
     protected $marketingListTypeRepository;
@@ -40,18 +41,6 @@ class LoadMarketingListData extends AbstractFixture implements DependentFixtureI
                 'organization uid',
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadDefaultUserData',
-            __NAMESPACE__ . '\\LoadOrganizationData',
-            __NAMESPACE__ . '\\LoadMarketingSegmentData',
-        ];
     }
 
     /**
@@ -102,5 +91,13 @@ class LoadMarketingListData extends AbstractFixture implements DependentFixtureI
             throw new EntityNotFoundException('Marketing list type ' . $name . ' not found!');
         }
         return $type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 12;
     }
 }

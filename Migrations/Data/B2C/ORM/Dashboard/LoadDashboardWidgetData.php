@@ -1,16 +1,17 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Dashboard;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\DashboardBundle\Model\Manager;
 use Oro\Bundle\DashboardBundle\Model\WidgetModel;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadDashboardWidgetData extends AbstractFixture implements DependentFixtureInterface
+class LoadDashboardWidgetData extends AbstractFixture implements OrderedFixtureInterface
 {
     /** @var  Manager */
     protected $dashboardManager;
@@ -22,16 +23,6 @@ class LoadDashboardWidgetData extends AbstractFixture implements DependentFixtur
     {
         parent::setContainer($container);
         $this->dashboardManager = $this->container->get('oro_dashboard.manager');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadDashboardData',
-        ];
     }
 
     /**
@@ -80,5 +71,13 @@ class LoadDashboardWidgetData extends AbstractFixture implements DependentFixtur
             $widget->setLayoutPosition($layoutPosition);
         }
         return $widget;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 20;
     }
 }

@@ -1,13 +1,13 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Tracking;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\TrackingBundle\Entity\TrackingWebsite;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadTrackingWebsiteData extends AbstractFixture implements DependentFixtureInterface
+class LoadTrackingWebsiteData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritdoc}
@@ -21,17 +21,6 @@ class LoadTrackingWebsiteData extends AbstractFixture implements DependentFixtur
                 'organization uid'
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadDefaultUserData',
-        ];
     }
 
     /**
@@ -66,5 +55,13 @@ class LoadTrackingWebsiteData extends AbstractFixture implements DependentFixtur
             $this->setTrackingWebsiteReference($websiteData['uid'], $website);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 40;
     }
 }

@@ -1,29 +1,21 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\AddressBundle\Entity\AddressType;
+
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
 use OroCRM\Bundle\MagentoBundle\Entity\Order;
 use OroCRM\Bundle\MagentoBundle\Entity\OrderAddress;
 use OroCRM\Bundle\MagentoBundle\Entity\OrderItem;
+
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureInterface
+class LoadCustomerOrderData extends AbstractFixture implements OrderedFixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadCustomerCartData',
-        ];
-    }
-
     /**
      * @return array
      */
@@ -141,5 +133,13 @@ class LoadCustomerOrderData extends AbstractFixture implements DependentFixtureI
             throw new EntityNotFoundException('Address type ' . AddressType::TYPE_BILLING . ' not found!');
         }
         return $type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 32;
     }
 }

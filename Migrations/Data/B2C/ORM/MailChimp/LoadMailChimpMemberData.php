@@ -1,13 +1,14 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\MailChimp;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\MailChimpBundle\Entity\Member;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadMailChimpMemberData extends AbstractFixture implements DependentFixtureInterface
+class LoadMailChimpMemberData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @return array
@@ -22,18 +23,6 @@ class LoadMailChimpMemberData extends AbstractFixture implements DependentFixtur
                 'mailchimp subscriber list uid',
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
-            __NAMESPACE__ . '\\LoadMailChimpIntegrationData',
-            __NAMESPACE__ . '\\LoadMailChimpSubscriberListData',
-        ];
     }
 
     /**
@@ -63,5 +52,13 @@ class LoadMailChimpMemberData extends AbstractFixture implements DependentFixtur
             $manager->persist($member);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 38;
     }
 }

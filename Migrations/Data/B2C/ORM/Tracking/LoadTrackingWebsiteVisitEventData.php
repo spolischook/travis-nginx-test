@@ -1,13 +1,14 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Tracking;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadTrackingWebsiteVisitEventData extends AbstractFixture implements DependentFixtureInterface
+class LoadTrackingWebsiteVisitEventData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritdoc}
@@ -21,19 +22,6 @@ class LoadTrackingWebsiteVisitEventData extends AbstractFixture implements Depen
                 'customer uid',
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadTrackingWebsiteData',
-            __NAMESPACE__ . '\\LoadTrackingWebsiteEventData',
-            __NAMESPACE__ . '\\LoadTrackingEventDictionaryData',
-            __NAMESPACE__ . '\\LoadTrackingWebsiteVisitData',
-        ];
     }
 
     /**
@@ -66,5 +54,14 @@ class LoadTrackingWebsiteVisitEventData extends AbstractFixture implements Depen
             $manager->persist($visitEvent);
         }
         $manager->flush();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 44;
     }
 }

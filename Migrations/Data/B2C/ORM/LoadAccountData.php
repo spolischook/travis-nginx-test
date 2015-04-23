@@ -2,25 +2,13 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 
-class LoadAccountData extends AbstractFixture implements DependentFixtureInterface
+class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadDefaultUserData',
-            __NAMESPACE__ . '\\LoadOrganizationData',
-            __NAMESPACE__ . '\\LoadPinBarData',
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -71,5 +59,13 @@ class LoadAccountData extends AbstractFixture implements DependentFixtureInterfa
             }
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 9;
     }
 }
