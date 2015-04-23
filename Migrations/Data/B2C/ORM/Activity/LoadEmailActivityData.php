@@ -2,8 +2,8 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,10 +17,11 @@ use Oro\Bundle\EmailBundle\Model\FolderType;
 
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
-class LoadEmailActivityData extends AbstractFixture implements DependentFixtureInterface
+class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @var EmailEntityBuilder
@@ -106,7 +107,7 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
             $email = $this->createEmail($entity, $data['subject'], $type);
             $email->setEmailBody($this->createEmailBody($data['body']));
             $email->addFolder($this->getFolder($origin, $type));
-
+            $email->addActivityTarget($user);
             $email->addActivityTarget($entity);
             $email->setMessageId(sprintf('id.%s@%s', uniqid(), '@orocrm-pro.demo-data.generated'));
             $this->em->getClassMetadata(get_class($email))->setLifecycleCallbacks([]);
@@ -201,5 +202,13 @@ class LoadEmailActivityData extends AbstractFixture implements DependentFixtureI
         $created = $class->getProperty('created');
         $created->setAccessible(true);
         $created->setValue($email, $createdAt);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 16;
     }
 }

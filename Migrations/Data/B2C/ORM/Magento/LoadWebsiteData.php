@@ -2,11 +2,13 @@
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\MagentoBundle\Entity\Website;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadWebsiteData extends AbstractFixture
+class LoadWebsiteData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @return array
@@ -33,5 +35,13 @@ class LoadWebsiteData extends AbstractFixture
             $this->setWebsiteReference($websiteData['uid'], $website);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 25;
     }
 }

@@ -2,10 +2,11 @@
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-class LoadOrganizationData extends AbstractFixture
+class LoadOrganizationData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @return array
@@ -38,5 +39,13 @@ class LoadOrganizationData extends AbstractFixture
             $manager->persist($organization);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 1;
     }
 }

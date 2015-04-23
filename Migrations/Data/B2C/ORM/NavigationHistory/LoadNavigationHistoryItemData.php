@@ -2,29 +2,17 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\NavigationHistory;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadNavigationHistoryItemData extends AbstractFixture implements DependentFixtureInterface
+class LoadNavigationHistoryItemData extends AbstractFixture implements OrderedFixtureInterface
 {
     const ACCOUNT_VIEW_ROUTE = 'orocrm_account_view';
     const CONTACT_VIEW_ROUTE = 'orocrm_contact_view';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadDefaultUserData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadContactData',
-        ];
-    }
 
     /**
      * {@inheritdoc}
@@ -110,5 +98,13 @@ class LoadNavigationHistoryItemData extends AbstractFixture implements Dependent
         $history->setOrganization($this->getOrganizationReference($data['organization uid']));
 
         return $history;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 23;
     }
 }

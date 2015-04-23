@@ -1,27 +1,20 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
+
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
 use OroCRM\Bundle\MagentoBundle\Entity\CartAddress;
 use OroCRM\Bundle\MagentoBundle\Entity\CartStatus;
 use OroCRM\Bundle\MagentoBundle\Entity\Customer;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadCustomerCartData extends AbstractFixture implements DependentFixtureInterface
+class LoadCustomerCartData extends AbstractFixture implements OrderedFixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadCustomerData',
-        ];
-    }
 
     /**
      * @return array
@@ -96,5 +89,13 @@ class LoadCustomerCartData extends AbstractFixture implements DependentFixtureIn
             $address->setPostalCode($customerAddress->getPostalCode());
             $cart->setBillingAddress($address);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 30;
     }
 }

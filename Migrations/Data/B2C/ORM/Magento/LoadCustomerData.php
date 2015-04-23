@@ -1,31 +1,18 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\ContactBundle\Entity\ContactAddress;
 use OroCRM\Bundle\MagentoBundle\Entity\Address;
 use OroCRM\Bundle\MagentoBundle\Entity\Customer;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadCustomerData extends AbstractFixture implements DependentFixtureInterface
+class LoadCustomerData extends AbstractFixture implements OrderedFixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadContactData',
-            __NAMESPACE__ . '\\LoadWebsiteData',
-            __NAMESPACE__ . '\\LoadStoreData',
-            __NAMESPACE__ . '\\LoadCustomerGroupData',
-            __NAMESPACE__ . '\\LoadMagentoIntegrationData',
-        ];
-    }
-
     /**
      * @return array
      */
@@ -94,5 +81,13 @@ class LoadCustomerData extends AbstractFixture implements DependentFixtureInterf
             $address->setPrimary(true);
             $customer->addAddress($address);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 29;
     }
 }

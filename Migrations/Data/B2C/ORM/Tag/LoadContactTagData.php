@@ -1,16 +1,18 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Tag;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\TagBundle\Entity\TagManager;
+
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadContactTagData extends AbstractFixture implements DependentFixtureInterface
+class LoadContactTagData extends AbstractFixture implements OrderedFixtureInterface
 {
     /** @var  TagManager */
     protected $tagManager;
@@ -77,5 +79,13 @@ class LoadContactTagData extends AbstractFixture implements DependentFixtureInte
             $this->tagManager->saveTagging($contact, false);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 24;
     }
 }

@@ -1,18 +1,18 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Dashboard;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Oro\Bundle\DashboardBundle\Model\DashboardModel;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+
 use Oro\Bundle\DashboardBundle\Model\Manager;
+use Oro\Bundle\DashboardBundle\Model\DashboardModel;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadDashboardData extends AbstractFixture implements DependentFixtureInterface
+class LoadDashboardData extends AbstractFixture implements OrderedFixtureInterface
 {
-
     /** @var  Manager */
     protected $dashboardManager;
 
@@ -23,16 +23,6 @@ class LoadDashboardData extends AbstractFixture implements DependentFixtureInter
     {
         parent::setContainer($container);
         $this->dashboardManager = $this->container->get('oro_dashboard.manager');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
-        ];
     }
 
     /**
@@ -80,5 +70,13 @@ class LoadDashboardData extends AbstractFixture implements DependentFixtureInter
         foreach ($dashboardRepository->findAll() as $dashboard) {
             $this->em->remove($dashboard);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 19;
     }
 }

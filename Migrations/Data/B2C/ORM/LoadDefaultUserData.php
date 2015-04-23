@@ -1,10 +1,10 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -13,7 +13,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadRolesData;
 
-class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInterface
+class LoadDefaultUserData extends AbstractFixture implements OrderedFixtureInterface
 {
     /** @var  EntityRepository */
     protected $roleRepository;
@@ -50,18 +50,6 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
                 'group uid',
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadGroupData',
-            __NAMESPACE__ . '\\LoadOrganizationData',
-            __NAMESPACE__ . '\\LoadBusinessUnitData',
-        ];
     }
 
     public function getData()
@@ -158,5 +146,13 @@ class LoadDefaultUserData extends AbstractFixture implements DependentFixtureInt
 
         $this->setUserReference($userData['uid'], $user);
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 5;
     }
 }

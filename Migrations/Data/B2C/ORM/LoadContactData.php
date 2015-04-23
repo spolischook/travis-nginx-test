@@ -1,9 +1,9 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
@@ -18,7 +18,7 @@ use OroCRM\Bundle\ContactBundle\Entity\ContactAddress;
 use OroCRM\Bundle\ContactBundle\Entity\ContactEmail;
 use OroCRM\Bundle\ContactBundle\Entity\ContactPhone;
 
-class LoadContactData extends AbstractFixture implements DependentFixtureInterface
+class LoadContactData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @var Country[]
@@ -55,16 +55,6 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadAccountData',
-        ];
-    }
-
-    /**
      * @return array
      */
     public function getData()
@@ -86,7 +76,6 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
         $data = $this->getData();
 
         foreach ($data['contacts'] as $contactData) {
-
             $account = $this->getAccountReference($contactData['account uid']);
 
             $contact = new Contact();
@@ -235,5 +224,13 @@ class LoadContactData extends AbstractFixture implements DependentFixtureInterfa
             }
             $contact->addAddress($address);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 10;
     }
 }

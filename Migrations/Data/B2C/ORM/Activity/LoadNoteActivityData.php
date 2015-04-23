@@ -2,8 +2,8 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -14,7 +14,7 @@ use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadNoteActivityData extends AbstractFixture implements DependentFixtureInterface
+class LoadNoteActivityData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -99,5 +99,13 @@ class LoadNoteActivityData extends AbstractFixture implements DependentFixtureIn
         $this->setObjectValues($note, $data);
 
         $manager->persist($note);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 17;
     }
 }

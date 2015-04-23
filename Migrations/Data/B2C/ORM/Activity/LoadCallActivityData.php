@@ -2,17 +2,18 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\CallBundle\Entity\Call;
 use OroCRM\Bundle\CallBundle\Entity\CallDirection;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\ContactBundle\Entity\ContactPhone;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadCallActivityData extends AbstractFixture implements DependentFixtureInterface
+class LoadCallActivityData extends AbstractFixture implements OrderedFixtureInterface
 {
     /** @var  CallDirection[] */
     protected $directions;
@@ -119,5 +120,13 @@ class LoadCallActivityData extends AbstractFixture implements DependentFixtureIn
                 $manager->persist($call);
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 18;
     }
 }

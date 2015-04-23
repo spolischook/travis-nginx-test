@@ -1,13 +1,14 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\MagentoBundle\Entity\Store;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadStoreData extends AbstractFixture implements DependentFixtureInterface
+class LoadStoreData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritdoc}
@@ -20,16 +21,6 @@ class LoadStoreData extends AbstractFixture implements DependentFixtureInterface
                 'website uid',
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadWebsiteData',
-        ];
     }
 
     /**
@@ -58,5 +49,13 @@ class LoadStoreData extends AbstractFixture implements DependentFixtureInterface
             $this->setStoreReference($storeData['uid'], $store);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 26;
     }
 }

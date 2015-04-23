@@ -1,23 +1,13 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 
-class LoadGroupData extends AbstractFixture implements DependentFixtureInterface
+class LoadGroupData extends AbstractFixture implements OrderedFixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadBusinessUnitData',
-        ];
-    }
-
     /**
      * @return array
      */
@@ -43,5 +33,13 @@ class LoadGroupData extends AbstractFixture implements DependentFixtureInterface
             $this->setGroupReference($groupData['uid'], $group);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 4;
     }
 }
