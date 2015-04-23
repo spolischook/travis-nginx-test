@@ -36,7 +36,7 @@ Use as dependency in composer
     ],
     ...
     "require": {
-        "orocrmpro/demo-data-bundle": "dev-master"
+        "oro/crm-pro-demo-data-bundle": "dev-master"
     }
 ```
 

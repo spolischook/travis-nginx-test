@@ -1,11 +1,11 @@
 {
-    "name": "orocrmpro/demo-data-bundle",
+    "name": "oro/crm-pro-demo-data-bundle",
     "type": "symfony-bundle",
     "description": "OroCRM Demo Data Bundle",
     "keywords": ["OroCRM", "Pro", "Demo Data"],
     "license": "MIT",
     "require": {
-      "php": ">=5.3.3",
+      "php": ">=5.4.9",
       "symfony/symfony": "2.3.*"
     },
     "autoload": {
