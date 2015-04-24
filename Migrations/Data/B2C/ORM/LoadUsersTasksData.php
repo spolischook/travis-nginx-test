@@ -2,9 +2,9 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -13,7 +13,7 @@ use OroCRM\Bundle\TaskBundle\Entity\Task;
 use OroCRM\Bundle\TaskBundle\Entity\TaskPriority;
 use OroCRMPro\Bundle\DemoDataBundle\Model\WeekendChecker;
 
-class LoadUsersTasksData extends AbstractFixture implements DependentFixtureInterface
+class LoadUsersTasksData extends AbstractFixture implements OrderedFixtureInterface
 {
     use WeekendChecker;
 
@@ -61,16 +61,6 @@ class LoadUsersTasksData extends AbstractFixture implements DependentFixtureInte
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadDefaultUserData',
-        ];
-    }
-
-    /**
      * @return array
      */
     protected function getData()
@@ -94,7 +84,7 @@ class LoadUsersTasksData extends AbstractFixture implements DependentFixtureInte
             },
             []
         );
-        $this->em->getClassMetadata('OroCRM\Bundle\TaskBundle\Entity\Task')->setLifecycleCallbacks([]);
+        $manager->getClassMetadata('OroCRM\Bundle\TaskBundle\Entity\Task')->setLifecycleCallbacks([]);
         $now = new \DateTime();
         $date = new \DateTime();
         for ($i = 0; array_key_exists($i, $data['tasks']); $date->add(new \DateInterval('P1D'))) {
@@ -121,12 +111,12 @@ class LoadUsersTasksData extends AbstractFixture implements DependentFixtureInte
                     );
                     $taskPriority = $this->getPriority($taskData['priority']);
                     $task->setTaskPriority($taskPriority);
-                    $this->em->persist($task);
+                    $manager->persist($task);
                 }
                 $i++;
             }
         }
-        $this->em->flush();
+        $manager->flush();
     }
 
     /**
@@ -140,5 +130,13 @@ class LoadUsersTasksData extends AbstractFixture implements DependentFixtureInte
             return $this->prioritiesRepository->find(self::DEFAULT_TASK_PRIORITY_NAME);
         }
         return $taskPriority;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 7;
     }
 }

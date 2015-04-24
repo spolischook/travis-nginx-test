@@ -1,16 +1,18 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Tag;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\TagBundle\Entity\TagManager;
+
 use OroCRM\Bundle\AccountBundle\Entity\Account;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadAccountTagData extends AbstractFixture implements DependentFixtureInterface
+class LoadAccountTagData extends AbstractFixture implements OrderedFixtureInterface
 {
     /** @var  TagManager */
     protected $tagManager;
@@ -22,17 +24,6 @@ class LoadAccountTagData extends AbstractFixture implements DependentFixtureInte
     {
         parent::setContainer($container);
         $this->tagManager = $container->get('oro_tag.tag.manager');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadAccountData',
-            __NAMESPACE__ . '\\LoadTagData',
-        ];
     }
 
     /**
@@ -79,5 +70,13 @@ class LoadAccountTagData extends AbstractFixture implements DependentFixtureInte
             $this->setSecurityContext($account->getOwner());
             $this->tagManager->saveTagging($account);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 23;
     }
 }

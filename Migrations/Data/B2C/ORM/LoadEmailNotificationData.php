@@ -2,29 +2,18 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 use Oro\Bundle\NotificationBundle\Entity\Event;
 use Oro\Bundle\NotificationBundle\Entity\RecipientList;
+
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 class LoadEmailNotificationData extends AbstractFixture implements DependentFixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadGroupData',
-            __NAMESPACE__ . '\\LoadDefaultUserData',
-            __NAMESPACE__ . '\\LoadEmailTemplateData',
-        ];
-    }
-
     /**
      * @return array
      */
@@ -142,5 +131,15 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
             throw new EntityNotFoundException('EmailTemplate ' . $name . ' not found.');
         }
         return $entity;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            __NAMESPACE__ . '\\LoadEmailTemplateData'
+        ];
     }
 }

@@ -2,17 +2,18 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\ReportBundle\Entity\Report;
 use Oro\Bundle\ReportBundle\Entity\ReportType;
+
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
-class LoadReportData extends AbstractFixture implements DependentFixtureInterface
+class LoadReportData extends AbstractFixture implements OrderedFixtureInterface
 {
     /** @var EntityRepository */
     protected $reportTypeRepository;
@@ -107,5 +108,13 @@ class LoadReportData extends AbstractFixture implements DependentFixtureInterfac
         foreach ($reportRepository->findAll() as $entity) {
             $this->em->remove($entity);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 15;
     }
 }

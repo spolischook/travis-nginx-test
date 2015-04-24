@@ -2,11 +2,12 @@
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Magento;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\MagentoBundle\Entity\CustomerGroup;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadCustomerGroupData extends AbstractFixture
+class LoadCustomerGroupData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @return array
@@ -33,5 +34,13 @@ class LoadCustomerGroupData extends AbstractFixture
             $this->setCustomerGroupReference($groupData['uid'], $group);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 28;
     }
 }

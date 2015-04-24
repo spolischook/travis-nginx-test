@@ -1,8 +1,8 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -10,7 +10,7 @@ use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 
-class LoadPinBarData extends AbstractFixture implements DependentFixtureInterface
+class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @var UserManager
@@ -33,16 +33,6 @@ class LoadPinBarData extends AbstractFixture implements DependentFixtureInterfac
         parent::setContainer($container);
         $this->navigationFactory = $container->get('oro_navigation.item.factory');
         $this->userManager = $container->get('oro_user.manager');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadDefaultUserData',
-        ];
     }
 
     /**
@@ -98,7 +88,7 @@ class LoadPinBarData extends AbstractFixture implements DependentFixtureInterfac
         ];
         /** @var User $user */
         foreach ($users as $user) {
-            $this->setSecurityContext($this->getMainUser());
+            $this->setSecurityContext($user);
             foreach ($params as $param) {
                 $param['user'] = $user;
                 $pinTab = $this->navigationFactory->createItem($param['type'], $param);
@@ -107,5 +97,13 @@ class LoadPinBarData extends AbstractFixture implements DependentFixtureInterfac
             }
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 8;
     }
 }

@@ -1,0 +1,95 @@
+Uid,Contact uid,Street,City,Region,PostalCode,Country,Label
+1,1,4712 Cedarstone Drive,Toledo,OH,43604,US,Primary address
+2,1,787 Robinson Court,Saginaw,MI,48607,US,Second address
+3,2,1859 Black Oak Hollow Road,San Jose,CA,95113,US,Primary address
+4,2,2574 Broadway Avenue,Kingsport,TN,37660,US,Second address
+5,3,679 Pearl Street,Sacramento,CA,95815,US,Primary address
+6,3,2186 Poe Road,Pinehurst,TX,77362,US,Second address
+7,4,2620 Oakmound Drive,Hickory Hills,IL,60457,US,Primary address
+8,4,3291 Hott Street,Oklahoma City,OK,73102,US,Second address
+10,5,37 Lodgeville Road,Eagan,MN,55121,US,Primary address
+11,6,2450 Grasselli Street,New Boston,NH,3070,US,Primary address
+12,6,1927 Steve Hunt Road,Miami,FL,33176,US,Second address
+13,7,1798 Bryan Avenue,Minneapolis,MN,55404,US,Primary address
+14,7,1388 Forest Drive,Mclean,VA,22101,US,Second address
+15,8,2424 Elk Creek Road,Smyrna,GA,30080,US,Primary address
+17,9,1858 Summit Park Avenue,Bloomfield Township,MI,48302,US,Primary address
+19,10,2493 Hillside Drive,Bedford,MA,1730,US,Primary address
+20,10,2241 Norma Avenue,Dayton,OH,45402,US,Second address
+21,11,2928 Bryan Street,Greensboro,NC,27407,US,Primary address
+22,11,510 Dogwood Road,Phoenix,AZ,85040,US,Second address
+23,12,3609 Hickory Heights Drive,Hanover,MD,21076,US,Primary address
+24,12,4015 Daffodil Lane,Arlington,VA,22202,US,Second address
+25,13,888 Oakridge Lane,Dallas,TX,75207,US,Primary address
+26,14,2209 Blue Spruce Lane,Cockeysville,MD,21030,US,Primary address
+27,15,3439 Francis Mine,Central Valley,CA,96019,US,Primary address
+28,15,198 Masonic Drive,Billings,MT,59102,US,Second address
+29,16,1805 Elm Drive,New York,NY,10018,US,Primary address
+30,16,1783 Sycamore Street,Santa Clara,CA,95054,US,Second address
+31,17,4076 Little Street,Tallmadge,OH,44278,US,Primary address
+32,17,4885 Timberbrook Lane,Greeley,CO,80631,US,Second address
+34,18,1530 Bailey Drive,Cedar Rapids,IA,52401,US,Primary address
+36,19,1051 Fincham Road,San Diego,CA,92103,US,Primary address
+37,20,2198 Burke Street,Boston,MA,2210,US,Primary address
+38,20,3863 Copperhead Road,Hartford,CT,6103,US,Second address
+39,21,2227 Kembery Drive,Lombard,IL,60148,US,Primary address
+41,22,1620 Settlers Lane,New York,NY,10007,US,Primary address
+42,22,4841 Morningview Lane,New York,NY,10007,US,Second address
+44,24,879 Franklin Avenue,Lake City,FL,32025,US,Primary address
+45,25,2366 Laurel Lane,Midland,TX,79701,US,Primary address
+46,26,239 Maple Street,Santa Ana,CA,92705,US,Primary address
+47,27,4159 Dawson Drive,Little Rock,AR,72211,US,Primary address
+49,29,3909 Monroe Street,Houston,TX,77026,US,Primary address
+50,30,4562 Badger Pond Lane,Tampa,FL,33634,US,Primary address
+51,31,2671 Hope Street,Mesquite,TX,75149,US,Primary address
+52,26,204 Radford Street,Louisville,KY,40203,US,Second address
+53,27,2878 Mount Street,Mount Pleasant,MI,48858,US,Second address
+54,28,2495 Stratford Drive,Wailuku,HI,96793,US,Primary address
+55,29,3500 Saints Alley,Tampa,FL,33610,US,Second address
+56,30,150 Franklee Lane,Conshohocken,PA,19428,US,Second address
+57,31,1614 Duffy Street,Elmhurst,IN,60126,US,Second address
+58,32,3609 Sycamore Street,San Jose,CA,95129,US,Primary address
+59,33,3420 Willis Avenue,Daytona Beach,FL,32114,US,Primary address
+60,33,3277 Arrowood Drive,Jacksonville,FL,32216,US,Second address
+62,34,4250 Augusta Park,Charleston,WV,25313,US,Primary address
+63,35,3350 Still Street,Gibsonburg,OH,43431,US,Primary address
+64,35,2813 Pine Garden Lane,Atlanta,GA,30339,US,Second address
+65,36,4721 Shady Pines Drive,Owensboro,KY,42301,US,Primary address
+66,36,4337 Tea Berry Lane,Marinette,WI,54143,US,Second address
+67,37,4924 Daffodil Lane,Arlington,VA,22201,US,Primary address
+68,37,779 Clarence Court,Jacksonville,NC,28540,US,Second address
+69,38,449 Wetzel Lane,Harbor Springs,MI,49740,US,Primary address
+70,38,3331 Lynn Street,North Billerica,MA,1862,US,Second address
+71,39,1228 Seneca Drive,Portland,OR,97205,US,Primary address
+72,39,1340 Losh Lane,Pittsburgh,PA,15213,US,Second address
+73,40,1743 Stone Lane,Wayne,PA,19088,US,Primary address
+75,41,4200 Red Bud Lane,Newark,NJ,7102,US,Primary address
+76,41,3194 Sand Fork Road,Elkhart,IN,46516,US,Second address
+77,42,1019 Heritage Road,Ivanhoe,CA,93235,US,Primary address
+78,42,3209 Bungalow Road,Omaha,NE,68104,US,Second address
+79,43,719 Marshville Road,Poughkeepsie,NY,12601,US,Primary address
+80,43,2876 Levy Court,Acton,MA,1720,US,Second address
+81,45,60 Bell Street,New York,NY,10025,US,Primary address
+82,45,1155 Flinderation Road,Chicago,IL,60631,US,Second address
+83,46,1264 Grim Avenue,San Diego,CA,92103,US,Primary address
+84,46,2179 Farm Meadow Drive,Monterey,TN,38574,US,Second address
+85,47,1651 Church Street,Far Rockaway,NY,11691,US,Primary address
+86,48,4772 Davis Place,Maumee,OH,43537,US,Primary address
+87,49,4969 Hide A Way Road,San Jose,CA,95136,US,Primary address
+88,50,1442 Duck Creek Road,Pescadero,CA,94060,US,Primary address
+90,52,2970 Braxton Street,Rockford,IL,61101,US,Primary address
+92,54,3598 Water Street,Oakland,CA,94612,US,Primary address
+93,55,3445 Lynn Street,Cambridge,MA,2141,US,Primary address
+94,56,3538 Havanna Street,Greensboro,NC,27401,US,Primary address
+95,57,3858 Hurry Street,Fredericksburg,VA,22408,US,Primary address
+96,58,1698 Devils Hill Road,Jackson,MS,39211,US,Primary address
+97,59,3211 Stratford Court,Durham,NC,27701,US,Primary address
+98,60,3256 Pearlman Avenue,Cambridge,MA,2142,US,Primary address
+99,61,2867 Charles Street,Ypsilanti,MI,48198,US,Primary address
+100,62,2467 Frank Avenue,Springfield,MA,1103,US,Primary address
+102,64,4059 Chapmans Lane,Albuquerque,NM,87121,US,Primary address
+104,66,1132 Spruce Drive,New Wilmington,PA,16142,US,Primary address
+105,66,1608 Hickory Ridge Drive,Las Vegas,NV,89109,US,Second address
+106,67,4057 Conifer Drive,Redmond,WA,98052,US,Primary address
+107,68,2319 Keyser Ridge Road,Greensboro,NC,27455,US,Primary address
+108,69,4384 Tetrick Road,Polk City,FL,33868,US,Primary address

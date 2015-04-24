@@ -1,13 +1,13 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\MailChimp;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\MailChimpBundle\Entity\Campaign;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadMailChimpCampaignData extends AbstractFixture implements DependentFixtureInterface
+class LoadMailChimpCampaignData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @return array
@@ -22,18 +22,6 @@ class LoadMailChimpCampaignData extends AbstractFixture implements DependentFixt
                 'campaign email uid',
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadOrganizationData',
-            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadCampaignEmailData',
-            __NAMESPACE__ . '\\LoadMailChimpIntegrationData',
-        ];
     }
 
     /**
@@ -62,5 +50,13 @@ class LoadMailChimpCampaignData extends AbstractFixture implements DependentFixt
             $manager->persist($campaign);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 35;
     }
 }

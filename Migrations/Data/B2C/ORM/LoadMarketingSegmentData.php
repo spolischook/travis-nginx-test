@@ -2,9 +2,9 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -12,7 +12,7 @@ use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\SegmentBundle\Entity\SegmentType;
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
-class LoadMarketingSegmentData extends AbstractFixture implements DependentFixtureInterface
+class LoadMarketingSegmentData extends AbstractFixture implements OrderedFixtureInterface
 {
     /** @var EntityRepository */
     protected $segmentTypeRepository;
@@ -39,17 +39,6 @@ class LoadMarketingSegmentData extends AbstractFixture implements DependentFixtu
                 'business unit uid',
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadOrganizationData',
-            __NAMESPACE__ . '\\LoadBusinessUnitData',
-        ];
     }
 
     /**
@@ -126,5 +115,13 @@ class LoadMarketingSegmentData extends AbstractFixture implements DependentFixtu
             throw new EntityNotFoundException('Segment type ' . $name . ' not found!');
         }
         return $type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 11;
     }
 }

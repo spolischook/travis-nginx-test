@@ -51,10 +51,11 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
         $dir = __DIR__ . DIRECTORY_SEPARATOR;
 
         preg_match('/Migrations\/Data\/(\w*\/ORM)/', $classData->getFilename(), $matches);
-        if(!empty($matches[1])) {
-            $dir .=  '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $matches[1] . DIRECTORY_SEPARATOR ;
+        if (!empty($matches[1])) {
+            $dir .= '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $matches[1] . DIRECTORY_SEPARATOR;
         }
         $dir .= static::DATA_FOLDER . DIRECTORY_SEPARATOR;
+
         return $dir;
     }
 
@@ -90,6 +91,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
                 throw new EntityNotFoundException('Main user does not exist.');
             }
         }
+
         return $entity;
     }
 
@@ -104,6 +106,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
         if (!$entity) {
             throw new EntityNotFoundException('Main organization is not defined.');
         }
+
         return $entity;
     }
 

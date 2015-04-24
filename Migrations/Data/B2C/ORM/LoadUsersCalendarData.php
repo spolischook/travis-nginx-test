@@ -1,9 +1,9 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -15,7 +15,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadRolesData;
 use OroCRMPro\Bundle\DemoDataBundle\Model\WeekendChecker;
 
-class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureInterface
+class LoadUsersCalendarData extends AbstractFixture implements OrderedFixtureInterface
 {
     use WeekendChecker;
 
@@ -48,16 +48,6 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
                 'end time'
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadDefaultUserData',
-        ];
     }
 
     /**
@@ -100,7 +90,7 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
             }
 
             $created = $calendar->getOwner()->getCreatedAt();
-            $this->em->getClassMetadata('Oro\Bundle\CalendarBundle\Entity\CalendarEvent')->setLifecycleCallbacks([]);
+            $manager->getClassMetadata('Oro\Bundle\CalendarBundle\Entity\CalendarEvent')->setLifecycleCallbacks([]);
 
             for ($i = 0; array_key_exists($i, $data['events']); $created->add(new \DateInterval('P1D'))) {
                 $dayEvents = array_key_exists($i, $events) ? $events[$i] : [];
@@ -148,5 +138,13 @@ class LoadUsersCalendarData extends AbstractFixture implements DependentFixtureI
         }
 
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 6;
     }
 }
