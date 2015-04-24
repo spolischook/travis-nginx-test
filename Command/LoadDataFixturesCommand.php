@@ -54,7 +54,9 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
         $fixturesType = $this->getTypeOfFixtures($input);
         if ($clean && $force) {
             return $output->writeln('<error>Use one of two options: --clean or --force</error>');
-        } elseif ($force) {
+        }
+
+        if ($force) {
             $parentReturnCode = parent::execute($input, $output);
             if ($parentReturnCode === 0) {
                 $commandName = CalculateAnalyticsCommand::COMMAND_NAME;
@@ -62,15 +64,21 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
                 $input = new ArrayInput(['command' => $commandName]);
                 $command->run($input, $output);
             }
+
             return $parentReturnCode;
-        } elseif ($clean) {
+        }
+
+        if ($clean) {
             $output->writeln('  <comment>></comment> <info>Removing demo data</info>');
             $this->removeOldData($output);
-            return $output->writeln('  <comment>></comment> <info>Demo data removed</info>');
-        } else {
-            $this->writeDescription($output, $fixturesType);
+
+            $output->writeln('  <comment>></comment> <info>Demo data removed</info>');
             return 0;
         }
+
+        $this->writeDescription($output, $fixturesType);
+
+        return 0;
     }
 
     protected function removeOldData()
@@ -79,11 +87,89 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
         /** @var EntityManager $manager */
         $manager = $container->get('doctrine')->getManager();
 
+        foreach ($this->getRepositories() as $repository => $repositoryCriteria) {
+            $this->removeAll($manager, $repository, $repositoryCriteria);
+        }
+        $manager->flush();
+
+        foreach ($this->getB2BRepositories() as $repository => $repositoryCriteria) {
+            $this->removeAll($manager, $repository, $repositoryCriteria);
+        }
+        $manager->flush();
+
+        $this->removeAll($manager, 'OroEmailBundle:EmailTemplate');
+        $emailAddressRepository = $container
+            ->get('oro_email.email.address.manager')
+            ->getEmailAddressRepository($manager);
+        $this->removeEntities($manager, $emailAddressRepository);
+        $manager->flush();
+    }
+
+    /**
+     * @param EntityManager $manager
+     * @param $repository
+     * @param null $criteria
+     */
+    protected function removeAll(EntityManager $manager, $repository, $criteria = null)
+    {
+        $entityRepository = $manager->getRepository($repository);
+        $this->removeEntities($manager, $entityRepository, $criteria);
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param $fixturesType
+     */
+    protected function writeDescription(OutputInterface $output, $fixturesType)
+    {
+        $fixturesPart = $fixturesType
+            ? sprintf(' <info>--fixtures-type=%s</info>', $fixturesType)
+            : '';
+
+        $output->writeln(
+            'To proceed with install demo data - run command with <info>--force</info> option:'
+        );
+        $output->write(sprintf('    <info>%s --force</info>', $this->getName()));
+        $output->writeln($fixturesPart);
+
+        $output->writeln(
+            'To clean data - run command with <info> --clean</info> options:'
+        );
+        $output->write(sprintf('    <info>%s --clean</info>', $this->getName()));
+        $output->writeln($fixturesPart);
+    }
+
+    /**
+     * @param EntityManager $manager
+     * @param EntityRepository $repository
+     * @param $criteria
+     */
+    protected function removeEntities(EntityManager $manager, EntityRepository $repository, $criteria = null)
+    {
+        $entities = $criteria === null
+            ? $repository->findAll()
+            : $repository->matching($criteria);
+
+        foreach ($entities as $entity) {
+            $manager->remove($entity);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getRepositories()
+    {
         $criteria = new Criteria((new ExpressionBuilder())->gt('id', 1));
         $accessGroupCriteria = new Criteria((new ExpressionBuilder())->gt('id', 3));
-        $migrationsCriteria = new Criteria((new ExpressionBuilder())->contains('className', 'Demo'));
+        $migrationsCriteria = new Criteria(
+            (new ExpressionBuilder())->contains(
+                'className',
+                'OroCRMPro\\\\Bundle\\\\DemoDataBundle\\\\Migrations\\\\Data'
+            )
+        );
 
-        $repositories = [
+        return  [
             'OroCalendarBundle:Calendar' => $criteria,
             'OroCalendarBundle:CalendarEvent' => null,
             'OroCalendarBundle:CalendarProperty' => $criteria,
@@ -137,67 +223,18 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
             'OroCRMAccountBundle:Account' => null,
             'OroCRMChannelBundle:Channel' => null,
         ];
-
-        $emailAddressRepository = $container
-            ->get('oro_email.email.address.manager')
-            ->getEmailAddressRepository($manager);
-
-        foreach ($repositories as $repository => $repositoryCriteria) {
-            $this->removeAll($manager, $repository, $repositoryCriteria);
-        }
-        $manager->flush();
-        $this->removeAll($manager, 'OroEmailBundle:EmailTemplate');
-        $this->removeEntities($manager, $emailAddressRepository);
-        $manager->flush();
     }
 
     /**
-     * @param EntityManager $manager
-     * @param $repository
-     * @param null $criteria
+     * @return array
      */
-    protected function removeAll(EntityManager $manager, $repository, $criteria = null)
+    protected function getB2BRepositories()
     {
-        $entityRepository = $manager->getRepository($repository);
-        $this->removeEntities($manager, $entityRepository, $criteria);
-    }
-
-    /**
-     * @param OutputInterface $output
-     * @param $fixturesType
-     */
-    protected function writeDescription(OutputInterface $output, $fixturesType)
-    {
-        $fixturesPart = $fixturesType
-            ? sprintf(' <info>--fixtures-type=%s</info>', $fixturesType)
-            : '';
-
-        $output->writeln(
-            'To proceed with install demo data - run command with <info>--force</info> option:'
-        );
-        $output->write(sprintf('    <info>%s --force</info>', $this->getName()));
-        $output->writeln($fixturesPart);
-
-        $output->writeln(
-            'To clean data - run command with <info> --clean</info> options:'
-        );
-        $output->write(sprintf('    <info>%s --clean</info>', $this->getName()));
-        $output->writeln($fixturesPart);
-    }
-
-    /**
-     * @param EntityManager $manager
-     * @param EntityRepository $repository
-     * @param $criteria
-     */
-    protected function removeEntities(EntityManager $manager, EntityRepository $repository, $criteria = null)
-    {
-        $entities = $criteria === null
-            ? $repository->findAll()
-            : $repository->matching($criteria);
-
-        foreach ($entities as $entity) {
-            $manager->remove($entity);
-        }
+        return [
+            'OroCRMSalesBundle:Opportunity' => null,
+            'OroCRMSalesBundle:Lead' => null,
+            'OroCRMSalesBundle:B2bCustomer' => null,
+            'OroCRMSalesBundle:SalesFunnel' => null,
+        ];
     }
 }
