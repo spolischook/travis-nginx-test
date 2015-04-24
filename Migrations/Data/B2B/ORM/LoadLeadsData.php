@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
+use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
 use OroCRM\Bundle\SalesBundle\Entity\LeadStatus;
 use OroCRM\Bundle\SalesBundle\Entity\Lead;
@@ -22,8 +23,7 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
     {
         return [
             __NAMESPACE__ . '\\LoadLeadSourceData',
-            __NAMESPACE__ . '\\LoadChannelData',
-            __NAMESPACE__ . '\\LoadMainData'
+            __NAMESPACE__ . '\\LoadB2bCustomerData',
         ];
     }
 
@@ -40,6 +40,7 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
             $this->setSecurityContext($user);
 
             $lead = $this->createLead($leadData, $statuses, $user);
+            $this->setLeadReference($leadData['uid'], $lead);
             $manager->persist($lead);
         }
         $manager->flush();
@@ -57,7 +58,6 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
             ? $statuses[$leadData['status name']]
             : $statuses[self::DEFAULT_LEAD_STATUS];
         $source = $this->getLeadSource($leadData);
-        $channel = $this->getDataChannel($leadData);
         $created = $this->generateCreatedDate();
         $address = $this->getAddress($leadData);
         $customer = $this->getB2bCustomer($leadData);
@@ -68,14 +68,14 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
         if ($source && method_exists($lead, 'setSource')) {
             $lead->setSource($source);
         }
-        if ($channel) {
-            $lead->setDataChannel($channel);
-        }
         if ($address) {
             $lead->setAddress($address);
         }
         if ($customer) {
             $lead->setCustomer($customer);
+        }
+        if (!empty($leadData['channel uid'])) {
+            $lead->setDataChannel($this->getDataChannel($leadData['channel uid']));
         }
         $lead->setStatus($status)
             ->setName($leadData['companyname'])
@@ -100,7 +100,8 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
                 'status name',
                 'owner uid',
                 'channel uid',
-                'customer uid'
+                'customer uid',
+                'contact uid'
             ]
         );
     }
@@ -160,17 +161,11 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
     }
 
     /**
-     * @param array $data
-     * @return null|Channel
+     * @param $channelUid
+     * @return Channel
      */
-    protected function getDataChannel(array $data = [])
+    protected function getDataChannel($channelUid)
     {
-        $channel = null;
-        if (array_key_exists('channel uid', $data)
-            && $this->hasReference('Channel:' . $data['channel uid'])
-        ) {
-            $channel = $this->getReference('Channel:' . $data['channel uid']);
-        }
-        return $channel;
+        return $this->getReference('Channel:' . $channelUid);
     }
 }

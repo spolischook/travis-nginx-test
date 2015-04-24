@@ -5,6 +5,7 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
+use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -104,6 +105,15 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
             throw new EntityNotFoundException('Main organization is not defined.');
         }
         return $entity;
+    }
+
+    /**
+     * @param $channelUid
+     * @return Channel
+     */
+    protected function getDataChannelReference($channelUid)
+    {
+        return $this->getReference('Channel:' . $channelUid);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
@@ -46,7 +47,6 @@ class LoadB2bCustomerData extends AbstractFixture implements DependentFixtureInt
     protected function createCustomer(array $customerData)
     {
         $organization = $this->getOrganizationReference($customerData['organization uid']);
-        $channel = $this->getDataChannel($customerData);
         $created = $this->generateCreatedDate();
         $shippingAddress = $this->getAddressReference($customerData['shipping address uid']);
         $contact = $this->getContactReference($customerData['contact uid']);
@@ -66,24 +66,18 @@ class LoadB2bCustomerData extends AbstractFixture implements DependentFixtureInt
         $customer->setCreatedAt($created);
         $customer->setUpdatedAt($this->generateUpdatedDate($created));
 
-        if ($channel) {
-            $customer->setDataChannel($channel);
+        if (!empty($customerData['channel uid'])) {
+            $customer->setDataChannel($this->getDataChannel($customerData['channel uid']));
         }
         return $customer;
     }
 
     /**
-     * @param array $data
-     * @return null|Channel
+     * @param $channelUid
+     * @return Channel
      */
-    protected function getDataChannel(array $data = [])
+    protected function getDataChannel($channelUid)
     {
-        $channel = null;
-        if (array_key_exists('channel uid', $data)
-            && $this->hasReference('Channel:' . $data['channel uid'])
-        ) {
-            $channel = $this->getReference('Channel:' . $data['channel uid']);
-        }
-        return $channel;
+        return $this->getReference('Channel:' . $channelUid);
     }
 }

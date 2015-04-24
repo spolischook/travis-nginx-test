@@ -30,6 +30,9 @@ use OroCRM\Bundle\MagentoBundle\Entity\Website;
 use OroCRM\Bundle\MailChimpBundle\Entity\SubscribersList;
 use OroCRM\Bundle\MarketingListBundle\Entity\MarketingList;
 use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
+use OroCRM\Bundle\SalesBundle\Entity\Lead;
+use OroCRM\Bundle\SalesBundle\Entity\Opportunity;
+
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 /**
@@ -611,6 +614,27 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     }
 
     /**
+     * @param      $uid
+     * @param Lead $lead
+     */
+    protected function setLeadReference($uid, Lead $lead)
+    {
+        $reference = 'Lead:' . $uid;
+        $this->setReference($reference, $lead);
+    }
+
+    /**
+     * @param $uid
+     * @return Lead
+     * @throws EntityNotFoundException
+     */
+    protected function getLeadReference($uid)
+    {
+        $reference = 'Lead:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
      * @param $uid
      * @param B2BCustomer $customer
      */
@@ -628,6 +652,27 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     protected function getB2bCustomerReference($uid)
     {
         $reference = 'B2bCustomer:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param Opportunity $opportunity
+     */
+    protected function setOpportunityReference($uid, Opportunity $opportunity)
+    {
+        $reference = 'Opportunity:' . $uid;
+        $this->setReference($reference, $opportunity);
+    }
+
+    /**
+     * @param $uid
+     * @return Opportunity
+     * @throws EntityNotFoundException
+     */
+    protected function getOpportunityReference($uid)
+    {
+        $reference = 'Opportunity:' . $uid;
         return $this->getReferenceByName($reference);
     }
 }

@@ -144,6 +144,8 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
             'OroCRMSalesBundle:B2bCustomer' => null,
             'OroCRMChannelBundle:Channel' => null,
             'OroCRMSalesBundle:Lead' => null,
+            'OroCRMSalesBundle:Opportunity' => null,
+            'OroCRMSalesBundle:SalesFunnel' => null
         ];
 
         $emailAddressRepository = $container

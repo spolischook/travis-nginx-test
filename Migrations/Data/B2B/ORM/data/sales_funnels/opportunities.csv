@@ -1,0 +1,21 @@
+Uid,User Uid,Opportunity Uid,Channel Uid,Transition,Budget Amount,Customer Need,Proposed Solution,Probability,Close Revenue
+1,1,1,1,,5030,4550,4000,0.44,
+2,1,2,1,,4500,2300,2300,0.26,
+3,1,3,1,,1300,1000,850,0.2136,
+4,1,4,1,,,,,,
+5,1,5,1,,550,2500,3250,0.512,
+6,1,6,1,develop,1555,3255,3550,,
+7,1,7,1,develop,1558,2890,2960,,
+8,1,8,1,develop,,,,0.24,
+9,1,9,1,develop,,,,0.3645,
+10,1,10,1,develop,2050,,,,
+11,1,11,1,close_as_won,5850,,4500,,2575
+12,1,12,1,close_as_won,6960,7215,,0.32,565
+13,1,13,1,close_as_won,,,,,
+14,1,14,1,close_as_won,1010,1554,1980,0.65,
+15,1,15,1,close_as_won,,,,,
+16,1,16,1,close_as_lost,,,,,
+17,1,17,1,close_as_lost,7200,4580,5690,0.35,6452
+18,1,18,1,close_as_lost,8760,9800,4005,0.5,9023
+19,1,19,1,close_as_lost,,,,,
+20,1,20,1,close_as_lost,9910,150,1200,0.2015,4235
