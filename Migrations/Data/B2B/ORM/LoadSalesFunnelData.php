@@ -66,8 +66,8 @@ class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInt
             $lead        = $this->getLeadReference($funnelData['lead uid']);
             $salesFunnel = $this->createSalesFunnel($funnelData);
             $salesFunnel->setLead($lead);
-            $step        = 'start_from_lead';
-            $parameters  = $this->makeFLowParameters(
+            $step       = 'start_from_lead';
+            $parameters = $this->makeFLowParameters(
                 ['lead' => $lead],
                 $salesFunnel->getOwner(),
                 $lead->getCreatedAt()
@@ -129,7 +129,7 @@ class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInt
         $organization = $user->getOrganization();
 
         $salesFunnel = new SalesFunnel();
-        $createdAt = $this->generateCreatedDate();
+        $createdAt   = $this->generateCreatedDate();
         $salesFunnel
             ->setOwner($user)
             ->setStartDate($createdAt)
@@ -217,13 +217,17 @@ class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInt
         if (!isset($steps[$name])) {
             throw new \InvalidArgumentException();
         }
+
         return $steps[$name];
     }
 
+    /**
+     * @return WorkflowStep[]
+     */
     protected function getFlowSalesFunnelsSteps()
     {
         if (count($this->workflowSteps) === 0) {
-            $workflowSteps = $this->em
+            $workflowSteps       = $this->em
                 ->getRepository('OroWorkflowBundle:WorkflowStep')
                 ->findAll();
             $this->workflowSteps = array_reduce(
@@ -233,11 +237,13 @@ class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInt
                     if ($step->getDefinition() === $this->getSalesFunnelWorkflowDefinition()) {
                         $steps[$step->getName()] = $step;
                     }
+
                     return $steps;
                 },
                 []
             );
         }
+
         return $this->workflowSteps;
     }
 
@@ -251,21 +257,31 @@ class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInt
                 ->getRepository('OroWorkflowBundle:WorkflowDefinition')
                 ->find('b2b_flow_sales_funnel');
         }
+
         return $this->workflowDefinition;
     }
 
+    /**
+     * @param Lead $lead
+     * @return string
+     */
     protected function getLeadWorkflowStepName(Lead $lead)
     {
         $name = 'new_lead';
         if ($lead->getStatus()->getName() === 'canceled') {
             $name = 'disqualified_lead';
         }
+
         return $name;
     }
 
+    /**
+     * @param Opportunity $opportunity
+     * @return string
+     */
     protected function getOpportunityWorkflowStepName(Opportunity $opportunity)
     {
-        $name = 'developed_opportunity';
+        $name       = 'developed_opportunity';
         $statusName = $opportunity->getStatus()->getName();
         if ($statusName === 'lost') {
             $name = 'lost_opportunity';
@@ -273,6 +289,7 @@ class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInt
         if ($statusName === 'won') {
             $name = 'won_opportunity';
         }
+
         return $name;
     }
 }
