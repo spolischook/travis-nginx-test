@@ -22,6 +22,8 @@ parameters:
     oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
     oro_organization.form.extension.organization.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationProFormExtension
 
+    oropro_organization.form.extension.organization_list.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationListExtension
+
 services:
     oropro_organization.twig.extension.organization:
         class: %oropro_organization.twig.extension.organization.class%
@@ -135,3 +137,15 @@ services:
             - @twig
         tags:
             - { name: oro_ui.content_provider, enabled: false }
+
+    oropro_organization.form.extension.organization_list:
+        class: %oropro_organization.form.extension.organization_list.class%
+        arguments:
+            - @router
+            - @oro_security.security_facade
+            - @event_dispatcher
+        calls:
+            - [setRequest, [@?request=]]
+        scope: request
+        tags:
+            - { name: form.type_extension, alias: oro_organization_choice_select2 }
