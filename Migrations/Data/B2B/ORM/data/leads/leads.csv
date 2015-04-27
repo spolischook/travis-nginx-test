@@ -4,12 +4,12 @@ Uid,Owner uid,FirstName,Lastname,Email,Address uid,PhoneNumber,CompanyName,Statu
 3,main,Aisha,Lechuga,AishaELechuga@dayrep.com,3,410-794-7279,Avant Garde Interior Designs,new,1,1,3,3
 4,main,Clarence,Golden,ClarenceNGolden@armyspy.com,4,518-441-4708,H.C. Bohack,new,1,1,4,4
 5,main,Stanley,Lyons,StanleyGLyons@armyspy.com,5,804-477-5590,Monk House Sales,new,1,1,5,5
-6,main,Leonida,Dixon,LeonidaMDixon@einrot.com,6,707-348-9487,Life's Gold,new,1,1,6,6
-7,main,Lola,Hall,LolaJHall@einrot.com,7,707-947-4901,Leo's Stereo,new,2,1,7,7
+6,main,Leonida,Dixon,LeonidaMDixon@einrot.com,6,707-348-9487,"Life's Gold",new,1,1,6,6
+7,main,Lola,Hall,LolaJHall@einrot.com,7,707-947-4901,"Leo's Stereo",new,2,1,7,7
 8,main,Darlene,Ramos,DarleneVRamos@armyspy.com,8,912-342-9593,Modern Architecture Design,new,2,1,8,8
 9,main,Jerry,Martin,JerryNMartin@dayrep.com,9,928-862-3347,Allied Radio,new,2,1,9,9
-10,main,Michael,Williams,MichaelMWilliams@cuvox.de,10,608-743-3485,Ruehl No. 925,new,2,1,10,10
-11,main,Marshall,Tacker,MarshallMTacker@armyspy.com,11,979-234-6303,Ole's,new,2,1,11,11
+10,main,Michael,Williams,MichaelMWilliams@cuvox.de,10,608-743-3485,"Ruehl No. 925",new,2,1,10,10
+11,main,Marshall,Tacker,MarshallMTacker@armyspy.com,11,979-234-6303,"Ole's",new,2,1,11,11
 12,main,Phillip,Baker,PhillipABaker@armyspy.com,12,845-508-9364,Gov Mart,new,2,1,12,12
 13,main,David,Stringham,DavidRStringham@armyspy.com,13,330-668-8830,Casa Bonita,new,2,1,13,13
 14,main,Aubrey,Tingley,AubreyHTingley@cuvox.de,14,308-366-0524,Piccolo Mondo,new,2,1,14,14
@@ -18,19 +18,19 @@ Uid,Owner uid,FirstName,Lastname,Email,Address uid,PhoneNumber,CompanyName,Statu
 17,main,Saundra,Hoots,SaundraVHoots@cuvox.de,17,860-677-3172,Monsource,new,2,1,17,17
 18,main,Avery,Viers,AveryDViers@dayrep.com,18,740-597-5172,Formula Gray,new,2,1,18,18
 19,main,Kelly,Feinstein,KellyLFeinstein@teleworm.us,19,650-733-4527,Super Shops,new,2,1,19,19
-20,main,Connie,Huang,ConnieJHuang@einrot.com,20,615-578-0662,Brendle's,new,2,1,20,20
-21,main,Ron,Bennett,RonLBennett@gustr.com,21,678-557-7183,Alexander's,new,2,1,21,21
-22,main,Glenn,Poole,GlennCPoole@cuvox.de,22,770-992-5718,Isaly's,new,2,1,22,22
+20,main,Connie,Huang,ConnieJHuang@einrot.com,20,615-578-0662,"Brendle's",new,2,1,20,20
+21,main,Ron,Bennett,RonLBennett@gustr.com,21,678-557-7183,"Alexander's",new,2,1,21,21
+22,main,Glenn,Poole,GlennCPoole@cuvox.de,22,770-992-5718,"Isaly's",new,2,1,22,22
 23,main,Kenneth,Fowler,KennethMFowler@dayrep.com,23,978-423-5919,Gamma Gas,new,2,1,23,23
 24,main,George,Moreno,GeorgeJMoreno@cuvox.de,24,646-602-2074,County Market,new,3,1,24,24
 25,main,Chris,Heavener,ChrisJHeavener@superrito.com,25,906-774-7957,Cherry & Webb,new,2,1,25,25
-26,main,Mei,Bell,MeiFBell@armyspy.com,26,610-453-4749,Mansmann's Department Store,new,2,1,26,26
+26,main,Mei,Bell,MeiFBell@armyspy.com,26,610-453-4749,"Mansmann's Department Store",new,2,1,26,26
 27,main,Joy,Avey,JoyRAvey@gustr.com,27,469-446-1959,Weenie Beenie,new,2,1,27,27
 28,main,Sam,Jacobson,SamKJacobson@cuvox.de,28,507-263-9822,Allied Radio,new,2,1,28,28
 29,main,Scotty,Williams,ScottyTWilliams@armyspy.com,29,315-791-1273,Harmony House,new,2,1,29,29
 30,main,Paul,Williams,PaulMWilliams@armyspy.com,30,786-217-4707,Fireball,new,2,1,30,30
 31,main,Angela,Sullivan,AngelaRSullivan@dayrep.com,31,919-628-3623,Master Builder Design Services,new,3,1,31,31
-32,main,Gerald,Dickson,GeraldMDickson@dayrep.com,32,919-918-1714,Kent's,new,3,1,32,32
+32,main,Gerald,Dickson,GeraldMDickson@dayrep.com,32,919-918-1714,"Kent's",new,3,1,32,32
 33,main,James,Landers,JamesPLanders@armyspy.com,33,910-770-9457,Casa Bonita,new,3,1,33,33
 34,main,Joe,Hale,JoeLHale@teleworm.us,34,708-326-3396,Formula Grey,new,3,1,34,34
 35,main,Faye,Church,FayeRChurch@einrot.com,35,252-200-2298,Service Merchandise,new,3,1,35,35
@@ -46,11 +46,11 @@ Uid,Owner uid,FirstName,Lastname,Email,Address uid,PhoneNumber,CompanyName,Statu
 45,main,Donna,Sanders,DonnaASanders@superrito.com,45,317-722-4218,Strong Life,new,4,1,5,45
 46,main,Richard,Alderson,RichardSAlderson@dayrep.com,46,937-455-2486,Simply Save,new,4,1,6,46
 47,main,Bob,Baker,BobEBaker@dayrep.com,47,731-415-7808,Wealth Zone Group,new,4,1,7,47
-48,main,Deborah,Archambault,DeborahJArchambault@einrot.com,48,425-675-2248,Carter's Foods,new,4,1,8,48
+48,main,Deborah,Archambault,DeborahJArchambault@einrot.com,48,425-675-2248,"Carter's Foods",new,4,1,8,48
 49,main,Todd,Sears,ToddSSears@einrot.com,49,480-726-7173,Peter Reeves,new,4,1,9,49
 50,main,Emma,Zellers,EmmaWZellers@dayrep.com,50,917-541-1762,Dick Fischers,new,4,1,10,50
 51,main,Claudia,Howard,ClaudiaJHoward@cuvox.de,,217-417-9298,Team Designers and Associates,new,4,1,11,51
-52,main,Ruth,Chavez,RuthJChavez@einrot.com,,586-755-0517,Mr. AG's,new,4,1,12,52
+52,main,Ruth,Chavez,RuthJChavez@einrot.com,,586-755-0517,Mr. "AG's",new,4,1,12,52
 53,main,John,Watkins,JohnSWatkins@gustr.com,,419-468-8316,Pak and Save,new,4,1,13,53
 54,main,Steven,Riding,StevenIRiding@gustr.com,,517-927-8422,Millenia Life,new,4,1,14,54
 55,main,Ronald,Velazquez,RonaldBVelazquez@superrito.com,,906-406-2616,Integra Investment Service,new,4,1,15,55
@@ -80,12 +80,12 @@ Uid,Owner uid,FirstName,Lastname,Email,Address uid,PhoneNumber,CompanyName,Statu
 79,2001,Grace,Ruis,GraceJRuis@armyspy.com,,307-868-1270,Asian Plan,new,5,1,39,10
 80,2001,Shawn,Bryson,ShawnLBryson@gustr.com,,630-242-4645,Matrix Interior Design,qualified,5,1,40,11
 81,2001,Theodore,Knight,TheodoreBKnight@armyspy.com,,913-644-7299,Realty Depot,qualified,5,1,1,12
-82,2001,Dee,Wright,DeeRWright@armyspy.com,,208-674-6632,Lawn N' Order Garden Care,qualified,5,1,2,13
+82,2001,Dee,Wright,DeeRWright@armyspy.com,,208-674-6632,"Lawn N' Order Garden Care",qualified,5,1,2,13
 83,2001,Jay,Key,JayEKey@einrot.com,,661-695-4146,On Cue,qualified,5,1,3,14
 84,2001,Maurice,Sherman,MauriceCSherman@cuvox.de,,919-410-4924,Anderson-Little,qualified,5,1,4,15
 85,2001,Ema,Bade,EmaIBade@einrot.com,,815-399-3013,Buckeye Furniture,qualified,5,1,5,16
 86,2001,Margie,Rupe,MargieGRupe@superrito.com,,660-675-0640,Simple Solutions,qualified,5,1,6,17
-87,2001,David,Dimas,DavidADimas@armyspy.com,,305-710-3927,Mervyn's,qualified,5,1,7,18
+87,2001,David,Dimas,DavidADimas@armyspy.com,,305-710-3927,"Mervyn's",qualified,5,1,7,18
 88,2001,Sidney,Price,SidneyMPrice@armyspy.com,,202-829-9187,DGS HomeSource,qualified,5,1,8,19
 89,2001,Elease,Moore,EleaseJMoore@gustr.com,,605-694-4291,HomeBase,qualified,5,1,9,20
 90,2001,Karen,Sprague,KarenDSprague@dayrep.com,,859-881-5712,Sound Advice,canceled,5,1,10,21

@@ -5,20 +5,32 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Doctrine\ORM\Events;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 
 use OroCRM\Bundle\SalesBundle\Entity\Lead;
 use OroCRM\Bundle\SalesBundle\Entity\Opportunity;
+use OroCRM\Bundle\SalesBundle\Entity\OpportunityStatus;
 use OroCRM\Bundle\SalesBundle\Entity\SalesFunnel;
 
 use Oro\Bundle\UserBundle\Entity\User;
+use OroCRMPro\Bundle\DemoDataBundle\EventListener\SalesFunnelWorkflowSubscriber;
+use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInterface
 {
+    /** @var WorkFlowStep[] */
+    protected $workflowSteps;
+
+    /** @var WorkflowDefinition */
+    protected $workflowDefinition;
+
     /** @var WorkflowManager */
     protected $workflowManager;
 
@@ -49,23 +61,58 @@ class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInt
     {
         $data = $this->getData();
         $manager->getClassMetadata('OroCRM\Bundle\SalesBundle\Entity\SalesFunnel')->setLifecycleCallbacks([]);
+
         foreach ($data['leads'] as $funnelData) {
-            if (empty($funnelData['lead uid'])) {
-                throw new \InvalidArgumentException('Lead uid can n ot be empty.');
-            }
+            $lead        = $this->getLeadReference($funnelData['lead uid']);
             $salesFunnel = $this->createSalesFunnel($funnelData);
+            $salesFunnel->setLead($lead);
+            $step        = 'start_from_lead';
+            $parameters  = $this->makeFLowParameters(
+                ['lead' => $lead],
+                $salesFunnel->getOwner(),
+                $lead->getCreatedAt()
+            );
+
+            if (null !== $salesFunnelItem = $this->getSalesFunnelItem($step, $salesFunnel, $parameters, $lead)) {
+                $currentStep = $this->getWorkflowStep($this->getLeadWorkflowStepName($lead));
+                $salesFunnelItem->setCurrentStep($currentStep);
+                $lead->setWorkflowItem($salesFunnelItem);
+                $salesFunnel->setWorkflowStep($currentStep);
+            }
             $manager->persist($salesFunnel);
-            //$this->loadLeadFlow($salesFunnel, $funnelData);
         }
         $manager->flush();
 
+
         foreach ($data['opportunities'] as $funnelData) {
-            if (empty($funnelData['opportunity uid'])) {
-                throw new \InvalidArgumentException('Opportunity uid can not be empty.');
-            }
+            $opportunity = $this->getOpportunityReference($funnelData['opportunity uid']);
             $salesFunnel = $this->createSalesFunnel($funnelData);
+            $step        = 'start_from_opportunity';
+            $parameters  = $this->makeFLowParameters(
+                ['opportunity' => $opportunity],
+                $salesFunnel->getOwner(),
+                $opportunity->getCreatedAt()
+            );
+
+            if (null !== $salesFunnelItem = $this->getSalesFunnelItem($step, $salesFunnel, $parameters, $opportunity)) {
+                $salesFunnelItem->getData()
+                    ->set('customer_need', $funnelData['customer need'])
+                    ->set('proposed_solution', $funnelData['proposed solution']);
+                $currentStep = $this->getWorkflowStep($this->getOpportunityWorkflowStepName($opportunity));
+                if ($currentStep->getName() === 'won_opportunity') {
+                    $salesFunnelItem->getData()
+                        ->set('close_revenue', $funnelData['close revenue'])
+                        ->set('probability', 1);
+                } elseif ($currentStep->getName() === 'lost_opportunity') {
+                    $salesFunnelItem->getData()
+                        ->set('close_revenue', 0)
+                        ->set('probability', 0);
+                }
+                $salesFunnelItem->setCurrentStep($currentStep);
+                $opportunity->setWorkflowItem($salesFunnelItem);
+                $salesFunnel->setWorkflowStep($currentStep);
+            }
             $manager->persist($salesFunnel);
-            //$this->loadOpportunityFlow($salesFunnel, $funnelData);
         }
         $manager->flush();
     }
@@ -93,54 +140,8 @@ class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInt
         if (!empty($funnelData['channel uid'])) {
             $salesFunnel->setDataChannel($this->getDataChannelReference($funnelData['channel uid']));
         }
-        if (!empty($funnelData['lead uid'])) {
-            $salesFunnel->setLead($this->getLeadReference($funnelData['lead uid']));
-        }
-        if (!empty($funnelData['opportunity uid'])) {
-            $salesFunnel->setOpportunity($this->getOpportunityReference($funnelData['opportunity uid']));
-        }
 
         return $salesFunnel;
-    }
-
-    /**
-     * @param SalesFunnel $funnel
-     * @param array       $funnelData
-     * @throws \Exception
-     */
-    protected function loadLeadFlow(SalesFunnel $funnel, array $funnelData)
-    {
-        $step       = 'start_from_lead';
-        $lead       = $funnel->getLead();
-        $parameters = $this->makeFLowParameters(['lead' => $lead], $funnel->getOwner());
-
-        if (null === $salesFunnelItem = $this->getSalesFunnelItem($step, $funnel, $parameters, $lead)) {
-            return;
-        }
-
-        if ($this->isTransitionAllowed($salesFunnelItem, 'qualify')) {
-            $this->workflowManager->transit($salesFunnelItem, 'qualify');
-        } else {
-            return;
-        }
-        $this->processSalesFunnelItem($salesFunnelItem, $funnelData, $lead);
-    }
-
-    /**
-     * @param SalesFunnel $funnel
-     * @param array       $funnelData
-     * @throws \Exception
-     */
-    protected function loadOpportunityFlow(SalesFunnel $funnel, array $funnelData)
-    {
-        $step        = 'start_from_opportunity';
-        $opportunity = $funnel->getOpportunity();
-        $parameters  = $this->makeFLowParameters(['opportunity' => $opportunity], $funnel->getOwner());
-
-        if (null === $salesFunnelItem = $this->getSalesFunnelItem($step, $funnel, $parameters, $opportunity)) {
-            return;
-        }
-        $this->processSalesFunnelItem($salesFunnelItem, $funnelData, $opportunity);
     }
 
     /**
@@ -177,74 +178,21 @@ class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInt
     }
 
     /**
-     * @param array $parameters
-     * @param User  $owner
+     * @param array     $parameters
+     * @param User      $owner
+     * @param \DateTime $startDate
      * @return array
      */
-    protected function makeFlowParameters(array $parameters, User $owner)
+    protected function makeFlowParameters(array $parameters, User $owner, \DateTime $startDate)
     {
         return array_merge(
             [
                 'sales_funnel'            => null,
                 'sales_funnel_owner'      => $owner,
-                'sales_funnel_start_date' => new \DateTime(),
+                'sales_funnel_start_date' => $startDate,
             ],
             $parameters
         );
-    }
-
-    /**
-     * @param WorkflowItem     $salesFunnelItem
-     * @param array            $funnelData
-     * @param Opportunity|Lead $entity
-     * @throws \Exception
-     * @throws \Oro\Bundle\WorkflowBundle\Exception\WorkflowException
-     */
-    protected function processSalesFunnelItem(WorkflowItem $salesFunnelItem, array $funnelData, $entity)
-    {
-        $transition = $funnelData['transition'];
-        $salesFunnelItem->getData()
-            ->set('budget_amount', $funnelData['budget amount'])
-            ->set('customer_need', $funnelData['customer need'])
-            ->set('proposed_solution', $funnelData['proposed solution'])
-            ->set('probability', $funnelData['probability']);
-
-        if ($this->isTransitionsAllowed($salesFunnelItem, $transition)) {
-            $this->workflowManager->transit($salesFunnelItem, 'develop');
-
-            if (in_array($transition, ['close_as_won', 'close_as_lost'])) {
-                $closeDate = $this->generateCloseDate($entity->getUpdatedAt());
-                if ($funnelData['close_revenue'] > 0) {
-                    $salesFunnelItem->getData()
-                        ->set('close_revenue', $funnelData['close revenue'])
-                        ->set('close_date', $closeDate);
-                }
-                if ($transition === 'close_as_won') {
-                    if ($this->isTransitionAllowed($salesFunnelItem, 'close_as_won')) {
-                        $this->workflowManager->transit($salesFunnelItem, 'close_as_won');
-                    }
-                } elseif ($transition === 'close_as_lost') {
-                    $salesFunnelItem->getData()
-                        ->set('close_reason_name', 'cancelled')
-                        ->set('close_date', $closeDate);
-                    if ($this->isTransitionAllowed($salesFunnelItem, 'close_as_lost')) {
-                        $this->workflowManager->transit($salesFunnelItem, 'close_as_lost');
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * @param WorkflowItem $workflowItem
-     * @param string       $transition
-     * @return bool
-     */
-    protected function isTransitionAllowed(WorkflowItem $workflowItem, $transition)
-    {
-        $workflow = $this->workflowManager->getWorkflow($workflowItem);
-
-        return $workflow->isTransitionAllowed($workflowItem, $transition);
     }
 
     /**
@@ -259,13 +207,72 @@ class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInt
     }
 
     /**
-     * @param WorkflowItem $salesFunnelItem
-     * @param              $transition
-     * @return bool
+     * @param $name
+     * @return WorkflowStep
+     * @throws EntityNotFoundException
      */
-    private function isTransitionsAllowed(WorkflowItem $salesFunnelItem, $transition)
+    protected function getWorkflowStep($name)
     {
-        return $this->isTransitionAllowed($salesFunnelItem, 'develop')
-        && in_array($transition, ['develop', 'close_as_won', 'close_as_lost']);
+        $steps = $this->getFlowSalesFunnelsSteps();
+        if (!isset($steps[$name])) {
+            throw new \InvalidArgumentException();
+        }
+        return $steps[$name];
+    }
+
+    protected function getFlowSalesFunnelsSteps()
+    {
+        if (count($this->workflowSteps) === 0) {
+            $workflowSteps = $this->em
+                ->getRepository('OroWorkflowBundle:WorkflowStep')
+                ->findAll();
+            $this->workflowSteps = array_reduce(
+                $workflowSteps,
+                function ($steps, $step) {
+                    /** @var WorkflowStep $step */
+                    if ($step->getDefinition() === $this->getSalesFunnelWorkflowDefinition()) {
+                        $steps[$step->getName()] = $step;
+                    }
+                    return $steps;
+                },
+                []
+            );
+        }
+        return $this->workflowSteps;
+    }
+
+    /**
+     * @return WorkflowDefinition
+     */
+    protected function getSalesFunnelWorkflowDefinition()
+    {
+        if (null === $this->workflowDefinition) {
+            $this->workflowDefinition = $this->em
+                ->getRepository('OroWorkflowBundle:WorkflowDefinition')
+                ->find('b2b_flow_sales_funnel');
+        }
+        return $this->workflowDefinition;
+    }
+
+    protected function getLeadWorkflowStepName(Lead $lead)
+    {
+        $name = 'new_lead';
+        if ($lead->getStatus()->getName() === 'canceled') {
+            $name = 'disqualified_lead';
+        }
+        return $name;
+    }
+
+    protected function getOpportunityWorkflowStepName(Opportunity $opportunity)
+    {
+        $name = 'developed_opportunity';
+        $statusName = $opportunity->getStatus()->getName();
+        if ($statusName === 'lost') {
+            $name = 'lost_opportunity';
+        }
+        if ($statusName === 'won') {
+            $name = 'won_opportunity';
+        }
+        return $name;
     }
 }
