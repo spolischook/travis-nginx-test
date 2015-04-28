@@ -39,7 +39,7 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
         $statuses = $this->loadLeadStatuses($manager);
         $manager->getClassMetadata('OroCRM\Bundle\SalesBundle\Entity\Lead')->setLifecycleCallbacks([]);
         foreach ($data as $leadData) {
-            $user = $this->getUserReference($leadData['owner uid']);
+            $user = $this->getUserReference($leadData['user uid']);
             $this->setSecurityContext($user);
 
             $lead = $this->createLead($leadData, $statuses, $user);
@@ -102,7 +102,7 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
                 'address uid',
                 'lead source uid',
                 'status name',
-                'owner uid',
+                'user uid',
                 'channel uid',
                 'customer uid',
                 'contact uid'
