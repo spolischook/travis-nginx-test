@@ -81,7 +81,7 @@ class LoadDefaultUserData extends AbstractFixture implements OrderedFixtureInter
 
         foreach ($data['users'] as $userData) {
             $businessUnit = new ArrayCollection([$this->getBusinessUnitReference($userData['business unit uid'])]);
-            $this->createUser($this->em, $userRole, $businessUnit, $userData);
+            $this->createUser($userRole, $businessUnit, $userData);
         }
 
         $mainUser = $this->getMainUser();
@@ -99,22 +99,17 @@ class LoadDefaultUserData extends AbstractFixture implements OrderedFixtureInter
     protected function addUsers(Role $role, ArrayCollection $businessUnits, array $data = [])
     {
         foreach ($data as $userData) {
-            $this->createUser($this->em, $role, $businessUnits, $userData);
+            $this->createUser($role, $businessUnits, $userData);
         }
     }
 
     /**
-     * @param ObjectManager $manager
      * @param array $userData
      * @param Role $role
      * @param ArrayCollection $businessUnits
      */
-    protected function createUser(
-        ObjectManager $manager,
-        Role $role,
-        ArrayCollection $businessUnits,
-        array $userData = []
-    ) {
+    protected function createUser(Role $role, ArrayCollection $businessUnits, array $userData = [])
+    {
         $organization = $this->getOrganizationReference($userData['organization uid']);
         /** @var User $user */
         $user = $this->userManager->createUser();
@@ -130,7 +125,7 @@ class LoadDefaultUserData extends AbstractFixture implements OrderedFixtureInter
         /**
          * Setup manual properties(Created, Updated, LoginCount) for entity
          */
-        $manager->getClassMetadata(get_class($user))->setLifecycleCallbacks([]);
+        $this->em->getClassMetadata(get_class($user))->setLifecycleCallbacks([]);
         $user->setCreatedAt($this->generateCreatedDate());
         $user->setUpdatedAt($this->generateUpdatedDate($user->getCreatedAt()));
         $user->setLoginCount(0);
@@ -145,7 +140,7 @@ class LoadDefaultUserData extends AbstractFixture implements OrderedFixtureInter
         $this->userManager->updateUser($user);
 
         $this->setUserReference($userData['uid'], $user);
-        $manager->flush();
+        $this->em->flush();
     }
 
     /**

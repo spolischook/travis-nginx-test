@@ -22,6 +22,19 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getExcludeProperties()
+    {
+        return array_merge(
+            parent::getExcludeProperties(),
+            [
+                'organization uid'
+            ]
+        );
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
@@ -36,6 +49,7 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
                 ->setEntities()
                 ->setChannelType(DefaultChannelData::B2B_CHANNEL_TYPE)
                 ->setName($channelData['name'])
+                ->setOwner($this->getOrganizationReference($channelData['organization uid']))
                 ->getChannel();
             $this->addReference('Chanel:' . $channelData['uid'], $channel);
             $manager->persist($channel);

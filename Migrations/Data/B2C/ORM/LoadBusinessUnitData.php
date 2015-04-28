@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 class LoadBusinessUnitData extends AbstractFixture implements OrderedFixtureInterface
@@ -70,7 +70,7 @@ class LoadBusinessUnitData extends AbstractFixture implements OrderedFixtureInte
                 $businessUnit = $this->getMainBusinessUnit();
                 $main = false;
             } else {
-                $businessUnit = new Organization();
+                $businessUnit = new BusinessUnit();
             }
 
             $organization = $this->getOrganizationReference($mainBusinessUnitData['organization uid']);

@@ -31,6 +31,7 @@ class LoadOrganizationData extends AbstractFixture implements OrderedFixtureInte
                 $main = false;
             } else {
                 $organization = new Organization();
+                $organization->addUser($this->getMainUser());
             }
             $organization->setEnabled(true);
             $this->setObjectValues($organization, $organizationData);
