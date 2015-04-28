@@ -6,13 +6,4 @@ use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\LoadReportData as B2
 
 class LoadReportData extends B2CLoadReportData
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadMainData',
-        ];
-    }
 }

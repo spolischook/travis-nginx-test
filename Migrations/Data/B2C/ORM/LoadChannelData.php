@@ -51,7 +51,7 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
                 ->setName($channelData['name'])
                 ->setOwner($this->getOrganizationReference($channelData['organization uid']))
                 ->getChannel();
-            $this->addReference('Channel:' . $channelData['uid'], $channel);
+            $this->setChannelReference($channelData['uid'], $channel);
             $manager->persist($channel);
         }
         $manager->flush();

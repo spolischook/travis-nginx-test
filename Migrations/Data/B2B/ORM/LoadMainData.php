@@ -18,22 +18,27 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
     {
         return [
             static::B2C_NAMESPACE . '\\LoadOrganizationData',
+            static::B2C_NAMESPACE . '\\LoadBusinessUnitData',
             static::B2C_NAMESPACE . '\\LoadDefaultUserData',
             static::B2C_NAMESPACE . '\\LoadPinBarData',
-            static::B2C_NAMESPACE . '\\LoadBusinessUnitData',
             static::B2C_NAMESPACE . '\\LoadGroupData',
+            static::B2C_NAMESPACE . '\\LoadEmailTemplateData',
+            static::B2C_NAMESPACE . '\\LoadEmailNotificationData',
             static::B2C_NAMESPACE . '\\NavigationHistory\LoadNavigationHistoryItemData',
+            /** Tag data */
             static::B2C_NAMESPACE . '\\Tag\LoadTagData',
             static::B2C_NAMESPACE . '\\Tag\LoadAccountTagData',
             static::B2C_NAMESPACE . '\\Tag\LoadContactTagData',
+            /** Marketing data */
             static::B2C_NAMESPACE . '\\LoadMarketingSegmentData',
             static::B2C_NAMESPACE . '\\LoadMarketingListData',
+            /** Campaign data */
             static::B2C_NAMESPACE . '\\LoadCampaignData',
             static::B2C_NAMESPACE . '\\LoadCampaignEmailData',
-            static::B2C_NAMESPACE . '\\LoadEmailTemplateData',
-            static::B2C_NAMESPACE . '\\LoadEmailNotificationData',
+            /** User data */
             static::B2C_NAMESPACE . '\\LoadUsersCalendarData',
             static::B2C_NAMESPACE . '\\LoadUsersTasksData',
+            /** Mailchimp data*/
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpIntegrationData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpCampaignData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpSubscriberListData',

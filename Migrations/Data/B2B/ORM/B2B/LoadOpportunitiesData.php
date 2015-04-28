@@ -1,25 +1,24 @@
 <?php
 
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM\B2B;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\SalesBundle\Entity\Opportunity;
-use OroCRM\Bundle\SalesBundle\Entity\OpportunityCloseReason;
 use OroCRM\Bundle\SalesBundle\Entity\OpportunityStatus;
+use OroCRM\Bundle\SalesBundle\Entity\OpportunityCloseReason;
 
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureInterface
+class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInterface
 {
     const DEFAULT_OPPORTUNITY_STATUS = 'in_progress';
-    const WON_OPPORTUNITY_STATUS     = 'won';
-    const LOST_OPPORTUNITY_STATUS    = 'lost';
+    const WON_OPPORTUNITY_STATUS = 'won';
+    const LOST_OPPORTUNITY_STATUS = 'lost';
 
     /** @var OpportunityCloseReason[] */
     protected $closeReasons;
@@ -28,13 +27,12 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
     protected $statuses;
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
-    public function getDependencies()
+    protected function getData()
     {
         return [
-            __NAMESPACE__ . '\\LoadLeadsData',
-            __NAMESPACE__ . '\\LoadB2bCustomerData',
+            'opportunities' => $this->loadData('b2b/opportunities.csv'),
         ];
     }
 
@@ -43,9 +41,9 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
      */
     public function load(ObjectManager $manager)
     {
-        $data = $this->loadData('leads/opportunities.csv');
+        $data = $this->getData();
         $manager->getClassMetadata('OroCRM\Bundle\SalesBundle\Entity\Opportunity')->setLifecycleCallbacks([]);
-        foreach ($data as $opportunityData) {
+        foreach ($data['opportunities'] as $opportunityData) {
             $user = $this->getUserReference($opportunityData['user uid']);
             $this->setSecurityContext($user);
             $opportunity = $this->createOpportunity($opportunityData, $user);
@@ -57,15 +55,15 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
 
     protected function createOpportunity(array $opportunityData, User $user)
     {
-        $contact  = $this->getContactReference($opportunityData['contact uid']);
+        $contact = $this->getContactReference($opportunityData['contact uid']);
         $customer = $this->getB2bCustomerReference($opportunityData['customer uid']);
-        $created  = $this->generateCreatedDate();
+        $created = $this->generateCreatedDate();
         /** @var Organization $organization */
         $organization = $user->getOrganization();
-        $status       = $this->getStatus($opportunityData['status']);
+        $status = $this->getStatus($opportunityData['status']);
 
         $opportunity = new Opportunity();
-        $updated     = $this->generateUpdatedDate($created);
+        $updated = $this->generateUpdatedDate($created);
         $opportunity->setName($contact->getFirstName() . ' ' . $contact->getLastName())
             ->setContact($contact)
             ->setOwner($user)
@@ -80,7 +78,7 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
         }
 
         if (!empty($opportunityData['channel uid'])) {
-            $opportunity->setDataChannel($this->getDataChannelReference($opportunityData['channel uid']));
+            $opportunity->setDataChannel($this->getChannelReference($opportunityData['channel uid']));
         }
         if (!empty($opportunityData['lead uid'])) {
             $opportunity->setLead($this->getLeadReference($opportunityData['lead uid']));
@@ -145,7 +143,7 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
     protected function loadCloseReasons()
     {
         $opportunityCloseReasons = $this->em->getRepository('OroCRMSalesBundle:OpportunityCloseReason')->findAll();
-        $this->closeReasons      = array_reduce(
+        $this->closeReasons = array_reduce(
             $opportunityCloseReasons,
             function ($reasons, $reason) {
                 /** @var OpportunityCloseReason $reason */
@@ -185,7 +183,7 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
     protected function loadStatuses()
     {
         $opportunityStatuses = $this->em->getRepository('OroCRMSalesBundle:OpportunityStatus')->findAll();
-        $this->statuses      = array_reduce(
+        $this->statuses = array_reduce(
             $opportunityStatuses,
             function ($statuses, $status) {
                 /** @var OpportunityStatus $status */
@@ -198,7 +196,7 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
     }
 
     /**
-     * @param Opportunity       $opportunity
+     * @param Opportunity $opportunity
      * @param OpportunityStatus $status
      */
     protected function setOpportunityStatus(Opportunity $opportunity, OpportunityStatus $status)
@@ -214,5 +212,13 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
             default:
                 break;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 54;
     }
 }

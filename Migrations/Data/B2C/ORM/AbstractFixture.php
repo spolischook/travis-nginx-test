@@ -111,15 +111,6 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
     }
 
     /**
-     * @param $channelUid
-     * @return Channel
-     */
-    protected function getDataChannelReference($channelUid)
-    {
-        return $this->getReference('Channel:' . $channelUid);
-    }
-
-    /**
      * @param $object
      * @param $fieldName
      * @param $value

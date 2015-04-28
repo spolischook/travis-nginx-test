@@ -32,7 +32,7 @@ class LoadRFMMetricData extends AbstractFixture implements OrderedFixtureInterfa
         $data = $this->getData();
 
         foreach ($data['rmf_metrics'] as $metricData) {
-            $dataChannel = $this->getIntegrationDataChannelReference($metricData['integration uid']);
+            $dataChannel = $this->getChannelReference($metricData['integration uid']);
             $category = new RFMMetricCategory();
             $category->setCategoryIndex($metricData['index'])
                 ->setChannel($dataChannel)
