@@ -1,4 +1,5 @@
 <?php
+
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -6,10 +7,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
+
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
-use OroCRM\Bundle\SalesBundle\Entity\LeadStatus;
 use OroCRM\Bundle\SalesBundle\Entity\Lead;
+use OroCRM\Bundle\SalesBundle\Entity\LeadStatus;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
@@ -32,7 +35,7 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $data = $this->loadData('leads/leads.csv');
+        $data     = $this->loadData('leads/leads.csv');
         $statuses = $this->loadLeadStatuses($manager);
         $manager->getClassMetadata('OroCRM\Bundle\SalesBundle\Entity\Lead')->setLifecycleCallbacks([]);
         foreach ($data as $leadData) {
@@ -49,17 +52,17 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
     /**
      * @param array $leadData
      * @param array $statuses
-     * @param User $user
+     * @param User  $user
      * @return Lead
      */
     protected function createLead(array $leadData, array $statuses, User $user)
     {
-        $status = isset($statuses[$leadData['status name']])
+        $status   = isset($statuses[$leadData['status name']])
             ? $statuses[$leadData['status name']]
             : $statuses[self::DEFAULT_LEAD_STATUS];
-        $source = $this->getLeadSource($leadData);
-        $created = $this->generateCreatedDate();
-        $address = $this->getAddress($leadData);
+        $source   = $this->getLeadSource($leadData);
+        $created  = $this->generateCreatedDate();
+        $address  = $this->getAddress($leadData);
         $customer = $this->getB2bCustomer($leadData);
         /** @var Organization $organization */
         $organization = $user->getOrganization();
@@ -84,6 +87,7 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
             ->setCreatedAt($created)
             ->setUpdatedAt($this->generateUpdatedDate($created));
         $this->setObjectValues($lead, $leadData);
+
         return $lead;
     }
 
@@ -113,11 +117,13 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
     protected function loadLeadStatuses(ObjectManager $manager)
     {
         $leadStatuses = $manager->getRepository('OroCRMSalesBundle:LeadStatus')->findAll();
+
         return array_reduce(
             $leadStatuses,
             function ($statuses, $status) {
                 /** @var LeadStatus $status */
                 $statuses[$status->getName()] = $status;
+
                 return $statuses;
             },
             []
@@ -133,6 +139,7 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
         if (!$leadData['lead source uid']) {
             return null;
         }
+
         return $this->getLeadSourceReference($leadData['lead source uid']);
     }
 
@@ -145,6 +152,7 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
         if (!$leadData['address uid']) {
             return null;
         }
+
         return $this->getAddressReference($leadData['address uid']);
     }
 
@@ -157,6 +165,7 @@ class LoadLeadsData extends AbstractFixture implements DependentFixtureInterface
         if (!$leadData['customer uid']) {
             return null;
         }
+
         return $this->getB2bCustomerReference($leadData['customer uid']);
     }
 

@@ -2,23 +2,24 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
+
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\SalesBundle\Entity\Opportunity;
-
 use OroCRM\Bundle\SalesBundle\Entity\OpportunityCloseReason;
 use OroCRM\Bundle\SalesBundle\Entity\OpportunityStatus;
+
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureInterface
 {
     const DEFAULT_OPPORTUNITY_STATUS = 'in_progress';
-    const WON_OPPORTUNITY_STATUS = 'won';
-    const LOST_OPPORTUNITY_STATUS = 'lost';
+    const WON_OPPORTUNITY_STATUS     = 'won';
+    const LOST_OPPORTUNITY_STATUS    = 'lost';
 
     /** @var OpportunityCloseReason[] */
     protected $closeReasons;
@@ -56,15 +57,15 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
 
     protected function createOpportunity(array $opportunityData, User $user)
     {
-        $contact     = $this->getContactReference($opportunityData['contact uid']);
-        $customer    = $this->getB2bCustomerReference($opportunityData['customer uid']);
-        $created = $this->generateCreatedDate();
+        $contact  = $this->getContactReference($opportunityData['contact uid']);
+        $customer = $this->getB2bCustomerReference($opportunityData['customer uid']);
+        $created  = $this->generateCreatedDate();
         /** @var Organization $organization */
         $organization = $user->getOrganization();
-        $status = $this->getStatus($opportunityData['status']);
+        $status       = $this->getStatus($opportunityData['status']);
 
         $opportunity = new Opportunity();
-        $updated = $this->generateUpdatedDate($created);
+        $updated     = $this->generateUpdatedDate($created);
         $opportunity->setName($contact->getFirstName() . ' ' . $contact->getLastName())
             ->setContact($contact)
             ->setOwner($user)
@@ -92,6 +93,7 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
 
         $this->setObjectValues($opportunity, $opportunityData);
         $this->setOpportunityStatus($opportunity, $status);
+
         return $opportunity;
     }
 
@@ -122,6 +124,7 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
     protected function getCloseReason($name)
     {
         $closeReasons = $this->getCloseReasons();
+
         return isset($closeReasons[$name])
             ? $closeReasons[$name]
             : null;
@@ -135,17 +138,19 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
         if (count($this->closeReasons) === 0) {
             $this->loadCloseReasons();
         }
+
         return $this->closeReasons;
     }
 
     protected function loadCloseReasons()
     {
         $opportunityCloseReasons = $this->em->getRepository('OroCRMSalesBundle:OpportunityCloseReason')->findAll();
-        $this->closeReasons = array_reduce(
+        $this->closeReasons      = array_reduce(
             $opportunityCloseReasons,
             function ($reasons, $reason) {
                 /** @var OpportunityCloseReason $reason */
                 $reasons[$reason->getName()] = $reason;
+
                 return $reasons;
             },
             []
@@ -159,6 +164,7 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
     protected function getStatus($name)
     {
         $statuses = $this->getStatuses();
+
         return isset($statuses[$name])
             ? $statuses[$name]
             : $statuses[self::DEFAULT_OPPORTUNITY_STATUS];
@@ -172,17 +178,19 @@ class LoadOpportunitiesData extends AbstractFixture implements DependentFixtureI
         if (count($this->statuses) === 0) {
             $this->loadStatuses();
         }
+
         return $this->statuses;
     }
 
     protected function loadStatuses()
     {
         $opportunityStatuses = $this->em->getRepository('OroCRMSalesBundle:OpportunityStatus')->findAll();
-        $this->statuses = array_reduce(
+        $this->statuses      = array_reduce(
             $opportunityStatuses,
             function ($statuses, $status) {
                 /** @var OpportunityStatus $status */
                 $statuses[$status->getName()] = $status;
+
                 return $statuses;
             },
             []

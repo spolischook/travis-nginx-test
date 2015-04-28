@@ -46,10 +46,10 @@ class LoadB2bCustomerData extends AbstractFixture implements DependentFixtureInt
      */
     protected function createCustomer(array $customerData)
     {
-        $organization = $this->getOrganizationReference($customerData['organization uid']);
-        $created = $this->generateCreatedDate();
+        $organization    = $this->getOrganizationReference($customerData['organization uid']);
+        $created         = $this->generateCreatedDate();
         $shippingAddress = $this->getAddressReference($customerData['shipping address uid']);
-        $contact = $this->getContactReference($customerData['contact uid']);
+        $contact         = $this->getContactReference($customerData['contact uid']);
 
         $billingAddress = $customerData['shipping address uid'] === $customerData['billing address uid']
             ? clone $shippingAddress
@@ -69,6 +69,7 @@ class LoadB2bCustomerData extends AbstractFixture implements DependentFixtureInt
         if (!empty($customerData['channel uid'])) {
             $customer->setDataChannel($this->getDataChannel($customerData['channel uid']));
         }
+
         return $customer;
     }
 

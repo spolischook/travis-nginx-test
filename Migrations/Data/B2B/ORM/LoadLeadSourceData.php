@@ -15,7 +15,7 @@ class LoadLeadSourceData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        $data = $this->loadData('leads/sources.csv');
+        $data      = $this->loadData('leads/sources.csv');
         $className = ExtendHelper::buildEnumValueClassName('lead_source');
         /** @var EnumValueRepository $enumRepo */
         $enumRepo = $manager->getRepository($className);

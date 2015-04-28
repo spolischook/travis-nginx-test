@@ -4,24 +4,25 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Doctrine\ORM\Events;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 
 use OroCRM\Bundle\SalesBundle\Entity\Lead;
 use OroCRM\Bundle\SalesBundle\Entity\Opportunity;
 use OroCRM\Bundle\SalesBundle\Entity\OpportunityStatus;
 use OroCRM\Bundle\SalesBundle\Entity\SalesFunnel;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use OroCRMPro\Bundle\DemoDataBundle\EventListener\SalesFunnelWorkflowSubscriber;
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadSalesFunnelData extends AbstractFixture implements DependentFixtureInterface
 {
