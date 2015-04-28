@@ -2,20 +2,16 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Form\Extension;
 
-use Doctrine\Common\Collections\Collection;
-
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-
-use OroPro\Bundle\OrganizationBundle\Event\OrganizationListEvent;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use OroPro\Bundle\OrganizationBundle\Form\Type\OrganizationChoiceType;
 
 class OrganizationListExtension extends AbstractTypeExtension
@@ -29,22 +25,22 @@ class OrganizationListExtension extends AbstractTypeExtension
     /** @var SecurityFacade */
     protected $securityFacade;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
+    /** @var SecurityContextInterface */
+    protected $securityContext;
 
     /**
      * @param RouterInterface $router
      * @param SecurityFacade $securityFacade
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param SecurityContextInterface $securityContext
      */
     public function __construct(
         RouterInterface $router,
         SecurityFacade $securityFacade,
-        EventDispatcherInterface $eventDispatcher
+        SecurityContextInterface $securityContext
     ) {
         $this->router = $router;
         $this->securityFacade = $securityFacade;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -67,31 +63,34 @@ class OrganizationListExtension extends AbstractTypeExtension
 
         list($class, $method) = explode('::', $controllerData['_controller']);
 
-        if (!$this->securityFacade->isClassMethodGranted($class, $method)) {
-            $resolver->setDefaults(['choices' => []]);
-
+        $annotation = $this->securityFacade->getClassMethodAnnotation($class, $method);
+        if (!$annotation) {
             return;
         }
 
+        $resolver->setDefaults(['choices' => $this->getChoices($annotation)]);
+    }
+
+    /**
+     * @param Acl $annotation Acl to apply
+     *
+     * @return array
+     */
+    protected function getChoices(Acl $annotation)
+    {
+        /** @var Organization[] $organizations */
         $organizations = $this->securityFacade->getLoggedUser()->getOrganizations(true);
-        $event = new OrganizationListEvent($controllerData['_route'], $organizations);
-        $this->eventDispatcher->dispatch(OrganizationListEvent::NAME, $event);
+        $choices = [];
 
-        $resolver->setDefaults(['choices' => $event->getOrganizations()]);
-        $resolver->setNormalizers(
-            [
-                'choices' => function (Options $options, Collection $value) {
-                    $choices = [];
+        foreach ($organizations as $organization) {
+            if (!$this->securityContext->isGranted($annotation->getId(), $organization)) {
+                continue;
+            }
 
-                    /** @var Organization $organization */
-                    foreach ($value as $organization) {
-                        $choices[$organization->getId()] = $organization->getName();
-                    }
+            $choices[$organization->getId()] = $organization->getName();
+        }
 
-                    return $choices;
-                },
-            ]
-        );
+        return $choices;
     }
 
     /**
@@ -109,7 +108,7 @@ class OrganizationListExtension extends AbstractTypeExtension
         }
 
         $parts = parse_url($fromUrl);
-        if (!$parts) {
+        if (empty($parts['path'])) {
             return null;
         }
 

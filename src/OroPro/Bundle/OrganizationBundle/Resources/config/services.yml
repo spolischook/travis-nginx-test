@@ -24,6 +24,7 @@ parameters:
 
     oropro_organization.form.extension.organization_list.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationListExtension
 
+    oropro_organization.acl.voter.organization.class: OroPro\Bundle\OrganizationBundle\Acl\Voter\OrganizationAnnotationVoter
 services:
     oropro_organization.twig.extension.organization:
         class: %oropro_organization.twig.extension.organization.class%
@@ -143,9 +144,17 @@ services:
         arguments:
             - @router
             - @oro_security.security_facade
-            - @event_dispatcher
+            - @security.context
         calls:
             - [setRequest, [@?request=]]
         scope: request
         tags:
             - { name: form.type_extension, alias: oro_organization_choice_select2 }
+
+    oropro_organization.acl.voter.organization:
+        class: %oropro_organization.acl.voter.organization.class%
+        arguments:
+            - @oro_security.acl.annotation_provider
+            - %oro_organization.organization.entity.class%
+        tags:
+            - { name: security.voter }
