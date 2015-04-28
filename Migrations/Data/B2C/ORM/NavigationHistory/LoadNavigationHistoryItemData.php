@@ -105,6 +105,6 @@ class LoadNavigationHistoryItemData extends AbstractFixture implements OrderedFi
      */
     public function getOrder()
     {
-        return 23;
+        return 21;
     }
 }

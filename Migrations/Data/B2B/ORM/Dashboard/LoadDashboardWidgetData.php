@@ -7,13 +7,4 @@ use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Dashboard\LoadDashbo
 
 class LoadDashboardWidgetData extends B2CLoadDashboardWidgetData
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            __NAMESPACE__ . '\\LoadDashboardData',
-        ];
-    }
 }

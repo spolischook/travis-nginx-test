@@ -345,9 +345,9 @@ abstract class EntityReferences extends DoctrineAbstractFixture
      * @return Channel
      * @throws EntityNotFoundException
      */
-    protected function getIntegrationDataChannelReference($uid)
+    protected function getChannelReference($uid)
     {
-        $reference = 'IntegrationDataChannel:' . $uid;
+        $reference = 'Channel:' . $uid;
         return $this->getReferenceByName($reference);
     }
 
@@ -355,9 +355,9 @@ abstract class EntityReferences extends DoctrineAbstractFixture
      * @param $uid
      * @param Channel $dataChannel
      */
-    protected function setIntegrationDataChannelReference($uid, Channel $dataChannel)
+    protected function setChannelReference($uid, Channel $dataChannel)
     {
-        $reference = 'IntegrationDataChannel:' . $uid;
+        $reference = 'Channel:' . $uid;
         $this->setReference($reference, $dataChannel);
     }
 

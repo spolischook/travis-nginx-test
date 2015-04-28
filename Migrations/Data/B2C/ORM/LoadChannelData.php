@@ -37,7 +37,7 @@ class LoadChannelData extends AbstractFixture implements OrderedFixtureInterface
                 ->setChannelType(DefaultChannelData::B2B_CHANNEL_TYPE)
                 ->setName($channelData['name'])
                 ->getChannel();
-            $this->addReference('Channel:' . $channelData['uid'], $channel);
+            $this->setChannelReference($channelData['uid'], $channel);
             $manager->persist($channel);
         }
         $manager->flush();
