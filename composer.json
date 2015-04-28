@@ -8,12 +8,16 @@
             "": "src/"
         }
     },
-    "repositories": [
-        {
+   "repositories": {
+        "composer": {
             "type": "composer",
             "url": "http://packagist.orocrm.com"
+        },
+        "enterprise": {
+            "type": "vcs",
+            "url": "https://github.com/orocrm/crm-enterprise.git"
         }
-    ],
+    },
     "require": {
         "oro/platform": "1.x-dev",
         "oro/crm": "1.x-dev",
