@@ -19,3 +19,6 @@
 [submodule "src/OroCRMPackages/src/OroCRM/Bundle/MailChimpBundle"]
 	path = src/OroCRMPackages/src/OroCRM/Bundle/MailChimpBundle
 	url = git@github.com:laboro/OroCRMMailChimpBundle.git
+[submodule "src/OroCRMPackages/src/OroCRM/Bundle/AbandonedCartBundle"]
+	path = src/OroCRMPackages/src/OroCRM/Bundle/AbandonedCartBundle
+	url = git@github.com:laboro/OroCRMAbandonedCartBundle.git
