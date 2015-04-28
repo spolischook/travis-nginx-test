@@ -43,7 +43,6 @@ class LoadDashboardData extends AbstractFixture implements OrderedFixtureInterfa
         $data = $this->getData();
         $this->removeDashboards();
 
-        $isDefault = true;
         foreach ($data['dashboards'] as $dashboardData) {
             /** @var DashboardModel $dashboardModel */
             $dashboardModel = $this->dashboardManager->createDashboardModel();
@@ -51,10 +50,7 @@ class LoadDashboardData extends AbstractFixture implements OrderedFixtureInterfa
             $dashboardModel->setLabel($dashboardData['label']);
             $dashboardModel->setOrganization($this->getOrganizationReference($dashboardData['organization uid']));
             $dashboardModel->setOwner($this->getMainUser());
-            $dashboardModel->setIsDefault($isDefault);
-            if ($isDefault) {
-                $isDefault = false;
-            }
+            $dashboardModel->setIsDefault($dashboardData['is_default']);
             $this->dashboardManager->save($dashboardModel);
             $this->setDashboardReference($dashboardData['uid'], $dashboardModel->getEntity());
         }

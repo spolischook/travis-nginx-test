@@ -20,34 +20,36 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
     {
         return [
             static::B2C_NAMESPACE . '\\LoadGroupData',
-            static::B2C_NAMESPACE . '\\LoadAccountData',
-            static::B2C_NAMESPACE . '\\LoadContactData',
             static::B2C_NAMESPACE . '\\LoadPinBarData',
-            static::B2C_NAMESPACE . '\\LoadGroupData',
+            static::B2C_NAMESPACE . '\\LoadEmailTemplateData',
+            static::B2C_NAMESPACE . '\\LoadEmailNotificationData',
             static::B2C_NAMESPACE . '\\NavigationHistory\LoadNavigationHistoryItemData',
+            /** Tag data */
             static::B2C_NAMESPACE . '\\Tag\LoadTagData',
             static::B2C_NAMESPACE . '\\Tag\LoadAccountTagData',
             static::B2C_NAMESPACE . '\\Tag\LoadContactTagData',
+            /** Marketing data */
             static::B2C_NAMESPACE . '\\LoadMarketingSegmentData',
             static::B2C_NAMESPACE . '\\LoadMarketingListData',
+            /** Campaign data */
             static::B2C_NAMESPACE . '\\LoadCampaignData',
             static::B2C_NAMESPACE . '\\LoadCampaignEmailData',
-            static::B2C_NAMESPACE . '\\LoadEmailTemplateData',
-            static::B2C_NAMESPACE . '\\LoadEmailNotificationData',
+            /** Users data */
             static::B2C_NAMESPACE . '\\LoadUsersCalendarData',
             static::B2C_NAMESPACE . '\\LoadUsersTasksData',
+            /** MailChimp data */
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpIntegrationData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpCampaignData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpSubscriberListData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpStaticSegmentData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpMemberData',
+            /** Activity data */
             static::B2C_NAMESPACE . '\\Activity\LoadCallActivityData',
             static::B2C_NAMESPACE . '\\Activity\LoadEmailActivityData',
             static::B2C_NAMESPACE . '\\Activity\LoadNoteActivityData',
-            static::B2C_NAMESPACE . '\\Dashboard\LoadDashboardData',
-            static::B2C_NAMESPACE . '\\Dashboard\LoadDashboardWidgetData',
-            static::B2C_NAMESPACE . '\\LoadChannelData',
+            /** Report data */
             static::B2C_NAMESPACE . '\\LoadReportData',
+            /** Magento data */
             static::B2C_NAMESPACE . '\\Magento\LoadCustomerCartData',
             static::B2C_NAMESPACE . '\\Magento\LoadCustomerCartItemData',
             static::B2C_NAMESPACE . '\\Magento\LoadCustomerData',
@@ -57,6 +59,7 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
             static::B2C_NAMESPACE . '\\Magento\LoadRFMMetricData',
             static::B2C_NAMESPACE . '\\Magento\LoadStoreData',
             static::B2C_NAMESPACE . '\\Magento\LoadWebsiteData',
+            /** Tracking data */
             static::B2C_NAMESPACE . '\\Tracking\LoadTrackingEventDictionaryData',
             static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteData',
             static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteEventData',
