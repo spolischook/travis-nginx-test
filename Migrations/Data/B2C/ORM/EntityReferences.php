@@ -3,7 +3,9 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture as DoctrineAbstractFixture;
 
+use Oro\Bundle\AddressBundle\Entity\Address;
 use Oro\Bundle\DashboardBundle\Entity\Dashboard;
+use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -27,6 +29,10 @@ use OroCRM\Bundle\MagentoBundle\Entity\Store;
 use OroCRM\Bundle\MagentoBundle\Entity\Website;
 use OroCRM\Bundle\MailChimpBundle\Entity\SubscribersList;
 use OroCRM\Bundle\MarketingListBundle\Entity\MarketingList;
+use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
+use OroCRM\Bundle\SalesBundle\Entity\Lead;
+use OroCRM\Bundle\SalesBundle\Entity\Opportunity;
+
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 /**
@@ -563,5 +569,110 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     {
         $reference = 'Segment:' . $uid;
         $this->setReference($reference, $segment);
+    }
+
+    /**
+     * @param $uid
+     * @param Address $address
+     */
+    protected function setAddressReference($uid, Address $address)
+    {
+        $reference = 'Address:' . $uid;
+        $this->setReference($reference, $address);
+    }
+
+    /**
+     * @param $uid
+     * @return Address
+     * @throws EntityNotFoundException
+     */
+    protected function getAddressReference($uid)
+    {
+        $reference = 'Address:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param AbstractEnumValue $leadSourceValue
+     */
+    protected function setLeadSourceReference($uid, AbstractEnumValue $leadSourceValue)
+    {
+        $reference = 'LeadSource:' . $uid;
+        $this->setReference($reference, $leadSourceValue);
+    }
+
+    /**
+     * @param $uid
+     * @return AbstractEnumValue
+     * @throws EntityNotFoundException
+     */
+    protected function getLeadSourceReference($uid)
+    {
+        $reference = 'LeadSource:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param      $uid
+     * @param Lead $lead
+     */
+    protected function setLeadReference($uid, Lead $lead)
+    {
+        $reference = 'Lead:' . $uid;
+        $this->setReference($reference, $lead);
+    }
+
+    /**
+     * @param $uid
+     * @return Lead
+     * @throws EntityNotFoundException
+     */
+    protected function getLeadReference($uid)
+    {
+        $reference = 'Lead:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param B2BCustomer $customer
+     */
+    protected function setB2bCustomerReference($uid, B2bCustomer $customer)
+    {
+        $reference = 'B2bCustomer:' . $uid;
+        $this->setReference($reference, $customer);
+    }
+
+    /**
+     * @param $uid
+     * @return B2bCustomer
+     * @throws EntityNotFoundException
+     */
+    protected function getB2bCustomerReference($uid)
+    {
+        $reference = 'B2bCustomer:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param Opportunity $opportunity
+     */
+    protected function setOpportunityReference($uid, Opportunity $opportunity)
+    {
+        $reference = 'Opportunity:' . $uid;
+        $this->setReference($reference, $opportunity);
+    }
+
+    /**
+     * @param $uid
+     * @return Opportunity
+     * @throws EntityNotFoundException
+     */
+    protected function getOpportunityReference($uid)
+    {
+        $reference = 'Opportunity:' . $uid;
+        return $this->getReferenceByName($reference);
     }
 }

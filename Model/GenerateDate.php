@@ -35,4 +35,15 @@ trait GenerateDate
         $date = date('Y-m-d H:i:s', $val);
         return new \DateTime($date, new \DateTimeZone('UTC'));
     }
+
+    /**
+     * @param \DateTime $fromDate
+     * @return \DateTime
+     */
+    protected function generateCloseDate(\DateTime $fromDate)
+    {
+        $closeDate = clone $fromDate;
+        $amountOfDays = rand(1, 30);
+        return $closeDate->add(new \DateInterval(sprintf('P%dD', $amountOfDays)));
+    }
 }

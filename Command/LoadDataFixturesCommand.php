@@ -6,12 +6,16 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ExpressionBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Oro\Bundle\MigrationBundle\Command\LoadDataFixturesCommand as BaseDataFixturesCommand;
-use OroCRM\Bundle\AnalyticsBundle\Command\CalculateAnalyticsCommand;
+
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\MigrationBundle\Command\LoadDataFixturesCommand as BaseDataFixturesCommand;
+use OroCRM\Bundle\AnalyticsBundle\Command\CalculateAnalyticsCommand;
 
 class LoadDataFixturesCommand extends BaseDataFixturesCommand
 {
@@ -49,8 +53,8 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $force = $input->getOption('force');
-        $clean = $input->getOption('clean');
+        $force        = $input->getOption('force');
+        $clean        = $input->getOption('clean');
         $fixturesType = $this->getTypeOfFixtures($input);
         if ($clean && $force) {
             return $output->writeln('<error>Use one of two options: --clean or --force</error>');
@@ -60,8 +64,8 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
             $parentReturnCode = parent::execute($input, $output);
             if ($parentReturnCode === 0) {
                 $commandName = CalculateAnalyticsCommand::COMMAND_NAME;
-                $command = $this->getApplication()->find($commandName);
-                $input = new ArrayInput(['command' => $commandName]);
+                $command     = $this->getApplication()->find($commandName);
+                $input       = new ArrayInput(['command' => $commandName]);
                 $command->run($input, $output);
             }
 
@@ -73,6 +77,7 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
             $this->removeOldData($output);
 
             $output->writeln('  <comment>></comment> <info>Demo data removed</info>');
+
             return 0;
         }
 
@@ -95,6 +100,13 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
         foreach ($this->getB2BRepositories() as $repository => $repositoryCriteria) {
             $this->removeAll($manager, $repository, $repositoryCriteria);
         }
+
+        $leadSourceRepoClassName = ExtendHelper::buildEnumValueClassName('lead_source');
+        /** @var EnumValueRepository $enumRepo */
+        $leadSourceRepository = $manager->getRepository($leadSourceRepoClassName);
+        $leadSourceCriteria   = new Criteria((new ExpressionBuilder())->neq('id', 'demand_generation'));
+        $this->removeEntities($manager, $leadSourceRepository, $leadSourceCriteria);
+
         $manager->flush();
 
         $this->removeAll($manager, 'OroEmailBundle:EmailTemplate');
@@ -107,8 +119,8 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
 
     /**
      * @param EntityManager $manager
-     * @param $repository
-     * @param null $criteria
+     * @param               $repository
+     * @param null          $criteria
      */
     protected function removeAll(EntityManager $manager, $repository, $criteria = null)
     {
@@ -118,7 +130,7 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
 
     /**
      * @param OutputInterface $output
-     * @param $fixturesType
+     * @param                 $fixturesType
      */
     protected function writeDescription(OutputInterface $output, $fixturesType)
     {
@@ -140,9 +152,9 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
     }
 
     /**
-     * @param EntityManager $manager
+     * @param EntityManager    $manager
      * @param EntityRepository $repository
-     * @param $criteria
+     * @param                  $criteria
      */
     protected function removeEntities(EntityManager $manager, EntityRepository $repository, $criteria = null)
     {
@@ -160,68 +172,68 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
      */
     protected function getRepositories()
     {
-        $criteria = new Criteria((new ExpressionBuilder())->gt('id', 1));
+        $criteria            = new Criteria((new ExpressionBuilder())->gt('id', 1));
         $accessGroupCriteria = new Criteria((new ExpressionBuilder())->gt('id', 3));
-        $migrationsCriteria = new Criteria(
+        $migrationsCriteria  = new Criteria(
             (new ExpressionBuilder())->contains(
                 'className',
                 'OroCRMPro\\\\Bundle\\\\DemoDataBundle\\\\Migrations\\\\Data'
             )
         );
 
-        return  [
-            'OroCalendarBundle:Calendar' => $criteria,
-            'OroCalendarBundle:CalendarEvent' => null,
-            'OroCalendarBundle:CalendarProperty' => $criteria,
-            'OroCRMContactBundle:ContactAddress' => null,
-            'OroEmailBundle:EmailBody' => null,
-            'OroEmailBundle:EmailRecipient' => null,
-            'OroEmailBundle:Email' => null,
-            'OroCRMContactBundle:Contact' => null,
-            'OroActivityListBundle:ActivityList' => null,
-            'OroCRMMagentoBundle:Website' => null,
-            'OroCRMMagentoBundle:Store' => null,
-            'OroCRMMagentoBundle:CustomerGroup' => null,
-            'OroNavigationBundle:NavigationItem' => null,
-            'OroOrganizationBundle:Organization' => $criteria,
-            'OroOrganizationBundle:BusinessUnit' => $criteria,
-            'OroUserBundle:Group' => $accessGroupCriteria,
-            'OroNotificationBundle:EmailNotification' => null,
-            'OroCRMMagentoBundle:Order' => null,
-            'OroCRMMagentoBundle:Cart' => null,
-            'OroCRMMagentoBundle:Customer' => null,
-            'OroNotificationBundle:RecipientList' => null,
-            'OroCRMMagentoBundle:CartItem' => null,
-            'OroCRMAnalyticsBundle:RFMMetricCategory' => null,
-            'OroSegmentBundle:Segment' => null,
-            'OroWorkflowBundle:WorkflowItem' => null,
-            'OroTrackingBundle:TrackingData' => null,
-            'OroTrackingBundle:TrackingEvent' => null,
-            'OroTrackingBundle:TrackingWebsite' => null,
-            'OroTrackingBundle:TrackingVisit' => null,
-            'OroTrackingBundle:TrackingVisitEvent' => null,
+        return [
+            'OroCalendarBundle:Calendar'                => $criteria,
+            'OroCalendarBundle:CalendarEvent'           => null,
+            'OroCalendarBundle:CalendarProperty'        => $criteria,
+            'OroCRMContactBundle:ContactAddress'        => null,
+            'OroEmailBundle:EmailBody'                  => null,
+            'OroEmailBundle:EmailRecipient'             => null,
+            'OroEmailBundle:Email'                      => null,
+            'OroCRMContactBundle:Contact'               => null,
+            'OroActivityListBundle:ActivityList'        => null,
+            'OroCRMMagentoBundle:Website'               => null,
+            'OroCRMMagentoBundle:Store'                 => null,
+            'OroCRMMagentoBundle:CustomerGroup'         => null,
+            'OroNavigationBundle:NavigationItem'        => null,
+            'OroOrganizationBundle:Organization'        => $criteria,
+            'OroOrganizationBundle:BusinessUnit'        => $criteria,
+            'OroUserBundle:Group'                       => $accessGroupCriteria,
+            'OroNotificationBundle:EmailNotification'   => null,
+            'OroCRMMagentoBundle:Order'                 => null,
+            'OroCRMMagentoBundle:Cart'                  => null,
+            'OroCRMMagentoBundle:Customer'              => null,
+            'OroNotificationBundle:RecipientList'       => null,
+            'OroCRMMagentoBundle:CartItem'              => null,
+            'OroCRMAnalyticsBundle:RFMMetricCategory'   => null,
+            'OroSegmentBundle:Segment'                  => null,
+            'OroWorkflowBundle:WorkflowItem'            => null,
+            'OroTrackingBundle:TrackingData'            => null,
+            'OroTrackingBundle:TrackingEvent'           => null,
+            'OroTrackingBundle:TrackingWebsite'         => null,
+            'OroTrackingBundle:TrackingVisit'           => null,
+            'OroTrackingBundle:TrackingVisitEvent'      => null,
             'OroTrackingBundle:TrackingEventDictionary' => null,
-            'OroReportBundle:Report' => $criteria,
-            'OroCRMMailChimpBundle:Campaign' => null,
-            'OroCRMMailChimpBundle:StaticSegment' => null,
-            'OroCRMMailChimpBundle:SubscribersList' => null,
-            'OroCRMMailChimpBundle:Member' => null,
-            'OroCRMCampaignBundle:EmailCampaign' => null,
-            'OroEmailBundle:EmailFolder' => null,
-            'OroEmailBundle:EmailOrigin' => null,
+            'OroReportBundle:Report'                    => $criteria,
+            'OroCRMMailChimpBundle:Campaign'            => null,
+            'OroCRMMailChimpBundle:StaticSegment'       => null,
+            'OroCRMMailChimpBundle:SubscribersList'     => null,
+            'OroCRMMailChimpBundle:Member'              => null,
+            'OroCRMCampaignBundle:EmailCampaign'        => null,
+            'OroEmailBundle:EmailFolder'                => null,
+            'OroEmailBundle:EmailOrigin'                => null,
             'OroNavigationBundle:NavigationHistoryItem' => null,
-            'OroMigrationBundle:DataFixture' => $migrationsCriteria,
-            'OroIntegrationBundle:Channel' => null,
-            'OroIntegrationBundle:Transport' => null,
-            'OroUserBundle:User' => $criteria,
-            'OroCRMCallBundle:Call' => null,
-            'OroDashboardBundle:Dashboard' => null,
-            'OroDashboardBundle:Widget' => null,
-            'OroCRMMarketingListBundle:MarketingList' => null,
-            'OroCRMTaskBundle:Task' => null,
-            'OroCRMCampaignBundle:Campaign' => null,
-            'OroCRMAccountBundle:Account' => null,
-            'OroCRMChannelBundle:Channel' => null,
+            'OroMigrationBundle:DataFixture'            => $migrationsCriteria,
+            'OroIntegrationBundle:Channel'              => null,
+            'OroIntegrationBundle:Transport'            => null,
+            'OroUserBundle:User'                        => $criteria,
+            'OroCRMCallBundle:Call'                     => null,
+            'OroDashboardBundle:Dashboard'              => null,
+            'OroDashboardBundle:Widget'                 => null,
+            'OroCRMMarketingListBundle:MarketingList'   => null,
+            'OroCRMTaskBundle:Task'                     => null,
+            'OroCRMCampaignBundle:Campaign'             => null,
+            'OroCRMAccountBundle:Account'               => null,
+            'OroCRMChannelBundle:Channel'               => null,
         ];
     }
 
@@ -232,7 +244,7 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
     {
         return [
             'OroCRMSalesBundle:Opportunity' => null,
-            'OroCRMSalesBundle:Lead' => null,
+            'OroCRMSalesBundle:Lead'        => null,
             'OroCRMSalesBundle:B2bCustomer' => null,
             'OroCRMSalesBundle:SalesFunnel' => null,
         ];
