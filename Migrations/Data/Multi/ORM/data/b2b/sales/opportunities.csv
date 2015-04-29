@@ -1,7 +1,7 @@
-Uid,User Uid,Opportunity Uid,Channel Uid,Step Name,Customer Need,Proposed Solution,Close Revenue
+Uid,User uid,Opportunity uid,Channel uid,Step Name,Customer Need,Proposed Solution,Close Revenue
 1,main,1,1,new_opportunity,4550,4000,
 2,main,2,1,new_opportunity,2300,2300,
-3,main,3,1,,1000,850,2566
+3,51,3,1,,1000,850,2566
 4,54,4,1,,4520,1985,
 5,55,5,1,,2500,3250,5860
 6,56,6,1,,3255,3550,

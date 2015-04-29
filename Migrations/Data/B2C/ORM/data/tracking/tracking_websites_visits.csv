@@ -1,4 +1,4 @@
-Uid,Customer uid,Website Uid,Visitor_uid,Ip,User_identifier,Parsing_count,parsed_uid,identifier_detected,client,client_version,client_type,os,os_version,desktop,mobile,bot
+Uid,Customer uid,Website uid,Visitor_uid,Ip,User_identifier,Parsing_count,parsed_uid,identifier_detected,client,client_version,client_type,os,os_version,desktop,mobile,bot
 1,,1,44c9fbc16202c8d2,"80.91.180.166, 80.91.180.166",id=guest, visitor-id=4090125,0,1,Firefox,31.0,browser,GNU/Linux,,1,0,0
 2,,1,34170f3c213d2da5,"67.1.56.235, 67.1.56.235",id=guest, visitor-id=4090141,0,0,Mobile Safari,,browser,iOS,7.1,0,1,0
 3,1,1,44c9fbc16202c8d2,"80.91.180.166, 80.91.180.166",id=190370,email=dshatovskiy@magecore.com,190370,1,Firefox,31.0,browser,GNU/Linux,,1,0,0
