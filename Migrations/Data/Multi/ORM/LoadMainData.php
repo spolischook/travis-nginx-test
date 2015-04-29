@@ -65,6 +65,8 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
             static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteEventData',
             static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteVisitData',
             static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteVisitEventData',
+            /** B2B data */
+            static::B2B_NAMESPACE . '\\B2B\LoadLeadSourceData',
         ];
     }
 

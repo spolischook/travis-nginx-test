@@ -54,7 +54,7 @@ class LoadB2bCustomerData extends AbstractFixture implements OrderedFixtureInter
 
         $customer = new B2bCustomer();
         $customer->setName($customerData['company']);
-        $customer->setOwner($this->getUserReference($customerData['owner uid']));
+        $customer->setOwner($this->getUserReference($customerData['user uid']));
         $customer->setContact($contact);
         $customer->setAccount($contact->getAccounts()->first());
         $customer->setOrganization($organization);
