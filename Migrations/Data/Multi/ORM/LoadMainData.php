@@ -23,7 +23,6 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
             static::B2C_NAMESPACE . '\\LoadPinBarData',
             static::B2C_NAMESPACE . '\\LoadEmailTemplateData',
             static::B2C_NAMESPACE . '\\LoadEmailNotificationData',
-            static::B2C_NAMESPACE . '\\NavigationHistory\LoadNavigationHistoryItemData',
             /** Tag data */
             static::B2C_NAMESPACE . '\\Tag\LoadTagData',
             static::B2C_NAMESPACE . '\\Tag\LoadAccountTagData',
@@ -43,10 +42,6 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpSubscriberListData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpStaticSegmentData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpMemberData',
-            /** Activity data */
-            static::B2C_NAMESPACE . '\\Activity\LoadCallActivityData',
-            static::B2C_NAMESPACE . '\\Activity\LoadEmailActivityData',
-            static::B2C_NAMESPACE . '\\Activity\LoadNoteActivityData',
             /** Report data */
             static::B2C_NAMESPACE . '\\LoadReportData',
             /** Magento data */

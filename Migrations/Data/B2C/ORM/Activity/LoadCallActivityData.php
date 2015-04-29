@@ -83,10 +83,10 @@ class LoadCallActivityData extends AbstractFixture implements OrderedFixtureInte
     /**
      * @param ObjectManager $manager
      * @param Account|Contact $entity
-     * @param Contact $contact
+     * @param Contact|null $contact
      * @param $data
      */
-    protected function loadActivity(ObjectManager $manager, $entity, Contact $contact, $data)
+    protected function loadActivity(ObjectManager $manager, $entity, $contact, $data)
     {
         if ($contact !== null && $contact->getPhones()->count()) {
             /** @var ContactPhone $phone */

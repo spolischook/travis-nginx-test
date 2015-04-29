@@ -120,7 +120,6 @@ class LoadContactData extends AbstractFixture implements OrderedFixtureInterface
 
             $manager->persist($contact);
             $manager->persist($account);
-
         }
         $manager->flush();
     }
