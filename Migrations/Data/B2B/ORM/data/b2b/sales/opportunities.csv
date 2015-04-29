@@ -1,16 +1,16 @@
-Uid,User Uid,Opportunity Uid,Channel Uid,Step Name,Customer Need,Proposed Solution,Close Revenue
+Uid,User uid,Opportunity uid,Channel uid,Step Name,Customer Need,Proposed Solution,Close Revenue
 1,3,1,1,new_opportunity,4550,4000,
 2,3,2,1,new_opportunity,2300,2300,
 3,8,3,1,,1000,850,2566
 4,9,4,1,,4520,1985,
 5,11,5,1,,2500,3250,5860
 6,25,6,1,,3255,3550,
-7,26,7,1,,2890,2960,
+7,26,7,1,,2890,2960,2689
 8,28,8,1,,2700,6685,
 9,29,9,1,,2685,3586,
 10,31,10,1,,3521,7466,
 11,31,11,1,new_opportunity,6899,4500,
-12,31,12,1,new_opportunity,7215,6544,
+12,31,12,1,,7215,6544,7895
 13,32,17,1,,7544,3855,1200
 14,33,20,1,new_opportunity,1554,1980,4588
 15,34,28,1,,8654,3285,8450

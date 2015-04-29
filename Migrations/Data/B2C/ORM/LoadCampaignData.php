@@ -48,8 +48,9 @@ class LoadCampaignData extends AbstractFixture implements OrderedFixtureInterfac
 
             $this->setObjectValues($campaign, $campaignData);
             $manager->persist($campaign);
-            $manager->flush();
+            $this->setCampaignReference($campaignData['uid'], $campaign);
         }
+        $manager->flush();
     }
 
     /**
