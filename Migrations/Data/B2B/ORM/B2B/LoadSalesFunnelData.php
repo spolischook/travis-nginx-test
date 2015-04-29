@@ -97,7 +97,10 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
                 $salesFunnelItem->getData()
                     ->set('customer_need', $funnelData['customer need'])
                     ->set('proposed_solution', $funnelData['proposed solution']);
-                $currentStep = $this->getWorkflowStep($this->getOpportunityWorkflowStepName($opportunity));
+                $stepName = !empty($funnelData['step name'])
+                    ? $funnelData['step name']
+                    : $this->getOpportunityWorkflowStepName($opportunity);
+                $currentStep = $this->getWorkflowStep($stepName);
                 if ($currentStep->getName() === 'won_opportunity') {
                     $salesFunnelItem->getData()
                         ->set('close_revenue', $funnelData['close revenue'])
@@ -203,7 +206,7 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
     {
         $steps = $this->getFlowSalesFunnelsSteps();
         if (!isset($steps[$name])) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException(sprintf('Invalid workflow step %s', $name));
         }
 
         return $steps[$name];
@@ -269,8 +272,13 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
      */
     protected function getOpportunityWorkflowStepName(Opportunity $opportunity)
     {
+        $opportunityStatus = $opportunity->getStatus();
+        if (null === $opportunityStatus) {
+            return 'new_opportunity';
+        }
+
         $name = 'developed_opportunity';
-        $statusName = $opportunity->getStatus()->getName();
+        $statusName = $opportunityStatus->getName();
         if ($statusName === 'lost') {
             $name = 'lost_opportunity';
         }

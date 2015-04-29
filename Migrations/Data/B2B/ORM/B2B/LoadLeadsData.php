@@ -38,7 +38,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
             [
                 'lead source uid',
                 'status name',
-                'owner uid',
+                'user uid',
                 'channel uid',
                 'customer uid',
                 'contact uid'
@@ -54,8 +54,9 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
         $data = $this->getData();
         $statuses = $this->loadLeadStatuses($manager);
         $manager->getClassMetadata('OroCRM\Bundle\SalesBundle\Entity\Lead')->setLifecycleCallbacks([]);
+
         foreach ($data['leads'] as $leadData) {
-            $user = $this->getUserReference($leadData['owner uid']);
+            $user = $this->getUserReference($leadData['user uid']);
             $this->setSecurityContext($user);
 
             $lead = $this->createLead($leadData, $statuses, $user);
@@ -88,12 +89,12 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
             $lead->setDataChannel($this->getChannelReference($leadData['channel uid']));
         }
         $lead->setStatus($status)
-            ->setName($leadData['companyname'])
             ->setOwner($user)
             ->setOrganization($organization)
             ->setCreatedAt($created)
             ->setUpdatedAt($this->generateUpdatedDate($created));
         $this->setObjectValues($lead, $leadData);
+        $lead->setName($lead->getCompanyName());
 
         $this->addAddress($lead, $customer);
 
