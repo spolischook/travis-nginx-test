@@ -35,7 +35,7 @@ class LoadCustomerData extends AbstractFixture implements OrderedFixtureInterfac
             $customerGroup = $this->getCustomerGroupReference($customerData['customer group uid']);
             $integration = $this->getIntegrationReference($customerData['integration uid']);
             $contact = $this->getContactReference($customerData['contact uid']);
-            $dataChannel = $this->getChannelReference($customerData['integration uid']);
+            $dataChannel = $this->getMagentoChannelReference($customerData['integration uid']);
 
             $customer = new Customer();
             $customer->setWebsite($website)

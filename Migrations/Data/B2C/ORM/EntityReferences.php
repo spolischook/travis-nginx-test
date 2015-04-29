@@ -363,6 +363,27 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     * @return Channel
+     * @throws EntityNotFoundException
+     */
+    protected function getMagentoChannelReference($uid)
+    {
+        $reference = 'MagentoChannel:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param $uid
+     * @param Channel $dataChannel
+     */
+    protected function setMagentoChannelReference($uid, Channel $dataChannel)
+    {
+        $reference = 'MagentoChannel:' . $uid;
+        $this->setReference($reference, $dataChannel);
+    }
+
+    /**
+     * @param $uid
      * @return Website
      * @throws EntityNotFoundException
      */

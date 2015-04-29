@@ -73,7 +73,7 @@ class LoadMagentoIntegrationData extends AbstractFixture implements OrderedFixtu
             $dataChannel = $builder->getChannel();
             $this->enableRFMMetric($dataChannel);
 
-            $this->setIntegrationDataChannelReference($integrationData['uid'], $dataChannel);
+            $this->setMagentoChannelReference($integrationData['uid'], $dataChannel);
             $manager->persist($dataChannel);
         }
         $manager->flush();
