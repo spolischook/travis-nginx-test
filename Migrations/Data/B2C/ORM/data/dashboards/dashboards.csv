@@ -1,2 +1,2 @@
-Uid,Organization uid,Name,Label
-1,1,main,Dashboard
+Uid,Organization uid,Name,Label,Is_default
+1,1,main,Dashboard,1
