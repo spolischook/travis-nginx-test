@@ -9,6 +9,7 @@ parameters:
     oro_pro_ews.email_synchronizer.class:                OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizer
     oro_pro_ews.email_sync_processor_factory.class:      OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizationProcessorFactory
     oro_pro_ews.email_body_loader.class:                 OroPro\Bundle\EwsBundle\Provider\EwsEmailBodyLoader
+    oro_pro_ews.email_origin_listener.class:             OroPro\Bundle\EwsBundle\EventListener\EmailOriginListener
 
 services:
     oro_pro_ews.connector:
@@ -82,3 +83,8 @@ services:
             - @oro_pro_ews.connector
         tags:
             - { name: oro_email.email_body_loader }
+
+    oro_pro_ews.email_origin_listener:
+        class: %oro_pro_ews.email_origin_listener.class%
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
