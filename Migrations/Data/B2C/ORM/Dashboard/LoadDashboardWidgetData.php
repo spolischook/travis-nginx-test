@@ -46,14 +46,32 @@ class LoadDashboardWidgetData extends AbstractFixture implements OrderedFixtureI
             $dashboard = $this->getDashboardReference($widgetData['dashboard uid']);
             $dashboardModel = $this->dashboardManager->getDashboardModel($dashboard);
 
-            $widget = $this->createWidgetModel(
+            $widgetModel = $this->createWidgetModel(
                 $widgetData['widget'],
                 [$widgetData['position x'], $widgetData['position y']]
             );
-            $dashboardModel->addWidget($widget);
-            $this->dashboardManager->save($widget);
+            $this->setWidgetsOptions($widgetModel, $widgetData['options']);
+
+            $dashboardModel->addWidget($widgetModel);
+            $this->dashboardManager->save($widgetModel);
         }
         $manager->flush();
+    }
+
+    /**
+     * Setup widget`s options
+     * @param WidgetModel $widgetModel
+     * @param string $options
+     */
+    protected function setWidgetsOptions(WidgetModel $widgetModel, $options = '')
+    {
+        if(!empty($options))
+        {
+            $widgetOptions = unserialize(base64_decode($options));
+            if(is_array($widgetOptions)) {
+                $widgetModel->getEntity()->setOptions($widgetOptions);
+            }
+        }
     }
 
     /**
@@ -65,12 +83,12 @@ class LoadDashboardWidgetData extends AbstractFixture implements OrderedFixtureI
      */
     protected function createWidgetModel($widgetName, array $layoutPosition = null)
     {
-        $widget = $this->dashboardManager->createWidgetModel($widgetName);
+        $widgetModel = $this->dashboardManager->createWidgetModel($widgetName);
 
         if (null !== $layoutPosition) {
-            $widget->setLayoutPosition($layoutPosition);
+            $widgetModel->setLayoutPosition($layoutPosition);
         }
-        return $widget;
+        return $widgetModel;
     }
 
     /**
