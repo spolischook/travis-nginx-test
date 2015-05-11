@@ -157,4 +157,4 @@ services:
             - @oro_security.acl.annotation_provider
             - %oro_organization.organization.entity.class%
         tags:
-            - { name: security.voter }
+            - { name: security.voter, priority: -255 }

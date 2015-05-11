@@ -4,6 +4,7 @@ namespace OroPro\Bundle\OrganizationBundle\Acl\Voter;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 
@@ -50,6 +51,16 @@ class OrganizationAnnotationVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
+        if (!$this->supportsClass(ClassUtils::getRealClass($object))) {
+            return self::ACCESS_ABSTAIN;
+        }
+
+        foreach ($attributes as $attribute) {
+            if (!$this->supportsAttribute($attribute)) {
+                return self::ACCESS_ABSTAIN;
+            }
+        }
+
         return self::ACCESS_GRANTED;
     }
 }
