@@ -12,7 +12,7 @@ trait GenerateDate
     protected function generateCreatedDate()
     {
         // Convert to timetamp
-        $min = strtotime('now - 1 month');
+        $min = strtotime('now - 2 months');
         $max = strtotime('now - 1 day');
         $val = rand($min, $max);
 

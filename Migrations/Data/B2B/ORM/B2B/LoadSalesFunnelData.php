@@ -13,12 +13,12 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 
 use OroCRM\Bundle\SalesBundle\Entity\Lead;
 use OroCRM\Bundle\SalesBundle\Entity\Opportunity;
 use OroCRM\Bundle\SalesBundle\Entity\SalesFunnel;
 
-use OroCRMPro\Bundle\DemoDataBundle\EventListener\SalesFunnelWorkflowSubscriber;
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
@@ -61,29 +61,17 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
         $data = $this->getData();
         $manager->getClassMetadata('OroCRM\Bundle\SalesBundle\Entity\SalesFunnel')->setLifecycleCallbacks([]);
 
-        foreach ($data['leads'] as $funnelData) {
-            $lead = $this->getLeadReference($funnelData['lead uid']);
-            $salesFunnel = $this->createSalesFunnel($funnelData);
-            $salesFunnel->setLead($lead);
-            $step = 'start_from_lead';
-            $parameters = $this->makeFLowParameters(
-                ['lead' => $lead],
-                $salesFunnel->getOwner(),
-                $lead->getCreatedAt()
-            );
+        $this->loadLeadsFunnels($data['leads']);
+        $this->loadOpportunitiesFunnels($data['opportunities']);
+    }
 
-            if (null !== $salesFunnelItem = $this->getSalesFunnelItem($step, $salesFunnel, $parameters, $lead)) {
-                $currentStep = $this->getWorkflowStep($this->getLeadWorkflowStepName($lead));
-                $salesFunnelItem->setCurrentStep($currentStep);
-                $lead->setWorkflowItem($salesFunnelItem);
-                $salesFunnel->setWorkflowStep($currentStep);
-            }
-            $manager->persist($salesFunnel);
-        }
-        $manager->flush();
-
-
-        foreach ($data['opportunities'] as $funnelData) {
+    /**
+     * @param array $opportunities
+     * @throws WorkflowException
+     */
+    protected function loadOpportunitiesFunnels($opportunities = [])
+    {
+        foreach ($opportunities as $funnelData) {
             $opportunity = $this->getOpportunityReference($funnelData['opportunity uid']);
             $salesFunnel = $this->createSalesFunnel($funnelData);
             $step = 'start_from_opportunity';
@@ -93,7 +81,8 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
                 $opportunity->getCreatedAt()
             );
 
-            if (null !== $salesFunnelItem = $this->getSalesFunnelItem($step, $salesFunnel, $parameters, $opportunity)) {
+            $salesFunnelItem = $this->getSalesFunnelItem($step, $salesFunnel, $parameters, $opportunity);
+            if (null !== $salesFunnelItem) {
                 $salesFunnelItem->getData()
                     ->set('customer_need', $funnelData['customer need'])
                     ->set('proposed_solution', $funnelData['proposed solution']);
@@ -114,9 +103,36 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
                 $opportunity->setWorkflowItem($salesFunnelItem);
                 $salesFunnel->setWorkflowStep($currentStep);
             }
-            $manager->persist($salesFunnel);
+            $this->em->persist($salesFunnel);
+            $this->em->flush();
         }
-        $manager->flush();
+    }
+
+    /**
+     * @param array $leads
+     */
+    protected function loadLeadsFunnels($leads = [])
+    {
+        foreach ($leads as $funnelData) {
+            $lead = $this->getLeadReference($funnelData['lead uid']);
+            $salesFunnel = $this->createSalesFunnel($funnelData);
+            $salesFunnel->setLead($lead);
+            $step = 'start_from_lead';
+            $parameters = $this->makeFLowParameters(
+                ['lead' => $lead],
+                $salesFunnel->getOwner(),
+                $lead->getCreatedAt()
+            );
+
+            if (null !== $salesFunnelItem = $this->getSalesFunnelItem($step, $salesFunnel, $parameters, $lead)) {
+                $currentStep = $this->getWorkflowStep($this->getLeadWorkflowStepName($lead));
+                $salesFunnelItem->setCurrentStep($currentStep);
+                $lead->setWorkflowItem($salesFunnelItem);
+                $salesFunnel->setWorkflowStep($currentStep);
+            }
+            $this->em->persist($salesFunnel);
+            $this->em->flush();
+        }
     }
 
     /**

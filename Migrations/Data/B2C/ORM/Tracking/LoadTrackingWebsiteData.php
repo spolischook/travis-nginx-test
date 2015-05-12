@@ -18,7 +18,8 @@ class LoadTrackingWebsiteData extends AbstractFixture implements OrderedFixtureI
             parent::getExcludeProperties(),
             [
                 'user uid',
-                'organization uid'
+                'organization uid',
+                'magento channel uid',
             ]
         );
     }
@@ -45,7 +46,7 @@ class LoadTrackingWebsiteData extends AbstractFixture implements OrderedFixtureI
             $this->setObjectValues($website, $websiteData);
             $website->setOrganization($this->getOrganizationReference($websiteData['organization uid']));
             $website->setOwner($this->getUserReference($websiteData['user uid']));
-
+            $website->setChannel($this->getMagentoChannelReference($websiteData['magento channel uid']));
             $website->setCreatedAt($this->generateCreatedDate());
             $website->setUpdatedAt($website->getCreatedAt());
 
