@@ -11,7 +11,10 @@ use Oro\Bundle\UserBundle\Entity\Email;
 class EmailOriginListener
 {
     /**
+     * Deactivate old email on email origin table
+     *
      * @param OnFlushEventArgs $event
+     * @return array
      */
     public function onFlush(OnFlushEventArgs $event)
     {
@@ -24,9 +27,9 @@ class EmailOriginListener
 
         foreach ($unitOfWork->getScheduledEntityUpdates() as $entity) {
             if ($entity instanceof User || $entity instanceof Email) {
-                $changeset = $unitOfWork->getEntityChangeSet($entity);
-                if (isset($changeset['email'][0])) {
-                    $oldEmails[] = $changeset['email'][0];
+                $changeSet = $unitOfWork->getEntityChangeSet($entity);
+                if (isset($changeSet['email'][0])) {
+                    $oldEmails[] = $changeSet['email'][0];
                 }
             }
         }
@@ -45,5 +48,7 @@ class EmailOriginListener
                 ->getQuery();
             $query->execute();
         }
+
+        return $oldEmails;
     }
 }
