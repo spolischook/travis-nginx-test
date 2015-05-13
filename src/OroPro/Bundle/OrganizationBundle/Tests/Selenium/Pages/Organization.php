@@ -20,7 +20,7 @@ class Organization extends AbstractPageEntity
      */
     public function setStatus($status)
     {
-        $enabled = $this->test->select($this->test->byId('oro_organization_form_enabled'));
+        $enabled = $this->test->select($this->test->byXpath("//*[starts-with(@id,'oro_organization_form_enabled')]"));
         $enabled->selectOptionByLabel($status);
         return $this;
     }
@@ -31,7 +31,7 @@ class Organization extends AbstractPageEntity
      */
     public function setName($name)
     {
-        $username = $this->test->byId('oro_organization_form_name');
+        $username = $this->test->byXpath("//*[starts-with(@id,'oro_organization_form_name')]");
         $username->clear();
         $username->value($name);
         return $this;
@@ -43,7 +43,7 @@ class Organization extends AbstractPageEntity
      */
     public function setDescription($name)
     {
-        $description = $this->test->byId('oro_organization_form_description');
+        $description = $this->test->byXpath("//*[starts-with(@id,'oro_organization_form_description')]");
         $description->clear();
         $description->value($name);
         return $this;
