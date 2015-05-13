@@ -70,22 +70,25 @@
                     'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'
                 ],
                 function ($, mediator, multipleHandler) {
-                    var handler = new multipleHandler(
-                        {{ json|json_encode|raw }},
-                        {{ options|json_encode|raw }},
-                        {{ oro_currency_symbol_prepend()|json_encode|raw }}
-                    );
+                    mediator.once('page:afterChange', function() {
+                        var i, data = {{ json|json_encode|raw }};
+                        var handler = new multipleHandler(
+                                data,
+                                {{ options|json_encode|raw }},
+                                {{ oro_currency_symbol_prepend()|json_encode|raw }}
+                        );
 
-                    $('#{{ containerId }}-chart').insertFusionCharts({
-                        type: 'MSLine',
-                        dataSource: handler.getDataSource(),
-                        dataFormat: 'json',
-                        width: '100%',
-                        height: 400,
-                        id: '{{ containerId }}'
-                    });
-                    mediator.once('page:beforeChange', function () {
-                        $('#{{ containerId }}-chart').disposeFusionCharts();
+                        $('#{{ containerId }}-chart').insertFusionCharts({
+                            type: 'MSLine',
+                            dataSource: handler.getDataSource(),
+                            dataFormat: 'json',
+                            width: '100%',
+                            height: 400,
+                            id: '{{ containerId }}'
+                        });
+                        mediator.once('page:beforeChange', function () {
+                            $('#{{ containerId }}-chart').disposeFusionCharts();
+                        });
                     });
                 }
         );
