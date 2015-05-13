@@ -71,9 +71,8 @@
                 ],
                 function ($, mediator, multipleHandler) {
                     mediator.once('page:afterChange', function() {
-                        var i, data = {{ json|json_encode|raw }};
                         var handler = new multipleHandler(
-                                data,
+                                {{ json|json_encode|raw }},
                                 {{ options|json_encode|raw }},
                                 {{ oro_currency_symbol_prepend()|json_encode|raw }}
                         );
