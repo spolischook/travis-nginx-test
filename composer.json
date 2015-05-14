@@ -73,7 +73,8 @@
         "components/backbone": "1.1.*",
         "hwi/oauth-bundle": "~0.3",
         "components/font-awesome": "~4.3.0",
-        "piwik/device-detector": "~3.0"
+        "piwik/device-detector": "~3.0",
+        "fr3d/ldap-bundle": "2.0.x-dev"
     },
     "config": {
         "component-dir": "web/bundles/components"
