@@ -7,7 +7,7 @@
             "Oro\\Bundle": ["src/Oro/src", "src/OroPackages/src"],
             "OroCRM\\Bundle": ["src/OroCRM/src", "src/OroCRMPackages/src"],
             "OroPro\\Bundle": "src/OroCRMPro/src",
-            "OroCRMPro\\Bundle": "src/OroCRMPro/src",
+            "OroCRMPro\\Bundle":  ["src/OroCRMPro/src", "src/OroCRMProPackages/src"],
             "": "src/"
         }
     },
