@@ -47,7 +47,13 @@ Loading demo data fixtures for different scenarios(B2C,B2B,Multi):
 
 
 ```bash
-app/console oro:migration:live:demo:data:load --fixtures-type=B2C
+app/console oro:migration:live:demo:data:load --force --fixtures-type=B2C
+app/console oro:migration:live:demo:data:load --force --fixtures-type=B2B
+app/console oro:migration:live:demo:data:load --force --fixtures-type=Multi
 ```
 
+Clean data fixtures:
 
+```bash
+app/console oro:migration:live:demo:data:load --clean
+```
