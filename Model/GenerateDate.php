@@ -7,6 +7,7 @@ trait GenerateDate
 
     /**
      * Generate Created date
+     *
      * @return \DateTime
      */
     protected function generateCreatedDate()
@@ -22,6 +23,7 @@ trait GenerateDate
 
     /**
      * Generate Updated date
+     *
      * @param \DateTime $created
      * @return \DateTime
      */
@@ -42,7 +44,7 @@ trait GenerateDate
      */
     protected function generateCloseDate(\DateTime $fromDate)
     {
-        $closeDate = clone $fromDate;
+        $closeDate    = clone $fromDate;
         $amountOfDays = rand(1, 30);
         return $closeDate->add(new \DateInterval(sprintf('P%dD', $amountOfDays)));
     }

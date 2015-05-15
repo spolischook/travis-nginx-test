@@ -48,7 +48,7 @@ class LoadMarketingSegmentData extends AbstractFixture implements OrderedFixture
     {
         return [
             'segments' => $this->loadData('marketing/segments.csv'),
-            'columns' => $this->loadData('marketing/segments_definition_columns.csv'),
+            'columns'  => $this->loadData('marketing/segments_definition_columns.csv'),
         ];
     }
 
@@ -74,7 +74,7 @@ class LoadMarketingSegmentData extends AbstractFixture implements OrderedFixture
 
     /**
      * @param Segment $segment
-     * @param $uid
+     * @param         $uid
      */
     protected function addDefinition(Segment $segment, $uid)
     {
@@ -93,10 +93,10 @@ class LoadMarketingSegmentData extends AbstractFixture implements OrderedFixture
 
         foreach ($columns as $column) {
             $definition['columns'][] = [
-                'name' => $column['name'],
-                'label' => $column['label'],
+                'name'    => $column['name'],
+                'label'   => $column['label'],
                 'sorting' => '',
-                'func' => null,
+                'func'    => null,
             ];
         }
         $segment->setDefinition(json_encode($definition));

@@ -52,7 +52,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $data = $this->getData();
+        $data     = $this->getData();
         $statuses = $this->loadLeadStatuses($manager);
         $manager->getClassMetadata('OroCRM\Bundle\SalesBundle\Entity\Lead')->setLifecycleCallbacks([]);
         foreach ($data['leads'] as $leadData) {
@@ -69,18 +69,18 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
     /**
      * @param array $leadData
      * @param array $statuses
-     * @param User $user
+     * @param User  $user
      * @return Lead
      */
     protected function createLead(array $leadData, array $statuses, User $user)
     {
-        $status = isset($statuses[$leadData['status name']])
+        $status  = isset($statuses[$leadData['status name']])
             ? $statuses[$leadData['status name']]
             : $statuses[self::DEFAULT_LEAD_STATUS];
         $created = $this->generateCreatedDate();
         /** @var Organization $organization */
         $organization = $user->getOrganization();
-        $customer = $this->getB2bCustomerReference($leadData['customer uid']);
+        $customer     = $this->getB2bCustomerReference($leadData['customer uid']);
 
         $lead = new Lead();
         $lead->setSource($this->getLeadSourceReference($leadData['lead source uid']));

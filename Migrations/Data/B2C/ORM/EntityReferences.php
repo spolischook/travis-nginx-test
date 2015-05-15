@@ -389,7 +389,7 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     }
 
     /**
-     * @param $uid
+     * @param         $uid
      * @param Channel $dataChannel
      */
     protected function setMagentoChannelReference($uid, Channel $dataChannel)

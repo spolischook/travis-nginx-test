@@ -20,8 +20,8 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
     public function getData()
     {
         return [
-            'rules' => $this->loadData('notifications/rules.csv'),
-            'users' => $this->loadData('notifications/users.csv'),
+            'rules'  => $this->loadData('notifications/rules.csv'),
+            'users'  => $this->loadData('notifications/users.csv'),
             'groups' => $this->loadData('notifications/groups.csv'),
         ];
     }
@@ -53,7 +53,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
 
     /**
      * @param RecipientList $recipientList
-     * @param $uid
+     * @param               $uid
      */
     protected function loadRecipientGroups($recipientList, $uid)
     {
@@ -68,7 +68,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
 
     /**
      * @param RecipientList $recipientList
-     * @param $uid
+     * @param               $uid
      */
     protected function loadRecipientUsers($recipientList, $uid)
     {
@@ -83,8 +83,9 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
 
     /**
      * Filter and return data relations for Rule
+     *
      * @param Array $data
-     * @param $uid
+     * @param       $uid
      * @return array
      */
     protected function filterRuleData(Array $data, $uid)
@@ -99,13 +100,14 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
 
     /**
      * Get notification event
+     *
      * @param $name
      * @return Event
      * @throws EntityNotFoundException
      */
     protected function getNotificationEvent($name)
     {
-        $name = 'oro.notification.event.entity_post_' . $name;
+        $name       = 'oro.notification.event.entity_post_' . $name;
         $repository = $this->em->getRepository('OroNotificationBundle:Event');
 
         /** @var Event $entity */
@@ -118,6 +120,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
 
     /**
      * Get notification email template
+     *
      * @param $name
      * @return EmailTemplate
      * @throws EntityNotFoundException

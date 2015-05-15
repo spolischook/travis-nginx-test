@@ -68,7 +68,7 @@ class LoadCallActivityData extends AbstractFixture implements OrderedFixtureInte
         ];
 
         foreach ($data['account_calls'] as $callData) {
-            $account = $this->getAccountReference($callData['account uid']);
+            $account        = $this->getAccountReference($callData['account uid']);
             $defaultContact = $account->getDefaultContact();
             $this->loadActivity($manager, $account, $defaultContact, $callData);
         }
@@ -81,10 +81,10 @@ class LoadCallActivityData extends AbstractFixture implements OrderedFixtureInte
     }
 
     /**
-     * @param ObjectManager $manager
+     * @param ObjectManager   $manager
      * @param Account|Contact $entity
-     * @param Contact|null $contact
-     * @param $data
+     * @param Contact|null    $contact
+     * @param                 $data
      */
     protected function loadActivity(ObjectManager $manager, $entity, $contact, $data)
     {
@@ -105,7 +105,7 @@ class LoadCallActivityData extends AbstractFixture implements OrderedFixtureInte
                     $data['direction'] = null;
                 }
                 $data['duration'] = new \DateTime($data['duration'], new \DateTimeZone('UTC'));
-                $created = $this->generateCreatedDate();
+                $created          = $this->generateCreatedDate();
                 $call->setCreatedAt($created);
                 $call->setUpdatedAt($created);
                 $call->setCallDateTime($created);

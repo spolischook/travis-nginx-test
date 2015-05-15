@@ -81,11 +81,12 @@ class LoadMagentoIntegrationData extends AbstractFixture implements OrderedFixtu
 
     /**
      * Enable RFM Metrics for $dataChannel
+     *
      * @param Channel $dataChannel
      */
     protected function enableRFMMetric(Channel $dataChannel)
     {
-        $data = $dataChannel->getData();
+        $data                = $dataChannel->getData();
         $data['rfm_enabled'] = true;
         $dataChannel->setData($data);
     }

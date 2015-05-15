@@ -31,13 +31,13 @@ class LoadCustomerOrderData extends AbstractFixture implements OrderedFixtureInt
      */
     public function load(ObjectManager $manager)
     {
-        $data = $this->getData();
+        $data        = $this->getData();
         $addressType = $this->getBillingAddressType();
 
         foreach ($data['orders'] as $orderData) {
-            $cart = $this->getCartReference($orderData['cart uid']);
+            $cart     = $this->getCartReference($orderData['cart uid']);
             $customer = $cart->getCustomer();
-            $order = new Order();
+            $order    = new Order();
 
             $order->setOrganization($cart->getOrganization());
             $order->setChannel($cart->getChannel());
@@ -67,7 +67,7 @@ class LoadCustomerOrderData extends AbstractFixture implements OrderedFixtureInt
             $order->setPaymentDetails($orderData['payment_method_details']);
             $order->setShippingMethod('flatrate_flatrate');
 
-            $cartItems = $cart->getCartItems();
+            $cartItems  = $cart->getCartItems();
             $orderItems = [];
             foreach ($cartItems as $cartItem) {
                 $orderItem = new OrderItem();
@@ -97,8 +97,9 @@ class LoadCustomerOrderData extends AbstractFixture implements OrderedFixtureInt
 
     /**
      * Add cart address
-     * @param Order $order
-     * @param Cart $cart
+     *
+     * @param Order       $order
+     * @param Cart        $cart
      * @param AddressType $addressType
      */
     protected function addOrderAddress(Order $order, Cart $cart, AddressType $addressType)
@@ -128,7 +129,7 @@ class LoadCustomerOrderData extends AbstractFixture implements OrderedFixtureInt
     protected function getBillingAddressType()
     {
         $repository = $this->em->getRepository('OroAddressBundle:AddressType');
-        $type = $repository->findOneBy(['name' => AddressType::TYPE_BILLING]);
+        $type       = $repository->findOneBy(['name' => AddressType::TYPE_BILLING]);
         if (!$type) {
             throw new EntityNotFoundException('Address type ' . AddressType::TYPE_BILLING . ' not found!');
         }

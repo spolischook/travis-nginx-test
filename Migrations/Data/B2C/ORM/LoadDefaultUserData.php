@@ -31,9 +31,9 @@ class LoadDefaultUserData extends AbstractFixture implements OrderedFixtureInter
     {
         parent::setContainer($container);
 
-        $this->roleRepository = $this->em->getRepository('OroUserBundle:Role');
+        $this->roleRepository     = $this->em->getRepository('OroUserBundle:Role');
         $this->businessRepository = $this->em->getRepository('OroOrganizationBundle:BusinessUnit');
-        $this->userManager = $this->container->get('oro_user.manager');
+        $this->userManager        = $this->container->get('oro_user.manager');
     }
 
     /**
@@ -55,8 +55,8 @@ class LoadDefaultUserData extends AbstractFixture implements OrderedFixtureInter
     public function getData()
     {
         return [
-            'users' => $this->loadData('users/users.csv'),
-            'sales' => $this->loadData('users/default_sales.csv'),
+            'users'     => $this->loadData('users/users.csv'),
+            'sales'     => $this->loadData('users/default_sales.csv'),
             'marketing' => $this->loadData('users/default_marketing.csv'),
         ];
     }
@@ -92,8 +92,8 @@ class LoadDefaultUserData extends AbstractFixture implements OrderedFixtureInter
     }
 
     /**
-     * @param array $data
-     * @param Role $role
+     * @param array           $data
+     * @param Role            $role
      * @param ArrayCollection $businessUnits
      */
     protected function addUsers(Role $role, ArrayCollection $businessUnits, array $data = [])
@@ -104,8 +104,8 @@ class LoadDefaultUserData extends AbstractFixture implements OrderedFixtureInter
     }
 
     /**
-     * @param array $userData
-     * @param Role $role
+     * @param array           $userData
+     * @param Role            $role
      * @param ArrayCollection $businessUnits
      */
     protected function createUser(Role $role, ArrayCollection $businessUnits, array $userData = [])

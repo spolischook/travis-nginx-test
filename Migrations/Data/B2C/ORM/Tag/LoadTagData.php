@@ -42,7 +42,7 @@ class LoadTagData extends AbstractFixture implements OrderedFixtureInterface
 
         foreach ($data['tags'] as $tagData) {
             $tagData['organization'] = $this->getOrganizationReference($tagData['organization uid']);
-            $tagData['owner'] = $this->getMainUser();
+            $tagData['owner']        = $this->getMainUser();
 
             $tag = new Tag();
             $this->setObjectValues($tag, $tagData);

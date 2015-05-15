@@ -26,7 +26,7 @@ class LoadGroupData extends AbstractFixture implements OrderedFixtureInterface
         $data = $this->getData();
         foreach ($data['groups'] as $groupData) {
             $businessUnit = $this->getBusinessUnitReference($groupData['business unit uid']);
-            $group = new Group($groupData['name']);
+            $group        = new Group($groupData['name']);
             $group->setOwner($businessUnit);
             $group->setOrganization($businessUnit->getOrganization());
             $manager->persist($group);

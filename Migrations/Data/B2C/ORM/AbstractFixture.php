@@ -47,7 +47,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
     protected function getDataDirectory()
     {
         $classData = new \ReflectionClass($this);
-        $dir = __DIR__ . DIRECTORY_SEPARATOR;
+        $dir       = __DIR__ . DIRECTORY_SEPARATOR;
 
         preg_match('/Migrations\/Data\/(\w*\/ORM)/', $classData->getFilename(), $matches);
         if (!empty($matches[1])) {
@@ -63,10 +63,10 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
      */
     public function setContainer(ContainerInterface $container = null)
     {
-        $this->em = $container->get('doctrine')->getManager();
+        $this->em        = $container->get('doctrine')->getManager();
         $this->container = $container;
 
-        $this->userRepository = $this->em->getRepository('OroUserBundle:User');
+        $this->userRepository         = $this->em->getRepository('OroUserBundle:User');
         $this->organizationRepository = $this->em->getRepository('OroOrganizationBundle:Organization');
 
         $subscriber = new ActivityListSubscriber();
@@ -130,7 +130,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
     }
 
     /**
-     * @param $object
+     * @param       $object
      * @param array $values
      * @param array $exclude
      */
@@ -167,7 +167,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
     /**
      * Remove event $instance listener (for manual set created/updated dates)
      *
-     * @param $instance
+     * @param       $instance
      * @param array $events
      */
     protected function removeEventListener($instance, $events = ['prePersist', 'postPersist'])

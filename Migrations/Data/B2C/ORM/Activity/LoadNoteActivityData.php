@@ -83,9 +83,9 @@ class LoadNoteActivityData extends AbstractFixture implements OrderedFixtureInte
     /**
      * Create Note activity for $entity
      *
-     * @param ObjectManager $manager
+     * @param ObjectManager   $manager
      * @param Account|Contact $entity
-     * @param $data
+     * @param                 $data
      */
     protected function addActivity(ObjectManager $manager, $entity, $data)
     {

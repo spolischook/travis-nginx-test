@@ -46,12 +46,12 @@ class LoadAccountTagData extends AbstractFixture implements OrderedFixtureInterf
         $info = [];
         foreach ($data['accountTags'] as $accountTag) {
             $account = $this->getAccountReference($accountTag['account uid']);
-            $tag = $this->getTagReference($accountTag['tag uid']);
+            $tag     = $this->getTagReference($accountTag['tag uid']);
 
             if (!isset($info[$accountTag['account uid']])) {
                 $info[$accountTag['account uid']] = [
                     'account' => $account,
-                    'tags' => [$tag]
+                    'tags'    => [$tag]
                 ];
             } else {
                 $info[$accountTag['account uid']]['tags'][] = $tag;

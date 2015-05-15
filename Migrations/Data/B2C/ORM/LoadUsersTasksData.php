@@ -33,7 +33,7 @@ class LoadUsersTasksData extends AbstractFixture implements OrderedFixtureInterf
         parent::setContainer($container);
 
         $this->prioritiesRepository = $this->em->getRepository('OroCRMTaskBundle:TaskPriority');
-        $this->priorities = array_reduce(
+        $this->priorities           = array_reduce(
             $this->prioritiesRepository->findAll(),
             function ($carry, $item) {
                 /** @var TaskPriority $item */
@@ -75,7 +75,7 @@ class LoadUsersTasksData extends AbstractFixture implements OrderedFixtureInterf
      */
     public function load(ObjectManager $manager)
     {
-        $data = $this->getData();
+        $data  = $this->getData();
         $tasks = array_reduce(
             $data['tasks'],
             function ($carry, $item) {
@@ -85,17 +85,17 @@ class LoadUsersTasksData extends AbstractFixture implements OrderedFixtureInterf
             []
         );
         $manager->getClassMetadata('OroCRM\Bundle\TaskBundle\Entity\Task')->setLifecycleCallbacks([]);
-        $now = new \DateTime();
+        $now  = new \DateTime();
         $date = new \DateTime();
         for ($i = 0; array_key_exists($i, $data['tasks']); $date->add(new \DateInterval('P1D'))) {
             if (!$this->isWeekEnd($date)) {
-                $day = $i + 1;
+                $day      = $i + 1;
                 $dayTasks = array_key_exists($day, $tasks) ? $tasks[$day] : [];
                 foreach ($dayTasks as $taskData) {
                     $owner = $this->getUserReference($taskData['user uid']);
                     /** @var Organization $organization */
-                    $organization = $owner->getOrganization();
-                    $dueDate = new \DateTime($date->format('Y-m-d') . ' ' . $taskData['due time']);
+                    $organization  = $owner->getOrganization();
+                    $dueDate       = new \DateTime($date->format('Y-m-d') . ' ' . $taskData['due time']);
                     $taskCreatedAt = (new \DateTime())->setTimestamp(
                         rand($owner->getCreatedAt()->getTimestamp(), $now->getTimestamp())
                     );

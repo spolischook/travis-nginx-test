@@ -39,7 +39,7 @@ class LoadCustomerCartData extends AbstractFixture implements OrderedFixtureInte
                 ->findOneBy(['name' => $cartData['status']]);
 
             $customer = $this->getCustomerReference($cartData['customer uid']);
-            $cart = new Cart();
+            $cart     = new Cart();
 
             $cart->setOrganization($customer->getOrganization());
             $cart->setChannel($customer->getChannel());
@@ -73,7 +73,8 @@ class LoadCustomerCartData extends AbstractFixture implements OrderedFixtureInte
 
     /**
      * Add cart address
-     * @param Cart $cart
+     *
+     * @param Cart     $cart
      * @param Customer $customer
      */
     protected function addCartAddress(Cart $cart, Customer $customer)
@@ -81,7 +82,7 @@ class LoadCustomerCartData extends AbstractFixture implements OrderedFixtureInte
         if ($customer->getAddresses()->count()) {
             /** @var AbstractAddress $customerAddress */
             $customerAddress = $customer->getAddresses()->first();
-            $address = new CartAddress();
+            $address         = new CartAddress();
             $address->setCity($customerAddress->getCity());
             $address->setStreet($customerAddress->getStreet());
             $address->setCountry($customerAddress->getCountry());

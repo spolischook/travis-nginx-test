@@ -32,7 +32,7 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
     {
         parent::setContainer($container);
         $this->navigationFactory = $container->get('oro_navigation.item.factory');
-        $this->userManager = $container->get('oro_user.manager');
+        $this->userManager       = $container->get('oro_user.manager');
     }
 
     /**
@@ -41,7 +41,7 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $userStorageManager = $this->userManager->getStorageManager();
-        $users = $userStorageManager->getRepository('OroUserBundle:User')->findAll();
+        $users              = $userStorageManager->getRepository('OroUserBundle:User')->findAll();
 
         $params = [
             'account' => [
@@ -91,7 +91,7 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
             $this->setSecurityContext($user);
             foreach ($params as $param) {
                 $param['user'] = $user;
-                $pinTab = $this->navigationFactory->createItem($param['type'], $param);
+                $pinTab        = $this->navigationFactory->createItem($param['type'], $param);
                 $pinTab->getItem()->setOrganization($user->getOrganization());
                 $manager->persist($pinTab);
             }

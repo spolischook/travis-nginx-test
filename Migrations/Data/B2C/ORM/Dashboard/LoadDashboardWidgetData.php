@@ -43,7 +43,7 @@ class LoadDashboardWidgetData extends AbstractFixture implements OrderedFixtureI
         $data = $this->getData();
         $this->setSecurityContext($this->getMainUser());
         foreach ($data['widgets'] as $widgetData) {
-            $dashboard = $this->getDashboardReference($widgetData['dashboard uid']);
+            $dashboard      = $this->getDashboardReference($widgetData['dashboard uid']);
             $dashboardModel = $this->dashboardManager->getDashboardModel($dashboard);
 
             $widgetModel = $this->createWidgetModel(
@@ -59,16 +59,16 @@ class LoadDashboardWidgetData extends AbstractFixture implements OrderedFixtureI
     }
 
     /**
-     * Setup widget`s options
+     * Setup options for widgets
+     *
      * @param WidgetModel $widgetModel
-     * @param string $options
+     * @param string      $options
      */
     protected function setWidgetsOptions(WidgetModel $widgetModel, $options = '')
     {
-        if(!empty($options))
-        {
+        if (!empty($options)) {
             $widgetOptions = unserialize(base64_decode($options));
-            if(is_array($widgetOptions)) {
+            if (is_array($widgetOptions)) {
                 $widgetModel->getEntity()->setOptions($widgetOptions);
             }
         }
@@ -78,7 +78,7 @@ class LoadDashboardWidgetData extends AbstractFixture implements OrderedFixtureI
      * Create dashboard entity with admin user
      *
      * @param string $widgetName
-     * @param array $layoutPosition
+     * @param array  $layoutPosition
      * @return WidgetModel
      */
     protected function createWidgetModel($widgetName, array $layoutPosition = null)

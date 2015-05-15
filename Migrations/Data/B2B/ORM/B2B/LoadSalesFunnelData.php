@@ -48,7 +48,7 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
     protected function getData()
     {
         return [
-            'leads' => $this->loadData('b2b/sales/leads.csv'),
+            'leads'         => $this->loadData('b2b/sales/leads.csv'),
             'opportunities' => $this->loadData('b2b/sales/opportunities.csv'),
         ];
     }
@@ -74,8 +74,8 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
         foreach ($opportunities as $funnelData) {
             $opportunity = $this->getOpportunityReference($funnelData['opportunity uid']);
             $salesFunnel = $this->createSalesFunnel($funnelData);
-            $step = 'start_from_opportunity';
-            $parameters = $this->makeFLowParameters(
+            $step        = 'start_from_opportunity';
+            $parameters  = $this->makeFLowParameters(
                 ['opportunity' => $opportunity],
                 $salesFunnel->getOwner(),
                 $opportunity->getCreatedAt()
@@ -86,7 +86,7 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
                 $salesFunnelItem->getData()
                     ->set('customer_need', $funnelData['customer need'])
                     ->set('proposed_solution', $funnelData['proposed solution']);
-                $stepName = !empty($funnelData['step name'])
+                $stepName    = !empty($funnelData['step name'])
                     ? $funnelData['step name']
                     : $this->getOpportunityWorkflowStepName($opportunity);
                 $currentStep = $this->getWorkflowStep($stepName);
@@ -114,10 +114,10 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
     protected function loadLeadsFunnels($leads = [])
     {
         foreach ($leads as $funnelData) {
-            $lead = $this->getLeadReference($funnelData['lead uid']);
+            $lead        = $this->getLeadReference($funnelData['lead uid']);
             $salesFunnel = $this->createSalesFunnel($funnelData);
             $salesFunnel->setLead($lead);
-            $step = 'start_from_lead';
+            $step       = 'start_from_lead';
             $parameters = $this->makeFLowParameters(
                 ['lead' => $lead],
                 $salesFunnel->getOwner(),
@@ -147,7 +147,7 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
         $organization = $user->getOrganization();
 
         $salesFunnel = new SalesFunnel();
-        $createdAt = $this->generateCreatedDate();
+        $createdAt   = $this->generateCreatedDate();
         $salesFunnel
             ->setOwner($user)
             ->setStartDate($createdAt)
@@ -164,8 +164,8 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
 
     /**
      * @param                  $step
-     * @param SalesFunnel $funnel
-     * @param array $parameters
+     * @param SalesFunnel      $funnel
+     * @param array            $parameters
      * @param Opportunity|Lead $entity
      * @return null|WorkflowItem
      * @throws \Exception
@@ -196,8 +196,8 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
     }
 
     /**
-     * @param array $parameters
-     * @param User $owner
+     * @param array     $parameters
+     * @param User      $owner
      * @param \DateTime $startDate
      * @return array
      */
@@ -205,8 +205,8 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
     {
         return array_merge(
             [
-                'sales_funnel' => null,
-                'sales_funnel_owner' => $owner,
+                'sales_funnel'            => null,
+                'sales_funnel_owner'      => $owner,
                 'sales_funnel_start_date' => $startDate,
             ],
             $parameters
@@ -234,7 +234,7 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
     protected function getFlowSalesFunnelsSteps()
     {
         if (count($this->workflowSteps) === 0) {
-            $workflowSteps = $this->em
+            $workflowSteps       = $this->em
                 ->getRepository('OroWorkflowBundle:WorkflowStep')
                 ->findAll();
             $this->workflowSteps = array_reduce(
@@ -293,7 +293,7 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
             return 'new_opportunity';
         }
 
-        $name = 'developed_opportunity';
+        $name       = 'developed_opportunity';
         $statusName = $opportunityStatus->getName();
         if ($statusName === 'lost') {
             $name = 'lost_opportunity';

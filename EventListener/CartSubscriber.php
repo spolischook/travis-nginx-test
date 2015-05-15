@@ -34,10 +34,10 @@ class CartSubscriber implements EventSubscriber
 
     /** @var array */
     protected $statuses = [
-        'open' => 'open',
-        'expired' => 'abandoned',
-        'lost' => 'abandoned',
-        'purchased' => 'converted',
+        'open'                     => 'open',
+        'expired'                  => 'abandoned',
+        'lost'                     => 'abandoned',
+        'purchased'                => 'converted',
         'converted_to_opportunity' => 'converted',
     ];
 
@@ -47,7 +47,7 @@ class CartSubscriber implements EventSubscriber
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $this->em = $args->getEntityManager();
-        $entity = $args->getEntity();
+        $entity   = $args->getEntity();
 
         /** @var Cart $entity */
         if ($entity instanceof Cart) {
@@ -72,7 +72,7 @@ class CartSubscriber implements EventSubscriber
         $workflowName = $this->getWorkflowStepName($name);
 
         if (!$this->workflowSteps || !$this->definition) {
-            $this->definition = $this->getCartWorkflowDefinition();
+            $this->definition    = $this->getCartWorkflowDefinition();
             $this->workflowSteps = $this->em->getRepository('OroWorkflowBundle:WorkflowStep')->findAll();
         }
 
@@ -80,8 +80,8 @@ class CartSubscriber implements EventSubscriber
             $this->workflowSteps,
             function (WorkflowStep $workflowStep) use ($workflowName) {
                 return (
-                    $workflowStep->getName() == $workflowName &&
-                    $workflowStep->getDefinition() == $this->definition
+                    $workflowStep->getName() == $workflowName
+                    && $workflowStep->getDefinition() == $this->definition
                 );
             }
         );

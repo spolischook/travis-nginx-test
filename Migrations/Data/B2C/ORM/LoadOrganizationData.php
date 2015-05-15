@@ -28,7 +28,7 @@ class LoadOrganizationData extends AbstractFixture implements OrderedFixtureInte
         foreach ($data['organizations'] as $organizationData) {
             if ($main) {
                 $organization = $this->getMainOrganization();
-                $main = false;
+                $main         = false;
             } else {
                 $organization = new Organization();
                 $organization->addUser($this->getMainUser());

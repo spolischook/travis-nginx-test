@@ -42,7 +42,7 @@ class LoadStoreData extends AbstractFixture implements OrderedFixtureInterface
 
         foreach ($data['stores'] as $storeData) {
             $storeData['website'] = $this->getWebsiteReference($storeData['website uid']);
-            $store = new Store();
+            $store                = new Store();
             $this->setObjectValues($store, $storeData);
             $manager->persist($store);
 

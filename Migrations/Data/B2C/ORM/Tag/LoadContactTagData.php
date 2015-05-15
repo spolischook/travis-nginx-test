@@ -51,12 +51,12 @@ class LoadContactTagData extends AbstractFixture implements OrderedFixtureInterf
         $info = [];
         foreach ($data['contactTags'] as $contactTag) {
             $contact = $this->getContactReference($contactTag['contact uid']);
-            $tag = $this->getTagReference($contactTag['tag uid']);
+            $tag     = $this->getTagReference($contactTag['tag uid']);
 
             if (!isset($info[$contactTag['contact uid']])) {
                 $info[$contactTag['contact uid']] = [
                     'contact' => $contact,
-                    'tags' => [$tag]
+                    'tags'    => [$tag]
                 ];
             } else {
                 $info[$contactTag['contact uid']]['tags'][] = $tag;

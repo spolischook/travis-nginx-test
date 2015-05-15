@@ -10,6 +10,7 @@ trait FileLoader
 
     /**
      * Get Data path directory
+     *
      * @return string
      */
     abstract protected function getDataDirectory();
@@ -22,7 +23,7 @@ trait FileLoader
     {
         static $data = [];
         if (!isset($data[$name])) {
-            $path = $this->getDataDirectory() . $name;
+            $path        = $this->getDataDirectory() . $name;
             $data[$name] = $this->loadDataFromCSV($path);
         }
 
@@ -41,8 +42,8 @@ trait FileLoader
             throw new FileNotFoundException($path);
         }
 
-        $data = [];
-        $handle = fopen($path, 'r');
+        $data    = [];
+        $handle  = fopen($path, 'r');
         $headers = fgetcsv($handle, 1000, ',');
 
         if (empty($headers)) {

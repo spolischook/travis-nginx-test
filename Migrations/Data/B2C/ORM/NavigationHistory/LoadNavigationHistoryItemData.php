@@ -80,9 +80,9 @@ class LoadNavigationHistoryItemData extends AbstractFixture implements OrderedFi
     }
 
     /**
-     * @param int $entityId
+     * @param int    $entityId
      * @param string $route
-     * @param array $data
+     * @param array  $data
      * @return NavigationHistoryItem
      */
     protected function createNavigationHistory($entityId, $route, $data = [])

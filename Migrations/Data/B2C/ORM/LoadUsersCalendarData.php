@@ -32,7 +32,7 @@ class LoadUsersCalendarData extends AbstractFixture implements OrderedFixtureInt
     {
         parent::setContainer($container);
         $this->calendarRepository = $this->em->getRepository('OroCalendarBundle:Calendar');
-        $this->roleRepository = $this->em->getRepository('OroUserBundle:Role');
+        $this->roleRepository     = $this->em->getRepository('OroUserBundle:Role');
     }
 
     /**
@@ -56,7 +56,7 @@ class LoadUsersCalendarData extends AbstractFixture implements OrderedFixtureInt
     protected function getData()
     {
         return [
-            'events' => $this->loadData('calendar/events.csv'),
+            'events'      => $this->loadData('calendar/events.csv'),
             'connections' => $this->loadData('calendar/connections.csv')
         ];
     }
@@ -66,9 +66,9 @@ class LoadUsersCalendarData extends AbstractFixture implements OrderedFixtureInt
      */
     public function load(ObjectManager $manager)
     {
-        $data = $this->getData();
+        $data      = $this->getData();
         $calendars = $this->calendarRepository->findAll();
-        $events = array_reduce(
+        $events    = array_reduce(
             $data['events'],
             function ($carry, $item) {
                 $carry[$item['day']][] = $item;
@@ -98,8 +98,8 @@ class LoadUsersCalendarData extends AbstractFixture implements OrderedFixtureInt
                     foreach ($dayEvents as $eventData) {
                         $event = new CalendarEvent();
                         $this->setObjectValues($event, $eventData);
-                        $start = new \DateTime($created->format('Y-m-d') . ' ' . $eventData['start time']);
-                        $end = new \DateTime($created->format('Y-m-d') . ' ' . $eventData['end time']);
+                        $start     = new \DateTime($created->format('Y-m-d') . ' ' . $eventData['start time']);
+                        $end       = new \DateTime($created->format('Y-m-d') . ' ' . $eventData['end time']);
                         $createdAt = clone $start;
                         $event
                             ->setStart($start)
@@ -117,13 +117,13 @@ class LoadUsersCalendarData extends AbstractFixture implements OrderedFixtureInt
         }
 
         foreach ($data['connections'] as $connection) {
-            $user = $this->getUserReference($connection['user_uid']);
-            $targetUser = $this->getUserReference($connection['target_user_uid']);
-            $calendar = $this->calendarRepository->findDefaultCalendar(
+            $user             = $this->getUserReference($connection['user_uid']);
+            $targetUser       = $this->getUserReference($connection['target_user_uid']);
+            $calendar         = $this->calendarRepository->findDefaultCalendar(
                 $user->getId(),
                 $user->getOrganization()->getId()
             );
-            $targetCalendar = $this->calendarRepository->findDefaultCalendar(
+            $targetCalendar   = $this->calendarRepository->findDefaultCalendar(
                 $targetUser->getId(),
                 $targetUser->getOrganization()->getId()
             );

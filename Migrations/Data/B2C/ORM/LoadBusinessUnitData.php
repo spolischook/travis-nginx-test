@@ -32,13 +32,14 @@ class LoadBusinessUnitData extends AbstractFixture implements OrderedFixtureInte
     protected function getData()
     {
         return [
-            'main' => $this->loadData('business_units/main_business_units.csv'),
+            'main'     => $this->loadData('business_units/main_business_units.csv'),
             'children' => $this->loadData('business_units/children_business_units.csv'),
         ];
     }
 
     /**
      * Update and return Main Business Unit
+     *
      * @return BusinessUnit
      * @throws EntityNotFoundException
      */
@@ -68,7 +69,7 @@ class LoadBusinessUnitData extends AbstractFixture implements OrderedFixtureInte
         foreach ($data['main'] as $mainBusinessUnitData) {
             if ($main) {
                 $businessUnit = $this->getMainBusinessUnit();
-                $main = false;
+                $main         = false;
             } else {
                 $businessUnit = new BusinessUnit();
             }
@@ -83,8 +84,9 @@ class LoadBusinessUnitData extends AbstractFixture implements OrderedFixtureInte
 
         foreach ($data['children'] as $businessUnitData) {
             $mainBusinessUnit = $this->getBusinessUnitReference($businessUnitData['main business unit uid']);
-            $businessUnit = new BusinessUnit();
-            $businessUnitData['owner'] = $mainBusinessUnit;
+            $businessUnit     = new BusinessUnit();
+
+            $businessUnitData['owner']        = $mainBusinessUnit;
             $businessUnitData['organization'] = $mainBusinessUnit->getOrganization();
 
             $this->setObjectValues($businessUnit, $businessUnitData);

@@ -25,12 +25,12 @@ class ActivityListSubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $entityManager = $args->getEntityManager();
-        $unitOfWork = $entityManager->getUnitOfWork();
-        $entity = $args->getEntity();
+        $unitOfWork    = $entityManager->getUnitOfWork();
+        $entity        = $args->getEntity();
 
         /** @var ActivityList $entity */
         if ($entity instanceof ActivityList) {
-            $identityMap = $unitOfWork->getIdentityMap();
+            $identityMap  = $unitOfWork->getIdentityMap();
             $relatedClass = $entity->getRelatedActivityClass();
             foreach ($identityMap[$relatedClass] as $activity) {
                 if ($activity->getId() == $entity->getRelatedActivityId()) {

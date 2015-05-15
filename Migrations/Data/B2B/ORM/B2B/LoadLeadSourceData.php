@@ -26,7 +26,7 @@ class LoadLeadSourceData extends AbstractFixture implements OrderedFixtureInterf
      */
     public function load(ObjectManager $manager)
     {
-        $data = $this->getData();
+        $data      = $this->getData();
         $className = ExtendHelper::buildEnumValueClassName('lead_source');
         /** @var EnumValueRepository $enumRepo */
         $enumRepo = $manager->getRepository($className);

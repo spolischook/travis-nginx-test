@@ -33,7 +33,7 @@ class LoadRFMMetricData extends AbstractFixture implements OrderedFixtureInterfa
 
         foreach ($data['rmf_metrics'] as $metricData) {
             $dataChannel = $this->getMagentoChannelReference($metricData['integration uid']);
-            $category = new RFMMetricCategory();
+            $category    = new RFMMetricCategory();
             $category->setCategoryIndex($metricData['index'])
                 ->setChannel($dataChannel)
                 ->setCategoryType($metricData['type'])

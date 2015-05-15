@@ -61,9 +61,9 @@ class LoadContactData extends AbstractFixture implements OrderedFixtureInterface
     {
         return [
             'addresses' => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'addresses.csv'),
-            'contacts' => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'contacts.csv'),
-            'emails' => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'emails.csv'),
-            'phones' => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'phones.csv'),
+            'contacts'  => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'contacts.csv'),
+            'emails'    => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'emails.csv'),
+            'phones'    => $this->loadData('contacts' . DIRECTORY_SEPARATOR . 'phones.csv'),
         ];
     }
 
@@ -73,7 +73,7 @@ class LoadContactData extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $this->countries = $manager->getRepository('OroAddressBundle:Country')->findAll();
-        $data = $this->getData();
+        $data            = $this->getData();
 
         foreach ($data['contacts'] as $contactData) {
             $account = $this->getAccountReference($contactData['account uid']);
@@ -83,12 +83,12 @@ class LoadContactData extends AbstractFixture implements OrderedFixtureInterface
             $contact->setCreatedAt($this->generateCreatedDate());
             $contact->setUpdatedAt($this->generateUpdatedDate($contact->getCreatedAt()));
 
-            $contactData['assignedTo'] = $account->getOwner();
-            $contactData['reportsTo'] = $contact;
-            $contactData['owner'] = $account->getOwner();
-            $contactData['updatedBy'] = $account->getOwner();
-            $contactData['createdBy'] = $account->getOwner();
-            $contactData['birthday'] = new \DateTime($contactData['birthday']);
+            $contactData['assignedTo']   = $account->getOwner();
+            $contactData['reportsTo']    = $contact;
+            $contactData['owner']        = $account->getOwner();
+            $contactData['updatedBy']    = $account->getOwner();
+            $contactData['createdBy']    = $account->getOwner();
+            $contactData['birthday']     = new \DateTime($contactData['birthday']);
             $contactData['organization'] = $account->getOrganization();
 
             if (!empty($contactData['photo'])) {
@@ -126,8 +126,9 @@ class LoadContactData extends AbstractFixture implements OrderedFixtureInterface
 
     /**
      * Load Contact phones
+     *
      * @param Contact $contact
-     * @param $uid
+     * @param         $uid
      */
     public function loadPhones(Contact $contact, $uid)
     {
@@ -151,8 +152,9 @@ class LoadContactData extends AbstractFixture implements OrderedFixtureInterface
 
     /**
      * Load Contact emails
+     *
      * @param Contact $contact
-     * @param $uid
+     * @param         $uid
      */
     public function loadEmails(Contact $contact, $uid)
     {
@@ -176,8 +178,9 @@ class LoadContactData extends AbstractFixture implements OrderedFixtureInterface
 
     /**
      * Load Contact addresses
+     *
      * @param Contact $contact
-     * @param $uid
+     * @param         $uid
      */
     public function loadAddresses(Contact $contact, $uid)
     {
@@ -191,7 +194,7 @@ class LoadContactData extends AbstractFixture implements OrderedFixtureInterface
         );
 
         foreach ($addresses as $addressData) {
-            $isoCode = $addressData['country'];
+            $isoCode   = $addressData['country'];
             $countries = array_filter(
                 $this->countries,
                 function (Country $country) use ($isoCode) {
@@ -203,7 +206,7 @@ class LoadContactData extends AbstractFixture implements OrderedFixtureInterface
             $country = array_values($countries)[0];
 
             $regions = $country->getRegions();
-            $region = $regions->filter(
+            $region  = $regions->filter(
                 function (Region $region) use ($addressData) {
                     return $region->getCode() == $addressData['region'];
                 }

@@ -48,9 +48,9 @@ class LoadB2bCustomerData extends AbstractFixture implements OrderedFixtureInter
      */
     protected function createCustomer(array $customerData)
     {
-        $organization    = $this->getOrganizationReference($customerData['organization uid']);
-        $created         = $this->generateCreatedDate();
-        $contact         = $this->getContactReference($customerData['contact uid']);
+        $organization = $this->getOrganizationReference($customerData['organization uid']);
+        $created      = $this->generateCreatedDate();
+        $contact      = $this->getContactReference($customerData['contact uid']);
 
         $customer = new B2bCustomer();
         $customer->setName($customerData['company']);
@@ -73,14 +73,14 @@ class LoadB2bCustomerData extends AbstractFixture implements OrderedFixtureInter
 
     /**
      * @param B2bCustomer $customer
-     * @param Contact $contact
+     * @param Contact     $contact
      */
     protected function addCustomerAddress(B2bCustomer $customer, Contact $contact)
     {
         if ($contact->getAddresses()->count()) {
             /** @var ContactAddress $contactAddress */
             $contactAddress = $contact->getAddresses()->first();
-            $address = new Address();
+            $address        = new Address();
             $address->setLabel($contactAddress->getLabel());
             $address->setCountry($contactAddress->getCountry());
             $address->setRegion($contactAddress->getRegion());

@@ -30,12 +30,12 @@ class LoadCustomerData extends AbstractFixture implements OrderedFixtureInterfac
     {
         $data = $this->getData();
         foreach ($data['customers'] as $customerData) {
-            $website = $this->getWebsiteReference($customerData['website uid']);
-            $store = $this->getStoreReference($customerData['store uid']);
+            $website       = $this->getWebsiteReference($customerData['website uid']);
+            $store         = $this->getStoreReference($customerData['store uid']);
             $customerGroup = $this->getCustomerGroupReference($customerData['customer group uid']);
-            $integration = $this->getIntegrationReference($customerData['integration uid']);
-            $contact = $this->getContactReference($customerData['contact uid']);
-            $dataChannel = $this->getMagentoChannelReference($customerData['integration uid']);
+            $integration   = $this->getIntegrationReference($customerData['integration uid']);
+            $contact       = $this->getContactReference($customerData['contact uid']);
+            $dataChannel   = $this->getMagentoChannelReference($customerData['integration uid']);
 
             $customer = new Customer();
             $customer->setWebsite($website)
@@ -64,14 +64,14 @@ class LoadCustomerData extends AbstractFixture implements OrderedFixtureInterfac
 
     /**
      * @param Customer $customer
-     * @param Contact $contact
+     * @param Contact  $contact
      */
     protected function addCustomerAddress(Customer $customer, Contact $contact)
     {
         if ($contact->getAddresses()->count()) {
             /** @var ContactAddress $contactAddress */
             $contactAddress = $contact->getAddresses()->first();
-            $address = new Address();
+            $address        = new Address();
             $address->setLabel($contactAddress->getLabel());
             $address->setCountry($contactAddress->getCountry());
             $address->setRegion($contactAddress->getRegion());
