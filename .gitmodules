@@ -22,3 +22,6 @@
 [submodule "src/OroCRMPackages/src/OroCRM/Bundle/AbandonedCartBundle"]
 	path = src/OroCRMPackages/src/OroCRM/Bundle/AbandonedCartBundle
 	url = git@github.com:laboro/OroCRMAbandonedCartBundle.git
+[submodule "src/OroCRMProPackages/src/OroCRMPro/Bundle/DemoDataBundle"]
+	path = src/OroCRMProPackages/src/OroCRMPro/Bundle/DemoDataBundle
+	url = git@github.com:laboro/OroCRMProDemoDataBundle.git
