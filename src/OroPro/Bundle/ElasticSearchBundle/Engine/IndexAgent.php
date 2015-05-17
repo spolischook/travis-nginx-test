@@ -5,6 +5,7 @@ namespace OroPro\Bundle\ElasticSearchBundle\Engine;
 use Elasticsearch\Client;
 
 use Oro\Bundle\SearchBundle\Engine\Indexer;
+use Oro\Bundle\SearchBundle\Provider\SearchMappingProvider;
 use OroPro\Bundle\ElasticSearchBundle\Client\ClientFactory;
 
 class IndexAgent
@@ -25,9 +26,9 @@ class IndexAgent
     protected $engineParameters;
 
     /**
-     * @var array
+     * @var SearchMappingProvider
      */
-    protected $entityConfiguration;
+    protected $mappingProvider;
 
     /**
      * @var array
@@ -62,13 +63,16 @@ class IndexAgent
     /**
      * @param ClientFactory $clientFactory
      * @param array $engineParameters
-     * @param array $entityConfiguration
+     * @param SearchMappingProvider $mappingProvider
      */
-    public function __construct(ClientFactory $clientFactory, array $engineParameters, array $entityConfiguration)
-    {
+    public function __construct(
+        ClientFactory $clientFactory,
+        array $engineParameters,
+        SearchMappingProvider $mappingProvider
+    ) {
         $this->clientFactory       = $clientFactory;
         $this->engineParameters    = $engineParameters;
-        $this->entityConfiguration = $entityConfiguration;
+        $this->mappingProvider     = $mappingProvider;
     }
 
     /**
@@ -127,7 +131,9 @@ class IndexAgent
         $body = current(array_values($typeMapping));
 
         $indexName = $this->getIndexName();
-        $client->indices()->deleteMapping(['index' => $indexName, 'type' => $type]);
+        if ($client->indices()->existsType(['index' => $indexName, 'type' => $type])) {
+            $client->indices()->deleteMapping(['index' => $indexName, 'type' => $type]);
+        }
         $client->indices()->putMapping(['index' => $indexName, 'type' => $type, 'body' => $body]);
     }
 
@@ -213,7 +219,7 @@ class IndexAgent
     protected function getMappings()
     {
         $mappings = [];
-        foreach (array_keys($this->entityConfiguration) as $entityName) {
+        foreach (array_keys($this->mappingProvider->getMappingConfig()) as $entityName) {
             $mappings = array_merge($mappings, $this->getTypeMapping($entityName));
         }
 
@@ -227,11 +233,11 @@ class IndexAgent
      */
     protected function getTypeMapping($entityName)
     {
-        if (empty($this->entityConfiguration[$entityName])) {
+        if (empty($this->mappingProvider->getMappingConfig()[$entityName])) {
             throw new \LogicException(sprintf('Search configuration for %s is not defined', $entityName));
         }
 
-        $configuration = $this->entityConfiguration[$entityName];
+        $configuration = $this->mappingProvider->getMappingConfig()[$entityName];
         $properties = [];
 
         // entity fields properties

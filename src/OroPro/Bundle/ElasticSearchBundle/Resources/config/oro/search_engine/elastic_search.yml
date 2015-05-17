@@ -50,7 +50,7 @@ services:
         arguments:
             - @oropro_elasticsearch.client.factory
             - %oro_search.engine_parameters%
-            - %oro_search.entities_config%
+            - @oro_search.provider.search_mapping
         calls:
             - [setFieldTypeMapping, [%oropro_elasticsearch.field_type_mapping%]]
 
