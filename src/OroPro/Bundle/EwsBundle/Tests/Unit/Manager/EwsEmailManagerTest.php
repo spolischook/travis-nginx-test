@@ -59,9 +59,28 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @return array
      */
-    public function testGetEmails()
+    public function getEmailsProvider()
+    {
+        return [
+            'with subject' => [
+                'subject' => 'Subject'
+            ],
+            'without subject' => [
+                'subject' => null
+            ]
+        ];
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     *
+     * @param string $subject
+     *
+     * @dataProvider getEmailsProvider
+     */
+    public function testGetEmails($subject)
     {
         $ewsMock = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Ews\ExchangeWebServices')
             ->disableOriginalConstructor()
@@ -98,7 +117,7 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $msg->Items->Message[0]->ItemId = new EwsType\ItemIdType();
         $msg->Items->Message[0]->ItemId->Id = 'Id';
         $msg->Items->Message[0]->ItemId->ChangeKey = 'ChangeKey';
-        $msg->Items->Message[0]->Subject = 'Subject';
+        $msg->Items->Message[0]->Subject = $subject;
         $msg->Items->Message[0]->From = new EwsType\SingleRecipientType();
         $msg->Items->Message[0]->From->Mailbox = new EwsType\EmailAddressType();
         $msg->Items->Message[0]->From->Mailbox->EmailAddress = 'fromEmail';
@@ -244,7 +263,14 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $email = $emails[0];
         $this->assertEquals('Id', $email->getId()->getId());
         $this->assertEquals('ChangeKey', $email->getId()->getChangeKey());
-        $this->assertEquals('Subject', $email->getSubject());
+
+        if (!$subject) {
+            $this->assertNotNull($email->getSubject());
+        } else {
+            $this->assertEquals($subject, $email->getSubject());
+        }
+
+        $this->assertEquals($subject, $email->getSubject());
         $this->assertEquals('fromEmail', $email->getFrom());
         $this->assertEquals('<testId@test.tst>', $email->getRefs());
         $this->assertTrue($email->isSeen());

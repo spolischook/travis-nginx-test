@@ -56,7 +56,7 @@ class OrganizationsSwitchingTest extends Selenium2TestCase
             ->assertTitle('Create User - Users - User Management - System')
             ->setUsername($fields['username'])
             ->enable()
-            ->setOwner('Main')
+            //->setOwner('Main') //not necessary, because Owner will be preselected and 'Main' may NOT be present.
             ->setFirstpassword('123123q')
             ->setSecondpassword('123123q')
             ->setFirstName('First_'.$fields['username'])

@@ -1,3 +1,10 @@
+CHANGELOG for 1.9.0
+===================
+This changelog references the relevant changes (new features, changes and bugs) done in 1.9.0 versions.
+* 1.9.0 (2015-04-28)
+ * Configuration on the organization level
+ * Synchronization of custom attributes of Magento entities
+
 CHANGELOG for 1.8.0
 ===================
 This changelog references the relevant changes (new features, changes and bugs) done in 1.8.0 versions.

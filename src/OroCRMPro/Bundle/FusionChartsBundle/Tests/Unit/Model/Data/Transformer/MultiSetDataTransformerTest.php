@@ -59,8 +59,8 @@ class MultiSetDataTransformerTest extends \PHPUnit_Framework_TestCase
                             'data' => [
                                 ['value' => 1],
                                 ['value' => 3],
+                            ]
                         ]
-                    ]
                     ],
                 ]
             ]

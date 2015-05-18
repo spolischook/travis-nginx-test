@@ -3,7 +3,6 @@
 namespace OroPro\Bundle\OrganizationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -24,8 +23,9 @@ class OrganizationController extends Controller
      * )
      * @AclAncestor("oro_organization_view")
      * @Template()
+     * @return array
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return [
             'entity_class' => $this->container->getParameter('oropro_organization.entity.class')
@@ -61,6 +61,8 @@ class OrganizationController extends Controller
      *      class="OroOrganizationBundle:Organization",
      *      permission="EDIT"
      * )
+     * @param Organization $entity
+     * @return array
      */
     public function updateAction(Organization $entity)
     {
@@ -76,6 +78,8 @@ class OrganizationController extends Controller
      *      class="OroOrganizationBundle:Organization",
      *      permission="VIEW"
      * )
+     * @param Organization $entity
+     * @return array
      */
     public function viewAction(Organization $entity)
     {
@@ -123,6 +127,8 @@ class OrganizationController extends Controller
      * @Route("/widget/info/{id}", name="oro_organization_widget_info", requirements={"id"="\d+"})
      * @Template
      * @AclAncestor("oro_organization_view")
+     * @param Organization $entity
+     * @return array
      */
     public function infoAction(Organization $entity)
     {
@@ -133,6 +139,8 @@ class OrganizationController extends Controller
      * @Route("/widget/users/{id}", name="oro_organization_widget_users", requirements={"id"="\d+"})
      * @Template
      * @AclAncestor("oro_organization_view")
+     * @param Organization $entity
+     * @return array
      */
     public function usersAction(Organization $entity)
     {
