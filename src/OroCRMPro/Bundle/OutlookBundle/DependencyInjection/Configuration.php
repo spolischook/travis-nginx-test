@@ -16,6 +16,9 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode    = $treeBuilder->root('oro_crm_pro_outlook');
+        $sideBarPanelLayoutPath =
+            __DIR__ .
+            str_replace('/', DIRECTORY_SEPARATOR, '/configuration/xaml/side-bar-panel-layout.xaml');
 
         $contactKeys    = [
             ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
@@ -58,6 +61,13 @@ class Configuration implements ConfigurationInterface
             ['OroCRM' => 'addresses[2].postalCode', 'Outlook' => 'OtherAddressPostalCode'],
         ];
 
+        $xamlLayouts = [
+            [
+                'side_bar_panel_layout' => file_get_contents($sideBarPanelLayoutPath),
+
+            ]
+        ];
+
         SettingsBuilder::append(
             $rootNode,
             [
@@ -66,10 +76,11 @@ class Configuration implements ConfigurationInterface
                 'contacts_conflict_resolution'   => ['value' => 'OroCRMAlwaysWins'],
                 'contacts_sync_interval_orocrm'  => ['value' => 120],
                 'contacts_sync_interval_outlook' => ['value' => 30],
-                'contacts_keys'                  => ['value' => $contactKeys, 'type'  => 'array'],
-                'contacts_mapping'               => ['value' => $contactMapping, 'type'  => 'array'],
+                'contacts_keys'                  => ['value' => $contactKeys, 'type' => 'array'],
+                'contacts_mapping'               => ['value' => $contactMapping, 'type' => 'array'],
                 'tasks_enabled'                  => ['value' => true],
                 'calendar_events_enabled'        => ['value' => true],
+                'xaml_layouts'                   => ['value' => $xamlLayouts, 'type' => 'array']
             ]
         );
 

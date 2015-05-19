@@ -75,6 +75,8 @@ oro_system_configuration:
             data_type: array
         oro_crm_pro_outlook.contacts_mapping:
             data_type: array
+        oro_crm_pro_outlook.xaml_layouts:
+             data_type: array
 
         oro_crm_pro_outlook.tasks_enabled:
             data_type: boolean
@@ -146,3 +148,5 @@ oro_system_configuration:
                 oro_crm_pro_outlook.tasks_enabled: ~
             calendar_events:
                 oro_crm_pro_outlook.calendar_events_enabled: ~
+            xaml_layouts:
+                oro_crm_pro_outlook.xaml_layouts: ~
