@@ -1,0 +1,7 @@
+parameters:
+    orocrmpro_outlook.data_transformer.layout_translator.class: OroCRMPro\Bundle\OutlookBundle\Model\Data\Transformer\LayoutTranslatorDataTransformer
+services:
+    orocrmpro_outlook.data_transformer.layout_translator:
+        class: %orocrmpro_outlook.data_transformer.layout_translator.class%
+        arguments:
+            - @translator

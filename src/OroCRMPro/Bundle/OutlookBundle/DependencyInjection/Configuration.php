@@ -6,44 +6,10 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
-use Oro\Bundle\TranslationBundle\Translation\Translator;
 use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 
 class Configuration implements ConfigurationInterface
 {
-    /** @var  Translator */
-    protected $translator;
-
-    public function __construct(Translator $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
-     * Get translator
-     *
-     * @return Translator
-     */
-    public function getTranslator()
-    {
-        return $this->translator;
-    }
-
-    /**
-     * Set translator
-     *
-     * @param Translator $translator
-     *
-     * @return Configuration
-     */
-    public function setTranslator($translator)
-    {
-        $this->translator = $translator;
-
-        return $this;
-    }
-
-
     /**
      * {@inheritdoc}
      */
@@ -54,6 +20,8 @@ class Configuration implements ConfigurationInterface
         $sideBarPanelLayoutPath =
             __DIR__ .
             str_replace('/', DIRECTORY_SEPARATOR, '/../Resources/views/layouts/side-bar-panel-layout.xaml');
+
+        $sideBarPanelLayoutContent = $this->getLayoutContent($sideBarPanelLayoutPath);
 
         $contactKeys    = [
             ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
@@ -96,13 +64,6 @@ class Configuration implements ConfigurationInterface
             ['OroCRM' => 'addresses[2].postalCode', 'Outlook' => 'OtherAddressPostalCode'],
         ];
 
-        $layouts = [
-            [
-                'side_bar_panel_layout' => $this->getTranslatedLayout($sideBarPanelLayoutPath),
-
-            ]
-        ];
-
         SettingsBuilder::append(
             $rootNode,
             [
@@ -115,7 +76,7 @@ class Configuration implements ConfigurationInterface
                 'contacts_mapping'               => ['value' => $contactMapping, 'type' => 'array'],
                 'tasks_enabled'                  => ['value' => true],
                 'calendar_events_enabled'        => ['value' => true],
-                'layouts'                        => ['value' => $layouts, 'type' => 'array']
+                'side_bar_panel_layout'          => ['value' => $sideBarPanelLayoutContent, 'type' => 'string']
             ]
         );
 
@@ -123,22 +84,18 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Fetch layout and translate it.
+     * Fetch layout content by $path
      *
      * @param string $path
      *
      * @return string
      * @throws FileNotFoundException
      */
-    protected function getTranslatedLayout($path)
+    protected function getLayoutContent($path)
     {
         if (!is_file($path)) {
             throw new FileNotFoundException($path);
         }
-        $content = file_get_contents($path);
-
-        return preg_replace_callback('/<%(.+)%>/', function ($input) {
-            return $this->translator->trans($input[1], [], 'xaml');
-        }, $content);
+        return file_get_contents($path);
     }
 }
