@@ -10,7 +10,6 @@ parameters:
     oropro_organization.listener.kernel_request_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\KernelRequestListener
     oropro_organization.listener.system_org_grid_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\SystemModeOrganizationGridListener
     oropro_organization.event_listener.workflow_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\WorkflowListener
-    oropro_organization.datagrid.email_grid_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\Datagrid\EmailGridListener
 
     oropro_organization.exception.organization_aware_listener.class: OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareExceptionListener
     oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
@@ -114,14 +113,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_workflow.action.handle_before, method: onBeforeAction }
             - { name: kernel.event_listener, event: oro_workflow.start_transition.handle_before_render, method: onStartTransition }
-
-    oro_email.listener.datagrid.email:
-        class: %oropro_organization.datagrid.email_grid_listener.class%
-        arguments:
-            - @oro_security.acl_helper
-            - @security.context
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.base-email-grid, method: onBuildAfter }
 
     oropro_organization.exception.organization_aware_listener:
         class: %oropro_organization.exception.organization_aware_listener.class%
