@@ -6,6 +6,7 @@ use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\Email as EmailEntity;
 use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Tests\Unit\ReflectionUtil;
+use Oro\Bundle\EmailBundle\Entity\EmailUser;
 
 use OroPro\Bundle\EwsBundle\Entity\EwsEmail;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder;
@@ -566,6 +567,10 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $newEmailEntity->setMessageId('message_id');
         $new2EmailEntity = new EmailEntity();
         ReflectionUtil::setId($new2EmailEntity, '123');
+        
+        $emailUser = new EmailUser();
+        $emailUser->setFolder($folder);
+        $newEmailEntity->addEmailUser($emailUser);
 
         $this->em->expects($this->once())
             ->method('flush');
@@ -582,7 +587,6 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($email2->getMessageId(), $newEmailEntity->getMessageId());
         $this->assertEquals($email2->getXMessageId(), $newEmailEntity->getXMessageId());
         $this->assertEquals($email2->getXThreadId(), $newEmailEntity->getXThreadId());
-        $this->assertEquals($email2->isSeen(), $newEmailEntity->isSeen());
         $this->assertEquals($email2->getRefs(), implode('', $newEmailEntity->getRefs()));
         $this->assertEquals($folder, $newEmailEntity->getFolders()->first());
     }

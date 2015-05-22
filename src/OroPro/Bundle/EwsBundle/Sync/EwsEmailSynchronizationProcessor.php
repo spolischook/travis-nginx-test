@@ -481,6 +481,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $this->emailEntityBuilder->getBatch()->persist($this->em);
 
         // update references if needed
+        // todo CRM-2480
         $changes = $this->emailEntityBuilder->getBatch()->getChanges();
         foreach ($newEwsEmails as $ewsEmail) {
             foreach ($changes as $change) {
