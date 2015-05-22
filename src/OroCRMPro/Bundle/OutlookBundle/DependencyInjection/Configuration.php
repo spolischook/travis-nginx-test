@@ -4,6 +4,7 @@ namespace OroCRMPro\Bundle\OutlookBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 
@@ -14,8 +15,13 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('oro_crm_pro_outlook');
+        $treeBuilder            = new TreeBuilder();
+        $rootNode               = $treeBuilder->root('oro_crm_pro_outlook');
+        $sideBarPanelLayoutPath =
+            __DIR__ .
+            str_replace('/', DIRECTORY_SEPARATOR, '/../Resources/views/layouts/side-bar-panel-layout.xaml');
+
+        $sideBarPanelLayoutContent = $this->getLayoutContent($sideBarPanelLayoutPath);
 
         $contactKeys    = [
             ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
@@ -66,13 +72,30 @@ class Configuration implements ConfigurationInterface
                 'contacts_conflict_resolution'   => ['value' => 'OroCRMAlwaysWins'],
                 'contacts_sync_interval_orocrm'  => ['value' => 120],
                 'contacts_sync_interval_outlook' => ['value' => 30],
-                'contacts_keys'                  => ['value' => $contactKeys, 'type'  => 'array'],
-                'contacts_mapping'               => ['value' => $contactMapping, 'type'  => 'array'],
+                'contacts_keys'                  => ['value' => $contactKeys, 'type' => 'array'],
+                'contacts_mapping'               => ['value' => $contactMapping, 'type' => 'array'],
                 'tasks_enabled'                  => ['value' => true],
                 'calendar_events_enabled'        => ['value' => true],
+                'side_bar_panel_layout'          => ['value' => $sideBarPanelLayoutContent, 'type' => 'string']
             ]
         );
 
         return $treeBuilder;
+    }
+
+    /**
+     * Fetch layout content by $path
+     *
+     * @param string $path
+     *
+     * @return string
+     * @throws FileNotFoundException
+     */
+    protected function getLayoutContent($path)
+    {
+        if (!is_file($path)) {
+            throw new FileNotFoundException($path);
+        }
+        return file_get_contents($path);
     }
 }
