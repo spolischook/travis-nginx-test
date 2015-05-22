@@ -77,7 +77,7 @@ oro_system_configuration:
             data_type: array
         oro_crm_pro_outlook.side_bar_panel_layout:
              data_type:        string
-             data_transformer: orocrmpro_outlook.data_transformer.layout_translator
+             data_transformer: orocrmpro_outlook.data_transformer.layout
 
         oro_crm_pro_outlook.tasks_enabled:
             data_type: boolean
