@@ -25,6 +25,8 @@ parameters:
     oropro_organization.form.extension.organization_list.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationListExtension
 
     oropro_organization.acl.voter.organization.class: OroPro\Bundle\OrganizationBundle\Acl\Voter\OrganizationAnnotationVoter
+    oropro_organization.event_listener.email_organization.class: OroPro\Bundle\OrganizationBundle\EventListener\EmailOrganizationListener
+
 services:
     oropro_organization.twig.extension.organization:
         class: %oropro_organization.twig.extension.organization.class%
@@ -158,3 +160,8 @@ services:
             - %oro_organization.organization.entity.class%
         tags:
             - { name: security.voter, priority: -255 }
+
+    oropro_organization.event_listener.email_organization:
+        class: %oropro_organization.event_listener.email_organization.class%
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
