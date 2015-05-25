@@ -3,10 +3,13 @@
 namespace OroCRMPro\Bundle\OutlookBundle\Entity\Manager;
 
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
+use Oro\Bundle\ActivityListBundle\Entity\ActivityList;
+use Oro\Bundle\ActivityListBundle\Entity\Repository\ActivityListRepository;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EntityBundle\ORM\QueryBuilderHelper;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
@@ -64,17 +67,30 @@ class EmailEntityApiEntityManager extends ApiEntityManager implements EntitySeri
         $targetIdentifiers = [];
 
         foreach ($associations as $entityClass => $fieldName) {
-            $identifiers = $this->om->getClassMetadata($entityClass)->getIdentifierFieldNames();
+            $identifiers = $this->getObjectManager()->getClassMetadata($entityClass)->getIdentifierFieldNames();
             if (count($identifiers) === 1) {
                 $targetIdentifiers[] = $fieldName . '.' . $identifiers[0];
                 $joins[]             = $fieldName;
             }
         }
 
-        $qb = parent::getListQueryBuilder($limit, $page, $criteria, $orderBy, $joins);
+        $criteria = $this->prepareQueryCriteria($limit, $page, $criteria, $orderBy);
+
+        $qb = $this->getObjectManager()->getRepository(ActivityList::ENTITY_CLASS)->createQueryBuilder('al')
+            ->innerJoin($this->class, 'e', Join::WITH, 'e.id = al.relatedActivityId')
+            ->where('al.relatedActivityClass = :activityClass')
+            ->setParameter('activityClass', $this->class);
+        $this->applyJoins($qb, $joins);
+
+        // fix of doctrine error with Same Field, Multiple Values, Criteria and QueryBuilder
+        // http://www.doctrine-project.org/jira/browse/DDC-2798
+        // TODO revert changes when doctrine version >= 2.5 in scope of BAP-5577
+        QueryBuilderHelper::addCriteria($qb, $criteria);
+        // $qb->addCriteria($criteria);
 
         $qb->select('e.id as id')
-            ->addSelect('COALESCE(' . implode(',', $targetIdentifiers) . ') AS targetId');
+            ->addSelect('COALESCE(' . implode(',', $targetIdentifiers) . ') AS targetId')
+            ->andWhere('targetId IS NOT NULL');
 
         return $qb;
     }
