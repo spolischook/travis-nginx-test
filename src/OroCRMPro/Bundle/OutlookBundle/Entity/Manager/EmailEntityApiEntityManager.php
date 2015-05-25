@@ -63,7 +63,7 @@ class EmailEntityApiEntityManager extends ApiEntityManager implements EntitySeri
      */
     public function getListQueryBuilder($limit = 10, $page = 1, $criteria = [], $orderBy = null, $joins = [])
     {
-        $associations      = $this->activityManager->getActivityTargets($this->class);
+        $associations      = getAssociations();
         $targetIdentifiers = [];
 
         foreach ($associations as $entityClass => $fieldName) {
@@ -93,6 +93,16 @@ class EmailEntityApiEntityManager extends ApiEntityManager implements EntitySeri
             ->andWhere('targetId IS NOT NULL');
 
         return $qb;
+    }
+
+    /**
+     * Returns the list of fields responsible to store activity associations for the given activity entity type
+     *
+     * @return array
+     */
+    public function getAssociations()
+    {
+        return $this->activityManager->getActivityTargets($this->class);
     }
 
     /**
