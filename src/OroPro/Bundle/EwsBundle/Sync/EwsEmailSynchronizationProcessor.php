@@ -453,7 +453,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 try {
                     $ewsEmail       = $this->createEwsEmail(
                         $email->getId(),
-                        $this->addEmail($email, $folder, $email->isSeen()),
+                        $this->addEmailUser($email, $folder, $email->isSeen())->getEmail(), // todo fixed
                         $folderInfo->ewsFolder
                     );
                     $newEwsEmails[] = $ewsEmail;
@@ -552,8 +552,10 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             )
         );
 
-        $ewsEmail->getEmail()->removeFolder($ewsEmail->getEwsFolder()->getFolder());
-        $ewsEmail->getEmail()->addFolder($newEwsFolder->getFolder());
+        $emailUser = $ewsEmail->getEmail()->getEmailUserByFolder($ewsEmail->getEwsFolder()->getFolder()); // todo fixed
+        if ($emailUser != null) {
+            $emailUser->setFolder($newEwsFolder->getFolder());
+        }
         $ewsEmail->setEwsFolder($newEwsFolder);
         $ewsEmail->setEwsId($newEwsEmailId->getId());
         $ewsEmail->setEwsChangeKey($newEwsEmailId->getChangeKey());
