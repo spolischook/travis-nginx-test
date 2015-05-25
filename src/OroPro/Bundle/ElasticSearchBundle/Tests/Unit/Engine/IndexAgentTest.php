@@ -2,6 +2,7 @@
 
 namespace OroPro\Bundle\ElasticSearchBundle\Tests\Unit\Engine;
 
+use Oro\Bundle\SearchBundle\Provider\SearchMappingProvider;
 use OroPro\Bundle\ElasticSearchBundle\Engine\IndexAgent;
 
 class IndexAgentTest extends \PHPUnit_Framework_TestCase
@@ -82,7 +83,12 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
         }
 
-        return new IndexAgent($clientFactory, $engineParameters, $entityConfiguration);
+        $eventDispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcher')
+            ->disableOriginalConstructor()->getMock();
+        $mapperProvider = new SearchMappingProvider($eventDispatcher);
+        $mapperProvider->setMappingConfig($entityConfiguration);
+
+        return new IndexAgent($clientFactory, $engineParameters, $mapperProvider);
     }
 
     /**
@@ -383,6 +389,9 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
         $indices = $this->getMockBuilder('Elasticsearch\Namespaces\IndicesNamespace')
             ->disableOriginalConstructor()
             ->getMock();
+        $indices->expects($this->once())->method('existsType')
+            ->with(['index' => IndexAgent::DEFAULT_INDEX_NAME, 'type' => $type])
+            ->willReturn(true);
         $indices->expects($this->once())->method('deleteMapping')
             ->with(['index' => IndexAgent::DEFAULT_INDEX_NAME, 'type' => $type]);
         $indices->expects($this->once())->method('putMapping')
