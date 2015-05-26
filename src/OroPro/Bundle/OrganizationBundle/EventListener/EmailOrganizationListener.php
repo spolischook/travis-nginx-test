@@ -2,14 +2,15 @@
 
 namespace OroPro\Bundle\OrganizationBundle\EventListener;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnexpectedResultException;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
+use Oro\Bundle\EmailBundle\Event\EmailUserAdded;
 use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -18,70 +19,78 @@ class EmailOrganizationListener implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @param LifecycleEventArgs $eventArgs
+     * @var EntityManager
      */
-    public function postPersist(LifecycleEventArgs $eventArgs)
+    protected $em;
+
+    /**
+     * @param Registry $registry
+     */
+    public function __construct(Registry $registry)
     {
-        $emailUser = $eventArgs->getObject();
+        $this->em = $registry->getManager();
+    }
 
-        if ($emailUser instanceof EmailUser) {
-            $em = $eventArgs->getObjectManager();
-            $user = $this->getEmailOwner($emailUser, $em);
+    /**
+     * @param EmailUserAdded $eventArgs
+     */
+    public function onEmailUserAdded(EmailUserAdded $eventArgs)
+    {
+        $emailUser = $eventArgs->getEmailUser();
+        $user = $this->getEmailOwner($emailUser);
 
-            if ($user == null) {
-                $this->logger->notice(sprintf(
-                    'Could not determine owner of the origin ID: ',
-                    $emailUser->getFolder()->getOrigin()->getId()
-                ));
+        if ($user == null) {
+            $this->logger->notice(sprintf(
+                'Could not determine owner of the origin ID: ',
+                $emailUser->getFolder()->getOrigin()->getId()
+            ));
 
-                return;
+            return;
+        }
+
+        if ($emailUser->getOwner() == null) {
+            $emailUser->setOwner($user);
+        }
+
+        $organizations = $user->getOrganizations();
+        if ($emailUser->getOrganization() != null) {
+            if ($organizations->contains($emailUser->getOrganization())) {
+                $organizations->removeElement($emailUser->getOrganization());
             }
-
-            if ($emailUser->getOwner() == null) {
-                $emailUser->setOwner($user);
-            }
-
-            $organizations = $user->getOrganizations();
-            if ($emailUser->getOrganization() != null) {
-                if ($organizations->contains($emailUser->getOrganization())) {
-                    $organizations->removeElement($emailUser->getOrganization());
-                }
-            } else {
-                $organization = null;
-                $organizations->map(function($entry) use (&$organization) {
-                    if ($organization == null) {
-                        if (!$entry->getIsGlobal()) {
-                            $organization = $entry;
-                        }
+        } else {
+            $organization = null;
+            $organizations->map(function($entry) use (&$organization) {
+                if ($organization == null) {
+                    if (!$entry->getIsGlobal()) {
+                        $organization = $entry;
                     }
-                });
-                if ($organization != null) {
-                    $emailUser->setOrganization($organization);
-                    $organizations->removeElement($organization);
                 }
+            });
+            if ($organization != null) {
+                $emailUser->setOrganization($organization);
+                $organizations->removeElement($organization);
             }
+        }
 
-            $length = count($organizations);
-            for ($i = 0; $i < $length; $i++) {
-                $organization = $organizations[$i];
-                if (!$organization->getIsGlobal()) {
-                    $eu = clone $emailUser;
-                    $eu->setOwner($user);
-                    $eu->setOrganization($organization);
+        $length = count($organizations);
+        for ($i = 0; $i < $length; $i++) {
+            $organization = $organizations[$i];
+            if (!$organization->getIsGlobal()) {
+                $eu = clone $emailUser;
+                $eu->setOwner($user);
+                $eu->setOrganization($organization);
 
-                    $em->persist($eu);
-                }
+                $this->em->persist($eu);
             }
         }
     }
 
     /**
      * @param EmailUser     $emailUser
-     * @param ObjectManager $em
      *
      * @return User|null
      */
-    protected function getEmailOwner(EmailUser $emailUser, ObjectManager $em)
+    protected function getEmailOwner(EmailUser $emailUser)
     {
         if ($emailUser->getOwner() != null) {
             return $emailUser->getOwner();
@@ -90,7 +99,7 @@ class EmailOrganizationListener implements LoggerAwareInterface
         $origin = $emailUser->getFolder()->getOrigin();
 
         try {
-            $qb = $em->getRepository('Oro\Bundle\UserBundle\Entity\User')
+            $qb = $this->em->getRepository('Oro\Bundle\UserBundle\Entity\User')
                 ->createQueryBuilder('u')
                 ->select('u')
                 ->innerJoin('u.emailOrigins', 'o')
@@ -99,7 +108,7 @@ class EmailOrganizationListener implements LoggerAwareInterface
                 ->setMaxResults(1);
 
             return $qb->getQuery()->getOneOrNullResult();
-        } catch (NonUniqueResultException $e) {
+        } catch (UnexpectedResultException $e) {
             $this->logger->notice($e->getMessage());
 
             return null;

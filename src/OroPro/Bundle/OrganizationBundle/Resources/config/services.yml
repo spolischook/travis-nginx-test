@@ -163,5 +163,7 @@ services:
 
     oropro_organization.event_listener.email_organization:
         class: %oropro_organization.event_listener.email_organization.class%
+        arguments:
+            - @doctrine
         tags:
-            - { name: doctrine.event_listener, event: postPersist }
+            - { name: kernel.event_listener, event: oro_email.email_user_added, method: onEmailUserAdded }
