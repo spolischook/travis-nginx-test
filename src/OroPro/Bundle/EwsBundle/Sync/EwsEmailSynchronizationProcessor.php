@@ -12,6 +12,7 @@ use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Sync\AbstractEmailSynchronizationProcessor;
 use Oro\Bundle\EmailBundle\Sync\KnownEmailAddressCheckerInterface;
+use Oro\Bundle\UserBundle\Entity\User;
 
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmail;
@@ -356,7 +357,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $folder             = $folderInfo->ewsFolder->getFolder();
         $folderType         = $folderInfo->folderType;
         $lastSynchronizedAt = $folder->getSynchronizedAt();
-        $userId             = $this->getUserId($folder->getOrigin());
+        $user               = $this->getUserId($folder->getOrigin());
 
         $this->logger->notice(sprintf('Loading emails from "%s" folder ...', $folder->getFullName()));
         $this->logger->notice(sprintf('Query: "%s".', $searchQuery->convertToString()));
@@ -379,6 +380,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $this->logger->notice(sprintf('Processed %d emails ...', $processed));
             }
 
+            $userId = $user ? $user->getId() : null;
             if (!$this->isApplicableEmail($email, $folderType, $userId)) {
                 continue;
             }
@@ -390,13 +392,13 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             $count++;
             $batch[] = $email;
             if ($count === self::DB_BATCH_SIZE) {
-                $this->saveEmails($batch, $folderInfo);
+                $this->saveEmails($batch, $folderInfo, $user);
                 $count = 0;
                 $batch = [];
             }
         }
         if ($count > 0) {
-            $this->saveEmails($batch, $folderInfo);
+            $this->saveEmails($batch, $folderInfo, $user);
         }
 
         return $lastSynchronizedAt;
@@ -407,8 +409,9 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      *
      * @param Email[]    $emails
      * @param FolderInfo $folderInfo
+     * @param User       $owner
      */
-    protected function saveEmails(array $emails, FolderInfo $folderInfo)
+    protected function saveEmails(array $emails, FolderInfo $folderInfo, User $owner)
     {
         $this->emailEntityBuilder->removeEmails();
 
@@ -453,7 +456,12 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 try {
                     $ewsEmail       = $this->createEwsEmail(
                         $email->getId(),
-                        $this->addEmail($email, $folder, $email->isSeen()),
+                        $this->addEmailUser(
+                            $email,
+                            $folder,
+                            $email->isSeen(),
+                            $owner
+                        )->getEmail(),
                         $folderInfo->ewsFolder
                     );
                     $newEwsEmails[] = $ewsEmail;
@@ -552,8 +560,10 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             )
         );
 
-        $ewsEmail->getEmail()->removeFolder($ewsEmail->getEwsFolder()->getFolder());
-        $ewsEmail->getEmail()->addFolder($newEwsFolder->getFolder());
+        $emailUser = $ewsEmail->getEmail()->getEmailUserByFolder($ewsEmail->getEwsFolder()->getFolder()); // todo fixed
+        if ($emailUser != null) {
+            $emailUser->setFolder($newEwsFolder->getFolder());
+        }
         $ewsEmail->setEwsFolder($newEwsFolder);
         $ewsEmail->setEwsId($newEwsEmailId->getId());
         $ewsEmail->setEwsChangeKey($newEwsEmailId->getChangeKey());
