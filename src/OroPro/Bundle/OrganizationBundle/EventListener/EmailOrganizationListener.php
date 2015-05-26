@@ -39,7 +39,7 @@ class EmailOrganizationListener implements LoggerAwareInterface
         $emailUser = $eventArgs->getEmailUser();
         $user = $this->getEmailOwner($emailUser);
 
-        if ($user == null) {
+        if ($user === null) {
             $this->logger->notice(sprintf(
                 'Could not determine owner of the origin ID: ',
                 $emailUser->getFolder()->getOrigin()->getId()
@@ -48,31 +48,30 @@ class EmailOrganizationListener implements LoggerAwareInterface
             return;
         }
 
-        if ($emailUser->getOwner() == null) {
+        if ($emailUser->getOwner() === null) {
             $emailUser->setOwner($user);
         }
 
         $organizations = $user->getOrganizations();
-        if ($emailUser->getOrganization() != null) {
+        if ($emailUser->getOrganization() !== null) {
             if ($organizations->contains($emailUser->getOrganization())) {
                 $organizations->removeElement($emailUser->getOrganization());
             }
         } else {
             $organization = null;
-            $organizations->map(function($entry) use (&$organization) {
-                if ($organization == null) {
+            $organizations->map(function ($entry) use (&$organization) {
+                if ($organization === null) {
                     if (!$entry->getIsGlobal()) {
                         $organization = $entry;
                     }
                 }
             });
-            if ($organization != null) {
+            if ($organization !== null) {
                 $emailUser->setOrganization($organization);
                 $organizations->removeElement($organization);
             }
         }
 
-        $length = count($organizations);
         foreach ($organizations as $organization) {
             if (!$organization->getIsGlobal()) {
                 $eu = clone $emailUser;
@@ -85,13 +84,13 @@ class EmailOrganizationListener implements LoggerAwareInterface
     }
 
     /**
-     * @param EmailUser     $emailUser
+     * @param EmailUser $emailUser
      *
      * @return User|null
      */
     protected function getEmailOwner(EmailUser $emailUser)
     {
-        if ($emailUser->getOwner() != null) {
+        if ($emailUser->getOwner() !== null) {
             return $emailUser->getOwner();
         }
 
