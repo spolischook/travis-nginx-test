@@ -357,7 +357,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $folder             = $folderInfo->ewsFolder->getFolder();
         $folderType         = $folderInfo->folderType;
         $lastSynchronizedAt = $folder->getSynchronizedAt();
-        $user               = $this->getUserId($folder->getOrigin());
+        $userId             = $this->getUserId($folder->getOrigin());
 
         $this->logger->notice(sprintf('Loading emails from "%s" folder ...', $folder->getFullName()));
         $this->logger->notice(sprintf('Query: "%s".', $searchQuery->convertToString()));
@@ -380,8 +380,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $this->logger->notice(sprintf('Processed %d emails ...', $processed));
             }
 
-            $userId = $user ? $user->getId() : null;
-            if (!$this->isApplicableEmail($email, $folderType, $userId)) {
+            if (!$this->isApplicableEmail($email, $folderType, (int) $userId)) {
                 continue;
             }
 
@@ -392,13 +391,21 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             $count++;
             $batch[] = $email;
             if ($count === self::DB_BATCH_SIZE) {
-                $this->saveEmails($batch, $folderInfo, $user);
+                $this->saveEmails(
+                    $batch,
+                    $folderInfo,
+                    $this->em->getReference('Oro\Bundle\UserBundle\Entity\User', $userId)
+                );
                 $count = 0;
                 $batch = [];
             }
         }
         if ($count > 0) {
-            $this->saveEmails($batch, $folderInfo, $user);
+            $this->saveEmails(
+                $batch,
+                $folderInfo,
+                $this->em->getReference('Oro\Bundle\UserBundle\Entity\User', $userId)
+            );
         }
 
         return $lastSynchronizedAt;
@@ -489,7 +496,6 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $this->emailEntityBuilder->getBatch()->persist($this->em);
 
         // update references if needed
-        // todo CRM-2480
         $changes = $this->emailEntityBuilder->getBatch()->getChanges();
         foreach ($newEwsEmails as $ewsEmail) {
             foreach ($changes as $change) {

@@ -3,7 +3,7 @@
 namespace OroPro\Bundle\OrganizationBundle\EventListener;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnexpectedResultException;
 
@@ -14,6 +14,13 @@ use Oro\Bundle\EmailBundle\Event\EmailUserAdded;
 use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\UserBundle\Entity\User;
 
+/**
+ * Class EmailOrganizationListener
+ *
+ * Creates EmailUser entities for each of users' organizations
+ *
+ * @package OroPro\Bundle\OrganizationBundle\EventListener
+ */
 class EmailOrganizationListener implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
@@ -53,6 +60,38 @@ class EmailOrganizationListener implements LoggerAwareInterface
         }
 
         $organizations = $user->getOrganizations();
+        $this->setAndRemoveOrganization($organizations, $emailUser);
+        $this->duplicateEmailUsers($organizations, $emailUser, $user);
+    }
+
+    /**
+     * @param EmailUser $emailUser
+     *
+     * @return User|null
+     */
+    protected function getEmailOwner(EmailUser $emailUser)
+    {
+        if ($emailUser->getOwner() !== null) {
+            return $emailUser->getOwner();
+        }
+
+        $origin = $emailUser->getFolder()->getOrigin();
+
+        try {
+            return $this->em->getRepository('OroUserBundle:User')->getOriginOwner($origin);
+        } catch (UnexpectedResultException $e) {
+            $this->logger->notice($e->getMessage());
+
+            return null;
+        }
+    }
+
+    /**
+     * @param Collection $organizations
+     * @param EmailUser  $emailUser
+     */
+    protected function setAndRemoveOrganization($organizations, EmailUser $emailUser)
+    {
         if ($emailUser->getOrganization() !== null) {
             if ($organizations->contains($emailUser->getOrganization())) {
                 $organizations->removeElement($emailUser->getOrganization());
@@ -71,7 +110,15 @@ class EmailOrganizationListener implements LoggerAwareInterface
                 $organizations->removeElement($organization);
             }
         }
+    }
 
+    /**
+     * @param Collection $organizations
+     * @param EmailUser  $emailUser
+     * @param User       $user
+     */
+    protected function duplicateEmailUsers($organizations, EmailUser $emailUser, User $user)
+    {
         foreach ($organizations as $organization) {
             if (!$organization->getIsGlobal()) {
                 $eu = clone $emailUser;
@@ -80,36 +127,6 @@ class EmailOrganizationListener implements LoggerAwareInterface
 
                 $this->em->persist($eu);
             }
-        }
-    }
-
-    /**
-     * @param EmailUser $emailUser
-     *
-     * @return User|null
-     */
-    protected function getEmailOwner(EmailUser $emailUser)
-    {
-        if ($emailUser->getOwner() !== null) {
-            return $emailUser->getOwner();
-        }
-
-        $origin = $emailUser->getFolder()->getOrigin();
-
-        try {
-            $qb = $this->em->getRepository('Oro\Bundle\UserBundle\Entity\User')
-                ->createQueryBuilder('u')
-                ->select('u')
-                ->innerJoin('u.emailOrigins', 'o')
-                ->where('o.id = :originId')
-                ->setParameter('originId', $origin->getId())
-                ->setMaxResults(1);
-
-            return $qb->getQuery()->getOneOrNullResult();
-        } catch (UnexpectedResultException $e) {
-            $this->logger->notice($e->getMessage());
-
-            return null;
         }
     }
 }
