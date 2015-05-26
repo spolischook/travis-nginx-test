@@ -73,8 +73,7 @@ class EmailOrganizationListener implements LoggerAwareInterface
         }
 
         $length = count($organizations);
-        for ($i = 0; $i < $length; $i++) {
-            $organization = $organizations[$i];
+        foreach ($organizations as $organization) {
             if (!$organization->getIsGlobal()) {
                 $eu = clone $emailUser;
                 $eu->setOwner($user);
