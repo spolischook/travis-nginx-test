@@ -59,7 +59,7 @@ class EmailOrganizationListener implements LoggerAwareInterface
             $emailUser->setOwner($user);
         }
 
-        $organizations = $user->getOrganizations();
+        $organizations = clone $user->getOrganizations();
         $this->setAndRemoveOrganization($organizations, $emailUser);
         $this->duplicateEmailUsers($organizations, $emailUser, $user);
     }
