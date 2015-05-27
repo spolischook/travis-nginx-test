@@ -10,5 +10,5 @@ services:
         arguments:
             - %oro_email.email.entity.class%
             - @doctrine.orm.entity_manager
-            - @oro_soap.entity_serializer
             - @oro_activity.manager
+            - @oro_locale.dql.formatter.name

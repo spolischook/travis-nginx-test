@@ -3,96 +3,44 @@
 namespace OroCRMPro\Bundle\OutlookBundle\Entity\Manager;
 
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
-use Oro\Bundle\ActivityListBundle\Entity\ActivityList;
-use Oro\Bundle\ActivityListBundle\Entity\Repository\ActivityListRepository;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EntityBundle\ORM\QueryBuilderHelper;
+use Oro\Bundle\EntityBundle\ORM\QueryUtils;
+use Oro\Bundle\EntityBundle\ORM\SqlQueryBuilder;
+use Oro\Bundle\LocaleBundle\DQL\DQLNameFormatter;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
-use Oro\Bundle\SoapBundle\Entity\Manager\EntitySerializerManagerInterface;
 use Oro\Bundle\SoapBundle\Event\FindAfter;
-use Oro\Bundle\SoapBundle\Serializer\EntitySerializer;
+use Oro\Bundle\SoapBundle\Event\GetListBefore;
 
-class EmailEntityApiEntityManager extends ApiEntityManager implements EntitySerializerManagerInterface
+class EmailEntityApiEntityManager extends ApiEntityManager
 {
-    /** @var EntitySerializer */
-    protected $entitySerializer;
-
     /** @var ActivityManager */
     protected $activityManager;
+
+    /** @var DQLNameFormatter */
+    protected $nameFormatter;
 
     /**
      * @param string           $class
      * @param ObjectManager    $om
-     * @param EntitySerializer $entitySerializer
      * @param ActivityManager  $activityManager
+     * @param DQLNameFormatter $nameFormatter
      */
     public function __construct(
         $class,
         ObjectManager $om,
-        EntitySerializer $entitySerializer,
-        ActivityManager $activityManager
+        ActivityManager $activityManager,
+        DQLNameFormatter $nameFormatter
     ) {
         parent::__construct($class, $om);
-        $this->entitySerializer = $entitySerializer;
-        $this->activityManager  = $activityManager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function serialize(QueryBuilder $qb)
-    {
-        return $qb->getQuery()->getArrayResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function serializeOne($id)
-    {
-        throw new \BadMethodCallException('Not supported');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getListQueryBuilder($limit = 10, $page = 1, $criteria = [], $orderBy = null, $joins = [])
-    {
-        $associations      = getAssociations();
-        $targetIdentifiers = [];
-
-        foreach ($associations as $entityClass => $fieldName) {
-            $identifiers = $this->getObjectManager()->getClassMetadata($entityClass)->getIdentifierFieldNames();
-            if (count($identifiers) === 1) {
-                $targetIdentifiers[] = $fieldName . '.' . $identifiers[0];
-                $joins[]             = $fieldName;
-            }
-        }
-
-        $criteria = $this->prepareQueryCriteria($limit, $page, $criteria, $orderBy);
-
-        $qb = $this->getObjectManager()->getRepository(ActivityList::ENTITY_CLASS)->createQueryBuilder('al')
-            ->innerJoin($this->class, 'e', Join::WITH, 'e.id = al.relatedActivityId')
-            ->where('al.relatedActivityClass = :activityClass')
-            ->setParameter('activityClass', $this->class);
-        $this->applyJoins($qb, $joins);
-
-        // fix of doctrine error with Same Field, Multiple Values, Criteria and QueryBuilder
-        // http://www.doctrine-project.org/jira/browse/DDC-2798
-        // TODO revert changes when doctrine version >= 2.5 in scope of BAP-5577
-        QueryBuilderHelper::addCriteria($qb, $criteria);
-        // $qb->addCriteria($criteria);
-
-        $qb->select('e.id as id')
-            ->addSelect('COALESCE(' . implode(',', $targetIdentifiers) . ') AS targetId')
-            ->andWhere('targetId IS NOT NULL');
-
-        return $qb;
+        $this->activityManager = $activityManager;
+        $this->nameFormatter   = $nameFormatter;
     }
 
     /**
@@ -142,15 +90,82 @@ class EmailEntityApiEntityManager extends ApiEntityManager implements EntitySeri
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
-    protected function getSerializationConfig()
+    public function getListQueryBuilder($limit = 10, $page = 1, $criteria = [], $orderBy = null, $joins = [])
     {
-        $config = [
-            'exclusion_policy' => 'all',
-            'fields'           => 'id'
-        ];
+        $criteria = $this->normalizeQueryCriteria($criteria);
 
-        return $config;
+        $selectStmt = [];
+        $subQueries = [];
+        foreach ($this->getAssociations() as $entityClass => $fieldName) {
+            // dispatch oro_api.request.get_list.before event
+            $event = new GetListBefore($criteria, $entityClass);
+            $this->eventDispatcher->dispatch(GetListBefore::NAME, $event);
+            $subCriteria = $event->getCriteria();
+
+            $nameExpr = $this->nameFormatter->getFormattedNameDQL('target', $entityClass);
+            $subQb    = $this->getRepository()->createQueryBuilder('e')
+                ->select(
+                    sprintf(
+                        'e.id AS emailId, target.%s AS entityId, \'%s\' AS entityClass, '
+                        . ($nameExpr ?: '\'\'') . ' AS entityTitle',
+                        $this->getIdentifierFieldName($entityClass),
+                        str_replace('\'', '\'\'', $entityClass)
+                    )
+                )
+                ->innerJoin('e.' . $fieldName, 'target');
+            $this->applyJoins($subQb, $joins);
+
+            // fix of doctrine error with Same Field, Multiple Values, Criteria and QueryBuilder
+            // http://www.doctrine-project.org/jira/browse/DDC-2798
+            // TODO revert changes when doctrine version >= 2.5 in scope of BAP-5577
+            QueryBuilderHelper::addCriteria($subQb, $subCriteria);
+            // $subQb->addCriteria($criteria);
+
+            $subQuery = $subQb->getQuery();
+
+            $subQueries[] = QueryUtils::getExecutableSql($subQuery);
+
+            if (empty($selectMapping)) {
+                $mapping    = QueryUtils::parseQuery($subQuery)->getResultSetMapping();
+                $selectStmt = sprintf(
+                    'entity.%s AS id, entity.%s AS entity, entity.%s AS title',
+                    QueryUtils::getColumnNameByAlias($mapping, 'entityId'),
+                    QueryUtils::getColumnNameByAlias($mapping, 'entityClass'),
+                    QueryUtils::getColumnNameByAlias($mapping, 'entityTitle')
+                );
+            }
+        }
+
+        $rsm = new ResultSetMapping();
+        $rsm
+            ->addScalarResult('id', 'id', Type::INTEGER)
+            ->addScalarResult('entity', 'entity')
+            ->addScalarResult('title', 'title');
+        $qb = new SqlQueryBuilder($this->getObjectManager(), $rsm);
+        $qb
+            ->select($selectStmt)
+            ->from('(' . implode(' UNION ALL ', $subQueries) . ')', 'entity')
+            ->setMaxResults($limit)
+            ->setFirstResult($this->getOffset($page, $limit));
+        if ($orderBy) {
+            $qb->orderBy($orderBy);
+        }
+
+        return $qb;
+    }
+
+    /**
+     * @param string $entityClass
+     *
+     * @return string
+     */
+    protected function getIdentifierFieldName($entityClass)
+    {
+        $metadata    = $this->getObjectManager()->getMetadataFactory()->getMetadataFor($entityClass);
+        $identifiers = $metadata->getIdentifierFieldNames();
+
+        return $identifiers[0];
     }
 }

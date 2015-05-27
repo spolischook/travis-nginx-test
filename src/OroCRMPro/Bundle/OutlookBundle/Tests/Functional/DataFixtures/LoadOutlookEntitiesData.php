@@ -5,6 +5,9 @@ namespace OroCRMPro\Bundle\OutlookBundle\Tests\Functional\DataFixtures;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use OroCRM\Bundle\AccountBundle\Entity\Account;
@@ -15,13 +18,10 @@ use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
 use OroCRM\Bundle\SalesBundle\Entity\Lead;
 use OroCRM\Bundle\SalesBundle\Entity\Opportunity;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 class LoadOutlookEntitiesData extends AbstractFixture implements ContainerAwareInterface
 {
-    const CHANNEL_TYPE       = 'b2b';
-    const CHANNEL_NAME       = 'b2b Channel';
+    const CHANNEL_TYPE = 'b2b';
+    const CHANNEL_NAME = 'b2b Channel';
     const FIRST_CONTACT_NAME = 'Richard';
 
     /** @var ObjectManager */
@@ -60,7 +60,7 @@ class LoadOutlookEntitiesData extends AbstractFixture implements ContainerAwareI
     ];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -68,11 +68,11 @@ class LoadOutlookEntitiesData extends AbstractFixture implements ContainerAwareI
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
-        $this->em = $manager;
+        $this->em           = $manager;
         $this->organization = $manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
 
         $this->createChannel();
@@ -100,7 +100,9 @@ class LoadOutlookEntitiesData extends AbstractFixture implements ContainerAwareI
     protected function createContacts()
     {
         $firstCustomer = true;
+        $count         = 0;
         foreach ($this->contactsData as $contactData) {
+            $count++;
             $contact = new Contact();
             $contact->setOrganization($this->organization);
             $contact->setFirstName($contactData['firstName']);
@@ -109,6 +111,7 @@ class LoadOutlookEntitiesData extends AbstractFixture implements ContainerAwareI
                 $contact->addAccount($this->getReference('default_account'));
                 $this->setReference('default_contact', $contact);
             }
+            $this->setReference(sprintf('test_contact%d', $count), $contact);
             $firstCustomer = false;
 
             $this->em->persist($contact);
