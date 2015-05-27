@@ -96,7 +96,7 @@ class EmailEntityApiEntityManager extends ApiEntityManager
     {
         $criteria = $this->normalizeQueryCriteria($criteria);
 
-        $selectStmt = [];
+        $selectStmt = null;
         $subQueries = [];
         foreach ($this->getAssociations() as $entityClass => $fieldName) {
             // dispatch oro_api.request.get_list.before event
@@ -127,7 +127,7 @@ class EmailEntityApiEntityManager extends ApiEntityManager
 
             $subQueries[] = QueryUtils::getExecutableSql($subQuery);
 
-            if (empty($selectMapping)) {
+            if (empty($selectStmt)) {
                 $mapping    = QueryUtils::parseQuery($subQuery)->getResultSetMapping();
                 $selectStmt = sprintf(
                     'entity.%s AS id, entity.%s AS entity, entity.%s AS title',
