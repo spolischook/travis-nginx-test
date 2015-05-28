@@ -566,7 +566,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             )
         );
 
-        $emailUser = $ewsEmail->getEmail()->getEmailUserByFolder($ewsEmail->getEwsFolder()->getFolder()); // todo fixed
+        $emailUser = $ewsEmail->getEmail()->getEmailUserByFolder($ewsEmail->getEwsFolder()->getFolder());
         if ($emailUser != null) {
             $emailUser->setFolder($newEwsFolder->getFolder());
         }
