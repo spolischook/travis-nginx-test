@@ -49,14 +49,13 @@ class EmailSearchControllerTest extends WebTestCase
         );
         $entities = $this->getJsonResponseContent($this->client->getResponse(), 200);
         $this->assertCount(5, $entities);
-        $entity = reset(
-            array_filter(
-                $entities,
-                function ($entity) {
-                    return $entity['entity'] === 'OroCRM\Bundle\ContactBundle\Entity\Contact';
-                }
-            )
+        $entities = array_filter(
+            $entities,
+            function ($entity) {
+                return $entity['entity'] === 'OroCRM\Bundle\ContactBundle\Entity\Contact';
+            }
         );
+        $entity = reset($entities);
         $this->assertContains(LoadOutlookEntitiesData::FIRST_CONTACT_NAME, $entity['title']);
 
         // Check search by Contact name filtered by Contact entity only. Should return only one Contact entity.
