@@ -7,6 +7,7 @@ use Oro\Bundle\EmailBundle\Entity\Email as EmailEntity;
 use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Tests\Unit\ReflectionUtil;
 use Oro\Bundle\EmailBundle\Entity\EmailUser;
+use Oro\Bundle\UserBundle\Entity\User;
 
 use OroPro\Bundle\EwsBundle\Entity\EwsEmail;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder;
@@ -471,6 +472,9 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         );
         $processor->setLogger($this->logger);
 
+        $owner = new User();
+        $owner->setUsername('owner');
+
         $origin = new EwsEmailOrigin();
 
         $folder = new EmailFolder();
@@ -524,6 +528,8 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue([]));
 
         $newEmailEntity = new EmailEntity();
+        $newEmailUserEntity = new EmailUser();
+        $newEmailUserEntity->setEmail($newEmailEntity);
         $newEwsEmailEntity = new EwsEmail();
         $newEwsEmailEntity
             ->setEmail($newEmailEntity)
@@ -534,7 +540,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->emailEntityBuilder->expects($this->once())
             ->method('removeEmails');
         $this->emailEntityBuilder->expects($this->once())
-            ->method('email')
+            ->method('emailUser')
             ->with(
                 $email2->getSubject(),
                 $email2->getFrom(),
@@ -546,7 +552,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
                 $email2->getCcRecipients(),
                 $email2->getBccRecipients()
             )
-            ->will($this->returnValue($newEmailEntity));
+            ->will($this->returnValue($newEmailUserEntity));
         $this->em->expects($this->once())
             ->method('persist')
             ->with($newEwsEmailEntity);
@@ -580,7 +586,8 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             'saveEmails',
             [
                 [$email1, $email2],
-                $folderInfo
+                $folderInfo,
+                $owner
             ]
         );
 
@@ -588,7 +595,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($email2->getXMessageId(), $newEmailEntity->getXMessageId());
         $this->assertEquals($email2->getXThreadId(), $newEmailEntity->getXThreadId());
         $this->assertEquals($email2->getRefs(), implode('', $newEmailEntity->getRefs()));
-        $this->assertEquals($folder, $newEmailEntity->getFolders()->first());
+        $this->assertEquals($folder, $newEmailUserEntity->getFolder());
     }
 
     /**
