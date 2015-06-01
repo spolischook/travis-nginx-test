@@ -8,7 +8,7 @@
         "php": ">=5.4",
         "symfony/symfony": "2.3.*",
         "fr3d/ldap-bundle": "2.0.x-dev",
-        "oro/config-bundle": "dev-master",
+        "oro/integration-bundle": "dev-master",
         "oro/migration-bundle": "dev-master",
         "oro/user-bundle": "dev-master"
     },
