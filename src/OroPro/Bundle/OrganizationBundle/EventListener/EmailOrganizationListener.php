@@ -39,10 +39,13 @@ class EmailOrganizationListener implements LoggerAwareInterface
     }
 
     /**
+     * // todo CRM-2480
+     *
      * @param EmailUserAdded $eventArgs
      */
     public function onEmailUserAdded(EmailUserAdded $eventArgs)
     {
+        return;
         $emailUser = $eventArgs->getEmailUser();
         $user = $this->getEmailOwner($emailUser);
 

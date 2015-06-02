@@ -26,6 +26,7 @@ parameters:
 
     oropro_organization.acl.voter.organization.class: OroPro\Bundle\OrganizationBundle\Acl\Voter\OrganizationAnnotationVoter
     oropro_organization.event_listener.email_organization.class: OroPro\Bundle\OrganizationBundle\EventListener\EmailOrganizationListener
+    oropro_organization.event_listener.user_organization.class: OroPro\Bundle\OrganizationBundle\EventListener\UserOrganizationListener
 
 services:
     oropro_organization.twig.extension.organization:
@@ -167,3 +168,8 @@ services:
             - @doctrine
         tags:
             - { name: kernel.event_listener, event: oro_email.email_user_added, method: onEmailUserAdded }
+
+    oropro_organization.event_listener.user_organization:
+        class: %oropro_organization.event_listener.user_organization.class%
+        tags:
+            - { name: doctrine.event_listener, event: onFlush, method: onFlush }
