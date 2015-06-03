@@ -15,13 +15,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder            = new TreeBuilder();
-        $rootNode               = $treeBuilder->root('oro_crm_pro_outlook');
-        $sideBarPanelLayoutPath =
-            __DIR__ .
-            str_replace('/', DIRECTORY_SEPARATOR, '/../Resources/views/layouts/side-bar-panel-layout.xaml');
-
-        $sideBarPanelLayoutContent = $this->getLayoutContent($sideBarPanelLayoutPath);
+        $treeBuilder = new TreeBuilder();
+        $rootNode    = $treeBuilder->root('oro_crm_pro_outlook');
 
         $contactKeys    = [
             ['OroCRM' => 'lastName', 'Outlook' => 'LastName'],
@@ -76,7 +71,10 @@ class Configuration implements ConfigurationInterface
                 'contacts_mapping'               => ['value' => $contactMapping, 'type' => 'array'],
                 'tasks_enabled'                  => ['value' => true],
                 'calendar_events_enabled'        => ['value' => true],
-                'side_bar_panel_layout'          => ['value' => $sideBarPanelLayoutContent, 'type' => 'string']
+                'side_bar_panel_layout'          => [
+                    'value' => $this->getLayoutContent('side-bar-panel-layout.xaml'),
+                    'type'  => 'string'
+                ]
             ]
         );
 
@@ -86,16 +84,21 @@ class Configuration implements ConfigurationInterface
     /**
      * Fetch layout content by $path
      *
-     * @param string $path
+     * @param string $fileName
      *
      * @return string
+     *
      * @throws FileNotFoundException
      */
-    protected function getLayoutContent($path)
+    protected function getLayoutContent($fileName)
     {
+        $rootPath = __DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/../Resources/views/layouts/');
+        $path     = $rootPath . $fileName;
+
         if (!is_file($path)) {
             throw new FileNotFoundException($path);
         }
+
         return file_get_contents($path);
     }
 }
