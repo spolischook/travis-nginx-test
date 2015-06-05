@@ -82,9 +82,7 @@ class EmailEntityApiEntityManager extends ApiEntityManager
             return null;
         }
 
-        // dispatch oro_api.request.find.after event
-        $event = new FindAfter($entity[0]);
-        $this->eventDispatcher->dispatch(FindAfter::NAME, $event);
+        $this->checkFoundEntity($entity[0]);
 
         return $entity[0]->getId();
     }
