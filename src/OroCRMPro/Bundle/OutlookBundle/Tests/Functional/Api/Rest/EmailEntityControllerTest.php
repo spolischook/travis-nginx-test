@@ -22,7 +22,7 @@ class EmailEntityControllerTest extends WebTestCase
                 'OroCRMPro\Bundle\OutlookBundle\Tests\Functional\DataFixtures\LoadOutlookEmailEntitiesData'
             ]
         );
-        $this->baseUrl = $this->getUrl('orocrmpro_api_outlook_get_entities');
+        $this->baseUrl = $this->getUrl('orocrmpro_api_outlook_get_entities_by_filters');
     }
 
     public function testGetEntities()

@@ -5,6 +5,7 @@ namespace OroCRMPro\Bundle\OutlookBundle\Controller\Api\Rest;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Util\Codes;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -27,6 +28,44 @@ class EmailEntityController extends RestGetController
     /**
      * Returns the list of entities associated with the specified email.
      *
+     * @param int $id The email identifier.
+     *
+     * @Get(
+     *      "{id}/entities",
+     *      requirements={"id"="\d+"}
+     * )
+     * @ApiDoc(
+     *      description="Returns the list of entities associated with the specified email",
+     *      resource=true
+     * )
+     *
+     * @AclAncestor("oro_email_view")
+     *
+     * @return Response
+     */
+    public function cgetAction($id)
+    {
+        $manager = $this->getManager();
+
+        $page     = (int)$this->getRequest()->get('page', 1);
+        $limit    = (int)$this->getRequest()->get('limit', self::ITEMS_PER_PAGE);
+
+        $criteria = $this->buildFilterCriteria(
+            [
+                'id' => ['=', $id]
+            ],
+            [
+                'id' => new IdentifierToReferenceFilter($this->getDoctrine(), $manager->getMetadata()->getName())
+            ]
+        );
+
+        return $this->handleGetListRequest($page, $limit, $criteria);
+    }
+
+    /**
+     * Returns the list of entities associated with the specified email.
+     *
+     * @Get("entities")
      * @QueryParam(
      *      name="page",
      *      requirements="\d+",
@@ -38,12 +77,6 @@ class EmailEntityController extends RestGetController
      *      requirements="\d+",
      *      nullable=true,
      *      description="Number of items per page. Defaults to 10."
-     * )
-     * @QueryParam(
-     *      name="emailId",
-     *      requirements="\d+",
-     *      nullable=true,
-     *      description="The email identifier."
      * )
      * @QueryParam(
      *     name="messageId",
@@ -90,54 +123,51 @@ class EmailEntityController extends RestGetController
      *
      * @return Response
      */
-    public function cgetAction()
+    public function cgetByFiltersAction()
     {
         $manager = $this->getManager();
 
-        $emailId = $this->getRequest()->get('emailId');
-        if ($emailId === null) {
-            $emailId = $manager->findEmailId(
-                $this->getFilterCriteria(
-                    array_diff($this->getSupportedQueryParameters(__FUNCTION__), ['emailId']),
-                    [
-                        'messageId' => new StringToArrayParameterFilter(),
-                        'from'      => new StringToArrayParameterFilter(),
-                        'to'        => new StringToArrayParameterFilter(),
-                        'cc'        => new StringToArrayParameterFilter(),
-                        'bcc'       => new StringToArrayParameterFilter()
-                    ],
-                    [
-                        'from' => 'fromEmailAddress.email',
-                        'to'   => 'toAddress.email',
-                        'cc'   => 'ccAddress.email',
-                        'bcc'  => 'bccAddress.email'
-                    ]
-                ),
+        $emailId = $manager->findEmailId(
+            $this->getFilterCriteria(
+                array_diff($this->getSupportedQueryParameters(__FUNCTION__), ['emailId']),
                 [
-                    'fromEmailAddress' => null,
-                    'toRecipients'     => [
-                        'join' => 'recipients'
-                    ],
-                    'toAddress'        => [
-                        'join' => 'toRecipients.emailAddress'
-                    ],
-                    'ccRecipients'     => [
-                        'join'      => 'recipients',
-                        'condition' => 'ccRecipients.type = \'' . EmailRecipient::CC . '\''
-                    ],
-                    'ccAddress'        => [
-                        'join' => 'ccRecipients.emailAddress'
-                    ],
-                    'bccRecipients'    => [
-                        'join'      => 'recipients',
-                        'condition' => 'bccRecipients.type = \'' . EmailRecipient::BCC . '\''
-                    ],
-                    'bccAddress'       => [
-                        'join' => 'bccRecipients.emailAddress'
-                    ]
+                    'messageId' => new StringToArrayParameterFilter(),
+                    'from'      => new StringToArrayParameterFilter(),
+                    'to'        => new StringToArrayParameterFilter(),
+                    'cc'        => new StringToArrayParameterFilter(),
+                    'bcc'       => new StringToArrayParameterFilter()
+                ],
+                [
+                    'from' => 'fromEmailAddress.email',
+                    'to'   => 'toAddress.email',
+                    'cc'   => 'ccAddress.email',
+                    'bcc'  => 'bccAddress.email'
                 ]
-            );
-        }
+            ),
+            [
+                'fromEmailAddress' => null,
+                'toRecipients'     => [
+                    'join' => 'recipients'
+                ],
+                'toAddress'        => [
+                    'join' => 'toRecipients.emailAddress'
+                ],
+                'ccRecipients'     => [
+                    'join'      => 'recipients',
+                    'condition' => 'ccRecipients.type = \'' . EmailRecipient::CC . '\''
+                ],
+                'ccAddress'        => [
+                    'join' => 'ccRecipients.emailAddress'
+                ],
+                'bccRecipients'    => [
+                    'join'      => 'recipients',
+                    'condition' => 'bccRecipients.type = \'' . EmailRecipient::BCC . '\''
+                ],
+                'bccAddress'       => [
+                    'join' => 'bccRecipients.emailAddress'
+                ]
+            ]
+        );
 
         if ($emailId === null) {
             return $this->buildResponse('', self::ACTION_READ, ['result' => null], Codes::HTTP_NOT_FOUND);
