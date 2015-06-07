@@ -11,4 +11,3 @@ services:
             - %oro_email.email.entity.class%
             - @doctrine.orm.entity_manager
             - @oro_activity.manager
-            - @oro_locale.dql.formatter.name

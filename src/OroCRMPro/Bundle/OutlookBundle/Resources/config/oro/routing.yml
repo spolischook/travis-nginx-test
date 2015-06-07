@@ -7,13 +7,3 @@ orocrmpro_outlook_email_entity_api:
         _format:  json
     defaults:
         version: latest
-
-orocrmpro_outlook_email_search_api:
-    resource: OroCRMPro\Bundle\OutlookBundle\Controller\Api\Rest\EmailSearchController
-    type: rest
-    prefix:   api/rest/{version}/outlook/emails/
-    requirements:
-        version:  latest|v1
-        _format:  json
-    defaults:
-        version: latest
