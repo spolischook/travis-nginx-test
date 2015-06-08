@@ -20,7 +20,7 @@
                 {% set label = item.label ~ ': ' ~ itemValue ~ '{br}(' ~ 'from'|trans ~ ' '
                 ~ options.settings.quarterDate|oro_format_date ~ ')' %}
             {% else %}
-                {% set label = item.label ~ ' (' ~ 'from'|trans ~ ' ' ~ options.settings.quarterDate|oro_format_date
+                {% set label = item.label ~ ' (' ~ 'from'|trans ~ ' ' ~ options.settings.quarterDate|oro_format_date({timeZone: oro_timezone()})
                 ~ '): ' ~ itemValue %}
             {% endif %}
 
