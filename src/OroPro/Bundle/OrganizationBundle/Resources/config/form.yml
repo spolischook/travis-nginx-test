@@ -20,13 +20,6 @@ services:
         tags:
             - { name: form.type, alias: oro_type_choice_organization_type }
 
-    oropro_organization.method.get_organization_type:
-        arguments:
-            - @doctrine
-        tags:
-            - { name: oro_service_method, service: oropro_organization.form.type.organization_choice, method: getChoices }
-        lazy: true
-
     oropro_organization.form.type.organization_choice:
         class: %oropro_organization.form.type.organization_choice.class%
         arguments:
