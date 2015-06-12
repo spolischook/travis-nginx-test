@@ -162,7 +162,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             ->will($this->returnValue(['domain1.com', 'domain2.com']));
 
         $records = [
-            ['id0' => 1, 'email1' => 'test@example.com']
+            ['id_0' => 1, 'email_1' => 'test@example.com']
         ];
 
         $selectStmt = $this->createFetchStatementMock($records);
@@ -205,7 +205,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         $this->sync->callInitializeOrigins();
 
         // select users without origins
-        $selectClause = 'SELECT o0_.id AS id0, o1_.email AS email1';
+        $selectClause = 'SELECT o0_.id AS id_0, o1_.email AS email_1';
         $actualSql = $actualSqls[0];
         $actualSql = $selectClause
             . substr($actualSql, strpos($actualSql, ' FROM oro_user o0_'));
