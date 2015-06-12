@@ -6,11 +6,13 @@ oro_integration:
                 options:
                     required: false
                     label:   oro.ldap.transport.ldap.fields.export_auto_enable.label
+                    tooltip: oro.ldap.transport.ldap.fields.export_auto_enable.tooltip
                 priority: 10
             user_filter:
                 type: text
                 options:
                     label:    oro.ldap.transport.ldap.fields.user_filter.label
+                    tooltip:  oro.ldap.transport.ldap.fields.user_filter.tooltip
                     required: false
                 priority: 20
                 applicable: [ldap]
@@ -25,6 +27,7 @@ oro_integration:
                 type: text
                 options:
                     label:    oro.ldap.transport.ldap.fields.role_filter.label
+                    tooltip:  oro.ldap.transport.ldap.fields.role_filter.tooltip
                     required: true
                     constraints:
                         - NotBlank: ~
@@ -33,7 +36,8 @@ oro_integration:
             role_id_attribute:
                 type: text
                 options:
-                    label:   oro.ldap.transport.ldap.fields.role_id_attribute.label
+                    label:    oro.ldap.transport.ldap.fields.role_id_attribute.label
+                    tooltip:  oro.ldap.transport.ldap.fields.role_id_attribute.tooltip
                     required: true
                     constraints:
                         - NotBlank: ~
@@ -43,6 +47,7 @@ oro_integration:
                 type: text
                 options:
                     label:    oro.ldap.transport.ldap.fields.role_user_id_attribute.label
+                    tooltip:  oro.ldap.transport.ldap.fields.role_user_id_attribute.tooltip
                     required: true
                     constraints:
                         - NotBlank: ~
@@ -52,6 +57,7 @@ oro_integration:
                 type: oro_collection
                 options:
                     label:    oro.ldap.transport.ldap.fields.role_mapping.label
+                    tooltip:  oro.ldap.transport.ldap.fields.role_mapping.tooltip
                     type:     oro_ldap_role_mapping
                     required: false
                     handle_primary: false
@@ -62,6 +68,7 @@ oro_integration:
                 type: text
                 options:
                     label:    oro.ldap.transport.ldap.fields.export_user_base_dn.label
+                    tooltip:  oro.ldap.transport.ldap.fields.export_user_base_dn.tooltip
                     required: true
                     constraints:
                         - NotBlank: ~
@@ -71,6 +78,7 @@ oro_integration:
                 type: text
                 options:
                     label:    oro.ldap.transport.ldap.fields.export_user_class.label
+                    tooltip:  oro.ldap.transport.ldap.fields.export_user_class.tooltip
                     required: true
                     constraints:
                         - NotBlank: ~

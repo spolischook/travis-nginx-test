@@ -31,4 +31,4 @@ oro:
                     role_crm.label: CRM Roles
                     export_auto_enable.label: Auto-export new users
                     export_user_base_dn.label: Export Base Distinguished Name
-                    export_user_class.label: Export User class
+                    export_user_class.label: Export User Class

@@ -6,9 +6,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
+use Oro\Bundle\LDAPBundle\Form\EventListener\LdapConnectorFormSubscriber;
+
 class LdapTransportSettingsFormType extends AbstractType
 {
     const NAME = 'oro_ldap_ldap_transport_setting_form_type';
+
+    /** @var TypesRegistry */
+    private $registry;
+
+    /**
+     * @param TypesRegistry $registry
+     */
+    public function __construct(TypesRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
 
     /**
      * {@inheritdoc}
@@ -76,6 +90,7 @@ class LdapTransportSettingsFormType extends AbstractType
                 'always_empty' => false,
             ]
         );
+        $builder->addEventSubscriber(new LdapConnectorFormSubscriber($this->registry));
     }
 
     /**

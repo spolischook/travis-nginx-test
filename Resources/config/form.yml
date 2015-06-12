@@ -28,3 +28,4 @@ services:
         class: %oro_ldap.form.type.ldap_transport_setting.class%
         tags:
             - { name: form.type, alias: oro_ldap_ldap_transport_setting_form_type }
+        arguments: [@oro_integration.manager.types_registry]
