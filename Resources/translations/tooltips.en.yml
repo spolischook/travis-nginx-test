@@ -15,3 +15,4 @@ oro.ldap.transport.ldap.fields:
         Base DN used for exporting users, can be different than import, in case you may need to
         export users to different location.
     export_user_class.tooltip: Object class of exported users.
+    user_mapping.tooltip: Name of corresponding attribute in LDAP.

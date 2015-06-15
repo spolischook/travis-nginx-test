@@ -16,13 +16,78 @@ oro_integration:
                     required: false
                 priority: 20
                 applicable: [ldap]
-            user_mapping:
-                type: oro_ldap_user_mapping
+            user_mapping_enabled:
+                type: text
                 options:
-                    label:    oro.ldap.transport.ldap.fields.user_mapping.label
-                    required: true
+                    label:    oro.ldap.transport.ldap.fields.user_mapping_enabled.label
+                    tooltip:  oro.ldap.transport.ldap.fields.user_mapping.tooltip
+                    required: false
+                priority: 22
                 applicable: [ldap]
+            user_mapping_username:
+                type: text
+                options:
+                    label:    oro.ldap.transport.ldap.fields.user_mapping_username.label
+                    tooltip:  oro.ldap.transport.ldap.fields.user_mapping.tooltip
+                    required: true
+                    constraints:
+                        - NotBlank: ~
+                priority: 24
+                applicable: [ldap]
+            user_mapping_name_prefix:
+                type: text
+                options:
+                    label:    oro.ldap.transport.ldap.fields.user_mapping_name_prefix.label
+                    tooltip:  oro.ldap.transport.ldap.fields.user_mapping.tooltip
+                    required: false
+                priority: 26
+                applicable: [ldap]
+            user_mapping_first_name:
+                type: text
+                options:
+                    label:    oro.ldap.transport.ldap.fields.user_mapping_first_name.label
+                    tooltip:  oro.ldap.transport.ldap.fields.user_mapping.tooltip
+                    required: true
+                    constraints:
+                        - NotBlank: ~
+                priority: 28
+                applicable: [ldap]
+            user_mapping_middle_name:
+                type: text
+                options:
+                    label:    oro.ldap.transport.ldap.fields.user_mapping_middle_name.label
+                    tooltip:  oro.ldap.transport.ldap.fields.user_mapping.tooltip
+                    required: false
                 priority: 30
+                applicable: [ldap]
+            user_mapping_last_name:
+                type: text
+                options:
+                    label:    oro.ldap.transport.ldap.fields.user_mapping_last_name.label
+                    tooltip:  oro.ldap.transport.ldap.fields.user_mapping.tooltip
+                    required: true
+                    constraints:
+                        - NotBlank: ~
+                priority: 32
+                applicable: [ldap]
+            user_mapping_name_suffix:
+                type: text
+                options:
+                    label:    oro.ldap.transport.ldap.fields.user_mapping_name_suffix.label
+                    tooltip:  oro.ldap.transport.ldap.fields.user_mapping.tooltip
+                    required: false
+                priority: 34
+                applicable: [ldap]
+            user_mapping_email:
+                type: text
+                options:
+                    label:    oro.ldap.transport.ldap.fields.user_mapping_email.label
+                    tooltip:  oro.ldap.transport.ldap.fields.user_mapping.tooltip
+                    required: true
+                    constraints:
+                        - NotBlank: ~
+                priority: 36
+                applicable: [ldap]
             role_filter:
                 type: text
                 options:

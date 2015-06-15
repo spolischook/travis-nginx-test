@@ -42,6 +42,8 @@ class LdapManager extends BaseManager
         $mappingSettings = $channel->getMappingSettings();
         $mappingSettings->merge($settings);
 
+        $mappingSettings['user_mapping'] = $this->groupAttributes($mappingSettings);
+
         $params = $this->transformSettings($mappingSettings, $this->getTransforms());
 
         parent::__construct($driver, $userManager, $params);
@@ -69,6 +71,18 @@ class LdapManager extends BaseManager
         );
         unset($users['count']);
         return $users;
+    }
+
+    private function groupAttributes($settings)
+    {
+        $attributes = [];
+        foreach ($settings as $key => $value) {
+            if (false !== strpos($key, 'user_mapping_')) {
+                $attributes[str_replace('user_mapping_', '', $key)] = $value;
+            }
+        }
+
+        return $attributes;
     }
 
     /**
@@ -110,7 +124,7 @@ class LdapManager extends BaseManager
      */
     private function getDn(UserInterface $user)
     {
-        $mappings = (array) $user->getLdapMappings();
+        $mappings = (array)$user->getLdapMappings();
 
         if (isset($mappings[$this->channel->getId()])) {
             return $mappings[$this->channel->getId()];
@@ -128,7 +142,7 @@ class LdapManager extends BaseManager
      */
     private function setDn(UserInterface $user, $dn)
     {
-        $mappings = (array) $user->getLdapMappings();
+        $mappings = (array)$user->getLdapMappings();
         $mappings[$this->channel->getId()] = $dn;
 
         $user->setLdapMappings($mappings);
@@ -242,7 +256,7 @@ class LdapManager extends BaseManager
             $ldapValue = $entry[$this->params['role_id_attribute']];
             $value = null;
 
-            if (!array_key_exists('count', $ldapValue) ||  $ldapValue['count'] == 1) {
+            if (!array_key_exists('count', $ldapValue) || $ldapValue['count'] == 1) {
                 $value = $ldapValue[0];
             } else {
                 $value = array_slice($ldapValue, 1);
@@ -367,7 +381,7 @@ class LdapManager extends BaseManager
         foreach ($sortedMapping as $userField => $ldapAttr) {
             $attributes[] = [
                 'ldap_attr' => $ldapAttr,
-                'user_method' => sprintf('set%s', ucfirst($userField)),
+                'user_method' => sprintf('set%s', str_replace(' ', '', ucwords(str_replace('_', ' ', $userField)))),
                 'user_field' => $userField,
             ];
         }
