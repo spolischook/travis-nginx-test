@@ -3,11 +3,3 @@ services:
         class: OroCRMPro\Bundle\OutlookBundle\Config\LayoutDataTransformer
         arguments:
             - @translator
-
-    orocrmpro_outlook.manager.api.email_entity:
-        class: OroCRMPro\Bundle\OutlookBundle\Entity\Manager\EmailEntityApiEntityManager
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - %oro_email.email.entity.class%
-            - @doctrine.orm.entity_manager
-            - @oro_activity.manager
