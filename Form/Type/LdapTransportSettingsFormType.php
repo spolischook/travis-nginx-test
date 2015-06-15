@@ -90,7 +90,7 @@ class LdapTransportSettingsFormType extends AbstractType
                 'always_empty' => false,
             ]
         );
-        $builder->addEventSubscriber(new LdapConnectorFormSubscriber($this->registry));
+        //$builder->addEventSubscriber(new LdapConnectorFormSubscriber($this->registry));
     }
 
     /**

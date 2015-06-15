@@ -89,7 +89,7 @@ class LdapUserImportProcessor implements StepExecutionAwareProcessor
             if ($user === null) {
                 $user = $this->createUser($item);
                 $this->getContext()->incrementAddCount();
-            } else {
+            } elseif($this->getSyncPriority() == 'remote') {
                 $this->managerProvider->channel($this->getChannel())->hydrate($user, $item);
                 $this->getContext()->incrementUpdateCount();
             }
@@ -107,5 +107,10 @@ class LdapUserImportProcessor implements StepExecutionAwareProcessor
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->setContext($this->contextRegistry->getByStepExecution($stepExecution));
+    }
+
+    private function getSyncPriority()
+    {
+        return $this->getChannel()->getSynchronizationSettings()->offsetGetOr('syncPriority');
     }
 }

@@ -49,12 +49,14 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
     {
         foreach ($items as $user) {
             if ($this->managerProvider->channel($this->getChannel())->exists($user)) {
-                $this->context->incrementUpdateCount();
+                if ($this->getSyncPriority() == 'local') {
+                    $this->context->incrementUpdateCount();
+                    $this->managerProvider->channel($this->getChannel())->save($user);
+                }
             } else {
                 $this->context->incrementAddCount();
+                $this->managerProvider->channel($this->getChannel())->save($user);
             }
-
-            $this->managerProvider->channel($this->getChannel())->save($user);
         }
 
         $this->userManager->getStorageManager()->flush();
@@ -66,5 +68,10 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->setContext($this->contextRegistry->getByStepExecution($stepExecution));
+    }
+
+    private function getSyncPriority()
+    {
+        return $this->getChannel()->getSynchronizationSettings()->offsetGetOr('syncPriority');
     }
 }

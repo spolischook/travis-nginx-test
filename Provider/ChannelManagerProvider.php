@@ -96,7 +96,7 @@ class ChannelManagerProvider
         if ($this->channels === null) {
             $channels =
                 $this->registry->getRepository('OroIntegrationBundle:Channel')
-                    ->findBy(['type' => ChannelType::TYPE ]);
+                    ->findBy(['type' => ChannelType::TYPE]);
             $this->channels = [];
             foreach ($channels as $channel) {
                 $this->channels[$channel->getId()] = $channel;
@@ -124,7 +124,11 @@ class ChannelManagerProvider
                 continue;
             }
 
-            $this->channel($channel)->save($user);
+            if ($this->channel($channel)->exists($user)
+                && $channel->getSynchronizationSettings()->offsetGetOr('syncPriority') == 'local'
+            ) {
+                $this->channel($channel)->save($user);
+            }
         }
     }
 
