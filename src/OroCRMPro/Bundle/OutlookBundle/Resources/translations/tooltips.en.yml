@@ -7,3 +7,4 @@ orocrmpro_outlook:
             sync_interval_orocrm:   How often changes on CRM side will be checked
             sync_interval_outlook:  How often changes on Outlook side will be checked
             addin:                  Download MS Outlook OroCRM Plugin to integrate with your Outlook client. Once downloaded run the installation process.
+            side_bar_panel_layout:  The layout of the side bar panel for MS Outlook OroCRM Plugin in XAML format.
