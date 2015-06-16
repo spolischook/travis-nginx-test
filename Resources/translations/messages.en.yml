@@ -22,6 +22,7 @@ oro:
                     server_base_dn.label: Server Base Distinguished Name
                     admin_dn.label: Admin Distinguished Name
                     admin_password.label: Admin Password
+                    connection_check.label: Check Connection
                     user_filter.label: User Filter
                     user_mapping_enabled.label: Enabled Attribute
                     user_mapping_username.label: Username Attribute

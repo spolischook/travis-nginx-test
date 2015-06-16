@@ -75,6 +75,10 @@ class ChannelManagerProvider
      */
     public function channel(Channel $channel)
     {
+        if ($channel->getId() == null) {
+            return $this->make($channel);
+        }
+
         if (isset($this->managers[$channel->getId()])) {
             return $this->managers[$channel->getId()];
         }

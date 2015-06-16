@@ -1,0 +1,2 @@
+bundles:
+    - OroLDAPBundle:Form:fields.html.twig

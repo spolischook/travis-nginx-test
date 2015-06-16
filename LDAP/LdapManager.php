@@ -27,8 +27,8 @@ class LdapManager extends BaseManager
     /** @var PropertyAccessor|null */
     private $propertyAccessor;
 
-    /** @var Channel */
-    private $channel;
+    /** @var integer */
+    private $channelId;
 
     /**
      * @param Registry $registry
@@ -38,9 +38,9 @@ class LdapManager extends BaseManager
      */
     public function __construct(Registry $registry, ZendLdapDriver $driver, UserManager $userManager, Channel $channel)
     {
-        $settings = iterator_to_array($channel->getTransport()->getSettingsBag());
+        $transportSettings = iterator_to_array($channel->getTransport()->getSettingsBag());
         $mappingSettings = $channel->getMappingSettings();
-        $mappingSettings->merge($settings);
+        $mappingSettings->merge($transportSettings);
 
         $mappingSettings['user_mapping'] = $this->groupAttributes($mappingSettings);
 
@@ -48,7 +48,7 @@ class LdapManager extends BaseManager
 
         parent::__construct($driver, $userManager, $params);
         $this->registry = $registry;
-        $this->channel = $channel;
+        $this->channelId = $channel->getId();
     }
 
     /**
@@ -73,6 +73,11 @@ class LdapManager extends BaseManager
         return $users;
     }
 
+    /**
+     * @param $settings
+     *
+     * @return array
+     */
     private function groupAttributes($settings)
     {
         $attributes = [];
@@ -126,8 +131,8 @@ class LdapManager extends BaseManager
     {
         $mappings = (array)$user->getLdapMappings();
 
-        if (isset($mappings[$this->channel->getId()])) {
-            return $mappings[$this->channel->getId()];
+        if (isset($mappings[$this->channelId])) {
+            return $mappings[$this->channelId];
         }
 
         return false;
@@ -143,7 +148,7 @@ class LdapManager extends BaseManager
     private function setDn(UserInterface $user, $dn)
     {
         $mappings = (array)$user->getLdapMappings();
-        $mappings[$this->channel->getId()] = $dn;
+        $mappings[$this->channelId] = $dn;
 
         $user->setLdapMappings($mappings);
 

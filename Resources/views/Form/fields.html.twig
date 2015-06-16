@@ -1,0 +1,30 @@
+{% block oro_ldap_transport_check_button_type_widget %}
+    {% set entity = form.parent.vars.value %}
+    {% set options = {
+        el: '#' ~ form.vars.id,
+        transportEntityId: entity.id|default(null),
+
+    } %}
+    <div class="control-group">
+        <div class="controls">
+            <button type="button" class="btn btn-big btn-primary" id="{{ form.vars.id }}">
+                {{ label|trans }}
+            </button>
+            <script type="text/javascript">
+                require(['oroldap/js/ldap-checker'], function (LDAPChecker) {
+                    "use strict";
+                    new LDAPChecker({{ options|json_encode|raw }});
+                });
+            </script>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls messages">
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block oro_ldap_transport_check_button_type_row %}
+    {{ block('button_row') }}
+{% endblock %}

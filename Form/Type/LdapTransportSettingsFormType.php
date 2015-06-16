@@ -90,7 +90,14 @@ class LdapTransportSettingsFormType extends AbstractType
                 'always_empty' => false,
             ]
         );
-        //$builder->addEventSubscriber(new LdapConnectorFormSubscriber($this->registry));
+        $builder->add(
+            'check',
+            'oro_ldap_transport_check_button_type',
+            [
+                'label' => 'Check Connection',
+            ]
+        );
+        // TODO: $builder->addEventSubscriber(new LdapConnectorFormSubscriber($this->registry));
     }
 
     /**

@@ -3,6 +3,7 @@ parameters:
     oro_ldap.form.type.role_mapping_type.class:  Oro\Bundle\LDAPBundle\Form\Type\RoleMappingType
     oro_ldap.form.type.encryption_type.class:    Oro\Bundle\LDAPBundle\Form\Type\EncryptionType
     oro_ldap.form.type.ldap_transport_setting.class:  Oro\Bundle\LDAPBundle\Form\Type\LdapTransportSettingsFormType
+    oro_ldap.form.typr.ldap_transport_check_button.class: Oro\Bundle\LDAPBundle\Form\Type\LdapTransportCheckButton
 
 services:
     oro_ldap.form.type.user_mapping_type:
@@ -29,3 +30,8 @@ services:
         tags:
             - { name: form.type, alias: oro_ldap_ldap_transport_setting_form_type }
         arguments: [@oro_integration.manager.types_registry]
+
+    oro_ldap.form.typr.ldap_transport_check_button:
+        class: %oro_ldap.form.typr.ldap_transport_check_button.class%
+        tags:
+            - { name: form.type, alias: oro_ldap_transport_check_button_type }
