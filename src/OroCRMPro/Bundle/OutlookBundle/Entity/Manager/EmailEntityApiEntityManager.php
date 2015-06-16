@@ -10,12 +10,10 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\EmailBundle\Entity\Email;
-use Oro\Bundle\EntityBundle\ORM\QueryBuilderHelper;
 use Oro\Bundle\EntityBundle\ORM\QueryUtils;
 use Oro\Bundle\EntityBundle\ORM\SqlQueryBuilder;
 use Oro\Bundle\LocaleBundle\DQL\DQLNameFormatter;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
-use Oro\Bundle\SoapBundle\Event\FindAfter;
 use Oro\Bundle\SoapBundle\Event\GetListBefore;
 
 class EmailEntityApiEntityManager extends ApiEntityManager
@@ -70,11 +68,7 @@ class EmailEntityApiEntityManager extends ApiEntityManager
             ->setMaxResults(2);
         $this->applyJoins($qb, $joins);
 
-        // fix of doctrine error with Same Field, Multiple Values, Criteria and QueryBuilder
-        // http://www.doctrine-project.org/jira/browse/DDC-2798
-        // TODO revert changes when doctrine version >= 2.5 in scope of BAP-5577
-        QueryBuilderHelper::addCriteria($qb, $criteria);
-        // $qb->addCriteria($criteria);
+        $qb->addCriteria($criteria);
 
         /** @var Email[] $entity */
         $entity = $qb->getQuery()->getResult();
@@ -115,11 +109,7 @@ class EmailEntityApiEntityManager extends ApiEntityManager
                 ->innerJoin('e.' . $fieldName, 'target');
             $this->applyJoins($subQb, $joins);
 
-            // fix of doctrine error with Same Field, Multiple Values, Criteria and QueryBuilder
-            // http://www.doctrine-project.org/jira/browse/DDC-2798
-            // TODO revert changes when doctrine version >= 2.5 in scope of BAP-5577
-            QueryBuilderHelper::addCriteria($subQb, $subCriteria);
-            // $subQb->addCriteria($criteria);
+            $subQb->addCriteria($subCriteria);
 
             $subQuery = $subQb->getQuery();
 
