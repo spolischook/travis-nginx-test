@@ -16,7 +16,7 @@ services:
   oropro_organization_config.provider.form_provider:
       class: %oropro_organization_config.provider.organization_configuration.form_provider.class%
       arguments:
-          - []
+          - @oro_config.config_bag
           - @form.factory
           - @oro_security.security_facade
       tags:
