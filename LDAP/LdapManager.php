@@ -217,7 +217,7 @@ class LdapManager extends BaseManager
      */
     public function bind(UserInterface $user, $password)
     {
-        $ldapUser = User::createFromUser($user, $this->channel->getId());
+        $ldapUser = User::createFromUser($user, $this->channelId);
 
         if ($ldapUser->getDn() == null) {
             return false;
