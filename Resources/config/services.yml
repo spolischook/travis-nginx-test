@@ -54,10 +54,15 @@ services:
         tags:
             - { name: oro_service_link,  service: oro_ldap.provider.channel_manager }
 
+    oro_integration.sync_scheduler.link:
+        tags:
+            - { name: oro_service_link,  service: oro_integration.sync_scheduler }
+
     oro_ldap.event_listener.user_change_listener:
         class:  %oro_ldap.event_listener.user_change_listener.class%
         arguments:
             - @oro_ldap.provider.channel_manager.link
+            - @oro_integration.sync_scheduler.link
         tags:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: doctrine.event_listener, event: postFlush }

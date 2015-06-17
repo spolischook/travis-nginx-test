@@ -1,13 +1,6 @@
 oro_integration:
     form:
         mapping_settings:
-            export_auto_enable:
-                type: checkbox
-                options:
-                    required: false
-                    label:   oro.ldap.transport.ldap.fields.export_auto_enable.label
-                    tooltip: oro.ldap.transport.ldap.fields.export_auto_enable.tooltip
-                priority: 10
             user_filter:
                 type: text
                 options:

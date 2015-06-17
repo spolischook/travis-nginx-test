@@ -24,20 +24,11 @@ oro:
                     admin_password.label: Admin Password
                     connection_check.label: Check Connection
                     user_filter.label: User Filter
-                    user_mapping_enabled.label: Enabled Attribute
-                    user_mapping_username.label: Username Attribute
-                    user_mapping_name_prefix.label: Name Prefix Attribute
-                    user_mapping_first_name.label: First Name Attribute
-                    user_mapping_middle_name.label: Middle Name Attribute
-                    user_mapping_last_name.label: Last Name Attribute
-                    user_mapping_name_suffix.label: Name Suffix Attribute
-                    user_mapping_email.label: Email Attribute
                     role_filter.label: Role Filter
                     role_id_attribute.label: Role id
                     role_user_id_attribute.label: Role User id attribute
                     role_mapping.label: Role Mapping
                     role_ldap.label: LDAP Role
                     role_crm.label: CRM Roles
-                    export_auto_enable.label: Auto-export new users
                     export_user_base_dn.label: Export Base Distinguished Name
                     export_user_class.label: Export User Class

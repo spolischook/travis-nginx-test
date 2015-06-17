@@ -9,7 +9,7 @@ connector:
                     title:     export
                     class:     Oro\Bundle\ImportExportBundle\Job\Step\PostProcessItemStep
                     services:
-                        reader:    oro_importexport.reader.entity
+                        reader:    oro_integration.reader.entity.by_id
                         processor: oro_importexport.processor.null
                         writer:    oro_ldap.importexport.writer.ldap.user
                         job_executor: oro_importexport.job_executor

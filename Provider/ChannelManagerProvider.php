@@ -117,14 +117,10 @@ class ChannelManagerProvider
      * @param bool $enabledOnly Ignore disabled integration channels.
      * @param bool $exportNewEnabledOnly Ignore channels without option to export new users enabled.
      */
-    public function save(UserInterface $user, $enabledOnly = true, $exportNewEnabledOnly = true)
+    public function save(UserInterface $user, $enabledOnly = true)
     {
         foreach ($this->getChannels() as $channel) {
             if ($enabledOnly && !$channel->isEnabled()) {
-                continue;
-            }
-
-            if ($exportNewEnabledOnly && !$channel->getMappingSettings()->offsetGet('export_auto_enable')) {
                 continue;
             }
 

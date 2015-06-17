@@ -7,7 +7,10 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\LDAPBundle\Provider\ChannelManagerProvider;
+use Oro\Bundle\IntegrationBundle\Manager\SyncScheduler;
+use Oro\Bundle\LDAPBundle\Provider\Connector\UserLdapConnector;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class UserChangeListener
@@ -21,12 +24,20 @@ class UserChangeListener
     /** @var User[] */
     protected $updatedUsers = [];
 
+    /** @var integer[] */
+    protected $scheduledUserIds = [];
+
+    /** @var ServiceLink */
+    private $syncShedulerLink;
+
     /**
      * @param ServiceLink $managerProviderLink Service link with ChannelManagerProvider
+     * @param ServiceLink $syncShedulerLink Service link with SyncScheduler
      */
-    public function __construct(ServiceLink $managerProviderLink)
+    public function __construct(ServiceLink $managerProviderLink, ServiceLink $syncShedulerLink)
     {
         $this->managerProviderLink = $managerProviderLink;
+        $this->syncShedulerLink = $syncShedulerLink;
     }
 
     protected function processNew()
@@ -34,8 +45,18 @@ class UserChangeListener
         /** @var ChannelManagerProvider $managerProvider */
         $managerProvider = $this->managerProviderLink->getService();
 
+        $ids = [];
+
         foreach ($this->newUsers as $user) {
-            $managerProvider->save($user);
+            $ids[] = $user->getId();
+        }
+
+        $channels = $managerProvider->getChannels();
+
+        foreach ($channels as $channel) {
+            if (!empty($ids) && $this->isTwoWaySyncEnabled($channel)) {
+                $this->scheduledUserIds[$channel->getId()] = $ids;
+            }
         }
 
         $this->newUsers = [];
@@ -51,7 +72,7 @@ class UserChangeListener
         $channels = $provider->getChannels();
 
         foreach ($this->updatedUsers as $user) {
-            $mappings = (array) $user->getLdapMappings();
+            $mappings = (array)$user->getLdapMappings();
 
             foreach ($mappings as $channelId => $dn) {
                 $changedFields = $uow->getEntityChangeSet($user);
@@ -60,12 +81,36 @@ class UserChangeListener
                 $common = array_intersect($mappedFields, array_keys($changedFields));
 
                 if (!empty($common)) {
-                    $provider->channel($channel)->save($user);
+                    if (!isset($this->scheduledUserIds[$channelId])) {
+                        $this->scheduledUserIds[$channelId] = [];
+                    }
+                    $this->scheduledUserIds[$channelId][] = $user->getId();
                 }
             }
         }
 
         $this->updatedUsers = [];
+    }
+
+    public function exportScheduled()
+    {
+        /** @var ChannelManagerProvider $provider */
+        $provider = $this->managerProviderLink->getService();
+        /** @var SyncScheduler $syncScheduler */
+        $syncScheduler = $this->syncShedulerLink->getService();
+        $channels = $provider->getChannels();
+
+        foreach ($channels as $channel) {
+            if (isset($this->scheduledUserIds[$channel->getId()]) && $this->isTwoWaySyncEnabled($channel)) {
+                $syncScheduler->schedule(
+                    $channel,
+                    UserLdapConnector::TYPE,
+                    ['id' => $this->scheduledUserIds[$channel->getId()]]
+                );
+            }
+        }
+
+        $this->scheduledUserIds = [];
     }
 
     /**
@@ -77,9 +122,11 @@ class UserChangeListener
     {
         $uow = $args->getEntityManager()->getUnitOfWork();
 
+        $this->processNew();
+
         $this->processUpdated($uow);
 
-        $this->processNew();
+        $this->exportScheduled();
     }
 
     /**
@@ -102,5 +149,10 @@ class UserChangeListener
                 $this->updatedUsers[] = $entity;
             }
         }
+    }
+
+    private function isTwoWaySyncEnabled(Channel $channel)
+    {
+        return $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false);
     }
 }

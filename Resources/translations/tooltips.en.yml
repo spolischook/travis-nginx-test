@@ -8,9 +8,6 @@ oro.ldap.transport.ldap.fields:
     role_id_attribute.tooltip: Attribute which contains id of LDAP role.
     role_user_id_attribute.tooltip: Attribute on LDAP role which contains user ids.
     role_mapping.tooltip: It is possible to define mapping of CRM roles to LDAP roles.
-    export_auto_enable.tooltip: >
-        Enables exporting new user, each new user will be exported through this integration,
-        provided that integration is enabled.
     export_user_base_dn.tooltip: >
         Base DN used for exporting users, can be different than import, in case you may need to
         export users to different location.

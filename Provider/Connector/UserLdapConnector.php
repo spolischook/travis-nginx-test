@@ -6,6 +6,9 @@ use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
 
 class UserLdapConnector implements ForceConnectorInterface, TwoWaySyncConnectorInterface
 {
+
+    const TYPE = 'user';
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +38,7 @@ class UserLdapConnector implements ForceConnectorInterface, TwoWaySyncConnectorI
      */
     public function getType()
     {
-        return "ldap";
+        return static::TYPE;
     }
 
     /**

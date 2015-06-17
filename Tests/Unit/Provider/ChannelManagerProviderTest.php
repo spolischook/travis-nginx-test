@@ -54,7 +54,6 @@ class ChannelManagerProviderTest extends \PHPUnit_Framework_TestCase
                 'role_user_id_attribute' => 'member',
                 'export_user_base_dn' => 'ou=users,dc=domain,dc=local',
                 'export_user_class' => 'inetOrgPerson',
-                'export_auto_enable' => $export,
                 'role_mapping' => [
                     [
                         'ldapName' => 'role1',
