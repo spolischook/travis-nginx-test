@@ -23,8 +23,16 @@ class UserMappingType extends AbstractType
     ];
 
     /** @var array */
-    protected $ignoredFields = [
-        'ldap_mappings'
+    protected $allowedFields = [
+        'username',
+        'email',
+        'phone',
+        'name_prefix',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'name_suffix',
+        'birthday',
     ];
 
     /**
@@ -42,7 +50,8 @@ class UserMappingType extends AbstractType
     {
         $userManager = $this->getUserManager();
         $metadata = $userManager->getClassMetadata(static::USER_CLASS);
-        $notRequiredFields = array_diff($metadata->getFieldNames(), $this->requiredFields, $this->ignoredFields);
+        $fields = array_intersect($metadata->getColumnNames(), $this->allowedFields);
+        $notRequiredFields = array_diff($fields, $this->requiredFields);
 
         $requiredOptions = [
             'required'    => true,
@@ -65,7 +74,8 @@ class UserMappingType extends AbstractType
         foreach ($fields as $field) {
             $fieldOptions = array_merge(
                 [
-                    'label'    => $field,
+                    'label'    => "oro.user.$field.label",
+                    'tooltip'  => "user_mapping.tooltip",
                     'required' => false,
                 ],
                 $options

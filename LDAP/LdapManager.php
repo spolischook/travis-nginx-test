@@ -42,8 +42,6 @@ class LdapManager extends BaseManager
         $mappingSettings = $channel->getMappingSettings();
         $mappingSettings->merge($transportSettings);
 
-        $mappingSettings['user_mapping'] = $this->groupAttributes($mappingSettings);
-
         $params = $this->transformSettings($mappingSettings, $this->getTransforms());
 
         parent::__construct($driver, $userManager, $params);
@@ -71,23 +69,6 @@ class LdapManager extends BaseManager
         );
         unset($users['count']);
         return $users;
-    }
-
-    /**
-     * @param $settings
-     *
-     * @return array
-     */
-    private function groupAttributes($settings)
-    {
-        $attributes = [];
-        foreach ($settings as $key => $value) {
-            if (false !== strpos($key, 'user_mapping_')) {
-                $attributes[str_replace('user_mapping_', '', $key)] = $value;
-            }
-        }
-
-        return $attributes;
     }
 
     /**
