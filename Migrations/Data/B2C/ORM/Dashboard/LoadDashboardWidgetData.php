@@ -69,6 +69,9 @@ class LoadDashboardWidgetData extends AbstractFixture implements OrderedFixtureI
         if (!empty($options)) {
             $widgetOptions = unserialize(base64_decode($options));
             if (is_array($widgetOptions)) {
+                if (isset($widgetOptions['dateRange']) && isset($widgetOptions['dateRange']['value'])) {
+                    $this->convertDateVars($widgetOptions['dateRange']['value']);
+                }
                 $widgetModel->getEntity()->setOptions($widgetOptions);
             }
         }
