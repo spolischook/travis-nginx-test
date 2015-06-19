@@ -5,6 +5,7 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 
+use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\Email as EmailEntity;
@@ -63,6 +64,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      */
     public function process(EmailOrigin $origin, $syncStartTime)
     {
+        $this->initEnv($origin);
+
         /** @var EwsEmailOrigin $origin */
         $this->manager->selectUser($origin->getUserEmail());
 
@@ -357,7 +360,6 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $folder             = $folderInfo->ewsFolder->getFolder();
         $folderType         = $folderInfo->folderType;
         $lastSynchronizedAt = $folder->getSynchronizedAt();
-        $userId             = $this->getUserId($folder->getOrigin());
 
         $this->logger->notice(sprintf('Loading emails from "%s" folder ...', $folder->getFullName()));
         $this->logger->notice(sprintf('Query: "%s".', $searchQuery->convertToString()));
@@ -380,7 +382,12 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $this->logger->notice(sprintf('Processed %d emails ...', $processed));
             }
 
-            if (!$this->isApplicableEmail($email, $folderType, (int) $userId)) {
+            if (!$this->isApplicableEmail(
+                $email,
+                $folderType,
+                $this->currentUser->getId(),
+                $this->currentOrganization)
+            ) {
                 continue;
             }
 
@@ -393,8 +400,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             if ($count === self::DB_BATCH_SIZE) {
                 $this->saveEmails(
                     $batch,
-                    $folderInfo,
-                    $this->em->getReference('Oro\Bundle\UserBundle\Entity\User', $userId)
+                    $folderInfo
                 );
                 $count = 0;
                 $batch = [];
@@ -403,8 +409,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         if ($count > 0) {
             $this->saveEmails(
                 $batch,
-                $folderInfo,
-                $this->em->getReference('Oro\Bundle\UserBundle\Entity\User', $userId)
+                $folderInfo
             );
         }
 
@@ -416,9 +421,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      *
      * @param Email[]    $emails
      * @param FolderInfo $folderInfo
-     * @param User       $owner
      */
-    protected function saveEmails(array $emails, FolderInfo $folderInfo, User $owner)
+    protected function saveEmails(array $emails, FolderInfo $folderInfo)
     {
         $this->emailEntityBuilder->removeEmails();
 
@@ -467,8 +471,9 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                             $email,
                             $folder,
                             $email->isSeen(),
-                            $owner
-                        )->getEmail(),
+                            $this->currentUser,
+                            $this->currentOrganization
+                        ),
                         $folderInfo->ewsFolder
                     );
                     $newEwsEmails[] = $ewsEmail;
@@ -648,18 +653,18 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      * Creates new EwsEmail object
      *
      * @param ItemId         $ewsEmailId
-     * @param EmailEntity    $email
+     * @param EmailUser      $emailUser
      * @param EwsEmailFolder $ewsFolder
      *
      * @return EwsEmail
      */
-    protected function createEwsEmail(ItemId $ewsEmailId, EmailEntity $email, EwsEmailFolder $ewsFolder)
+    protected function createEwsEmail(ItemId $ewsEmailId, EmailUser $emailUser, EwsEmailFolder $ewsFolder)
     {
         $ewsEmail = new EwsEmail();
         $ewsEmail
             ->setEwsId($ewsEmailId->getId())
             ->setEwsChangeKey($ewsEmailId->getChangeKey())
-            ->setEmail($email)
+            ->setEmail($emailUser->getEmail())
             ->setEwsFolder($ewsFolder);
 
         return $ewsEmail;
