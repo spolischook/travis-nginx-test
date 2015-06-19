@@ -1,19 +1,22 @@
 orocrmpro_outlook:
     form:
-        outlook_settings:         MS Outlook settings
-        outlook_addin:            MS Outlook Add-in
-        outlook_integration:      Integration settings
-        outlook_synchronization:  Synchronization settings
-        contacts:                 Contacts
-        tasks:                    Tasks
-        calendar_events:          Calendar Events
-        enabled:                  Enabled
-        sync_direction:           Sync Direction
-        conflict_resolution:      Conflict Resolution
-        sync_interval_orocrm:     CRM sync interval (in seconds)
-        sync_interval_outlook:    Outlook sync interval (in seconds)
-        addin_label:              Download
-        side_bar_panel_layout:    Side bar panel layout
+        outlook_settings:                 MS Outlook settings
+        outlook_addin:                    MS Outlook Add-in
+        outlook_integration:              Integration settings
+        outlook_synchronization:          Synchronization settings
+        contacts:                         Contacts
+        tasks:                            Tasks
+        calendar_events:                  Calendar Events
+        enabled:                          Enabled
+        sync_direction:                   Sync Direction
+        conflict_resolution:              Conflict Resolution
+        sync_interval_orocrm:             CRM sync interval (in seconds)
+        sync_interval_outlook:            Outlook sync interval (in seconds)
+        addin_label:                      Download
+        side_bar_panel_layout:            Side bar panel layout
+        create_lead_dialog_layout:        Create lead dialog layout
+        create_case_dialog_layout:        Create case dialog layout
+        create_opportunity_dialog_layout: Create opportunity dialog layout
 
         contacts_sync_direction:
             choices:

@@ -62,19 +62,32 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             [
-                'contacts_enabled'               => ['value' => true],
-                'contacts_sync_direction'        => ['value' => 'Both'],
-                'contacts_conflict_resolution'   => ['value' => 'OroCRMAlwaysWins'],
-                'contacts_sync_interval_orocrm'  => ['value' => 120],
-                'contacts_sync_interval_outlook' => ['value' => 30],
-                'contacts_keys'                  => ['value' => $contactKeys, 'type' => 'array'],
-                'contacts_mapping'               => ['value' => $contactMapping, 'type' => 'array'],
-                'tasks_enabled'                  => ['value' => true],
-                'calendar_events_enabled'        => ['value' => true],
-                'side_bar_panel_layout'          => [
+                'contacts_enabled'                 => ['value' => true],
+                'contacts_sync_direction'          => ['value' => 'Both'],
+                'contacts_conflict_resolution'     => ['value' => 'OroCRMAlwaysWins'],
+                'contacts_sync_interval_orocrm'    => ['value' => 120],
+                'contacts_sync_interval_outlook'   => ['value' => 30],
+                'contacts_keys'                    => ['value' => $contactKeys, 'type' => 'array'],
+                'contacts_mapping'                 => ['value' => $contactMapping, 'type' => 'array'],
+                'tasks_enabled'                    => ['value' => true],
+                'calendar_events_enabled'          => ['value' => true],
+                'side_bar_panel_layout'            => [
                     'value' => $this->getLayoutContent('side-bar-panel-layout.xaml'),
                     'type'  => 'string'
+                ],
+                'create_lead_dialog_layout'        => [
+                    'value' => $this->getLayoutContent('create-lead-dialog-layout.xaml'),
+                    'type'  => 'string'
+                ],
+                'create_opportunity_dialog_layout' => [
+                    'value' => $this->getLayoutContent('create-opportunity-dialog-layout.xaml'),
+                    'type'  => 'string'
+                ],
+                'create_case_dialog_layout'        => [
+                    'value' => $this->getLayoutContent('create-case-dialog-layout.xaml'),
+                    'type'  => 'string'
                 ]
+
             ]
         );
 

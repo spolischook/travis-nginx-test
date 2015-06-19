@@ -27,9 +27,9 @@ class LayoutDataTransformer implements DataTransformerInterface
     public function transform($content)
     {
         return preg_replace_callback(
-            '/<%(.+)%>/',
+            '/<%(.+?)%>/',
             function ($matches) {
-                return $this->translator->trans($matches[1], [], static::TRANSLATION_DOMAIN);
+                return $this->translator->trans(trim($matches[1]), [], static::TRANSLATION_DOMAIN);
             },
             $content
         );
