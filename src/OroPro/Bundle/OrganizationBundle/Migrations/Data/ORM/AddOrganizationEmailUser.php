@@ -3,26 +3,15 @@
 namespace OroPro\Bundle\OrganizationBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
 use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\UserBundle\Entity\User;
 
-class AddOrganizationEmailUser extends AbstractFixture implements DependentFixtureInterface
+class AddOrganizationEmailUser extends AbstractFixture
 {
     const BATCH_SIZE = 100;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return [
-            'Oro\Bundle\EmailBundle\Migrations\Data\ORM\LoadInternalEmailOrigins',
-        ];
-    }
 
     /**
      * {@inheritdoc}
