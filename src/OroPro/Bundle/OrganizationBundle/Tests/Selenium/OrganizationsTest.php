@@ -18,7 +18,7 @@ class OrganizationsTest extends Selenium2TestCase
         $login = $this->login();
         /** @var Organizations $login */
         $login->openOrganizations('OroPro\Bundle\OrganizationBundle')
-            ->assertTitle('Organizations - User Management - System')
+            ->assertTitle('All - Organizations - User Management - System')
             ->add()
             ->assertTitle('Create Organization - Organizations - User Management - System')
             ->setStatus('Active')
@@ -30,7 +30,7 @@ class OrganizationsTest extends Selenium2TestCase
             ->checkEntityFieldData('Description', $descriptionName)
             ->toGrid()
             ->close()
-            ->assertTitle('Organizations - User Management - System');
+            ->assertTitle('All - Organizations - User Management - System');
 
         return $organizationName;
     }
@@ -58,7 +58,7 @@ class OrganizationsTest extends Selenium2TestCase
             ->checkEntityFieldData('Name', $newOrganizationName)
             ->checkEntityFieldData('Description', $descriptionName)
             ->toGrid()
-            ->assertTitle('Organizations - User Management - System')
+            ->assertTitle('All - Organizations - User Management - System')
             ->close();
     }
 }

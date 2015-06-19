@@ -1,9 +1,13 @@
 orocrmpro_outlook:
     form:
         tooltip:
-            enabled:                Indicates whether the synchronization of this entity is enabled or not
-            sync_direction:         The data synchronization direction
-            conflict_resolution:    Conflict resolution strategy that should be used if the same data are changed in both Outlook and CRM
-            sync_interval_orocrm:   How often changes on CRM side will be checked
-            sync_interval_outlook:  How often changes on Outlook side will be checked
-            addin:                  Download MS Outlook OroCRM Plugin to integrate with your Outlook client. Once downloaded run the installation process.
+            enabled:                          Indicates whether the synchronization of this entity is enabled or not
+            sync_direction:                   The data synchronization direction
+            conflict_resolution:              Conflict resolution strategy that should be used if the same data are changed in both Outlook and CRM
+            sync_interval_orocrm:             How often changes on CRM side will be checked
+            sync_interval_outlook:            How often changes on Outlook side will be checked
+            addin:                            Download MS Outlook OroCRM Plugin to integrate with your Outlook client. Once downloaded run the installation process.
+            side_bar_panel_layout:            The layout of the side bar panel for MS Outlook OroCRM Plugin in XAML format.
+            create_lead_dialog_layout:        The layout of the create lead dialog for MS Outlook OroCRM Plugin in XAML format.
+            create_case_dialog_layout:        The layout of the create case dialog for MS Outlook OroCRM Plugin in XAML format.
+            create_opportunity_dialog_layout: The layout of the create opportunity dialog for MS Outlook OroCRM Plugin in XAML format.

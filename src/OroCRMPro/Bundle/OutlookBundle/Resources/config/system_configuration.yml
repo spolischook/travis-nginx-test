@@ -4,7 +4,7 @@ oro_system_configuration:
             title: orocrmpro_outlook.form.outlook_settings
             icon:  icon-envelope-alt
 
-        integrations_outlook_addin:
+        outlook_addin:
             title: orocrmpro_outlook.form.outlook_addin
 
         integration_outlook_settings:
@@ -76,6 +76,39 @@ oro_system_configuration:
         oro_crm_pro_outlook.contacts_mapping:
             data_type: array
 
+        oro_crm_pro_outlook.side_bar_panel_layout:
+            data_type:        string
+            data_transformer: orocrmpro_outlook.data_transformer.layout
+            type: textarea
+            priority: 70
+            options:
+                label:   orocrmpro_outlook.form.side_bar_panel_layout
+                tooltip: orocrmpro_outlook.form.tooltip.side_bar_panel_layout
+        oro_crm_pro_outlook.create_lead_dialog_layout:
+            data_type:        string
+            data_transformer: orocrmpro_outlook.data_transformer.layout
+            type: textarea
+            priority: 60
+            options:
+                label:   orocrmpro_outlook.form.create_lead_dialog_layout
+                tooltip: orocrmpro_outlook.form.tooltip.create_lead_dialog_layout
+        oro_crm_pro_outlook.create_opportunity_dialog_layout:
+            data_type:        string
+            data_transformer: orocrmpro_outlook.data_transformer.layout
+            type: textarea
+            priority: 50
+            options:
+                label:   orocrmpro_outlook.form.create_opportunity_dialog_layout
+                tooltip: orocrmpro_outlook.form.tooltip.create_opportunity_dialog_layout
+        oro_crm_pro_outlook.create_case_dialog_layout:
+            data_type:        string
+            data_transformer: orocrmpro_outlook.data_transformer.layout
+            type: textarea
+            priority: 40
+            options:
+                label:   orocrmpro_outlook.form.create_case_dialog_layout
+                tooltip: orocrmpro_outlook.form.tooltip.create_case_dialog_layout
+
         oro_crm_pro_outlook.tasks_enabled:
             data_type: boolean
             type: oro_config_checkbox
@@ -95,6 +128,7 @@ oro_system_configuration:
         oro_crm_pro_outlook.addin_download:
             ui_only: true
             type: oro_download_links_type
+            priority: 90
             options:
                 label: orocrmpro_outlook.form.addin_label
                 required: false
@@ -114,10 +148,14 @@ oro_system_configuration:
                             outlook_settings:
                                 priority: -10
                                 children:
-                                    integrations_outlook_addin:
+                                    outlook_addin:
                                         priority: 80
                                         children:
                                             - oro_crm_pro_outlook.addin_download
+                                            - oro_crm_pro_outlook.side_bar_panel_layout
+                                            - oro_crm_pro_outlook.create_lead_dialog_layout
+                                            - oro_crm_pro_outlook.create_opportunity_dialog_layout
+                                            - oro_crm_pro_outlook.create_case_dialog_layout
                                     integration_outlook_settings:
                                         priority: 70
                                         children:
@@ -146,3 +184,8 @@ oro_system_configuration:
                 oro_crm_pro_outlook.tasks_enabled: ~
             calendar_events:
                 oro_crm_pro_outlook.calendar_events_enabled: ~
+            layouts:
+                oro_crm_pro_outlook.side_bar_panel_layout: ~
+                oro_crm_pro_outlook.create_lead_dialog_layout: ~
+                oro_crm_pro_outlook.create_opportunity_dialog_layout: ~
+                oro_crm_pro_outlook.create_case_dialog_layout: ~

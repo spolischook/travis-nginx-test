@@ -4,6 +4,7 @@ namespace OroCRMPro\Bundle\OutlookBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 
@@ -61,18 +62,56 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             [
-                'contacts_enabled'               => ['value' => true],
-                'contacts_sync_direction'        => ['value' => 'Both'],
-                'contacts_conflict_resolution'   => ['value' => 'OroCRMAlwaysWins'],
-                'contacts_sync_interval_orocrm'  => ['value' => 120],
-                'contacts_sync_interval_outlook' => ['value' => 30],
-                'contacts_keys'                  => ['value' => $contactKeys, 'type'  => 'array'],
-                'contacts_mapping'               => ['value' => $contactMapping, 'type'  => 'array'],
-                'tasks_enabled'                  => ['value' => true],
-                'calendar_events_enabled'        => ['value' => true],
+                'contacts_enabled'                 => ['value' => true],
+                'contacts_sync_direction'          => ['value' => 'Both'],
+                'contacts_conflict_resolution'     => ['value' => 'OroCRMAlwaysWins'],
+                'contacts_sync_interval_orocrm'    => ['value' => 120],
+                'contacts_sync_interval_outlook'   => ['value' => 30],
+                'contacts_keys'                    => ['value' => $contactKeys, 'type' => 'array'],
+                'contacts_mapping'                 => ['value' => $contactMapping, 'type' => 'array'],
+                'tasks_enabled'                    => ['value' => true],
+                'calendar_events_enabled'          => ['value' => true],
+                'side_bar_panel_layout'            => [
+                    'value' => $this->getLayoutContent('side-bar-panel-layout.xaml'),
+                    'type'  => 'string'
+                ],
+                'create_lead_dialog_layout'        => [
+                    'value' => $this->getLayoutContent('create-lead-dialog-layout.xaml'),
+                    'type'  => 'string'
+                ],
+                'create_opportunity_dialog_layout' => [
+                    'value' => $this->getLayoutContent('create-opportunity-dialog-layout.xaml'),
+                    'type'  => 'string'
+                ],
+                'create_case_dialog_layout'        => [
+                    'value' => $this->getLayoutContent('create-case-dialog-layout.xaml'),
+                    'type'  => 'string'
+                ]
+
             ]
         );
 
         return $treeBuilder;
+    }
+
+    /**
+     * Fetch layout content by $path
+     *
+     * @param string $fileName
+     *
+     * @return string
+     *
+     * @throws FileNotFoundException
+     */
+    protected function getLayoutContent($fileName)
+    {
+        $rootPath = __DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/../Resources/views/layouts/');
+        $path     = $rootPath . $fileName;
+
+        if (!is_file($path)) {
+            throw new FileNotFoundException($path);
+        }
+
+        return file_get_contents($path);
     }
 }
