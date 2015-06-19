@@ -9,10 +9,10 @@ use Doctrine\ORM\Query;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
+use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
 use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures\EmailAddress;
-use Oro\Bundle\EmailBundle\Entity\EmailUser;
 
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
@@ -80,16 +80,11 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->with('OroProEwsBundle:EwsEmail')
             ->will($this->returnValue($this->getDoctrineMocks()));
 
-        $email = $this->getTestEmail($this->getTestEwsOrigin());
-
-        $folder = new EmailFolder();
-        $emailUser = new EmailUser();
-        $emailUser->setFolder($folder);
-        $email->addEmailUser($emailUser);
-
+        $emailUser = $this->getTestEmailUser($this->getTestEwsOrigin());
+        $folder = $emailUser->getFolder();
         $ewsFolder->setFolder($folder);
 
-        $this->ewsEmailBodyLoader->loadEmailBody($folder, $email, $this->em);
+        $this->ewsEmailBodyLoader->loadEmailBody($folder, $emailUser->getEmail(), $this->em);
     }
 
     /**
@@ -105,14 +100,13 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
 
         $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector);
 
-        $email = $this->getTestEmail($this->getTestEwsOrigin());
-
         $folder = new EmailFolder();
-        $emailUser = new EmailUser();
-        $emailUser->setFolder($folder);
-        $email->addEmailUser($emailUser);
+        $folder->setType(FolderType::SENT);
+        $origin = new InternalEmailOrigin();
+        $origin->addFolder($folder);
+        $emailUser = $this->getTestEmailUser($origin);
 
-        $this->ewsEmailBodyLoader->loadEmailBody($folder, $email, $this->em);
+        $this->ewsEmailBodyLoader->loadEmailBody($folder, $emailUser->getEmail(), $this->em);
     }
 
     /**
@@ -123,14 +117,10 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector);
 
-        $email = $this->getTestEmail($this->getTestInternalOrigin());
+        $emailUser = $this->getTestEmailUser($this->getTestInternalOrigin());
+        $folder = $emailUser->getFolder();
 
-        $folder = new EmailFolder();
-        $emailUser = new EmailUser();
-        $emailUser->setFolder($folder);
-        $email->addEmailUser($emailUser);
-
-        $this->ewsEmailBodyLoader->loadEmailBody($folder, $email, $this->em);
+        $this->ewsEmailBodyLoader->loadEmailBody($folder, $emailUser->getEmail(), $this->em);
     }
 
     protected function getDoctrineMocks()
@@ -218,9 +208,9 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param EwsEmailOrigin|InternalEmailOrigin $origin
-     * @return Email
+     * @return EmailUser
      */
-    protected function getTestEmail($origin)
+    protected function getTestEmailUser($origin)
     {
         $user = $this->getTestUser();
         $user->addEmailOrigin($origin);
@@ -234,8 +224,8 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->setBodyContent('email body content')
             ->setBodyIsText(true);
 
-        $result = new Email();
-        $result
+        $email = new Email();
+        $email
             ->setSubject('test subject')
             ->setFromName('from_email@test.com')
             ->setFromEmailAddress($fromEmailAddress)
@@ -244,7 +234,13 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->setInternalDate(new \DateTime('now', new \DateTimeZone('UTC')))
             ->setImportance(Email::NORMAL_IMPORTANCE);
 
-        return $result;
+        $emailUser = new EmailUser();
+        $emailUser
+            ->setEmail($email)
+            ->setReceivedAt(new \DateTime('now', new \DateTimeZone('UTC')))
+            ->setFolder($origin->getFolder(FolderType::SENT));
+
+        return $emailUser;
     }
 
     protected function getTestDTOEmail(EwsEmailManager $ewsEmailManager)

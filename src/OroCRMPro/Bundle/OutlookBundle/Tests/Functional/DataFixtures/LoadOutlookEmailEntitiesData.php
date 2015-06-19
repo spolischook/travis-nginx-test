@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 
+use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -37,17 +38,17 @@ class LoadOutlookEmailEntitiesData extends AbstractFixture implements ContainerA
     {
         $this->em = $manager;
 
-        $email1 = $this->createEmail(
+        $emailUser1 = $this->createEmailUser(
             'Test Email 1',
             'email1@orocrm-pro.func-test',
             'test1@example.com',
             'test2@example.com'
         );
-        $email1->addActivityTarget($this->getReference('test_contact1'));
-        $email1->addActivityTarget($this->getReference('test_contact2'));
-        $email1->addActivityTarget($this->getReference('default_account'));
+        $emailUser1->getEmail()->addActivityTarget($this->getReference('test_contact1'));
+        $emailUser1->getEmail()->addActivityTarget($this->getReference('test_contact2'));
+        $emailUser1->getEmail()->addActivityTarget($this->getReference('default_account'));
 
-        $email2 = $this->createEmail(
+        $emailUser2 = $this->createEmailUser(
             'Test Email 1',
             'email2@orocrm-pro.func-test',
             'test1@example.com',
@@ -55,7 +56,7 @@ class LoadOutlookEmailEntitiesData extends AbstractFixture implements ContainerA
             'test3@example.com',
             'test4@example.com'
         );
-        $email2->addActivityTarget($this->getReference('default_lead'));
+        $emailUser2->getEmail()->addActivityTarget($this->getReference('default_lead'));
 
         $this->emailEntityBuilder->getBatch()->persist($this->em);
         $this->em->flush();
@@ -69,9 +70,9 @@ class LoadOutlookEmailEntitiesData extends AbstractFixture implements ContainerA
      * @param string|string[]|null $cc
      * @param string|string[]|null $bcc
      *
-     * @return Email
+     * @return EmailUser
      */
-    protected function createEmail($subject, $messageId, $from, $to, $cc = null, $bcc = null)
+    protected function createEmailUser($subject, $messageId, $from, $to, $cc = null, $bcc = null)
     {
         $origin = $this->em
             ->getRepository('OroEmailBundle:InternalEmailOrigin')
@@ -79,7 +80,7 @@ class LoadOutlookEmailEntitiesData extends AbstractFixture implements ContainerA
         $folder = $origin->getFolder(FolderType::SENT);
         $date   = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        $email = $this->emailEntityBuilder->email(
+        $emailUser = $this->emailEntityBuilder->emailUser(
             $subject,
             $from,
             $to,
@@ -88,11 +89,12 @@ class LoadOutlookEmailEntitiesData extends AbstractFixture implements ContainerA
             $date,
             Email::NORMAL_IMPORTANCE,
             $cc,
-            $bcc
+            $bcc,
+            $origin->getOwner()
         );
-        $email->addFolder($folder);
-        $email->setMessageId($messageId);
+        $emailUser->setFolder($folder);
+        $emailUser->getEmail()->setMessageId($messageId);
 
-        return $email;
+        return $emailUser;
     }
 }
