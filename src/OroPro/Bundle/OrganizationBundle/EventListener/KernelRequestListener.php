@@ -99,7 +99,7 @@ class KernelRequestListener
                  * In case of edit custom entity record we should take organization from this record
                  * and set it into organization provider
                  */
-                $entityClass = $this->routingHelper->decodeClassName($request->attributes->get('entityName'));
+                $entityClass = $this->routingHelper->resolveEntityClass($request->attributes->get('entityName'));
                 if ($entityClass && $request->attributes->get('id')) {
                     $entity  = $this->doctrine->getRepository($entityClass)->find($request->attributes->get('id'));
                     $organizationField = $this->metadataProvider->getMetadata($entityClass)->getOrganizationFieldName();
