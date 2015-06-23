@@ -386,8 +386,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $email,
                 $folderType,
                 $this->currentUser->getId(),
-                $this->currentOrganization)
-            ) {
+                $this->currentOrganization
+            )) {
                 continue;
             }
 
