@@ -17,30 +17,6 @@ interface LdapTransportInterface extends TransportInterface
     public function search($filter, array $attributes = []);
 
     /**
-     * Gets record by its distinguished name.
-     *
-     * @param string $dn
-     *
-     * @return array
-     */
-    public function get($dn);
-
-    /**
-     * Moves record to a different location.
-     *
-     * @param string $from
-     * @param string $to
-     */
-    public function move($from, $to);
-
-    /**
-     * Removes record from LDAP.
-     *
-     * @param string $dn
-     */
-    public function remove($dn);
-
-    /**
      * Checks if record exists in LDAP
      *
      * @param string $dn
@@ -72,4 +48,14 @@ interface LdapTransportInterface extends TransportInterface
      * @param array  $record
      */
     public function add($dn, array $record);
+
+    /**
+     * Binds user to LDAP
+     *
+     * @param $username
+     * @param $password
+     *
+     * @return bool
+     */
+    public function bind($username, $password);
 }

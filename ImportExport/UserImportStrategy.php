@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\LDAPBundle\ImportExport;
 
-use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
-use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Field\DatabaseHelper;
 use Oro\Bundle\ImportExportBundle\Field\FieldHelper;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
@@ -88,6 +88,13 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
         array $excludedFields = []
     )
     {
+        $channel = $this->contextMediator->getChannel($this->context);
+        // skip skip updates if priority is on local records.
+        if ($channel->getSynchronizationSettings()->offsetGet('syncPriority') == 'local') {
+            $this->context->incrementUpdateCount(-1);
+            return;
+        }
+
         $dns = (array)$existingEntity->getLdapDistinguishedNames();
         foreach($entity->getLdapDistinguishedNames() as $channelId => $dn) {
             $dns[$channelId] = $dn;

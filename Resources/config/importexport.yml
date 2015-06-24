@@ -11,6 +11,7 @@ services:
     oro_ldap.importexport.serializer:
         class: %oro_ldap.importexport.serializer.class%
         arguments: [@oro_importexport.serializer]
+        lazy: true
 
     oro_ldap.importexport.import.strategy:
         class: %oro_ldap.importexport.import.strategy.class%

@@ -2,56 +2,66 @@
 
 namespace Oro\Bundle\LDAPBundle\EventListener;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Bundle\LDAPBundle\Provider\ChannelManagerProvider;
 use Oro\Bundle\IntegrationBundle\Manager\SyncScheduler;
+use Oro\Bundle\LDAPBundle\Provider\ChannelType;
 use Oro\Bundle\LDAPBundle\Provider\Connector\UserLdapConnector;
+use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class UserChangeListener
 {
-    /** @var ServiceLink */
-    private $managerProviderLink;
-
+    /** @var Channel[] */
+    protected $channels = null;
     /** @var User[] */
     protected $newUsers = [];
-
     /** @var User[] */
     protected $updatedUsers = [];
-
     /** @var integer[] */
     protected $scheduledUserIds = [];
-
     /** @var ServiceLink */
     private $syncShedulerLink;
+    /** @var ServiceLink */
+    private $registryLink;
+    /** @var LdapTransportInterface */
+    private $ldapTransport;
 
     /**
-     * @param ServiceLink $managerProviderLink Service link with ChannelManagerProvider
-     * @param ServiceLink $syncShedulerLink Service link with SyncScheduler
+     * @param ServiceLink   $registry
+     * @param LdapTransportInterface $ldapTransport
+     * @param ServiceLink            $syncShedulerLink Service link with SyncScheduler
+     *
+     * @internal param ServiceLink $managerProviderLink Service link with ChannelManagerProvider
      */
-    public function __construct(ServiceLink $managerProviderLink, ServiceLink $syncShedulerLink)
+    public function __construct(
+        ServiceLink $registry,
+        LdapTransportInterface $ldapTransport,
+        ServiceLink $syncShedulerLink
+    )
     {
-        $this->managerProviderLink = $managerProviderLink;
+        $this->registryLink = $registry;
         $this->syncShedulerLink = $syncShedulerLink;
+        $this->ldapTransport = $ldapTransport;
     }
 
+    /**
+     * Processes new entities.
+     */
     protected function processNew()
     {
-        /** @var ChannelManagerProvider $managerProvider */
-        $managerProvider = $this->managerProviderLink->getService();
-
         $ids = [];
 
         foreach ($this->newUsers as $user) {
             $ids[] = $user->getId();
         }
 
-        $channels = $managerProvider->getChannels();
+        $channels = $this->getEnabledChannels();
 
         foreach ($channels as $channel) {
             if (!empty($ids) && $this->isTwoWaySyncEnabled($channel)) {
@@ -63,21 +73,21 @@ class UserChangeListener
     }
 
     /**
+     * Processes updated entities.
+     *
      * @param UnitOfWork $uow
      */
     protected function processUpdated(UnitOfWork $uow)
     {
-        /** @var ChannelManagerProvider $provider */
-        $provider = $this->managerProviderLink->getService();
-        $channels = $provider->getChannels();
+        $channels = $this->getEnabledChannels();
 
         foreach ($this->updatedUsers as $user) {
-            $mappings = (array)$user->getLdapMappings();
+            $mappings = (array)$user->getLdapDistinguishedNames();
 
             foreach ($mappings as $channelId => $dn) {
                 $changedFields = $uow->getEntityChangeSet($user);
                 $channel = $channels[$channelId];
-                $mappedFields = $provider->channel($channel)->getSynchronizedFields();
+                $mappedFields = $this->getMappedFields($channel);
                 $common = array_intersect($mappedFields, array_keys($changedFields));
 
                 if (!empty($common)) {
@@ -92,13 +102,14 @@ class UserChangeListener
         $this->updatedUsers = [];
     }
 
+    /**
+     * Schedules export job for updated/new entities.
+     */
     public function exportScheduled()
     {
-        /** @var ChannelManagerProvider $provider */
-        $provider = $this->managerProviderLink->getService();
         /** @var SyncScheduler $syncScheduler */
         $syncScheduler = $this->syncShedulerLink->getService();
-        $channels = $provider->getChannels();
+        $channels = $this->getEnabledChannels();
 
         foreach ($channels as $channel) {
             if (isset($this->scheduledUserIds[$channel->getId()]) && $this->isTwoWaySyncEnabled($channel)) {
@@ -154,5 +165,23 @@ class UserChangeListener
     private function isTwoWaySyncEnabled(Channel $channel)
     {
         return $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false);
+    }
+
+    private function getEnabledChannels()
+    {
+        if ($this->channels === null) {
+            $channels = $this->registryLink->getService()
+                ->getRepository('OroIntegrationBundle:Channel')
+                ->findBy(['type' => ChannelType::TYPE, 'enabled' => true]);
+            foreach($channels as $channel) {
+                $this->channels[$channel->getId()] = $channel;
+            }
+        }
+        return $this->channels;
+    }
+
+    private function getMappedFields(Channel $channel)
+    {
+        return array_keys(array_filter($channel->getMappingSettings()->offsetGet('userMapping')));
     }
 }

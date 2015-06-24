@@ -4,10 +4,7 @@ namespace Oro\Bundle\LDAPBundle\ImportExport;
 
 use Symfony\Component\Serializer\SerializerInterface;
 
-use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\DenormalizerInterface;
-use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\NormalizerInterface;
 use Oro\Bundle\ImportExportBundle\Serializer\Serializer as BaseSerializer;
-use Zend\Ldap\Attribute;
 
 class Serializer implements SerializerInterface
 {
@@ -43,15 +40,16 @@ class Serializer implements SerializerInterface
                 if (!isset($field['count']) || ($field['count'] == 1)) {
                     $extractedData[$key] = $field[0];
                 }
+                if (isset($field['count'])) {
+                    unset($field['count']);
+                }
             } else {
-                unset($field['count']);
                 $extractedData[$key] = $field;
             }
         }
         $extractedData['ldap_distinguished_names'] = [
-            $context['channel'] => $extractedData['dn']
+            $context['channel'] => $extractedData['ldap_distinguished_names']
         ];
-        unset($extractedData['dn']);
 
         return $this->serializer->deserialize($extractedData, $type, $format, $context);
     }

@@ -1,6 +1,4 @@
 parameters:
-    #providers
-    oro_ldap.provider.user.class:                       Oro\Bundle\LDAPBundle\Provider\UserProvider
     #integration
     oro_ldap.provider.channel_type.class:               Oro\Bundle\LDAPBundle\Provider\ChannelType
     oro_ldap.provider.connector.user.class:             Oro\Bundle\LDAPBundle\Provider\Connector\UserLdapConnector
@@ -8,13 +6,11 @@ parameters:
     #event listeners
     oro_ldap.event_listener.user_change_listener.class: Oro\Bundle\LDAPBundle\EventListener\UserChangeListener
     oro_ldap.event_listener.user_before_value_render_listener.class: Oro\Bundle\LDAPBundle\EventListener\UserBeforeRenderListener
+    #security
+    oro_ldap.authentication.provider.class:             Oro\Bundle\LDAPBundle\Security\LdapAuthenticationProvider
+    oro_ldap.security.authenticator.class:              Oro\Bundle\LDAPBundle\Security\LdapAuthenticator
 
 services:
-    oro_ldap.provider.user:
-        class: %oro_ldap.provider.user.class%
-        arguments:
-            - @doctrine
-
     oro_ldap.provider.channel_type:
         class: %oro_ldap.provider.channel_type.class%
         tags:
@@ -39,3 +35,29 @@ services:
         arguments: [@doctrine]
         tags:
             - { name: kernel.event_listener, event: oro.entity_extend_event.before_value_render, method: beforeValueRender }
+
+    oro_ldap.security.authenticator:
+        class: %oro_ldap.security.authenticator.class%
+        arguments: [@doctrine, @oro_ldap.provider.transport.ldap]
+
+    oro_ldap.authentication.provider:
+        class: %oro_ldap.authentication.provider.class%
+        parent: oro_security.authentication.provider.username_password_organization
+        arguments:
+            - @oro_ldap.security.authenticator
+        abstract: true
+
+    oro_ldap.sync_scheduler.link:
+        tags:
+            - { name: oro_service_link,  service: oro_integration.sync_scheduler }
+
+    oro_ldap.doctrine.link:
+        tags:
+            - { name: oro_service_link,  service: doctrine }
+
+    oro_ldap.event_listener.user_change_listener:
+        class:  %oro_ldap.event_listener.user_change_listener.class%
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }
+        arguments: [@oro_ldap.doctrine.link, @oro_ldap.provider.transport.ldap, @oro_integration.sync_scheduler.link]

@@ -57,28 +57,4 @@ class UserLdapConnector extends AbstractConnector implements TwoWaySyncConnector
     {
         return $this->transport->search($this->channel->getMappingSettings()->offsetGet('userFilter'));
     }
-
-    /**
-     * Generates distinguished name for user record/entity.
-     *
-     * @param array|User $user
-     *
-     * @return string
-     */
-    public function getDn($user)
-    {
-        $usernameAttr = $this->channel->getMappingSettings()->offsetGet('userMapping')['username'];
-        $exportUserBaseDn = $this->channel->getMappingSettings()->offsetGet('exportUserBaseDn');
-
-        if ($user instanceof User) {
-            $dns = (array)$user->getLdapDistinguishedNames();
-
-            if(isset($dns[$this->channel->getId()])) {
-                return $dns[$this->channel->getId()];
-            } else {
-                return sprintf('%s=%s,%s', $usernameAttr, $user->getUsername(), $exportUserBaseDn);
-            }
-        }
-        return $user['dn'];
-    }
 }

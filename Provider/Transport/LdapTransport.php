@@ -1,7 +1,6 @@
 <?php
 namespace Oro\Bundle\LDAPBundle\Provider\Transport;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 use Zend\Ldap\Ldap;
@@ -71,30 +70,6 @@ class LdapTransport implements LdapTransportInterface
     /**
      * {@inheritdoc}
      */
-    public function get($dn)
-    {
-        return $this->ldap->getEntry($dn);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function move($from, $to)
-    {
-        $this->ldap->move($from, $to);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($dn)
-    {
-        $this->ldap->delete($dn);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function exists($dn)
     {
         return $this->ldap->exists($dn);
@@ -122,5 +97,14 @@ class LdapTransport implements LdapTransportInterface
     public function add($dn, array $record)
     {
         $this->ldap->add($dn, $record);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function bind($username, $password) {
+        $this->ldap->bind($username, $password);
+
+        return $username === $this->ldap->getBoundUser();
     }
 }

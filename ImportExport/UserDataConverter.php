@@ -4,10 +4,12 @@ namespace Oro\Bundle\LDAPBundle\ImportExport;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+
 use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Converter\AbstractTableDataConverter;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
 
 class UserDataConverter extends AbstractTableDataConverter implements StepExecutionAwareInterface, ContextAwareInterface
@@ -44,10 +46,28 @@ class UserDataConverter extends AbstractTableDataConverter implements StepExecut
      */
     protected function getBackendHeader()
     {
-        $header = array_filter($this->getHeaderConversionRules(), function($value){
+        $header = array_filter($this->getHeaderConversionRules(), function ($value) {
             return !is_array($value);
         });
+
         return array_values($header);
+    }
+
+    /**
+     * @param Channel $channel
+     *
+     * @return $this
+     */
+    public function setChannel(Channel $channel)
+    {
+        $mappingSettings = $channel->getMappingSettings();
+
+        $this->userMapping = $mappingSettings->offsetGet('userMapping');
+
+        $this->userMapping = array_flip(array_filter($this->userMapping));
+        $this->userMapping += ['dn' => 'ldap_distinguished_names'];
+
+        return $this;
     }
 
     /**
@@ -55,16 +75,7 @@ class UserDataConverter extends AbstractTableDataConverter implements StepExecut
      */
     public function setImportExportContext(ContextInterface $context)
     {
-        $channel = $this->contextMediator->getChannel($context);
-        $mappingSettings = $channel->getMappingSettings();
-
-        $this->userMapping = $mappingSettings->offsetGet('userMapping');
-
-        $this->userMapping = array_flip(array_filter($this->userMapping));
-        $this->userMapping += ['dn' => [
-            self::BACKEND_TO_FRONTEND => ['dn', 'ldap_distinguished_names'],
-            self::FRONTEND_TO_BACKEND => ['dn', 'dn'],
-        ]];
+        $this->setChannel($this->contextMediator->getChannel($context));
     }
 
     /**

@@ -5,7 +5,7 @@ namespace Oro\Bundle\LDAPBundle\Tests\Unit\Security;
 use Oro\Bundle\LDAPBundle\Provider\ChannelManagerProvider;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-use Oro\Bundle\LDAPBundle\Security\LdapProvider;
+use Oro\Bundle\LDAPBundle\Security\LdapAuthenticationProvider;
 use Oro\Bundle\LDAPBundle\Tests\Unit\Stub\TestingUser;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
@@ -27,7 +27,7 @@ class LdapProviderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->ldapProvider = new LdapProvider(
+        $this->ldapProvider = new LdapAuthenticationProvider(
             $userChecker,
             $this->providerKey,
             $this->userProvider,
