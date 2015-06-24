@@ -1,5 +1,5 @@
 oro.ldap:
     transport.ldap.fields.check.message:
-        success:  Success, {{ users }} users have been found on LDAP server.
+        success:  Successfully connected to LDAP server.
         invalid:  Parameters are not valid.
         error:    Error occurred during check request, please try later!

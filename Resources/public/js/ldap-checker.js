@@ -70,7 +70,7 @@ define([
             var message = '';
             var status = data.status;
             if (data.status == 'success') {
-                message = __('oro.ldap.transport.ldap.fields.check.message.success', {users: data.users});
+                message = __('oro.ldap.transport.ldap.fields.check.message.success');
             } else if (data.status == 'invalid'){
                 message = __('oro.ldap.transport.ldap.fields.check.message.invalid');
                 status = 'danger';

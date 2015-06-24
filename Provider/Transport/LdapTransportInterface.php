@@ -57,5 +57,12 @@ interface LdapTransportInterface extends TransportInterface
      *
      * @return bool
      */
-    public function bind($username, $password);
+    public function bind($username = null, $password = null);
+
+    /**
+     * Checks if able to connect to server.
+     *
+     * @return bool
+     */
+    public function check();
 }

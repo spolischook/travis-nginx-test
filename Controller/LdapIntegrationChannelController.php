@@ -3,13 +3,12 @@
 namespace Oro\Bundle\LDAPBundle\Controller;
 
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 
 class LdapIntegrationChannelController extends Controller
 {
@@ -23,28 +22,16 @@ class LdapIntegrationChannelController extends Controller
      */
     public function checkAction(Request $request)
     {
-        /** @var TransportInterface $transport */
-        $transport = $this->get('oro_ldap.provider.ldap.transport');
+        /** @var LdapTransportInterface $transport */
+        $transport = $this->get('oro_ldap.provider.transport.ldap');
 
         $entity = $this->getChannelEntity($request, $transport);
 
-        $response = [];
+        $transport->init($entity->getTransport());
 
-        try {
-            $manager = $this->get('oro_ldap.provider.channel_manager');
-            $users = $manager->channel($entity)->findUsers();
-
-            $response = [
-                'status' => 'success',
-                'users' => count($users),
-            ];
-        } catch (\Exception $e) {
-            $response = [
-                'status' => 'invalid',
-            ];
-        }
-
-        return new JsonResponse($response);
+        return new JsonResponse([
+            'status' => $transport->check() ? 'success' : 'invalid',
+        ]);
     }
 
     /**

@@ -102,9 +102,22 @@ class LdapTransport implements LdapTransportInterface
     /**
      * {@inheritdoc}
      */
-    public function bind($username, $password) {
+    public function bind($username = null, $password = null) {
         $this->ldap->bind($username, $password);
 
         return $username === $this->ldap->getBoundUser();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function check()
+    {
+        try {
+            return $this->ldap->bind();
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
 }
