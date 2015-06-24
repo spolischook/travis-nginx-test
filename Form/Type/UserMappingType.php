@@ -5,6 +5,7 @@ namespace Oro\Bundle\LDAPBundle\Form\Type;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -15,32 +16,25 @@ class UserMappingType extends AbstractType
 
     /** @var Registry */
     protected $registry;
-
-    /** @var array */
-    protected $requiredFields = [
-        'username',
-        'email',
-    ];
-
-    /** @var array */
-    protected $allowedFields = [
-        'username',
-        'email',
-        'phone',
-        'name_prefix',
-        'first_name',
-        'middle_name',
-        'last_name',
-        'name_suffix',
-        'birthday',
-    ];
+    /** @var ConfigProviderInterface */
+    private $importExportConfig;
+    /** @var ConfigProviderInterface */
+    private $entityConfig;
 
     /**
-     * @param Registry $registry
+     * @param Registry                $registry
+     * @param ConfigProviderInterface $importExportConfig
+     * @param ConfigProviderInterface $entityConfig
      */
-    public function __construct(Registry $registry)
+    public function __construct(
+        Registry $registry,
+        ConfigProviderInterface $importExportConfig,
+        ConfigProviderInterface $entityConfig
+    )
     {
         $this->registry = $registry;
+        $this->importExportConfig = $importExportConfig;
+        $this->entityConfig = $entityConfig;
     }
 
     /**
@@ -50,37 +44,48 @@ class UserMappingType extends AbstractType
     {
         $userManager = $this->getUserManager();
         $metadata = $userManager->getClassMetadata(static::USER_CLASS);
-        $fields = array_intersect($metadata->getColumnNames(), $this->allowedFields);
-        $notRequiredFields = array_diff($fields, $this->requiredFields);
+        $fields = $metadata->getFieldNames();
 
-        $requiredOptions = [
-            'required'    => true,
-            'constraints' => [
-                new Assert\NotBlank(),
-            ],
-        ];
+        $fields = array_map(function ($fieldName) {
+            $importExportConfig = $this->importExportConfig->getConfig(self::USER_CLASS, $fieldName);
+            $entityConfig = $this->entityConfig->getConfig(self::USER_CLASS, $fieldName);
 
-        $this->addFields($builder, $this->requiredFields, $requiredOptions);
-        $this->addFields($builder, $notRequiredFields);
+            $field = ['name' => $fieldName, 'options' => ['required' => false]];
+
+            if ($importExportConfig->has('excluded') && $importExportConfig->get('excluded')) {
+                return null;
+            }
+
+            if ($fieldName == 'serialized_data') {
+                return null;
+            }
+
+            if ($importExportConfig->has('identity') && $importExportConfig->get('identity')) {
+                $field['options']['required'] = true;
+                $field['options']['constraints'] = [new Assert\NotBlank()];
+            }
+
+            if ($entityConfig->has('label')) {
+                $field['options']['label'] = $entityConfig->get('label');
+            }
+
+            if ($entityConfig->has('tooltip')) {
+                $field['options']['tooltip'] = $entityConfig->get('tooltip');
+            }
+            return $field;
+        }, $fields);
+
+        $this->addFields($builder, array_filter($fields));
     }
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $fields
-     * @param array $options
+     * @param array                $fields
      */
-    protected function addFields(FormBuilderInterface $builder, array $fields, array $options = [])
+    protected function addFields(FormBuilderInterface $builder, array $fields)
     {
         foreach ($fields as $field) {
-            $fieldOptions = array_merge(
-                [
-                    'label'    => "oro.user.$field.label",
-                    'tooltip'  => "user_mapping.tooltip",
-                    'required' => false,
-                ],
-                $options
-            );
-            $builder->add($field, 'text', $fieldOptions);
+            $builder->add($field['name'], 'text', $field['options']);
         }
     }
 

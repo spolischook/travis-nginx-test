@@ -1,10 +1,11 @@
 <?php
 namespace Oro\Bundle\LDAPBundle\Provider\Connector;
 
-use Oro\Bundle\IntegrationBundle\Provider\ForceConnectorInterface;
+use Oro\Bundle\IntegrationBundle\Provider\AbstractConnector;
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
+use Oro\Bundle\UserBundle\Entity\User;
 
-class UserLdapConnector implements ForceConnectorInterface, TwoWaySyncConnectorInterface
+class UserLdapConnector extends AbstractConnector implements TwoWaySyncConnectorInterface
 {
 
     const TYPE = 'user';
@@ -14,7 +15,7 @@ class UserLdapConnector implements ForceConnectorInterface, TwoWaySyncConnectorI
      */
     public function getLabel()
     {
-        return "oro.ldap.connector.user.label";
+        return "oro.ldap.integration.connector.user.label";
     }
 
     /**
@@ -52,8 +53,32 @@ class UserLdapConnector implements ForceConnectorInterface, TwoWaySyncConnectorI
     /**
      * {@inheritdoc}
      */
-    public function supportsForceSync()
+    protected function getConnectorSource()
     {
-        return false;
+        return $this->transport->search($this->channel->getMappingSettings()->offsetGet('userFilter'));
+    }
+
+    /**
+     * Generates distinguished name for user record/entity.
+     *
+     * @param array|User $user
+     *
+     * @return string
+     */
+    public function getDn($user)
+    {
+        $usernameAttr = $this->channel->getMappingSettings()->offsetGet('userMapping')['username'];
+        $exportUserBaseDn = $this->channel->getMappingSettings()->offsetGet('exportUserBaseDn');
+
+        if ($user instanceof User) {
+            $dns = (array)$user->getLdapDistinguishedNames();
+
+            if(isset($dns[$this->channel->getId()])) {
+                return $dns[$this->channel->getId()];
+            } else {
+                return sprintf('%s=%s,%s', $usernameAttr, $user->getUsername(), $exportUserBaseDn);
+            }
+        }
+        return $user['dn'];
     }
 }

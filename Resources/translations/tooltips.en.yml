@@ -1,15 +1,23 @@
-oro.ldap.transport.ldap.fields:
-    user_filter.tooltip: >
-        Filter for looking up users. Used for searching in LDAP.
-        All results of this filter will be considered users.
-    role_filter.tooltip: >
-        Filter for user roles. Used for searching in LDAP.
-        All results of this filter will be considered roles.
-    role_id_attribute.tooltip: Attribute which contains id of LDAP role.
-    role_user_id_attribute.tooltip: Attribute on LDAP role which contains user ids.
-    role_mapping.tooltip: It is possible to define mapping of CRM roles to LDAP roles.
-    export_user_base_dn.tooltip: >
-        Base DN used for exporting users, can be different than import, in case you may need to
-        export users to different location.
-    export_user_class.tooltip: Object class of exported users.
-    user_mapping.tooltip: Name of corresponding attribute in LDAP.
+oro.ldap.integration:
+    channel.fields:
+        host.tooltip:           The hostname of LDAP server.
+        port.tooltip:           The port of LDAP server.
+        encryption.tooltip:     Encryption type used for communication.
+        username.tooltip: >
+            The default credentials username. Some servers require that this be in DN form. This must be given in DN
+            form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.
+        password.tooltip:       The default credentials password (used only with username above).
+        baseDn.tooltip: >
+            The default base DN used for searching (e.g., for accounts). This option is required for most account
+            related operations and should indicate the DN under which accounts are located.
+        accountDomainName.tooltip: >
+            The FQDN domain for which the target LDAP server is an authority (e.g., example.com).
+        accountDomainNameShort.tooltip: >
+            The ‘short’ domain for which the target LDAP server is an authority. This is usually used to specify the
+            NetBIOS domain name for Windows networks but may also be used by non-AD servers.
+    transport.mapping:
+        userFilter.tooltip:             This filter will be used to search for users in LDAP.
+        roleFilter.tooltip:             This filter will be used to search for roles in LDAP.
+        userMapping.tooltip:            Name of corresponding attribute in LDAP.
+        roleMapping.tooltip: >
+            Mapping of LDAP Roles to one, or multiple CRM roles. These roles will be set for imported users.

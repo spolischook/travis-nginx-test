@@ -10,8 +10,8 @@ connector:
                     class:     Oro\Bundle\ImportExportBundle\Job\Step\PostProcessItemStep
                     services:
                         reader:    oro_integration.reader.entity.by_id
-                        processor: oro_importexport.processor.null
-                        writer:    oro_ldap.importexport.writer.ldap.user
+                        processor: oro_ldap.importexport.processor.user.export
+                        writer:    oro_ldap.importexport.writer.user
                         job_executor: oro_importexport.job_executor
 
         ldap_import_users:
@@ -22,7 +22,7 @@ connector:
                     title:     import
                     class:     Oro\Bundle\ImportExportBundle\Job\Step\PostProcessItemStep
                     services:
-                        reader:    oro_ldap.importexport.reader.ldap.user
-                        processor: oro_ldap.importexport.processor.import.user
-                        writer:    oro_ldap.importexport.writer.entity.user
+                        reader:       oro_ldap.provider.connector.user
+                        processor:    oro_importexport.processor.import_delegate
+                        writer:       oro_importexport.writer.entity
                         job_executor: oro_importexport.job_executor

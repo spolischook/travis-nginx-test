@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\LDAPBundle\Tests\Unit\ImportExport;
 
-use Oro\Bundle\LDAPBundle\ImportExport\LdapUserImportProcessor;
+use Oro\Bundle\LDAPBundle\ImportExport\UserImportProcessor;
 use Oro\Bundle\SSOBundle\Tests\Unit\Stub\TestingUser;
 
 class LdapUserImportProcessorTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +20,7 @@ class LdapUserImportProcessorTest extends \PHPUnit_Framework_TestCase
         $this->mockLdapManager();
         $this->mockChannelManagerProvider();
 
-        $this->processor = new LdapUserImportProcessor(
+        $this->processor = new UserImportProcessor(
             $this->userManager,
             $this->contextRegistry,
             $this->contextMediator,

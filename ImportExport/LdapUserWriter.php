@@ -6,40 +6,31 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
+use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
-use Oro\Bundle\LDAPBundle\Provider\ChannelManagerProvider;
-use Oro\Bundle\UserBundle\Entity\UserManager;
+use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 
-class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
+class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface, ContextAwareInterface
 {
-    use HasChannel;
 
-    /** @var UserManager */
-    private $userManager;
-
-    /** @var ContextRegistry */
-    private $contextRegistry;
-
-    /** @var ChannelManagerProvider */
-    private $managerProvider;
+    /** @var ContextInterface */
+    protected $context;
+    /** @var LdapTransportInterface */
+    protected $transport;
+    /** @var Channel */
+    protected $channel;
 
     /**
-     * @param UserManager $userManager
-     * @param ContextRegistry $contextRegistry
-     * @param ConnectorContextMediator $connectorContextMediator
-     * @param ChannelManagerProvider $managerProvider
+     * @param ContextRegistry          $contextRegistry
+     * @param ConnectorContextMediator $contextMediator
      */
-    public function __construct(
-        UserManager $userManager,
-        ContextRegistry $contextRegistry,
-        ConnectorContextMediator $connectorContextMediator,
-        ChannelManagerProvider $managerProvider
-    ) {
-        $this->userManager = $userManager;
+    public function __construct(ContextRegistry $contextRegistry, ConnectorContextMediator $contextMediator)
+    {
         $this->contextRegistry = $contextRegistry;
-        $this->setConnectorContextMediator($connectorContextMediator);
-        $this->managerProvider = $managerProvider;
+        $this->contextMediator = $contextMediator;
     }
 
     /**
@@ -47,19 +38,40 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
      */
     public function write(array $items)
     {
-        foreach ($items as $user) {
-            if ($this->managerProvider->channel($this->getChannel())->exists($user)) {
-                if ($this->getSyncPriority() == 'local') {
+        foreach ($items as $item) {
+            if (is_null($item['dn']) || !isset($item['dn'][$this->channel->getId()])) {
+                $dn = $this->createExportDn($item);
+            } else {
+                $dn = $item['dn'][$this->channel->getId()];
+            }
+            unset($item['dn']);
+
+            if ($this->transport->exists($dn)) {
+                if ($this->channel->getSynchronizationSettings()->offsetGet('syncPriority') == 'local') {
+                    $this->transport->update($dn, $item);
                     $this->context->incrementUpdateCount();
-                    $this->managerProvider->channel($this->getChannel())->save($user);
                 }
             } else {
+                $item['objectClass'] = $this->channel->getMappingSettings()->offsetGet('exportUserObjectClass');
+                $this->transport->add($dn, $item);
                 $this->context->incrementAddCount();
-                $this->managerProvider->channel($this->getChannel())->save($user);
             }
         }
+    }
 
-        $this->userManager->getStorageManager()->flush();
+    /**
+     * Creates Dn for export.
+     *
+     * @param array $item Record ready for LDAP export.
+     *
+     * @return string
+     */
+    protected function createExportDn(array $item)
+    {
+        $usernameAttr = $this->channel->getMappingSettings()->offsetGet('userMapping')['username'];
+        $exportUserBaseDn = $this->channel->getMappingSettings()->offsetGet('exportUserBaseDn');
+
+        return sprintf('%s=%s,%s', $usernameAttr, $item[$usernameAttr], $exportUserBaseDn);
     }
 
     /**
@@ -67,11 +79,17 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
-        $this->setContext($this->contextRegistry->getByStepExecution($stepExecution));
+        $this->setImportExportContext($this->contextRegistry->getByStepExecution($stepExecution));
     }
 
-    private function getSyncPriority()
+    /**
+     * {@inheritdoc}
+     */
+    public function setImportExportContext(ContextInterface $context)
     {
-        return $this->getChannel()->getSynchronizationSettings()->offsetGetOr('syncPriority');
+        $this->context = $context;
+        $this->channel = $this->contextMediator->getChannel($this->context);
+        $this->transport = $this->contextMediator->getTransport($this->channel);
+        $this->transport->init($this->channel->getTransport());
     }
 }

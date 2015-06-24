@@ -11,6 +11,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Transport;
 
 /**
  * Class LdapTransport
+ *
  * @package Oro\Bundle\LDAPBundle\Entity
  *
  * @ORM\Entity
@@ -19,57 +20,78 @@ use Oro\Bundle\IntegrationBundle\Entity\Transport;
  */
 class LdapTransport extends Transport
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="oro_ldap_server_hostname", type="string")
-     */
-    private $serverHostname;
+    const DEFAULT_PORT = 636;
+    const DEFAULT_HOST = '127.0.0.1';
+    const DEFAULT_ENCRYPTION = 'tls';
+    const DEFAULT_BASE_DN = 'dc=localhost,dc=com';
+    const DEFAULT_USERNAME = 'cn=admin,dc=localhost,dc=com';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_server_port", type="integer")
+     * @ORM\Column(name="oro_ldap_host", type="string")
      */
-    private $serverPort;
+    private $host;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_server_encryption", type="string")
+     * @ORM\Column(name="oro_ldap_port", type="integer")
      */
-    private $serverEncryption;
+    private $port;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_server_base_dn", type="string")
+     * @ORM\Column(name="oro_ldap_encryption", type="string")
      */
-    private $serverBaseDn;
+    private $encryption;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_admin_dn", type="string")
+     * @ORM\Column(name="oro_ldap_base_dn", type="string")
      */
-    private $adminDn;
+    private $baseDn;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_admin_password", type="string")
+     * @ORM\Column(name="oro_ldap_username", type="string")
      */
-    private $adminPassword;
+    private $username;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="oro_ldap_password", type="string")
+     */
+    private $password;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="oro_ldap_acc_domain", type="string")
+     */
+    private $accountDomainName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="oro_ldap_acc_domain_short", type="string")
+     */
+    private $accountDomainNameShort;
 
     /** @var ParameterBag */
     protected $settings;
 
     public function __construct()
     {
-        $this->serverHostname = '127.0.0.1';
-        $this->serverPort = 636;
-        $this->serverEncryption = 'tls';
-        $this->serverBaseDn = 'dc=local';
+        $this->host = self::DEFAULT_HOST;
+        $this->port = self::DEFAULT_PORT;
+        $this->encryption = self::DEFAULT_ENCRYPTION;
+        $this->baseDn = self::DEFAULT_BASE_DN;
+        $this->username = self::DEFAULT_USERNAME;
     }
 
     /**
@@ -79,12 +101,14 @@ class LdapTransport extends Transport
     {
         if (null === $this->settings) {
             $this->settings = new ParameterBag([
-                'server_hostname' => $this->getServerHostname(),
-                'server_port' => $this->getServerPort(),
-                'server_encryption' => $this->getServerEncryption(),
-                'server_base_dn' => $this->getServerBaseDn(),
-                'admin_dn' => $this->getAdminDn(),
-                'admin_password' => $this->getAdminPassword(),
+                'host'                   => $this->getHost(),
+                'port'                   => $this->getPort(),
+                'encryption'             => $this->getEncryption(),
+                'baseDn'                 => $this->getBaseDn(),
+                'username'               => $this->getUsername(),
+                'password'               => $this->getPassword(),
+                'accountDomainName'      => $this->getAccountDomainName(),
+                'accountDomainNameShort' => $this->getAccountDomainNameShort(),
             ]);
         }
 
@@ -94,19 +118,19 @@ class LdapTransport extends Transport
     /**
      * @return string
      */
-    public function getServerHostname()
+    public function getHost()
     {
-        return $this->serverHostname;
+        return $this->host;
     }
 
     /**
-     * @param string $serverHostname
+     * @param string $host
      *
      * @return $this
      */
-    public function setServerHostname($serverHostname)
+    public function setHost($host)
     {
-        $this->serverHostname = $serverHostname;
+        $this->host = $host;
 
         return $this;
     }
@@ -114,19 +138,19 @@ class LdapTransport extends Transport
     /**
      * @return string
      */
-    public function getServerPort()
+    public function getPort()
     {
-        return $this->serverPort;
+        return $this->port;
     }
 
     /**
-     * @param string $serverPort
+     * @param string $port
      *
      * @return $this
      */
-    public function setServerPort($serverPort)
+    public function setPort($port)
     {
-        $this->serverPort = $serverPort;
+        $this->port = $port;
 
         return $this;
     }
@@ -134,19 +158,19 @@ class LdapTransport extends Transport
     /**
      * @return string
      */
-    public function getServerEncryption()
+    public function getEncryption()
     {
-        return $this->serverEncryption;
+        return $this->encryption;
     }
 
     /**
-     * @param string $serverEncryption
+     * @param string $encryption
      *
      * @return $this
      */
-    public function setServerEncryption($serverEncryption)
+    public function setEncryption($encryption)
     {
-        $this->serverEncryption = $serverEncryption;
+        $this->encryption = $encryption;
 
         return $this;
     }
@@ -154,19 +178,19 @@ class LdapTransport extends Transport
     /**
      * @return string
      */
-    public function getServerBaseDn()
+    public function getBaseDn()
     {
-        return $this->serverBaseDn;
+        return $this->baseDn;
     }
 
     /**
-     * @param string $serverBaseDn
+     * @param string $baseDn
      *
      * @return $this
      */
-    public function setServerBaseDn($serverBaseDn)
+    public function setBaseDn($baseDn)
     {
-        $this->serverBaseDn = $serverBaseDn;
+        $this->baseDn = $baseDn;
 
         return $this;
     }
@@ -174,19 +198,19 @@ class LdapTransport extends Transport
     /**
      * @return string
      */
-    public function getAdminDn()
+    public function getUsername()
     {
-        return $this->adminDn;
+        return $this->username;
     }
 
     /**
-     * @param string $adminDn
+     * @param string $username
      *
      * @return $this
      */
-    public function setAdminDn($adminDn)
+    public function setUsername($username)
     {
-        $this->adminDn = $adminDn;
+        $this->username = $username;
 
         return $this;
     }
@@ -194,19 +218,63 @@ class LdapTransport extends Transport
     /**
      * @return string
      */
-    public function getAdminPassword()
+    public function getPassword()
     {
-        return $this->adminPassword;
+        return $this->password;
     }
 
     /**
-     * @param $adminPassword
+     * @param $password
      *
      * @return $this
      */
-    public function setAdminPassword($adminPassword)
+    public function setPassword($password)
     {
-        $this->adminPassword = $adminPassword;
+        if (empty($password)) {
+            return $this;
+        }
+
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountDomainName()
+    {
+        return $this->accountDomainName;
+    }
+
+    /**
+     * @param string $accountDomainName
+     *
+     * @return $this
+     */
+    public function setAccountDomainName($accountDomainName)
+    {
+        $this->accountDomainName = $accountDomainName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountDomainNameShort()
+    {
+        return $this->accountDomainNameShort;
+    }
+
+    /**
+     * @param string $accountDomainNameShort
+     *
+     * @return $this
+     */
+    public function setAccountDomainNameShort($accountDomainNameShort)
+    {
+        $this->accountDomainNameShort = $accountDomainNameShort;
 
         return $this;
     }

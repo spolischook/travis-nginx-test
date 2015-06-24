@@ -7,11 +7,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
-use Oro\Bundle\LDAPBundle\Form\EventListener\LdapConnectorFormSubscriber;
 
 class LdapTransportSettingsFormType extends AbstractType
 {
     const NAME = 'oro_ldap_ldap_transport_setting_form_type';
+    const LABEL_PREFIX = 'oro.ldap.integration.channel.fields.';
 
     /** @var TypesRegistry */
     private $registry;
@@ -30,74 +30,97 @@ class LdapTransportSettingsFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
-            'server_hostname',
+            'host',
             'text',
             [
-                'label' => 'oro.ldap.transport.ldap.fields.server_hostname.label',
-                'required' => true,
+                'label'       => self::LABEL_PREFIX . 'host.label',
+                'tooltip'     => self::LABEL_PREFIX . 'host.tooltip',
+                'required'    => true,
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
             ]
         );
         $builder->add(
-            'server_port',
+            'port',
             'integer',
             [
-                'label' => 'oro.ldap.transport.ldap.fields.server_port.label',
-                'required' => true,
+                'label'       => self::LABEL_PREFIX . 'port.label',
+                'tooltip'     => self::LABEL_PREFIX . 'port.tooltip',
+                'required'    => true,
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
             ]
         );
         $builder->add(
-            'server_encryption',
+            'encryption',
             'oro_ldap_encryption',
             [
-                'label' => 'oro.ldap.transport.ldap.fields.server_encryption.label',
-                'required' => true,
+                'label'       => self::LABEL_PREFIX . 'encryption.label',
+                'tooltip'     => self::LABEL_PREFIX . 'encryption.tooltip',
+                'required'    => true,
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
             ]
         );
         $builder->add(
-            'server_base_dn',
+            'baseDn',
             'text',
             [
-                'label' => 'oro.ldap.transport.ldap.fields.server_base_dn.label',
-                'required' => true,
+                'label'       => self::LABEL_PREFIX . 'baseDn.label',
+                'tooltip'     => self::LABEL_PREFIX . 'baseDn.tooltip',
+                'required'    => true,
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
             ]
         );
         $builder->add(
-            'admin_dn',
+            'username',
             'text',
             [
-                'label' => 'oro.ldap.transport.ldap.fields.admin_dn.label',
+                'label'    => self::LABEL_PREFIX . 'username.label',
+                'tooltip'  => self::LABEL_PREFIX . 'username.tooltip',
                 'required' => false,
             ]
         );
         $builder->add(
-            'admin_password',
+            'password',
             'password',
             [
-                'label' => 'oro.ldap.transport.ldap.fields.admin_password.label',
-                'required' => false,
+                'label'        => self::LABEL_PREFIX . 'password.label',
+                'tooltip'      => self::LABEL_PREFIX . 'password.tooltip',
+                'required'     => false,
                 'always_empty' => false,
             ]
         );
         $builder->add(
-            'check',
-            'oro_ldap_transport_check_button_type',
+            'accountDomainName',
+            'text',
             [
-                'label' => 'Check Connection',
+                'label'    => self::LABEL_PREFIX . 'accountDomainName.label',
+                'tooltip'  => self::LABEL_PREFIX . 'accountDomainName.tooltip',
+                'required' => false,
             ]
         );
-        // TODO: $builder->addEventSubscriber(new LdapConnectorFormSubscriber($this->registry));
+        $builder->add(
+            'accountDomainNameShort',
+            'text',
+            [
+                'label'    => self::LABEL_PREFIX . 'accountDomainNameShort.label',
+                'tooltip'  => self::LABEL_PREFIX . 'accountDomainNameShort.tooltip',
+                'required' => false,
+            ]
+        );
+        $builder->add(
+            'connectionCheck',
+            'oro_ldap_transport_check_button_type',
+            [
+                'label' => self::LABEL_PREFIX . 'connectionCheck.label',
+            ]
+        );
     }
 
     /**

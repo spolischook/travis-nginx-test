@@ -37,33 +37,40 @@ class OroLDAPBundleInstaller implements Installation, ExtendExtensionAwareInterf
     public function up(Schema $schema, QueryBag $queries)
     {
         $userTable = $schema->getTable('oro_user');
-        $userTable->addColumn('ldap_mappings', 'array', [
+        $userTable->addColumn('ldap_distinguished_names', 'array', [
             'oro_options' => [
-                'extend' => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
-                'form' => ['is_enabled' => false],
-                'datagrid' => ['is_visible' => false],
-                'view' => ['acl' => 'oro_integration_update'],
+                'extend'       => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
+                'form'         => ['is_enabled' => false],
+                'datagrid'     => ['is_visible' => false],
+                'view'         => ['acl' => 'oro_integration_update'],
+                'importexport' => ['excluded' => true],
             ],
-            'notnull' => false
+            'notnull'     => false
         ]);
 
         $transportTable = $schema->getTable('oro_integration_transport');
-        $transportTable->addColumn('oro_ldap_server_hostname', 'string', [
+        $transportTable->addColumn('oro_ldap_host', 'string', [
             'notnull' => false
         ]);
-        $transportTable->addColumn('oro_ldap_server_port', 'integer', [
+        $transportTable->addColumn('oro_ldap_port', 'integer', [
             'notnull' => false
         ]);
-        $transportTable->addColumn('oro_ldap_server_encryption', 'string', [
+        $transportTable->addColumn('oro_ldap_encryption', 'string', [
             'notnull' => false
         ]);
-        $transportTable->addColumn('oro_ldap_server_base_dn', 'string', [
+        $transportTable->addColumn('oro_ldap_base_dn', 'string', [
             'notnull' => false
         ]);
-        $transportTable->addColumn('oro_ldap_admin_dn', 'string', [
+        $transportTable->addColumn('oro_ldap_username', 'string', [
             'notnull' => false
         ]);
-        $transportTable->addColumn('oro_ldap_admin_password', 'string', [
+        $transportTable->addColumn('oro_ldap_password', 'string', [
+            'notnull' => false
+        ]);
+        $transportTable->addColumn('oro_ldap_acc_domain', 'string', [
+            'notnull' => false
+        ]);
+        $transportTable->addColumn('oro_ldap_acc_domain_short', 'string', [
             'notnull' => false
         ]);
     }

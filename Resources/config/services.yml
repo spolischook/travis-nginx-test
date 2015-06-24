@@ -1,10 +1,6 @@
 parameters:
-    #fr3ed
-    fr3d_ldap.security.authentication.provider.class:   Oro\Bundle\LDAPBundle\Security\LdapProvider
-    fr3d_ldap.ldap_driver.zend.class:                   Oro\Bundle\LDAPBundle\LDAP\ZendLdapDriver
     #providers
     oro_ldap.provider.user.class:                       Oro\Bundle\LDAPBundle\Provider\UserProvider
-    oro_ldap.provider.channel_manager.class:            Oro\Bundle\LDAPBundle\Provider\ChannelManagerProvider
     #integration
     oro_ldap.provider.channel_type.class:               Oro\Bundle\LDAPBundle\Provider\ChannelType
     oro_ldap.provider.connector.user.class:             Oro\Bundle\LDAPBundle\Provider\Connector\UserLdapConnector
@@ -14,22 +10,6 @@ parameters:
     oro_ldap.event_listener.user_before_value_render_listener.class: Oro\Bundle\LDAPBundle\EventListener\UserBeforeRenderListener
 
 services:
-    fr3d_ldap.security.authentication.provider:
-        class: %fr3d_ldap.security.authentication.provider.class%
-        arguments:
-            - @security.user_checker
-            - ""
-            - ""
-            - @oro_ldap.provider.channel_manager
-            - %security.authentication.hide_user_not_found%
-
-    oro_ldap.provider.channel_manager:
-        class: %oro_ldap.provider.channel_manager.class%
-        arguments:
-            - @doctrine
-            - @fr3d_ldap.user_manager
-            - @logger
-
     oro_ldap.provider.user:
         class: %oro_ldap.provider.user.class%
         arguments:
@@ -40,35 +20,22 @@ services:
         tags:
             - { name: oro_integration.channel, type: ldap }
 
-    oro_ldap.provider.ldap.transport:
+    oro_ldap.provider.transport.ldap:
         class: %oro_ldap.provider.transport.ldap.class%
         tags:
             - { name: oro_integration.transport, type: ldap, channel_type: ldap }
 
     oro_ldap.provider.connector.user:
         class: %oro_ldap.provider.connector.user.class%
+        arguments:
+            - @oro_importexport.context_registry
+            - @oro_integration.logger.strategy
+            - @oro_integration.provider.connector_context_mediator
         tags:
             - { name: oro_integration.connector, type: user, channel_type: ldap }
 
-    oro_ldap.provider.channel_manager.link:
-        tags:
-            - { name: oro_service_link,  service: oro_ldap.provider.channel_manager }
-
-    oro_integration.sync_scheduler.link:
-        tags:
-            - { name: oro_service_link,  service: oro_integration.sync_scheduler }
-
-    oro_ldap.event_listener.user_change_listener:
-        class:  %oro_ldap.event_listener.user_change_listener.class%
-        arguments:
-            - @oro_ldap.provider.channel_manager.link
-            - @oro_integration.sync_scheduler.link
-        tags:
-            - { name: doctrine.event_listener, event: onFlush }
-            - { name: doctrine.event_listener, event: postFlush }
-
     oro_ldap.event_listener.user_before_value_render_listener:
         class: %oro_ldap.event_listener.user_before_value_render_listener.class%
+        arguments: [@doctrine]
         tags:
             - { name: kernel.event_listener, event: oro.entity_extend_event.before_value_render, method: beforeValueRender }
-        arguments: [@oro_ldap.provider.channel_manager]

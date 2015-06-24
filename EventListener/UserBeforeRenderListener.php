@@ -1,22 +1,23 @@
 <?php
 namespace Oro\Bundle\LDAPBundle\EventListener;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Oro\Bundle\EntityExtendBundle\Event\ValueRenderEvent;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Bundle\LDAPBundle\Provider\ChannelManagerProvider;
+use Oro\Bundle\LDAPBundle\Provider\ChannelType;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class UserBeforeRenderListener
 {
-    /** @var ChannelManagerProvider */
-    private $managerProvider;
+    /** @var Registry */
+    private $registry;
 
     /**
-     * @param ChannelManagerProvider $managerProvider
+     * @param Registry $registry
      */
-    public function __construct(ChannelManagerProvider $managerProvider)
+    public function __construct(Registry $registry)
     {
-        $this->managerProvider = $managerProvider;
+        $this->registry = $registry;
     }
 
     /**
@@ -26,20 +27,24 @@ class UserBeforeRenderListener
      */
     public function beforeValueRender(ValueRenderEvent $event)
     {
-        if (($event->getEntity() instanceof User) && $event->getFieldConfigId()->getFieldName() == 'ldap_mappings') {
-            $value = (array) $event->getFieldValue();
+        if (($event->getEntity() instanceof User) && $event->getFieldConfigId()->getFieldName() == 'ldap_distinguished_names') {
+            $value = (array)$event->getFieldValue();
 
             $mappings = [];
 
             /** @var Channel[] $channels */
-            $channels = $this->managerProvider->getChannels();
-            foreach ($value as $channelId => $dn) {
-                if (!isset($channels[$channelId])) {
+            $channels = $this->registry
+                ->getRepository('OroIntegrationBundle:Channel')
+                ->findBy(['type' => ChannelType::TYPE]);
+
+            foreach($channels as $channel) {
+                if (!isset($value[$channel->getId()])) {
                     continue;
                 }
+
                 $mappings[] = [
-                    'name' => $channels[$channelId]->getName(),
-                    'dn' => $dn,
+                    'name' => $channel->getName(),
+                    'dn'   => $value[$channel->getId()],
                 ];
             }
 

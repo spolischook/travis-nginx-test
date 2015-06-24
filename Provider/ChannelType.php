@@ -12,6 +12,6 @@ class ChannelType implements ChannelInterface
      */
     public function getLabel()
     {
-        return 'oro.ldap.channel_type.label';
+        return 'oro.ldap.integration.channel.label';
     }
 }
