@@ -151,6 +151,10 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
 
         $em = $this->getEntityManager();
 
+        /**
+         * TODO this config value is taken ONLY from GlobalScopeManager so as there is no authorized user
+         * TODO to use OrganizationScopeManager and UserOrganizationScopeManager
+         */
         $server = $this->configurator->getServer();
 
         $lastUserId   = -1;
@@ -163,9 +167,12 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
             $email = $item['email'];
             if (!empty($email)) {
                 $this->logger->notice(sprintf('Create email origin. Server: %s. User Email: %s', $server, $email));
+
                 $origin = new EwsEmailOrigin();
                 $origin->setServer($server);
                 $origin->setUserEmail($email);
+                $origin->setOwner($user);
+                $origin->setOrganization($user->getOrganization());
                 $em->persist($origin);
                 $user->addEmailOrigin($origin);
 
