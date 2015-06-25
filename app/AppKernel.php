@@ -34,8 +34,7 @@ class AppKernel extends OroKernel
     {
         static $first = true;
 
-        // temporary disable switch to debug=false in test env
-        if ('test_tmp_unused' !== $this->getEnvironment()) {
+        if ('test' !== $this->getEnvironment()) {
             parent::initializeContainer();
             return;
         }
