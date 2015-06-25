@@ -96,7 +96,7 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
         array $excludedFields = []
     ) {
         $channel = $this->contextMediator->getChannel($this->context);
-        // skip skip updates if priority is on local records.
+        // skip updates if priority is on local records.
         if ($channel->getSynchronizationSettings()
                 ->offsetGet('syncPriority') == 'local'
         ) {
