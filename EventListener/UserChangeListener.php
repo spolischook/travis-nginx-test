@@ -9,6 +9,7 @@ use Doctrine\ORM\UnitOfWork;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Manager\SyncScheduler;
+use Oro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
 use Oro\Bundle\LDAPBundle\Provider\ChannelType;
 use Oro\Bundle\LDAPBundle\Provider\Connector\UserLdapConnector;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -52,13 +53,24 @@ class UserChangeListener
             return;
         }
 
+        $channels = $this->getEnabledChannels();
+
         $ids = [];
 
         foreach ($this->newUsers as $user) {
             $ids[] = $user->getId();
+            $distinguishedNames = [];
+            foreach($channels as $channel) {
+                if ($this->isTwoWaySyncEnabled($channel)) {
+                    $distinguishedNames[$channel->getId()] = LdapUtils::createDn(
+                        $channel->getMappingSettings()->offsetGet('userMapping')['username'],
+                        $user->getUsername(),
+                        $channel->getMappingSettings()->offsetGet('exportUserBaseDn')
+                    );
+                }
+            }
+            $user->setLdapDistinguishedNames($distinguishedNames);
         }
-
-        $channels = $this->getEnabledChannels();
 
         foreach ($channels as $channel) {
             if (!empty($ids) && $this->isTwoWaySyncEnabled($channel)) {
