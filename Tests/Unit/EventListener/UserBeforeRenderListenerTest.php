@@ -78,7 +78,7 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
     private function setUpChannels()
     {
         return [
-            1 => $this->setUpChannel(1, 'First LDAP Channel'),
+            1  => $this->setUpChannel(1, 'First LDAP Channel'),
             40 => $this->setUpChannel(40, 'Second LDAP Channel'),
         ];
     }
@@ -111,7 +111,9 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->event->expects($this->once())
             ->method('setFieldViewValue')
-            ->with($this->equalTo(['mappings' => [], 'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig']));
+            ->with($this->equalTo(
+                ['mappings' => [], 'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig']
+            ));
 
         $this->userRenderListener->beforeValueRender($this->event);
     }
@@ -138,7 +140,7 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
         $this->event->expects($this->once())
             ->method('getFieldValue')
             ->will($this->returnValue([
-                1 => 'an example of user distinguished name in channel with id 1',
+                1  => 'an example of user distinguished name in channel with id 1',
                 40 => 'an example of user distinguished name in channel with id 40',
             ]));
 
@@ -148,7 +150,9 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->event->expects($this->once())
             ->method('setFieldViewValue')
-            ->with($this->equalTo(['mappings' => [], 'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig']));
+            ->with($this->equalTo(
+                ['mappings' => [], 'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig']
+            ));
 
         $this->userRenderListener->beforeValueRender($this->event);
     }
@@ -173,7 +177,7 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
         $this->event->expects($this->once())
             ->method('getFieldValue')
             ->will($this->returnValue([
-                1 => 'an example of user distinguished name in channel with id 1',
+                1  => 'an example of user distinguished name in channel with id 1',
                 40 => 'an example of user distinguished name in channel with id 40',
             ]));
 
@@ -187,11 +191,11 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
                 'mappings' => [
                     [
                         'name' => 'First LDAP Channel',
-                        'dn' => 'an example of user distinguished name in channel with id 1'
+                        'dn'   => 'an example of user distinguished name in channel with id 1'
                     ],
                     [
                         'name' => 'Second LDAP Channel',
-                        'dn' => 'an example of user distinguished name in channel with id 40'
+                        'dn'   => 'an example of user distinguished name in channel with id 40'
                     ],
                 ],
                 'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig',

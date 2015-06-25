@@ -41,8 +41,7 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
         DefaultOwnerHelper $defaultOwnerHelper,
         ConnectorContextMediator $contextMediator,
         LdapHelper $ldapHelper
-    )
-    {
+    ) {
         parent::__construct($eventDispatcher, $strategyHelper, $fieldHelper, $databaseHelper);
         $this->defaultOwnerHelper = $defaultOwnerHelper;
         $this->contextMediator = $contextMediator;
@@ -95,17 +94,19 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
         $existingEntity,
         $itemData = null,
         array $excludedFields = []
-    )
-    {
+    ) {
         $channel = $this->contextMediator->getChannel($this->context);
         // skip skip updates if priority is on local records.
-        if ($channel->getSynchronizationSettings()->offsetGet('syncPriority') == 'local') {
+        if ($channel->getSynchronizationSettings()
+                ->offsetGet('syncPriority') == 'local'
+        ) {
             $this->context->incrementUpdateCount(-1);
+
             return;
         }
 
         $dns = (array)$existingEntity->getLdapDistinguishedNames();
-        foreach($entity->getLdapDistinguishedNames() as $channelId => $dn) {
+        foreach ($entity->getLdapDistinguishedNames() as $channelId => $dn) {
             $dns[$channelId] = $dn;
         }
 
@@ -113,5 +114,4 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
 
         parent::importExistingEntity($entity, $existingEntity, $itemData, $excludedFields);
     }
-
 }

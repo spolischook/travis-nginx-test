@@ -42,4 +42,4 @@ class LdapUtilsTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($expected, LdapUtils::getSearchFilter($attr, $value, $filter));
     }
-} 
+}

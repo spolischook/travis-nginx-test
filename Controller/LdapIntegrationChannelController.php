@@ -5,6 +5,7 @@ namespace Oro\Bundle\LDAPBundle\Controller;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,12 +47,12 @@ class LdapIntegrationChannelController extends Controller
         $data = null;
         $id = $request->get('id', false);
         if ($id) {
-            $data = $this->get('doctrine.orm.entity_manager')->find('OroIntegrationBundle:Channel', $id);
+            $data = $this->get('doctrine')->getRepository('OroIntegrationBundle:Channel')->find($id);
         }
 
-        $form = $this->get('form.factory')->create('oro_integration_channel_form', $data, ['csrf_protection' => false]);
+        $form = $this->createForm('oro_integration_channel_form', $data, ['csrf_protection' => false]);
         $form->submit($request);
 
         return $form->getData();
     }
-} 
+}

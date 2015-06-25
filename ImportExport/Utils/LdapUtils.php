@@ -40,4 +40,4 @@ class LdapUtils
 
         return sprintf("(&%s(%s=%s))", $filter, $attribute, $value);
     }
-} 
+}

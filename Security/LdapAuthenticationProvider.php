@@ -31,8 +31,7 @@ class LdapAuthenticationProvider extends UsernamePasswordOrganizationAuthenticat
         EncoderFactoryInterface $encoderFactory,
         $hideUserNotFoundExceptions = true,
         LdapAuthenticator $ldapAuthenticator
-    )
-    {
+    ) {
         parent::__construct($userProvider, $userChecker, $providerKey, $encoderFactory, $hideUserNotFoundExceptions);
 
         $this->ldapAuthenticator = $ldapAuthenticator;

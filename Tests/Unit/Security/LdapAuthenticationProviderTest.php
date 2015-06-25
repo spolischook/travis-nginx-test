@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\LDAPBundle\Tests\Unit\Security;
 
-use Oro\Bundle\LDAPBundle\Provider\ChannelManagerProvider;
 use Oro\Bundle\LDAPBundle\Security\LdapAuthenticator;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -16,6 +15,8 @@ class LdapAuthenticationProviderTest extends \PHPUnit_Framework_TestCase
     private $userProvider;
     /** @var LdapAuthenticator */
     private $ldapAuthenticator;
+    /** @var LdapAuthenticationProvider */
+    private $ldapProvider;
 
     public function setUp()
     {

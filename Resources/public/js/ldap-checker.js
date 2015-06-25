@@ -5,9 +5,8 @@ define([
     'routing',
     'backbone',
     'orotranslation/js/translator',
-    'oroui/js/mediator',
-    'oroui/js/messenger'
-], function($, _, routing, Backbone, __, mediator, messenger) {
+    'oroui/js/mediator'
+], function($, _, routing, Backbone, __, mediator) {
     "use strict";
 
     return Backbone.View.extend({

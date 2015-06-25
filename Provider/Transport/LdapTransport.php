@@ -65,7 +65,7 @@ class LdapTransport implements LdapTransportInterface
      */
     public function search($filter, array $attributes = [])
     {
-        return $this->ldap->search($filter, null, $scope = Ldap::SEARCH_SCOPE_SUB, $attributes);
+        return $this->ldap->search($filter, null, Ldap::SEARCH_SCOPE_SUB, $attributes);
     }
 
     /**
@@ -103,10 +103,11 @@ class LdapTransport implements LdapTransportInterface
     /**
      * {@inheritdoc}
      */
-    public function bind($username = null, $password = null) {
+    public function bind($username = null, $password = null)
+    {
         try {
             $this->ldap->bind($username, $password);
-        } catch (LdapException $e){
+        } catch (LdapException $e) {
             return false;
         }
 
@@ -124,5 +125,4 @@ class LdapTransport implements LdapTransportInterface
             return false;
         }
     }
-
 }

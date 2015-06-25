@@ -28,6 +28,4 @@ class LdapTransportCheckButton extends AbstractType
             'mapped' => false,
         ]);
     }
-
-
 }

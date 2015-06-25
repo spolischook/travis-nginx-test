@@ -16,7 +16,7 @@ class ExportProcessor extends BaseExportProcessor implements StepExecutionAwareI
     /**
      * @param ContextRegistry $contextRegistry
      */
-    function __construct(ContextRegistry $contextRegistry)
+    public function __construct(ContextRegistry $contextRegistry)
     {
         $this->contextRegistry = $contextRegistry;
     }

@@ -13,7 +13,6 @@ use Oro\Bundle\UserBundle\Entity\User as OroUser;
 
 class LdapAuthenticator
 {
-
     /** @var Channel[] */
     protected $channels;
     /** @var LdapTransportInterface */
@@ -21,21 +20,35 @@ class LdapAuthenticator
     /** @var Registry */
     private $registry;
 
+    /**
+     * @param Registry               $registry
+     * @param LdapTransportInterface $transport
+     */
     public function __construct(Registry $registry, LdapTransportInterface $transport)
     {
         $this->transport = $transport;
         $this->registry = $registry;
     }
 
+    /**
+     * @return Channel[]
+     */
     protected function getChannels()
     {
         if ($this->channels === null) {
-            $this->channels = $this->registry->getRepository('OroIntegrationBundle:Channel')->findBy(['type' => ChannelType::TYPE]);
+            $this->channels = $this->registry->getRepository('OroIntegrationBundle:Channel')
+                ->findBy(['type' => ChannelType::TYPE]);
         }
 
         return $this->channels;
     }
 
+    /**
+     * @param UserInterface $user
+     * @param string        $password
+     *
+     * @return bool
+     */
     public function check(UserInterface $user, $password)
     {
         if (!($user instanceof OroUser)) {
@@ -63,4 +76,4 @@ class LdapAuthenticator
 
         return false;
     }
-} 
+}

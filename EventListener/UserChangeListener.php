@@ -30,16 +30,15 @@ class UserChangeListener
     private $registryLink;
 
     /**
-     * @param ServiceLink   $registry
-     * @param ServiceLink            $syncShedulerLink Service link with SyncScheduler
+     * @param ServiceLink $registry
+     * @param ServiceLink $syncShedulerLink Service link with SyncScheduler
      *
      * @internal param ServiceLink $managerProviderLink Service link with ChannelManagerProvider
      */
     public function __construct(
         ServiceLink $registry,
         ServiceLink $syncShedulerLink
-    )
-    {
+    ) {
         $this->registryLink = $registry;
         $this->syncShedulerLink = $syncShedulerLink;
     }
@@ -60,7 +59,7 @@ class UserChangeListener
         foreach ($this->newUsers as $user) {
             $ids[] = $user->getId();
             $distinguishedNames = [];
-            foreach($channels as $channel) {
+            foreach ($channels as $channel) {
                 if ($this->isTwoWaySyncEnabled($channel)) {
                     $distinguishedNames[$channel->getId()] = LdapUtils::createDn(
                         $channel->getMappingSettings()->offsetGet('userMapping')['username'],
@@ -97,7 +96,7 @@ class UserChangeListener
         foreach ($this->updatedUsers as $user) {
             $mappings = (array)$user->getLdapDistinguishedNames();
 
-            foreach ($mappings as $channelId => $dn) {
+            foreach (array_keys($mappings) as $channelId) {
                 $changedFields = $uow->getEntityChangeSet($user);
                 $channel = $channels[$channelId];
                 $mappedFields = $this->getMappedFields($channel);
@@ -179,24 +178,38 @@ class UserChangeListener
         }
     }
 
+    /**
+     * @param Channel $channel
+     *
+     * @return mixed
+     */
     private function isTwoWaySyncEnabled(Channel $channel)
     {
         return $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false);
     }
 
+    /**
+     * @return Channel
+     */
     private function getEnabledChannels()
     {
         if ($this->channels === null) {
             $channels = $this->registryLink->getService()
                 ->getRepository('OroIntegrationBundle:Channel')
                 ->findBy(['type' => ChannelType::TYPE, 'enabled' => true]);
-            foreach($channels as $channel) {
+            foreach ($channels as $channel) {
                 $this->channels[$channel->getId()] = $channel;
             }
         }
+
         return $this->channels;
     }
 
+    /**
+     * @param Channel $channel
+     *
+     * @return array
+     */
     private function getMappedFields(Channel $channel)
     {
         return array_keys(array_filter($channel->getMappingSettings()->offsetGet('userMapping')));

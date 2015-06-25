@@ -44,7 +44,9 @@ class UserDataConverterTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->channel));
 
         $this->dataConverter = new UserDataConverter($this->contextMediator, $this->contextRegistry);
-        $this->dataConverter->setImportExportContext($this->getMock('Oro\Bundle\ImportExportBundle\Context\Contextinterface'));
+        $this->dataConverter->setImportExportContext(
+            $this->getMock('Oro\Bundle\ImportExportBundle\Context\Contextinterface')
+        );
     }
 
     public function testConvertToImportFormatDataProvider()
@@ -137,4 +139,4 @@ class UserDataConverterTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($expected, $this->dataConverter->convertToExportFormat($given));
     }
-} 
+}

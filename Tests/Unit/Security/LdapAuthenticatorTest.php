@@ -128,4 +128,4 @@ class LdapAuthenticatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->authenticator->check($user, 'password'));
     }
-} 
+}

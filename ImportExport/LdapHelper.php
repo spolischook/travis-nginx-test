@@ -126,9 +126,18 @@ class LdapHelper implements ContextAwareInterface
             return;
         }
 
+        $this->setUserRoles($user, $uniqueRoles);
+    }
+
+    /**
+     * @param User  $user
+     * @param array $roles
+     */
+    protected function setUserRoles($user, array $roles)
+    {
         $em = $this->getRoleEntityManager();
         $roleReferences = [];
-        foreach ($uniqueRoles as $role) {
+        foreach ($roles as $role) {
             $roleReferences[] = $em->getReference('Oro\Bundle\UserBundle\Entity\Role', $role);
         }
 

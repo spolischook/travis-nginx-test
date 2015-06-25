@@ -5,6 +5,7 @@ namespace Oro\Bundle\LDAPBundle\Tests\Unit\ImportExport;
 use Oro\Bundle\DataGridBundle\Common\Object;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
 use Oro\Bundle\LDAPBundle\Entity\LdapTransport;
 use Oro\Bundle\LDAPBundle\ImportExport\LdapUserWriter;
@@ -18,6 +19,7 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
     private $contextMediator;
     /** @var ContextRegistry */
     private $contextRegistry;
+    /** @var Channel */
     private $channel;
     /** @var LdapTransportInterface */
     private $transport;
@@ -30,7 +32,7 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
         $this->channel->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
-        $ms = Object::create([
+        $mappingSettings = Object::create([
             'exportUserBaseDn'      => 'ou=group,dc=localhost',
             'exportUserObjectClass' => 'inetOrgPerson',
             'userMapping'           => [
@@ -43,14 +45,14 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
         ]);
         $this->channel->expects($this->any())
             ->method('getMappingSettings')
-            ->will($this->returnValue($ms));
-        $ss = Object::create([
+            ->will($this->returnValue($mappingSettings));
+        $syncSettings = Object::create([
             'syncPriority'        => 'local',
             'isTwoWaySyncEnabled' => true,
         ]);
         $this->channel->expects($this->any())
             ->method('getSynchronizationSettings')
-            ->will($this->returnValue($ss));
+            ->will($this->returnValue($syncSettings));
         $transport = new LdapTransport();
         $this->channel->expects($this->any())
             ->method('getTransport')
@@ -70,10 +72,14 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
 
         $this->contextMediator->expects($this->any())
             ->method('getTransport')
-            ->will($this->returnValue($this->transport = $this->getMock('Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface')));
+            ->will($this->returnValue(
+                $this->transport = $this->getMock('Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface')
+            ));
 
         $this->writer = new LdapUserWriter($this->contextRegistry, $this->contextMediator);
-        $this->writer->setImportExportContext($this->context = $this->getMock('Oro\Bundle\ImportExportBundle\Context\Contextinterface'));
+        $this->writer->setImportExportContext(
+            $this->context = $this->getMock('Oro\Bundle\ImportExportBundle\Context\Contextinterface')
+        );
     }
 
     public function testNoItemsWritten()
@@ -129,4 +135,4 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
             ],
         ]);
     }
-} 
+}

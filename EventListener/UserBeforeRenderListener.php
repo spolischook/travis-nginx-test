@@ -28,7 +28,9 @@ class UserBeforeRenderListener
      */
     public function beforeValueRender(ValueRenderEvent $event)
     {
-        if (($event->getEntity() instanceof User) && $event->getFieldConfigId()->getFieldName() == 'ldap_distinguished_names') {
+        if (($event->getEntity() instanceof User) && $event->getFieldConfigId()
+                ->getFieldName() == 'ldap_distinguished_names'
+        ) {
             $value = (array)$event->getFieldValue();
 
             $mappings = [];

@@ -35,7 +35,8 @@ class LdapTransportTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider searchDataProvider
      */
-    public function testSearch($filter, $attributes) {
+    public function testSearch($filter, $attributes)
+    {
         $this->ldap->expects($this->once())
             ->method('search')
             ->with(
@@ -86,4 +87,4 @@ class LdapTransportTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->transport->bind($username));
     }
-} 
+}

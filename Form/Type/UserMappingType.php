@@ -30,8 +30,7 @@ class UserMappingType extends AbstractType
         Registry $registry,
         ConfigProviderInterface $importExportConfig,
         ConfigProviderInterface $entityConfig
-    )
-    {
+    ) {
         $this->registry = $registry;
         $this->importExportConfig = $importExportConfig;
         $this->entityConfig = $entityConfig;
@@ -72,6 +71,7 @@ class UserMappingType extends AbstractType
             if ($entityConfig->has('tooltip')) {
                 $field['options']['tooltip'] = $entityConfig->get('tooltip');
             }
+
             return $field;
         }, $fields);
 
