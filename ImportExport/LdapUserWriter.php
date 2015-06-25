@@ -11,6 +11,7 @@ use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
+use Oro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
 use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 
 class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface, ContextAwareInterface
@@ -39,7 +40,7 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
     public function write(array $items)
     {
         foreach ($items as $item) {
-            if (is_null($item['dn']) || !isset($item['dn'][$this->channel->getId()])) {
+            if (($item['dn'] === null) || !isset($item['dn'][$this->channel->getId()])) {
                 $dn = $this->createExportDn($item);
             } else {
                 $dn = $item['dn'][$this->channel->getId()];
@@ -71,7 +72,7 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
         $usernameAttr = $this->channel->getMappingSettings()->offsetGet('userMapping')['username'];
         $exportUserBaseDn = $this->channel->getMappingSettings()->offsetGet('exportUserBaseDn');
 
-        return sprintf('%s=%s,%s', $usernameAttr, $item[$usernameAttr], $exportUserBaseDn);
+        return LdapUtils::createDn($usernameAttr, $item[$usernameAttr], $exportUserBaseDn);
     }
 
     /**

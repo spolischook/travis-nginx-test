@@ -3,7 +3,6 @@ namespace Oro\Bundle\LDAPBundle\Provider\Connector;
 
 use Oro\Bundle\IntegrationBundle\Provider\AbstractConnector;
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
-use Oro\Bundle\UserBundle\Entity\User;
 
 class UserLdapConnector extends AbstractConnector implements TwoWaySyncConnectorInterface
 {

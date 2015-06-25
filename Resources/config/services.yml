@@ -60,4 +60,4 @@ services:
         tags:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: doctrine.event_listener, event: postFlush }
-        arguments: [@oro_ldap.doctrine.link, @oro_ldap.provider.transport.ldap, @oro_integration.sync_scheduler.link]
+        arguments: [@oro_ldap.doctrine.link, @oro_integration.sync_scheduler.link]

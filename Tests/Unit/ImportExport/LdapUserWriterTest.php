@@ -1,215 +1,132 @@
 <?php
+
 namespace Oro\Bundle\LDAPBundle\Tests\Unit\ImportExport;
 
+use Oro\Bundle\DataGridBundle\Common\Object;
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
+use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
+use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
+use Oro\Bundle\LDAPBundle\Entity\LdapTransport;
 use Oro\Bundle\LDAPBundle\ImportExport\LdapUserWriter;
-use Oro\Bundle\SSOBundle\Tests\Unit\Stub\TestingUser;
+use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 
 class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
 {
-    use MocksChannelAndContext;
-
+    /** @var LdapUserWriter */
     private $writer;
+    /** @var ConnectorContextMediator */
+    private $contextMediator;
+    /** @var ContextRegistry */
+    private $contextRegistry;
+    private $channel;
+    /** @var LdapTransportInterface */
+    private $transport;
+    /** @var ContextInterface */
+    private $context;
 
     public function setUp()
     {
-        $this->mockChannel();
-        $this->mockContext();
-        $this->mockContextRegistry();
-        $this->mockContextMediator();
-        $this->mockUserManager();
-        $this->mockLdapManager();
-        $this->mockChannelManagerProvider();
+        $this->channel = $this->getMock('Oro\Bundle\IntegrationBundle\Entity\Channel');
+        $this->channel->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue(1));
+        $ms = Object::create([
+            'exportUserBaseDn'      => 'ou=group,dc=localhost',
+            'exportUserObjectClass' => 'inetOrgPerson',
+            'userMapping'           => [
+                'username'   => 'cn',
+                'first_name' => 'sn',
+                'last_name'  => 'displayname',
+                'email'      => 'givenname',
+                'status'     => null,
+            ]
+        ]);
+        $this->channel->expects($this->any())
+            ->method('getMappingSettings')
+            ->will($this->returnValue($ms));
+        $ss = Object::create([
+            'syncPriority'        => 'local',
+            'isTwoWaySyncEnabled' => true,
+        ]);
+        $this->channel->expects($this->any())
+            ->method('getSynchronizationSettings')
+            ->will($this->returnValue($ss));
+        $transport = new LdapTransport();
+        $this->channel->expects($this->any())
+            ->method('getTransport')
+            ->will($this->returnValue($transport));
 
-        $this->writer = new LdapUserWriter(
-            $this->userManager,
-            $this->contextRegistry,
-            $this->contextMediator,
-            $this->managerProvider
-        );
-
-        $se = $this->getMockBuilder('Akeneo\Bundle\BatchBundle\Entity\StepExecution')
+        $this->contextMediator = $this->getMockBuilder('Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->writer->setStepExecution($se);
+        $this->contextRegistry = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->contextMediator->expects($this->any())
+            ->method('getChannel')
+            ->will($this->returnValue($this->channel));
+
+        $this->contextMediator->expects($this->any())
+            ->method('getTransport')
+            ->will($this->returnValue($this->transport = $this->getMock('Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface')));
+
+        $this->writer = new LdapUserWriter($this->contextRegistry, $this->contextMediator);
+        $this->writer->setImportExportContext($this->context = $this->getMock('Oro\Bundle\ImportExportBundle\Context\Contextinterface'));
     }
 
-    public function testWriteNothing()
+    public function testNoItemsWritten()
     {
-        $items = [];
+        $this->transport->expects($this->never())
+            ->method('exists');
+        $this->transport->expects($this->never())
+            ->method('add');
+        $this->transport->expects($this->never())
+            ->method('update');
 
-        $this->ldapManager->expects($this->never())
-            ->method('save');
-
-        $this->writer->write($items);
+        $this->writer->write([]);
     }
 
-    public function testWriteSingleExisting()
+    public function testOneUpdatedItem()
     {
-        $items = [
-            $firstUser = new TestingUser(),
-        ];
-
-        $this->ldapManager->expects($this->once())
+        $this->transport->expects($this->once())
             ->method('exists')
-            ->with($this->equalTo($firstUser))
             ->will($this->returnValue(true));
-
+        $this->transport->expects($this->never())
+            ->method('add');
+        $this->transport->expects($this->once())
+            ->method('update');
         $this->context->expects($this->once())
             ->method('incrementUpdateCount');
 
-        $this->ldapManager->expects($this->once())
-            ->method('save');
-
-        $this->writer->write($items);
+        $this->writer->write([
+            [
+                'dn' => [
+                    1 => 'example_dn'
+                ],
+                'cn' => 'username',
+            ],
+        ]);
     }
 
-    public function testWriteSingleNonExisting()
+    public function testOneAddedItem()
     {
-        $items = [
-            $firstUser = new TestingUser(),
-        ];
-
-        $this->ldapManager->expects($this->once())
+        $this->transport->expects($this->once())
             ->method('exists')
-            ->with($this->equalTo($firstUser))
             ->will($this->returnValue(false));
-
+        $this->transport->expects($this->once())
+            ->method('add');
+        $this->transport->expects($this->never())
+            ->method('update');
         $this->context->expects($this->once())
             ->method('incrementAddCount');
 
-        $this->ldapManager->expects($this->once())
-            ->method('save');
-
-        $this->writer->write($items);
+        $this->writer->write([
+            [
+                'dn' => null,
+                'cn' => 'username',
+            ],
+        ]);
     }
-
-    public function testWriteMultipleExisting()
-    {
-        $firstUser = new TestingUser();
-        $firstUser->setId(1);
-        $secondUser = new TestingUser();
-        $secondUser->setId(2);
-        $thirdUser = new TestingUser();
-        $thirdUser->setId(3);
-        $fourthUser = new TestingUser();
-        $fourthUser->setId(4);
-        $items = [
-            $firstUser,
-            $secondUser,
-            $thirdUser,
-            $fourthUser,
-        ];
-
-        $this->ldapManager->expects($this->exactly(count($items)))
-            ->method('exists')
-            ->withConsecutive(
-                [$this->equalTo($firstUser)],
-                [$this->equalTo($secondUser)],
-                [$this->equalTo($thirdUser)],
-                [$this->equalTo($fourthUser)]
-            )
-            ->will($this->returnValue(true));
-
-        $this->context->expects($this->exactly(count($items)))
-            ->method('incrementUpdateCount');
-
-        $this->ldapManager->expects($this->exactly(count($items)))
-            ->method('save')
-            ->withConsecutive(
-                [$this->equalTo($firstUser)],
-                [$this->equalTo($secondUser)],
-                [$this->equalTo($thirdUser)],
-                [$this->equalTo($fourthUser)]
-            );
-
-        $this->writer->write($items);
-    }
-
-    public function testWriteMultipleNonExisting()
-    {
-        $firstUser = new TestingUser();
-        $firstUser->setId(1);
-        $secondUser = new TestingUser();
-        $secondUser->setId(2);
-        $thirdUser = new TestingUser();
-        $thirdUser->setId(3);
-        $fourthUser = new TestingUser();
-        $fourthUser->setId(4);
-        $items = [
-            $firstUser,
-            $secondUser,
-            $thirdUser,
-            $fourthUser,
-        ];
-
-        $this->ldapManager->expects($this->exactly(count($items)))
-            ->method('exists')
-            ->withConsecutive(
-                [$this->equalTo($firstUser)],
-                [$this->equalTo($secondUser)],
-                [$this->equalTo($thirdUser)],
-                [$this->equalTo($fourthUser)]
-            )
-            ->will($this->returnValue(false));
-
-        $this->context->expects($this->exactly(count($items)))
-            ->method('incrementAddCount');
-
-        $this->ldapManager->expects($this->exactly(count($items)))
-            ->method('save')
-            ->withConsecutive(
-                [$this->equalTo($firstUser)],
-                [$this->equalTo($secondUser)],
-                [$this->equalTo($thirdUser)],
-                [$this->equalTo($fourthUser)]
-            );
-
-        $this->writer->write($items);
-    }
-
-    public function testWriteMultipleMixed()
-    {
-        $firstUser = new TestingUser();
-        $firstUser->setId(1);
-        $secondUser = new TestingUser();
-        $secondUser->setId(2);
-        $thirdUser = new TestingUser();
-        $thirdUser->setId(3);
-        $fourthUser = new TestingUser();
-        $fourthUser->setId(4);
-        $items = [
-            $firstUser,
-            $secondUser,
-            $thirdUser,
-            $fourthUser,
-        ];
-
-        $this->ldapManager->expects($this->exactly(count($items)))
-            ->method('exists')
-            ->withConsecutive(
-                [$this->equalTo($firstUser)],
-                [$this->equalTo($secondUser)],
-                [$this->equalTo($thirdUser)],
-                [$this->equalTo($fourthUser)]
-            )
-            ->will($this->onConsecutiveCalls(false, true, true, false));
-
-        $this->context->expects($this->exactly(2))
-            ->method('incrementUpdateCount');
-
-        $this->context->expects($this->exactly(2))
-            ->method('incrementAddCount');
-
-        $this->ldapManager->expects($this->exactly(count($items)))
-            ->method('save')
-            ->withConsecutive(
-                [$this->equalTo($firstUser)],
-                [$this->equalTo($secondUser)],
-                [$this->equalTo($thirdUser)],
-                [$this->equalTo($fourthUser)]
-            );
-
-        $this->writer->write($items);
-    }
-}
+} 

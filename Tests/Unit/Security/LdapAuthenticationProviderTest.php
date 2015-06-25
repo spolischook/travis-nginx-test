@@ -3,35 +3,39 @@
 namespace Oro\Bundle\LDAPBundle\Tests\Unit\Security;
 
 use Oro\Bundle\LDAPBundle\Provider\ChannelManagerProvider;
+use Oro\Bundle\LDAPBundle\Security\LdapAuthenticator;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 use Oro\Bundle\LDAPBundle\Security\LdapAuthenticationProvider;
 use Oro\Bundle\LDAPBundle\Tests\Unit\Stub\TestingUser;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-class LdapProviderTest extends \PHPUnit_Framework_TestCase
+class LdapAuthenticationProviderTest extends \PHPUnit_Framework_TestCase
 {
-    private $providerKey = 'fr3d_ldap';
+    private $providerKey = 'oro_ldap';
     private $userProvider;
-    /** @var ChannelManagerProvider */
-    private $managerProvider;
-
-    private $ldapProvider;
+    /** @var LdapAuthenticator */
+    private $ldapAuthenticator;
 
     public function setUp()
     {
         $userChecker = $this->getMock('Symfony\Component\Security\Core\User\UserCheckerInterface');
 
         $this->userProvider = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
-        $this->managerProvider = $this->getMockBuilder('Oro\Bundle\LDAPBundle\Provider\ChannelManagerProvider')
+
+        $encoderFactory = $this->getMock('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface');
+
+        $this->ldapAuthenticator= $this->getMockBuilder('Oro\Bundle\LDAPBundle\Security\LdapAuthenticator')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->ldapProvider = new LdapAuthenticationProvider(
+            $this->userProvider,
             $userChecker,
             $this->providerKey,
-            $this->userProvider,
-            $this->managerProvider
+            $encoderFactory,
+            true,
+            $this->ldapAuthenticator
         );
     }
     
@@ -50,8 +54,8 @@ class LdapProviderTest extends \PHPUnit_Framework_TestCase
             ->with('user')
             ->will($this->returnValue($user));
 
-        $this->managerProvider->expects($this->once())
-            ->method('bind')
+        $this->ldapAuthenticator->expects($this->once())
+            ->method('check')
             ->will($this->returnValue(true));
 
         $resultToken = $this->ldapProvider->authenticate($token);

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\LDAPBundle\ImportExport;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+
 use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
@@ -38,6 +39,7 @@ class LdapHelper implements ContextAwareInterface
 
     /**
      * @param ConnectorContextMediator $contextMediator
+     * @param Registry                 $registry
      */
     public function __construct(ConnectorContextMediator $contextMediator, Registry $registry)
     {
@@ -57,7 +59,7 @@ class LdapHelper implements ContextAwareInterface
 
         $this->roleMapping = [];
         $mapping = $this->channel->getMappingSettings()->offsetGet('roleMapping');
-        foreach($mapping as $map) {
+        foreach ($mapping as $map) {
             $this->roleMapping[$map['ldapName']] = $map['crmRoles'];
         }
         $this->roleIdAttr = $this->channel->getMappingSettings()->offsetGet('roleIdAttribute');
@@ -147,7 +149,7 @@ class LdapHelper implements ContextAwareInterface
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectManager|null|object
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     private function getRoleEntityManager()
     {

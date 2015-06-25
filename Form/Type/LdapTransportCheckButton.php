@@ -3,7 +3,6 @@
 namespace Oro\Bundle\LDAPBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class LdapTransportCheckButton extends AbstractType
@@ -19,6 +18,9 @@ class LdapTransportCheckButton extends AbstractType
         return static::NAME;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);

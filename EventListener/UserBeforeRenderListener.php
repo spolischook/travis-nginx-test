@@ -2,6 +2,7 @@
 namespace Oro\Bundle\LDAPBundle\EventListener;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+
 use Oro\Bundle\EntityExtendBundle\Event\ValueRenderEvent;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\LDAPBundle\Provider\ChannelType;
@@ -37,7 +38,7 @@ class UserBeforeRenderListener
                 ->getRepository('OroIntegrationBundle:Channel')
                 ->findBy(['type' => ChannelType::TYPE]);
 
-            foreach($channels as $channel) {
+            foreach ($channels as $channel) {
                 if (!isset($value[$channel->getId()])) {
                     continue;
                 }
@@ -50,7 +51,7 @@ class UserBeforeRenderListener
 
             $event->setFieldViewValue([
                 'mappings' => $mappings,
-                'template' => 'OroLDAPBundle:User:ldapMappings.html.twig',
+                'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig',
             ]);
         }
     }

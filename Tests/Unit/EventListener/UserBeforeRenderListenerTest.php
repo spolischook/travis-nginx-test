@@ -1,10 +1,11 @@
 <?php
 namespace Oro\Bundle\LDAPBundle\Tests\Unit\EventListener;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityExtendBundle\Event\ValueRenderEvent;
 use Oro\Bundle\LDAPBundle\EventListener\UserBeforeRenderListener;
-use Oro\Bundle\LDAPBundle\Provider\ChannelManagerProvider;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
@@ -21,16 +22,28 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
     /** @var ValueRenderEvent */
     private $event;
 
-    /** @var ChannelManagerProvider */
-    private $managerProvider;
+    /** @var Registry */
+    private $registry;
+
+    /** @var ObjectRepository */
+    private $repository;
 
     public function setUp()
     {
-        $this->managerProvider = $this->getMockBuilder('Oro\Bundle\LDAPBundle\Provider\ChannelManagerProvider')
+        $this->registry = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Registry')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->userRenderListener = new UserBeforeRenderListener($this->managerProvider);
+        $this->repository = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->registry->expects($this->any())
+            ->method('getRepository')
+            ->with($this->equalTo('OroIntegrationBundle:Channel'))
+            ->will($this->returnValue($this->repository));
+
+        $this->userRenderListener = new UserBeforeRenderListener($this->registry);
 
         $this->user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
             ->disableOriginalConstructor()
@@ -86,19 +99,19 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->configId->expects($this->once())
             ->method('getFieldName')
-            ->will($this->returnValue('ldap_mappings'));
+            ->will($this->returnValue('ldap_distinguished_names'));
 
         $this->event->expects($this->once())
             ->method('getFieldValue')
             ->will($this->returnValue(null));
 
-        $this->managerProvider->expects($this->once())
-            ->method('getChannels')
+        $this->repository->expects($this->once())
+            ->method('findBy')
             ->will($this->returnValue([]));
 
         $this->event->expects($this->once())
             ->method('setFieldViewValue')
-            ->with($this->equalTo(['mappings' => [], 'template' => 'OroLDAPBundle:User:ldapMappings.html.twig']));
+            ->with($this->equalTo(['mappings' => [], 'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig']));
 
         $this->userRenderListener->beforeValueRender($this->event);
     }
@@ -120,7 +133,7 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->configId->expects($this->once())
             ->method('getFieldName')
-            ->will($this->returnValue('ldap_mappings'));
+            ->will($this->returnValue('ldap_distinguished_names'));
 
         $this->event->expects($this->once())
             ->method('getFieldValue')
@@ -129,13 +142,13 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
                 40 => 'an example of user distinguished name in channel with id 40',
             ]));
 
-        $this->managerProvider->expects($this->once())
-            ->method('getChannels')
+        $this->repository->expects($this->once())
+            ->method('findBy')
             ->will($this->returnValue([]));
 
         $this->event->expects($this->once())
             ->method('setFieldViewValue')
-            ->with($this->equalTo(['mappings' => [], 'template' => 'OroLDAPBundle:User:ldapMappings.html.twig']));
+            ->with($this->equalTo(['mappings' => [], 'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig']));
 
         $this->userRenderListener->beforeValueRender($this->event);
     }
@@ -155,7 +168,7 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->configId->expects($this->once())
             ->method('getFieldName')
-            ->will($this->returnValue('ldap_mappings'));
+            ->will($this->returnValue('ldap_distinguished_names'));
 
         $this->event->expects($this->once())
             ->method('getFieldValue')
@@ -164,8 +177,8 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
                 40 => 'an example of user distinguished name in channel with id 40',
             ]));
 
-        $this->managerProvider->expects($this->once())
-            ->method('getChannels')
+        $this->repository->expects($this->once())
+            ->method('findBy')
             ->will($this->returnValue($this->setUpChannels()));
 
         $this->event->expects($this->once())
@@ -181,7 +194,7 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
                         'dn' => 'an example of user distinguished name in channel with id 40'
                     ],
                 ],
-                'template' => 'OroLDAPBundle:User:ldapMappings.html.twig',
+                'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig',
             ]));
 
         $this->userRenderListener->beforeValueRender($this->event);

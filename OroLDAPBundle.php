@@ -10,7 +10,9 @@ use Oro\Bundle\LDAPBundle\Security\Factory\FormLoginLdapFactory;
 
 class OroLDAPBundle extends Bundle
 {
-
+    /**
+     * {@inheritdoc}
+     */
     public function boot()
     {
         if (!function_exists('ldap_connect')) {

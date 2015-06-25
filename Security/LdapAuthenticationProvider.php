@@ -16,6 +16,14 @@ class LdapAuthenticationProvider extends UsernamePasswordOrganizationAuthenticat
     /** @var LdapAuthenticator */
     private $ldapAuthenticator;
 
+    /**
+     * @param UserProviderInterface   $userProvider
+     * @param UserCheckerInterface    $userChecker
+     * @param string                  $providerKey
+     * @param EncoderFactoryInterface $encoderFactory
+     * @param bool                    $hideUserNotFoundExceptions
+     * @param LdapAuthenticator       $ldapAuthenticator
+     */
     public function __construct(
         UserProviderInterface $userProvider,
         UserCheckerInterface $userChecker,
@@ -30,6 +38,9 @@ class LdapAuthenticationProvider extends UsernamePasswordOrganizationAuthenticat
         $this->ldapAuthenticator = $ldapAuthenticator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function checkAuthentication(UserInterface $user, UsernamePasswordToken $token)
     {
         $currentUser = $token->getUser();

@@ -3,6 +3,7 @@ namespace Oro\Bundle\LDAPBundle\Provider\Transport;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
 
+use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
 
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
@@ -103,7 +104,11 @@ class LdapTransport implements LdapTransportInterface
      * {@inheritdoc}
      */
     public function bind($username = null, $password = null) {
-        $this->ldap->bind($username, $password);
+        try {
+            $this->ldap->bind($username, $password);
+        } catch (LdapException $e){
+            return false;
+        }
 
         return $username === $this->ldap->getBoundUser();
     }

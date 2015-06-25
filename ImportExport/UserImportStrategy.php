@@ -24,6 +24,15 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
     /** @var LdapHelper */
     private $ldapHelper;
 
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param ImportStrategyHelper     $strategyHelper
+     * @param FieldHelper              $fieldHelper
+     * @param DatabaseHelper           $databaseHelper
+     * @param DefaultOwnerHelper       $defaultOwnerHelper
+     * @param ConnectorContextMediator $contextMediator
+     * @param LdapHelper               $ldapHelper
+     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         ImportStrategyHelper $strategyHelper,

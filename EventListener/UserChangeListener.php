@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\LDAPBundle\EventListener;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
@@ -12,7 +11,6 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Manager\SyncScheduler;
 use Oro\Bundle\LDAPBundle\Provider\ChannelType;
 use Oro\Bundle\LDAPBundle\Provider\Connector\UserLdapConnector;
-use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class UserChangeListener
@@ -29,25 +27,20 @@ class UserChangeListener
     private $syncShedulerLink;
     /** @var ServiceLink */
     private $registryLink;
-    /** @var LdapTransportInterface */
-    private $ldapTransport;
 
     /**
      * @param ServiceLink   $registry
-     * @param LdapTransportInterface $ldapTransport
      * @param ServiceLink            $syncShedulerLink Service link with SyncScheduler
      *
      * @internal param ServiceLink $managerProviderLink Service link with ChannelManagerProvider
      */
     public function __construct(
         ServiceLink $registry,
-        LdapTransportInterface $ldapTransport,
         ServiceLink $syncShedulerLink
     )
     {
         $this->registryLink = $registry;
         $this->syncShedulerLink = $syncShedulerLink;
-        $this->ldapTransport = $ldapTransport;
     }
 
     /**
@@ -55,6 +48,10 @@ class UserChangeListener
      */
     protected function processNew()
     {
+        if (empty($this->newUsers)) {
+            return;
+        }
+
         $ids = [];
 
         foreach ($this->newUsers as $user) {
@@ -79,6 +76,10 @@ class UserChangeListener
      */
     protected function processUpdated(UnitOfWork $uow)
     {
+        if (empty($this->updatedUsers)) {
+            return;
+        }
+
         $channels = $this->getEnabledChannels();
 
         foreach ($this->updatedUsers as $user) {
@@ -105,8 +106,12 @@ class UserChangeListener
     /**
      * Schedules export job for updated/new entities.
      */
-    public function exportScheduled()
+    protected function exportScheduled()
     {
+        if (empty($this->scheduledUserIds)) {
+            return;
+        }
+
         /** @var SyncScheduler $syncScheduler */
         $syncScheduler = $this->syncShedulerLink->getService();
         $channels = $this->getEnabledChannels();

@@ -58,7 +58,7 @@ class UserDataConverter extends AbstractTableDataConverter implements StepExecut
      *
      * @return $this
      */
-    public function setChannel(Channel $channel)
+    protected function setChannel(Channel $channel)
     {
         $mappingSettings = $channel->getMappingSettings();
 

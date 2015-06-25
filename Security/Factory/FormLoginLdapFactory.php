@@ -11,11 +11,17 @@ use Oro\Bundle\SecurityBundle\DependencyInjection\Security\Factory\OrganizationF
 class FormLoginLdapFactory extends OrganizationFormLoginFactory
 {
 
+    /**
+     * {@inheritdoc}
+     */
     public function getKey()
     {
         return 'oro-ldap-organization-form-login';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function createAuthProvider(ContainerBuilder $container, $id, $config, $userProviderId)
     {
         $provider = 'oro_ldap.authentication.provider.' . $id;

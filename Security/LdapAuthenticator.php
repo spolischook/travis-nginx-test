@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\LDAPBundle\Security;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-
 use Doctrine\Bundle\DoctrineBundle\Registry;
+
+use Symfony\Component\Security\Core\User\UserInterface;
 
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\LDAPBundle\Provider\ChannelType;
@@ -16,14 +16,24 @@ class LdapAuthenticator
 
     /** @var Channel[] */
     protected $channels;
-
     /** @var LdapTransportInterface */
     protected $transport;
+    /** @var Registry */
+    private $registry;
 
     public function __construct(Registry $registry, LdapTransportInterface $transport)
     {
-        $this->channels = $registry->getRepository('OroIntegrationBundle:Channel')->findBy(['type' => ChannelType::TYPE]);
         $this->transport = $transport;
+        $this->registry = $registry;
+    }
+
+    protected function getChannels()
+    {
+        if ($this->channels === null) {
+            $this->channels = $this->registry->getRepository('OroIntegrationBundle:Channel')->findBy(['type' => ChannelType::TYPE]);
+        }
+
+        return $this->channels;
     }
 
     public function check(UserInterface $user, $password)
@@ -34,7 +44,7 @@ class LdapAuthenticator
 
         $userDns = (array)$user->getLdapDistinguishedNames();
 
-        foreach ($this->channels as $channel) {
+        foreach ($this->getChannels() as $channel) {
             if (!$channel->isEnabled()) {
                 continue;
             }
