@@ -15,25 +15,18 @@ class LdapHelper implements ContextAwareInterface
 {
     /** @var  ContextInterface */
     protected $context;
-
     /** @var string */
     protected $roleIdAttr;
-
     /** @var string */
     protected $roleUserIdAttr;
-
     /** @var ConnectorContextMediator */
     private $contextMediator;
-
     /** @var LdapTransportInterface */
     private $transport;
-
     /** @var Channel */
     private $channel;
-
     /** @var array */
     private $roleMapping;
-
     /** @var Registry */
     private $registry;
 
@@ -163,5 +156,17 @@ class LdapHelper implements ContextAwareInterface
     private function getRoleEntityManager()
     {
         return $this->registry->getManagerForClass('OroUserBundle:Role');
+    }
+
+    /**
+     * Populates owner of user.
+     *
+     * @param User $entity
+     */
+    public function populateBusinessUnitOwner($entity)
+    {
+        if ($entity->getOwner() === null) {
+            $entity->setOwner($this->channel->getDefaultUserOwner()->getOwner());
+        }
     }
 }

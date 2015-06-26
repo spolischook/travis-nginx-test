@@ -82,6 +82,7 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
     {
         $this->defaultOwnerHelper->populateChannelOwner($entity, $this->contextMediator->getChannel($this->context));
         $this->ldapHelper->populateUserRoles($entity);
+        $this->ldapHelper->populateBusinessUnitOwner($entity);
 
         return parent::afterProcessEntity($entity);
     }

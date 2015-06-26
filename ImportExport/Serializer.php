@@ -51,6 +51,11 @@ class Serializer implements SerializerInterface
             $context['channel'] => $extractedData['ldap_distinguished_names']
         ];
 
-        return $this->serializer->deserialize($extractedData, $type, $format, $context);
+        $entity = $this->serializer->deserialize($extractedData, $type, $format, $context);
+        if ($entity->getPassword() === null) {
+            $entity->setPassword("");
+        }
+
+        return $entity;
     }
 }

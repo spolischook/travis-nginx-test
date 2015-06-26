@@ -1,9 +1,1 @@
-{% if data.mappings is not empty %}
-    <ul>
-        {% for mapping in data.mappings %}
-            <li><strong>{{ mapping.name }}:</strong>&nbsp;{{ mapping.dn }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    {{ 'N/A'|trans }}
-{% endif %}
+{% placeholder oro_ldap_user_distinguished_names_list with {'mappings': data.mappings} %}
