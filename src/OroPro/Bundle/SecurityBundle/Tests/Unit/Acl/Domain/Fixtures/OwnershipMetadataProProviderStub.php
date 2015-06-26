@@ -2,9 +2,11 @@
 
 namespace OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures;
 
-use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipProMetadata;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+
+use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipProMetadata;
 use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProProvider;
 
 class OwnershipMetadataProProviderStub extends OwnershipMetadataProProvider
@@ -72,9 +74,9 @@ class OwnershipMetadataProProviderStub extends OwnershipMetadataProProvider
 
     /**
      * @param string $className
-     * @param OwnershipProMetadata $metadata
+     * @param OwnershipMetadata $metadata
      */
-    public function setMetadata($className, OwnershipProMetadata $metadata)
+    public function setMetadata($className, OwnershipMetadata $metadata)
     {
         $this->metadata[$className] = $metadata;
     }

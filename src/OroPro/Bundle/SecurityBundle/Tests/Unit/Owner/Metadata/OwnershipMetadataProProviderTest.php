@@ -2,9 +2,9 @@
 
 namespace OroPro\Bundle\SecurityBundle\Tests\Unit\Owner\Metadata;
 
-use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
