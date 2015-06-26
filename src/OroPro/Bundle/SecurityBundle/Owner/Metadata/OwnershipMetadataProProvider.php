@@ -2,28 +2,18 @@
 
 namespace OroPro\Bundle\SecurityBundle\Owner\Metadata;
 
-use Doctrine\Common\Cache\CacheProvider;
-
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 
 class OwnershipMetadataProProvider extends OwnershipMetadataProvider
 {
     /**
      * {@inheritdoc}
      */
-    public function __construct(
-        array $owningEntityNames,
-        ConfigProvider $configProvider,
-        EntityClassResolver $entityClassResolver = null,
-        CacheProvider $cache = null
-    ) {
-        parent::__construct($owningEntityNames, $configProvider, $entityClassResolver, $cache);
-
-        $this->noOwnershipMetadata = new OwnershipProMetadata();
+    protected function getNoOwnershipMetadata()
+    {
+        return new OwnershipProMetadata();
     }
 
     /**
@@ -43,7 +33,7 @@ class OwnershipMetadataProProvider extends OwnershipMetadataProvider
             $organizationColumnName = $ownerColumnName;
         }
 
-        $data = new OwnershipProMetadata(
+        return new OwnershipProMetadata(
             $ownerType,
             $ownerFieldName,
             $ownerColumnName,
@@ -51,7 +41,5 @@ class OwnershipMetadataProProvider extends OwnershipMetadataProvider
             $organizationColumnName,
             $globalView
         );
-
-        return $data;
     }
 }
