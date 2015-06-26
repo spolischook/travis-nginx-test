@@ -45,7 +45,8 @@ class UserChangeListenerTest extends \PHPUnit_Framework_TestCase
                 'username' => 'sn',
                 'password' => null,
                 'salt' => null,
-            ]
+            ],
+            'exportUserBaseDn' => 'cn=base-dn',
         ]);
 
         $channel->expects($this->any())
