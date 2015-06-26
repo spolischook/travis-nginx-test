@@ -1,17 +1,17 @@
 /*global define*/
 define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotranslation/js/translator'],
-    function (dataFormatter, localeSettings, __) {
+    function(dataFormatter, localeSettings, __) {
         'use strict';
 
         /**
          * @export orocrmprofusioncharts/js/fusion-data-handler
          * @name   dataHandler
          */
-        return function (dataSource, schema, isCurrencyPrepend) {
+        return function(dataSource, schema, isCurrencyPrepend) {
             /**
              * Order data labels(fusion chart not ordered labels)
              */
-            dataSource.data = dataSource.data.sort(function (first, second) {
+            dataSource.data = dataSource.data.sort(function(first, second) {
                 if (first.label == null) {
                     return -1;
                 }
@@ -56,7 +56,7 @@ define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotransl
                 if (schema.value.type == 'percent') {
                     point.value *= 100;
                 } else {
-                    point.value = point.value === null ? 0 :dataFormatter.parseValue(point.value, schema.value.type);
+                    point.value = point.value === null ? 0 : dataFormatter.parseValue(point.value, schema.value.type);
                 }
 
                 if (point.value > max) {
@@ -72,21 +72,21 @@ define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotransl
             /**
              * @return {int|float}
              */
-            this.getMaxValue = function () {
+            this.getMaxValue = function() {
                 return max;
             };
 
             /**
              * @return {int|float}
              */
-            this.getMinValue = function () {
+            this.getMinValue = function() {
                 return min;
             };
 
             /**
              * @return {object}
              */
-            this.getDataSource = function () {
+            this.getDataSource = function() {
                 return dataSource;
             }
         }

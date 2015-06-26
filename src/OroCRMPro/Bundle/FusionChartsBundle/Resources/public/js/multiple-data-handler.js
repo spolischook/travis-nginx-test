@@ -1,13 +1,13 @@
 /*global define*/
 define(['underscore', 'orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotranslation/js/translator'],
-    function (_, dataFormatter, localeSettings, __) {
+    function(_, dataFormatter, localeSettings, __) {
         'use strict';
 
         /**
          * @export orocrmprofusioncharts/js/multiple-data-handler
          * @name   multipleHandler
          */
-        return function (dataSource, options, isCurrencyPrepend) {
+        return function(dataSource, options, isCurrencyPrepend) {
             if (options.data_schema.value.type == 'percent') {
                 dataSource.chart['numberSuffix'] = '%';
             } else if (options.data_schema.value.type == 'currency') {
@@ -22,9 +22,9 @@ define(['underscore', 'orochart/js/data_formatter', 'orolocale/js/locale-setting
             var max = 0;
             var min = 0;
 
-            _.each(dataSource.dataset, function (dataset) {
+            _.each(dataSource.dataset, function(dataset) {
                 var prev = 0;
-                _.each(dataset.data, function (data) {
+                _.each(dataset.data, function(data) {
                     data.displayValue = dataFormatter.formatValue(data.value, options.data_schema.value.type);
                     if (options.data_schema.value.type == 'percent') {
                         data.value *= 100;
@@ -50,7 +50,7 @@ define(['underscore', 'orochart/js/data_formatter', 'orolocale/js/locale-setting
                 });
             });
 
-            _.each(dataSource.categories.category, function (category) {
+            _.each(dataSource.categories.category, function(category) {
                 if (category.label != null) {
                     var labelValue = dataFormatter.parseValue(category.label, options.data_schema.label.type);
                     category.label = labelValue === null ?
@@ -63,7 +63,7 @@ define(['underscore', 'orochart/js/data_formatter', 'orolocale/js/locale-setting
             /**
              * @return {object}
              */
-            this.getDataSource = function () {
+            this.getDataSource = function() {
                 return dataSource;
             }
         }

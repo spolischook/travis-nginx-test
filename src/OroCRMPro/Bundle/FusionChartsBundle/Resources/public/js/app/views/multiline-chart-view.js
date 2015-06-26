@@ -1,4 +1,4 @@
-define(function (require) {
+define(function(require) {
     'use strict';
 
     var MultilineChartView,
@@ -11,7 +11,7 @@ define(function (require) {
         /**
          * @inheritDoc
          */
-        initialize: function (options) {
+        initialize: function(options) {
             _.extend(this, _.pick(options, ['chartOptions']));
             MultilineChartView.__super__.initialize.apply(this, options);
         },
@@ -19,7 +19,7 @@ define(function (require) {
         /**
          * @inheritDoc
          */
-        dispose: function () {
+        dispose: function() {
             if (this.disposed) {
                 return;
             }
@@ -30,7 +30,7 @@ define(function (require) {
         /**
          * @inheritDoc
          */
-        render: function () {
+        render: function() {
             var handler,
                 options = this.chartOptions;
 

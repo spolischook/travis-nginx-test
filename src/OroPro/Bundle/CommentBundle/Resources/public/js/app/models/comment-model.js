@@ -1,5 +1,5 @@
 /*global define*/
-define(function (require) {
+define(function(require) {
     'use strict';
 
     var ProCommentModel,
@@ -9,7 +9,7 @@ define(function (require) {
         /**
          * @inheritDoc
          */
-        url: function () {
+        url: function() {
             var url, _sa_org_id;
 
             url = ProCommentModel.__super__.url.call(this, arguments);
