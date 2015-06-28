@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\EwsBundle\Migrations\Schema;
+namespace OroPro\Bundle\EwsBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 
