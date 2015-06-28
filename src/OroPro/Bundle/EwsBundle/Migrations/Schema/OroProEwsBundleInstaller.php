@@ -57,7 +57,7 @@ class OroProEwsBundleInstaller implements Installation
         $table->addColumn('ews_id', 'string', ['length' => 255]);
         $table->addColumn('ews_change_key', 'string', ['length' => 255]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['email_id'], 'IDX_1257C23FA832C1C9');
+        $table->addUniqueIndex(['folder_id'], 'UNIQ_6622DD60162CB942');
     }
 
     /**
@@ -74,7 +74,7 @@ class OroProEwsBundleInstaller implements Installation
         $table->addColumn('ews_change_key', 'string', ['length' => 255]);
         $table->addColumn('ews_folder_id', 'integer', ['notnull' => true]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['email_id'], 'UNIQ_1257C23FA832C1C9');
+        $table->addIndex(['email_id'], 'IDX_1257C23FA832C1C9');
         $table->addIndex(['ews_id'], 'idx_oro_email_ews', []);
         $table->addIndex(['ews_folder_id'], 'IDX_1257C23F9380036F');
     }
