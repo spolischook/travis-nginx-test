@@ -197,6 +197,7 @@ class UserChangeListener
             $channels = $this->registryLink->getService()
                 ->getRepository('OroIntegrationBundle:Channel')
                 ->findBy(['type' => ChannelType::TYPE, 'enabled' => true]);
+            $this->channels = [];
             foreach ($channels as $channel) {
                 $this->channels[$channel->getId()] = $channel;
             }

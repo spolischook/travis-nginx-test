@@ -1,8 +1,0 @@
-items:
-    ldap_distinguished_names_list:
-        template: OroLDAPBundle:User:distinguishedNamesList.html.twig
-        acl: oro_integration_update
-placeholders:
-    oro_ldap_user_distinguished_names_list:
-        items:
-            ldap_distinguished_names_list: ~

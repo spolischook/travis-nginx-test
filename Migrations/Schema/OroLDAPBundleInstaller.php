@@ -43,6 +43,7 @@ class OroLDAPBundleInstaller implements Installation, ExtendExtensionAwareInterf
                 'form'         => ['is_enabled' => false],
                 'datagrid'     => ['is_visible' => false],
                 'importexport' => ['excluded' => true],
+                'view'         => ['acl' => 'oro_integration_update'],
             ],
             'notnull'     => false
         ]);

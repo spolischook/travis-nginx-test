@@ -35,6 +35,7 @@ class OroLDAPBundle implements Migration, ExtendExtensionAwareInterface
                 'form'         => ['is_enabled' => false],
                 'datagrid'     => ['is_visible' => false],
                 'importexport' => ['excluded' => true],
+                'view'         => ['acl' => 'oro_integration_update'],
             ],
             'notnull'     => false
         ]);

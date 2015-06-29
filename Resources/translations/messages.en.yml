@@ -1,6 +1,6 @@
 oro:
     user:
-        ldap_distinguished_names.label: Distinguished Names
+        ldap_distinguished_names.label: LDAP Distinguished Names
     ldap:
         oro_ldap_encryption:
             none:   None
