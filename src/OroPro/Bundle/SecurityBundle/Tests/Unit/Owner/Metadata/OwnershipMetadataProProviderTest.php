@@ -2,6 +2,10 @@
 
 namespace OroPro\Bundle\SecurityBundle\Tests\Unit\Owner\Metadata;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 
@@ -10,64 +14,108 @@ use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipProMetadata;
 
 class OwnershipMetadataProProviderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testOwnerClassesConfig()
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|ConfigProvider
+     */
+    protected $configProvider;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|EntityClassResolver
+     */
+    protected $entityClassResolver;
+
+    protected function setUp()
     {
-        $entityClassResolver = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\EntityClassResolver')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
+        $this->entityClassResolver = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\EntityClassResolver')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $entityClassResolver->expects($this->exactly(3))
+        $this->configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->entityClassResolver->expects($this->any())
             ->method('getEntityClass')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array('AcmeBundle:Organization', 'AcmeBundle\Entity\Organization'),
-                        array('AcmeBundle:BusinessUnit', 'AcmeBundle\Entity\BusinessUnit'),
-                        array('AcmeBundle:User', 'AcmeBundle\Entity\User'),
-                    )
+                    [
+                        ['AcmeBundle:Organization', 'AcmeBundle\Entity\Organization'],
+                        ['AcmeBundle:BusinessUnit', 'AcmeBundle\Entity\BusinessUnit'],
+                        ['AcmeBundle:User', 'AcmeBundle\Entity\User'],
+                    ]
                 )
             );
 
+        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->container->expects($this->any())
+            ->method('get')
+            ->will(
+                $this->returnValueMap(
+                    [
+                        [
+                            'oro_entity_config.provider.ownership',
+                            ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE,
+                            $this->configProvider,
+                        ],
+                        [
+                            'oro_entity.orm.entity_class_resolver',
+                            ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE,
+                            $this->entityClassResolver,
+                        ],
+                    ]
+                )
+            );
+    }
+
+    protected function tearDown()
+    {
+        unset($this->configProvider, $this->container);
+    }
+
+    public function testOwnerClassesConfig()
+    {
+
         $provider = new OwnershipMetadataProProvider(
-            array(
+            [
                 'organization' => 'AcmeBundle:Organization',
                 'business_unit' => 'AcmeBundle:BusinessUnit',
                 'user' => 'AcmeBundle:User',
-            ),
-            $configProvider,
-            $entityClassResolver
+            ],
+            $this->configProvider
         );
+        $provider->setContainer($this->container);
 
         $this->assertEquals('AcmeBundle\Entity\Organization', $provider->getOrganizationClass());
+        $this->assertEquals('AcmeBundle\Entity\Organization', $provider->getGlobalLevelClass());
         $this->assertEquals('AcmeBundle\Entity\BusinessUnit', $provider->getBusinessUnitClass());
+        $this->assertEquals('AcmeBundle\Entity\BusinessUnit', $provider->getLocalLevelClass());
         $this->assertEquals('AcmeBundle\Entity\User', $provider->getUserClass());
+        $this->assertEquals('AcmeBundle\Entity\User', $provider->getBasicLevelClass());
     }
 
     public function testGetMetadataUndefinedClassWithoutCache()
     {
-        $configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $provider = new OwnershipMetadataProProvider(
-            array(
+            [
                 'organization' => 'AcmeBundle\Entity\Organization',
                 'business_unit' => 'AcmeBundle\Entity\BusinessUnit',
                 'user' => 'AcmeBundle\Entity\User',
-            ),
-            $configProvider,
-            null
+            ],
+            $this->configProvider
         );
+        $provider->setContainer($this->container);
 
-        $configProvider->expects($this->once())
+        $this->configProvider->expects($this->once())
             ->method('hasConfig')
             ->with($this->equalTo('UndefinedClass'))
             ->will($this->returnValue(false));
 
-        $configProvider->expects($this->never())
+        $this->configProvider->expects($this->never())
             ->method('getConfig');
 
         $this->assertEquals(
@@ -78,31 +126,27 @@ class OwnershipMetadataProProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMetadataWithoutCache()
     {
-        $configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $provider = new OwnershipMetadataProProvider(
-            array(
+            [
                 'organization' => 'AcmeBundle\Entity\Organization',
                 'business_unit' => 'AcmeBundle\Entity\BusinessUnit',
                 'user' => 'AcmeBundle\Entity\User',
-            ),
-            $configProvider,
-            null
+            ],
+            $this->configProvider
         );
+        $provider->setContainer($this->container);
 
         $config = new Config(new EntityConfigId('ownership', 'SomeClass'));
         $config->set('owner_type', 'USER');
         $config->set('owner_field_name', 'test_field');
         $config->set('owner_column_name', 'test_column');
 
-        $configProvider->expects($this->once())
+        $this->configProvider->expects($this->once())
             ->method('hasConfig')
             ->with($this->equalTo('SomeClass'))
             ->will($this->returnValue(true));
 
-        $configProvider->expects($this->once())
+        $this->configProvider->expects($this->once())
             ->method('getConfig')
             ->with($this->equalTo('SomeClass'))
             ->will($this->returnValue($config));
@@ -115,31 +159,27 @@ class OwnershipMetadataProProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMetadataSetsOrganizationFieldName()
     {
-        $configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $provider = new OwnershipMetadataProProvider(
-            array(
+            [
                 'organization' => 'AcmeBundle\Entity\Organization',
                 'business_unit' => 'AcmeBundle\Entity\BusinessUnit',
                 'user' => 'AcmeBundle\Entity\User',
-            ),
-            $configProvider,
-            null
+            ],
+            $this->configProvider
         );
+        $provider->setContainer($this->container);
 
         $config = new Config(new EntityConfigId('ownership', 'SomeClass'));
         $config->set('owner_type', 'ORGANIZATION');
         $config->set('owner_field_name', 'test_field');
         $config->set('owner_column_name', 'test_column');
 
-        $configProvider->expects($this->once())
+        $this->configProvider->expects($this->once())
             ->method('hasConfig')
             ->with($this->equalTo('SomeClass'))
             ->will($this->returnValue(true));
 
-        $configProvider->expects($this->once())
+        $this->configProvider->expects($this->once())
             ->method('getConfig')
             ->with($this->equalTo('SomeClass'))
             ->will($this->returnValue($config));
@@ -152,38 +192,59 @@ class OwnershipMetadataProProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMetadataUndefinedClassWithCache()
     {
-        $configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
         $cache = $this->getMockForAbstractClass(
             'Doctrine\Common\Cache\CacheProvider',
-            array(),
+            [],
             '',
             false,
             true,
             true,
-            array('fetch', 'save')
+            ['fetch', 'save']
         );
 
+        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->container->expects($this->any())
+            ->method('get')
+            ->will(
+                $this->returnValueMap(
+                    [
+                        [
+                            'oro_entity_config.provider.ownership',
+                            ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE,
+                            $this->configProvider,
+                        ],
+                        [
+                            'oro_entity.orm.entity_class_resolver',
+                            ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE,
+                            $this->entityClassResolver,
+                        ],
+                        [
+                            'oro_security.owner.ownership_metadata_provider.cache',
+                            ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE,
+                            $cache,
+                        ],
+                    ]
+                )
+            );
+
         $provider = new OwnershipMetadataProProvider(
-            array(
+            [
                 'organization' => 'AcmeBundle\Entity\Organization',
                 'business_unit' => 'AcmeBundle\Entity\BusinessUnit',
                 'user' => 'AcmeBundle\Entity\User',
-            ),
-            $configProvider,
-            null,
-            $cache
+            ],
+            $this->configProvider
         );
+        $provider->setContainer($this->container);
 
         $metadata = new OwnershipProMetadata();
 
-        $configProvider->expects($this->once())
+        $this->configProvider->expects($this->once())
             ->method('hasConfig')
             ->with($this->equalTo('UndefinedClass'))
             ->will($this->returnValue(false));
 
-        $configProvider->expects($this->never())
+        $this->configProvider->expects($this->never())
             ->method('getConfig');
 
         $cache->expects($this->at(0))
@@ -212,15 +273,17 @@ class OwnershipMetadataProProviderTest extends \PHPUnit_Framework_TestCase
 
         // cache
         $provider = new OwnershipMetadataProProvider(
-            array(
+            [
                 'organization' => 'AcmeBundle\Entity\Organization',
                 'business_unit' => 'AcmeBundle\Entity\BusinessUnit',
                 'user' => 'AcmeBundle\Entity\User',
-            ),
-            $configProvider,
+            ],
+            $this->configProvider,
             null,
             $cache
         );
+        $provider->setContainer($this->container);
+
         $this->assertEquals(
             $metadata,
             $provider->getMetadata('UndefinedClass')
