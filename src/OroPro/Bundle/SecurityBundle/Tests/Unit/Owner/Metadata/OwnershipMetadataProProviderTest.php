@@ -2,7 +2,11 @@
 
 namespace OroPro\Bundle\SecurityBundle\Tests\Unit\Owner\Metadata;
 
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
+use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -29,6 +33,11 @@ class OwnershipMetadataProProviderTest extends \PHPUnit_Framework_TestCase
      */
     protected $entityClassResolver;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|SecurityContextInterface
+     */
+    protected $securityContext;
+
     protected function setUp()
     {
         $this->entityClassResolver = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\EntityClassResolver')
@@ -36,6 +45,11 @@ class OwnershipMetadataProProviderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->securityContext = $this
+            ->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -66,6 +80,11 @@ class OwnershipMetadataProProviderTest extends \PHPUnit_Framework_TestCase
                             'oro_entity.orm.entity_class_resolver',
                             ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE,
                             $this->entityClassResolver,
+                        ],
+                        [
+                            'security.context',
+                            ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE,
+                            $this->securityContext,
                         ],
                     ]
                 )
@@ -287,6 +306,60 @@ class OwnershipMetadataProProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             $metadata,
             $provider->getMetadata('UndefinedClass')
+        );
+    }
+
+    public function testGetMaxAccessLevelInGlobalMode()
+    {
+        $provider = new OwnershipMetadataProProvider(
+            [
+                'organization' => 'AcmeBundle\Entity\Organization',
+                'business_unit' => 'AcmeBundle\Entity\BusinessUnit',
+                'user' => 'AcmeBundle\Entity\User',
+            ],
+            $this->configProvider
+        );
+        $provider->setContainer($this->container);
+
+        $organization = new GlobalOrganization();
+        $token = new UsernamePasswordOrganizationToken('admin', 'admin', 'key', $organization);
+        $this->securityContext->expects($this->once())->method('getToken')->willReturn($token);
+
+        $this->assertEquals(AccessLevel::SYSTEM_LEVEL, $provider->getMaxAccessLevel(AccessLevel::SYSTEM_LEVEL));
+    }
+
+    public function testGetMaxAccessLevelNotInGlobalMode()
+    {
+        $provider = new OwnershipMetadataProProvider(
+            [
+                'organization' => 'AcmeBundle\Entity\Organization',
+                'business_unit' => 'AcmeBundle\Entity\BusinessUnit',
+                'user' => 'AcmeBundle\Entity\User',
+            ],
+            $this->configProvider
+        );
+        $provider->setContainer($this->container);
+
+        $config = new Config(new EntityConfigId('ownership', '\stdClass'));
+        $config->set('owner_type', 'USER');
+        $config->set('owner_field_name', 'test_field');
+        $config->set('owner_column_name', 'test_column');
+
+        $this->configProvider->expects($this->once())
+            ->method('hasConfig')
+            ->with($this->equalTo('\stdClass'))
+            ->will($this->returnValue(true));
+
+        $this->configProvider->expects($this->once())
+            ->method('getConfig')
+            ->with($this->equalTo('\stdClass'))
+            ->will($this->returnValue($config));
+
+        $this->securityContext->expects($this->once())->method('getToken')->willReturn(null);
+
+        $this->assertEquals(
+            AccessLevel::GLOBAL_LEVEL,
+            $provider->getMaxAccessLevel(AccessLevel::SYSTEM_LEVEL, '\stdClass')
         );
     }
 }

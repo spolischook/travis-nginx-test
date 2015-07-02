@@ -3,6 +3,7 @@
 namespace OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 
@@ -15,6 +16,11 @@ class OwnershipMetadataProProviderStub extends OwnershipMetadataProProvider
      * @var array
      */
     private $metadata = [];
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|SecurityContextInterface
+     */
+    private $securityContext;
 
     /**
      * @param \PHPUnit_Framework_TestCase $testCase
@@ -31,6 +37,11 @@ class OwnershipMetadataProProviderStub extends OwnershipMetadataProProvider
 
         $entityClassResolver->expects($testCase->any())->method('getEntityClass')->willReturnArgument(0);
 
+        $this->securityContext = $testCase
+            ->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $container = $testCase->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($testCase->any())
             ->method('get')
@@ -46,6 +57,11 @@ class OwnershipMetadataProProviderStub extends OwnershipMetadataProProvider
                             'oro_entity.orm.entity_class_resolver',
                             ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE,
                             $entityClassResolver,
+                        ],
+                        [
+                            'security.context',
+                            ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE,
+                            $this->securityContext,
                         ],
                     ]
                 )
@@ -79,5 +95,13 @@ class OwnershipMetadataProProviderStub extends OwnershipMetadataProProvider
     public function setMetadata($className, OwnershipMetadata $metadata)
     {
         $this->metadata[$className] = $metadata;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|SecurityContextInterface
+     */
+    public function getSecurityContext()
+    {
+        return $this->securityContext;
     }
 }
