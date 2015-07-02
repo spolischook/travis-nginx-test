@@ -18,9 +18,9 @@
         {% if item.isNozzle is defined and item.isNozzle %}
             {% if isMobileVersion %}
                 {% set label = item.label ~ ': ' ~ itemValue ~ '{br}(' ~ 'from'|trans ~ ' '
-                ~ options.settings.quarterDate|oro_format_date ~ ')' %}
+                ~ options.settings.quarterDate|oro_format_date({timeZone: oro_timezone()}) ~ ')' %}
             {% else %}
-                {% set label = item.label ~ ' (' ~ 'from'|trans ~ ' ' ~ options.settings.quarterDate|oro_format_date
+                {% set label = item.label ~ ' (' ~ 'from'|trans ~ ' ' ~ options.settings.quarterDate|oro_format_date({timeZone: oro_timezone()})
                 ~ '): ' ~ itemValue %}
             {% endif %}
 
