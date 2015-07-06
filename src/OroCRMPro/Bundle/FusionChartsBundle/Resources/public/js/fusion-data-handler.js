@@ -11,29 +11,29 @@ define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotransl
              * Order data labels(fusion chart not ordered labels)
              */
             dataSource.data = dataSource.data.sort(function(first, second) {
-                if (first.label == null) {
+                if (first.label === null || first.label === undefined) {
                     return -1;
                 }
-                if (second.label == null) {
+                if (second.label === null || second.label === undefined) {
                     return 1;
                 }
                 var firstLabel = dataFormatter.parseValue(first.label, schema.label.type);
                 var secondLabel = dataFormatter.parseValue(second.label, schema.label.type);
-                if (firstLabel == secondLabel) {
+                if (firstLabel === secondLabel) {
                     return 0;
                 }
                 return firstLabel > secondLabel ? 1 : -1;
             });
 
-            if (schema.value.type == 'percent') {
-                dataSource.chart['numberSuffix'] = '%';
-            } else if (schema.value.type == 'currency') {
+            if (schema.value.type === 'percent') {
+                dataSource.chart.numberSuffix = '%';
+            } else if (schema.value.type === 'currency') {
                 if (isCurrencyPrepend !== null) {
                     var currencySymbol = localeSettings.getCurrencySymbol();
                     var symbolPosition = 'number' + (isCurrencyPrepend ? 'Prefix' : 'Suffix');
                     dataSource.chart[symbolPosition] = currencySymbol;
                 }
-                dataSource.chart['forceDecimals'] = '1';
+                dataSource.chart.forceDecimals = '1';
             }
 
             var max = 0;
@@ -43,16 +43,20 @@ define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotransl
             var min = max;
 
             for (var i in dataSource.data) {
+                if (!dataSource.data.hasOwnProperty(i)) {
+                    continue;
+                }
                 var point = dataSource.data[i];
-                if (point.label != null) {
+                if (point.label !== null && point.label !== undefined) {
                     var labelValue = dataFormatter.parseValue(point.label, schema.label.type);
-                    point.label = labelValue === null ? point.label : dataFormatter.formatValue(labelValue, schema.label.type);
+                    point.label = labelValue === null ?
+                        point.label : dataFormatter.formatValue(labelValue, schema.label.type);
                 } else {
                     point.label = __('oro.chart.no_data');
                 }
 
                 point.displayValue = dataFormatter.formatValue(point.value, schema.value.type);
-                if (schema.value.type == 'percent') {
+                if (schema.value.type === 'percent') {
                     point.value *= 100;
                 } else {
                     point.value = point.value === null ? 0 : dataFormatter.parseValue(point.value, schema.value.type);
@@ -87,7 +91,7 @@ define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotransl
              */
             this.getDataSource = function() {
                 return dataSource;
-            }
-        }
+            };
+        };
     }
 );
