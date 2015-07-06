@@ -1,10 +1,10 @@
 define(function(require) {
     'use strict';
 
-    var MultilineChartView,
-        _ = require('underscore'),
-        MultipleHandler = require('orocrmprofusioncharts/js/multiple-data-handler'),
-        BaseView = require('oroui/js/app/views/base/view');
+    var MultilineChartView;
+    var _ = require('underscore');
+    var MultipleHandler = require('orocrmprofusioncharts/js/multiple-data-handler');
+    var BaseView = require('oroui/js/app/views/base/view');
     require('orocrmprofusioncharts/lib/FusionCharts.jqueryplugin');
 
     MultilineChartView = BaseView.extend({
@@ -31,8 +31,8 @@ define(function(require) {
          * @inheritDoc
          */
         render: function() {
-            var handler,
-                options = this.chartOptions;
+            var handler;
+            var options = this.chartOptions;
 
             handler = new MultipleHandler(
                 options.dataSource,

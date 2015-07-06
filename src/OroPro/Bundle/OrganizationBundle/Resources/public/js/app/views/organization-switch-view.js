@@ -1,5 +1,6 @@
-/*global define*/
-define(['oroui/js/app/views/base/page-region-view'], function(PageRegionView) {
+define([
+    'oroui/js/app/views/base/page-region-view'
+], function(PageRegionView) {
     'use strict';
 
     var OrganizationSwitchView;

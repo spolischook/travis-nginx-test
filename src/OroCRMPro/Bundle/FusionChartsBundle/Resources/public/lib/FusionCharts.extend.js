@@ -1,4 +1,3 @@
-/*global define*/
 define(function (require) {
     var _ = require('underscore');
         FusionCharts = require('orocrmprofusioncharts/lib/FusionCharts');

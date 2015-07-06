@@ -1,4 +1,3 @@
-/*global define*/
 define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotranslation/js/translator'],
     function(dataFormatter, localeSettings, __) {
         'use strict';
