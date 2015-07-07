@@ -5,7 +5,7 @@ namespace OroPro\Bundle\SecurityBundle\Tests\Unit\EventListener\Datagrid;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
 use Oro\Bundle\UserBundle\Entity\OrganizationAwareUserInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
@@ -69,7 +69,7 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testOnBuildBefore()
+    public function testOnBuildBeforeWhenUserIsNotAssignedToAnyOrganization()
     {
         $config = $this->getConfig();
         $event = $this->createEvent($config);
@@ -86,15 +86,81 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getUser')
             ->will($this->returnValue($this->user));
 
-        $organizations = $this->getOrganizations();
-
         $this->user->expects($this->once())
             ->method('getOrganizations')
-            ->will($this->returnValue($organizations));
+            ->will($this->returnValue([]));
 
         $this->roleListener->onBuildBefore($event);
 
-        $this->assertEquals($this->getExpectedConfig(), $event->getConfig()->toArray());
+        $expectedConfig = $this->getExpectedConfig();
+        $param = RoleListener::ORGANIZATION_ALIAS . '.' . 'id';
+        $expectedConfig['source']['query']['where']['and'] = ['0' => $param . ' IS NULL'];
+
+        $this->assertEquals($expectedConfig, $event->getConfig()->toArray());
+    }
+
+    public function testOnBuildBeforeWhenUserIsAssignedToSystemOrganization()
+    {
+        $config = $this->getConfig();
+        $event = $this->createEvent($config);
+
+        $this->serviceLink->expects($this->once())
+            ->method('getService')
+            ->will($this->returnValue($this->securityContext));
+
+        $this->securityContext->expects($this->once())
+            ->method('getToken')
+            ->will($this->returnValue($this->token));
+
+        $this->token->expects($this->once())
+            ->method('getUser')
+            ->will($this->returnValue($this->user));
+
+        $this->user->expects($this->once())
+            ->method('getOrganizations')
+            ->will($this->returnValue($this->getOrganizations()));
+
+        $this->roleListener->onBuildBefore($event);
+
+        $expectedConfig = $this->getExpectedConfig();
+
+        $this->assertEquals($expectedConfig, $event->getConfig()->toArray());
+    }
+
+    public function testOnBuildBeforeWhenUserIsNotAssignedToSystemOrganization()
+    {
+        $config = $this->getConfig();
+        $event = $this->createEvent($config);
+
+        $this->serviceLink->expects($this->once())
+            ->method('getService')
+            ->will($this->returnValue($this->securityContext));
+
+        $this->securityContext->expects($this->once())
+            ->method('getToken')
+            ->will($this->returnValue($this->token));
+
+        $this->token->expects($this->once())
+            ->method('getUser')
+            ->will($this->returnValue($this->user));
+
+        $organization = new GlobalOrganization();
+        $organization->setId(1);
+        $organization->setIsGLobal(false);
+
+        $this->user->expects($this->once())
+            ->method('getOrganizations')
+            ->will($this->returnValue([$organization]));
+
+        $this->roleListener->onBuildBefore($event);
+
+        $expectedConfig = $this->getExpectedConfig();
+        $param = RoleListener::ORGANIZATION_ALIAS . '.' . 'id';
+        $expectedConfig['source']['query']['where']['and'] =
+            ['0' => $param . ' IN (1) OR ' . $param . ' IS NULL'];
+
+
+        $this->assertEquals($expectedConfig, $event->getConfig()->toArray());
     }
 
     /**
@@ -151,11 +217,6 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
                                 'alias' => RoleListener::ORGANIZATION_ALIAS
                             ]
                         ]
-                    ],
-                    'where' => [
-                        'and' => [
-                                '0' => $param . ' IN (1,2) OR ' . $param . ' IS NULL'
-                        ]
                     ]
                 ]
             ],
@@ -187,11 +248,13 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getOrganizations()
     {
-        $organization1 = new Organization();
+        $organization1 = new GlobalOrganization();
         $organization1->setId(1);
+        $organization1->setIsGLobal(false);
 
-        $organization2 = new Organization();
+        $organization2 = new GlobalOrganization();
         $organization2->setId(2);
+        $organization2->setIsGLobal(true);
         return [
             $organization1,
             $organization2

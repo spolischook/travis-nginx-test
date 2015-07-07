@@ -83,15 +83,40 @@ class RoleListener
      */
     protected function processSourceQueryWhere(DatagridConfiguration $config)
     {
-        $organizationIds = implode(',', $this->getAssignedOrganizationsIds());
+        /** @var SecurityContextInterface $securityContext */
+        $securityContext = $this->securityContextLink->getService();
+        $user = $securityContext->getToken()->getUser();
+        $organizations = $user->getOrganizations();
+
         $where = $config->offsetGetByPath('[source][query][where][and]', []);
 
-        // Add only those roles which are in organizations where user is assigned
         $param = self::ORGANIZATION_ALIAS . '.' . 'id';
-        $where = array_merge(
-            $where,
-            [$param . ' IN (' . $organizationIds . ') OR ' . $param . ' IS NULL']
-        );
+        // User in not assigned to any Organization
+        if (empty($organizations)) {
+            $where = array_merge(
+                $where,
+                [$param . ' IS NULL']
+            );
+        }
+
+        $globalAccess = false;
+        $organizationsIds = [];
+        foreach ($organizations as $organization) {
+            if ($organization->getIsGlobal() == true) {
+                // User assigned to the System Organization
+                $globalAccess = true;
+                break;
+            }
+            $organizationsIds[] = $organization->getId();
+        }
+
+        // Restrict access only to the organizations where user is assigned
+        if (!$globalAccess && !empty($organizations)) {
+            $where = array_merge(
+                $where,
+                [$param . ' IN (' . implode(',', $organizationsIds) . ') OR ' . $param . ' IS NULL']
+            );
+        }
 
         if (count($where)) {
             $config->offsetSetByPath('[source][query][where][and]', $where);
@@ -131,22 +156,5 @@ class RoleListener
             'data_name' => self::ORGANIZATION_ALIAS . '.' . self::ORGANIZATION_NAME_COLUMN
         ];
         $config->offsetSetByPath('[sorters][columns]', $sorters);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getAssignedOrganizationsIds()
-    {
-        $organizationsIds = [];
-        /** @var SecurityContextInterface $securityContext */
-        $securityContext = $this->securityContextLink->getService();
-        $user = $securityContext->getToken()->getUser();
-        $organizations = $user->getOrganizations();
-        foreach ($organizations as $organization) {
-            $organizationsIds[] = $organization->getId();
-        }
-
-        return $organizationsIds;
     }
 }
