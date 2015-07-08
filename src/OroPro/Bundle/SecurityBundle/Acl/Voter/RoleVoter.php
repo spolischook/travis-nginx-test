@@ -52,7 +52,6 @@ class RoleVoter implements VoterInterface
             }
         }
 
-        /** @noinspection PhpParamsInspection */
         $result = $this->checkOrganizationContext($token, $object);
 
         return $result;
