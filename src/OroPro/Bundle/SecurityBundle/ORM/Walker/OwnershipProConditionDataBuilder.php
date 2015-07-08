@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipConditionDataBuilder;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
@@ -47,7 +47,7 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
     protected function buildConstraintIfAccessIsGranted(
         $targetEntityClassName,
         $accessLevel,
-        OwnershipMetadata $metadata
+        OwnershipMetadataInterface $metadata
     ) {
         $token = $this->getSecurityContext()->getToken();
         // in System mode if additional organization was set - we should limit data by this organization
@@ -64,7 +64,7 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
     /**
      * {@inheritdoc}
      */
-    protected function getOrganizationId(OwnershipMetadata $metadata = null)
+    protected function getOrganizationId(OwnershipMetadataInterface $metadata = null)
     {
         $token = $this->getSecurityContext()->getToken();
         if ($token instanceof OrganizationContextTokenInterface
@@ -90,11 +90,11 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
     }
 
     /**
-     * @param OwnershipMetadata $metadata
+     * @param OwnershipMetadataInterface $metadata
      *
      * @return bool
      */
-    protected function hasGlobalAccess(OwnershipMetadata $metadata = null)
+    protected function hasGlobalAccess(OwnershipMetadataInterface $metadata = null)
     {
         if (null !== $metadata) {
             return $metadata->isGlobalView();

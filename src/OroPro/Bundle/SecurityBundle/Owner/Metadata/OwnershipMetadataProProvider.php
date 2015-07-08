@@ -2,28 +2,65 @@
 
 namespace OroPro\Bundle\SecurityBundle\Owner\Metadata;
 
-use Doctrine\Common\Cache\CacheProvider;
-
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
+use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class OwnershipMetadataProProvider extends OwnershipMetadataProvider
 {
     /**
+     * @var SecurityContextInterface
+     */
+    private $securityContext;
+
+    /**
+     * @return SecurityContextInterface
+     */
+    public function getSecurityContext()
+    {
+        if (!$this->securityContext) {
+            $this->securityContext = $this->getContainer()->get('security.context');
+        }
+
+        return $this->securityContext;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function __construct(
-        array $owningEntityNames,
-        ConfigProvider $configProvider,
-        EntityClassResolver $entityClassResolver = null,
-        CacheProvider $cache = null
-    ) {
-        parent::__construct($owningEntityNames, $configProvider, $entityClassResolver, $cache);
+    protected function getNoOwnershipMetadata()
+    {
+        return new OwnershipProMetadata();
+    }
 
-        $this->noOwnershipMetadata = new OwnershipProMetadata();
+    /**
+     * {@inheritdoc}
+     */
+    public function getMaxAccessLevel($accessLevel, $className = null)
+    {
+        // for global mode we should not hide system access level as organization
+        if ($this->isGlobalMode()) {
+            return $accessLevel;
+        }
+
+        return parent::getMaxAccessLevel($accessLevel, $className);
+    }
+
+    /**
+     * Check if current mode is global (isGlobal for current organization is set to true)
+     *
+     * @return bool
+     */
+    protected function isGlobalMode()
+    {
+        $token = $this->getSecurityContext()->getToken();
+        if ($token instanceof OrganizationContextTokenInterface) {
+            return $token->getOrganizationContext()->getIsGlobal();
+        }
+
+        return false;
     }
 
     /**
@@ -31,19 +68,19 @@ class OwnershipMetadataProProvider extends OwnershipMetadataProvider
      */
     protected function getOwnershipMetadata(ConfigInterface $config)
     {
-        $ownerType              = $config->get('owner_type');
-        $ownerFieldName         = $config->get('owner_field_name');
-        $ownerColumnName        = $config->get('owner_column_name');
-        $organizationFieldName  = $config->get('organization_field_name');
+        $ownerType = $config->get('owner_type');
+        $ownerFieldName = $config->get('owner_field_name');
+        $ownerColumnName = $config->get('owner_column_name');
+        $organizationFieldName = $config->get('organization_field_name');
         $organizationColumnName = $config->get('organization_column_name');
-        $globalView             = $config->get('global_view');
+        $globalView = $config->get('global_view');
 
         if (!$organizationFieldName && $ownerType == OwnershipType::OWNER_TYPE_ORGANIZATION) {
-            $organizationFieldName  = $ownerFieldName;
+            $organizationFieldName = $ownerFieldName;
             $organizationColumnName = $ownerColumnName;
         }
 
-        $data = new OwnershipProMetadata(
+        return new OwnershipProMetadata(
             $ownerType,
             $ownerFieldName,
             $ownerColumnName,
@@ -51,7 +88,5 @@ class OwnershipMetadataProProvider extends OwnershipMetadataProvider
             $organizationColumnName,
             $globalView
         );
-
-        return $data;
     }
 }
