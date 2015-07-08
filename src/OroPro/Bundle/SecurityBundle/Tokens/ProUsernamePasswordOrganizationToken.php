@@ -16,9 +16,6 @@ class ProUsernamePasswordOrganizationToken extends UsernamePasswordOrganizationT
     {
         $organization = $this->getOrganizationContext();
         $roles = parent::getRoles();
-        if (!$organization) {
-            return $roles;
-        }
 
         $roles = $this->filterRolesInOrganizationContext($organization, $roles);
 
