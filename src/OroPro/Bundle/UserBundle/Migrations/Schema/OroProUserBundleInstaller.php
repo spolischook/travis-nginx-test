@@ -1,6 +1,6 @@
 <?php
 
-namespace OroPro\Bundle\SecurityBundle\Migrations\Schema;
+namespace OroPro\Bundle\UserBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 
@@ -10,7 +10,7 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterf
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 
-class OroProSecurityBundleInstaller implements Installation, ExtendExtensionAwareInterface
+class OroProUserBundleInstaller implements Installation, ExtendExtensionAwareInterface
 {
     /**
      * @var ExtendExtension
@@ -48,6 +48,10 @@ class OroProSecurityBundleInstaller implements Installation, ExtendExtensionAwar
                 'extend' => [
                     'owner' => ExtendScope::OWNER_CUSTOM,
                     'is_extend' => true,
+                ],
+                'form' => [
+                    'is_enabled' => true,
+                    'form_type'  => 'oropro_user_role_organization_select'
                 ],
                 'datagrid' => [
                     'is_visible' => true
