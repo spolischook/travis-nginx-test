@@ -61,7 +61,7 @@ services:
             - @oro_email.known_email_address_checker_factory
             - @oro_pro_ews.email_sync_processor_factory
             - @oro_email.email.address.manager
-            - @oro_email.email.owner.provider.storage
+            - @oro_email.email.address_owner.provider.storage
             - @oro_pro_ews.connector
             - @oro_pro_ews.service_configurator
             - %oro_user.entity.class%

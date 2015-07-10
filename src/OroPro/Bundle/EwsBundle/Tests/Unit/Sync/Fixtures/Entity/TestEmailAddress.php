@@ -5,7 +5,7 @@ namespace OroPro\Bundle\EwsBundle\Tests\Unit\Sync\Fixtures\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EmailBundle\Entity\EmailAddress;
-use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
+use Oro\Bundle\EmailBundle\Entity\EmailAddressOwnerInterface;
 
 /**
  * @ORM\Entity
@@ -24,7 +24,7 @@ class TestEmailAddress extends EmailAddress
         return $this->owner1;
     }
 
-    public function setOwner(EmailOwnerInterface $owner = null)
+    public function setOwner(EmailAddressOwnerInterface $owner = null)
     {
         $this->owner1 = $owner;
         $this->setHasOwner($owner !== null);
