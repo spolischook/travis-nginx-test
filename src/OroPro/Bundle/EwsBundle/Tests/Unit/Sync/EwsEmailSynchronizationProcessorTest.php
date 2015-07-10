@@ -4,7 +4,7 @@ namespace OroPro\Bundle\EwsBundle\Tests\Unit\Sync;
 
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\Email as EmailEntity;
-use Oro\Bundle\EmailBundle\Entity\EmailUser;
+use Oro\Bundle\EmailBundle\Entity\UserEmailOwner;
 use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Tests\Unit\ReflectionUtil;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -523,9 +523,9 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->with($this->identicalTo($origin))
             ->will($this->returnValue([]));
 
-        $newEmailUserEntity = new EmailUser();
+        $newEmailUserEntity = new UserEmailOwner();
         $newEmailEntity = new EmailEntity();
-        $newEmailUserEntity = new EmailUser();
+        $newEmailUserEntity = new UserEmailOwner();
         $newEmailUserEntity->setEmail($newEmailEntity);
         $newEwsEmailEntity = new EwsEmail();
         $newEwsEmailEntity
@@ -571,9 +571,9 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $new2EmailEntity = new EmailEntity();
         ReflectionUtil::setId($new2EmailEntity, '123');
         
-        $emailUser = new EmailUser();
+        $emailUser = new UserEmailOwner();
         $emailUser->setFolder($folder);
-        $newEmailEntity->addEmailUser($emailUser);
+        $newEmailEntity->addEmailOwner($emailUser);
 
         $this->em->expects($this->once())
             ->method('flush');
