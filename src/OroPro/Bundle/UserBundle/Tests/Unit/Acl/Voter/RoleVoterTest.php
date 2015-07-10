@@ -1,6 +1,6 @@
 <?php
 
-namespace OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Voter;
+namespace OroPro\Bundle\UserBundle\Tests\Unit\Acl\Voter;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
-use OroPro\Bundle\SecurityBundle\Acl\Voter\RoleVoter;
+use OroPro\Bundle\UserBundle\Acl\Voter\RoleVoter;
 
 class RoleVoterTest extends \PHPUnit_Framework_TestCase
 {

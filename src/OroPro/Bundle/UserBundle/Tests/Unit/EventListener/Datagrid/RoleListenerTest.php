@@ -1,16 +1,17 @@
 <?php
 
-namespace OroPro\Bundle\SecurityBundle\Tests\Unit\EventListener\Datagrid;
+namespace OroPro\Bundle\UserBundle\Tests\Unit\EventListener\Datagrid;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
 use Oro\Bundle\UserBundle\Entity\OrganizationAwareUserInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
-use OroPro\Bundle\SecurityBundle\EventListener\Datagrid\RoleListener;
+
+use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
+use OroPro\Bundle\UserBundle\EventListener\Datagrid\RoleListener;
 
 class RoleListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -222,7 +223,7 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
             ],
             'columns' => [
                 RoleListener::ORGANIZATION_NAME_COLUMN => [
-                    'label' => 'oropro.security_config.role.organization.grid.label'
+                    'label' => 'oro.user.role.organization.label'
                 ]
             ],
             'filters' => [

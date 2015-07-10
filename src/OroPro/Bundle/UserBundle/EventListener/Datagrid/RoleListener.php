@@ -1,6 +1,6 @@
 <?php
 
-namespace OroPro\Bundle\SecurityBundle\EventListener\Datagrid;
+namespace OroPro\Bundle\UserBundle\EventListener\Datagrid;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -129,7 +129,7 @@ class RoleListener
     protected function processColumns(DatagridConfiguration $config)
     {
         $columns = $config->offsetGetByPath('[columns]', []);
-        $columns[self::ORGANIZATION_NAME_COLUMN] = ['label' => 'oropro.security_config.role.organization.grid.label'];
+        $columns[self::ORGANIZATION_NAME_COLUMN] = ['label' => 'oro.user.role.organization.label'];
         $config->offsetSetByPath('[columns]', $columns);
     }
 

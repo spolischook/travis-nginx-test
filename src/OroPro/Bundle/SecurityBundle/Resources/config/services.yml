@@ -1,9 +1,6 @@
 parameters:
     oropro_security.licence.server_agent.class: OroPro\Bundle\SecurityBundle\Licence\ServerAgent
     oropro_security.licence.sender.class:       OroPro\Bundle\SecurityBundle\Licence\Sender
-    oropro_security.event_listener.datagrid.role.class: OroPro\Bundle\SecurityBundle\EventListener\Datagrid\RoleListener
-    oropro_security.acl.voter.role.class: OroPro\Bundle\SecurityBundle\Acl\Voter\RoleVoter
-
     #
     # Override Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
     # in enterprise edition user should be able to set Organization as Access level in "Default permission on entities"
@@ -25,15 +22,3 @@ services:
 
     oropro_security.licence.sender:
         class: %oropro_security.licence.sender.class%
-
-    oropro_security.event_listener.datagrid.role:
-        class: %oropro_security.event_listener.datagrid.role.class%
-        arguments:
-            - @oro_entity_config.link.security_context
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.roles-grid, method: onBuildBefore }
-
-    oropro_security.acl.voter.role:
-        class: %oropro_security.acl.voter.role.class%
-        tags:
-            - { name: security.voter, priority: 100 }

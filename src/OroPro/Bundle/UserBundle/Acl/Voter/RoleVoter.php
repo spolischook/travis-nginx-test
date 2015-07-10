@@ -1,6 +1,6 @@
 <?php
 
-namespace OroPro\Bundle\SecurityBundle\Acl\Voter;
+namespace OroPro\Bundle\UserBundle\Acl\Voter;
 
 use Doctrine\Common\Util\ClassUtils;
 
@@ -70,7 +70,7 @@ class RoleVoter implements VoterInterface
         $userOrganizations = $user->getOrganizations();
         $provideAccess = $userOrganizations->exists(
             function($key, $organization) {
-                return (true == $organization->getIsGlobal());
+                return ($organization->getIsGlobal());
             }
         );
 
