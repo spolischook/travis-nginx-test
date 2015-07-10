@@ -7,7 +7,7 @@ use Doctrine\ORM\Query;
 
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
-use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
+use Oro\Bundle\EmailBundle\Entity\Provider\EmailAddressOwnerProviderStorage;
 use Oro\Bundle\EmailBundle\Sync\AbstractEmailSynchronizer;
 use Oro\Bundle\EmailBundle\Sync\KnownEmailAddressCheckerFactory;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -27,7 +27,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
     /** @var EwsEmailSynchronizationProcessorFactory */
     protected $syncProcessorFactory;
 
-    /** @var EmailOwnerProviderStorage */
+    /** @var EmailAddressOwnerProviderStorage */
     protected $emailOwnerProviderStorage;
 
     /** @var EwsConnector */
@@ -46,7 +46,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
      * @param KnownEmailAddressCheckerFactory         $knownEmailAddressCheckerFactory
      * @param EwsEmailSynchronizationProcessorFactory $syncProcessorFactory
      * @param EmailAddressManager                     $emailAddressManager
-     * @param EmailOwnerProviderStorage               $emailOwnerProviderStorage
+     * @param EmailAddressOwnerProviderStorage               $emailOwnerProviderStorage
      * @param EwsConnector                            $connector
      * @param EwsServiceConfigurator                  $configurator
      * @param string                                  $userEntityClass
@@ -56,7 +56,7 @@ class EwsEmailSynchronizer extends AbstractEmailSynchronizer
         KnownEmailAddressCheckerFactory $knownEmailAddressCheckerFactory,
         EwsEmailSynchronizationProcessorFactory $syncProcessorFactory,
         EmailAddressManager $emailAddressManager,
-        EmailOwnerProviderStorage $emailOwnerProviderStorage,
+        EmailAddressOwnerProviderStorage $emailOwnerProviderStorage,
         EwsConnector $connector,
         EwsServiceConfigurator $configurator,
         $userEntityClass
