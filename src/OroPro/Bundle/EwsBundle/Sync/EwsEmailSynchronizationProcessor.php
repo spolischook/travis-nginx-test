@@ -5,7 +5,7 @@ namespace OroPro\Bundle\EwsBundle\Sync;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 
-use Oro\Bundle\EmailBundle\Entity\UserEmailOwner;
+use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\Email as EmailEntity;
@@ -571,7 +571,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             )
         );
 
-        $emailUser = $ewsEmail->getEmail()->getEmailOwnerByFolder($ewsEmail->getEwsFolder()->getFolder());
+        $emailUser = $ewsEmail->getEmail()->getEmailUserByFolder($ewsEmail->getEwsFolder()->getFolder());
         if ($emailUser != null) {
             $emailUser->setFolder($newEwsFolder->getFolder());
         }
@@ -653,12 +653,12 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
      * Creates new EwsEmail object
      *
      * @param ItemId         $ewsEmailId
-     * @param UserEmailOwner      $emailUser
+     * @param EmailUser      $emailUser
      * @param EwsEmailFolder $ewsFolder
      *
      * @return EwsEmail
      */
-    protected function createEwsEmail(ItemId $ewsEmailId, UserEmailOwner $emailUser, EwsEmailFolder $ewsFolder)
+    protected function createEwsEmail(ItemId $ewsEmailId, EmailUser $emailUser, EwsEmailFolder $ewsFolder)
     {
         $ewsEmail = new EwsEmail();
         $ewsEmail

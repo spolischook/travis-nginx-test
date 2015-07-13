@@ -6,7 +6,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
-use Oro\Bundle\EmailBundle\Entity\Provider\EmailAddressOwnerProviderStorage;
+use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
 use Oro\Bundle\EmailBundle\Sync\KnownEmailAddressCheckerFactory;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\OrganizationBundle\OroOrganizationBundle;
@@ -53,7 +53,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         $this->emailAddressManager->expects($this->any())
             ->method('getEmailAddressProxyClass')
             ->will($this->returnValue('OroPro\Bundle\EwsBundle\Tests\Unit\Sync\Fixtures\Entity\TestEmailAddress'));
-        $emailOwnerProviderStorage = new EmailAddressOwnerProviderStorage();
+        $emailOwnerProviderStorage = new EmailOwnerProviderStorage();
         $userEmailOwnerProvider = $this->getMock('Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderInterface');
         $userEmailOwnerProvider->expects($this->any())
             ->method('getEmailOwnerClass')
@@ -78,7 +78,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             $doctrine,
             $this->emailAddressManager,
             new EmailAddressHelper(),
-            new EmailAddressOwnerProviderStorage(),
+            new EmailOwnerProviderStorage(),
             []
         );
         $syncProcessorFactory = new EwsEmailSynchronizationProcessorFactory($doctrine, $this->emailEntityBuilder);

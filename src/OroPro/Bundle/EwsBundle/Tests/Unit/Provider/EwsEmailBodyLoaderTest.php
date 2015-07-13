@@ -9,7 +9,7 @@ use Doctrine\ORM\Query;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
-use Oro\Bundle\EmailBundle\Entity\UserEmailOwner;
+use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
 use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures\EmailAddress;
@@ -208,8 +208,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param EwsEmailOrigin|InternalEmailOrigin $origin
-     *
-*@return UserEmailOwner
+     * @return EmailUser
      */
     protected function getTestEmailUser($origin)
     {
@@ -235,7 +234,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->setInternalDate(new \DateTime('now', new \DateTimeZone('UTC')))
             ->setImportance(Email::NORMAL_IMPORTANCE);
 
-        $emailUser = new UserEmailOwner();
+        $emailUser = new EmailUser();
         $emailUser
             ->setEmail($email)
             ->setReceivedAt(new \DateTime('now', new \DateTimeZone('UTC')))
