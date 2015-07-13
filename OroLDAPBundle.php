@@ -13,16 +13,6 @@ class OroLDAPBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function boot()
-    {
-        if (!function_exists('ldap_connect')) {
-            throw new \Exception("Module php-ldap isn't installed");
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
