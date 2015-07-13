@@ -28,3 +28,6 @@
 [submodule "src/OroCRMPackages/src/OroCRM/Bundle/DotmailerBundle"]
 	path = src/OroCRMPackages/src/OroCRM/Bundle/DotmailerBundle
 	url = git@github.com:laboro/OroCRMDotmailerBundle.git
+[submodule "src/OroPackages/src/Oro/Bundle/LDAPBundle"]
+	path = src/OroPackages/src/Oro/Bundle/LDAPBundle
+	url = https://github.com/laboro/OroLDAPBundle.git
