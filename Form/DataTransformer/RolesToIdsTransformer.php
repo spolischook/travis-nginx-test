@@ -4,10 +4,10 @@ namespace Oro\Bundle\LDAPBundle\Form\DataTransformer;
 
 use Doctrine\ORM\EntityManager;
 
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
-use Oro\Bundle\TranslationBundle\Form\DataTransformer\CollectionToArrayTransformer;
 
 class RolesToIdsTransformer implements DataTransformerInterface
 {

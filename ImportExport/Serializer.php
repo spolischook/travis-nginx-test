@@ -53,7 +53,7 @@ class Serializer implements SerializerInterface
 
         $entity = $this->serializer->deserialize($extractedData, $type, $format, $context);
         if ($entity->getPassword() === null) {
-            $entity->setPassword("");
+            $entity->setPassword('');
         }
 
         return $entity;

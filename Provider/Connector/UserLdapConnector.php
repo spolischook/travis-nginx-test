@@ -14,7 +14,7 @@ class UserLdapConnector extends AbstractConnector implements TwoWaySyncConnector
      */
     public function getLabel()
     {
-        return "oro.ldap.integration.connector.user.label";
+        return 'oro.ldap.integration.connector.user.label';
     }
 
     /**
@@ -22,7 +22,7 @@ class UserLdapConnector extends AbstractConnector implements TwoWaySyncConnector
      */
     public function getImportEntityFQCN()
     {
-        return "Oro\Bundle\UserBundle\Entity\User";
+        return 'Oro\Bundle\UserBundle\Entity\User';
     }
 
     /**
@@ -30,7 +30,7 @@ class UserLdapConnector extends AbstractConnector implements TwoWaySyncConnector
      */
     public function getImportJobName()
     {
-        return "ldap_import_users";
+        return 'ldap_import_users';
     }
 
     /**
@@ -46,7 +46,7 @@ class UserLdapConnector extends AbstractConnector implements TwoWaySyncConnector
      */
     public function getExportJobName()
     {
-        return "ldap_export_users";
+        return 'ldap_export_users';
     }
 
     /**

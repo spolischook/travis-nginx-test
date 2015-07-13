@@ -38,6 +38,6 @@ class LdapUtils
             $filter = "($filter)";
         }
 
-        return sprintf("(&%s(%s=%s))", $filter, $attribute, $value);
+        return sprintf('(&%s(%s=%s))', $filter, $attribute, $value);
     }
 }

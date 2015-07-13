@@ -49,7 +49,7 @@ class LdapTransport implements LdapTransportInterface
      */
     public function getSettingsFormType()
     {
-        return "oro_ldap_ldap_transport_setting_form_type";
+        return 'oro_ldap_ldap_transport_setting_form_type';
     }
 
     /**

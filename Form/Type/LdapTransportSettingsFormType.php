@@ -129,7 +129,7 @@ class LdapTransportSettingsFormType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => "Oro\Bundle\LDAPBundle\Entity\LdapTransport"
+            'data_class' => 'Oro\Bundle\LDAPBundle\Entity\LdapTransport'
         ]);
     }
 

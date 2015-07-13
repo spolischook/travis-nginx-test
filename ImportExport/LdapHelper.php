@@ -73,7 +73,7 @@ class LdapHelper implements ContextAwareInterface
             $filter = "($filter)";
         }
 
-        $filter = sprintf("(&%s(%s=%s))", $filter, $this->roleUserIdAttr, $userDn);
+        $filter = sprintf('(&%s(%s=%s))', $filter, $this->roleUserIdAttr, $userDn);
 
         return $this->transport->search($filter, [$this->roleIdAttr]);
     }

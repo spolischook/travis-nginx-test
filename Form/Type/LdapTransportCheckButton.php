@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class LdapTransportCheckButton extends AbstractType
 {
 
-    const NAME = "oro_ldap_transport_check_button_type";
+    const NAME = 'oro_ldap_transport_check_button_type';
 
     /**
      * {@inheritdoc}
