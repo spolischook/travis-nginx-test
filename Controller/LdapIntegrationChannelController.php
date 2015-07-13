@@ -2,20 +2,20 @@
 
 namespace Oro\Bundle\LDAPBundle\Controller;
 
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class LdapIntegrationChannelController extends Controller
 {
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      *
      * @Route("/check", name="oro_ldap_transport_check")
@@ -23,11 +23,8 @@ class LdapIntegrationChannelController extends Controller
      */
     public function checkAction(Request $request)
     {
-        /** @var LdapTransportInterface $transport */
+        $entity = $this->getChannelEntity($request);
         $transport = $this->get('oro_ldap.provider.transport.ldap');
-
-        $entity = $this->getChannelEntity($request, $transport);
-
         $transport->init($entity->getTransport());
 
         return new JsonResponse([
@@ -37,10 +34,8 @@ class LdapIntegrationChannelController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return Channel
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     protected function getChannelEntity(Request $request)
     {
