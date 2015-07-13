@@ -21,7 +21,7 @@ class EwsEmailRepository extends EntityRepository
     {
         return $this->createQueryBuilder('ews_email')
             ->innerJoin('ews_email.email', 'email')
-            ->innerJoin('email.emailOwners', 'email_users')
+            ->innerJoin('email.emailUsers', 'email_users')
             ->innerJoin('email_users.folder', 'folder')
             ->where('folder = :folder AND ews_email.ewsId IN (:ewsIds)')
             ->setParameter('folder', $folder)
@@ -60,7 +60,7 @@ class EwsEmailRepository extends EntityRepository
         return $this->createQueryBuilder('ews_email')
             ->innerJoin('ews_email.ewsFolder', 'ews_folder')
             ->innerJoin('ews_email.email', 'email')
-            ->innerJoin('email.emailOwners', 'email_users')
+            ->innerJoin('email.emailUsers', 'email_users')
             ->innerJoin('email_users.folder', 'folder')
             ->where('folder.origin = :origin AND email.messageId IN (:messageIds)')
             ->setParameter('origin', $origin)
