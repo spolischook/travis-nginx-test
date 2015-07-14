@@ -32,24 +32,28 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
         $this->channel->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
-        $mappingSettings = Object::create([
-            'exportUserBaseDn'      => 'ou=group,dc=localhost',
-            'exportUserObjectClass' => 'inetOrgPerson',
-            'userMapping'           => [
-                'username'   => 'cn',
-                'first_name' => 'sn',
-                'last_name'  => 'displayname',
-                'email'      => 'givenname',
-                'status'     => null,
+        $mappingSettings = Object::create(
+            [
+                'exportUserBaseDn'      => 'ou=group,dc=localhost',
+                'exportUserObjectClass' => 'inetOrgPerson',
+                'userMapping'           => [
+                    'username'   => 'cn',
+                    'first_name' => 'sn',
+                    'last_name'  => 'displayname',
+                    'email'      => 'givenname',
+                    'status'     => null,
+                ],
             ]
-        ]);
+        );
         $this->channel->expects($this->any())
             ->method('getMappingSettings')
             ->will($this->returnValue($mappingSettings));
-        $syncSettings = Object::create([
-            'syncPriority'        => 'local',
-            'isTwoWaySyncEnabled' => true,
-        ]);
+        $syncSettings = Object::create(
+            [
+                'syncPriority'        => 'local',
+                'isTwoWaySyncEnabled' => true,
+            ]
+        );
         $this->channel->expects($this->any())
             ->method('getSynchronizationSettings')
             ->will($this->returnValue($syncSettings));
@@ -72,9 +76,11 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
 
         $this->contextMediator->expects($this->any())
             ->method('getTransport')
-            ->will($this->returnValue(
-                $this->transport = $this->getMock('Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface')
-            ));
+            ->will(
+                $this->returnValue(
+                    $this->transport = $this->getMock('Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface')
+                )
+            );
 
         $this->writer = new LdapUserWriter($this->contextRegistry, $this->contextMediator);
         $this->writer->setImportExportContext(
@@ -106,14 +112,16 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
         $this->context->expects($this->once())
             ->method('incrementUpdateCount');
 
-        $this->writer->write([
+        $this->writer->write(
             [
-                'dn' => [
-                    1 => 'example_dn'
+                [
+                    'dn' => [
+                        1 => 'example_dn',
+                    ],
+                    'cn' => 'username',
                 ],
-                'cn' => 'username',
-            ],
-        ]);
+            ]
+        );
     }
 
     public function testOneAddedItem()
@@ -128,11 +136,13 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
         $this->context->expects($this->once())
             ->method('incrementAddCount');
 
-        $this->writer->write([
+        $this->writer->write(
             [
-                'dn' => null,
-                'cn' => 'username',
-            ],
-        ]);
+                [
+                    'dn' => null,
+                    'cn' => 'username',
+                ],
+            ]
+        );
     }
 }

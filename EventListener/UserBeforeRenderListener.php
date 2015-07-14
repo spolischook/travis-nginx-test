@@ -36,8 +36,7 @@ class UserBeforeRenderListener
             $mappings = [];
 
             /** @var Channel[] $channels */
-            $channels = $this->registry
-                ->getRepository('OroIntegrationBundle:Channel')
+            $channels = $this->registry->getRepository('OroIntegrationBundle:Channel')
                 ->findBy(['type' => ChannelType::TYPE]);
 
             foreach ($channels as $channel) {
@@ -51,10 +50,12 @@ class UserBeforeRenderListener
                 ];
             }
 
-            $event->setFieldViewValue([
-                'mappings' => $mappings,
-                'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig',
-            ]);
+            $event->setFieldViewValue(
+                [
+                    'mappings' => $mappings,
+                    'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig',
+                ]
+            );
         }
     }
 }

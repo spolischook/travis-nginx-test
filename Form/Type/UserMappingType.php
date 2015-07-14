@@ -45,35 +45,38 @@ class UserMappingType extends AbstractType
         $metadata = $userManager->getClassMetadata(static::USER_CLASS);
         $fields = $metadata->getFieldNames();
 
-        $fields = array_map(function ($fieldName) {
-            $importExportConfig = $this->importExportConfig->getConfig(self::USER_CLASS, $fieldName);
-            $entityConfig = $this->entityConfig->getConfig(self::USER_CLASS, $fieldName);
+        $fields = array_map(
+            function ($fieldName) {
+                $importExportConfig = $this->importExportConfig->getConfig(self::USER_CLASS, $fieldName);
+                $entityConfig = $this->entityConfig->getConfig(self::USER_CLASS, $fieldName);
 
-            $field = ['name' => $fieldName, 'options' => ['required' => false]];
+                $field = ['name' => $fieldName, 'options' => ['required' => false]];
 
-            if ($importExportConfig->has('excluded') && $importExportConfig->get('excluded')) {
-                return null;
-            }
+                if ($importExportConfig->has('excluded') && $importExportConfig->get('excluded')) {
+                    return null;
+                }
 
-            if ($fieldName == 'serialized_data') {
-                return null;
-            }
+                if ($fieldName == 'serialized_data') {
+                    return null;
+                }
 
-            if ($importExportConfig->has('identity') && $importExportConfig->get('identity')) {
-                $field['options']['required'] = true;
-                $field['options']['constraints'] = [new Assert\NotBlank()];
-            }
+                if ($importExportConfig->has('identity') && $importExportConfig->get('identity')) {
+                    $field['options']['required'] = true;
+                    $field['options']['constraints'] = [new Assert\NotBlank()];
+                }
 
-            if ($entityConfig->has('label')) {
-                $field['options']['label'] = $entityConfig->get('label');
-            }
+                if ($entityConfig->has('label')) {
+                    $field['options']['label'] = $entityConfig->get('label');
+                }
 
-            if ($entityConfig->has('tooltip')) {
-                $field['options']['tooltip'] = $entityConfig->get('tooltip');
-            }
+                if ($entityConfig->has('tooltip')) {
+                    $field['options']['tooltip'] = $entityConfig->get('tooltip');
+                }
 
-            return $field;
-        }, $fields);
+                return $field;
+            },
+            $fields
+        );
 
         $this->addFields($builder, array_filter($fields));
     }

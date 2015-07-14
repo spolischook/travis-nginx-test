@@ -27,16 +27,20 @@ class OroLDAPBundle implements Migration
     public static function addLdapDistinguishedNamesColumn(Schema $schema)
     {
         $userTable = $schema->getTable('oro_user');
-        $userTable->addColumn('ldap_distinguished_names', 'array', [
-            'oro_options' => [
-                'extend'       => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
-                'form'         => ['is_enabled' => false],
-                'datagrid'     => ['is_visible' => false],
-                'importexport' => ['excluded' => true],
-                'view'         => ['acl' => 'oro_integration_update'],
-            ],
-            'notnull'     => false
-        ]);
+        $userTable->addColumn(
+            'ldap_distinguished_names',
+            'array',
+            [
+                'oro_options' => [
+                    'extend'       => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
+                    'form'         => ['is_enabled' => false],
+                    'datagrid'     => ['is_visible' => false],
+                    'importexport' => ['excluded' => true],
+                    'view'         => ['acl' => 'oro_integration_update'],
+                ],
+                'notnull'     => false,
+            ]
+        );
     }
 
     /**

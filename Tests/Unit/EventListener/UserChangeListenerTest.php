@@ -36,18 +36,22 @@ class UserChangeListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue($id));
 
-        $this->syncSettings = ConfigObject::create([
-            'isTwoWaySyncEnabled' => true,
-        ]);
+        $this->syncSettings = ConfigObject::create(
+            [
+                'isTwoWaySyncEnabled' => true,
+            ]
+        );
 
-        $this->mappingSettings = ConfigObject::create([
-            'userMapping' => [
-                'username' => 'sn',
-                'password' => null,
-                'salt' => null,
-            ],
-            'exportUserBaseDn' => 'cn=base-dn',
-        ]);
+        $this->mappingSettings = ConfigObject::create(
+            [
+                'userMapping'      => [
+                    'username' => 'sn',
+                    'password' => null,
+                    'salt'     => null,
+                ],
+                'exportUserBaseDn' => 'cn=base-dn',
+            ]
+        );
 
         $channel->expects($this->any())
             ->method('getSynchronizationSettings')
@@ -83,10 +87,14 @@ class UserChangeListenerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->channelRepository));
         $this->channelRepository->expects($this->any())
             ->method('findBy')
-            ->will($this->returnValue([
-                1 => $this->setUpChannel(1, 'First LDAP'),
-                40 => $this->setUpChannel(40, 'Second LDAP'),
-            ]));
+            ->will(
+                $this->returnValue(
+                    [
+                        1  => $this->setUpChannel(1, 'First LDAP'),
+                        40 => $this->setUpChannel(40, 'Second LDAP'),
+                    ]
+                )
+            );
         $registryLink = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink')
             ->disableOriginalConstructor()
             ->getMock();
@@ -132,9 +140,11 @@ class UserChangeListenerTest extends \PHPUnit_Framework_TestCase
         $user = new TestingUser();
         $user->setId(1);
 
-        $user->setLdapDistinguishedNames([
-            1 => 'some_dn'
-        ]);
+        $user->setLdapDistinguishedNames(
+            [
+                1 => 'some_dn',
+            ]
+        );
 
         $this->uow->expects($this->once())
             ->method('getScheduledEntityUpdates')
@@ -159,9 +169,11 @@ class UserChangeListenerTest extends \PHPUnit_Framework_TestCase
         $user = new TestingUser();
         $user->setId(1);
 
-        $user->setLdapDistinguishedNames([
-            1 => 'some_dn'
-        ]);
+        $user->setLdapDistinguishedNames(
+            [
+                1 => 'some_dn',
+            ]
+        );
 
         $this->uow->expects($this->once())
             ->method('getScheduledEntityUpdates')
@@ -191,12 +203,16 @@ class UserChangeListenerTest extends \PHPUnit_Framework_TestCase
         $user2 = new TestingUser();
         $user2->setId(2);
 
-        $user->setLdapDistinguishedNames([
-            1 => 'some_dn'
-        ]);
-        $user2->setLdapDistinguishedNames([
-            1 => 'some_dn'
-        ]);
+        $user->setLdapDistinguishedNames(
+            [
+                1 => 'some_dn',
+            ]
+        );
+        $user2->setLdapDistinguishedNames(
+            [
+                1 => 'some_dn',
+            ]
+        );
 
         $this->uow->expects($this->once())
             ->method('getScheduledEntityUpdates')
@@ -212,9 +228,11 @@ class UserChangeListenerTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->anything(),
                 $this->equalTo('user'),
-                $this->equalTo([
-                    'id' => [$user->getId(), $user2->getId()]
-                ])
+                $this->equalTo(
+                    [
+                        'id' => [$user->getId(), $user2->getId()],
+                    ]
+                )
             );
 
         $this->userChangeListener->onFlush(new OnFlushEventArgs($this->em));

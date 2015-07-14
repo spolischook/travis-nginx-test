@@ -100,16 +100,18 @@ class LdapTransport extends Transport
     public function getSettingsBag()
     {
         if (null === $this->settings) {
-            $this->settings = new ParameterBag([
-                'host'                   => $this->getHost(),
-                'port'                   => $this->getPort(),
-                'encryption'             => $this->getEncryption(),
-                'baseDn'                 => $this->getBaseDn(),
-                'username'               => $this->getUsername(),
-                'password'               => $this->getPassword(),
-                'accountDomainName'      => $this->getAccountDomainName(),
-                'accountDomainNameShort' => $this->getAccountDomainNameShort(),
-            ]);
+            $this->settings = new ParameterBag(
+                [
+                    'host'                   => $this->getHost(),
+                    'port'                   => $this->getPort(),
+                    'encryption'             => $this->getEncryption(),
+                    'baseDn'                 => $this->getBaseDn(),
+                    'username'               => $this->getUsername(),
+                    'password'               => $this->getPassword(),
+                    'accountDomainName'      => $this->getAccountDomainName(),
+                    'accountDomainNameShort' => $this->getAccountDomainNameShort(),
+                ]
+            );
         }
 
         return $this->settings;

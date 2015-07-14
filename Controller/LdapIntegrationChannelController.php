@@ -27,9 +27,9 @@ class LdapIntegrationChannelController extends Controller
         $transport = $this->get('oro_ldap.provider.transport.ldap');
         $transport->init($entity->getTransport());
 
-        return new JsonResponse([
-            'status' => $transport->check() ? 'success' : 'invalid',
-        ]);
+        return new JsonResponse(
+            ['status' => $transport->check() ? 'success' : 'invalid',]
+        );
     }
 
     /**

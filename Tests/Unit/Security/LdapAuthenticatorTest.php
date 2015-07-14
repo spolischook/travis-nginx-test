@@ -45,6 +45,7 @@ class LdapAuthenticatorTest extends \PHPUnit_Framework_TestCase
         $repo->expects($this->any())
             ->method('findBy')
             ->will($this->returnValue($this->mockChannels()));
+
         return $repo;
     }
 
@@ -64,44 +65,66 @@ class LdapAuthenticatorTest extends \PHPUnit_Framework_TestCase
 
     public function testCheckSuccess()
     {
-        $this->channels[0]->expects($this->any())->method('isEnabled')->will($this->returnValue(false));
-        $this->channels[1]->expects($this->any())->method('isEnabled')->will($this->returnValue(true));
-        $this->channels[2]->expects($this->any())->method('isEnabled')->will($this->returnValue(true));
+        $this->channels[0]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(false));
+        $this->channels[1]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(true));
+        $this->channels[2]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(true));
 
         $this->transport->expects($this->exactly(2))
             ->method('bind')
             ->will($this->onConsecutiveCalls(false, true));
         $user = new TestingUser();
-        $user->setLdapDistinguishedNames([
-            5 => 'dn1',
-            70 => 'dn5',
-        ]);
+        $user->setLdapDistinguishedNames(
+            [
+                5  => 'dn1',
+                70 => 'dn5',
+            ]
+        );
 
         $this->assertTrue($this->authenticator->check($user, 'password'));
     }
 
     public function testCheckFailBecauseNoChannelIsActive()
     {
-        $this->channels[0]->expects($this->any())->method('isEnabled')->will($this->returnValue(false));
-        $this->channels[1]->expects($this->any())->method('isEnabled')->will($this->returnValue(false));
-        $this->channels[2]->expects($this->any())->method('isEnabled')->will($this->returnValue(false));
+        $this->channels[0]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(false));
+        $this->channels[1]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(false));
+        $this->channels[2]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(false));
 
         $this->transport->expects($this->never())
             ->method('bind');
         $user = new TestingUser();
-        $user->setLdapDistinguishedNames([
-            5 => 'dn1',
-            70 => 'dn5',
-        ]);
+        $user->setLdapDistinguishedNames(
+            [
+                5  => 'dn1',
+                70 => 'dn5',
+            ]
+        );
 
         $this->assertFalse($this->authenticator->check($user, 'password'));
     }
 
     public function testCheckFailBecauseUserHasNoMappings()
     {
-        $this->channels[0]->expects($this->any())->method('isEnabled')->will($this->returnValue(false));
-        $this->channels[1]->expects($this->any())->method('isEnabled')->will($this->returnValue(true));
-        $this->channels[2]->expects($this->any())->method('isEnabled')->will($this->returnValue(true));
+        $this->channels[0]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(false));
+        $this->channels[1]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(true));
+        $this->channels[2]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(true));
 
         $this->transport->expects($this->never())
             ->method('bind');
@@ -113,18 +136,26 @@ class LdapAuthenticatorTest extends \PHPUnit_Framework_TestCase
 
     public function testCheckFailBecauseNoChannelBound()
     {
-        $this->channels[0]->expects($this->any())->method('isEnabled')->will($this->returnValue(false));
-        $this->channels[1]->expects($this->any())->method('isEnabled')->will($this->returnValue(true));
-        $this->channels[2]->expects($this->any())->method('isEnabled')->will($this->returnValue(true));
+        $this->channels[0]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(false));
+        $this->channels[1]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(true));
+        $this->channels[2]->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(true));
 
         $this->transport->expects($this->exactly(2))
             ->method('bind')
             ->will($this->onConsecutiveCalls(false, false));
         $user = new TestingUser();
-        $user->setLdapDistinguishedNames([
-            5 => 'dn1',
-            70 => 'dn5',
-        ]);
+        $user->setLdapDistinguishedNames(
+            [
+                5  => 'dn1',
+                70 => 'dn5',
+            ]
+        );
 
         $this->assertFalse($this->authenticator->check($user, 'password'));
     }

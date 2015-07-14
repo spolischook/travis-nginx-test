@@ -24,8 +24,10 @@ class LdapTransportCheckButton extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
-        $resolver->setDefaults([
-            'mapped' => false,
-        ]);
+        $resolver->setDefaults(
+            [
+                'mapped' => false,
+            ]
+        );
     }
 }

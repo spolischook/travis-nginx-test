@@ -12,13 +12,15 @@ class EncryptionType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults([
-            'choices' => [
-                'none' => 'oro.ldap.oro_ldap_encryption.none',
-                'ssl'  => 'oro.ldap.oro_ldap_encryption.ssl',
-                'tls'  => 'oro.ldap.oro_ldap_encryption.tls',
+        $resolver->setDefaults(
+            [
+                'choices' => [
+                    'none' => 'oro.ldap.oro_ldap_encryption.none',
+                    'ssl'  => 'oro.ldap.oro_ldap_encryption.ssl',
+                    'tls'  => 'oro.ldap.oro_ldap_encryption.tls',
+                ],
             ]
-        ]);
+        );
     }
 
     /**

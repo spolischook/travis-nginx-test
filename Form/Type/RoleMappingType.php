@@ -30,23 +30,26 @@ class RoleMappingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('ldapName', 'text', [
+        $builder->add(
+            'ldapName',
+            'text',
+            [
                 'label' => 'oro.ldap.integration.transport.mapping.roleLdapName.label',
-            ])
-            ->add(
-                $builder->create(
-                    'crmRoles',
-                    'genemu_jqueryselect2_entity',
-                    [
-                        'class'    => 'OroUserBundle:Role',
-                        'property' => 'label',
-                        'multiple' => true,
-                        'label' => 'oro.ldap.integration.transport.mapping.roleCrmName.label',
-                    ]
-                )
-                    ->addModelTransformer(new RolesToIdsTransformer($this->getRoleManager(), static::ROLE_CLASS))
-            );
+            ]
+        );
+        $builder->add(
+            $builder->create(
+                'crmRoles',
+                'genemu_jqueryselect2_entity',
+                [
+                    'class'    => 'OroUserBundle:Role',
+                    'property' => 'label',
+                    'multiple' => true,
+                    'label'    => 'oro.ldap.integration.transport.mapping.roleCrmName.label',
+                ]
+            )
+                ->addModelTransformer(new RolesToIdsTransformer($this->getRoleManager(), static::ROLE_CLASS))
+        );
     }
 
     /**

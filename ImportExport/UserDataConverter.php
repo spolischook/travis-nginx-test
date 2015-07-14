@@ -46,9 +46,12 @@ class UserDataConverter extends AbstractTableDataConverter implements StepExecut
      */
     protected function getBackendHeader()
     {
-        $header = array_filter($this->getHeaderConversionRules(), function ($value) {
-            return !is_array($value);
-        });
+        $header = array_filter(
+            $this->getHeaderConversionRules(),
+            function ($value) {
+                return !is_array($value);
+            }
+        );
 
         return array_values($header);
     }
