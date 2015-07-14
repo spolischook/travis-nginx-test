@@ -111,7 +111,8 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
             $dns[$channelId] = $dn;
         }
 
-        $entity->setLdapDistinguishedNames($dns);
+        // Update existing entity so ldap dns will be updated despite being marked as excluded in importexport entity configuration.
+        $existingEntity->setLdapDistinguishedNames($dns);
 
         parent::importExistingEntity($entity, $existingEntity, $itemData, $excludedFields);
     }
