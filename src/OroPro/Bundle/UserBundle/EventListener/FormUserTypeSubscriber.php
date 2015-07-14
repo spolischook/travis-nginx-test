@@ -76,7 +76,7 @@ class FormUserTypeSubscriber implements EventSubscriberInterface
                     'property'      => 'label',
                     'query_builder' => function (EntityRepository $er) use ($organizationIds) {
                         $qb = $er->createQueryBuilder('r');
-                        $qb->where('r.role <> :anon')
+                        $qb->where($qb->expr()->neq('r.role', ':anon'))
                             ->andWhere($qb->expr()->in('r.organization', ':orgIds'))
                             ->setParameter('anon', User::ROLE_ANONYMOUS)
                             ->setParameter('orgIds', $organizationIds)
