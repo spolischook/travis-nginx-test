@@ -7,7 +7,9 @@ use OroPro\Bundle\OrganizationBundle\Tests\Unit\Fixture\GlobalOrganization;
 
 class OrganizationFieldListenerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testAddOrganizationField()
+    const ROLE_CLASS_NAME = 'use Oro\Bundle\UserBundle\Entity\Role';
+
+    public function testAddOrganizationFieldWhenOrganizationIsGlobal()
     {
         $env      = $this->getMockBuilder('Twig_Environment')
             ->disableOriginalConstructor()
@@ -17,6 +19,12 @@ class OrganizationFieldListenerTest extends \PHPUnit_Framework_TestCase
         $formView        = $this->getMockBuilder('Symfony\Component\Form\FormView')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $formView->vars = [
+            'value' => self::ROLE_CLASS_NAME,
+            'attr' => []
+        ];
+
         $currentFormData = 'someHTML';
         $formData        = [
             'dataBlocks' => [
@@ -33,7 +41,7 @@ class OrganizationFieldListenerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $event->expects($this->once())->method('getTwigEnvironment')->will($this->returnValue($env));
         $event->expects($this->once())->method('getFormData')->will($this->returnValue($formData));
-        $event->expects($this->once())->method('getForm')->will($this->returnValue($formView));
+        $event->expects($this->exactly(2))->method('getForm')->will($this->returnValue($formView));
 
         array_unshift($formData['dataBlocks'][0]['subblocks'][0]['data'], $newField);
         $event->expects($this->once())->method('setFormData')->with($formData);
@@ -60,6 +68,54 @@ class OrganizationFieldListenerTest extends \PHPUnit_Framework_TestCase
         $securityFacade->expects($this->once())
             ->method('getOrganization')
             ->willReturn($organization);
+
+        $listener = new OrganizationFieldListener($configManager, $securityFacade);
+
+        $listener->addOrganizationField($event);
+    }
+
+    public function testAddOrganizationFieldWhenOrganizationIsNoGlobalAndFormEntityIsNotRole()
+    {
+        $formView = $this->getMockBuilder('Symfony\Component\Form\FormView')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $formView->vars = [
+            'value' => 'TEST',
+            'attr' => []
+        ];
+
+        $event = $this->getMockBuilder('Oro\Bundle\UIBundle\Event\BeforeFormRenderEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $event->expects($this->never())->method('getTwigEnvironment');
+
+        $provider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $provider->expects($this->any())
+            ->method('hasConfig')
+            ->will($this->returnValue(false));
+        $configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $configManager->expects($this->any())
+            ->method('getProvider')
+            ->will($this->returnValue($provider));
+
+        $securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $organization = new GlobalOrganization();
+        $organization->setIsGlobal(false);
+
+        $securityFacade->expects($this->once())
+            ->method('getOrganization')
+            ->willReturn($organization);
+
+        $event->expects($this->once())->method('getForm')->will($this->returnValue($formView));
 
         $listener = new OrganizationFieldListener($configManager, $securityFacade);
 

@@ -5,6 +5,7 @@ namespace OroPro\Bundle\OrganizationBundle\Form\EventListener;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\UIBundle\Event\BeforeFormRenderEvent;
+use Oro\Bundle\UserBundle\Entity\Role;
 
 class OrganizationFieldListener
 {
@@ -33,7 +34,7 @@ class OrganizationFieldListener
      */
     public function addOrganizationField(BeforeFormRenderEvent $event)
     {
-        if ($this->securityFacade->getOrganization()->getIsGlobal()) {
+        if ($this->isOrganizationFieldAllowed($event)) {
             $environment = $event->getTwigEnvironment();
             $data        = $event->getFormData();
             $form        = $event->getForm();
@@ -57,5 +58,17 @@ class OrganizationFieldListener
 
             $event->setFormData($data);
         }
+    }
+
+    /**
+     * @param BeforeFormRenderEvent $event
+     * @return bool
+     */
+    protected function isOrganizationFieldAllowed(BeforeFormRenderEvent $event)
+    {
+        $organizationIsGlobal = $this->securityFacade->getOrganization()->getIsGlobal();
+        $isRole = $event->getForm()->vars['value'] instanceof Role;
+
+        return $organizationIsGlobal || $isRole;
     }
 }

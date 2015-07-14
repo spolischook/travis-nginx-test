@@ -9,12 +9,26 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
+use OroPro\Bundle\UserBundle\Helper\UserProHelper;
 
 class RoleVoter implements VoterInterface
 {
     const VIEW = 'VIEW';
     const EDIT = 'EDIT';
     const DELETE = 'DELETE';
+
+    /**
+     * @var UserProHelper
+     */
+    protected $userHelper;
+
+    /**
+     * @param UserProHelper $userProHelper
+     */
+    public function __construct(UserProHelper $userProHelper)
+    {
+        $this->userHelper = $userProHelper;
+    }
 
     /**
      * {@inheritDoc}
@@ -29,7 +43,7 @@ class RoleVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, [self::DELETE, self::EDIT, self::VIEW]);
+        return in_array($attribute, [self::DELETE, self::EDIT, self::VIEW], true);
     }
 
     /**
@@ -66,28 +80,14 @@ class RoleVoter implements VoterInterface
     {
         /** @var User $user */
         $user = $token->getUser();
-
-        $userOrganizations = $user->getOrganizations();
-        $provideAccess = $userOrganizations->exists(
-            function($key, $organization) {
-                return ($organization->getIsGlobal());
-            }
-        );
-
+        $provideAccess = $this->userHelper->isUserAssignedToSystemOrganization($user);
         if ($provideAccess) {
             return self::ACCESS_GRANTED;
         }
 
         $roleOrganization = $object->getOrganization();
-
         if ($roleOrganization) {
-            $roleOrganizationId = $roleOrganization->getId();
-
-            $provideAccess = $userOrganizations->exists(
-                function($key, $organization) use ($roleOrganizationId) {
-                    return ($organization->getId() === $roleOrganizationId);
-                }
-            );
+            $provideAccess = $this->userHelper->isUserAssignedToOrganization($user, $roleOrganization);
         }
 
         if ($provideAccess) {

@@ -8,6 +8,8 @@ use Oro\Bundle\OrganizationBundle\Autocomplete\OrganizationSearchHandler as Base
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
+use OroPro\Bundle\UserBundle\Helper\UserProHelper;
+
 class OrganizationSearchHandler implements SearchHandlerInterface
 {
     /**
@@ -21,15 +23,23 @@ class OrganizationSearchHandler implements SearchHandlerInterface
     protected $securityContextLink;
 
     /**
+     * @var UserProHelper
+     */
+    protected $userHelper;
+
+    /**
      * @param BaseOrganizationSearchHandler $baseOrganizationSearchHandler
      * @param ServiceLink $securityContextLink
+     * @param UserProHelper $userHelper
      */
     public function __construct(
         BaseOrganizationSearchHandler $baseOrganizationSearchHandler,
-        ServiceLink $securityContextLink
+        ServiceLink $securityContextLink,
+        UserProHelper $userHelper
     ) {
         $this->baseOrganizationSearchHandler = $baseOrganizationSearchHandler;
         $this->securityContextLink = $securityContextLink;
+        $this->userHelper = $userHelper;
     }
 
     /**
@@ -41,11 +51,7 @@ class OrganizationSearchHandler implements SearchHandlerInterface
         /** @var User $user */
         $user = $this->securityContextLink->getService()->getToken()->getUser();
         $organizations = $user->getOrganizations();
-        $hasGlobalOrganization = $organizations->exists(
-            function ($key, Organization $organization) {
-                return $organization->getIsGlobal();
-            }
-        );
+        $hasGlobalOrganization = $this->userHelper->isUserAssignedToSystemOrganization($user);
         if (!$hasGlobalOrganization) {
             $organizationIds = $organizations
                 ->map(

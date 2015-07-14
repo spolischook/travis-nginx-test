@@ -194,7 +194,6 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getExpectedConfig()
     {
-        $param = RoleListener::ORGANIZATION_ALIAS . '.' . 'id';
         return [
             'source' => [
                 'type' => 'orm',
@@ -256,6 +255,7 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
         $organization2 = new GlobalOrganization();
         $organization2->setId(2);
         $organization2->setIsGLobal(true);
+
         return [
             $organization1,
             $organization2

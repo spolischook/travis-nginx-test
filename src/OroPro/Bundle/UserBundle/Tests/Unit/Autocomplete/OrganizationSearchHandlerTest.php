@@ -11,6 +11,7 @@ use Oro\Bundle\OrganizationBundle\Autocomplete\OrganizationSearchHandler as Base
 use Oro\Bundle\UserBundle\Entity\User;
 
 use OroPro\Bundle\UserBundle\Autocomplete\OrganizationSearchHandler;
+use OroPro\Bundle\UserBundle\Helper\UserProHelper;
 
 class OrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,6 +35,11 @@ class OrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected $user;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|UserProHelper
+     */
+    protected $userHelper;
+
     protected function setUp()
     {
         $this->baseHandler = $this
@@ -44,8 +50,11 @@ class OrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->userHelper = $this
+            ->getMockBuilder('OroPro\Bundle\UserBundle\Helper\UserProHelper')
+            ->getMock();
 
-        $this->handler = new OrganizationSearchHandler($this->baseHandler, $this->serviceLink);
+        $this->handler = new OrganizationSearchHandler($this->baseHandler, $this->serviceLink, $this->userHelper);
     }
 
     protected function setUpServiceLinkMock()
@@ -71,28 +80,9 @@ class OrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
             ->with('org', 1, 10)
             ->will($this->returnValue($expectedSearchResults));
 
-        $globalOrganization = $this
-            ->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
-            ->disableOriginalConstructor()
-            ->setMethods(['getIsGlobal'])
-            ->getMock();
-        $regularOrganization = $this
-            ->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
-            ->disableOriginalConstructor()
-            ->setMethods(['getIsGlobal'])
-            ->getMock();
-        $globalOrganization->expects($this->once())->method('getIsGlobal')->will($this->returnValue(true));
-        $regularOrganization->expects($this->never())->method('getIsGlobal')->will($this->returnValue(false));
-
-        $userOrganizations = new ArrayCollection(
-            [
-                $globalOrganization,
-                $regularOrganization
-            ]
-        );
-
-        $this->user->expects($this->once())->method('getOrganizations')
-            ->will($this->returnValue($userOrganizations));
+        $this->userHelper->expects($this->once())
+            ->method('isUserAssignedToSystemOrganization')
+            ->will($this->returnValue(true));
 
         $searchResults = $this->handler->search('org', 1, 10);
 
@@ -109,6 +99,10 @@ class OrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
             ->with('org', 1, 10)
             ->will($this->returnValue(['results' => [['id' => 1], ['id' => 2], ['id' => 3]]]));
 
+        $this->userHelper->expects($this->once())
+            ->method('isUserAssignedToSystemOrganization')
+            ->will($this->returnValue(false));
+
         $firstRegularOrganization = $this
             ->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
             ->disableOriginalConstructor()
@@ -119,9 +113,8 @@ class OrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(['getId', 'getIsGlobal'])
             ->getMock();
-        $firstRegularOrganization->expects($this->once())->method('getIsGlobal')->will($this->returnValue(false));
+
         $firstRegularOrganization->expects($this->once())->method('getId')->will($this->returnValue(1));
-        $secondRegularOrganization->expects($this->once())->method('getIsGlobal')->will($this->returnValue(false));
         $secondRegularOrganization->expects($this->once())->method('getId')->will($this->returnValue(2));
 
         $userOrganizations = new ArrayCollection(

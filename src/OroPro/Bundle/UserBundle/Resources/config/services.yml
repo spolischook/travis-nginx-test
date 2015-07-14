@@ -3,10 +3,14 @@ parameters:
     oropro_user.autocomplete.organization_search_handler.class: OroPro\Bundle\UserBundle\Autocomplete\OrganizationSearchHandler
     oropro_user.event_listener.datagrid.role.class: OroPro\Bundle\UserBundle\EventListener\Datagrid\RoleListener
     oropro_user.acl.voter.role.class: OroPro\Bundle\UserBundle\Acl\Voter\RoleVoter
+    oropro_user.helper.class: OroPro\Bundle\UserBundle\Helper\UserProHelper
 
 services:
     oropro_user.form.type.role_organization_select:
         class: %oropro_user.form.type.role_organization_select.class%
+        arguments:
+            - @security.context
+            - @oropro_user.helper
         tags:
             - { name: form.type, alias: oropro_user_role_organization_select }
 
@@ -15,6 +19,7 @@ services:
         arguments:
             - @oro_organization.autocomplete.organization_search_handler
             - @oro_entity_config.link.security_context
+            - @oropro_user.helper
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: oropro_user_organizations }
         lazy: true
@@ -28,5 +33,10 @@ services:
 
     oropro_user.acl.voter.role:
         class: %oropro_user.acl.voter.role.class%
+        arguments:
+            - @oropro_user.helper
         tags:
             - { name: security.voter, priority: 100 }
+
+    oropro_user.helper:
+        class: %oropro_user.helper.class%
