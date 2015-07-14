@@ -62,7 +62,7 @@ class LdapHelper implements ContextAwareInterface
     /**
      * Searches LDAP for users roles.
      *
-     * @param $userDn
+     * @param string $userDn
      *
      * @return \Iterator
      */
@@ -126,7 +126,7 @@ class LdapHelper implements ContextAwareInterface
      * @param User  $user
      * @param array $roles
      */
-    protected function setUserRoles($user, array $roles)
+    protected function setUserRoles(User $user, array $roles)
     {
         $em = $this->getRoleEntityManager();
         $roleReferences = [];
@@ -163,7 +163,7 @@ class LdapHelper implements ContextAwareInterface
      *
      * @param User $entity
      */
-    public function populateBusinessUnitOwner($entity)
+    public function populateBusinessUnitOwner(User $entity)
     {
         if ($entity->getOwner() === null) {
             $entity->setOwner($this->channel->getDefaultUserOwner()->getOwner());

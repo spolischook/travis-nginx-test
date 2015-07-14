@@ -54,10 +54,7 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
     public function setImportExportContext(ContextInterface $context)
     {
         parent::setImportExportContext($context);
-
-        if ($this->ldapHelper instanceof ContextAwareInterface) {
-            $this->ldapHelper->setImportExportContext($context);
-        }
+        $this->ldapHelper->setImportExportContext($context);
     }
 
     /**
@@ -111,7 +108,10 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
             $dns[$channelId] = $dn;
         }
 
-        // Update existing entity so ldap dns will be updated despite being marked as excluded in importexport entity configuration.
+        /*
+         * Update existing entity so ldap dns will be updated despite being marked as excluded in importexport entity
+         * configuration.
+         */
         $existingEntity->setLdapDistinguishedNames($dns);
 
         parent::importExistingEntity($entity, $existingEntity, $itemData, $excludedFields);
