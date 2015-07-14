@@ -21,3 +21,5 @@ oro.ldap.integration:
         userMapping.tooltip:            Name of corresponding attribute in LDAP.
         roleMapping.tooltip: >
             Mapping of LDAP Roles to one, or multiple CRM roles. These roles will be set for imported users.
+        roleIdAttribute.tooltip: >
+            Attribute in LDAP representing role id in CRM. This is where role name from role mapping is found.
