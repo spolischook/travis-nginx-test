@@ -1,2 +1,2 @@
 bundles:
-    - { name: Oro\Bundle\LDAPBundle\OroLDAPBundle }
+    - { name: Oro\Bundle\LDAPBundle\OroLDAPBundle, priority: 110 }

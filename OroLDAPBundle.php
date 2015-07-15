@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\LDAPBundle;
 
+use Oro\Bundle\LDAPBundle\DependencyInjection\Compiler\DynamicFieldsExtensionCompilerPass;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -15,10 +16,10 @@ class OroLDAPBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        parent::build($container);
-
         /** @var SecurityExtension $security */
         $security = $container->getExtension('security');
         $security->addSecurityListenerFactory(new FormLoginLdapFactory());
+
+        $container->addCompilerPass(new DynamicFieldsExtensionCompilerPass());
     }
 }

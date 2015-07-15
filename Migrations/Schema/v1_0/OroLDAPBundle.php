@@ -36,7 +36,6 @@ class OroLDAPBundle implements Migration
                     'form'         => ['is_enabled' => false],
                     'datagrid'     => ['is_visible' => false],
                     'importexport' => ['excluded' => true],
-                    'view'         => ['acl' => 'oro_integration_update'],
                 ],
                 'notnull'     => false,
             ]
