@@ -11,6 +11,7 @@ class LdapUtilsTest extends \PHPUnit_Framework_TestCase
         return [
             ['cn=username,ou=unit,dc=localhost', 'cn', 'username', 'ou=unit,dc=localhost'],
             ['cn=username', 'cn', 'username', null],
+            ['sn=username', 'sn', 'username', null],
         ];
     }
 

@@ -5,10 +5,12 @@ namespace Oro\Bundle\LDAPBundle\Form\Type;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderInterface;
+use Oro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
 
 class UserMappingType extends AbstractType
 {
@@ -20,6 +22,8 @@ class UserMappingType extends AbstractType
     private $importExportConfig;
     /** @var ConfigProviderInterface */
     private $entityConfig;
+    /** @var string[] */
+    private $requiredFields = [LdapUtils::USERNAME_MAPPING_ATTRIBUTE];
 
     /**
      * @param Registry                $registry
@@ -60,7 +64,10 @@ class UserMappingType extends AbstractType
                     return null;
                 }
 
-                if ($importExportConfig->has('identity') && $importExportConfig->get('identity')) {
+                if (
+                    ($importExportConfig->has('identity') && $importExportConfig->get('identity'))
+                    || in_array($fieldName, $this->requiredFields)
+                ) {
                     $field['options']['required'] = true;
                     $field['options']['constraints'] = [new Assert\NotBlank()];
                 }

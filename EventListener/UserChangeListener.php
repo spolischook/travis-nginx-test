@@ -16,7 +16,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 class UserChangeListener
 {
-    /** @var Channel[] */
+    /** @var null|Channel[] */
     protected $channels = null;
     /** @var User[] */
     protected $newUsers = [];
@@ -61,10 +61,12 @@ class UserChangeListener
             $distinguishedNames = [];
             foreach ($channels as $channel) {
                 if ($this->isTwoWaySyncEnabled($channel)) {
+                    $mappingSettings = $channel->getMappingSettings();
+
                     $distinguishedNames[$channel->getId()] = LdapUtils::createDn(
-                        $channel->getMappingSettings()->offsetGet('userMapping')['username'],
+                        $mappingSettings->offsetGet('userMapping')[LdapUtils::USERNAME_MAPPING_ATTRIBUTE],
                         $user->getUsername(),
-                        $channel->getMappingSettings()->offsetGet('exportUserBaseDn')
+                        $mappingSettings->offsetGet('exportUserBaseDn')
                     );
                 }
             }
@@ -189,7 +191,7 @@ class UserChangeListener
     }
 
     /**
-     * @return Channel
+     * @return Channel[]
      */
     private function getEnabledChannels()
     {

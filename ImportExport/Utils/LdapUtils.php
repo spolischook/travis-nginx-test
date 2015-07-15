@@ -4,6 +4,7 @@ namespace Oro\Bundle\LDAPBundle\ImportExport\Utils;
 
 class LdapUtils
 {
+    const USERNAME_MAPPING_ATTRIBUTE = 'username';
 
     /**
      * Generates distinguished name of user.

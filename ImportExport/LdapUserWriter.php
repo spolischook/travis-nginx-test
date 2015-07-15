@@ -69,10 +69,14 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
      */
     protected function createExportDn(array $item)
     {
-        $usernameAttr = $this->channel->getMappingSettings()->offsetGet('userMapping')['username'];
-        $exportUserBaseDn = $this->channel->getMappingSettings()->offsetGet('exportUserBaseDn');
+        $mappingSettings = $this->channel->getMappingSettings();
+        $usernameAttr = $mappingSettings->offsetGet('userMapping')[LdapUtils::USERNAME_MAPPING_ATTRIBUTE];
 
-        return LdapUtils::createDn($usernameAttr, $item[$usernameAttr], $exportUserBaseDn);
+        return LdapUtils::createDn(
+            $usernameAttr,
+            $item[$usernameAttr],
+            $mappingSettings->offsetGet('exportUserBaseDn')
+        );
     }
 
     /**
