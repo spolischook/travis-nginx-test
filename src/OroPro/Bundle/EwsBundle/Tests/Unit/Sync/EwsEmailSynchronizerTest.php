@@ -9,6 +9,7 @@ use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
 use Oro\Bundle\EmailBundle\Sync\KnownEmailAddressCheckerFactory;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
+use Oro\Bundle\OrganizationBundle\OroOrganizationBundle;
 use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\Mocks\EntityManagerMock;
 use Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\OrmTestCase;
 use Oro\Bundle\UserBundle\OroUserBundle;
@@ -154,6 +155,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
 
     public function testInitializeOrigins()
     {
+
         $this->ewsConfigurator->expects($this->once())
             ->method('getServer')
             ->will($this->returnValue('test_server'));
@@ -175,13 +177,19 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         $insertOriginStmt = $this->getMock('Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\Mocks\StatementMock');
         $insertOriginStmt->expects($this->at(6))
             ->method('bindValue')
-            ->with(6, 'test_server');
+            ->with(6, 1);
         $insertOriginStmt->expects($this->at(7))
             ->method('bindValue')
-            ->with(7, 'test@example.com');
+            ->with(7, null);
         $insertOriginStmt->expects($this->at(8))
             ->method('bindValue')
-            ->with(8, 'ewsemailorigin');
+            ->with(8, 'test_server');
+        $insertOriginStmt->expects($this->at(9))
+            ->method('bindValue')
+            ->with(9, 'test@example.com');
+        $insertOriginStmt->expects($this->at(10))
+            ->method('bindValue')
+            ->with(10, 'ewsemailorigin');
 
         $statementCount = -1;
         $actualSqls = [];
@@ -223,13 +231,12 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             . ' WHERE (NOT (EXISTS ('
             . 'SELECT o2_.id'
             . ' FROM oro_user o2_'
-            . ' INNER JOIN oro_user_email_origin o4_ ON o2_.id = o4_.user_id'
-            . ' INNER JOIN oro_email_origin o3_ ON o3_.id = o4_.origin_id'
+            . ' INNER JOIN oro_email_origin o3_ ON o2_.id = o3_.owner_id'
             . ' AND o3_.name IN (ALL_ORIGINS)'
-            . ' INNER JOIN oro_email_address o5_ ON (o5_.owner_user_id = o2_.id)'
-            . ' INNER JOIN oro_email_origin o6_ ON (o6_.id = o3_.id) AND o6_.name IN (\'ewsemailorigin\')'
-            . ' WHERE o2_.id = o0_.id AND o3_.isActive = ? AND o6_.ews_server = ?'
-            . ' AND o6_.ews_user_email = o5_.email)))'
+            . ' INNER JOIN oro_email_address o4_ ON (o4_.owner_user_id = o2_.id)'
+            . ' INNER JOIN oro_email_origin o5_ ON (o5_.id = o3_.id) AND o5_.name IN (\'ewsemailorigin\')'
+            . ' WHERE o2_.id = o0_.id AND o3_.isActive = ? AND o5_.ews_server = ?'
+            . ' AND o5_.ews_user_email = o4_.email)))'
             . ' AND (o1_.email LIKE \'%@domain1.com\' OR o1_.email LIKE \'%@domain2.com\')'
             . ' ORDER BY o0_.id ASC';
         $this->assertEquals($expectedSql, $actualSql);
@@ -237,8 +244,9 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         // insert origin
         $actualSql = $actualSqls[1];
         $expectedSql = 'INSERT INTO oro_email_origin'
-            . ' (isActive, sync_code_updated, synchronized, sync_code, sync_count, ews_server, ews_user_email, name)'
-            . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+            . ' (isActive, sync_code_updated, synchronized, '
+            . 'sync_code, sync_count, owner_id, organization_id, ews_server, ews_user_email, name)'
+            . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         $this->assertEquals($expectedSql, $actualSql);
     }
 }

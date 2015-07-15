@@ -196,7 +196,7 @@ class KernelRequestListenerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->routingHelper->expects($this->once())
-            ->method('decodeClassName')
+            ->method('resolveEntityClass')
             ->willReturnCallback(
                 function ($className) {
                     return $className;
