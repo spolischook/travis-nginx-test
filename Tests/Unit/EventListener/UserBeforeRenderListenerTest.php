@@ -114,7 +114,9 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
         $this->event->expects($this->once())
             ->method('setFieldViewValue')
             ->with(
-                $this->equalTo(['mappings' => [], 'template' => 'OroCRMProLDAPBundle:User:ldapDistinguishedNames.html.twig'])
+                $this->equalTo(
+                    ['mappings' => [], 'template' => 'OroCRMProLDAPBundle:User:ldapDistinguishedNames.html.twig']
+                )
             );
 
         $this->userRenderListener->beforeValueRender($this->event);
