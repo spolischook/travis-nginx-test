@@ -28,7 +28,7 @@ class LdapIntegrationChannelController extends Controller
         $transport->init($entity->getTransport());
 
         return new JsonResponse(
-            ['status' => $transport->check() ? 'success' : 'invalid',]
+            ['status' => $transport->check() ? 'success' : 'invalid']
         );
     }
 

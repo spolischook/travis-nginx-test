@@ -10,6 +10,7 @@ use Oro\Bundle\LDAPBundle\ImportExport\UserDataConverter;
 
 class UserDataConverterTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var Channel */
     private $channel;
     /** @var ConnectorContextMediator */
     private $contextMediator;
@@ -21,15 +22,19 @@ class UserDataConverterTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->channel = new Channel();
-        $this->channel->setMappingSettings(Object::create([
-            'userMapping' => [
-                'username'   => 'cn',
-                'first_name' => 'sn',
-                'last_name'  => 'displayname',
-                'phone'      => null,
-                'status'     => null
-            ]
-        ]));
+        $this->channel->setMappingSettings(
+            Object::create(
+                [
+                    'userMapping' => [
+                        'username'   => 'cn',
+                        'first_name' => 'sn',
+                        'last_name'  => 'displayname',
+                        'phone'      => null,
+                        'status'     => null,
+                    ]
+                ]
+            )
+        );
 
         $this->contextMediator = $this->getMockBuilder('Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator')
             ->disableOriginalConstructor()

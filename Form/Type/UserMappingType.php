@@ -64,8 +64,7 @@ class UserMappingType extends AbstractType
                     return null;
                 }
 
-                if (
-                    ($importExportConfig->has('identity') && $importExportConfig->get('identity'))
+                if (($importExportConfig->has('identity') && $importExportConfig->get('identity'))
                     || in_array($fieldName, $this->requiredFields)
                 ) {
                     $field['options']['required'] = true;

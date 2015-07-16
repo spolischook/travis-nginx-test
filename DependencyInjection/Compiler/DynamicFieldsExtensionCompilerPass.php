@@ -22,10 +22,12 @@ class DynamicFieldsExtensionCompilerPass implements CompilerPassInterface
             $container->setDefinition(self::BASE_SERVICE_ID, clone $definition);
 
             $definition->setClass(self::DECORATOR_CLASS);
-            $definition->setArguments([
-                $container->getDefinition(self::BASE_SERVICE_ID),
-                $container->getDefinition('oro_security.security_facade')
-            ]);
+            $definition->setArguments(
+                [
+                    $container->getDefinition(self::BASE_SERVICE_ID),
+                    $container->getDefinition('oro_security.security_facade')
+                ]
+            );
         }
     }
 }

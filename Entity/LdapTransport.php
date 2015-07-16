@@ -5,8 +5,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 
 /**
@@ -15,8 +13,6 @@ use Oro\Bundle\IntegrationBundle\Entity\Transport;
  * @package Oro\Bundle\LDAPBundle\Entity
  *
  * @ORM\Entity
- * @Config()
- * @Oro\Loggable()
  */
 class LdapTransport extends Transport
 {
