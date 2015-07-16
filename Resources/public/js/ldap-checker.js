@@ -68,9 +68,9 @@ define([
         responseHandler: function(data) {
             var message = '';
             var status = data.status;
-            if (data.status == 'success') {
+            if (data.status === 'success') {
                 message = __('orocrmpro.ldap.transport.ldap.fields.check.message.success');
-            } else if (data.status == 'invalid') {
+            } else if (data.status === 'invalid') {
                 message = __('orocrmpro.ldap.transport.ldap.fields.check.message.invalid');
                 status = 'danger';
             }
