@@ -13,6 +13,8 @@ use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
  */
 class EwsEmailOrigin extends EmailOrigin
 {
+    const MAILBOX_NAME = 'EWS';
+
     /**
      * @var string
      *
