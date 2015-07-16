@@ -1,11 +1,12 @@
-/*global define*/
-define(['oroui/js/app/views/base/page-region-view'], function (PageRegionView) {
+define([
+    'oroui/js/app/views/base/page-region-view'
+], function(PageRegionView) {
     'use strict';
 
     var OrganizationSwitchView;
 
     OrganizationSwitchView = PageRegionView.extend({
-        template: function (data) {
+        template: function(data) {
             return data.organization_switch;
         },
         pageItems: ['organization_switch']
