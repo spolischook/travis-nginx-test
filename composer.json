@@ -27,7 +27,7 @@
     },
     "require": {
         "php": ">=5.4.9",
-        "oro/crm": "1.x-dev",
+        "oro/crm": "1.7.x-dev",
         "elasticsearch/elasticsearch": "1.2.2"
     },
     "minimum-stability": "dev",
