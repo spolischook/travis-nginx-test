@@ -5,6 +5,7 @@ namespace OroCRMPro\Bundle\LDAPBundle\Migrations\Schema\v1_0;
 use Doctrine\DBAL\Schema\Schema;
 
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\EntityExtendBundle\Migration\OroOptions;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
@@ -17,6 +18,7 @@ class OroLDAPBundle implements Migration
     {
         self::addLdapDistinguishedNamesColumn($schema);
         self::addLdapTransportColumns($schema);
+        self::setUserFieldsImportExportConfiguration($schema);
     }
 
     /**
@@ -58,5 +60,28 @@ class OroLDAPBundle implements Migration
         $transportTable->addColumn('ldap_password', 'string', ['notnull' => false]);
         $transportTable->addColumn('ldap_account_domain', 'string', ['notnull' => false]);
         $transportTable->addColumn('ldap_account_domain_short', 'string', ['notnull' => false]);
+    }
+
+    /**
+     * Set fields excluded from importexport of Users.
+     *
+     * @param Schema $schema
+     */
+    public static function setUserFieldsImportExportConfiguration(Schema $schema)
+    {
+        $table = $schema->getTable('oro_user');
+
+        $table->getColumn('id')->setOptions(
+            [OroOptions::KEY => ['importexport' => ['excluded' => true]]]
+        );
+        $table->getColumn('login_count')->setOptions(
+            [OroOptions::KEY => ['importexport' => ['excluded' => true]]]
+        );
+        $table->getColumn('createdAt')->setOptions(
+            [OroOptions::KEY => ['importexport' => ['excluded' => true]]]
+        );
+        $table->getColumn('updatedAt')->setOptions(
+            [OroOptions::KEY => ['importexport' => ['excluded' => true]]]
+        );
     }
 }

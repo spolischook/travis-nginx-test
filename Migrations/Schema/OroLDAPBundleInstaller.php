@@ -26,5 +26,6 @@ class OroLDAPBundleInstaller implements Installation
     {
         OroLDAPBundle_v1_0::addLdapDistinguishedNamesColumn($schema);
         OroLDAPBundle_v1_0::addLdapTransportColumns($schema);
+        OroLDAPBundle_v1_0::setUserFieldsImportExportConfiguration($schema);
     }
 }
