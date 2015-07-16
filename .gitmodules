@@ -30,4 +30,4 @@
 	url = git@github.com:laboro/OroCRMDotmailerBundle.git
 [submodule "src/OroCRMProPackages/src/OroCRMPro/Bundle/LDAPBundle"]
 	path = src/OroCRMProPackages/src/OroCRMPro/Bundle/LDAPBundle
-	url = https://github.com/laboro/OroLDAPBundle.git
+	url = git@github.com:laboro/OroLDAPBundle.git
