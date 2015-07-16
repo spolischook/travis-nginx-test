@@ -1,8 +1,9 @@
 oro:
     user:
         ldap_distinguished_names.label: LDAP Distinguished Names
+orocrmpro:
     ldap:
-        oro_ldap_encryption:
+        ldap_encryption:
             none:   None
             ssl:    SSL
             tls:    TLS

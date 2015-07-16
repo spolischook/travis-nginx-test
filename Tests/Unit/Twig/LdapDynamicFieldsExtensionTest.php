@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Tests\Unit\Twig;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\Twig;
 
-use Oro\Bundle\LDAPBundle\Twig\LdapDynamicFieldsExtension;
+use OroCRMPro\Bundle\LDAPBundle\Twig\LdapDynamicFieldsExtension;
 
 class LdapDynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
 {

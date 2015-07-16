@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\LDAPBundle\Form\Type;
+namespace OroCRMPro\Bundle\LDAPBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -10,8 +10,8 @@ use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
 
 class LdapTransportSettingsFormType extends AbstractType
 {
-    const NAME = 'oro_ldap_ldap_transport_setting_form_type';
-    const LABEL_PREFIX = 'oro.ldap.integration.channel.fields.';
+    const NAME = 'orocrmpro_ldap_ldap_transport_setting_form_type';
+    const LABEL_PREFIX = 'orocrmpro.ldap.integration.channel.fields.';
 
     /** @var TypesRegistry */
     private $registry;
@@ -55,7 +55,7 @@ class LdapTransportSettingsFormType extends AbstractType
         );
         $builder->add(
             'encryption',
-            'oro_ldap_encryption',
+            'orocrmpro_ldap_encryption',
             [
                 'label'       => self::LABEL_PREFIX . 'encryption.label',
                 'tooltip'     => self::LABEL_PREFIX . 'encryption.tooltip',
@@ -116,7 +116,7 @@ class LdapTransportSettingsFormType extends AbstractType
         );
         $builder->add(
             'connectionCheck',
-            'oro_ldap_transport_check_button_type',
+            'orocrmpro_ldap_transport_check_button_type',
             [
                 'label' => self::LABEL_PREFIX . 'connectionCheck.label',
             ]
@@ -130,7 +130,7 @@ class LdapTransportSettingsFormType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Oro\Bundle\LDAPBundle\Entity\LdapTransport',
+                'data_class' => 'OroCRMPro\Bundle\LDAPBundle\Entity\LdapTransport',
             ]
         );
     }

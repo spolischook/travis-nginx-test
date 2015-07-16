@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Tests\Unit\Stub;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\Stub;
 
 use Oro\Bundle\UserBundle\Entity\Role;
 

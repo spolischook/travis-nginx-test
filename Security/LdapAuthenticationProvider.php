@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Security;
+namespace OroCRMPro\Bundle\LDAPBundle\Security;
 
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;

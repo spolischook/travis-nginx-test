@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\ImportExport\Utils;
+namespace OroCRMPro\Bundle\LDAPBundle\ImportExport\Utils;
 
 class LdapUtils
 {

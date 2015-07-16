@@ -1,4 +1,4 @@
-# OroLDAPBundle
+# OroCRM Pro LDAP Bundle
 
 Provides LDAP integration for synchronization and authentication of Users
 through LDAP server.

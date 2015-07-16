@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Form\Type;
+namespace OroCRMPro\Bundle\LDAPBundle\Form\Type;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Oro\Bundle\LDAPBundle\Form\DataTransformer\RolesToIdsTransformer;
+use OroCRMPro\Bundle\LDAPBundle\Form\DataTransformer\RolesToIdsTransformer;
 
 class RoleMappingType extends AbstractType
 {
@@ -34,7 +34,7 @@ class RoleMappingType extends AbstractType
             'ldapName',
             'text',
             [
-                'label' => 'oro.ldap.integration.transport.mapping.roleLdapName.label',
+                'label' => 'orocrmpro.ldap.integration.transport.mapping.roleLdapName.label',
             ]
         );
         $builder->add(
@@ -45,7 +45,7 @@ class RoleMappingType extends AbstractType
                     'class'    => 'OroUserBundle:Role',
                     'property' => 'label',
                     'multiple' => true,
-                    'label'    => 'oro.ldap.integration.transport.mapping.roleCrmName.label',
+                    'label'    => 'orocrmpro.ldap.integration.transport.mapping.roleCrmName.label',
                 ]
             )
                 ->addModelTransformer(new RolesToIdsTransformer($this->getRoleManager(), static::ROLE_CLASS))
@@ -65,6 +65,6 @@ class RoleMappingType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_ldap_role_mapping';
+        return 'orocrmpro_ldap_role_mapping';
     }
 }

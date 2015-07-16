@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\ImportExport;
+namespace OroCRMPro\Bundle\LDAPBundle\ImportExport;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

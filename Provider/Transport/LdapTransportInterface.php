@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Provider\Transport;
+namespace OroCRMPro\Bundle\LDAPBundle\Provider\Transport;
 
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 

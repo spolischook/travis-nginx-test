@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Form\Type;
+namespace OroCRMPro\Bundle\LDAPBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class LdapTransportCheckButton extends AbstractType
 {
 
-    const NAME = 'oro_ldap_transport_check_button_type';
+    const NAME = 'orocrmpro_ldap_transport_check_button_type';
 
     /**
      * {@inheritdoc}

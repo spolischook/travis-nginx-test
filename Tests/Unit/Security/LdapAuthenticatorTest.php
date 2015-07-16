@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Tests\Unit\Security;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\Security;
 
-use Oro\Bundle\LDAPBundle\Security\LdapAuthenticator;
-use Oro\Bundle\LDAPBundle\Tests\Unit\Stub\TestingUser;
+use OroCRMPro\Bundle\LDAPBundle\Security\LdapAuthenticator;
+use OroCRMPro\Bundle\LDAPBundle\Tests\Unit\Stub\TestingUser;
 
 class LdapAuthenticatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -59,7 +59,7 @@ class LdapAuthenticatorTest extends \PHPUnit_Framework_TestCase
             ->method('getRepository')
             ->with($this->equalTo('OroIntegrationBundle:Channel'))
             ->will($this->returnValue($this->repository));
-        $this->transport = $this->getMock('Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface');
+        $this->transport = $this->getMock('OroCRMPro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface');
         $this->authenticator = new LdapAuthenticator($this->registry, $this->transport);
     }
 

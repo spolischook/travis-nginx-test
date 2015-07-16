@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Security\Factory;
+namespace OroCRMPro\Bundle\LDAPBundle\Security\Factory;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
@@ -16,7 +16,7 @@ class FormLoginLdapFactory extends OrganizationFormLoginFactory
      */
     public function getKey()
     {
-        return 'oro-ldap-organization-form-login';
+        return 'orocrmpro-ldap-organization-form-login';
     }
 
     /**
@@ -24,11 +24,11 @@ class FormLoginLdapFactory extends OrganizationFormLoginFactory
      */
     protected function createAuthProvider(ContainerBuilder $container, $id, $config, $userProviderId)
     {
-        $provider = 'oro_ldap.authentication.provider.' . $id;
+        $provider = 'orocrmpro_ldap.authentication.provider.' . $id;
         $container
             ->setDefinition(
                 $provider,
-                new DefinitionDecorator('oro_ldap.authentication.provider')
+                new DefinitionDecorator('orocrmpro_ldap.authentication.provider')
             )
             ->replaceArgument(0, new Reference($userProviderId))
             ->replaceArgument(2, $id);

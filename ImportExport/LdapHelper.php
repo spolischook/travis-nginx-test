@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\ImportExport;
+namespace OroCRMPro\Bundle\LDAPBundle\ImportExport;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
@@ -8,8 +8,9 @@ use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
-use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 use Oro\Bundle\UserBundle\Entity\User;
+
+use OroCRMPro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 
 class LdapHelper implements ContextAwareInterface
 {

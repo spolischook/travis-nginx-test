@@ -1,12 +1,14 @@
 <?php
-namespace Oro\Bundle\LDAPBundle\Tests\Unit\EventListener;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\EventListener;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectRepository;
+
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityExtendBundle\Event\ValueRenderEvent;
-use Oro\Bundle\LDAPBundle\EventListener\UserBeforeRenderListener;
 use Oro\Bundle\UserBundle\Entity\User;
+
+use OroCRMPro\Bundle\LDAPBundle\EventListener\UserBeforeRenderListener;
 
 class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -112,7 +114,7 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
         $this->event->expects($this->once())
             ->method('setFieldViewValue')
             ->with(
-                $this->equalTo(['mappings' => [], 'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig'])
+                $this->equalTo(['mappings' => [], 'template' => 'OroCRMProLDAPBundle:User:ldapDistinguishedNames.html.twig'])
             );
 
         $this->userRenderListener->beforeValueRender($this->event);
@@ -156,7 +158,7 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
             ->method('setFieldViewValue')
             ->with(
                 $this->equalTo(
-                    ['mappings' => [], 'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig']
+                    ['mappings' => [], 'template' => 'OroCRMProLDAPBundle:User:ldapDistinguishedNames.html.twig']
                 )
             );
 
@@ -210,7 +212,7 @@ class UserBeforeRenderListenerTest extends \PHPUnit_Framework_TestCase
                                 'dn'   => 'an example of user distinguished name in channel with id 40',
                             ],
                         ],
-                        'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig',
+                        'template' => 'OroCRMProLDAPBundle:User:ldapDistinguishedNames.html.twig',
                     ]
                 )
             );

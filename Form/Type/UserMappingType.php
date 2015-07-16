@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Form\Type;
+namespace OroCRMPro\Bundle\LDAPBundle\Form\Type;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
@@ -10,7 +10,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderInterface;
-use Oro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
+
+use OroCRMPro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
 
 class UserMappingType extends AbstractType
 {
@@ -111,6 +112,6 @@ class UserMappingType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_ldap_user_mapping';
+        return 'orocrmpro_ldap_user_mapping';
     }
 }

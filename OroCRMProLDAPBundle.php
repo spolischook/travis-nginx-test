@@ -1,15 +1,15 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle;
+namespace OroCRMPro\Bundle\LDAPBundle;
 
-use Oro\Bundle\LDAPBundle\DependencyInjection\Compiler\DynamicFieldsExtensionCompilerPass;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-use Oro\Bundle\LDAPBundle\Security\Factory\FormLoginLdapFactory;
+use OroCRMPro\Bundle\LDAPBundle\DependencyInjection\Compiler\DynamicFieldsExtensionCompilerPass;
+use OroCRMPro\Bundle\LDAPBundle\Security\Factory\FormLoginLdapFactory;
 
-class OroLDAPBundle extends Bundle
+class OroCRMProLDAPBundle extends Bundle
 {
     /**
      * {@inheritdoc}

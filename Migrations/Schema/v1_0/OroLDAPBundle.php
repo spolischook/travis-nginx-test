@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Migrations\Schema\v1_0;
+namespace OroCRMPro\Bundle\LDAPBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Schema\Schema;
 
@@ -50,13 +50,13 @@ class OroLDAPBundle implements Migration
     public static function addLdapTransportColumns(Schema $schema)
     {
         $transportTable = $schema->getTable('oro_integration_transport');
-        $transportTable->addColumn('oro_ldap_host', 'string', ['notnull' => false]);
-        $transportTable->addColumn('oro_ldap_port', 'integer', ['notnull' => false]);
-        $transportTable->addColumn('oro_ldap_encryption', 'string', ['notnull' => false]);
-        $transportTable->addColumn('oro_ldap_base_dn', 'string', ['notnull' => false]);
-        $transportTable->addColumn('oro_ldap_username', 'string', ['notnull' => false]);
-        $transportTable->addColumn('oro_ldap_password', 'string', ['notnull' => false]);
-        $transportTable->addColumn('oro_ldap_acc_domain', 'string', ['notnull' => false]);
-        $transportTable->addColumn('oro_ldap_acc_domain_short', 'string', ['notnull' => false]);
+        $transportTable->addColumn('ldap_host', 'string', ['notnull' => false]);
+        $transportTable->addColumn('ldap_port', 'integer', ['notnull' => false]);
+        $transportTable->addColumn('ldap_encryption', 'string', ['notnull' => false]);
+        $transportTable->addColumn('ldap_base_dn', 'string', ['notnull' => false]);
+        $transportTable->addColumn('ldap_username', 'string', ['notnull' => false]);
+        $transportTable->addColumn('ldap_password', 'string', ['notnull' => false]);
+        $transportTable->addColumn('ldap_account_domain', 'string', ['notnull' => false]);
+        $transportTable->addColumn('ldap_account_domain_short', 'string', ['notnull' => false]);
     }
 }

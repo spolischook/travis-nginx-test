@@ -1,17 +1,18 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Tests\Unit\Security;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\Security;
 
-use Oro\Bundle\LDAPBundle\Security\LdapAuthenticator;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-use Oro\Bundle\LDAPBundle\Security\LdapAuthenticationProvider;
-use Oro\Bundle\LDAPBundle\Tests\Unit\Stub\TestingUser;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
+use OroCRMPro\Bundle\LDAPBundle\Security\LdapAuthenticationProvider;
+use OroCRMPro\Bundle\LDAPBundle\Security\LdapAuthenticator;
+use OroCRMPro\Bundle\LDAPBundle\Tests\Unit\Stub\TestingUser;
 
 class LdapAuthenticationProviderTest extends \PHPUnit_Framework_TestCase
 {
-    private $providerKey = 'oro_ldap';
+    private $providerKey = 'orocrmpro_ldap';
     private $userProvider;
     /** @var LdapAuthenticator */
     private $ldapAuthenticator;
@@ -26,7 +27,7 @@ class LdapAuthenticationProviderTest extends \PHPUnit_Framework_TestCase
 
         $encoderFactory = $this->getMock('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface');
 
-        $this->ldapAuthenticator= $this->getMockBuilder('Oro\Bundle\LDAPBundle\Security\LdapAuthenticator')
+        $this->ldapAuthenticator= $this->getMockBuilder('OroCRMPro\Bundle\LDAPBundle\Security\LdapAuthenticator')
             ->disableOriginalConstructor()
             ->getMock();
 

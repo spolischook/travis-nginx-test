@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\LDAPBundle\Provider\Connector;
+namespace OroCRMPro\Bundle\LDAPBundle\Provider\Connector;
 
 use Oro\Bundle\IntegrationBundle\Provider\AbstractConnector;
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
@@ -14,7 +14,7 @@ class UserLdapConnector extends AbstractConnector implements TwoWaySyncConnector
      */
     public function getLabel()
     {
-        return 'oro.ldap.integration.connector.user.label';
+        return 'orocrmpro.ldap.integration.connector.user.label';
     }
 
     /**

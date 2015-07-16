@@ -1,12 +1,13 @@
 <?php
-namespace Oro\Bundle\LDAPBundle\EventListener;
+namespace OroCRMPro\Bundle\LDAPBundle\EventListener;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 use Oro\Bundle\EntityExtendBundle\Event\ValueRenderEvent;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Bundle\LDAPBundle\Provider\ChannelType;
 use Oro\Bundle\UserBundle\Entity\User;
+
+use OroCRMPro\Bundle\LDAPBundle\Provider\ChannelType;
 
 class UserBeforeRenderListener
 {
@@ -53,7 +54,7 @@ class UserBeforeRenderListener
             $event->setFieldViewValue(
                 [
                     'mappings' => $mappings,
-                    'template' => 'OroLDAPBundle:User:ldapDistinguishedNames.html.twig',
+                    'template' => 'OroCRMProLDAPBundle:User:ldapDistinguishedNames.html.twig',
                 ]
             );
         }

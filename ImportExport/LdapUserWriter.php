@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\ImportExport;
+namespace OroCRMPro\Bundle\LDAPBundle\ImportExport;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
@@ -11,8 +11,9 @@ use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
-use Oro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
-use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
+
+use OroCRMPro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
+use OroCRMPro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 
 class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface, ContextAwareInterface
 {

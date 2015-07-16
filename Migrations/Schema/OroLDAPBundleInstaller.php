@@ -1,12 +1,13 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Migrations;
+namespace OroCRMPro\Bundle\LDAPBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 
-use Oro\Bundle\LDAPBundle\Migrations\Schema\v1_0\OroLDAPBundle as OroLDAPBundle_v1_0;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+
+use OroCRMPro\Bundle\LDAPBundle\Migrations\Schema\v1_0\OroLDAPBundle as OroLDAPBundle_v1_0;
 
 class OroLDAPBundleInstaller implements Installation
 {

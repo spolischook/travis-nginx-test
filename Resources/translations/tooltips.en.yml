@@ -1,4 +1,4 @@
-oro.ldap.integration:
+orocrmpro.ldap.integration:
     channel.fields:
         host.tooltip:           The hostname of LDAP server.
         port.tooltip:           The port of LDAP server.

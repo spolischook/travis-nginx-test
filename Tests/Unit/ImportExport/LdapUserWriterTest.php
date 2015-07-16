@@ -1,15 +1,16 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Tests\Unit\ImportExport;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\ImportExport;
 
 use Oro\Bundle\DataGridBundle\Common\Object;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
-use Oro\Bundle\LDAPBundle\Entity\LdapTransport;
-use Oro\Bundle\LDAPBundle\ImportExport\LdapUserWriter;
-use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
+
+use OroCRMPro\Bundle\LDAPBundle\Entity\LdapTransport;
+use OroCRMPro\Bundle\LDAPBundle\ImportExport\LdapUserWriter;
+use OroCRMPro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 
 class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
 {
@@ -78,7 +79,9 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
             ->method('getTransport')
             ->will(
                 $this->returnValue(
-                    $this->transport = $this->getMock('Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface')
+                    $this->transport = $this->getMock(
+                        'OroCRMPro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface'
+                    )
                 )
             );
 

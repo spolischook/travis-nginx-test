@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\LDAPBundle\Provider\Transport;
+namespace OroCRMPro\Bundle\LDAPBundle\Provider\Transport;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -41,7 +41,7 @@ class LdapTransport implements LdapTransportInterface
      */
     public function getLabel()
     {
-        return 'oro.ldap.transport.ldap.label';
+        return 'orocrmpro.ldap.transport.ldap.label';
     }
 
     /**
@@ -49,7 +49,7 @@ class LdapTransport implements LdapTransportInterface
      */
     public function getSettingsFormType()
     {
-        return 'oro_ldap_ldap_transport_setting_form_type';
+        return 'orocrmpro_ldap_ldap_transport_setting_form_type';
     }
 
     /**
@@ -57,7 +57,7 @@ class LdapTransport implements LdapTransportInterface
      */
     public function getSettingsEntityFQCN()
     {
-        return 'Oro\Bundle\LDAPBundle\Entity\LdapTransport';
+        return 'OroCRMPro\Bundle\LDAPBundle\Entity\LdapTransport';
     }
 
     /**

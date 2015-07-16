@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Controller;
+namespace OroCRMPro\Bundle\LDAPBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,13 +18,13 @@ class LdapIntegrationChannelController extends Controller
      *
      * @return JsonResponse
      *
-     * @Route("/check", name="oro_ldap_transport_check")
+     * @Route("/check", name="orocrmpro_ldap_transport_check")
      * @AclAncestor("oro_integration_update")
      */
     public function checkAction(Request $request)
     {
         $entity = $this->getChannelEntity($request);
-        $transport = $this->get('oro_ldap.provider.transport.ldap');
+        $transport = $this->get('orocrmpro_ldap.provider.transport.ldap');
         $transport->init($entity->getTransport());
 
         return new JsonResponse(

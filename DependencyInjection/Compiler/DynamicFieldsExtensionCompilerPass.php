@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\DependencyInjection\Compiler;
+namespace OroCRMPro\Bundle\LDAPBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -10,7 +10,7 @@ class DynamicFieldsExtensionCompilerPass implements CompilerPassInterface
     const BASE_SERVICE_ID = 'oro_entity_extend.twig.extension.dynamic_fields.base';
     const SERVICE_ID = 'oro_entity_extend.twig.extension.dynamic_fields';
 
-    const DECORATOR_CLASS = 'Oro\Bundle\LDAPBundle\Twig\LdapDynamicFieldsExtension';
+    const DECORATOR_CLASS = 'OroCRMPro\Bundle\LDAPBundle\Twig\LdapDynamicFieldsExtension';
 
     /**
      * {@inheritdoc}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Form\Extension;
+namespace OroCRMPro\Bundle\LDAPBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -10,7 +10,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 use Oro\Bundle\FormBundle\Utils\FormUtils;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Bundle\LDAPBundle\Provider\ChannelType;
+
+use OroCRMPro\Bundle\LDAPBundle\Provider\ChannelType;
 
 class ChannelConnectorsExtension extends AbstractTypeExtension
 {

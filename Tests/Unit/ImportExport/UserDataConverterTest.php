@@ -1,12 +1,13 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Tests\Unit\ImportExport;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\ImportExport;
 
 use Oro\Bundle\DataGridBundle\Common\Object;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
-use Oro\Bundle\LDAPBundle\ImportExport\UserDataConverter;
+
+use OroCRMPro\Bundle\LDAPBundle\ImportExport\UserDataConverter;
 
 class UserDataConverterTest extends \PHPUnit_Framework_TestCase
 {

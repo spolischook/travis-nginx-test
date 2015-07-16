@@ -7,7 +7,7 @@ define([
     'orotranslation/js/translator',
     'oroui/js/mediator'
 ], function($, _, routing, Backbone, __, mediator) {
-    "use strict";
+    'use strict';
 
     return Backbone.View.extend({
         events: {
@@ -18,7 +18,7 @@ define([
          * Check url
          * @property string
          */
-        route: 'oro_ldap_transport_check',
+        route: 'orocrmpro_ldap_transport_check',
         url: null,
         id: null,
         $messages: null,
@@ -60,7 +60,7 @@ define([
                 .always(_.bind(function(response, status) {
                     mediator.execute('hideLoading');
                     if (status !== 'success') {
-                        this.renderResult('error', __('oro.ldap.transport.ldap.fields.check.message.error'));
+                        this.renderResult('error', __('orocrmpro.ldap.transport.ldap.fields.check.message.error'));
                     }
                 }, this));
         },
@@ -69,9 +69,9 @@ define([
             var message = '';
             var status = data.status;
             if (data.status == 'success') {
-                message = __('oro.ldap.transport.ldap.fields.check.message.success');
+                message = __('orocrmpro.ldap.transport.ldap.fields.check.message.success');
             } else if (data.status == 'invalid') {
-                message = __('oro.ldap.transport.ldap.fields.check.message.invalid');
+                message = __('orocrmpro.ldap.transport.ldap.fields.check.message.invalid');
                 status = 'danger';
             }
             this.renderResult(status, message);

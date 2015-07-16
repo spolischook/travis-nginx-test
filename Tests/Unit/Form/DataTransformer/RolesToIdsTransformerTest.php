@@ -1,11 +1,11 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Tests\Unit\Form\DataTransformer;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\LDAPBundle\Form\DataTransformer\RolesToIdsTransformer;
-use Oro\Bundle\LDAPBundle\Tests\Unit\Stub\TestingRole;
+use OroCRMPro\Bundle\LDAPBundle\Form\DataTransformer\RolesToIdsTransformer;
+use OroCRMPro\Bundle\LDAPBundle\Tests\Unit\Stub\TestingRole;
 
 class RolesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
 {

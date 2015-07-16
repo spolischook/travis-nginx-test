@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Form\DataTransformer;
+namespace OroCRMPro\Bundle\LDAPBundle\Form\DataTransformer;
 
 use Doctrine\ORM\EntityManager;
 

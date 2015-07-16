@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Twig;
+namespace OroCRMPro\Bundle\LDAPBundle\Twig;
 
-use Oro\Bundle\EntityExtendBundle\Twig\DynamicFieldsExtension as BaseDynamicFieldsExtension;
+use Oro\Bundle\EntityExtendBundle\Twig\DynamicFieldsExtension;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 /**
@@ -10,21 +10,21 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
  *
  * Decorator of dynamic fields twig extension.
  *
- * @package Oro\Bundle\LDAPBundle\Twig
+ * @package OroCRMPro\Bundle\LDAPBundle\Twig
  */
 class LdapDynamicFieldsExtension extends \Twig_Extension
 {
-    /** @var BaseDynamicFieldsExtension */
+    /** @var DynamicFieldsExtension */
     private $baseExtension;
 
     /** @var SecurityFacade */
     private $securityFacade;
 
     /**
-     * @param BaseDynamicFieldsExtension $baseExtension
+     * @param DynamicFieldsExtension $baseExtension
      * @param SecurityFacade             $securityFacade
      */
-    public function __construct(BaseDynamicFieldsExtension $baseExtension, SecurityFacade $securityFacade)
+    public function __construct(DynamicFieldsExtension $baseExtension, SecurityFacade $securityFacade)
     {
         $this->baseExtension = $baseExtension;
         $this->securityFacade = $securityFacade;

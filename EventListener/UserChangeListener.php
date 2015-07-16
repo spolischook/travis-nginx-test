@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\EventListener;
+namespace OroCRMPro\Bundle\LDAPBundle\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
@@ -9,10 +9,11 @@ use Doctrine\ORM\UnitOfWork;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Manager\SyncScheduler;
-use Oro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
-use Oro\Bundle\LDAPBundle\Provider\ChannelType;
-use Oro\Bundle\LDAPBundle\Provider\Connector\UserLdapConnector;
 use Oro\Bundle\UserBundle\Entity\User;
+
+use OroCRMPro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
+use OroCRMPro\Bundle\LDAPBundle\Provider\ChannelType;
+use OroCRMPro\Bundle\LDAPBundle\Provider\Connector\UserLdapConnector;
 
 class UserChangeListener
 {

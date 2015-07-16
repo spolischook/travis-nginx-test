@@ -1,15 +1,16 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Security;
+namespace OroCRMPro\Bundle\LDAPBundle\Security;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Bundle\LDAPBundle\Provider\ChannelType;
-use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 use Oro\Bundle\UserBundle\Entity\User as OroUser;
+
+use OroCRMPro\Bundle\LDAPBundle\Provider\ChannelType;
+use OroCRMPro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 
 class LdapAuthenticator
 {

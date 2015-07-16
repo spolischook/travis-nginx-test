@@ -1,9 +1,10 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Tests\Unit\Provider\Transport;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\Provider\Transport;
 
-use Oro\Bundle\LDAPBundle\Provider\Transport\LdapTransport;
 use Zend\Ldap\Exception\LdapException;
+
+use OroCRMPro\Bundle\LDAPBundle\Provider\Transport\LdapTransport;
 
 class LdapTransportTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,4 +1,4 @@
-# OroLDAPBundle
+# OroCRMProLDAPBundle
 
 ## Function
 
@@ -74,5 +74,10 @@ Setting specifying how users are mapped to LDAP records.
 
 ## Implementation
 
-Implementation follows documentation of [OroIntegrationBundle](//github.com/laboro/platform/tree/master/src/Oro/Bundle/IntegrationBundle)
-and [OroImportExportBundle](//github.com/laboro/platform/tree/master/src/Oro/Bundle/ImportExportBundle).
+Implementation follows documentation of
+[OroIntegrationBundle](//github.com/laboro/platform/tree/master/src/Oro/Bundle/IntegrationBundle)
+and
+[OroImportExportBundle](//github.com/laboro/platform/tree/master/src/Oro/Bundle/ImportExportBundle).
+
+Communication with LDAP is implemented using
+[Zend LDAP (v2.0.*)](//framework.zend.com/manual/2.0/en/modules/zend.ldap.introduction.html).

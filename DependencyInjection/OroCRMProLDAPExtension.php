@@ -1,13 +1,13 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\DependencyInjection;
+namespace OroCRMPro\Bundle\LDAPBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class OroLDAPExtension extends Extension
+class OroCRMProLDAPExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -18,13 +18,5 @@ class OroLDAPExtension extends Extension
         $serviceLoader->load('services.yml');
         $serviceLoader->load('form.yml');
         $serviceLoader->load('importexport.yml');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return 'oro_ldap';
     }
 }

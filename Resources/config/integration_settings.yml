@@ -4,23 +4,23 @@ oro_integration:
             userFilter:
                 type:         text
                 options:
-                    label:        oro.ldap.integration.transport.mapping.userFilter.label
-                    tooltip:      oro.ldap.integration.transport.mapping.userFilter.tooltip
+                    label:        orocrmpro.ldap.integration.transport.mapping.userFilter.label
+                    tooltip:      orocrmpro.ldap.integration.transport.mapping.userFilter.tooltip
                     required:     true
                 priority:     10
                 applicable:   [ldap]
             userMapping:
-                type:         oro_ldap_user_mapping
+                type:         orocrmpro_ldap_user_mapping
                 options:
-                    label:        oro.ldap.integration.transport.mapping.userMapping.label
+                    label:        orocrmpro.ldap.integration.transport.mapping.userMapping.label
                     required:     true
                 applicable:   [ldap]
                 priority:     20
             roleFilter:
                 type:         text
                 options:
-                    label:        oro.ldap.integration.transport.mapping.roleFilter.label
-                    tooltip:      oro.ldap.integration.transport.mapping.roleFilter.tooltip
+                    label:        orocrmpro.ldap.integration.transport.mapping.roleFilter.label
+                    tooltip:      orocrmpro.ldap.integration.transport.mapping.roleFilter.tooltip
                     required:     true
                     constraints:
                         - NotBlank: ~
@@ -29,8 +29,8 @@ oro_integration:
             roleIdAttribute:
                 type:         text
                 options:
-                    label:        oro.ldap.integration.transport.mapping.roleIdAttribute.label
-                    tooltip:      oro.ldap.integration.transport.mapping.roleIdAttribute.tooltip
+                    label:        orocrmpro.ldap.integration.transport.mapping.roleIdAttribute.label
+                    tooltip:      orocrmpro.ldap.integration.transport.mapping.roleIdAttribute.tooltip
                     required:     true
                     constraints:
                         - NotBlank: ~
@@ -39,7 +39,7 @@ oro_integration:
             roleUserIdAttribute:
                 type:         text
                 options:
-                    label:        oro.ldap.integration.transport.mapping.roleUserIdAttribute.label
+                    label:        orocrmpro.ldap.integration.transport.mapping.roleUserIdAttribute.label
                     required:     true
                     constraints:
                         - NotBlank: ~
@@ -48,8 +48,8 @@ oro_integration:
             roleMapping:
                 type:         oro_collection
                 options:
-                    label:        oro.ldap.integration.transport.mapping.roleMapping.label
-                    type:         oro_ldap_role_mapping
+                    label:        orocrmpro.ldap.integration.transport.mapping.roleMapping.label
+                    type:         orocrmpro_ldap_role_mapping
                     required:     false
                     handle_primary: false
                     show_form_when_empty: false
@@ -58,7 +58,7 @@ oro_integration:
             exportUserObjectClass:
                 type:         text
                 options:
-                    label:        oro.ldap.integration.transport.mapping.exportUserObjectClass.label
+                    label:        orocrmpro.ldap.integration.transport.mapping.exportUserObjectClass.label
                     required:     true
                     constraints:
                         - NotBlank: ~
@@ -67,7 +67,7 @@ oro_integration:
             exportUserBaseDn:
                 type:         text
                 options:
-                    label:        oro.ldap.integration.transport.mapping.exportUserBaseDn.label
+                    label:        orocrmpro.ldap.integration.transport.mapping.exportUserBaseDn.label
                     required:     true
                     constraints:
                         - NotBlank: ~

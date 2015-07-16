@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Form\Type;
+namespace OroCRMPro\Bundle\LDAPBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -15,9 +15,9 @@ class EncryptionType extends AbstractType
         $resolver->setDefaults(
             [
                 'choices' => [
-                    'none' => 'oro.ldap.oro_ldap_encryption.none',
-                    'ssl'  => 'oro.ldap.oro_ldap_encryption.ssl',
-                    'tls'  => 'oro.ldap.oro_ldap_encryption.tls',
+                    'none' => 'orocrmpro.ldap.ldap_encryption.none',
+                    'ssl'  => 'orocrmpro.ldap.ldap_encryption.ssl',
+                    'tls'  => 'orocrmpro.ldap.ldap_encryption.tls',
                 ],
             ]
         );
@@ -36,6 +36,6 @@ class EncryptionType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_ldap_encryption';
+        return 'orocrmpro_ldap_encryption';
     }
 }

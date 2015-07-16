@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\LDAPBundle\Provider;
+namespace OroCRMPro\Bundle\LDAPBundle\Provider;
 
 use Oro\Bundle\IntegrationBundle\Provider\ChannelInterface;
 
@@ -12,6 +12,6 @@ class ChannelType implements ChannelInterface
      */
     public function getLabel()
     {
-        return 'oro.ldap.integration.channel.label';
+        return 'orocrmpro.ldap.integration.channel.label';
     }
 }

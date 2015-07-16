@@ -1,13 +1,14 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Tests\Unit\EventListener;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\EventListener;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
 use Oro\Bundle\DataGridBundle\Common\Object as ConfigObject;
-use Oro\Bundle\LDAPBundle\EventListener\UserChangeListener;
-use Oro\Bundle\LDAPBundle\Tests\Unit\Stub\TestingUser;
+
+use OroCRMPro\Bundle\LDAPBundle\EventListener\UserChangeListener;
+use OroCRMPro\Bundle\LDAPBundle\Tests\Unit\Stub\TestingUser;
 
 class UserChangeListenerTest extends \PHPUnit_Framework_TestCase
 {

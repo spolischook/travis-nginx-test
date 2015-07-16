@@ -1,2 +1,2 @@
 bundles:
-    - OroLDAPBundle:Form:fields.html.twig
+    - OroCRMProLDAPBundle:Form:fields.html.twig

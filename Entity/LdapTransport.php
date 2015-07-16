@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\LDAPBundle\Entity;
+namespace OroCRMPro\Bundle\LDAPBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,7 +10,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Transport;
 /**
  * Class LdapTransport
  *
- * @package Oro\Bundle\LDAPBundle\Entity
+ * @package OroCRMPro\Bundle\LDAPBundle\Entity
  *
  * @ORM\Entity
  */
@@ -25,56 +25,56 @@ class LdapTransport extends Transport
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_host", type="string")
+     * @ORM\Column(name="ldap_host", type="string")
      */
     private $host;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_port", type="integer")
+     * @ORM\Column(name="ldap_port", type="integer")
      */
     private $port;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_encryption", type="string")
+     * @ORM\Column(name="ldap_encryption", type="string")
      */
     private $encryption;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_base_dn", type="string")
+     * @ORM\Column(name="ldap_base_dn", type="string")
      */
     private $baseDn;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_username", type="string")
+     * @ORM\Column(name="ldap_username", type="string")
      */
     private $username;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_password", type="string")
+     * @ORM\Column(name="ldap_password", type="string")
      */
     private $password;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_acc_domain", type="string")
+     * @ORM\Column(name="ldap_account_domain", type="string")
      */
     private $accountDomainName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="oro_ldap_acc_domain_short", type="string")
+     * @ORM\Column(name="ldap_account_domain_short", type="string")
      */
     private $accountDomainNameShort;
 

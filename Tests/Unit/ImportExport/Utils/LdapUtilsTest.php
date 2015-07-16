@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\LDAPBundle\Tests\Unit\ImportExport\Utils;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\ImportExport\Utils;
 
-use Oro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
+use OroCRMPro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
 
 class LdapUtilsTest extends \PHPUnit_Framework_TestCase
 {
