@@ -10,11 +10,10 @@ use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
  * EWS Email Origin
  *
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class EwsEmailOrigin extends EmailOrigin
 {
-    const MAILBOX_NAME = 'EWS';
-
     /**
      * @var string
      *
@@ -83,5 +82,15 @@ class EwsEmailOrigin extends EmailOrigin
     public function __toString()
     {
         return sprintf('%s (%s)', $this->userEmail, $this->server);
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function beforeSave()
+    {
+        if ($this->mailboxName === null) {
+            $this->mailboxName = $this->userEmail;
+        }
     }
 }

@@ -19,7 +19,7 @@ class UpdateOriginName extends AbstractFixture
         $origins = $repo->findAll();
         if ($origins) {
             foreach ($origins as $origin) {
-                $origin->setMailboxName(EwsEmailOrigin::MAILBOX_NAME);
+                $origin->setMailboxName($origin->getUserEmail());
             }
 
             $manager->flush();
