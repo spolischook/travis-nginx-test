@@ -1,5 +1,4 @@
-/*global require*/
-require(['oroui/js/app/controllers/base/controller'], function (BaseController) {
+require(['oroui/js/app/controllers/base/controller'], function(BaseController) {
     'use strict';
 
     /**
@@ -7,7 +6,7 @@ require(['oroui/js/app/controllers/base/controller'], function (BaseController) 
      */
     BaseController.loadBeforeAction([
         'oroproorganization/js/app/views/organization-switch-view'
-    ], function (OrganizationSwitchView) {
+    ], function(OrganizationSwitchView) {
         BaseController.addToReuse('organization_switch', OrganizationSwitchView, {
             el: '#organization-switcher'
         });

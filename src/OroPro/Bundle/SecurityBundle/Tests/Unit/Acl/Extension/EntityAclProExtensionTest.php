@@ -10,10 +10,10 @@ use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProviderStub;
 
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
+use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProProviderStub;
 use OroPro\Bundle\SecurityBundle\Acl\Extension\EntityAclProExtension;
 
 class EntityAclProExtensionTest extends \PHPUnit_Framework_TestCase
@@ -21,29 +21,17 @@ class EntityAclProExtensionTest extends \PHPUnit_Framework_TestCase
     /** @var EntityAclProExtension */
     protected $extension;
 
-    /** @var OwnershipMetadataProviderStub */
+    /** @var OwnershipMetadataProProviderStub */
     protected $metadataProvider;
 
     /** @var OwnerTree */
     protected $tree;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
-    protected $contextLink;
-
     public function setUp()
     {
-        $this->tree             = new OwnerTree();
-        $this->metadataProvider = new OwnershipMetadataProviderStub($this);
-        $this->extension        = TestHelper::get($this)->createEntityAclExtension(
-            $this->metadataProvider,
-            $this->tree
-        );
-
-        $this->contextLink = $this
-            ->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->extension->setContextLink($this->contextLink);
+        $this->tree = new OwnerTree();
+        $this->metadataProvider = new OwnershipMetadataProProviderStub($this);
+        $this->extension = TestHelper::get($this)->createEntityAclExtension($this->metadataProvider, $this->tree);
     }
 
     /**
@@ -60,6 +48,9 @@ class EntityAclProExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($isGranted, $this->extension->decideIsGranting($accessLevel, null, $token));
     }
 
+    /**
+     * @return array
+     */
     public function decideIsGrantingDataProvider()
     {
         return [
@@ -100,6 +91,9 @@ class EntityAclProExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($accessLevels, $this->extension->getAccessLevelNames($object));
     }
 
+    /**
+     * @return array
+     */
     public function getAccessLevelNamesDataProvider()
     {
         return [
@@ -142,16 +136,11 @@ class EntityAclProExtensionTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testFixMaxAccessLevelInGlobalMode()
+    public function testGetMaxAccessLevelInGlobalMode()
     {
         $organization = new GlobalOrganization();
         $token = new UsernamePasswordOrganizationToken('admin', 'admin', 'key', $organization);
-        $securityContext = $this
-            ->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $securityContext->expects($this->once())->method('getToken')->willReturn($token);
-        $this->contextLink->expects($this->once())->method('getService')->willReturn($securityContext);
+        $this->metadataProvider->getSecurityContext()->expects($this->once())->method('getToken')->willReturn($token);
 
         $this->assertEquals(
             AccessLevel::SYSTEM_LEVEL,

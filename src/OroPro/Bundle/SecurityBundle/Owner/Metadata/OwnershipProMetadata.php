@@ -41,7 +41,7 @@ class OwnershipProMetadata extends OwnershipMetadata
      */
     public function isGlobalView()
     {
-        return 'true' === $this->globalView || true === $this->globalView;
+        return filter_var($this->globalView, FILTER_VALIDATE_BOOLEAN);
     }
 
     /**
@@ -74,21 +74,5 @@ class OwnershipProMetadata extends OwnershipMetadata
             $this->organizationColumnName,
             $this->globalView
             ) = unserialize($serialized);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function __set_state($data)
-    {
-        $result                         = new OwnershipProMetadata();
-        $result->ownerType              = $data['ownerType'];
-        $result->ownerFieldName         = $data['ownerFieldName'];
-        $result->ownerColumnName        = $data['ownerColumnName'];
-        $result->organizationColumnName = $data['organizationColumnName'];
-        $result->organizationFieldName  = $data['organizationFieldName'];
-        $result->globalView             = $data['globalView'];
-
-        return $result;
     }
 }

@@ -1,17 +1,17 @@
-define(function (require) {
+define(function(require) {
     'use strict';
 
-    var MultilineChartView,
-        _ = require('underscore'),
-        MultipleHandler = require('orocrmprofusioncharts/js/multiple-data-handler'),
-        BaseView = require('oroui/js/app/views/base/view');
+    var MultilineChartView;
+    var _ = require('underscore');
+    var MultipleHandler = require('orocrmprofusioncharts/js/multiple-data-handler');
+    var BaseView = require('oroui/js/app/views/base/view');
     require('orocrmprofusioncharts/lib/FusionCharts.jqueryplugin');
 
     MultilineChartView = BaseView.extend({
         /**
          * @inheritDoc
          */
-        initialize: function (options) {
+        initialize: function(options) {
             _.extend(this, _.pick(options, ['chartOptions']));
             MultilineChartView.__super__.initialize.apply(this, options);
         },
@@ -19,7 +19,7 @@ define(function (require) {
         /**
          * @inheritDoc
          */
-        dispose: function () {
+        dispose: function() {
             if (this.disposed) {
                 return;
             }
@@ -30,9 +30,9 @@ define(function (require) {
         /**
          * @inheritDoc
          */
-        render: function () {
-            var handler,
-                options = this.chartOptions;
+        render: function() {
+            var handler;
+            var options = this.chartOptions;
 
             handler = new MultipleHandler(
                 options.dataSource,

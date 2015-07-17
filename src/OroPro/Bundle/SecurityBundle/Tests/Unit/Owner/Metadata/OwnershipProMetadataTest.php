@@ -11,8 +11,11 @@ class OwnershipProMetadataTest extends \PHPUnit_Framework_TestCase
         $metadata = new OwnershipProMetadata();
         $this->assertFalse($metadata->hasOwner());
         $this->assertFalse($metadata->isOrganizationOwned());
+        $this->assertFalse($metadata->isGlobalLevelOwned());
         $this->assertFalse($metadata->isBusinessUnitOwned());
+        $this->assertFalse($metadata->isLocalLevelOwned());
         $this->assertFalse($metadata->isUserOwned());
+        $this->assertFalse($metadata->isBasicLevelOwned());
         $this->assertEquals('', $metadata->getOwnerFieldName());
         $this->assertEquals('', $metadata->getOwnerColumnName());
     }
@@ -48,8 +51,11 @@ class OwnershipProMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(OwnershipProMetadata::OWNER_TYPE_ORGANIZATION, $metadata->getOwnerType());
         $this->assertTrue($metadata->hasOwner());
         $this->assertTrue($metadata->isOrganizationOwned());
+        $this->assertTrue($metadata->isGlobalLevelOwned());
         $this->assertFalse($metadata->isBusinessUnitOwned());
+        $this->assertFalse($metadata->isLocalLevelOwned());
         $this->assertFalse($metadata->isUserOwned());
+        $this->assertFalse($metadata->isBasicLevelOwned());
         $this->assertEquals('org', $metadata->getOwnerFieldName());
         $this->assertEquals('org_id', $metadata->getOwnerColumnName());
         $this->assertTrue($metadata->isGlobalView());
@@ -61,8 +67,11 @@ class OwnershipProMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(OwnershipProMetadata::OWNER_TYPE_BUSINESS_UNIT, $metadata->getOwnerType());
         $this->assertTrue($metadata->hasOwner());
         $this->assertFalse($metadata->isOrganizationOwned());
+        $this->assertFalse($metadata->isGlobalLevelOwned());
         $this->assertTrue($metadata->isBusinessUnitOwned());
+        $this->assertTrue($metadata->isLocalLevelOwned());
         $this->assertFalse($metadata->isUserOwned());
+        $this->assertFalse($metadata->isBasicLevelOwned());
         $this->assertEquals('bu', $metadata->getOwnerFieldName());
         $this->assertEquals('bu_id', $metadata->getOwnerColumnName());
         $this->assertTrue($metadata->isGlobalView());
@@ -74,8 +83,11 @@ class OwnershipProMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(OwnershipProMetadata::OWNER_TYPE_USER, $metadata->getOwnerType());
         $this->assertTrue($metadata->hasOwner());
         $this->assertFalse($metadata->isOrganizationOwned());
+        $this->assertFalse($metadata->isGlobalLevelOwned());
         $this->assertFalse($metadata->isBusinessUnitOwned());
+        $this->assertFalse($metadata->isLocalLevelOwned());
         $this->assertTrue($metadata->isUserOwned());
+        $this->assertTrue($metadata->isBasicLevelOwned());
         $this->assertEquals('usr', $metadata->getOwnerFieldName());
         $this->assertEquals('user_id', $metadata->getOwnerColumnName());
         $this->assertFalse($metadata->isGlobalView());
@@ -87,6 +99,7 @@ class OwnershipProMetadataTest extends \PHPUnit_Framework_TestCase
         $data = serialize($metadata);
         $metadata = new OwnershipProMetadata();
         $this->assertFalse($metadata->isOrganizationOwned());
+        $this->assertFalse($metadata->isGlobalLevelOwned());
         $this->assertEquals('', $metadata->getOwnerFieldName());
         $this->assertEquals('', $metadata->getOwnerColumnName());
         $metadata = unserialize($data);

@@ -9,7 +9,6 @@ use Symfony\Component\DependencyInjection\Reference;
 class OverrideEntityAclExtensionPass implements CompilerPassInterface
 {
     const ACL_EXTENSION_SERVICE         = 'oro_security.acl.extension.entity';
-    const SECURITY_CONTEXT_SERVICE_LINK = 'security.context.link';
 
     const SYSTEM_MODE_ORG_PROVIDER = 'oropro_organization.system_mode_org_provider';
 
@@ -42,12 +41,6 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        // Add context link service to the entity ACL extension service
-        if ($container->hasDefinition(self::ACL_EXTENSION_SERVICE)) {
-            $definition = $container->getDefinition(self::ACL_EXTENSION_SERVICE);
-            $definition->addMethodCall('setContextLink', [new Reference(self::SECURITY_CONTEXT_SERVICE_LINK)]);
-        }
-
         // rewrite search_listener
         if ($container->hasDefinition(self::SEARCH_LISTENER_SERVICE)) {
             $definition = $container->getDefinition(self::SEARCH_LISTENER_SERVICE);
