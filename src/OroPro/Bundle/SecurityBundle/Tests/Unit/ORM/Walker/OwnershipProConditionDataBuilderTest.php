@@ -95,6 +95,9 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->builder = new OwnershipProConditionDataBuilder(
             $securityContextLink,
@@ -103,6 +106,7 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
             $this->metadataProvider,
             $treeProvider,
             $this->registry,
+            $configProvider,
             $this->aclVoter
         );
 
