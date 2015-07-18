@@ -155,7 +155,6 @@ class EwsEmailSynchronizerTest extends OrmTestCase
 
     public function testInitializeOrigins()
     {
-
         $this->ewsConfigurator->expects($this->once())
             ->method('getServer')
             ->will($this->returnValue('test_server'));
@@ -175,21 +174,21 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             ->method('bindValue')
             ->with(2, 'test_server');
         $insertOriginStmt = $this->getMock('Oro\Bundle\TestFrameworkBundle\Test\Doctrine\ORM\Mocks\StatementMock');
-        $insertOriginStmt->expects($this->at(6))
-            ->method('bindValue')
-            ->with(6, 1);
         $insertOriginStmt->expects($this->at(7))
             ->method('bindValue')
-            ->with(7, null);
+            ->with(7, 1);
         $insertOriginStmt->expects($this->at(8))
             ->method('bindValue')
-            ->with(8, 'test_server');
+            ->with(8, null);
         $insertOriginStmt->expects($this->at(9))
             ->method('bindValue')
-            ->with(9, 'test@example.com');
+            ->with(9, 'test_server');
         $insertOriginStmt->expects($this->at(10))
             ->method('bindValue')
-            ->with(10, 'ewsemailorigin');
+            ->with(10, 'test@example.com');
+        $insertOriginStmt->expects($this->at(11))
+            ->method('bindValue')
+            ->with(11, 'ewsemailorigin');
 
         $statementCount = -1;
         $actualSqls = [];
@@ -244,9 +243,9 @@ class EwsEmailSynchronizerTest extends OrmTestCase
         // insert origin
         $actualSql = $actualSqls[1];
         $expectedSql = 'INSERT INTO oro_email_origin'
-            . ' (isActive, sync_code_updated, synchronized, '
+            . ' (mailbox_name, isActive, sync_code_updated, synchronized, '
             . 'sync_code, sync_count, owner_id, organization_id, ews_server, ews_user_email, name)'
-            . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         $this->assertEquals($expectedSql, $actualSql);
     }
 }
