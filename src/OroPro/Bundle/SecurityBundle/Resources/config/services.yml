@@ -6,12 +6,17 @@ parameters:
     # Override Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
     # in enterprise edition user should be able to set Organization as Access level in "Default permission on entities"
     #
-    oro_security.acl.extension.entity.class:    OroPro\Bundle\SecurityBundle\Acl\Extension\EntityAclProExtension
+    oro_security.acl.extension.entity.class:     OroPro\Bundle\SecurityBundle\Acl\Extension\EntityAclProExtension
 
     oro_security.acl.privilege_repository.class: OroPro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeProRepository
     oro_security.acl.voter.class:                OroPro\Bundle\SecurityBundle\Acl\Voter\AclProVoter
+    oro_security.acl.dbal.provider.class:        OroPro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
+    oro_security.acl.base_manager.class:         OroPro\Bundle\SecurityBundle\Acl\Persistence\BaseAclManager
     oro_security.listener.search_listener.class: OroPro\Bundle\SecurityBundle\EventListener\SearchProListener
+
     oro_security.twig.security_organization_extension: OroPro\Bundle\SecurityBundle\Twig\OroProSecurityOrganizationExtension
+
+    oro_security.acl.security_identity_retrieval_strategy.class: OroPro\Bundle\SecurityBundle\Acl\Domain\SecurityIdentityRetrievalStrategy
 
 services:
     oropro_security.licence.server_agent:
