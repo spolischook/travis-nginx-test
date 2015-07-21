@@ -2,6 +2,7 @@
 
 namespace OroPro\Bundle\SecurityBundle\EventListener;
 
+use Doctrine\Common\Collections\Criteria;
 use Oro\Bundle\SearchBundle\Event\BeforeSearchEvent;
 use Oro\Bundle\SearchBundle\Event\PrepareEntityMapEvent;
 use Oro\Bundle\SecurityBundle\EventListener\SearchListener;
@@ -51,7 +52,10 @@ class SearchProListener extends SearchListener
             $organizationId = $this->organizationProvider->getOrganizationId();
             if ($organizationId) {
                 $query = $event->getQuery();
-                $query->andWhere('organization', 'in', [$organizationId, self::EMPTY_ORGANIZATION_ID], 'integer');
+                $expr = Criteria::expr();
+                $query->getCriteria()->andWhere(
+                    $expr->in('integer.organization', [$organizationId, self::EMPTY_ORGANIZATION_ID])
+                );
                 $event->setQuery($query);
             }
         } else {

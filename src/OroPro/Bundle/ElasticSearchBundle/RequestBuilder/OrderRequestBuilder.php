@@ -11,10 +11,14 @@ class OrderRequestBuilder implements RequestBuilderInterface
      */
     public function build(Query $query, array $request)
     {
-        $field = $query->getOrderBy();
-        if ($field) {
-            $request['body']['sort'][$field]['order'] = $query->getOrderDirection();
-        }
+        $query->getCriteria()->getOrderings();
+        /**
+         * TODO: ordering from criteria
+         */
+//        $field = $query->getOrderBy();
+//        if ($field) {
+//            $request['body']['sort'][$field]['order'] = $query->getOrderDirection();
+//        }
 
         return $request;
     }

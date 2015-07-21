@@ -15,14 +15,12 @@ class ContainsWherePartBuilder extends AbstractWherePartBuilder
     /**
      * {@inheritdoc}
      */
-    public function buildPart($field, $type, $operator, $value, $keyword, array $request)
+    public function buildPart($field, $type, $operator, $value)
     {
         // define bool part
         $boolPart = 'must';
         if ($operator == Query::OPERATOR_NOT_CONTAINS) {
             $boolPart = 'must_not';
-        } elseif ($keyword == Query::KEYWORD_OR) {
-            $boolPart = 'should';
         }
 
         // define query part
@@ -34,9 +32,6 @@ class ContainsWherePartBuilder extends AbstractWherePartBuilder
             $queryPart = ['wildcard' => [$field => '*' . $value . '*']];
         }
 
-        // add condition
-        $request['body']['query']['filtered']['query']['bool'][$boolPart][] = $queryPart;
-
-        return $request;
+        return ['bool' => [$boolPart => [$queryPart]]];
     }
 }
