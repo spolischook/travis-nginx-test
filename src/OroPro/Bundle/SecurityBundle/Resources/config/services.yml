@@ -17,6 +17,7 @@ parameters:
     oro_security.twig.security_organization_extension: OroPro\Bundle\SecurityBundle\Twig\OroProSecurityOrganizationExtension
 
     oro_security.acl.security_identity_retrieval_strategy.class: OroPro\Bundle\SecurityBundle\Acl\Domain\SecurityIdentityRetrievalStrategy
+    oro_security.owner.decision_maker.class:     OroPro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker
 
 services:
     oropro_security.licence.server_agent:
