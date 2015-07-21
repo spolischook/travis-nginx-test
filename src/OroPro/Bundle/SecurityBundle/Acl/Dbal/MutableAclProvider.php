@@ -116,4 +116,43 @@ class MutableAclProvider extends BaseMutableAclProvider
             $this->connection->getDatabasePlatform()->convertBooleans($username)
         );
     }
+
+
+    /**
+     * @param string $securityIdentifier
+     * @param string $username
+     *
+     * @return BusinessUnitSecurityIdentity|RoleSecurityIdentity|OrganizationSecurityIdentity
+     */
+    protected function getSecurityIdentityFromString($securityIdentifier, $username)
+    {
+        if ($username) {
+            return new UserSecurityIdentity(
+                substr($securityIdentifier, 1 + $pos = strpos($securityIdentifier, '-')),
+                substr($securityIdentifier, 0, $pos)
+            );
+        } else {
+            $pos = strpos($securityIdentifier, '-');
+
+            if ($pos !== false) {
+                $identifier = substr($securityIdentifier, 1 + $pos);
+                $className = substr($securityIdentifier, 0, $pos);
+                $sidReflection = new \ReflectionClass($className);
+                $interfaceNames = $sidReflection->getInterfaceNames();
+                if (in_array(
+                    'Oro\Bundle\OrganizationBundle\Entity\BusinessUnitInterface',
+                    (array) $interfaceNames)
+                ) {
+                    return new BusinessUnitSecurityIdentity($identifier, $className);
+                } elseif (in_array(
+                    'Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface',
+                    (array) $interfaceNames)
+                ) {
+                    return new OrganizationSecurityIdentity($identifier, $className);
+                }
+            }
+
+            return new RoleSecurityIdentity($securityIdentifier);
+        }
+    }
 }
