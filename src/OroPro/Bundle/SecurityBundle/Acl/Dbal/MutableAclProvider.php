@@ -50,6 +50,8 @@ class MutableAclProvider extends BaseMutableAclProvider
             );
         }
 
+        $this->sids = null;
+
         return sprintf(
             'UPDATE %s SET identifier = %s WHERE identifier = %s AND username = %s',
             $this->options['sid_table_name'],
@@ -79,6 +81,8 @@ class MutableAclProvider extends BaseMutableAclProvider
                 'or OrganizationSecurityIdentity or BusinessUnitSecurityIdentity.'
             );
         }
+
+        $this->sids = null;
 
         return sprintf(
             'INSERT INTO %s (identifier, username) VALUES (%s, %s)',
