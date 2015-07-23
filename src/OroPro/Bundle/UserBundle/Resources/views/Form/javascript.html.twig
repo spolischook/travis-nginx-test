@@ -1,0 +1,11 @@
+{% macro filterRoles(form) %}
+    <script type="text/javascript">
+        require(['orointegration/js/channel-view'], function () {
+            "use strict";
+            var roles = $('#{{ form.roles.vars.id }}').find('input[type="checkbox"]');
+            roles.each(function(key, elm) {
+                $(elm).show();
+            });
+        });
+    </script>
+{% endmacro %}

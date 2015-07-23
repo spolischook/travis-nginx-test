@@ -52,46 +52,46 @@ class FormUserTypeSubscriber implements EventSubscriberInterface
     {
         $form = $event->getForm();
 
-        if ($form->has('roles') && !$this->isCurrentUserAssignedToGlobalOrganization()) {
-            $form->remove('roles');
-
-            $organizationIds = [];
-            $organizations = $this->getCurrentUserOrganizations();
-            if ($organizations) {
-                $organizationIds = $organizations
-                    ->map(
-                        function (Organization $organization) {
-                            return $organization->getId();
-                        }
-                    )->toArray();
-            }
-
-            $form->add(
-                'roles',
-                'entity',
-                [
-                    'property_path' => 'rolesCollection',
-                    'label'         => 'oro.user.roles.label',
-                    'class'         => 'OroUserBundle:Role',
-                    'property'      => 'label',
-                    'query_builder' => function (EntityRepository $er) use ($organizationIds) {
-                        $qb = $er->createQueryBuilder('r');
-                        $qb->where($qb->expr()->neq('r.role', ':anon'))
-                            ->andWhere($qb->expr()->in('r.organization', ':orgIds'))
-                            ->setParameter('anon', User::ROLE_ANONYMOUS)
-                            ->setParameter('orgIds', $organizationIds)
-                            ->orderBy('r.label');
-                        return $qb;
-                    },
-                    'multiple'      => true,
-                    'expanded'      => true,
-                    'required'      => !$this->isMyProfilePage,
-                    'read_only'     => $this->isMyProfilePage,
-                    'disabled'      => $this->isMyProfilePage,
-                    'translatable_options' => false
-                ]
-            );
-        }
+//        if ($form->has('roles') && !$this->isCurrentUserAssignedToGlobalOrganization()) {
+//            $form->remove('roles');
+//
+//            $organizationIds = [];
+//            $organizations = $this->getCurrentUserOrganizations();
+//            if ($organizations) {
+//                $organizationIds = $organizations
+//                    ->map(
+//                        function (Organization $organization) {
+//                            return $organization->getId();
+//                        }
+//                    )->toArray();
+//            }
+//
+//            $form->add(
+//                'roles',
+//                'entity',
+//                [
+//                    'property_path' => 'rolesCollection',
+//                    'label'         => 'oro.user.roles.label',
+//                    'class'         => 'OroUserBundle:Role',
+//                    'property'      => 'label',
+//                    'query_builder' => function (EntityRepository $er) use ($organizationIds) {
+//                        $qb = $er->createQueryBuilder('r');
+//                        $qb->where($qb->expr()->neq('r.role', ':anon'))
+//                            ->andWhere($qb->expr()->in('r.organization', ':orgIds'))
+//                            ->setParameter('anon', User::ROLE_ANONYMOUS)
+//                            ->setParameter('orgIds', $organizationIds)
+//                            ->orderBy('r.label');
+//                        return $qb;
+//                    },
+//                    'multiple'      => true,
+//                    'expanded'      => true,
+//                    'required'      => !$this->isMyProfilePage,
+//                    'read_only'     => $this->isMyProfilePage,
+//                    'disabled'      => $this->isMyProfilePage,
+//                    'translatable_options' => false
+//                ]
+//            );
+//        }
     }
 
     /**
