@@ -146,4 +146,30 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
                 'username' => $username,
             ]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getSecurityIdentityIdsByScope(array $sids, array $shareScope)
+    {
+        $sidIds = [];
+
+        foreach ($sids as $key => $sid) {
+            $sharedToScope = false;
+
+            if ($this->ace->getSecurityIdentity() instanceof UserSecurityIdentity) {
+                $sharedToScope = 'user';
+            } elseif ($this->ace->getSecurityIdentity() instanceof BusinessUnitSecurityIdentity) {
+                $sharedToScope = 'business_unit';
+            } elseif ($this->ace->getSecurityIdentity() instanceof OrganizationSecurityIdentity) {
+                $sharedToScope = 'organization';
+            }
+
+            if (in_array($sharedToScope, $shareScope)) {
+                $sidIds[] = $key;
+            }
+        }
+
+        return $sidIds;
+    }
 }
