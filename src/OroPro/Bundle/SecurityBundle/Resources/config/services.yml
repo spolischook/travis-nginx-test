@@ -1,6 +1,7 @@
 parameters:
     oropro_security.licence.server_agent.class: OroPro\Bundle\SecurityBundle\Licence\ServerAgent
     oropro_security.licence.sender.class:       OroPro\Bundle\SecurityBundle\Licence\Sender
+    oropro_security.form.type.share.class:      OroPro\Bundle\SecurityBundle\Form\Type\ShareType
 
     #
     # Override Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
@@ -19,6 +20,9 @@ parameters:
     oro_security.acl.security_identity_retrieval_strategy.class: OroPro\Bundle\SecurityBundle\Acl\Domain\SecurityIdentityRetrievalStrategy
     oro_security.owner.decision_maker.class:     OroPro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker
 
+    oro_security.form.model.factory.class:       OroPro\Bundle\SecurityBundle\Form\Model\Factory
+    oro_security.form.handler.share.class:       OroPro\Bundle\OrganizationBundle\Form\Handler\ShareHandler
+
 services:
     oropro_security.licence.server_agent:
         class: %oropro_security.licence.server_agent.class%
@@ -29,3 +33,12 @@ services:
 
     oropro_security.licence.sender:
         class: %oropro_security.licence.sender.class%
+
+    oro_security.form.type.share:
+        class: %oropro_security.form.type.share.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: form.type, alias: oro_share }
+        calls:
+            - [setEntityManager, [@doctrine.orm.entity_manager]]
