@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 use OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper;
 
@@ -45,7 +45,7 @@ class IsGlobalType extends AbstractType
         $organizationHelper = $this->organizationHelper;
 
         // if entity was marked as global, we should check if existing global organization have the same id
-        $callback = function ($value, ExecutionContext $context) use ($organizationHelper) {
+        $callback = function ($value, ExecutionContextInterface $context) use ($organizationHelper) {
             /** @var OrganizationProHelper $organizationHelper */
             $globalOrgId = $organizationHelper->getGlobalOrganizationId();
             if (!empty($value)
