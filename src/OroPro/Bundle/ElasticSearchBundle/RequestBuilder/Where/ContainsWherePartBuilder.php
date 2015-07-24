@@ -4,6 +4,7 @@ namespace OroPro\Bundle\ElasticSearchBundle\RequestBuilder\Where;
 
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 use Oro\Bundle\SearchBundle\Query\Query;
+use OroPro\Bundle\ElasticSearchBundle\Engine\IndexAgent;
 
 class ContainsWherePartBuilder extends AbstractWherePartBuilder
 {
@@ -17,21 +18,12 @@ class ContainsWherePartBuilder extends AbstractWherePartBuilder
      */
     public function buildPart($field, $type, $operator, $value)
     {
-        // define bool part
-        $boolPart = 'must';
-        if ($operator == Query::OPERATOR_NOT_CONTAINS) {
-            $boolPart = 'must_not';
+        $condition = ['match' => [sprintf('%s.%s', $field, IndexAgent::FULLTEXT_ANALYZED_FIELD) => $value]];
+
+        if ($operator === Query::OPERATOR_NOT_CONTAINS) {
+            return ['bool' => ['must_not' => $condition]];
         }
 
-        // define query part
-        if ($field == Indexer::TEXT_ALL_DATA_FIELD) {
-            // nGram tokenizer is used
-            $queryPart = ['match' => [$field => $value]];
-        } else {
-            // regular wildcard
-            $queryPart = ['wildcard' => [$field => '*' . $value . '*']];
-        }
-
-        return ['bool' => [$boolPart => [$queryPart]]];
+        return $condition;
     }
 }
