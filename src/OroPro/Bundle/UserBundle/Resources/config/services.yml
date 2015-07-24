@@ -4,6 +4,7 @@ parameters:
     oropro_user.event_listener.datagrid.role.class: OroPro\Bundle\UserBundle\EventListener\Datagrid\RoleListener
     oropro_user.acl.voter.role.class: OroPro\Bundle\UserBundle\Acl\Voter\RoleVoter
     oropro_user.helper.class: OroPro\Bundle\UserBundle\Helper\UserProHelper
+    oropro_user.form.type.user.class: OroPro\Bundle\UserBundle\Form\Type\UserType
 
 services:
     oropro_user.form.type.role_organization_select:
@@ -40,3 +41,15 @@ services:
 
     oropro_user.helper:
         class: %oropro_user.helper.class%
+
+    oropro_user.form.type.user:
+        scope: request
+        class: %oropro_user.form.type.user.class%
+        arguments:
+            - @security.context
+            - @oro_security.security_facade
+            - @request
+            - @oro_config.user_config_manager
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: form.type, alias: oro_user_user }
