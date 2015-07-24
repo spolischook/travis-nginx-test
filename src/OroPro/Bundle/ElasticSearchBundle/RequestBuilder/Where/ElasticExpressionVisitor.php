@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Expr\CompositeExpression;
 use Doctrine\Common\Collections\Expr\ExpressionVisitor;
 use Doctrine\Common\Collections\Expr\Value;
 
-use Oro\Bundle\SearchBundle\Query\Query;
+use Oro\Bundle\SearchBundle\Query\Criteria\Criteria;
 
 class ElasticExpressionVisitor extends ExpressionVisitor
 {
@@ -30,8 +30,8 @@ class ElasticExpressionVisitor extends ExpressionVisitor
     public function walkComparison(Comparison $comparison)
     {
         $value = $comparison->getValue()->getValue();
-        list($type, $field) = $this->getFieldInfo($comparison->getField());
-        $operator = $this->getSearchOperatorByComparisonOperator($comparison->getOperator());
+        list($type, $field) = Criteria::explodeFieldTypeName($comparison->getField());
+        $operator = Criteria::getSearchOperatorByComparisonOperator($comparison->getOperator());
 
         foreach ($this->partBuilders as $partBuilder) {
             if ($partBuilder->isOperatorSupported($operator)) {
@@ -67,37 +67,5 @@ class ElasticExpressionVisitor extends ExpressionVisitor
             default:
                 throw new \RuntimeException("Unknown composite " . $expr->getType());
         }
-    }
-
-    /**
-     * @param string $field
-     *
-     * @return array
-     */
-    protected function getFieldInfo($field)
-    {
-        $fieldType = Query::TYPE_TEXT;
-        if (strpos($field, '.') !== false) {
-            list($fieldType, $field) = explode('.', $field);
-        }
-
-        return [$fieldType, $field];
-    }
-
-    /**
-     * @param string $operator
-     *
-     * @return string
-     */
-    protected function getSearchOperatorByComparisonOperator($operator)
-    {
-        switch ($operator) {
-            case Comparison::CONTAINS:
-                return Query::OPERATOR_CONTAINS;
-            case Comparison::NEQ:
-                return Query::OPERATOR_NOT_EQUALS;
-        }
-
-        return strtolower($operator);
     }
 }

@@ -31,12 +31,6 @@ class RangeWherePartBuilder extends AbstractWherePartBuilder
      */
     public function buildPart($field, $type, $operator, $value)
     {
-        // define bool part
-        $boolPart = 'must';
-
-        // find range modifier
-        $modifier = $this->operatorModifiers[$operator];
-
-        return  ['bool' => [$boolPart => ['range' => [$field => [$modifier => $value]]]]];
+        return  ['range' => [$field => [$this->operatorModifiers[$operator] => $value]]];
     }
 }

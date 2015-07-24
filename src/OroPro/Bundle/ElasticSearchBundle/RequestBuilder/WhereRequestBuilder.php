@@ -20,7 +20,7 @@ class WhereRequestBuilder implements RequestBuilderInterface
     {
         $visitor = new ElasticExpressionVisitor($this->partBuilders);
 
-        $request['body']['query']['filtered']['query'] = $visitor->dispatch(
+        $request['body']['query'] = $visitor->dispatch(
             $query->getCriteria()->getWhereExpression()
         );
 
