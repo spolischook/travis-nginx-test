@@ -2,7 +2,6 @@
 
 namespace OroPro\Bundle\UserBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -13,7 +12,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\ConfigBundle\Manager\UserConfigManager;
 use Doctrine\ORM\EntityManager;
-use OroPro\Bundle\UserBundle\EventListener\FormUserTypeSubscriber;
 
 class UserType extends BaseUserType
 {
@@ -38,15 +36,6 @@ class UserType extends BaseUserType
     ) {
         parent::__construct($security, $securityFacade, $request, $userConfigManager);
         $this->em = $em;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        parent::buildForm($builder, $options);
-        $builder->addEventSubscriber(new FormUserTypeSubscriber($this->security, $this->isMyProfilePage));
     }
 
     /**
