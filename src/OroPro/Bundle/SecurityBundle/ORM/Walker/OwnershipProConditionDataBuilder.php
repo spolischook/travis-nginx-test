@@ -157,11 +157,11 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
         foreach ($sids as $key => $sid) {
             $sharedToScope = false;
 
-            if ($this->ace->getSecurityIdentity() instanceof UserSecurityIdentity) {
+            if ($sid instanceof UserSecurityIdentity) {
                 $sharedToScope = 'user';
-            } elseif ($this->ace->getSecurityIdentity() instanceof BusinessUnitSecurityIdentity) {
+            } elseif ($sid instanceof BusinessUnitSecurityIdentity) {
                 $sharedToScope = 'business_unit';
-            } elseif ($this->ace->getSecurityIdentity() instanceof OrganizationSecurityIdentity) {
+            } elseif ($sid instanceof OrganizationSecurityIdentity) {
                 $sharedToScope = 'organization';
             }
 
