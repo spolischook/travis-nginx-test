@@ -4,6 +4,7 @@ namespace OroPro\Bundle\ElasticSearchBundle\RequestBuilder;
 
 use Oro\Bundle\SearchBundle\Query\Query;
 use OroPro\Bundle\ElasticSearchBundle\RequestBuilder\Where\AbstractWherePartBuilder;
+use OroPro\Bundle\ElasticSearchBundle\RequestBuilder\Where\ElasticExpressionVisitor;
 
 class WhereRequestBuilder implements RequestBuilderInterface
 {
@@ -17,19 +18,11 @@ class WhereRequestBuilder implements RequestBuilderInterface
      */
     public function build(Query $query, array $request)
     {
-        foreach ($query->getOptions() as $option) {
-            $field    = $option['fieldName'];
-            $type     = $option['fieldType'];
-            $operator = $option['condition'];
-            $value    = $option['fieldValue'];
-            $keyword  = $option['type'];
+        $visitor = new ElasticExpressionVisitor($this->partBuilders);
 
-            foreach ($this->partBuilders as $partBuilder) {
-                if ($partBuilder->isOperatorSupported($operator)) {
-                    $request = $partBuilder->buildPart($field, $type, $operator, $value, $keyword, $request);
-                }
-            }
-        }
+        $request['body']['query'] = $visitor->dispatch(
+            $query->getCriteria()->getWhereExpression()
+        );
 
         return $request;
     }

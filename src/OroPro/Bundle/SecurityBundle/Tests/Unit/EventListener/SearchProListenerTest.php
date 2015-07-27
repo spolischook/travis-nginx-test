@@ -60,16 +60,10 @@ class SearchProListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->listener->beforeSearchEvent($event);
 
-        $wherePart = $this->query->getOptions();
-        $this->assertCount(2, $wherePart);
-        $expexted = [
-            'fieldName' => 'organization',
-            'condition' => 'in',
-            'fieldValue' => [10, 0],
-            'fieldType' => 'integer',
-            'type' => 'and'
-        ];
-        $this->assertEquals($expexted, $wherePart[1]);
+        $this->assertEquals(
+            ' from testEntity where (text someTextField ~ "test" and integer organization in (10, 0))',
+            $this->query->getStringQuery()
+        );
     }
 
     public function testBeforeSearchEventSystemMode()
@@ -84,8 +78,10 @@ class SearchProListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->listener->beforeSearchEvent($event);
 
-        $wherePart = $this->query->getOptions();
-        $this->assertCount(1, $wherePart);
+        $this->assertEquals(
+            ' from testEntity where text someTextField ~ "test"',
+            $this->query->getStringQuery()
+        );
     }
 
     public function testBeforeSearchEventSystemModeWithAdditionalOrg()
@@ -103,17 +99,9 @@ class SearchProListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->listener->beforeSearchEvent($event);
 
-        $wherePart = $this->query->getOptions();
-        $this->assertCount(2, $wherePart);
         $this->assertEquals(
-            [
-                'fieldName' => 'organization',
-                'condition' => 'in',
-                'fieldValue' => [2, 0],
-                'fieldType' => 'integer',
-                'type' => 'and'
-            ],
-            $wherePart[1]
+            ' from testEntity where (text someTextField ~ "test" and integer organization in (2, 0))',
+            $this->query->getStringQuery()
         );
     }
 }
