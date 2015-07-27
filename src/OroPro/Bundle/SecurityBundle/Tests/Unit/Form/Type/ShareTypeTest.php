@@ -76,7 +76,13 @@ class ShareTypeTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $child->expects($this->once())
             ->method('addModelTransformer');
+        $child->expects($this->once())
+            ->method('addEventListener');
         $builder->expects($this->at(5))
+            ->method('get')
+            ->with('organizations')
+            ->willReturn($child);
+        $builder->expects($this->at(6))
             ->method('get')
             ->with('organizations')
             ->willReturn($child);
