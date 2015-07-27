@@ -74,7 +74,7 @@ class OrganizationChoiceType extends AbstractType
     /**
      * Returns a list of choices for current logged user
      *
-     * @return array of organizations: key = organization name, value = ChoiceListItem
+     * @return array [{organization id} => {organization name}, ...]
      */
     public function getChoices()
     {
