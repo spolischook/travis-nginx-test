@@ -123,7 +123,8 @@ class SearchQueryToStringConverter
                 return '"' . $value . '"';
             case SearchQueryMatch::PREFIX_WITH_ORDER_RESTRICTED_MATCH:
                 return '"' . $value . '"%*';
-            default: // DEFAULT_MATCH and PREFIX_MATCH
+            default:
+                // DEFAULT_MATCH and PREFIX_MATCH
                 return $value;
         }
     }
