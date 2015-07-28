@@ -67,7 +67,7 @@ class ShareHandler extends BaseHandler
         } else {
             return $this->form->has('organizations') &&
                     $sid instanceof OrganizationSecurityIdentity &&
-                    in_array('organization', $this->shareScopes, true);
+                    in_array(Share::SHARE_SCOPE_ORGANIZATION, $this->shareScopes, true);
         }
     }
 

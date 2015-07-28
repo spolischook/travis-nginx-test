@@ -15,6 +15,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 use OroPro\Bundle\SecurityBundle\Acl\Domain\OrganizationSecurityIdentity;
+use OroPro\Bundle\SecurityBundle\Form\Model\Share;
 
 class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
 {
@@ -158,11 +159,11 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
             $sharedToScope = false;
 
             if ($sid instanceof UserSecurityIdentity) {
-                $sharedToScope = 'user';
+                $sharedToScope = Share::SHARE_SCOPE_USER;
             } elseif ($sid instanceof BusinessUnitSecurityIdentity) {
-                $sharedToScope = 'business_unit';
+                $sharedToScope = Share::SHARE_SCOPE_BUSINESS_UNIT;
             } elseif ($sid instanceof OrganizationSecurityIdentity) {
-                $sharedToScope = 'organization';
+                $sharedToScope = Share::SHARE_SCOPE_ORGANIZATION;
             }
 
             if (in_array($sharedToScope, $shareScope)) {

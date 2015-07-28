@@ -1,0 +1,4 @@
+oropro:
+    security:
+        share_scopes:
+            organization: Organization

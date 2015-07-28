@@ -10,6 +10,7 @@ use Oro\Bundle\SecurityBundle\Acl\Domain\BusinessUnitSecurityIdentity;
 use Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker as BaseDecisionMaker;
 
 use OroPro\Bundle\SecurityBundle\Acl\Domain\OrganizationSecurityIdentity;
+use OroPro\Bundle\SecurityBundle\Form\Model\Share;
 
 class EntityOwnershipDecisionMaker extends BaseDecisionMaker
 {
@@ -57,13 +58,13 @@ class EntityOwnershipDecisionMaker extends BaseDecisionMaker
 
         $sharedToScope = false;
         if ($this->ace->getSecurityIdentity() instanceof UserSecurityIdentity) {
-            $sharedToScope = 'user';
+            $sharedToScope = Share::SHARE_SCOPE_USER;
         } elseif ($this->ace->getSecurityIdentity() instanceof BusinessUnitSecurityIdentity) {
-            $sharedToScope = 'business_unit';
+            $sharedToScope = Share::SHARE_SCOPE_BUSINESS_UNIT;
         } elseif ($this->ace->getSecurityIdentity() instanceof OrganizationSecurityIdentity) {
-            $sharedToScope = 'organization';
+            $sharedToScope = Share::SHARE_SCOPE_ORGANIZATION;
         }
 
-        return in_array($sharedToScope, $shareScopes);
+        return in_array($sharedToScope, $shareScopes, true);
     }
 }

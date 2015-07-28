@@ -22,6 +22,7 @@ parameters:
 
     oro_security.form.model.factory.class:       OroPro\Bundle\SecurityBundle\Form\Model\Factory
     oro_security.form.handler.share.class:       OroPro\Bundle\OrganizationBundle\Form\Handler\ShareHandler
+    oro_security.form.type.share_scope.class:    OroPro\Bundle\SecurityBundle\Form\Type\ShareScopeType
 
 services:
     oropro_security.licence.server_agent:
