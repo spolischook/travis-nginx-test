@@ -46,18 +46,5 @@ class ShareType extends BaseType
         $builder->get('organizations')->addModelTransformer(
             new EntitiesToIdsTransformer($this->entityManager, 'Oro\Bundle\OrganizationBundle\Entity\Organization')
         );
-        // The event listener fixes transformation from empty string to array with empty string.
-        // The case is affected by Genemu\Bundle\FormBundle\Form\JQuery\DataTransformer::reverseTransform().
-        // Example: explode(',', '') => array(0=>'').
-        // @todo remove after vendor fixation
-        $builder->get('organizations')->addEventListener(
-            FormEvents::PRE_SUBMIT,
-            function (FormEvent $event) {
-                $value = $event->getData();
-                if (empty($value)) {
-                    $event->setData([]);
-                }
-            }
-        );
     }
 }
