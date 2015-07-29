@@ -24,6 +24,8 @@ parameters:
     oro_security.form.handler.share.class:       OroPro\Bundle\OrganizationBundle\Form\Handler\ShareHandler
     oro_security.form.type.share_scope.class:    OroPro\Bundle\SecurityBundle\Form\Type\ShareScopeType
 
+    oro_security.ace.query.manager.class:        OroPro\Bundle\SecurityBundle\Model\Action\AceQueryManager
+
 services:
     oropro_security.licence.server_agent:
         class: %oropro_security.licence.server_agent.class%
