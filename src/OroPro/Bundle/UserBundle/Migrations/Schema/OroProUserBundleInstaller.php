@@ -54,7 +54,7 @@ class OroProUserBundleInstaller implements Installation, ExtendExtensionAwareInt
                     'form_type'  => 'oropro_user_role_organization_select'
                 ],
                 'datagrid' => [
-                    'is_visible' => true
+                    'is_visible' => false
                 ]
             ]
         );

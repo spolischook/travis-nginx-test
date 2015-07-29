@@ -12,50 +12,40 @@
                 var granted = permissionsMap[roleId] == null || isOrganizationForRoleChecked(roleId);
 
                 if (!granted) {
-                    $('label[for="' + elm.id + '"]').hide();
-                    $(elm).hide();
+                    hideCheckboxElement(elm);
                 }
             });
 
             $(function() {
                 $(document).on('change', 'input.org:checkbox', function (e) {
-                    if($(this).prop('checked') == false) {
-                        roles.each(function (key, elm) {
-                            var roleId = elm.value;
-                            var granted = (permissionsMap[roleId] == null || isOrganizationForRoleChecked(roleId));
-                            if (!granted) {
-                                $(elm).prop('checked', false);
-                            }
-                        });
-                    }
-                    rebuildCheckboxes();
+                    roles.each(function (key, elm) {
+                        var roleId = elm.value;
+                        var granted = (permissionsMap[roleId] == null || isOrganizationForRoleChecked(roleId));
+                        if (!granted) {
+                            $(elm).prop('checked', false);
+                            hideCheckboxElement(elm);
+                        } else {
+                            showCheckboxElement(elm)
+                        }
+                    });
                 });
             });
+
+            function hideCheckboxElement(elm) {
+                $('label[for="' + elm.id + '"]').hide();
+                $(elm).hide();
+            }
+
+            function showCheckboxElement(elm) {
+                $('label[for="' + elm.id + '"]').show();
+                $(elm).show();
+            }
 
             function isOrganizationForRoleChecked(roleId) {
                 var checkedOrganization = organizations.filter(function(key, elm) {
                     return (parseInt(elm.value) == permissionsMap[roleId] && elm.checked);
                 });
-
-                if (checkedOrganization.length == 0) {
-                    return false;
-                }
-                return true;
-            };
-
-            function rebuildCheckboxes() {
-                roles.each(function (key, elm) {
-                    var roleId = elm.value;
-                    var granted = (permissionsMap[roleId] == null || isOrganizationForRoleChecked(roleId));
-
-                    if (!granted) {
-                        $('label[for="' + elm.id + '"]').hide();
-                        $(elm).hide();
-                    } else {
-                        $('label[for="' + elm.id + '"]').show();
-                        $(elm).show();
-                    }
-                });
+                return checkedOrganization.length > 0;
             }
         });
     </script>
