@@ -89,11 +89,12 @@ class LdapHelper implements ContextAwareInterface
     {
         $ldapRoles = [];
         foreach ($roles as $role) {
-            if (!array_key_exists($this->roleIdAttr, $role)) {
+            $roleAttr = strtolower($this->roleIdAttr);
+            if (!array_key_exists($roleAttr, $role)) {
                 continue;
             }
 
-            $ldapValue = $role[$this->roleIdAttr];
+            $ldapValue = $role[$roleAttr];
 
             $value = null;
             if (!array_key_exists('count', $ldapValue) || $ldapValue['count'] == 1) {

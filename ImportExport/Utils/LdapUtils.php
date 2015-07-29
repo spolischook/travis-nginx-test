@@ -17,6 +17,7 @@ class LdapUtils
      */
     public static function createDn($usernameAttribute, $username, $baseDn = null)
     {
+        $usernameAttribute = strtolower($usernameAttribute);
         if ($baseDn === null) {
             return sprintf('%s=%s', $usernameAttribute, $username);
         }

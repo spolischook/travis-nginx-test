@@ -46,6 +46,7 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
             } else {
                 $dn = $item['dn'][$this->channel->getId()];
             }
+            $dn = strtolower($dn);
             unset($item['dn']);
 
             if ($this->transport->exists($dn)) {
@@ -71,7 +72,7 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
     protected function createExportDn(array $item)
     {
         $mappingSettings = $this->channel->getMappingSettings();
-        $usernameAttr = $mappingSettings->offsetGet('userMapping')[LdapUtils::USERNAME_MAPPING_ATTRIBUTE];
+        $usernameAttr = strtolower($mappingSettings->offsetGet('userMapping')[LdapUtils::USERNAME_MAPPING_ATTRIBUTE]);
 
         return LdapUtils::createDn(
             $usernameAttr,

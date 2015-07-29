@@ -24,7 +24,12 @@ class UserMappingType extends AbstractType
     /** @var ConfigProviderInterface */
     private $entityConfig;
     /** @var string[] */
-    private $requiredFields = [LdapUtils::USERNAME_MAPPING_ATTRIBUTE];
+    private $requiredFields = [
+        LdapUtils::USERNAME_MAPPING_ATTRIBUTE,
+        'email',
+        'firstName',
+        'lastName',
+    ];
 
     /**
      * @param Registry                $registry
