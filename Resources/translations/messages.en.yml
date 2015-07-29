@@ -28,6 +28,7 @@ orocrmpro:
                     userMapping.label:            User Mapping:
                     roleFilter.label:             Role Filter
                     roleMapping.label:            Role Mapping:
+                    userInformation.label:        User Information
                     roleLdapName.label:           LDAP Role Name
                     roleCrmName.label:            CRM Role Names
                     roleIdAttribute.label:        Role Id Attribute

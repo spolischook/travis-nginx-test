@@ -6,6 +6,7 @@ parameters:
     #event listeners
     orocrmpro_ldap.event_listener.user_change_listener.class: OroCRMPro\Bundle\LDAPBundle\EventListener\UserChangeListener
     orocrmpro_ldap.event_listener.user_before_value_render_listener.class: OroCRMPro\Bundle\LDAPBundle\EventListener\UserBeforeRenderListener
+    orocrmpro_ldap.event_listener.load_integration_themes_listener.class: OroCRMPro\Bundle\LDAPBundle\EventListener\LoadIntegrationThemesListener
     #security
     orocrmpro_ldap.authentication.provider.class:             OroCRMPro\Bundle\LDAPBundle\Security\LdapAuthenticationProvider
     orocrmpro_ldap.security.authenticator.class:              OroCRMPro\Bundle\LDAPBundle\Security\LdapAuthenticator
@@ -35,6 +36,11 @@ services:
         arguments: [@doctrine]
         tags:
             - { name: kernel.event_listener, event: oro.entity_extend_event.before_value_render, method: beforeValueRender }
+
+    orocrmpro_ldap.event_listener.load_integration_themes_listener:
+        class: %orocrmpro_ldap.event_listener.load_integration_themes_listener.class%
+        tags:
+            - { name: kernel.event_listener, event: oro_integration.load_integration_themes, method: onLoad }
 
     orocrmpro_ldap.security.authenticator:
         class: %orocrmpro_ldap.security.authenticator.class%

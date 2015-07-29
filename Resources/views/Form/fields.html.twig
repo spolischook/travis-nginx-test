@@ -32,3 +32,16 @@
 {% block orocrmpro_ldap_user_mapping_row %}
     {{ block('button_row') }}
 {% endblock %}
+
+{% block _oro_integration_channel_form_mappingSettings_widget %}
+    <div class="responsive-cell responsive-cell-no-blocks">
+        <h5>{{ 'orocrmpro.ldap.integration.transport.mapping.userInformation.label'|trans }}</h5>
+        {% for child in form  if child.vars.name != 'roleMapping' %}
+            {{ form_row(child) }}
+        {% endfor %}
+    </div>
+    <div class="responsive-cell responsive-cell-no-blocks ldap-role-mapping">
+        <h5>{{ form.roleMapping.vars.label|trans({}, translation_domain) }}</h5>
+        {{ form_widget(form.roleMapping) }}
+    </div>
+{% endblock %}
