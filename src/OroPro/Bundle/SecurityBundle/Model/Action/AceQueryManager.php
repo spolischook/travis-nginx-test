@@ -8,6 +8,8 @@ use Doctrine\ORM\Query\Expr\Composite;
 use Oro\Bundle\SecurityBundle\Exception\UnknownShareScopeException;
 use Oro\Bundle\SecurityBundle\Model\Action\AceQueryManager as BaseManager;
 
+use OroPro\Bundle\SecurityBundle\Form\Model\Share;
+
 class AceQueryManager extends BaseManager
 {
     /**
@@ -15,24 +17,20 @@ class AceQueryManager extends BaseManager
      */
     protected function addExprByShareScope(QueryBuilder $qb, Composite $expr, $scope)
     {
-        if ($scope == 'user') {
-            $expr->add($qb->expr()->eq('asid.username', 'true'));
-        } elseif ($scope == 'business_unit') {
-            $expr->add(
-                $qb->expr()->like(
-                    'asid.identifier',
-                    $qb->expr()->literal('Oro\\\\Bundle\\\\OrganizationBundle\\\\Entity\\\\BusinessUnit%')
-                )
-            );
-        } elseif ($scope == 'organization') {
-            $expr->add(
-                $qb->expr()->like(
-                    'asid.identifier',
-                    $qb->expr()->literal('Oro\\\\Bundle\\\\OrganizationBundle\\\\Entity\\\\Organization%')
-                )
-            );
-        } else {
-            throw new UnknownShareScopeException($scope);
+        try {
+            parent::addExprByShareScope($qb, $expr, $scope);
+        } catch(UnknownShareScopeException $e) {
+
+            if ($scope === Share::SHARE_SCOPE_ORGANIZATION) {
+                $expr->add(
+                    $qb->expr()->like(
+                        'asid.identifier',
+                        $qb->expr()->literal('Oro\\\\Bundle\\\\OrganizationBundle\\\\Entity\\\\Organization%')
+                    )
+                );
+            } else {
+                throw new UnknownShareScopeException($scope);
+            }
         }
     }
 }
