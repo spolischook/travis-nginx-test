@@ -1,4 +1,6 @@
-oropro:
+oro:
     security:
         share_scopes:
-            organization: Organization
+            organization:
+                label: Organization
+                short_label: Org

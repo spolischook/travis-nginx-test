@@ -15,7 +15,7 @@ class ShareScopeType extends BaseType
     {
         $choices = parent::getChoices();
 
-        $choices[Share::SHARE_SCOPE_ORGANIZATION] = 'oropro.security.share_scopes.organization';
+        $choices[Share::SHARE_SCOPE_ORGANIZATION] = 'oro.security.share_scopes.organization.label';
 
         return $choices;
     }

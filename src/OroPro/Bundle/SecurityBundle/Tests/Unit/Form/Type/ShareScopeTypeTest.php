@@ -30,9 +30,9 @@ class ShareScopeTypeTest extends \PHPUnit_Framework_TestCase
                     'multiple' => true,
                     'expanded' => true,
                     'choices' => [
-                        Share::SHARE_SCOPE_USER => 'oro.security.share_scopes.user',
-                        Share::SHARE_SCOPE_BUSINESS_UNIT => 'oro.security.share_scopes.business_unit',
-                        Share::SHARE_SCOPE_ORGANIZATION => 'oropro.security.share_scopes.organization'
+                        Share::SHARE_SCOPE_USER => 'oro.security.share_scopes.user.label',
+                        Share::SHARE_SCOPE_BUSINESS_UNIT => 'oro.security.share_scopes.business_unit.label',
+                        Share::SHARE_SCOPE_ORGANIZATION => 'oro.security.share_scopes.organization.label'
                     ]
                 ]
             );
