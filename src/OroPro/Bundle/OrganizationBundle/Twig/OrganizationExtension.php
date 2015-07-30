@@ -6,9 +6,10 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\TranslationBundle\Translation\Translator;
 
 use OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper;
 
@@ -19,7 +20,7 @@ class OrganizationExtension extends \Twig_Extension
     /** @var  Registry */
     protected $doctrine;
 
-    /** @var Translator */
+    /** @var TranslatorInterface */
     protected $translator;
 
     /** @var ConfigProvider */
@@ -31,13 +32,13 @@ class OrganizationExtension extends \Twig_Extension
     /**
      * @param ConfigProvider        $organizationProvider
      * @param Registry              $doctrine
-     * @param Translator            $translator
+     * @param TranslatorInterface   $translator
      * @param OrganizationProHelper $organizationHelper
      */
     public function __construct(
         ConfigProvider $organizationProvider,
         Registry $doctrine,
-        Translator $translator,
+        TranslatorInterface $translator,
         OrganizationProHelper $organizationHelper
     ) {
         $this->doctrine             = $doctrine;

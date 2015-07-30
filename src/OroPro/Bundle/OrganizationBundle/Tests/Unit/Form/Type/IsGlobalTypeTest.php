@@ -84,9 +84,7 @@ class IsGlobalTypeTest extends \PHPUnit_Framework_TestCase
 
 
         // check validator
-        $context = $this->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $context = $this->getMock('Symfony\Component\Validator\Context\ExecutionContextInterface');
         $this->helper->expects($this->once())->method('getGlobalOrganizationId')->willReturn($globalOrgId);
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
