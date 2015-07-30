@@ -10,6 +10,7 @@ parameters:
     oro_security.acl.privilege_repository.class: OroPro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeProRepository
     oro_security.acl.voter.class:                OroPro\Bundle\SecurityBundle\Acl\Voter\AclProVoter
     oro_security.listener.search_listener.class: OroPro\Bundle\SecurityBundle\EventListener\SearchProListener
+    oro_security.search.acl_helper.class:        OroPro\Bundle\SecurityBundle\Search\AclHelper
     oro_security.twig.security_organization_extension: OroPro\Bundle\SecurityBundle\Twig\OroProSecurityOrganizationExtension
 
 services:
