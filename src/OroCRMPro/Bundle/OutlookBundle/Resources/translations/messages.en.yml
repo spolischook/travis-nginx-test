@@ -28,3 +28,5 @@ orocrmpro_outlook:
             choices:
                 orocrm_always_wins:  OroCRM always wins
                 outlook_always_wins: Outlook always wins
+    integration:
+        label: Outlook integration

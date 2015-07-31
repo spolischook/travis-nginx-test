@@ -40,7 +40,8 @@ class ConfigurationController extends FOSRestController
      *      }
      * )
      * @Acl(
-     *      id="oro_config_system_outlook",
+     *      id="orocrmpro_outlook_integration",
+     *      label="orocrmpro_outlook.integration.label",
      *      type="action",
      *      group_name=""
      * )
