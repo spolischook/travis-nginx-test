@@ -99,9 +99,8 @@ class UserChangeListener
         foreach ($this->updatedUsers as $user) {
             $mappings = (array)$user->getLdapDistinguishedNames();
 
-            foreach (array_keys($mappings) as $channelId) {
+            foreach (array_intersect_key($channels, $mappings) as $channelId => $channel) {
                 $changedFields = $uow->getEntityChangeSet($user);
-                $channel = $channels[$channelId];
                 $mappedFields = $this->getMappedFields($channel);
                 $common = array_intersect($mappedFields, array_keys($changedFields));
 
