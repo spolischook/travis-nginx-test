@@ -34,5 +34,6 @@ parameters:
     locale:             en
     secret:             ThisTokenIsNotSoSecretChangeIt
     installed:          ~
+    assets_version:     ~
 
     enterprise_licence: ~
