@@ -4,6 +4,7 @@ namespace OroPro\Bundle\ElasticSearchBundle\Tests\Unit\Engine;
 
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 use Oro\Bundle\SearchBundle\Query\Query;
+use OroPro\Bundle\ElasticSearchBundle\Engine\IndexAgent;
 use OroPro\Bundle\ElasticSearchBundle\RequestBuilder\Where\ContainsWherePartBuilder;
 use OroPro\Bundle\ElasticSearchBundle\RequestBuilder\Where\EqualsWherePartBuilder;
 use OroPro\Bundle\ElasticSearchBundle\RequestBuilder\Where\InWherePartBuilder;
@@ -20,9 +21,9 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $containsPart = new ContainsWherePartBuilder();
-        $equalsPart = new EqualsWherePartBuilder();
-        $rangePart = new RangeWherePartBuilder();
-        $inPart = new InWherePartBuilder($equalsPart);
+        $equalsPart   = new EqualsWherePartBuilder();
+        $rangePart    = new RangeWherePartBuilder();
+        $inPart       = new InWherePartBuilder($equalsPart);
 
         $this->builder = new WhereRequestBuilder();
 
@@ -36,6 +37,7 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $where
      * @param array $request
+     *
      * @dataProvider buildDataProvider
      */
     public function testBuild(array $where, array $request)
@@ -55,12 +57,8 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
     public function buildDataProvider()
     {
         return [
-            'empty' => [
-                'where' => [],
-                'request' => [],
-            ],
-            'all_text ~ value' => [
-                'where' => [
+            'all_text ~ value'                   => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_AND,
                         'name'     => Indexer::TEXT_ALL_DATA_FIELD,
@@ -69,13 +67,17 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
-                        'must' => [['match' => [Indexer::TEXT_ALL_DATA_FIELD => 'value']]]
-                    ]]]]]
+                    'body' => [
+                        'query' => [
+                            'match' => [
+                                Indexer::TEXT_ALL_DATA_FIELD . '.' . IndexAgent::FULLTEXT_ANALYZED_FIELD => 'value'
+                            ]
+                        ]
+                    ]
                 ],
             ],
-            'field ~ value' => [
-                'where' => [
+            'field ~ value'                      => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_AND,
                         'name'     => 'field',
@@ -84,13 +86,17 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
-                        'must' => [['wildcard' => ['field' => '*value*']]]
-                    ]]]]]
+                    'body' => [
+                        'query' => [
+                            'match' => [
+                                'field.' . IndexAgent::FULLTEXT_ANALYZED_FIELD => 'value'
+                            ]
+                        ]
+                    ]
                 ],
             ],
-            'field !~ value' => [
-                'where' => [
+            'field !~ value'                     => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_AND,
                         'name'     => 'field',
@@ -99,13 +105,17 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
-                        'must_not' => [['wildcard' => ['field' => '*value*']]]
-                    ]]]]]
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'must_not' => ['match' => ['field.' . IndexAgent::FULLTEXT_ANALYZED_FIELD => 'value']]
+                            ]
+                        ]
+                    ]
                 ],
             ],
             'field1 ~ value1 or field2 ~ value2' => [
-                'where' => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_OR,
                         'name'     => 'field1',
@@ -120,16 +130,20 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
-                        'should' => [
-                            ['wildcard' => ['field1' => '*value1*']],
-                            ['wildcard' => ['field2' => '*value2*']],
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'should' => [
+                                    ['match' => ['field1.' . IndexAgent::FULLTEXT_ANALYZED_FIELD => 'value1']],
+                                    ['match' => ['field2.' . IndexAgent::FULLTEXT_ANALYZED_FIELD => 'value2']],
+                                ]
+                            ]
                         ]
-                    ]]]]]
+                    ]
                 ],
             ],
-            'field = value' => [
-                'where' => [
+            'field = value'                      => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_AND,
                         'name'     => 'field',
@@ -138,13 +152,11 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
-                        'must' => [['match' => ['field' => 'value']]]
-                    ]]]]]
+                    'body' => ['query' => ['match' => ['field' => 'value']]]
                 ],
             ],
-            'field != value' => [
-                'where' => [
+            'field != value'                     => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_AND,
                         'name'     => 'field',
@@ -153,13 +165,17 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
-                        'must_not' => [['match' => ['field' => 'value']]]
-                    ]]]]]
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'must_not' => ['match' => ['field' => 'value']]
+                            ]
+                        ]
+                    ]
                 ],
             ],
             'field1 = value1 or field2 = value2' => [
-                'where' => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_OR,
                         'name'     => 'field1',
@@ -174,16 +190,20 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
-                        'should' => [
-                            ['match' => ['field1' => 'value1']],
-                            ['match' => ['field2' => 'value2']],
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'should' => [
+                                    ['match' => ['field1' => 'value1']],
+                                    ['match' => ['field2' => 'value2']],
+                                ]
+                            ]
                         ]
-                    ]]]]]
+                    ]
                 ],
             ],
-            'field > 1 and field < 10' => [
-                'where' => [
+            'field > 1 and field < 10'           => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_AND,
                         'name'     => 'field',
@@ -198,16 +218,20 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
-                        'must' => [
-                            ['range' => ['field' => ['gt' => 1]]],
-                            ['range' => ['field' => ['lt' => 10]]],
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    ['range' => ['field' => ['gt' => 1]]],
+                                    ['range' => ['field' => ['lt' => 10]]],
+                                ]
+                            ]
                         ]
-                    ]]]]]
+                    ]
                 ],
             ],
-            'field <= 1 or field => 10' => [
-                'where' => [
+            'field <= 1 or field => 10'          => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_OR,
                         'name'     => 'field',
@@ -222,16 +246,20 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['query' => ['bool' => [
-                        'should' => [
-                            ['range' => ['field' => ['lte' => 1]]],
-                            ['range' => ['field' => ['gte' => 10]]],
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'should' => [
+                                    ['range' => ['field' => ['lte' => 1]]],
+                                    ['range' => ['field' => ['gte' => 10]]],
+                                ]
+                            ]
                         ]
-                    ]]]]]
+                    ]
                 ],
             ],
-            'field in (first, second)' => [
-                'where' => [
+            'field in (first, second)'           => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_AND,
                         'name'     => 'field',
@@ -240,33 +268,41 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['filter' => ['bool' => [
-                        'must' => [['or' => [
-                            ['term' => ['field' => 'first']],
-                            ['term' => ['field' => 'second']],
-                        ]]]
-                    ]]]]]
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'should' => [
+                                    ['term' => ['field' => 'first']],
+                                    ['term' => ['field' => 'second']],
+                                ]
+                            ]
+                        ]
+                    ]
                 ],
             ],
-            'field in first' => [
-                'where' => [
+            'field in first'                     => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_OR,
                         'name'     => 'field',
                         'operator' => Query::OPERATOR_IN,
-                        'value'    => 'first'
+                        'value'    => ['first']
                     ],
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['filter' => ['bool' => [
-                        'should' => [['or' => [
-                            ['term' => ['field' => 'first']],
-                        ]]]
-                    ]]]]]
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'should' => [
+                                    ['term' => ['field' => 'first']],
+                                ]
+                            ]
+                        ]
+                    ]
                 ],
             ],
-            'field !in (first, second)' => [
-                'where' => [
+            'field !in (first, second)'          => [
+                'where'   => [
                     [
                         'keyword'  => Query::KEYWORD_AND,
                         'name'     => 'field',
@@ -275,12 +311,16 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
                 'request' => [
-                    'body' => ['query' => ['filtered' => ['filter' => ['bool' => [
-                        'must_not' => [['or' => [
-                            ['term' => ['field' => 'first']],
-                            ['term' => ['field' => 'second']],
-                        ]]]
-                    ]]]]]
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'must_not' => [
+                                    ['term' => ['field' => 'first']],
+                                    ['term' => ['field' => 'second']],
+                                ]
+                            ]
+                        ]
+                    ]
                 ],
             ],
         ];

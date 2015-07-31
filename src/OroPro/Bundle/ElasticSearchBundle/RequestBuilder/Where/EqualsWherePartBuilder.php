@@ -14,19 +14,14 @@ class EqualsWherePartBuilder extends AbstractWherePartBuilder
     /**
      * {@inheritdoc}
      */
-    public function buildPart($field, $type, $operator, $value, $keyword, array $request)
+    public function buildPart($field, $type, $operator, $value)
     {
-        // define bool part
-        $boolPart = 'must';
-        if ($operator == Query::OPERATOR_NOT_EQUALS) {
-            $boolPart = 'must_not';
-        } elseif ($keyword == Query::KEYWORD_OR) {
-            $boolPart = 'should';
+        $condition = ['match' => [$field => $value]];
+
+        if ($operator === Query::OPERATOR_NOT_EQUALS) {
+            return ['bool' => ['must_not' => $condition]];
         }
 
-        // add condition
-        $request['body']['query']['filtered']['query']['bool'][$boolPart][] = ['match' => [$field => $value]];
-
-        return $request;
+        return $condition;
     }
 }
