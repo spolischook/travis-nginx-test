@@ -44,11 +44,11 @@ class IndexAgent
         'analysis' => [
             'analyzer' => [
                 self::FULLTEXT_SEARCH_ANALYZER => [
-                    'tokenizer' => 'standard',
+                    'tokenizer' => 'keyword',
                     'filter'    => ['lowercase']
                 ],
                 self::FULLTEXT_INDEX_ANALYZER  => [
-                    'tokenizer' => 'standard',
+                    'tokenizer' => 'keyword',
                     'filter'    => ['lowercase', 'substring'],
                 ],
             ],
