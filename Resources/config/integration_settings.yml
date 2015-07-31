@@ -7,6 +7,8 @@ oro_integration:
                     label:        orocrmpro.ldap.integration.transport.mapping.userFilter.label
                     tooltip:      orocrmpro.ldap.integration.transport.mapping.userFilter.tooltip
                     required:     true
+                    constraints:
+                        - NotBlank: ~
                 priority:     10
                 applicable:   [ldap]
             userMapping:
