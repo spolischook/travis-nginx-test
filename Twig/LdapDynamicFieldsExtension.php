@@ -58,7 +58,7 @@ class LdapDynamicFieldsExtension extends \Twig_Extension
     {
         $fields = $this->baseExtension->getFields($entity, $entityClass);
 
-        if (isset($fields['ldap_distinguished_names']) && !$this->securityFacade->isGranted('oro_integration_update')) {
+        if (isset($fields['ldap_distinguished_names']) && !$this->securityFacade->isGranted('ROLE_ADMINISTRATOR')) {
             unset($fields['ldap_distinguished_names']);
         }
 
