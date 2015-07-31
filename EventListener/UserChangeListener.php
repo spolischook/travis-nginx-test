@@ -59,19 +59,6 @@ class UserChangeListener
 
         foreach ($this->newUsers as $user) {
             $ids[] = $user->getId();
-            $distinguishedNames = [];
-            foreach ($channels as $channel) {
-                if ($this->isTwoWaySyncEnabled($channel)) {
-                    $mappingSettings = $channel->getMappingSettings();
-
-                    $distinguishedNames[$channel->getId()] = LdapUtils::createDn(
-                        $mappingSettings->offsetGet('userMapping')[LdapUtils::USERNAME_MAPPING_ATTRIBUTE],
-                        $user->getUsername(),
-                        $mappingSettings->offsetGet('exportUserBaseDn')
-                    );
-                }
-            }
-            $user->setLdapDistinguishedNames($distinguishedNames);
         }
 
         foreach ($channels as $channel) {
