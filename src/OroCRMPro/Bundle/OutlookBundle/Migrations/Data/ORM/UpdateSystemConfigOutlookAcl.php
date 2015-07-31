@@ -64,7 +64,7 @@ class UpdateSystemConfigOutlookAcl extends AbstractFixture implements ContainerA
         foreach ($roles as $role) {
             $sid = $manager->getSid($role);
 
-            $oid         = $manager->getOid('action:oro_config_system_outlook');
+            $oid         = $manager->getOid('action:orocrmpro_outlook_integration');
             $maskBuilder = $manager->getMaskBuilder($oid)
                 ->add('EXECUTE');
             $manager->setPermission($sid, $oid, $maskBuilder->get());
@@ -79,11 +79,13 @@ class UpdateSystemConfigOutlookAcl extends AbstractFixture implements ContainerA
         $queryBuilder = $this->objectManager->getRepository('OroUserBundle:Role')->createQueryBuilder('e');
         return $queryBuilder
             ->andWhere(
-                $queryBuilder->expr()->like(
-                    'e.role',
-                    $queryBuilder->expr()->literal(Role::PREFIX_ROLE . '%')
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->like('e.role', ':prefix'),
+                    $queryBuilder->expr()->neq('e.role', ':admin')
                 )
             )
+            ->setParameter('prefix', Role::PREFIX_ROLE . '%')
+            ->setParameter('admin', 'ROLE_ADMINISTRATOR')
             ->getQuery()
             ->getResult();
     }
