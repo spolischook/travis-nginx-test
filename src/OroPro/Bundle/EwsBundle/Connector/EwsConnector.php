@@ -426,7 +426,8 @@ class EwsConnector
                     case SearchQuery::RESTRICTION:
                         $request->Restriction = $query->convertToRestriction();
                         break;
-                    default: // SearchQuery::AUTO
+                    default:
+                        // SearchQuery::AUTO
                         if ($this->ews->isQueryStringSupported()) {
                             $request->QueryString = $query->convertToQueryString();
                         } else {

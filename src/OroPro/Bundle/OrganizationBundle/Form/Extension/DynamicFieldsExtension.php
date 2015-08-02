@@ -3,7 +3,7 @@
 namespace OroPro\Bundle\OrganizationBundle\Form\Extension;
 
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderInterface;
@@ -24,14 +24,15 @@ class DynamicFieldsExtension extends BaseDynamicFieldsExtension
     /**
      * @param ConfigManager                        $configManager
      * @param Router                               $router
-     * @param Translator                           $translator
+     * @param TranslatorInterface                  $translator
+     * @param DoctrineHelper                       $doctrineHelper
      * @param SecurityFacade                       $securityFacade
      * @param SystemAccessModeOrganizationProvider $systemAccessModeOrganizationProvider
      */
     public function __construct(
         ConfigManager $configManager,
         Router $router,
-        Translator $translator,
+        TranslatorInterface $translator,
         DoctrineHelper $doctrineHelper,
         SecurityFacade $securityFacade,
         SystemAccessModeOrganizationProvider $systemAccessModeOrganizationProvider
