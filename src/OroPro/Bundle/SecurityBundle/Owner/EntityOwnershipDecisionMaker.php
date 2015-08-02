@@ -14,6 +14,9 @@ use OroPro\Bundle\SecurityBundle\Form\Model\Share;
 
 class EntityOwnershipDecisionMaker extends BaseDecisionMaker
 {
+    /** @var bool */
+    protected $shared = false;
+
     /**
      * {@inheritdoc}
      */
@@ -24,6 +27,7 @@ class EntityOwnershipDecisionMaker extends BaseDecisionMaker
         }
 
         if (parent::isSharedWithUser($user, $domainObject, $organization)) {
+            $this->shared = true;
             return true;
         }
 
@@ -34,6 +38,7 @@ class EntityOwnershipDecisionMaker extends BaseDecisionMaker
             $orgClass = 'Oro\Bundle\OrganizationBundle\Entity\Organization';
             foreach ($userOrganizationIds as $orgId) {
                 if ($securityIdentity->equals(new OrganizationSecurityIdentity($orgId, $orgClass))) {
+                    $this->shared = true;
                     return true;
                 }
             }
@@ -66,5 +71,25 @@ class EntityOwnershipDecisionMaker extends BaseDecisionMaker
         }
 
         return in_array($sharedToScope, $shareScopes, true);
+    }
+
+    /**
+     * Return TRUE if maker decided that Object was shared
+     *
+     * @return bool
+     */
+    public function isShared()
+    {
+        return $this->shared;
+    }
+
+    /**
+     * Set shared to default value FALSE
+     *
+     * @return mixed
+     */
+    public function resetShared()
+    {
+        $this->shared = false;
     }
 }

@@ -4,6 +4,8 @@ namespace OroPro\Bundle\SecurityBundle\Acl\Voter;
 
 use Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter;
 
+use OroPro\Bundle\SecurityBundle\Acl\Extension\AceShareDecisionInterface;
+
 class AclProVoter extends AclVoter
 {
     /**
@@ -13,6 +15,12 @@ class AclProVoter extends AclVoter
     {
         // in system access mode we should not check entity organization
         if ($this->getSecurityToken()->getOrganizationContext()->getIsGlobal()) {
+            return $result;
+        }
+
+        if ($this->getAclExtension() instanceof AceShareDecisionInterface
+            && $this->getAclExtension()->isEntityShared()
+        ) {
             return $result;
         }
 

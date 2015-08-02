@@ -9,13 +9,14 @@ use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension;
 use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 
-class EntityAclProExtension extends EntityAclExtension
+class EntityAclProExtension extends EntityAclExtension implements AceShareDecisionInterface
 {
     /**
      * {@inheritdoc}
      */
     public function decideIsGranting($triggeredMask, $object, TokenInterface $securityToken)
     {
+        $this->decisionMaker->resetShared();
         // check if we are in global mode - return false in case if Access Level < AccessLevel::SYSTEM_LEVEL
         if ($securityToken instanceof OrganizationContextTokenInterface) {
             $organization = $securityToken->getOrganizationContext();
@@ -55,5 +56,13 @@ class EntityAclProExtension extends EntityAclExtension
         }
 
         return AccessLevel::getAccessLevelNames($minLevel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEntityShared()
+    {
+        return $this->decisionMaker->isShared();
     }
 }

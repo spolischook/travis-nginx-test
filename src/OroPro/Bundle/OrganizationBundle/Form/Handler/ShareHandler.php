@@ -7,6 +7,7 @@ use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 
 use Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository;
+use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
 use Oro\Bundle\SecurityBundle\Form\Handler\ShareHandler as BaseHandler;
 use Oro\Bundle\SecurityBundle\Form\Model\Share as BaseShareModel;
 
@@ -84,5 +85,21 @@ class ShareHandler extends BaseHandler
         }
 
         return $newSids;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMaskBySid(SecurityIdentityInterface $sid)
+    {
+        $mask = parent::getMaskBySid($sid);
+
+        if ($mask === 0) {
+            if ($sid instanceof OrganizationSecurityIdentity) {
+                return EntityMaskBuilder::MASK_VIEW_GLOBAL;
+            }
+        }
+
+        return $mask;
     }
 }
