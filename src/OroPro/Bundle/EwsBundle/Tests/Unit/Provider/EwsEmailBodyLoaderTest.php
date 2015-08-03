@@ -19,8 +19,7 @@ use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
 use OroPro\Bundle\EwsBundle\Manager\EwsEmailManager;
 use OroPro\Bundle\EwsBundle\Provider\EwsEmailBodyLoader;
 
-use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
-
+use Oro\Bundle\ImapBundle\Entity\UserEmailOrigin;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
@@ -64,7 +63,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
         $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector);
 
         $this->assertEquals(true, $this->ewsEmailBodyLoader->supports(new EwsEmailOrigin()));
-        $this->assertEquals(false, $this->ewsEmailBodyLoader->supports(new ImapEmailOrigin()));
+        $this->assertEquals(false, $this->ewsEmailBodyLoader->supports(new UserEmailOrigin()));
     }
 
     public function testloadEmailBody()

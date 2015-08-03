@@ -17,11 +17,11 @@ class LimitRequestBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $query = new Query();
         if (null !== $firstResult) {
-            $query->setFirstResult($firstResult);
+            $query->getCriteria()->setFirstResult($firstResult);
         }
 
         if (null !== $maxResults) {
-            $query->setMaxResults($maxResults);
+            $query->getCriteria()->setMaxResults($maxResults);
         }
 
         $builder = new LimitRequestBuilder();
@@ -38,9 +38,7 @@ class LimitRequestBuilderTest extends \PHPUnit_Framework_TestCase
             'no data' => [
                 'firstResult' => null,
                 'maxResults' => null,
-                'request' => [
-                    'body' => ['size' => 0]
-                ],
+                'request' => [],
             ],
             'limit' => [
                 'firstResult' => null,

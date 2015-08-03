@@ -18,9 +18,9 @@ class OrderRequestBuilderTest extends \PHPUnit_Framework_TestCase
         $query = new Query();
         if ($field) {
             if ($direction) {
-                $query->setOrderBy($field, $direction);
+                $query->getCriteria()->orderBy([$field => $direction]);
             } else {
-                $query->setOrderBy($field);
+                $query->getCriteria()->orderBy([$field]);
             }
         }
 
@@ -47,13 +47,6 @@ class OrderRequestBuilderTest extends \PHPUnit_Framework_TestCase
                 'direction' => Query::ORDER_DESC,
                 'request' => [
                     'body' => ['sort' => ['name' => ['order' => Query::ORDER_DESC]]]
-                ],
-            ],
-            'no direction' => [
-                'field' => 'name',
-                'direction' => null,
-                'request' => [
-                    'body' => ['sort' => ['name' => ['order' => Query::ORDER_ASC]]]
                 ],
             ],
             'empty' => [
