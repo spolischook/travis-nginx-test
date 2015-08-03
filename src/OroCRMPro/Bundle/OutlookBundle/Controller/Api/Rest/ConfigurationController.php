@@ -24,20 +24,12 @@ use Oro\Bundle\ConfigBundle\Exception\ItemNotFoundException;
 class ConfigurationController extends FOSRestController
 {
     /**
-     * Get all configuration data of the specified outlook section.
+     * Get all configuration data of the specified Outlook section.
      *
-     * @param string $path The configuration section path. For example: outlook/layout
+     * @param string $path The configuration section path. For example: outlook or outlook/layout
      *
      * @Get("/configuration/{path}",
-     *      requirements={"path"="outlook(\/[\w-]*)*"}
-     * )
-     * @ApiDoc(
-     *      description="Get all configuration data of the specified outlook section",
-     *      resource=true,
-     *      filters={
-     *          {"name"="scope", "dataType"="string", "description"="Scope name. By default - user"},
-     *          {"name"="locale", "dataType"="string", "description"="The preferred locale for configuration values"}
-     *      }
+     *      requirements={"path"="outlook(\/[\w-]+)*"}
      * )
      * @Acl(
      *      id="orocrmpro_outlook_integration",
