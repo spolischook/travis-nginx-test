@@ -1,4 +1,4 @@
-oro_config_outlook_api:
+orocrmpro_outlook_config_api:
     resource: "@OroCRMProOutlookBundle/Controller/Api/Rest/ConfigurationController.php"
     type:     rest
     options:
