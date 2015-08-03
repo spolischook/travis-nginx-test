@@ -27,7 +27,7 @@ class EntityOwnershipDecisionMaker extends BaseDecisionMaker
             return true;
         }
 
-        $tree = $this->treeProvider->getTree();
+        $tree = $this->getTreeProvider()->getTree();
         $securityIdentity = $this->ace->getSecurityIdentity();
         if ($securityIdentity instanceof OrganizationSecurityIdentity) {
             $userOrganizationIds = $tree->getUserOrganizationIds($this->getObjectId($user));
@@ -49,8 +49,8 @@ class EntityOwnershipDecisionMaker extends BaseDecisionMaker
     protected function isSharingApplicable($domainObject)
     {
         $entityName = ClassUtils::getClass($domainObject);
-        $shareScopes = $this->configProvider->hasConfig($entityName)
-            ? $this->configProvider->getConfig($entityName)->get('share_scopes')
+        $shareScopes = $this->getSecurityConfigProvider()->hasConfig($entityName)
+            ? $this->getSecurityConfigProvider()->getConfig($entityName)->get('share_scopes')
             : null;
         if (!$this->ace || !$shareScopes) {
             return false;
