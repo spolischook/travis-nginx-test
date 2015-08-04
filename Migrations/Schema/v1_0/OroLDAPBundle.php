@@ -34,7 +34,7 @@ class OroLDAPBundle implements Migration
             'array',
             [
                 'oro_options' => [
-                    'extend'       => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
+                    'extend'       => ['owner' => ExtendScope::OWNER_CUSTOM],
                     'form'         => ['is_enabled' => false],
                     'datagrid'     => ['is_visible' => false],
                     'importexport' => ['excluded' => true],
