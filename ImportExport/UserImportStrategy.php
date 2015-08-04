@@ -11,6 +11,7 @@ use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrate
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ImportStrategyHelper;
 use Oro\Bundle\IntegrationBundle\ImportExport\Helper\DefaultOwnerHelper;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
 {
@@ -72,12 +73,15 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
     }
 
     /**
-     * {@inheritdoc}
+     * @param User $entity
+     *
+     * @return User
      */
     protected function afterProcessEntity($entity)
     {
         $this->defaultOwnerHelper->populateChannelOwner($entity, $this->contextMediator->getChannel($this->context));
         $this->ldapHelper->populateUserRoles($entity);
+        $this->ldapHelper->populateOrganization($entity);
         $this->ldapHelper->populateBusinessUnitOwner($entity);
 
         return parent::afterProcessEntity($entity);

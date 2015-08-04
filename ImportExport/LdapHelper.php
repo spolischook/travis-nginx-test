@@ -61,6 +61,66 @@ class LdapHelper implements ContextAwareInterface
     }
 
     /**
+     * @param User  $user
+     * @param array $roles
+     */
+    protected function setUserRoles(User $user, array $roles)
+    {
+        $em = $this->getRoleEntityManager();
+        $roleReferences = [];
+        foreach ($roles as $role) {
+            $roleReferences[] = $em->getReference('Oro\Bundle\UserBundle\Entity\Role', $role);
+        }
+
+        array_map([$user, 'addRole'], $roleReferences);
+    }
+
+    /**
+     * Populates roles of a user.
+     *
+     * @param User $user
+     */
+    public function populateUserRoles(User $user)
+    {
+        $dns = (array)$user->getLdapDistinguishedNames();
+        $roles = $this->getRoles($dns[$this->channel->getId()]);
+
+        $this->updateRoles($user, $roles);
+    }
+
+    /**
+     * Populates owner of user.
+     *
+     * @param User $entity
+     */
+    public function populateBusinessUnitOwner(User $entity)
+    {
+        if ($entity->getOwner() === null) {
+            $businessUnit = $this->channel->getDefaultUserOwner()->getOwner();
+            $entity->addBusinessUnit($businessUnit);
+            $entity->setOwner($businessUnit);
+        }
+    }
+
+    /**
+     * Populates organization of user (Same as integration organization).
+     *
+     * @param User $entity
+     */
+    public function populateOrganization(User $entity)
+    {
+        $organization = $this->channel->getOrganization();
+
+        if (!$organization->hasUser($entity)) {
+            $organization->addUser($entity);
+        }
+
+        if ($entity->getOrganization() === null) {
+            $entity->setOrganization($organization);
+        }
+    }
+
+    /**
      * Searches LDAP for users roles.
      *
      * @param string $userDn
@@ -125,50 +185,10 @@ class LdapHelper implements ContextAwareInterface
     }
 
     /**
-     * @param User  $user
-     * @param array $roles
-     */
-    protected function setUserRoles(User $user, array $roles)
-    {
-        $em = $this->getRoleEntityManager();
-        $roleReferences = [];
-        foreach ($roles as $role) {
-            $roleReferences[] = $em->getReference('Oro\Bundle\UserBundle\Entity\Role', $role);
-        }
-
-        array_map([$user, 'addRole'], $roleReferences);
-    }
-
-    /**
-     * Populates roles of a user.
-     *
-     * @param User $user
-     */
-    public function populateUserRoles(User $user)
-    {
-        $dns = (array)$user->getLdapDistinguishedNames();
-        $roles = $this->getRoles($dns[$this->channel->getId()]);
-
-        $this->updateRoles($user, $roles);
-    }
-
-    /**
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
     private function getRoleEntityManager()
     {
         return $this->registry->getManagerForClass('OroUserBundle:Role');
-    }
-
-    /**
-     * Populates owner of user.
-     *
-     * @param User $entity
-     */
-    public function populateBusinessUnitOwner(User $entity)
-    {
-        if ($entity->getOwner() === null) {
-            $entity->setOwner($this->channel->getDefaultUserOwner()->getOwner());
-        }
     }
 }
