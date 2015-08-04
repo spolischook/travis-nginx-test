@@ -19,8 +19,6 @@ class BaseAclManager implements AclSidInterface
 {
     /**
      * {@inheritdoc}
-     *
-     * @param string|RoleInterface|UserInterface|TokenInterface|BusinessUnitInterface|OrganizationSecurityIdentity $identity
      */
     public function getSid($identity)
     {
@@ -34,7 +32,7 @@ class BaseAclManager implements AclSidInterface
             return UserSecurityIdentity::fromToken($identity);
         } elseif ($identity instanceof BusinessUnitInterface) {
             return BusinessUnitSecurityIdentity::fromBusinessUnit($identity);
-        }  elseif ($identity instanceof OrganizationInterface) {
+        } elseif ($identity instanceof OrganizationInterface) {
             return OrganizationSecurityIdentity::fromOrganization($identity);
         }
 

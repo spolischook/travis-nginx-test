@@ -103,7 +103,7 @@ class MutableAclProvider extends BaseMutableAclProvider
         } elseif ($sid instanceof RoleSecurityIdentity) {
             $identifier = $sid->getRole();
             $username = false;
-        }  elseif ($sid instanceof BusinessUnitSecurityIdentity || $sid instanceof OrganizationSecurityIdentity) {
+        } elseif ($sid instanceof BusinessUnitSecurityIdentity || $sid instanceof OrganizationSecurityIdentity) {
             $identifier = $sid->getClass() . '-' . $sid->getId();
             $username = false;
         } else {
@@ -145,13 +145,15 @@ class MutableAclProvider extends BaseMutableAclProvider
                 $interfaceNames = $sidReflection->getInterfaceNames();
                 if (in_array(
                     'Oro\Bundle\OrganizationBundle\Entity\BusinessUnitInterface',
-                    (array) $interfaceNames)
-                ) {
+                    (array) $interfaceNames,
+                    true
+                )) {
                     return new BusinessUnitSecurityIdentity($identifier, $className);
                 } elseif (in_array(
                     'Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface',
-                    (array) $interfaceNames)
-                ) {
+                    (array) $interfaceNames,
+                    true
+                )) {
                     return new OrganizationSecurityIdentity($identifier, $className);
                 }
             }

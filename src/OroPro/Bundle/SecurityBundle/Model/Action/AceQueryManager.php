@@ -19,8 +19,7 @@ class AceQueryManager extends BaseManager
     {
         try {
             parent::addExprByShareScope($qb, $expr, $scope);
-        } catch(UnknownShareScopeException $e) {
-
+        } catch (UnknownShareScopeException $e) {
             if ($scope === Share::SHARE_SCOPE_ORGANIZATION) {
                 $expr->add(
                     $qb->expr()->like(
