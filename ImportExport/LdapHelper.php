@@ -52,12 +52,15 @@ class LdapHelper implements ContextAwareInterface
         $this->transport->init($this->channel->getTransport());
 
         $this->roleMapping = [];
-        $mapping = $this->channel->getMappingSettings()->offsetGet('roleMapping');
+        $mapping = $this->channel->getMappingSettings()
+            ->offsetGet('roleMapping');
         foreach ($mapping as $map) {
             $this->roleMapping[$map['ldapName']] = $map['crmRoles'];
         }
-        $this->roleIdAttr = $this->channel->getMappingSettings()->offsetGet('roleIdAttribute');
-        $this->roleUserIdAttr = $this->channel->getMappingSettings()->offsetGet('roleUserIdAttribute');
+        $this->roleIdAttr = $this->channel->getMappingSettings()
+            ->offsetGet('roleIdAttribute');
+        $this->roleUserIdAttr = $this->channel->getMappingSettings()
+            ->offsetGet('roleUserIdAttribute');
     }
 
     /**
@@ -95,9 +98,13 @@ class LdapHelper implements ContextAwareInterface
      */
     public function populateBusinessUnitOwner(User $entity)
     {
-        if ($entity->getOwner() === null) {
-            $businessUnit = $this->channel->getDefaultUserOwner()->getOwner();
+        $businessUnit = $this->channel->getDefaultBusinessUnitOwner();
+
+        do {
             $entity->addBusinessUnit($businessUnit);
+        } while (null !== $businessUnit = $businessUnit->getOwner());
+
+        if ($entity->getOwner() === null) {
             $entity->setOwner($businessUnit);
         }
     }
@@ -129,7 +136,8 @@ class LdapHelper implements ContextAwareInterface
      */
     protected function getRoles($userDn)
     {
-        $filter = $this->channel->getMappingSettings()->offsetGet('roleFilter');
+        $filter = $this->channel->getMappingSettings()
+            ->offsetGet('roleFilter');
         if (!preg_match('/^\(.+\)$/', $filter)) {
             $filter = "($filter)";
         }
