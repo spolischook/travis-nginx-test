@@ -7,7 +7,6 @@ use Oro\Bundle\IntegrationBundle\Event\LoadIntegrationThemesEvent;
 
 use OroCRMPro\Bundle\LDAPBundle\Provider\ChannelType;
 
-
 class LoadIntegrationThemesListener
 {
     const LDAP_THEME = 'OroCRMProLDAPBundle:Form:fields.html.twig';
