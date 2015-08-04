@@ -59,16 +59,11 @@ class TestHelper
             ->method('getTree')
             ->will($this->testCase->returnValue($ownerTree));
 
-        $configProviderMock = $this->testCase->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $decisionMaker = new EntityOwnershipDecisionMaker(
             $treeProviderMock,
             $idAccessor,
             new EntityOwnerAccessor($metadataProvider),
-            $metadataProvider,
-            $configProviderMock
+            $metadataProvider
         );
 
         $config = $this->testCase->getMockBuilder('\Doctrine\ORM\Configuration')
