@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 use Oro\Bundle\FormBundle\Utils\FormUtils;
@@ -31,15 +32,27 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
             FormEvents::POST_SUBMIT,
             [$this, 'onPostSubmit']
         );
+
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            [$this, 'onPreSubmit']
+        );
     }
 
     /**
-     * @param Channel $data
+     * @param Channel|array $data
      * @return bool
      */
-    public function isApplicable(Channel $data = null)
+    public function isApplicable($data = null)
     {
-        return $data && $data->getType() === ChannelType::TYPE;
+        if ($data === null) {
+            return false;
+        }
+
+        if (is_array($data)) {
+            return $data['type'] === ChannelType::TYPE;
+        }
+        return $data->getType() === ChannelType::TYPE;
     }
 
     /**
@@ -54,23 +67,11 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
             return;
         }
 
-        $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $options          = $event->getForm()['connectors']->getConfig()->getOptions();
-        $class            = $propertyAccessor->getValue($options, self::CLASS_PATH);
-
-        FormUtils::replaceField(
-            $event->getForm(),
-            'connectors',
-            [
-                'attr' => [
-                    'class' => implode(' ', [$class, 'hide'])
-                ]
-            ]
-        );
+        $this->hideConnectors($event->getForm());
     }
 
     /**
-     * Set all connectors to MailChimp channel
+     * Set all Connectors to be enabled.
      *
      * @param FormEvent $event
      */
@@ -86,10 +87,47 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
     }
 
     /**
+     * Hide connectors choices list before submitting.
+     *
+     * @param FormEvent $event
+     */
+    public function onPreSubmit(FormEvent $event)
+    {
+        $data = $event->getData();
+        if (!$this->isApplicable($data)) {
+            return;
+        }
+
+        $this->hideConnectors($event->getForm());
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getExtendedType()
     {
         return 'oro_integration_channel_form';
+    }
+
+    /**
+     * Hides connector choices fields in form.
+     *
+     * @param FormInterface $form
+     */
+    protected function hideConnectors(FormInterface $form)
+    {
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $options          = $form['connectors']->getConfig()->getOptions();
+        $class            = $propertyAccessor->getValue($options, self::CLASS_PATH);
+
+        FormUtils::replaceField(
+            $form,
+            'connectors',
+            [
+                'attr' => [
+                    'class' => implode(' ', [$class, 'hide'])
+                ]
+            ]
+        );
     }
 }
