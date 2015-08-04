@@ -3,6 +3,7 @@
 namespace OroCRMPro\Bundle\OutlookBundle\Controller\Api\Rest;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -11,10 +12,7 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\ConfigBundle\Exception\ItemNotFoundException;
 
 /**
@@ -29,19 +27,14 @@ class ConfigurationController extends FOSRestController
      * @param string $path The configuration section path. For example: outlook or outlook/layout
      *
      * @Get("/configuration/{path}",
-     *      requirements={"path"="outlook(\/[\w-]+)*"}
+     *      requirements={"path"="localization|outlook(\/[\w-]+)*"}
      * )
-     * @Acl(
-     *      id="orocrmpro_outlook_integration",
-     *      label="orocrmpro_outlook.integration.label",
-     *      type="action",
-     *      group_name=""
-     * )
-     *
      * @return Response
      */
     public function getAction($path)
     {
+        $this->checkConfigurationAccess();
+
         $manager = $this->get('oro_config.manager.api');
 
         try {
@@ -53,5 +46,23 @@ class ConfigurationController extends FOSRestController
         return $this->handleView(
             $this->view($data, Codes::HTTP_OK)
         );
+    }
+
+    protected function checkConfigurationAccess()
+    {
+        if ($this->getSecurityFacade()->isGranted('orocrmpro_outlook_integration')
+            || $this->getSecurityFacade()->isGranted('oro_config_system')
+        ) {
+            return;
+        }
+        throw new AccessDeniedException();
+    }
+
+    /**
+     * @return SecurityFacade
+     */
+    protected function getSecurityFacade()
+    {
+        return $this->get('oro_security.security_facade');
     }
 }
