@@ -3,6 +3,7 @@
 namespace OroCRMPro\Bundle\LDAPBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Types\Type;
 
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\OroOptions;
@@ -78,10 +79,10 @@ class OroLDAPBundle implements Migration
             [OroOptions::KEY => ['importexport' => ['excluded' => true]]]
         );
         $table->getColumn('createdAt')->setOptions(
-            [OroOptions::KEY => ['importexport' => ['excluded' => true]]]
+            [OroOptions::KEY => ['importexport' => ['excluded' => true]], 'type' => Type::getType(Type::DATETIME)]
         );
         $table->getColumn('updatedAt')->setOptions(
-            [OroOptions::KEY => ['importexport' => ['excluded' => true]]]
+            [OroOptions::KEY => ['importexport' => ['excluded' => true]], 'type' => Type::getType(Type::DATETIME)]
         );
     }
 }
