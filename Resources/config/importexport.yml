@@ -47,7 +47,10 @@ services:
 
     orocrmpro_ldap.importexport.writer.user:
         class: %orocrmpro_ldap.importexport.writer.user.class%
-        arguments: [@oro_importexport.context_registry, @oro_integration.provider.connector_context_mediator]
+        arguments:
+            - @oro_importexport.context_registry
+            - @oro_integration.provider.connector_context_mediator
+            - @orocrmpro_ldap.importexport.helper
 
     orocrmpro_ldap.importexport.helper:
         class: %orocrmpro_ldap.importexport.helper.class%

@@ -24,15 +24,22 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
     protected $transport;
     /** @var Channel */
     protected $channel;
+    /** @var LdapHelper */
+    private $ldapHelper;
 
     /**
      * @param ContextRegistry          $contextRegistry
      * @param ConnectorContextMediator $contextMediator
+     * @param LdapHelper               $ldapHelper
      */
-    public function __construct(ContextRegistry $contextRegistry, ConnectorContextMediator $contextMediator)
-    {
+    public function __construct(
+        ContextRegistry $contextRegistry,
+        ConnectorContextMediator $contextMediator,
+        LdapHelper $ldapHelper
+    ) {
         $this->contextRegistry = $contextRegistry;
         $this->contextMediator = $contextMediator;
+        $this->ldapHelper = $ldapHelper;
     }
 
     /**
@@ -40,6 +47,8 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
      */
     public function write(array $items)
     {
+        $exported = [];
+
         foreach ($items as $item) {
             if (($item['dn'] === null) || !isset($item['dn'][$this->channel->getId()])) {
                 $dn = $this->createExportDn($item);
@@ -49,17 +58,26 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
             $dn = strtolower($dn);
             unset($item['dn']);
 
-            if ($this->transport->exists($dn)) {
-                if ($this->channel->getSynchronizationSettings()->offsetGet('syncPriority') == 'local') {
+            $username = $item[$this->getUsernameAttribute()];
+
+            try {
+                if (!$this->transport->exists($dn)) {
+                    $item['objectClass'] = $this->channel->getMappingSettings()->offsetGet('exportUserObjectClass');
+                    $this->transport->add($dn, $item);
+                    $this->context->incrementAddCount();
+                    $exported[$username] = $dn;
+                } elseif ($this->channel->getSynchronizationSettings()->offsetGet('syncPriority') == 'local') {
                     $this->transport->update($dn, $item);
                     $this->context->incrementUpdateCount();
+                    $exported[$username] = $dn;
                 }
-            } else {
-                $item['objectClass'] = $this->channel->getMappingSettings()->offsetGet('exportUserObjectClass');
-                $this->transport->add($dn, $item);
-                $this->context->incrementAddCount();
+            } catch (\Exception $e) {
+                $this->context->addError($e->getMessage());
+                $this->context->incrementErrorEntriesCount();
             }
         }
+
+        $this->ldapHelper->updateUserDistinguishedNames($this->channel->getId(), $exported);
     }
 
     /**
@@ -71,14 +89,22 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
      */
     protected function createExportDn(array $item)
     {
-        $mappingSettings = $this->channel->getMappingSettings();
-        $usernameAttr = strtolower($mappingSettings->offsetGet('userMapping')[LdapUtils::USERNAME_MAPPING_ATTRIBUTE]);
-
         return LdapUtils::createDn(
-            $usernameAttr,
+            $usernameAttr = $this->getUsernameAttribute(),
             $item[$usernameAttr],
-            $mappingSettings->offsetGet('exportUserBaseDn')
+            $this->channel->getMappingSettings()->offsetGet('exportUserBaseDn')
         );
+    }
+
+    /**
+     * Returns username mapping attribute for current channel.
+     *
+     * @return string
+     */
+    protected function getUsernameAttribute()
+    {
+        $mappingSettings = $this->channel->getMappingSettings();
+        return strtolower($mappingSettings->offsetGet('userMapping')[LdapUtils::USERNAME_MAPPING_ATTRIBUTE]);
     }
 
     /**

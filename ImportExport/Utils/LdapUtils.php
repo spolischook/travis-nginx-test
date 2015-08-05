@@ -2,6 +2,8 @@
 
 namespace OroCRMPro\Bundle\LDAPBundle\ImportExport\Utils;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 class LdapUtils
 {
     const USERNAME_MAPPING_ATTRIBUTE = 'username';
@@ -41,5 +43,19 @@ class LdapUtils
         }
 
         return sprintf('(&%s(%s=%s))', $filter, $attribute, $value);
+    }
+
+    /**
+     * Sets LDAP distinguished name for user.
+     *
+     * @param User    $user
+     * @param integer $channelId
+     * @param string  $dn
+     */
+    public static function setLdapDistinguishedName(User $user, $channelId, $dn)
+    {
+        $dns = (array)$user->getLdapDistinguishedNames();
+        $dns[$channelId] = $dn;
+        $user->setLdapDistinguishedNames($dns);
     }
 }

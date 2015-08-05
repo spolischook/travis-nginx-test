@@ -10,6 +10,7 @@ use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
 use Oro\Bundle\UserBundle\Entity\User;
 
+use OroCRMPro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
 use OroCRMPro\Bundle\LDAPBundle\Provider\Transport\LdapTransportInterface;
 
 class LdapHelper implements ContextAwareInterface
@@ -128,6 +129,30 @@ class LdapHelper implements ContextAwareInterface
     }
 
     /**
+     * Saves distinguished names for each user.
+     *
+     * @param integer $channelId Id of channel under which DNs will be assigned.
+     * @param array   $list ['username' => 'dn'] $list List of user ids and distinguished names.
+     */
+    public function updateUserDistinguishedNames($channelId, array $list)
+    {
+        if (empty($list)) {
+            return;
+        }
+
+        $userRepository = $this->registry->getRepository('OroUserBundle:User');
+        $users = $userRepository->findBy(['username' => array_keys($list)]);
+
+        foreach ($users as $user) {
+            LdapUtils::setLdapDistinguishedName($user, $channelId, $list[$user->getUsername()]);
+
+            $this->getUserEntityManager()->persist($user);
+        }
+
+        $this->getUserEntityManager()->flush();
+    }
+
+    /**
      * Searches LDAP for users roles.
      *
      * @param string $userDn
@@ -198,5 +223,13 @@ class LdapHelper implements ContextAwareInterface
     private function getRoleEntityManager()
     {
         return $this->registry->getManagerForClass('OroUserBundle:Role');
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    private function getUserEntityManager()
+    {
+        return $this->registry->getManagerForClass('OroUserBundle:User');
     }
 }
