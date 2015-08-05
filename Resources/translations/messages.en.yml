@@ -1,5 +1,7 @@
 oro:
     user:
+        createdat.label: Created At
+        updatedat.label: Updated At
         ldap_distinguished_names.label: LDAP Distinguished Names
 orocrmpro:
     ldap:
