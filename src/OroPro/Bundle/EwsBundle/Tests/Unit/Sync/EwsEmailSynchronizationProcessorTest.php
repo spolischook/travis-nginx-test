@@ -423,6 +423,18 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->will($this->returnValue($sq));
 
+        $mailboxRepository = $this->getMockbuilder('Oro\Bundle\EmailBundle\Entity\Repository\MailboxRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mailboxRepository
+            ->expects($this->once())
+            ->method('findOneByOrigin')
+            ->with($origin)
+            ->will($this->returnValue(null));
+        $this->em->expects($this->once())
+            ->method('getRepository')
+            ->with('OroEmailBundle:Mailbox')
+            ->will($this->returnValue($mailboxRepository));
         $this->manager->expects($this->once())
             ->method('selectUser')
             ->with('test@example.com');
