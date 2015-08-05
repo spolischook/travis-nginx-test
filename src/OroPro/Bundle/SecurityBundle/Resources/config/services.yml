@@ -15,6 +15,7 @@ parameters:
     oro_security.acl.base_manager.class:         OroPro\Bundle\SecurityBundle\Acl\Persistence\BaseAclManager
     oro_security.listener.search_listener.class: OroPro\Bundle\SecurityBundle\EventListener\SearchProListener
 
+    oro_security.search.acl_helper.class:        OroPro\Bundle\SecurityBundle\Search\AclHelper
     oro_security.twig.security_organization_extension: OroPro\Bundle\SecurityBundle\Twig\OroProSecurityOrganizationExtension
 
     oro_security.acl.security_identity_retrieval_strategy.class: OroPro\Bundle\SecurityBundle\Acl\Domain\SecurityIdentityRetrievalStrategy

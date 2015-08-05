@@ -1,0 +1,5 @@
+orocrmpro_outlook_config_api:
+    resource: "@OroCRMProOutlookBundle/Controller/Api/Rest/ConfigurationController.php"
+    type:     rest
+    options:
+        priority: 10
