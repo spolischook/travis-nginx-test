@@ -9,3 +9,9 @@ orocrmpro_outlook_audit_api:
     type:     rest
     options:
         priority: 10
+
+orocrmpro_outlook_workflowdefinition_api:
+    resource: "@OroCRMProOutlookBundle/Controller/Api/Rest/WorkflowDefinitionController.php"
+    type:     rest
+    options:
+        priority: 10
