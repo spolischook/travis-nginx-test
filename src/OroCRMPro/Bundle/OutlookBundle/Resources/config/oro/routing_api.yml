@@ -3,3 +3,9 @@ orocrmpro_outlook_config_api:
     type:     rest
     options:
         priority: 10
+
+orocrmpro_outlook_audit_api:
+    resource: "@OroCRMProOutlookBundle/Controller/Api/Rest/AuditController.php"
+    type:     rest
+    options:
+        priority: 10
