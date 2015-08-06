@@ -5,7 +5,6 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
-use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
@@ -13,6 +12,7 @@ use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
+use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Model\FolderType;
 
@@ -105,7 +105,7 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
             $user   = $entity->getOwner();
             $origin = $this->mailerProcessor->getEmailOrigin($user->getEmail());
 
-            $emailUser = $this->createEmail($entity, $data['subject'], $type);
+            $emailUser = $this->createEmailUser($entity, $data['subject'], $type);
             $emailUser->getEmail()->setEmailBody($this->createEmailBody($data['body']));
             $emailUser->setFolder($this->getFolder($origin, $type));
             $emailUser->getEmail()->addActivityTarget($user);
@@ -126,7 +126,7 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
      *
      * @return EmailUser
      */
-    protected function createEmail($entity, $subject, $type = FolderType::SENT)
+    protected function createEmailUser($entity, $subject, $type = FolderType::SENT)
     {
         $from = $entity->getOwner()->getEmail();
         $to   = $entity->getEmail();
