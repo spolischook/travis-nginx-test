@@ -18,6 +18,8 @@ use Oro\Bundle\SoapBundle\Request\Parameters\Filter\HttpDateTimeParameterFilter;
 use Oro\Bundle\SoapBundle\Request\Parameters\Filter\IdentifierToReferenceFilter;
 
 /**
+ * TODO: This controller should be removed with new API implementation.
+ *
  * @NamePrefix("oro_api_")
  */
 class AuditController extends RestGetController implements ClassResourceInterface
