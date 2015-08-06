@@ -16,6 +16,8 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 
 /**
+ * TODO: This controller should be removed with new API implementation.
+ *
  * @NamePrefix("oro_api_workflow_definition_")
  */
 class WorkflowDefinitionController extends FOSRestController

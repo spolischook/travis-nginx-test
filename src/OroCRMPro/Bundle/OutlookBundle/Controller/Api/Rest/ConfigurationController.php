@@ -16,6 +16,8 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\ConfigBundle\Exception\ItemNotFoundException;
 
 /**
+ * TODO: This controller should be removed with new API implementation.
+ *
  * @RouteResource("configuration_outlook")
  * @NamePrefix("oro_api_")
  */
