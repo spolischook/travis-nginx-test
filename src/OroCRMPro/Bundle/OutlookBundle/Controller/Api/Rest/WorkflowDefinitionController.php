@@ -52,9 +52,7 @@ class WorkflowDefinitionController extends FOSRestController
         ) {
             return;
         }
-        throw new AccessDeniedException(
-            'You do not get VIEW permission for this object'
-        );
+        throw new AccessDeniedException();
     }
 
     /**
