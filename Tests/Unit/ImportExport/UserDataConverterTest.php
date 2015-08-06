@@ -51,7 +51,7 @@ class UserDataConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->dataConverter = new UserDataConverter($this->contextMediator, $this->contextRegistry);
         $this->dataConverter->setImportExportContext(
-            $this->getMock('Oro\Bundle\ImportExportBundle\Context\Contextinterface')
+            $this->getMock('Oro\Bundle\ImportExportBundle\Context\ContextInterface')
         );
     }
 
