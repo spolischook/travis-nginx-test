@@ -5,6 +5,7 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
+use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
@@ -76,17 +77,17 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
 
         foreach ($data['account_emails'] as $emailData) {
             $account = $this->getAccountReference($emailData['account uid']);
-            $this->addEmail($account, $emailData);
+            $this->addEmailUser($account, $emailData);
         }
 
         foreach ($data['contact_emails'] as $emailData) {
             $contact = $this->getContactReference($emailData['contact uid']);
-            $this->addEmail($contact, $emailData);
+            $this->addEmailUser($contact, $emailData);
         }
 
         foreach ($data['incoming_emails'] as $emailData) {
             $contact = $this->getContactReference($emailData['contact uid']);
-            $this->addEmail($contact, $emailData, FolderType::INBOX);
+            $this->addEmailUser($contact, $emailData, FolderType::INBOX);
         }
         $manager->flush();
     }
@@ -98,19 +99,20 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
      * @param                 $data
      * @param string          $type
      */
-    protected function addEmail($entity, $data, $type = FolderType::SENT)
+    protected function addEmailUser($entity, $data, $type = FolderType::SENT)
     {
         if ($entity->getEmail() !== null) {
             $user   = $entity->getOwner();
             $origin = $this->mailerProcessor->getEmailOrigin($user->getEmail());
 
-            $email = $this->createEmail($entity, $data['subject'], $type);
-            $email->setEmailBody($this->createEmailBody($data['body']));
-            $email->addFolder($this->getFolder($origin, $type));
-            $email->addActivityTarget($user);
-            $email->addActivityTarget($entity);
-            $email->setMessageId(sprintf('id.%s@%s', uniqid(), '@orocrm-pro.demo-data.generated'));
-            $this->em->getClassMetadata(get_class($email))->setLifecycleCallbacks([]);
+            $emailUser = $this->createEmail($entity, $data['subject'], $type);
+            $emailUser->getEmail()->setEmailBody($this->createEmailBody($data['body']));
+            $emailUser->setFolder($this->getFolder($origin, $type));
+            $emailUser->getEmail()->addActivityTarget($user);
+            $emailUser->getEmail()->addActivityTarget($entity);
+            $emailUser->getEmail()->setMessageId(sprintf('id.%s@%s', uniqid(), '@orocrm-pro.demo-data.generated'));
+
+            $this->em->getClassMetadata(get_class($emailUser))->setLifecycleCallbacks([]);
             $this->emailEntityBuilder->getBatch()->persist($this->em);
         }
     }
@@ -121,7 +123,8 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
      * @param Account|Contact $entity
      * @param                 $subject
      * @param string          $type
-     * @return Email
+     *
+     * @return EmailUser
      */
     protected function createEmail($entity, $subject, $type = FolderType::SENT)
     {
@@ -134,18 +137,22 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
 
         $createdAt = $this->generateUpdatedDate($entity->getCreatedAt());
 
-        /** @var Email $email */
-        $email = $this->emailEntityBuilder->email(
+        /** @var EmailUser $emailUser */
+        $emailUser = $this->emailEntityBuilder->emailUser(
             $subject,
             $from,
             $to,
             $createdAt,
             $createdAt,
             $createdAt,
-            Email::NORMAL_IMPORTANCE
+            Email::NORMAL_IMPORTANCE,
+            null,
+            null,
+            $entity->getOwner()
         );
-        $this->setProtectedCreatedAtDate($email, $createdAt);
-        return $email;
+        $this->setProtectedCreatedAtDate($emailUser, $createdAt);
+
+        return $emailUser;
     }
 
     /**
@@ -186,6 +193,7 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
                 ->setName('inbox');
             $origin->addFolder($folder);
             $this->em->persist($origin);
+
             return $folder;
         } else {
             throw new EntityNotFoundException('Folder ' . $type . ' not found');
@@ -194,11 +202,18 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
 
     /**
      * @todo: should be refactored in BAP-7856
-     * @param Email     $email
+     *
+     * @param EmailUser     $emailUser
      * @param \DateTime $createdAt
      */
-    protected function setProtectedCreatedAtDate(Email $email, \DateTime $createdAt)
+    protected function setProtectedCreatedAtDate(EmailUser $emailUser, \DateTime $createdAt)
     {
+        $class   = new \ReflectionClass($emailUser);
+        $created = $class->getProperty('createdAt');
+        $created->setAccessible(true);
+        $created->setValue($emailUser, $createdAt);
+
+        $email = $emailUser->getEmail();
         $class   = new \ReflectionClass($email);
         $created = $class->getProperty('created');
         $created->setAccessible(true);
