@@ -2,11 +2,14 @@
 
 namespace OroPro\Bundle\UserBundle\Form\Type;
 
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use OroPro\Bundle\UserBundle\Helper\UserProHelper;
 
 class RoleOrganizationSelectType extends AbstractType
@@ -34,6 +37,17 @@ class RoleOrganizationSelectType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $user = $this->getUser();
+        if (!$this->userHelper->isUserAssignedToSystemOrganization($user)) {
+            $view->vars['required'] = true;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $defaults = [
@@ -43,9 +57,10 @@ class RoleOrganizationSelectType extends AbstractType
             'autocomplete_alias' => 'oropro_user_organizations',
         ];
 
-        $user = $this->securityContext->getToken()->getUser();
+        $user = $this->getUser();
         if (!$this->userHelper->isUserAssignedToSystemOrganization($user)) {
             $defaults['constraints'] = [new Assert\NotBlank()];
+            $defaults['attr']['data-validation'] = json_encode(['NotBlank' => []]);
         }
 
         $resolver->setDefaults(
@@ -67,5 +82,13 @@ class RoleOrganizationSelectType extends AbstractType
     public function getName()
     {
         return 'oropro_user_role_organization_select';
+    }
+
+    /**
+     * @return User
+     */
+    protected function getUser()
+    {
+        return $this->securityContext->getToken()->getUser();
     }
 }
