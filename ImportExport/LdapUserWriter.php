@@ -55,7 +55,6 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
             } else {
                 $dn = $item['dn'][$this->channel->getId()];
             }
-            $dn = strtolower($dn);
             unset($item['dn']);
 
             $username = $item[$this->getUsernameAttribute()];
