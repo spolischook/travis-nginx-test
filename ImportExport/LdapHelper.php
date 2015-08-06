@@ -101,13 +101,13 @@ class LdapHelper implements ContextAwareInterface
     {
         $businessUnit = $this->channel->getDefaultBusinessUnitOwner();
 
-        do {
-            $entity->addBusinessUnit($businessUnit);
-        } while (null !== $businessUnit = $businessUnit->getOwner());
-
         if ($entity->getOwner() === null) {
             $entity->setOwner($businessUnit);
         }
+
+        do {
+            $entity->addBusinessUnit($businessUnit);
+        } while (null !== $businessUnit = $businessUnit->getOwner());
     }
 
     /**
