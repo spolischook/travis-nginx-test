@@ -63,9 +63,10 @@ class UserDataConverter extends AbstractTableDataConverter implements StepExecut
      */
     protected function setChannel(Channel $channel)
     {
-        $mappingSettings = $channel->getMappingSettings();
-
-        $this->userMapping = $mappingSettings->offsetGet('userMapping');
+        $this->userMapping = array_map(
+            'strtolower',
+            $channel->getMappingSettings()->offsetGet('userMapping')
+        );
 
         $this->userMapping = array_flip(array_filter($this->userMapping));
         $this->userMapping += ['dn' => 'ldap_distinguished_names'];

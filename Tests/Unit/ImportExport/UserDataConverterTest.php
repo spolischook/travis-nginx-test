@@ -29,7 +29,7 @@ class UserDataConverterTest extends \PHPUnit_Framework_TestCase
                     'userMapping' => [
                         'username'   => 'cn',
                         'first_name' => 'sn',
-                        'last_name'  => 'displayname',
+                        'last_name'  => 'displayName',
                         'phone'      => null,
                         'status'     => null,
                     ]

@@ -53,15 +53,12 @@ class LdapHelper implements ContextAwareInterface
         $this->transport->init($this->channel->getTransport());
 
         $this->roleMapping = [];
-        $mapping = $this->channel->getMappingSettings()
-            ->offsetGet('roleMapping');
+        $mapping = $this->channel->getMappingSettings()->offsetGet('roleMapping');
         foreach ($mapping as $map) {
             $this->roleMapping[$map['ldapName']] = $map['crmRoles'];
         }
-        $this->roleIdAttr = $this->channel->getMappingSettings()
-            ->offsetGet('roleIdAttribute');
-        $this->roleUserIdAttr = $this->channel->getMappingSettings()
-            ->offsetGet('roleUserIdAttribute');
+        $this->roleIdAttr = strtolower($this->channel->getMappingSettings()->offsetGet('roleIdAttribute'));
+        $this->roleUserIdAttr = strtolower($this->channel->getMappingSettings()->offsetGet('roleUserIdAttribute'));
     }
 
     /**

@@ -27,56 +27,56 @@ class LdapTransport extends Transport
      *
      * @ORM\Column(name="ldap_host", type="string")
      */
-    private $host;
+    protected $host;
 
     /**
      * @var string
      *
      * @ORM\Column(name="ldap_port", type="integer")
      */
-    private $port;
+    protected $port;
 
     /**
      * @var string
      *
      * @ORM\Column(name="ldap_encryption", type="string")
      */
-    private $encryption;
+    protected $encryption;
 
     /**
      * @var string
      *
      * @ORM\Column(name="ldap_base_dn", type="string")
      */
-    private $baseDn;
+    protected $baseDn;
 
     /**
      * @var string
      *
      * @ORM\Column(name="ldap_username", type="string")
      */
-    private $username;
+    protected $username;
 
     /**
      * @var string
      *
      * @ORM\Column(name="ldap_password", type="string")
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string
      *
      * @ORM\Column(name="ldap_account_domain", type="string")
      */
-    private $accountDomainName;
+    protected $accountDomainName;
 
     /**
      * @var string
      *
      * @ORM\Column(name="ldap_account_domain_short", type="string")
      */
-    private $accountDomainNameShort;
+    protected $accountDomainNameShort;
 
     /** @var ParameterBag */
     protected $settings;

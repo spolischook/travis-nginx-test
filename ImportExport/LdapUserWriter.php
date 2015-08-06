@@ -103,7 +103,7 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
     protected function getUsernameAttribute()
     {
         $mappingSettings = $this->channel->getMappingSettings();
-        return $mappingSettings->offsetGet('userMapping')[LdapUtils::USERNAME_MAPPING_ATTRIBUTE];
+        return strtolower($mappingSettings->offsetGet('userMapping')[LdapUtils::USERNAME_MAPPING_ATTRIBUTE]);
     }
 
     /**
