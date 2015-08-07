@@ -48,16 +48,17 @@ class LdapUserWriter implements ItemWriterInterface, StepExecutionAwareInterface
     public function write(array $items)
     {
         $exported = [];
+        $usernameAttribute = $this->getUsernameAttribute();
 
         foreach ($items as $item) {
-            if (($item['dn'] === null) || !isset($item['dn'][$this->channel->getId()])) {
+            if (!isset($item['dn'][$this->channel->getId()])) {
                 $dn = $this->createExportDn($item);
             } else {
                 $dn = $item['dn'][$this->channel->getId()];
             }
             unset($item['dn']);
 
-            $username = $item[$this->getUsernameAttribute()];
+            $username = $item[$usernameAttribute];
 
             try {
                 if (!$this->transport->exists($dn)) {

@@ -70,7 +70,6 @@ class UserDataConverter extends AbstractTableDataConverter implements StepExecut
 
         $this->userMapping = array_flip(array_filter($this->userMapping));
         $this->userMapping += ['dn' => 'ldap_distinguished_names'];
-        $this->userMapping = array_change_key_case($this->userMapping);
 
         return $this;
     }
