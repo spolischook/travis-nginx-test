@@ -63,6 +63,7 @@ class LoadCustomerCartItemData extends AbstractFixture implements OrderedFixture
             $cartItem->setCreatedAt($this->generateUpdatedDate($cart->getCreatedAt()));
             $cartItem->setUpdatedAt($this->generateUpdatedDate($cartItem->getCreatedAt()));
             $cartItem->setCart($cart);
+            $cartItem->setOwner($cart->getOrganization());
 
             $cart->getCartItems()->add($cartItem);
             $cart->setItemsQty($cart->getItemsQty() + $cartItemData['qty']);
