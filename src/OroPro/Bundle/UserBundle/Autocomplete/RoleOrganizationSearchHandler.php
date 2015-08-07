@@ -10,7 +10,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 use OroPro\Bundle\UserBundle\Helper\UserProHelper;
 
-class OrganizationSearchHandler implements SearchHandlerInterface
+class RoleOrganizationSearchHandler implements SearchHandlerInterface
 {
     /**
      * @var BaseOrganizationSearchHandler

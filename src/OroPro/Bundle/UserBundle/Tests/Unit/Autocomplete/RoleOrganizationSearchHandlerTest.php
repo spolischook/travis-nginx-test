@@ -10,13 +10,13 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Autocomplete\OrganizationSearchHandler as BaseOrganizationSearchHandler;
 use Oro\Bundle\UserBundle\Entity\User;
 
-use OroPro\Bundle\UserBundle\Autocomplete\OrganizationSearchHandler;
+use OroPro\Bundle\UserBundle\Autocomplete\RoleOrganizationSearchHandler;
 use OroPro\Bundle\UserBundle\Helper\UserProHelper;
 
-class OrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
+class RoleOrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var OrganizationSearchHandler
+     * @var RoleOrganizationSearchHandler
      */
     protected $handler;
 
@@ -54,7 +54,7 @@ class OrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('OroPro\Bundle\UserBundle\Helper\UserProHelper')
             ->getMock();
 
-        $this->handler = new OrganizationSearchHandler($this->baseHandler, $this->serviceLink, $this->userHelper);
+        $this->handler = new RoleOrganizationSearchHandler($this->baseHandler, $this->serviceLink, $this->userHelper);
     }
 
     protected function setUpServiceLinkMock()

@@ -54,7 +54,7 @@ class RoleOrganizationSelectType extends AbstractType
             'configs' => [
                 'placeholder' => 'oro.organization.form.choose_organization',
             ],
-            'autocomplete_alias' => 'oropro_user_organizations',
+            'autocomplete_alias' => 'oropro_user_role_organizations',
         ];
 
         $user = $this->getUser();

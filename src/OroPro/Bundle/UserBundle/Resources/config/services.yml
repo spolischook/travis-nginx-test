@@ -1,10 +1,10 @@
 parameters:
     oropro_user.form.type.role_organization_select.class: OroPro\Bundle\UserBundle\Form\Type\RoleOrganizationSelectType
-    oropro_user.autocomplete.organization_search_handler.class: OroPro\Bundle\UserBundle\Autocomplete\OrganizationSearchHandler
+    oropro_user.autocomplete.role_organization_search_handler.class: OroPro\Bundle\UserBundle\Autocomplete\RoleOrganizationSearchHandler
     oropro_user.event_listener.datagrid.role.class: OroPro\Bundle\UserBundle\EventListener\Datagrid\RoleListener
     oropro_user.acl.voter.role.class: OroPro\Bundle\UserBundle\Acl\Voter\RoleVoter
     oropro_user.helper.class: OroPro\Bundle\UserBundle\Helper\UserProHelper
-    oropro_user.form.type.user.class: OroPro\Bundle\UserBundle\Form\Type\UserType
+    oropro_user.form.type.extension.user.class: OroPro\Bundle\UserBundle\Form\Extension\UserTypeExtension
 
 services:
     oropro_user.form.type.role_organization_select:
@@ -15,14 +15,14 @@ services:
         tags:
             - { name: form.type, alias: oropro_user_role_organization_select }
 
-    oropro_user.autocomplete.organization_search_handler:
-        class: %oropro_user.autocomplete.organization_search_handler.class%
+    oropro_user.autocomplete.role_organization_search_handler:
+        class: %oropro_user.autocomplete.role_organization_search_handler.class%
         arguments:
             - @oro_organization.autocomplete.organization_search_handler
             - @oro_entity_config.link.security_context
             - @oropro_user.helper
         tags:
-            - { name: oro_form.autocomplete.search_handler, alias: oropro_user_organizations }
+            - { name: oro_form.autocomplete.search_handler, alias: oropro_user_role_organizations }
         lazy: true
 
     oropro_user.event_listener.datagrid.role:
@@ -42,14 +42,9 @@ services:
     oropro_user.helper:
         class: %oropro_user.helper.class%
 
-    oropro_user.form.type.user:
-        scope: request
-        class: %oropro_user.form.type.user.class%
+    oropro_user.form.type.extension.user:
+        class: %oropro_user.form.type.extension.user.class%
         arguments:
-            - @security.context
-            - @oro_security.security_facade
-            - @request
-            - @oro_config.user_config_manager
             - @doctrine.orm.entity_manager
         tags:
-            - { name: form.type, alias: oro_user_user }
+            - { name: form.type_extension, alias: oro_user_user }
