@@ -83,6 +83,7 @@ class LoadCustomerOrderData extends AbstractFixture implements OrderedFixtureInt
                 $orderItem->setPrice($cartItem->getPrice());
                 $orderItem->setOriginalPrice($cartItem->getPrice());
                 $orderItem->setName($cartItem->getName());
+                $orderItem->setOwner($order->getOrganization());
                 $orderItems[] = $orderItem;
 
                 $manager->persist($orderItem);
