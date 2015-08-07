@@ -127,7 +127,7 @@ class UserChangeListenerTest extends \PHPUnit_Framework_TestCase
         $this->uow->expects($this->once())
             ->method('getScheduledEntityInsertions')
             ->will($this->returnValue([]));
-        $this->uow->expects($this->never())
+        $this->uow->expects($this->once())
             ->method('getEntityChangeSet');
         $this->syncScheduler->expects($this->never())
             ->method('schedule');
