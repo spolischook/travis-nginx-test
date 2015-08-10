@@ -14,6 +14,16 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         /**
+         * Extension is responsible for showing organization in global organizaton in recipients autocomplete
+         */
+        $serviceId = 'oro_email.provider.email_recipients.helper';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Provider\EmailRecipientsHelper');
+            $definition->addMethodCall('setSecurityFacade', [new Reference('oro_security.security_facade')]);
+        }
+
+        /**
          * Override Oro\Bundle\EntityExtendBundle\Grid\DynamicFieldsExtension
          * Extension is responsible for columns of custom fields on grids
          */
