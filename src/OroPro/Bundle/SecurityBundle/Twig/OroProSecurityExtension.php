@@ -26,6 +26,6 @@ class OroProSecurityExtension extends BaseExtension
             }
         }
 
-        return '';
+        return $result;
     }
 }
