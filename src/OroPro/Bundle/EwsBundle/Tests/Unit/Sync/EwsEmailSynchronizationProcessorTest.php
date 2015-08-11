@@ -410,6 +410,16 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $folders[$ewsFolder1->getEwsId()] = new FolderInfo($ewsFolder1, false);
         $folders[$ewsFolder2->getEwsId()] = new FolderInfo($ewsFolder2, true);
 
+        $this->em->expects($this->any())
+            ->method('getRepository')
+            ->will(
+                $this->returnValue(
+                    $this->getMockBuilder('Oro\Bundle\EmailBundle\Entity\Repository\MailboxRepository')
+                        ->disableOriginalConstructor()
+                        ->getMock()
+                )
+            );
+
         $sqb = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder')
             ->disableOriginalConstructor()
             ->getMock();
