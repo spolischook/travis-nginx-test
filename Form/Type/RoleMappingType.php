@@ -5,6 +5,9 @@ namespace OroCRMPro\Bundle\LDAPBundle\Form\Type;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 
+use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Tests\Selenium\Pages\Roles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -30,6 +33,8 @@ class RoleMappingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $registry = $this->registry;
+
         $builder->add(
             'ldapName',
             'text',
@@ -46,6 +51,14 @@ class RoleMappingType extends AbstractType
                     'property' => 'label',
                     'multiple' => true,
                     'label'    => 'orocrmpro.ldap.integration.transport.mapping.roleCrmName.label',
+                    'query_builder' => function () use ($registry) {
+                        $qb = $registry->getRepository('OroUserBundle:Role')
+                            ->createQueryBuilder('r');
+                        $qb->where('r.role != :role')
+                            ->setParameter('role', User::ROLE_ANONYMOUS);
+
+                        return $qb;
+                    }
                 ]
             )
                 ->addModelTransformer(new RolesToIdsTransformer($this->getRoleManager(), static::ROLE_CLASS))
