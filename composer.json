@@ -5,12 +5,9 @@
     "keywords": ["OroCRM", "Pro", "LDAP"],
     "license": "MIT",
     "require": {
-        "php": ">=5.4",
-        "symfony/symfony": "2.3.*",
+        "php": ">=5.4.9",
         "zendframework/zend-ldap": ">=2.0",
-        "oro/integration-bundle": "dev-master",
-        "oro/migration-bundle": "dev-master",
-        "oro/user-bundle": "dev-master"
+        "oro/platform": ">=1.7"
     },
     "autoload": {
         "psr-4": { "OroCRMPro\\Bundle\\LDAPBundle": "" }
