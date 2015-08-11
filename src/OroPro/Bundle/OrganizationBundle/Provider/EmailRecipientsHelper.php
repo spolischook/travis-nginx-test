@@ -33,13 +33,13 @@ class EmailRecipientsHelper extends BaseEmailRecipientsHelper
         $result = parent::isObjectAllowedForOrganization($object, $organization);
         if ($organization ||
             $this->isCurrentOrganizationGlobal() ||
-            !$this->getPropertyAccessor()->isReadable($object, 'organization')
+            !$this->getPropertyAccessor()->isReadable($object, static::ORGANIZATION_PROPERTY)
         ) {
             return $result;
         }
 
         $currentOrganization = $this->securityFacade->getOrganization();
-        $objectOrganization = $this->getPropertyAccessor()->getValue($object, 'organization');
+        $objectOrganization = $this->getPropertyAccessor()->getValue($object, static::ORGANIZATION_PROPERTY);
         if (!$objectOrganization) {
             return true;
         }
