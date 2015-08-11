@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Tests\Selenium\Pages\Roles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
