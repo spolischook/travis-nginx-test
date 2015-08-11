@@ -1,7 +1,6 @@
 parameters:
     oropro_security.licence.server_agent.class: OroPro\Bundle\SecurityBundle\Licence\ServerAgent
     oropro_security.licence.sender.class:       OroPro\Bundle\SecurityBundle\Licence\Sender
-    oropro_security.form.type.share.class:      OroPro\Bundle\SecurityBundle\Form\Type\ShareType
 
     #
     # Override Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
@@ -39,12 +38,3 @@ services:
 
     oropro_security.licence.sender:
         class: %oropro_security.licence.sender.class%
-
-    oro_security.form.type.share:
-        class: %oropro_security.form.type.share.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-        tags:
-            - { name: form.type, alias: oro_share }
-        calls:
-            - [setEntityManager, [@doctrine.orm.entity_manager]]

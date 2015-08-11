@@ -6,6 +6,7 @@ use Symfony\Component\Security\Acl\Domain\Entry;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
 use Oro\Bundle\SecurityBundle\Form\Handler\ShareHandler as BaseHandler;
@@ -16,18 +17,6 @@ use OroPro\Bundle\SecurityBundle\Acl\Domain\OrganizationSecurityIdentity;
 
 class ShareHandler extends BaseHandler
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepareForm($entity)
-    {
-        parent::prepareForm($entity);
-
-        if (!in_array('organization', $this->shareScopes, true)) {
-            $this->form->remove('organizations');
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -53,7 +42,7 @@ class ShareHandler extends BaseHandler
             $repo = $this->manager->getRepository('OroOrganizationBundle:Organization');
             $organizations = $repo->getEnabledOrganizations($orgIds);
             /** @var Share $model */
-            $model->setOrganizations($organizations);
+            $model->setEntities(array_merge($model->getEntities(), $organizations));
             $this->form->setData($model);
         }
     }
@@ -66,8 +55,7 @@ class ShareHandler extends BaseHandler
         if (parent::isSidApplicable($sid)) {
             return true;
         } else {
-            return $this->form->has('organizations') &&
-                    $sid instanceof OrganizationSecurityIdentity &&
+            return $sid instanceof OrganizationSecurityIdentity &&
                     in_array(Share::SHARE_SCOPE_ORGANIZATION, $this->shareScopes, true);
         }
     }
@@ -79,9 +67,10 @@ class ShareHandler extends BaseHandler
     {
         $newSids = parent::generateSids($model);
         /** @var Share $model */
-        $organizations = $model->getOrganizations();
-        foreach ($organizations as $organization) {
-            $newSids[] = OrganizationSecurityIdentity::fromOrganization($organization);
+        foreach ($model->getEntities() as $entity) {
+            if ($entity instanceof Organization) {
+                $newSids[] = OrganizationSecurityIdentity::fromOrganization($entity);
+            }
         }
 
         return $newSids;
