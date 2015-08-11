@@ -96,7 +96,8 @@ class EmailRecipientsHelperTest extends \PHPUnit_Framework_TestCase
                 'id',
                 'label',
                 'org'
-            ));
+            )
+        );
 
         $globalOrganization = new Organization();
         $globalOrganization->setIsGlobal(true);
