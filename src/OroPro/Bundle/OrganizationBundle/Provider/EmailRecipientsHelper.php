@@ -4,6 +4,7 @@ namespace OroPro\Bundle\OrganizationBundle\Provider;
 
 use Oro\Bundle\EmailBundle\Model\Recipient;
 use Oro\Bundle\EmailBundle\Provider\EmailRecipientsHelper as BaseEmailRecipientsHelper;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class EmailRecipientsHelper extends BaseEmailRecipientsHelper
@@ -17,14 +18,33 @@ class EmailRecipientsHelper extends BaseEmailRecipientsHelper
     public function createRecipientData(Recipient $recipient)
     {
         $result = parent::createRecipientData($recipient);
-        if (!$this->isCurrentOrganizationGlobal() ||
-            !$recipient->getEntity() ||
-            !$recipient->getEntity()->getOrganization()
-        ) {
-            $result['text'] = $recipient->getName();
+        if ($this->isCurrentOrganizationGlobal()) {
+            $result['text'] = $recipient->getLabel();
         }
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isObjectAllowedForOrganization($object = null, Organization $organization = null)
+    {
+        $result = parent::isObjectAllowedForOrganization($object, $organization);
+        if ($organization ||
+            $this->isCurrentOrganizationGlobal() ||
+            !$this->getPropertyAccessor()->isReadable($object, 'organization')
+        ) {
+            return $result;
+        }
+
+        $currentOrganization = $this->securityFacade->getOrganization();
+        $objectOrganization = $this->getPropertyAccessor()->getValue($object, 'organization');
+        if (!$objectOrganization) {
+            return true;
+        }
+
+        return $objectOrganization === $currentOrganization;
     }
 
     /**
