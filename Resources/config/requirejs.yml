@@ -1,0 +1,3 @@
+config:
+    paths:
+        'orocrmproldap/js/ldap-checker': 'bundles/orocrmproldap/js/ldap-checker.js'

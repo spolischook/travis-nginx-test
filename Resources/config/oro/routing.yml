@@ -1,0 +1,4 @@
+oro_crm_magento_bundle:
+    resource:     "@OroCRMProLDAPBundle/Controller"
+    type:         annotation
+    prefix:       /ldap

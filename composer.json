@@ -1,0 +1,25 @@
+{
+    "name": "orocrmpro/ldap-bundle",
+    "type": "symfony-bundle",
+    "description": "OroCRM Pro LDAP Bundle",
+    "keywords": ["OroCRM", "Pro", "LDAP"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "2.3.*",
+        "zendframework/zend-ldap": ">=2.0",
+        "oro/integration-bundle": "dev-master",
+        "oro/migration-bundle": "dev-master",
+        "oro/user-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-4": { "OroCRMPro\\Bundle\\LDAPBundle": "" }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

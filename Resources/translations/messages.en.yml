@@ -1,0 +1,41 @@
+oro:
+    user:
+        createdat.label: Created At
+        updatedat.label: Updated At
+        ldap_distinguished_names.label: LDAP Distinguished Names
+orocrmpro:
+    ldap:
+        ldap_encryption:
+            none:   None
+            ssl:    SSL
+            tls:    TLS
+        ldaptransport.entity_label:       LDAP Transport
+        integration:
+            channel:
+                label:                        LDAP
+                fields:
+                    host.label:                   Hostname
+                    port.label:                   Port
+                    encryption.label:             Encryption
+                    baseDn.label:                 Base Distinguished Name
+                    username.label:               Username
+                    password.label:               Password
+                    accountDomainName.label:      Account Domain Name
+                    accountDomainNameShort.label: Short Account Domain Name
+                    connectionCheck.label:        Check Connection
+            transport:
+                label:                        LDAP Transport
+                mapping:
+                    userFilter.label:             User Filter
+                    userMapping.label:            User Mapping:
+                    roleFilter.label:             Role Filter
+                    roleMapping.label:            Role Mapping:
+                    userInformation.label:        User Information
+                    roleLdapName.label:           LDAP Role Name
+                    roleCrmName.label:            CRM Role Names
+                    roleIdAttribute.label:        Role Id Attribute
+                    roleUserIdAttribute.label:    Role User Id Attribute
+                    exportUserBaseDn.label:       Export User Base Distinguished Name
+                    exportUserObjectClass.label:  Export User Object Class
+            connector:
+                user.label:                   LDAP User Connector
