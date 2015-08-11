@@ -4,8 +4,9 @@ namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\EmailBundle\Model\Recipient;
 use Oro\Bundle\EmailBundle\Model\RecipientEntity;
-use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
+use Oro\Bundle\UserBundle\Entity\User;
 
+use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
 use OroPro\Bundle\OrganizationBundle\Provider\EmailRecipientsHelper;
 
 class EmailRecipientsHelperTest extends \PHPUnit_Framework_TestCase
@@ -136,6 +137,52 @@ class EmailRecipientsHelperTest extends \PHPUnit_Framework_TestCase
                         'organization' => 'org',
                     ]),
                 ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider isObjectAllowedForOrganizationDataProvider
+     */
+    public function testIsObjectAllowedForOrganization($object, Organization $organization = null, $expectedResult)
+    {
+        $this->securityFacade->expects($this->any())
+            ->method('getOrganization')
+            ->will($this->returnValue($organization));
+
+        $this->assertEquals(
+            $expectedResult,
+            $this->emailRecipientsHelper->isObjectAllowedForOrganization($object)
+        );
+    }
+
+    public function isObjectAllowedForOrganizationDataProvider()
+    {
+        $organization = new Organization();
+
+        $object = new User();
+        $object->setOrganization($organization);
+
+        return [
+            [
+                new User(),
+                null,
+                true,
+            ],
+            [
+                new User(),
+                null,
+                true,
+            ],
+            [
+                $object,
+                $organization,
+                true
+            ],
+            [
+                $object,
+                null,
+                false,
             ],
         ];
     }
