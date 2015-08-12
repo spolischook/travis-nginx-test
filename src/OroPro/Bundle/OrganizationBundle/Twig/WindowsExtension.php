@@ -15,7 +15,7 @@ use OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareException;
  *
  * Class WindowsExtension
  * @package OroPro\Bundle\OrganizationBundle\Twig
-_ */
+ */
 class WindowsExtension extends BaseWindowsExtension
 {
     /** @var Router */
