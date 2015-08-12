@@ -9,6 +9,7 @@ define(function (require) {
             return;
         }
 
+        this.hcLib.Raphael._url = '';
         SmartLabelManager = this.hcLib.SmartLabelManager;
         SmartLabelManager.prototype.dispose = _.wrap(SmartLabelManager.prototype.dispose, function (dispose) {
             var parent,
