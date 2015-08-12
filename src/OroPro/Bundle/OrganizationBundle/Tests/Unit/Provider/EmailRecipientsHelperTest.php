@@ -144,8 +144,11 @@ class EmailRecipientsHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider isObjectAllowedForOrganizationDataProvider
      */
-    public function testIsObjectAllowedForOrganization($object, Organization $organization = null, $expectedResult)
-    {
+    public function testIsObjectAllowedForOrganization(
+        $object,
+        Organization $organization = null,
+        $expectedResult = null
+    ) {
         $this->securityFacade->expects($this->any())
             ->method('getOrganization')
             ->will($this->returnValue($organization));
