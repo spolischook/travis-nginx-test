@@ -4,7 +4,7 @@
     {% set links = [] %}
     {% for fileName, route in files %}
         {% set link %}
-        <a href="{{ route }}" class="{{ class is defined and class ? class : '' }}" style="display: block; margin-top: 5px;">
+        <a href="{{ route }}" class="no-hash" style="display: block; margin-top: 5px;">
             {{ fileName }}
         </a>
         {% endset %}
