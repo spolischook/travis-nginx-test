@@ -4,6 +4,7 @@ namespace OroPro\Bundle\OrganizationBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
 class OverrideServiceCompilerPass implements CompilerPassInterface
@@ -121,6 +122,7 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
 
         /**
          * Override Oro\Bundle\EntityExtendBundle\Twig\DynamicFieldsExtension
+         * Dialog two step form render
          */
         $serviceId = 'oro_windows.twig.extension';
         if ($container->hasDefinition($serviceId)) {
@@ -128,7 +130,10 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             $definition->setClass('OroPro\Bundle\OrganizationBundle\Twig\WindowsExtension');
             $definition->addArgument($container->getDefinition('security.context'));
             $definition->addArgument(new Reference('doctrine.orm.entity_manager'));
-            $definition->addArgument(new Reference('router'));
+            $definition->addMethodCall(
+                'setRouter',
+                [new Reference('router')]
+            );
         }
     }
 }
