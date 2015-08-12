@@ -26,6 +26,14 @@ parameters:
 
     oropro_organization.acl.voter.organization.class: OroPro\Bundle\OrganizationBundle\Acl\Voter\OrganizationAnnotationVoter
 
+#    oro_windows.twig.extension.class: OroPro\Bundle\OrganizationBundle\Twig\WindowsExtension
+#    oro_windows.twig.extension:
+#        class: %oro_windows.twig.extension.class%
+#        arguments:
+#            - @security.context
+#            - @doctrine.orm.entity_manager
+#        tags:
+#            - { name: twig.extension }
 services:
     oropro_organization.twig.extension.organization:
         class: %oropro_organization.twig.extension.organization.class%

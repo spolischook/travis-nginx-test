@@ -18,11 +18,16 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 use Oro\Bundle\UserBundle\Security\WsseToken;
 
+use Oro\Bundle\EmailBundle\Form\Model\Email;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 use OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareException;
 
 class OrganizationProFormExtension extends OrganizationFormExtension
 {
+    const ORGANIZATION_PROPERTY = 'organization';
+
     /** @var SecurityFacade */
     protected $securityFacade;
 
@@ -186,10 +191,10 @@ class OrganizationProFormExtension extends OrganizationFormExtension
     protected function getEntityInfo($entity)
     {
         $organizationField = null;
-        $entityId          = null;
+        $entityId = null;
 
         if ($entity instanceof WorkflowData) {
-            $workflowData   = $entity->getValues();
+            $workflowData = $entity->getValues();
             foreach ($workflowData as $key => $entity) {
                 if (is_object($entity)) {
                     $organizationField = $this->getMetadataProvider()
@@ -210,6 +215,8 @@ class OrganizationProFormExtension extends OrganizationFormExtension
 
         if ($organizationField) {
             $entityId = $this->doctrineHelper->getSingleEntityIdentifier($entity);
+        } elseif ($entity instanceof OrganizationAwareInterface) {
+            $organizationField = self::ORGANIZATION_PROPERTY;
         }
 
         return [$organizationField, $entityId];

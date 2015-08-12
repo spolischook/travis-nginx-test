@@ -108,5 +108,17 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
                 [new Reference('oropro_organization.system_mode_org_provider')]
             );
         }
+
+        /**
+         * Override Oro\Bundle\EntityExtendBundle\Twig\DynamicFieldsExtension
+         */
+        $serviceId = 'oro_windows.twig.extension';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Twig\WindowsExtension');
+            $definition->addArgument($container->getDefinition('security.context'));
+            $definition->addArgument(new Reference('doctrine.orm.entity_manager'));
+            $definition->addArgument(new Reference('router'));
+        }
     }
 }
