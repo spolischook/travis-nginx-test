@@ -10,6 +10,9 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function process(ContainerBuilder $container)
     {
@@ -116,6 +119,22 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             $definition->addMethodCall(
                 'setOrganizationProvider',
                 [new Reference('oropro_organization.system_mode_org_provider')]
+            );
+        }
+
+        /**
+         * Override Oro\Bundle\EntityExtendBundle\Twig\DynamicFieldsExtension
+         * Dialog two step form render
+         */
+        $serviceId = 'oro_windows.twig.extension';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Twig\WindowsExtension');
+            $definition->addArgument($container->getDefinition('security.context'));
+            $definition->addArgument(new Reference('doctrine.orm.entity_manager'));
+            $definition->addMethodCall(
+                'setRouter',
+                [new Reference('router')]
             );
         }
     }
