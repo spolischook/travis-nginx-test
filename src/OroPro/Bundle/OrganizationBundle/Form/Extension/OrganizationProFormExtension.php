@@ -18,7 +18,6 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 use Oro\Bundle\UserBundle\Security\WsseToken;
 
-use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
