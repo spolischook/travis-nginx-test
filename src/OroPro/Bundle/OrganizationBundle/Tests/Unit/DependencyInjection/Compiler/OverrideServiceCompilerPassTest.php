@@ -21,7 +21,8 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                     $this->equalTo('oro_organization.form.extension.organization'),
                     $this->equalTo('oro_organization.form.extension.owner'),
                     $this->equalTo('oro_report.listener.navigation_listener'),
-                    $this->equalTo('oro_organization.form.type.business_unit')
+                    $this->equalTo('oro_organization.form.type.business_unit'),
+                    $this->equalTo('oro_windows.twig.extension')
                 )
             )
             ->will($this->returnValue(false));
@@ -49,12 +50,13 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Twig\DynamicFieldsExtension'),
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Form\Extension\DynamicFieldsExtension'),
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Form\Extension\OwnerProFormExtension'),
-                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Form\Type\BusinessUnitProType')
+                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Form\Type\BusinessUnitProType'),
+                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Twig\WindowsExtension')
                 )
             )
             ->will($this->returnSelf());
         $definition
-            ->expects($this->exactly(4))
+            ->expects($this->exactly(6))
             ->method('addArgument');
 
         $containerMock = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
@@ -71,7 +73,8 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                     $this->equalTo('oro_organization.form.extension.organization'),
                     $this->equalTo('oro_organization.form.extension.owner'),
                     $this->equalTo('oro_report.listener.navigation_listener'),
-                    $this->equalTo('oro_organization.form.type.business_unit')
+                    $this->equalTo('oro_organization.form.type.business_unit'),
+                    $this->equalTo('oro_windows.twig.extension')
                 )
             )
             ->will($this->returnValue(true));
@@ -88,7 +91,9 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                     $this->equalTo('oro_organization.form.extension.organization'),
                     $this->equalTo('oro_organization.form.extension.owner'),
                     $this->equalTo('oro_report.listener.navigation_listener'),
-                    $this->equalTo('oro_organization.form.type.business_unit')
+                    $this->equalTo('oro_organization.form.type.business_unit'),
+                    $this->equalTo('oro_windows.twig.extension'),
+                    $this->equalTo('security.context')
                 )
             )
 
