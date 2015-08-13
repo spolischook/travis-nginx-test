@@ -32,6 +32,36 @@ class AppKernel extends OroKernel
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
     }
 
+    public function shutdown()
+    {
+        if (false === $this->booted) {
+            return;
+        }
+
+        if ($this->environment != 'test') {
+            return parent::shutdown();
+        }
+        // do cleanup to release memory in test environment
+        gc_disable();
+        $this->cleanupContainer();
+        parent::shutdown();
+        gc_collect_cycles();
+        gc_enable();
+    }
+
+    /**
+     * Remove all container references from all loaded services
+     */
+    protected function cleanupContainer()
+    {
+        $container = $this->getContainer();
+        $object = new \ReflectionObject($container);
+        $property = $object->getProperty('services');
+        $property->setAccessible(true);
+
+        $property->setValue($container, []);
+    }
+
     protected function initializeContainer()
     {
         static $first = true;
