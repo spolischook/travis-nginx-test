@@ -105,7 +105,6 @@ class RoleListener
             if ($organization->getIsGlobal() == true) {
                 // User assigned to the System Organization
                 $globalAccess = true;
-                break;
             }
             $organizationsIds[] = $organization->getId();
         }
