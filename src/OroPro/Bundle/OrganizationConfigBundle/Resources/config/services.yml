@@ -1,6 +1,7 @@
 parameters:
   oropro_organization_config.placeholder.filter.class: OroPro\Bundle\OrganizationConfigBundle\Placeholder\PlaceholderFilter
   oropro_organization_config.event_listener.organization_grid_listener.class: OroPro\Bundle\OrganizationConfigBundle\EventListener\OrganizationGridListener
+  oropro_organization_config.event_listener.mailboxes_grid_listener.class: OroPro\Bundle\OrganizationConfigBundle\EventListener\MailboxesGridListener
   oropro_organization_config.provider.organization_configuration.form_provider.class: OroPro\Bundle\OrganizationConfigBundle\Provider\OrganizationConfigurationFormProvider
   oropro_organization_config.organization.class: OroPro\Bundle\OrganizationConfigBundle\Config\OrganizationScopeManager
   oropro_organization_config.user.class: OroPro\Bundle\OrganizationConfigBundle\Config\UserOrganizationScopeManager
@@ -12,6 +13,13 @@ services:
       class: %oropro_organization_config.event_listener.organization_grid_listener.class%
       tags:
           - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.organization-grid, method: onBuildBefore }
+
+  oropro_organization_config.event_listener.mailboxes_grid_listener:
+      class: %oropro_organization_config.event_listener.mailboxes_grid_listener.class%
+      arguments:
+          - @request_stack
+      tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.base-mailboxes-grid, method: onBuildAfter }
 
   oropro_organization_config.provider.form_provider:
       class: %oropro_organization_config.provider.organization_configuration.form_provider.class%
