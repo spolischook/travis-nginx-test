@@ -56,11 +56,18 @@ class UserTypeExtension extends AbstractTypeExtension
         foreach ($roles as $role) {
             /** @var Organization $organization */
             $organization = $role->getOrganization();
+            $organizationName = 'System';
             $orgId = null;
             if ($organization) {
                 $orgId = $organization->getId();
+                $organizationName = $organization->getName();
             };
-            $permissionsMap[$role->getId()] = $orgId;
+
+            $label = $role->getLabel() . ' [' . $organizationName . ']';
+            $permissionsMap[$role->getId()] = [
+                'org_id' => $orgId,
+                'label' => $label,
+            ];
         }
 
         return $permissionsMap;

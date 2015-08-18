@@ -139,8 +139,17 @@ class RoleListener
     {
         $filters = $config->offsetGetByPath('[filters][columns]', []);
         $filters[self::ORGANIZATION_NAME_COLUMN] = [
-            'type' => 'string',
-            'data_name' => self::ORGANIZATION_ALIAS . '.' . self::ORGANIZATION_NAME_COLUMN,
+            'type' => 'entity',
+            'data_name' => 'org.id',
+            'enabled'      => true,
+            'options'      => [
+                'field_options' => [
+                    'class'                => 'OroOrganizationBundle:Organization',
+                    'property'             => 'name',
+                    'multiple'             => true,
+                    'translatable_options' => true
+                ]
+            ]
         ];
         $config->offsetSetByPath('[filters][columns]', $filters);
     }
