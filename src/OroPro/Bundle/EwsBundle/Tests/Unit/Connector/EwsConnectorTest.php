@@ -7,7 +7,6 @@ use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
 use OroPro\Bundle\EwsBundle\Connector\Search\QueryStringBuilder;
 use OroPro\Bundle\EwsBundle\Connector\Search\RestrictionBuilder;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
-use OroPro\Bundle\EwsBundle\Provider\EwsServiceConfigurator;
 
 class EwsConnectorTest extends \PHPUnit_Framework_TestCase
 {
@@ -100,14 +99,6 @@ class EwsConnectorTest extends \PHPUnit_Framework_TestCase
         $configurator = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Provider\EwsServiceConfigurator')
             ->disableOriginalConstructor()
             ->getMock();
-        $configurator->expects($this->once())->method('getEndpoint')->will($this->returnValue('wsdl'));
-        $configurator->expects($this->once())->method('getServer')->will($this->returnValue(''));
-        $configurator->expects($this->once())->method('getLogin')->will($this->returnValue(''));
-        $configurator->expects($this->once())->method('getPassword')->will($this->returnValue(''));
-        $configurator->expects($this->once())->method('getVersion')
-            ->will($this->returnValue(EwsType\ExchangeVersionType::EXCHANGE2010));
-        $configurator->expects($this->once())->method('isIgnoreFailedResponseMessages')
-            ->will($this->returnValue(false));
 
         $ewsMock = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Ews\ExchangeWebServices')
             ->setConstructorArgs(array($configurator))
