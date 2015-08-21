@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 
-class MailboxesGridListener
+class MailboxGridListener
 {
     const ROUTE = 'oropro_organization_config';
 
@@ -35,8 +35,8 @@ class MailboxesGridListener
             return;
         }
 
-        $source->getQueryBuilder()
-            ->andWhere('m.organization = :organization')
-            ->setParameter('organization', $request->attributes->get('_route_params')['id']);
+        $parameters = $event->getDatagrid()->getParameters();
+
+        $parameters->set('organization_ids', [$request->attributes->get('_route_params')['id']]);
     }
 }
