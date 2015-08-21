@@ -432,7 +432,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $messageIds        = $this->getNewMessageIds($emails, $existingEwsIds);
         $existingEwsEmails = $this->getExistingEwsEmails($folder->getOrigin(), $messageIds);
 
-        $existingEmailUsers = $this->getExistingEmailUsers($messageIds, $folder->getId());
+        $existingEmailUsers = $this->getExistingEmailUsers($folder, $messageIds);
 
         /** @var EwsEmail[] $newEwsEmails */
         $newEwsEmails = [];
