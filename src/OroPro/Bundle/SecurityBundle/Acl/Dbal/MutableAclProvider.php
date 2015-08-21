@@ -64,63 +64,21 @@ class MutableAclProvider extends BaseMutableAclProvider
     /**
      * {@inheritdoc}
      */
-    protected function getInsertSecurityIdentitySql(SecurityIdentityInterface $sid)
+    protected function getSecurityIdentifier(SecurityIdentityInterface $sid)
     {
         if ($sid instanceof UserSecurityIdentity) {
-            $identifier = $sid->getClass().'-'.$sid->getUsername();
-            $username = true;
+            return [$sid->getClass().'-'.$sid->getUsername(), true];
         } elseif ($sid instanceof RoleSecurityIdentity) {
-            $identifier = $sid->getRole();
-            $username = false;
+            return [$sid->getRole(), false];
         } elseif ($sid instanceof BusinessUnitSecurityIdentity || $sid instanceof OrganizationSecurityIdentity) {
-            $identifier = $sid->getClass() . '-' . $sid->getId();
-            $username = false;
+            return [$sid->getClass() . '-' . $sid->getId(), false];
         } else {
             throw new \InvalidArgumentException(
-                '$sid must either be an instance of UserSecurityIdentity or RoleSecurityIdentity ' .
-                'or OrganizationSecurityIdentity or BusinessUnitSecurityIdentity.'
+                '$sid must either be an instance of UserSecurityIdentity or RoleSecurityIdentity' .
+                ' or BusinessUnitSecurityIdentity or OrganizationSecurityIdentity.'
             );
         }
-
-        $this->sids = null;
-
-        return sprintf(
-            'INSERT INTO %s (identifier, username) VALUES (%s, %s)',
-            $this->options['sid_table_name'],
-            $this->connection->quote($identifier),
-            $this->connection->getDatabasePlatform()->convertBooleans($username)
-        );
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSelectSecurityIdentityIdSql(SecurityIdentityInterface $sid)
-    {
-        if ($sid instanceof UserSecurityIdentity) {
-            $identifier = $sid->getClass().'-'.$sid->getUsername();
-            $username = true;
-        } elseif ($sid instanceof RoleSecurityIdentity) {
-            $identifier = $sid->getRole();
-            $username = false;
-        } elseif ($sid instanceof BusinessUnitSecurityIdentity || $sid instanceof OrganizationSecurityIdentity) {
-            $identifier = $sid->getClass() . '-' . $sid->getId();
-            $username = false;
-        } else {
-            throw new \InvalidArgumentException(
-                '$sid must either be an instance of UserSecurityIdentity or RoleSecurityIdentity ' .
-                'or OrganizationSecurityIdentity or BusinessUnitSecurityIdentity.'
-            );
-        }
-
-        return sprintf(
-            'SELECT id FROM %s WHERE identifier = %s AND username = %s',
-            $this->options['sid_table_name'],
-            $this->connection->quote($identifier),
-            $this->connection->getDatabasePlatform()->convertBooleans($username)
-        );
-    }
-
 
     /**
      * @param string $securityIdentifier
