@@ -11,7 +11,6 @@ use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrate
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ImportStrategyHelper;
 use Oro\Bundle\IntegrationBundle\ImportExport\Helper\DefaultOwnerHelper;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
-use Oro\Bundle\UserBundle\Entity\User;
 
 class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
 {
@@ -73,18 +72,23 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
     }
 
     /**
-     * @param User $entity
-     *
-     * @return User
+     * {@inheritdoc}
      */
-    protected function afterProcessEntity($entity)
+    public function process($entity)
     {
-        $this->defaultOwnerHelper->populateChannelOwner($entity, $this->contextMediator->getChannel($this->context));
-        $this->ldapHelper->populateUserRoles($entity);
-        $this->ldapHelper->populateOrganization($entity);
-        $this->ldapHelper->populateBusinessUnitOwner($entity);
+        $entity = parent::process($entity);
+        if ($entity) {
+            // populate required relations only if a validation passed
+            $this->defaultOwnerHelper->populateChannelOwner(
+                $entity,
+                $this->contextMediator->getChannel($this->context)
+            );
+            $this->ldapHelper->populateUserRoles($entity);
+            $this->ldapHelper->populateOrganization($entity);
+            $this->ldapHelper->populateBusinessUnitOwner($entity);
+        }
 
-        return parent::afterProcessEntity($entity);
+        return $entity;
     }
 
     /**
