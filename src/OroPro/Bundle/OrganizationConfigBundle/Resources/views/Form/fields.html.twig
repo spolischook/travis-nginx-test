@@ -41,6 +41,7 @@
         } %}
     {% else %}
         {% set parameters = {
+            'organization_ids': [get_current_organization().getId()],
             'redirectData': redirectData
         } %}
     {% endif %}
