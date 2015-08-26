@@ -1,3 +1,12 @@
+CHANGELOG for 1.10.0
+===================
+This changelog references the relevant changes (new features, changes and bugs) done in 1.10.0 versions.
+* 1.10.0 (2015-08-26)
+ * LDAP integration
+ * Fixed issues with Outlook add-in download
+ * Fixed issues with connecting Outlook to OroCRM without access to system configuration, meaning that any user role may now use this integration
+ * Fixed issue with Outlook plugin sync before start of a workday
+
 CHANGELOG for 1.9.0
 ===================
 This changelog references the relevant changes (new features, changes and bugs) done in 1.9.0 versions.
