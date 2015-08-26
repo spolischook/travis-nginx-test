@@ -1,3 +1,12 @@
+CHANGELOG for 1.10.0
+===================
+This changelog references the relevant changes (new features, changes and bugs) done in 1.10.0 versions.
+* 1.10.0 (2015-08-26)
+ * LDAP integration
+ * Fixed issues with Outlook add-in download
+ * Fixed issues with connecting Outlook to OroCRM without access to system configuration, meaning that any user role may now use this integration
+ * Fixed issue with Outlook plugin sync before start of a workday
+
 CHANGELOG for 1.9.0
 ===================
 This changelog references the relevant changes (new features, changes and bugs) done in 1.9.0 versions.
@@ -48,7 +57,7 @@ CHANGELOG for 1.6.0
 This changelog references the relevant changes (new features, changes and bugs) done in 1.6.0 versions.
 
 * 1.6.0 (2014-10-15)
- * <b>New features.</b> 
+ * <b>New features.</b>
 The Enterprise Edition is built upon the simultaneously released 1.4.0 version of Community edition, so it will include all its new features and fixes. Below is the list of features exclusive to Enterprise version.
  * <b>Multiple Organizations.</b>
 In Enterprise Edition it is now possible to create and maintain multiple organizations on a single installation of OroCRM. Multiple organizations are needed when the business of the CRM owner is complex and consists of two or more independent units. To justify the necessity of use of multiple organizations, the separation between the parts of the business must be deep, otherwise business units within a single organization will be sufficient. The good rule of thumb is that if a business unit has its own P&L, it should correspond to an individual organization in the OroCRM. Here are few examples of the cases where business units are not enough and organizations are needed:
@@ -74,7 +83,7 @@ CHANGELOG for 1.6.0-RC1
 This changelog references the relevant changes (new features, changes and bugs) done in 1.6.0-RC1 versions.
 
 * 1.6.0 (2014-09-30)
- * <b>New features.</b> 
+ * <b>New features.</b>
 The Enterprise Edition is built upon the simultaneously released 1.4.0 version of Community edition, so it will include all its new features and fixes. Below is the list of features exclusive to Enterprise version.
  * <b>Multiple Organizations.</b>
 In Enterprise Edition it is now possible to create and maintain multiple organizations on a single installation of OroCRM. Multiple organizations are needed when the business of the CRM owner is complex and consists of two or more independent units. To justify the necessity of use of multiple organizations, the separation between the parts of the business must be deep, otherwise business units within a single organization will be sufficient. The good rule of thumb is that if a business unit has its own P&L, it should correspond to an individual organization in the OroCRM. Here are few examples of the cases where business units are not enough and organizations are needed:
