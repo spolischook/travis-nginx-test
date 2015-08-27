@@ -16,6 +16,12 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        $serviceId = 'oro_email.mailbox_choice_list';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Grid\MailboxChoiceList');
+        }
+
         /**
          * Shows mailboxes for all organizations in system configuration if logged under global organization
          */
