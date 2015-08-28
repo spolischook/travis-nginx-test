@@ -43,7 +43,7 @@ class MailboxGridListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->aclHelper = $this->getMockBuilder('Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper')
             ->disableOriginalConstructor()
-            ->getMock();        
+            ->getMock();
 
         $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
             ->disableOriginalConstructor()
