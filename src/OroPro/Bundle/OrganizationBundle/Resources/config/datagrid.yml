@@ -88,7 +88,7 @@ datagrid:
                     type: datetime
                     data_name: u.updatedAt
 
-    organization-share-grid:
+    share-with-organizations-datagrid:
         extended_entity_name: %oro_organization.organization.entity.class%
         options:
             entityHint: organization
@@ -121,6 +121,11 @@ datagrid:
                 frontend_type: datetime
         properties:
             id: ~
+            entity:
+                type: twig
+                frontend_type: html
+                template: OroProOrganizationBundle:Share:Property/entity.html.twig
+                data_name: u
         sorters:
             columns:
                 name:
