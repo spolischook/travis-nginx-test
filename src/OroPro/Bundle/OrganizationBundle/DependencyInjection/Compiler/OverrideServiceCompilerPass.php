@@ -16,6 +16,9 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        /**
+         * Show all mailboxes user have right to in mailbox choice list
+         */
         $serviceId = 'oro_email.mailbox_choice_list';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
