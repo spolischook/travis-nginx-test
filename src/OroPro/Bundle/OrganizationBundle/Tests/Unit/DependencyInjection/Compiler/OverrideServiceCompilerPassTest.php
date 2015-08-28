@@ -14,7 +14,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->method('hasDefinition')
             ->with(
                 $this->logicalOr(
-                    $this->equalTo('oro_email.mailbox_choice_list'),
+                    $this->equalTo('oro_email.mailbox.manager'),
                     $this->equalTo('oro_email.listener.datagrid.mailbox_grid'),
                     $this->equalTo('oro_email.provider.email_recipients.helper'),
                     $this->equalTo('oro_entity_extend.datagrid.extension.dynamic_fields'),
@@ -47,7 +47,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->method('setClass')
             ->with(
                 $this->logicalOr(
-                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Grid\MailboxChoiceList'),
+                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Entity\Manager\MailboxManager'),
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\EventListener\MailboxGridListener'),
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Provider\EmailRecipientsHelper'),
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Grid\DynamicFieldsExtension'),
@@ -70,7 +70,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->method('hasDefinition')
             ->with(
                 $this->logicalOr(
-                    $this->equalTo('oro_email.mailbox_choice_list'),
+                    $this->equalTo('oro_email.mailbox.manager'),
                     $this->equalTo('oro_email.listener.datagrid.mailbox_grid'),
                     $this->equalTo('oro_email.provider.email_recipients.helper'),
                     $this->equalTo('oro_entity_extend.datagrid.extension.dynamic_fields'),
@@ -89,7 +89,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->method('getDefinition')
             ->with(
                 $this->logicalOr(
-                    $this->equalTo('oro_email.mailbox_choice_list'),
+                    $this->equalTo('oro_email.mailbox.manager'),
                     $this->equalTo('oro_email.listener.datagrid.mailbox_grid'),
                     $this->equalTo('oro_email.provider.email_recipients.helper'),
                     $this->equalTo('oro_entity_extend.datagrid.extension.dynamic_fields'),

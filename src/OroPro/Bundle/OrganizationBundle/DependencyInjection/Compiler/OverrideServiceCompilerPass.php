@@ -17,12 +17,12 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         /**
-         * Show all mailboxes user have right to in mailbox choice list
+         * This override is responsible for making all mailboxes available to users logged under global organization.
          */
-        $serviceId = 'oro_email.mailbox_choice_list';
+        $serviceId = 'oro_email.mailbox.manager';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
-            $definition->setClass('OroPro\Bundle\OrganizationBundle\Grid\MailboxChoiceList');
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Entity\Manager\MailboxManager');
         }
 
         /**
