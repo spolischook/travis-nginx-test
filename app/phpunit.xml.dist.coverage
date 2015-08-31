@@ -24,23 +24,12 @@
             <directory suffix="Test.php">../src/*/src/*/Bundle/*Bundle/Tests/Unit</directory>
             <directory suffix="Test.php">../src/*/src/*/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
-        <testsuite name="Project OroCRM Unit Tests">
-            <directory suffix="Test.php">../src/OroCRM/src/OroCRM/Bundle/*Bundle/Tests/Unit</directory>
-            <directory suffix="Test.php">../src/OroCRMPackages/src/OroCRM/Bundle/*Bundle/Tests/Unit</directory>
+        <testsuite name="Project Unit Tests">
+            <directory suffix="Test.php">../src/*/src/*/Component/*/Tests/Unit</directory>
+            <directory suffix="Test.php">../src/*/src/*/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
-        <testsuite name="Project OroCRM Functional Tests">
-            <directory suffix="Test.php">../src/OroCRM/src/OroCRM/Bundle/*Bundle/Tests/Functional</directory>
-            <directory suffix="Test.php">../src/OroCRMPackages/src/OroCRM/Bundle/*Bundle/Tests/Functional</directory>
-        </testsuite>
-        <testsuite name="Project Oro Unit Tests">
-            <directory suffix="Test.php">../src/Oro/src/Oro/Component/*/Tests/Unit</directory>
-            <directory suffix="Test.php">../src/Oro/src/Oro/Bundle/*Bundle/Tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Project Oro Functional Tests">
-            <directory suffix="Test.php">../src/Oro/src/Oro/Bundle/*Bundle/Tests/Functional</directory>
-        </testsuite>
-        <testsuite name="Project Selenium Tests">
-            <directory suffix="Test.php">../src/OroCRM/src/OroCRM/Bundle/*Bundle/Tests/Selenium</directory>
+        <testsuite name="Project Functional Tests">
+            <directory suffix="Test.php">../src/*/src/*/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
     </testsuites>
 
