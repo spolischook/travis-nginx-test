@@ -27,6 +27,7 @@ parameters:
     oro_security.ace.query.manager.class:        OroPro\Bundle\SecurityBundle\Model\Action\AceQueryManager
 
     oro_security.twig.security_extension:        OroPro\Bundle\SecurityBundle\Twig\OroProSecurityExtension
+    oro_security.datasource.share.class:         OroPro\Bundle\SecurityBundle\Extension\ShareDatasource
 
 services:
     oropro_security.licence.server_agent:
