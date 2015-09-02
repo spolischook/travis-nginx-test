@@ -82,7 +82,7 @@ class OrganizationExtension extends \Twig_Extension
     {
         $result = $this->translator->trans('oropro.organization.datagrid.applicable_none');
 
-        $data = json_decode($value, true);
+        $data = is_array($value) ? $value : json_decode($value, true);
         if (!is_array($data)) {
             return $result;
         } elseif ($data['all'] === true) {
