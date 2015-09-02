@@ -44,7 +44,7 @@ trait FileLoader
 
         $data    = [];
         $handle  = fopen($path, 'r');
-        $headers = fgetcsv($handle, 1000, ',');
+        $headers = fgetcsv($handle, 3000, ',');
 
         if (empty($headers)) {
             return [];
@@ -53,7 +53,7 @@ trait FileLoader
         if (!in_array('uid', $headers)) {
             throw new NoSuchPropertyException('Property: "uid" does not exists');
         }
-        while ($info = fgetcsv($handle, 1000, ',')) {
+        while ($info = fgetcsv($handle, 3000, ',')) {
             if (count($info) !== count($headers)) {
                 continue;
             }
