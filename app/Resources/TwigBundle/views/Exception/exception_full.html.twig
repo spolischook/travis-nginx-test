@@ -1,4 +1,5 @@
 {% extends status_code == 403 ? 'OroUIBundle:Default:index.html.twig' : 'TwigBundle::layout.html.twig' %}
+
 {% set pageTitle = exception.message ~ ' ' ~ status_code ~ ' ' ~ status_text %}
 {% oro_title_set({titleTemplate : pageTitle, force : true}) %}
 {% block head_script %}
