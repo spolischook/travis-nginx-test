@@ -73,8 +73,8 @@ class OrganizationExtension extends \Twig_Extension
      * Due to restriction that configuration property which you want to show on grid should be indexed,
      * and complicated config form type "oro_type_choice_organization_type" that stores multiple values.
      *
-     * @param string      $value
-     * @param string|null $className
+     * @param string|array $value
+     * @param string|null  $className
      *
      * @return string
      */
