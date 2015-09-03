@@ -24,6 +24,8 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
 {
     use FileLoaderTrait, GenerateDateTrait;
 
+    const MAIN_USER_ID = 1;
+
     const DATA_FOLDER = 'data';
 
     /** @var  EntityManager */
@@ -49,7 +51,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
         $classData = new \ReflectionClass($this);
         $dir       = __DIR__ . DIRECTORY_SEPARATOR;
 
-        preg_match('/Migrations\/Data\/(\w*\/ORM)/', $classData->getFilename(), $matches);
+        preg_match('/Migrations[\\/\\\]Data[\\/\\\](\w*[\\/\\\]ORM)/', $classData->getFilename(), $matches);
         if (!empty($matches[1])) {
             $dir .= '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $matches[1] . DIRECTORY_SEPARATOR;
         }
@@ -59,7 +61,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -85,7 +87,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
             return $this->getUserReference('main');
         } else {
             /** @var User $entity */
-            $entity = $this->userRepository->find(1);
+            $entity = $this->userRepository->find(self::MAIN_USER_ID);
             if (!$entity) {
                 throw new EntityNotFoundException('Main user does not exist.');
             }
@@ -165,7 +167,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
     }
 
     /**
-     * Remove event $instance listener (for manual set created/updated dates)
+     * Remove event $instance listener (for manual setup created/updated dates)
      *
      * @param       $instance
      * @param array $events
