@@ -16,13 +16,13 @@ use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationT
 use Oro\Bundle\UserBundle\Entity\User;
 
 use OroCRMPro\Bundle\DemoDataBundle\EventListener\ActivityListSubscriber;
-use OroCRMPro\Bundle\DemoDataBundle\Model\FileLoader;
-use OroCRMPro\Bundle\DemoDataBundle\Model\GenerateDate;
+use OroCRMPro\Bundle\DemoDataBundle\Model\FileLoaderTrait;
+use OroCRMPro\Bundle\DemoDataBundle\Model\GenerateDateTrait;
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 abstract class AbstractFixture extends EntityReferences implements ContainerAwareInterface
 {
-    use FileLoader, GenerateDate;
+    use FileLoaderTrait, GenerateDateTrait;
 
     const DATA_FOLDER = 'data';
 
