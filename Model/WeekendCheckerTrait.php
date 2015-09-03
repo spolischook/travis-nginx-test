@@ -2,7 +2,7 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Model;
 
-trait WeekendChecker
+trait WeekendCheckerTrait
 {
     /**
      * @param \DateTime $dateTime

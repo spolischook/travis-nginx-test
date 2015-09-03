@@ -5,7 +5,7 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Model;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
-trait FileLoader
+trait FileLoaderTrait
 {
 
     /**
@@ -23,7 +23,9 @@ trait FileLoader
     {
         static $data = [];
         if (!isset($data[$name])) {
-            $path        = $this->getDataDirectory() . $name;
+            $path = $this->getDataDirectory() . $name;
+            $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+
             $data[$name] = $this->loadDataFromCSV($path);
         }
 
