@@ -23,7 +23,9 @@ trait FileLoaderTrait
     {
         static $data = [];
         if (!isset($data[$name])) {
-            $path        = $this->getDataDirectory() . $name;
+            $path = $this->getDataDirectory() . $name;
+            $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+
             $data[$name] = $this->loadDataFromCSV($path);
         }
 
