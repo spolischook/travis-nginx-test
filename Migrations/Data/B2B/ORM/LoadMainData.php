@@ -17,6 +17,7 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
+            static::B2C_NAMESPACE . '\\LoadConfigData',
             static::B2C_NAMESPACE . '\\LoadOrganizationData',
             static::B2C_NAMESPACE . '\\LoadBusinessUnitData',
             static::B2C_NAMESPACE . '\\LoadDefaultUserData',
@@ -48,7 +49,7 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
