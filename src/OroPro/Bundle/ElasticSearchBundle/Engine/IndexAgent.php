@@ -44,7 +44,7 @@ class IndexAgent
         'analysis' => [
             'analyzer' => [
                 self::FULLTEXT_SEARCH_ANALYZER => [
-                    'tokenizer' => 'keyword',
+                    'tokenizer' => 'whitespace',
                     'filter'    => ['lowercase']
                 ],
                 self::FULLTEXT_INDEX_ANALYZER  => [
