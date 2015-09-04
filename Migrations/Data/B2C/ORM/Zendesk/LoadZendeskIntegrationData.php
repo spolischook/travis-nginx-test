@@ -1,20 +1,30 @@
 <?php
 
-namespace OroCRM\Bundle\ZendeskBundle\Migrations\Data\Demo\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
 
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\ZendeskBundle\Provider\ChannelType;
 use OroCRM\Bundle\ZendeskBundle\Provider\TicketCommentConnector;
 use OroCRM\Bundle\ZendeskBundle\Provider\TicketConnector;
 use OroCRM\Bundle\ZendeskBundle\Provider\UserConnector;
-use OroCRM\Bundle\ZendeskBundle\Tests\Functional\DataFixtures\AbstractZendeskFixture;
-
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
-class LoadZendeskIntegrationData extends AbstractZendeskFixture implements DependentFixtureInterface
+class LoadZendeskIntegrationData extends AbstractFixture implements OrderedFixtureInterface
 {
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'transports' => $this->loadData('zendesk/integrations.csv'),
+        ];
+    }
+
     protected $channelData = array(
         array(
             'name'         => 'Demo Zendesk integration',
@@ -30,16 +40,6 @@ class LoadZendeskIntegrationData extends AbstractZendeskFixture implements Depen
             'organization' => null
         )
     );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return array(
-            'OroCRM\Bundle\ZendeskBundle\Migrations\Data\Demo\ORM\LoadTransportData'
-        );
-    }
 
     /**
      * {@inheritdoc}
@@ -60,4 +60,13 @@ class LoadZendeskIntegrationData extends AbstractZendeskFixture implements Depen
 
         $manager->flush();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 34;
+    }
+
 }

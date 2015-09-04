@@ -1,0 +1,2 @@
+uid,organization,name,enabled,transport,reference
+1,1,Demo Zendesk integration,0,orocrm_zendesk:zendesk_demo_transport,orocrm_zendesk:zendesk_demo_channel
