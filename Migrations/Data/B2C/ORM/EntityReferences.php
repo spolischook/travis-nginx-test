@@ -356,6 +356,27 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     }
 
     /**
+     * @param                 $uid
+     * @param Integration     $integration
+     */
+    protected function setZendeskIntegrationReference($uid, Integration $integration)
+    {
+        $reference = 'ZendeskIntegration:' . $uid;
+        $this->setReference($reference, $integration);
+    }
+
+    /**
+     * @param $uid
+     * @return Integration
+     * @throws EntityNotFoundException
+     */
+    protected function getZendeskIntegrationReference($uid)
+    {
+        $reference = 'ZendeskIntegration:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
      * @param $uid
      * @return Channel
      * @throws EntityNotFoundException

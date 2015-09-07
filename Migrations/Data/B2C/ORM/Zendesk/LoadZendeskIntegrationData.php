@@ -56,7 +56,7 @@ class LoadZendeskIntegrationData extends AbstractFixture implements OrderedFixtu
                 ]
             );
             $integration->setEnabled(true);
-            $this->setChannelReference($integrationData['uid'], $integration);
+            $this->setZendeskIntegrationReference($integrationData['uid'], $integration);
             $manager->persist($integration);
         }
         $manager->flush();
