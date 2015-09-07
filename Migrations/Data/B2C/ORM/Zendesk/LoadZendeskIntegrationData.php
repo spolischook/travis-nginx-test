@@ -1,64 +1,82 @@
 <?php
 
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Zendesk;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
+use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
+use OroCRM\Bundle\ZendeskBundle\Entity\ZendeskRestTransport;
 use OroCRM\Bundle\ZendeskBundle\Provider\ChannelType;
 use OroCRM\Bundle\ZendeskBundle\Provider\TicketCommentConnector;
 use OroCRM\Bundle\ZendeskBundle\Provider\TicketConnector;
 use OroCRM\Bundle\ZendeskBundle\Provider\UserConnector;
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadZendeskIntegrationData extends AbstractFixture implements OrderedFixtureInterface
 {
-
     /**
      * @return array
      */
     public function getData()
     {
         return [
-            'transports' => $this->loadData('zendesk/integrations.csv'),
+            'integrations' => $this->loadData('zendesk/integrations.csv'),
         ];
     }
 
-    protected $channelData = array(
-        array(
-            'name'         => 'Demo Zendesk integration',
-            'type'         => ChannelType::TYPE,
-            'connectors'   => array(
-                TicketConnector::TYPE,
-                UserConnector::TYPE,
-                TicketCommentConnector::TYPE
-            ),
-            'enabled'      => 0,
-            'transport'    => 'orocrm_zendesk:zendesk_demo_transport',
-            'reference'    => 'orocrm_zendesk:zendesk_demo_channel',
-            'organization' => null
-        )
-    );
-
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
-        foreach ($this->channelData as $data) {
-            $channel = new Channel();
+        $data = $this->getData();
 
-            $data['transport']    = $this->getReference($data['transport']);
-            $data['organization'] = $this->getReference('default_organization');
+        foreach ($data['integrations'] as $integrationData) {
+            $transport = new ZendeskRestTransport();
+            $this->setEntityPropertyValues(
+                $transport,
+                $integrationData,
+                array('uid','organization uid', 'name','reference')
+            );
+            $manager->persist($transport);
 
-            $this->setEntityPropertyValues($channel, $data, array('reference'));
-            $manager->persist($channel);
-
-            $this->setReference($data['reference'], $channel);
+            $integration = new Integration();
+            $integration->setDefaultUserOwner($this->getMainUser());
+            $integration->setType(ChannelType::TYPE);
+            $integration->setName($integrationData['name']);
+            $integration->setTransport($transport);
+            $integration->setOrganization($this->getOrganizationReference($integrationData['organization uid']));
+            $integration->setConnectors(
+                [
+                    TicketConnector::TYPE,
+                    UserConnector::TYPE,
+                    TicketCommentConnector::TYPE
+                ]
+            );
+            $integration->setEnabled(true);
+            $this->setChannelReference($integrationData['uid'], $integration);
+            $manager->persist($integration);
         }
-
         $manager->flush();
+    }
+
+    /**
+     * Sets $entity object properties from $data array
+     *
+     * @param object $entity
+     * @param array $data
+     * @param array $excludeProperties
+     */
+    public function setEntityPropertyValues($entity, array $data, array $excludeProperties = array())
+    {
+        foreach ($data as $property => $value) {
+            if (in_array($property, $excludeProperties)) {
+                continue;
+            }
+            PropertyAccess::createPropertyAccessor()->setValue($entity, $property, $value);
+        }
     }
 
     /**
@@ -68,5 +86,4 @@ class LoadZendeskIntegrationData extends AbstractFixture implements OrderedFixtu
     {
         return 34;
     }
-
 }
