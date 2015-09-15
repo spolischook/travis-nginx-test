@@ -21,7 +21,6 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
             static::B2C_NAMESPACE . '\\LoadOrganizationData',
             static::B2C_NAMESPACE . '\\LoadBusinessUnitData',
             static::B2C_NAMESPACE . '\\LoadDefaultUserData',
-            static::B2C_NAMESPACE . '\\LoadPinBarData',
             static::B2C_NAMESPACE . '\\LoadGroupData',
             static::B2C_NAMESPACE . '\\LoadEmailTemplateData',
             static::B2C_NAMESPACE . '\\LoadEmailNotificationData',

@@ -620,6 +620,28 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     * @return Report
+     * @throws EntityNotFoundException
+     */
+    protected function getReportReference($uid)
+    {
+        $reference = 'Report:' . $uid;
+
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param         $uid
+     * @param Report $report
+     */
+    protected function setReportReference($uid, Report $report)
+    {
+        $reference = 'Report:' . $uid;
+        $this->setReference($reference, $report);
+    }
+
+    /**
+     * @param $uid
      * @return Segment
      * @throws EntityNotFoundException
      */
