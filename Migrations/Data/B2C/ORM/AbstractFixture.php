@@ -15,7 +15,6 @@ use Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository;
 use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
 use Oro\Bundle\UserBundle\Entity\User;
 
-use OroCRMPro\Bundle\DemoDataBundle\EventListener\ActivityListSubscriber;
 use OroCRMPro\Bundle\DemoDataBundle\Model\FileLoaderTrait;
 use OroCRMPro\Bundle\DemoDataBundle\Model\GenerateDateTrait;
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
@@ -70,9 +69,6 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
 
         $this->userRepository         = $this->em->getRepository('OroUserBundle:User');
         $this->organizationRepository = $this->em->getRepository('OroOrganizationBundle:Organization');
-
-        $subscriber = new ActivityListSubscriber();
-        $this->em->getEventManager()->addEventSubscriber($subscriber);
 
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
