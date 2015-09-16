@@ -23,6 +23,9 @@
         "oro/crm": "1.x-dev",
         "oro/crm-enterprise" : "1.x-dev"
     },
+    "require-dev": {
+        "sensio/generator-bundle": "2.5.3"
+    },
     "config": {
         "component-dir": "web/bundles/components"
     },
