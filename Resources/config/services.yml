@@ -1,0 +1,2 @@
+parameters:
+    oro_search.event_listener.demo_data_listener.class: OroCRMPro\Bundle\DemoDataBundle\EventListener\DemoDataMigrationListener
