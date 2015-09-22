@@ -2,7 +2,6 @@
 
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Zendesk;
 
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
@@ -35,7 +34,7 @@ class LoadZendeskIntegrationData extends AbstractFixture implements OrderedFixtu
 
         foreach ($data['integrations'] as $integrationData) {
             $transport = new ZendeskRestTransport();
-            $this->setEntityPropertyValues(
+            $this->setObjectValues(
                 $transport,
                 $integrationData,
                 array('uid','organization uid', 'name','reference')
@@ -60,23 +59,6 @@ class LoadZendeskIntegrationData extends AbstractFixture implements OrderedFixtu
             $manager->persist($integration);
         }
         $manager->flush();
-    }
-
-    /**
-     * Sets $entity object properties from $data array
-     *
-     * @param object $entity
-     * @param array $data
-     * @param array $excludeProperties
-     */
-    public function setEntityPropertyValues($entity, array $data, array $excludeProperties = array())
-    {
-        foreach ($data as $property => $value) {
-            if (in_array($property, $excludeProperties)) {
-                continue;
-            }
-            PropertyAccess::createPropertyAccessor()->setValue($entity, $property, $value);
-        }
     }
 
     /**
