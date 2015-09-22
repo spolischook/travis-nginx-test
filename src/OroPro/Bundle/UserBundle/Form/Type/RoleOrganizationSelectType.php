@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
+use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use OroPro\Bundle\UserBundle\Helper\UserProHelper;
 
@@ -61,6 +62,11 @@ class RoleOrganizationSelectType extends AbstractType
         if (!$this->userHelper->isUserAssignedToSystemOrganization($user)) {
             $defaults['constraints'] = [new Assert\NotBlank()];
             $defaults['attr']['data-validation'] = json_encode(['NotBlank' => []]);
+
+            $token = $this->securityContext->getToken();
+            if ($token instanceof OrganizationContextTokenInterface) {
+                $defaults['data'] = $token->getOrganizationContext();
+            }
         }
 
         $resolver->setDefaults(

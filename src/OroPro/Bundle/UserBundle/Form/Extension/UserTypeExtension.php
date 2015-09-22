@@ -2,13 +2,13 @@
 
 namespace OroPro\Bundle\UserBundle\Form\Extension;
 
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 use Doctrine\ORM\EntityManager;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
 
