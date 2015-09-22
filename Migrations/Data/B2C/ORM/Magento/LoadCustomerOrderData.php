@@ -52,20 +52,19 @@ class LoadCustomerOrderData extends AbstractFixture implements OrderedFixtureInt
             $order->setUpdatedAt($this->generateUpdatedDate($order->getCreatedAt()));
             $order->setCart($cart);
             $order->setCurrency($cart->getBaseCurrencyCode());
-            $order->setTotalAmount($cart->getGrandTotal());
-            $order->setTotalInvoicedAmount($cart->getGrandTotal());
             $order->setDataChannel($cart->getDataChannel());
-
-            if ($orderData['status'] === 'Completed') {
-                $order->setTotalPaidAmount($cart->getGrandTotal());
-                $this->addOrderAddress($order, $cart, $addressType);
-                $order->setSubtotalAmount($cart->getSubTotal());
-            }
-
             $order->setShippingAmount(rand(5, 10));
             $order->setPaymentMethod($orderData['payment_method']);
             $order->setPaymentDetails($orderData['payment_method_details']);
             $order->setShippingMethod('flatrate_flatrate');
+            $order->setTotalInvoicedAmount($cart->getGrandTotal());
+            $order->setTotalAmount($cart->getGrandTotal());
+            $order->setSubtotalAmount($cart->getSubTotal());
+            $this->addOrderAddress($order, $cart, $addressType);
+
+            if ($order->isCompleted()) {
+                $order->setTotalPaidAmount($cart->getGrandTotal());
+            }
 
             $cartItems  = $cart->getCartItems();
             $orderItems = [];
