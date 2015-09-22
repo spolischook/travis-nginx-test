@@ -95,8 +95,11 @@ class OrganizationProFormExtension extends OrganizationFormExtension
                 list ($organizationField, $entityId) = $this->getEntityInfo($entity);
                 if ($organizationField) {
                     if ($entityId === null && !$this->organizationProvider->getOrganizationId()) {
-                        //we in create process without organization in organization Provider
-                        throw new OrganizationAwareException();
+                        // skip setting organization as it was set already
+                        if (!$this->getOrganizationValue($entity, $organizationField)) {
+                            //we in create process without organization in organization Provider
+                            throw new OrganizationAwareException();
+                        }
                     } else {
                         //we in edit process or in create process with organization id in parameter
                         if ($entityId) {

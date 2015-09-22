@@ -3,92 +3,46 @@
 namespace OroPro\Bundle\EwsBundle\Ews;
 
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
-
 use OroPro\Bundle\EwsBundle\Provider\EwsServiceConfigurator;
-use \SoapClient;
 
 /**
  * The ExchangeWebServices class provides a SOAP client
  */
 class ExchangeWebServices extends AbstractExchangeWebServices
 {
-    /**
-     * Location of the Exchange server.
-     *
-     * @var string
-     */
-    protected $server;
-
-    /**
-     * Username to use when connecting to the Exchange server.
-     *
-     * @var string
-     */
-    protected $username;
-
-    /**
-     * Password to use when connecting to the Exchange server.
-     *
-     * @var string
-     */
-    protected $password;
+    /** @var EwsServiceConfigurator */
+    protected $configurator;
 
     /**
      * Miscrosoft Exchange Server version that we are going to connect to
      *
      * @var string one of the ExchangeVersionType::* constants
-     * @see EwsType\ExchangeVersionType
+     * or FALSE if the version should be retrieved from a config
      */
-    protected $version;
-
-    /**
-     * The path to WSDL file describes Exchange Web Services (EWS).
-     *
-     * @var string
-     */
-    protected $wsdlFile;
+    protected $version = false;
 
     /**
      * SOAP client used to make the request
      *
      * @var ExchangeSoapClient
      */
-    protected $soap = null;
+    protected $soap;
 
     /**
      * Exchange impersonation
      *
      * @var EWSType\ExchangeImpersonationType
      */
-    protected $impersonation = null;
-
-    /**
-     * As an EWS function call may return several response messages, it may be helpful
-     * to filter failed ones.
-     * If this flag is true the failed response messages are ignored and returned in
-     * the EWS function call result together with success response messages.
-     * If this flag is false (default behaviour) an exception is thrown is at least one
-     * failed response message exists in the result.
-     *
-     * @var bool
-     */
-    protected $ignoreFailedResponseMessages = false;
+    protected $impersonation;
 
     /**
      * Constructor for the ExchangeWebServices class
      *
      * @param \OroPro\Bundle\EwsBundle\Provider\EwsServiceConfigurator $configurator
-     *
-     * @see   EwsType\ExchangeVersionType
      */
     public function __construct(EwsServiceConfigurator $configurator)
     {
-        $this->wsdlFile                     = $configurator->getEndpoint();
-        $this->server                       = $configurator->getServer();
-        $this->username                     = $configurator->getLogin();
-        $this->password                     = $configurator->getPassword();
-        $this->version                      = $configurator->getVersion();
-        $this->ignoreFailedResponseMessages = $configurator->isIgnoreFailedResponseMessages();
+        $this->configurator = $configurator;
     }
 
     /**
@@ -118,7 +72,9 @@ class ExchangeWebServices extends AbstractExchangeWebServices
      */
     public function getVersion()
     {
-        return $this->version;
+        return $this->version === false
+            ? $this->configurator->getVersion()
+            : $this->version;
     }
 
     /**
@@ -134,23 +90,27 @@ class ExchangeWebServices extends AbstractExchangeWebServices
     /**
      * Initializes the SOAP client to make a request
      *
-     * @return SoapClient
+     * @return \SoapClient
      */
     protected function initializeSoapClient()
     {
         $options = array();
 
-        if ($this->server != null) {
-            $options['location'] = 'https://' . $this->server . '/EWS/Exchange.asmx';
+        $server = $this->configurator->getServer();
+        if ($server) {
+            $options['location'] = 'https://' . $server . '/EWS/Exchange.asmx';
         }
-        if ($this->version != null) {
-            $options['version'] = $this->version;
+        $version = $this->getVersion();
+        if ($version) {
+            $options['version'] = $version;
         }
-        if ($this->username != null) {
-            $options['user'] = $this->username;
+        $username = $this->configurator->getLogin();
+        if ($username) {
+            $options['user'] = $username;
         }
-        if ($this->username != null) {
-            $options['password'] = $this->password;
+        $password = $this->configurator->getPassword();
+        if ($password) {
+            $options['password'] = $password;
         }
 
         // To create arrays even if a single element returned
@@ -159,11 +119,11 @@ class ExchangeWebServices extends AbstractExchangeWebServices
 
         $this->UpdateClassmapOption($options);
 
-        if ($this->impersonation != null) {
+        if ($this->impersonation !== null) {
             $options['impersonation'] = $this->impersonation;
         }
 
-        return new ExchangeSoapClient($this->wsdlFile, $options);
+        return new ExchangeSoapClient($this->configurator->getEndpoint(), $options);
     }
 
     /**
@@ -218,20 +178,20 @@ class ExchangeWebServices extends AbstractExchangeWebServices
     {
         if ($code != 200) {
             $err = (string)$code;
-            $faultCode = EwsException::buildReceiverFaultCode("Soap.RequestProcessingFailed");
+            $faultCode = EwsException::buildReceiverFaultCode('Soap.RequestProcessingFailed');
             // Process the most common errors
             if ($code == 400) {
-                $err = "Bad request";
+                $err = 'Bad request';
             } elseif ($code == 401) {
-                $err = "Unauthorized";
-                $faultCode = EwsException::buildReceiverFaultCode("Soap.Unauthorized");
+                $err = 'Unauthorized';
+                $faultCode = EwsException::buildReceiverFaultCode('Soap.Unauthorized');
             } elseif ($code == 403) {
-                $err = "Forbidden";
-                $faultCode = EwsException::buildReceiverFaultCode("Soap.Forbidden");
+                $err = 'Forbidden';
+                $faultCode = EwsException::buildReceiverFaultCode('Soap.Forbidden');
             } elseif ($code == 500) {
-                $err = "Internal Error";
+                $err = 'Internal Error';
             } elseif ($code == 501) {
-                $err = "Not implemented";
+                $err = 'Not implemented';
             }
             throw new EwsException('SOAP client returned status of [' . $err . ']', $faultCode);
         }
@@ -243,23 +203,24 @@ class ExchangeWebServices extends AbstractExchangeWebServices
      */
     private function validateResponseType($response)
     {
-        if ($response != null && is_object($response)) {
-            if (get_class($response) == "stdClass") {
+        if ($response !== null && is_object($response)) {
+            if (get_class($response) === 'stdClass') {
                 throw new EwsException(
-                    "SOAP client returns a response as 'stdClass' class, but it is expected more precise response type."
-                    . "Please check that SOAP client is configured properly.",
-                    EwsException::buildSenderFaultCode("Ews.InvalidConfiguration")
+                    'SOAP client returns a response as \'stdClass\' class,'
+                    . ' but it is expected more precise response type.'
+                    . ' Please check that SOAP client is configured properly.',
+                    EwsException::buildSenderFaultCode('Ews.InvalidConfiguration')
                 );
             }
-            if (property_exists($response, "ResponseMessages")) {
+            if (property_exists($response, 'ResponseMessages')) {
                 $responseMessagesCount = 0;
                 $failedMessages = array();
                 foreach (get_object_vars($response->ResponseMessages) as $messages) {
                     if (is_array($messages)) {
                         foreach ($messages as $message) {
-                            if (property_exists($message, "ResponseClass")) {
+                            if (property_exists($message, 'ResponseClass')) {
                                 $responseMessagesCount++;
-                                if ($message->ResponseClass == "Error") {
+                                if ($message->ResponseClass === 'Error') {
                                     $failedMessages[] = array(
                                         'ResponseCode' => $message->ResponseCode,
                                         'MessageText' => $message->MessageText
@@ -269,10 +230,10 @@ class ExchangeWebServices extends AbstractExchangeWebServices
                         }
                     }
                 }
-                if (!$this->ignoreFailedResponseMessages && count($failedMessages) > 0) {
+                if (!$this->configurator->isIgnoreFailedResponseMessages() && count($failedMessages) > 0) {
                     throw new EwsException(
                         $failedMessages[0]['MessageText'],
-                        EwsException::buildReceiverFaultCode("Ews." . $failedMessages[0]['ResponseCode'])
+                        EwsException::buildReceiverFaultCode('Ews.' . $failedMessages[0]['ResponseCode'])
                     );
                 }
             }
@@ -287,9 +248,12 @@ class ExchangeWebServices extends AbstractExchangeWebServices
      */
     public function isQueryStringSupported()
     {
+        $version        = $this->getVersion();
         $isExchange2007 = (
-            $this->version == EwsType\ExchangeVersionType::EXCHANGE2007
-            || $this->version == EwsType\ExchangeVersionType::EXCHANGE2007_SP1);
+            $version === EwsType\ExchangeVersionType::EXCHANGE2007
+            || $version === EwsType\ExchangeVersionType::EXCHANGE2007_SP1
+        );
+
         return !$isExchange2007;
     }
 }

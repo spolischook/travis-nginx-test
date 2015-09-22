@@ -61,7 +61,7 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
         'analysis' => [
             'analyzer' => [
                 IndexAgent::FULLTEXT_SEARCH_ANALYZER => [
-                    'tokenizer' => 'keyword',
+                    'tokenizer' => 'whitespace',
                     'filter'    => ['lowercase']
                 ],
                 IndexAgent::FULLTEXT_INDEX_ANALYZER => [
