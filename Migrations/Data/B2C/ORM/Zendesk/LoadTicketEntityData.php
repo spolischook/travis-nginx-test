@@ -1,33 +1,28 @@
 <?php
 
-namespace OroCRM\Bundle\ZendeskBundle\Migrations\Data\Demo\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Zendesk;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\ORM\EntityManager;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\UserBundle\Entity\User as OroUser;
 use OroCRM\Bundle\CaseBundle\Entity\CaseComment;
 use OroCRM\Bundle\ZendeskBundle\Entity\TicketComment;
 use OroCRM\Bundle\ZendeskBundle\Entity\UserRole;
 use OroCRM\Bundle\ZendeskBundle\Model\EntityMapper;
-use OroCRM\Bundle\CaseBundle\Migrations\Data\Demo\ORM\LoadCaseEntityData;
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\ZendeskBundle\Entity\TicketType;
 use OroCRM\Bundle\ZendeskBundle\Entity\User;
 use OroCRM\Bundle\CaseBundle\Entity\CaseEntity;
 use OroCRM\Bundle\ZendeskBundle\Entity\Ticket;
-use Oro\Bundle\UserBundle\Entity\User as OroUser;
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
-class LoadTicketEntityData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
+class LoadTicketEntityData extends AbstractFixture implements OrderedFixtureInterface
 {
-    const TICKET_COUNT = 10;
-
     /**
      * @var ContainerInterface
      */
@@ -42,11 +37,6 @@ class LoadTicketEntityData extends AbstractFixture implements ContainerAwareInte
      * @var array
      */
     protected $entitiesCount;
-
-    /**
-     * @var array|null
-     */
-    protected $cases = null;
 
     /**
      * @var int
@@ -67,6 +57,20 @@ class LoadTicketEntityData extends AbstractFixture implements ContainerAwareInte
     protected $zendeskUsers = array();
 
     /**
+     * @var int
+     */
+    protected $organizationId;
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return [
+            'tickets' => $this->loadData('zendesk/tickets.csv')
+        ];
+    }
+    /**
      * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
@@ -80,38 +84,28 @@ class LoadTicketEntityData extends AbstractFixture implements ContainerAwareInte
     public function load(ObjectManager $manager)
     {
         $this->entityManager = $manager;
+        $data = $this->getData();
 
-        $demoZendeskChannel = $this->getReference('orocrm_zendesk:zendesk_demo_channel');
-
-        for ($i = 0; $i < static::TICKET_COUNT; ++$i) {
-            $ticket = $this->createTicketEntity($demoZendeskChannel);
-
-            if (!$ticket) {
-                continue;
-            }
-
-            $manager->persist($ticket);
-
+        foreach ($data['tickets'] as $dataTicket) {
+            $ticket = $this->createTicket($dataTicket);
+            $this->entityManager->persist($ticket);
             $this->createTicketComments($ticket);
         }
-
         $manager->flush();
     }
 
     /**
-     * @param Channel $channel
+     * @param array $data
      * @return Ticket|null
      */
-    protected function createTicketEntity(Channel $channel)
+    protected function createTicket($data)
     {
         $this->ticketOriginId++;
-        $case = $this->getCase();
-        if (!$case) {
-            return null;
-        }
-        $requester = $this->getZendeskUserByUser($this->getRandomEntity('OroUserBundle:User'));
+        /** @var CaseEntity $case */
+        $case = $this->getCaseReference($data['case uid']);
+        $requester = $this->getZendeskUserByUser($case->getOwner());
         $assignee = $this->getZendeskUserByUser($case->getAssignedTo());
-        $data = array(
+        $ticket = array(
             'originId' => $this->ticketOriginId,
             'url' => "https://company.zendesk.com/api/v2/tickets/{$this->ticketOriginId}.json",
             'recipient' => "{$this->ticketOriginId}_support@company.com",
@@ -128,7 +122,7 @@ class LoadTicketEntityData extends AbstractFixture implements ContainerAwareInte
             'collaborators' => new ArrayCollection(array($requester))
         );
 
-        if ($data['hasIncidents']) {
+        if ($ticket['hasIncidents']) {
             $type = $this->entityManager->getRepository('OroCRMZendeskBundle:TicketType')
                 ->findOneBy(array('name' => TicketType::TYPE_PROBLEM));
         } else {
@@ -148,24 +142,21 @@ class LoadTicketEntityData extends AbstractFixture implements ContainerAwareInte
             return null;
         }
 
-        $data['type'] = $type;
-        $data['status'] = $status;
-        $data['priority'] = $priority;
+        $ticket['type'] = $type;
+        $ticket['status'] = $status;
+        $ticket['priority'] = $priority;
 
-        $data['channel'] = $channel;
+        $ticket['channel'] = $this->getZendeskIntegrationReference($data['zendesk uid']);
 
         $contact = $case->getRelatedContact();
-        if (!$contact) {
-            $data['submitter'] = $data['requester'];
-        } else {
-            $data['submitter'] = $this->getZendeskUserByContact($contact);
+        if ($contact) {
+            $ticket['submitter'] = $this->getZendeskUserByContact($contact);
         }
 
-        $ticket = new Ticket();
+        $ticketEntity = new Ticket();
+        $this->setObjectValues($ticket, $ticketEntity);
 
-        $this->setObjectValues($data, $ticket);
-
-        return $ticket;
+        return $ticketEntity;
     }
 
     /**
@@ -179,23 +170,27 @@ class LoadTicketEntityData extends AbstractFixture implements ContainerAwareInte
         return $result;
     }
 
-    /**
-     * @return CaseEntity|false
-     */
-    protected function getCase()
+    protected function createTicketComments(Ticket $ticket)
     {
-        if ($this->cases === null) {
-            $this->cases = $this->entityManager->createQueryBuilder()
-                ->select('e')
-                ->from('OroCRMCaseBundle:CaseEntity', 'e')
-                ->setMaxResults(LoadCaseEntityData::CASES_COUNT)
-                ->getQuery()
-                ->execute();
-        } else {
-            next($this->cases);
-        }
+        $comments = $ticket->getRelatedCase()->getComments();
 
-        return current($this->cases);
+        /**
+         * @var CaseComment $comment
+         */
+        foreach ($comments as $comment) {
+            $ticketComment = new TicketComment();
+            $author = $this->getZendeskUserByUser($comment->getOwner());
+            $ticketComment->setOriginId($this->ticketCommentOriginId++)
+                ->setAuthor($author)
+                ->setBody($comment->getMessage())
+                ->setHtmlBody($comment->getMessage())
+                ->setCreatedAt($comment->getCreatedAt())
+                ->setPublic($comment->isPublic())
+                ->setTicket($ticket)
+                ->setRelatedComment($comment);
+
+            $this->entityManager->persist($ticketComment);
+        }
     }
 
     /**
@@ -252,29 +247,6 @@ class LoadTicketEntityData extends AbstractFixture implements ContainerAwareInte
         return $zendeskUser;
     }
 
-    protected function createTicketComments(Ticket $ticket)
-    {
-        $comments = $ticket->getRelatedCase()->getComments();
-
-        /**
-         * @var CaseComment $comment
-         */
-        foreach ($comments as $comment) {
-            $ticketComment = new TicketComment();
-            $author = $this->getZendeskUserByUser($comment->getOwner());
-            $ticketComment->setOriginId($this->ticketCommentOriginId++)
-                ->setAuthor($author)
-                ->setBody($comment->getMessage())
-                ->setHtmlBody($comment->getMessage())
-                ->setCreatedAt($comment->getCreatedAt())
-                ->setPublic($comment->isPublic())
-                ->setTicket($ticket)
-                ->setRelatedComment($comment);
-
-            $this->entityManager->persist($ticketComment);
-        }
-    }
-
     /**
      * @param string $entityName
      * @return object|null
@@ -315,36 +287,6 @@ class LoadTicketEntityData extends AbstractFixture implements ContainerAwareInte
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getDependencies()
-    {
-        return array(
-            'OroCRM\Bundle\CaseBundle\Migrations\Data\Demo\ORM\LoadCaseEntityData',
-            'OroCRM\Bundle\ZendeskBundle\Migrations\Data\Demo\ORM\LoadChannelData'
-        );
-    }
-
-    /**
-     * @param array $data
-     * @param object $target
-     */
-    protected function setObjectValues(array $data, $target)
-    {
-        $reflectionClass = new \ReflectionClass($target);
-
-        foreach ($reflectionClass->getProperties() as $property) {
-            $propertyName = $property->getName();
-            if (!array_key_exists($propertyName, $data)) {
-                continue;
-            }
-            $value = $data[$propertyName];
-            $reflectionClass->getMethod('set' . ucfirst($propertyName))
-                ->invoke($target, $value);
-        }
-    }
-
-    /**
      * @param $roleName
      * @return null|object
      */
@@ -354,5 +296,13 @@ class LoadTicketEntityData extends AbstractFixture implements ContainerAwareInte
             ->findOneBy(array('name' => $roleName));
 
         return $role;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 36;
     }
 }

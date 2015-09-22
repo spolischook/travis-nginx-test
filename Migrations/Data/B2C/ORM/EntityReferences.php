@@ -21,6 +21,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\CampaignBundle\Entity\Campaign;
 use OroCRM\Bundle\CampaignBundle\Entity\EmailCampaign;
+use OroCRM\Bundle\CaseBundle\Entity\CaseEntity;
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
@@ -637,6 +638,28 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     {
         $reference = 'Segment:' . $uid;
         $this->setReference($reference, $segment);
+    }
+
+    /**
+     * @param $uid
+     * @return CaseEntity
+     * @throws EntityNotFoundException
+     */
+    protected function getCaseReference($uid)
+    {
+        $reference = 'Case:' . $uid;
+
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param         $uid
+     * @param CaseEntity $case
+     */
+    protected function setCaseReference($uid, CaseEntity $case)
+    {
+        $reference = 'Case:' . $uid;
+        $this->setReference($reference, $case);
     }
 
     /**

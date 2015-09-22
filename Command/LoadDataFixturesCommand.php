@@ -74,7 +74,7 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
 
         if ($clean) {
             $output->writeln('  <comment>></comment> <info>Removing demo data</info>');
-            $this->removeOldData($output);
+            $this->removeOldData();
 
             $output->writeln('  <comment>></comment> <info>Demo data removed</info>');
 
@@ -195,8 +195,6 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
             'OroCRMMagentoBundle:Store'                 => null,
             'OroCRMMagentoBundle:CustomerGroup'         => null,
             'OroNavigationBundle:NavigationItem'        => null,
-            'OroOrganizationBundle:Organization'        => $criteria,
-            'OroOrganizationBundle:BusinessUnit'        => $criteria,
             'OroUserBundle:Group'                       => $accessGroupCriteria,
             'OroNotificationBundle:EmailNotification'   => null,
             'OroCRMMagentoBundle:Order'                 => null,
@@ -218,6 +216,11 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
             'OroCRMMailChimpBundle:StaticSegment'       => null,
             'OroCRMMailChimpBundle:SubscribersList'     => null,
             'OroCRMMailChimpBundle:Member'              => null,
+            'OroCRMZendeskBundle:TicketComment'         => null,
+            'OroCRMZendeskBundle:Ticket'                => null,
+            'OroCRMZendeskBundle:User'                  => null,
+            'OroCRMCaseBundle:CaseComment'              => null,
+            'OroCRMCaseBundle:CaseEntity'               => null,
             'OroCRMCampaignBundle:EmailCampaign'        => null,
             'OroEmailBundle:EmailFolder'                => null,
             'OroEmailBundle:EmailOrigin'                => null,
@@ -234,6 +237,8 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
             'OroCRMCampaignBundle:Campaign'             => null,
             'OroCRMAccountBundle:Account'               => null,
             'OroCRMChannelBundle:Channel'               => null,
+            'OroOrganizationBundle:Organization'        => $criteria,
+            'OroOrganizationBundle:BusinessUnit'        => $criteria,
         ];
     }
 
