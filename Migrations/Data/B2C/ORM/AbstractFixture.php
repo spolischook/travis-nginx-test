@@ -15,14 +15,15 @@ use Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository;
 use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
 use Oro\Bundle\UserBundle\Entity\User;
 
-use OroCRMPro\Bundle\DemoDataBundle\EventListener\ActivityListSubscriber;
-use OroCRMPro\Bundle\DemoDataBundle\Model\FileLoader;
-use OroCRMPro\Bundle\DemoDataBundle\Model\GenerateDate;
+use OroCRMPro\Bundle\DemoDataBundle\Model\FileLoaderTrait;
+use OroCRMPro\Bundle\DemoDataBundle\Model\GenerateDateTrait;
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 abstract class AbstractFixture extends EntityReferences implements ContainerAwareInterface
 {
-    use FileLoader, GenerateDate;
+    use FileLoaderTrait, GenerateDateTrait;
+
+    const MAIN_USER_ID = 1;
 
     const DATA_FOLDER = 'data';
 
@@ -49,7 +50,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
         $classData = new \ReflectionClass($this);
         $dir       = __DIR__ . DIRECTORY_SEPARATOR;
 
-        preg_match('/Migrations\/Data\/(\w*\/ORM)/', $classData->getFilename(), $matches);
+        preg_match('#Migrations[/\\\]Data[/\\\](\w*[/\\\]ORM)#', $classData->getFilename(), $matches);
         if (!empty($matches[1])) {
             $dir .= '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $matches[1] . DIRECTORY_SEPARATOR;
         }
@@ -59,7 +60,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -68,9 +69,6 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
 
         $this->userRepository         = $this->em->getRepository('OroUserBundle:User');
         $this->organizationRepository = $this->em->getRepository('OroOrganizationBundle:Organization');
-
-        $subscriber = new ActivityListSubscriber();
-        $this->em->getEventManager()->addEventSubscriber($subscriber);
 
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
@@ -85,7 +83,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
             return $this->getUserReference('main');
         } else {
             /** @var User $entity */
-            $entity = $this->userRepository->find(1);
+            $entity = $this->userRepository->find(self::MAIN_USER_ID);
             if (!$entity) {
                 throw new EntityNotFoundException('Main user does not exist.');
             }
@@ -165,7 +163,7 @@ abstract class AbstractFixture extends EntityReferences implements ContainerAwar
     }
 
     /**
-     * Remove event $instance listener (for manual set created/updated dates)
+     * Remove event $instance listener (for manual setup created/updated dates)
      *
      * @param       $instance
      * @param array $events

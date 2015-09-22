@@ -13,11 +13,11 @@ use Oro\Bundle\CalendarBundle\Entity\CalendarProperty;
 use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarRepository;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadRolesData;
-use OroCRMPro\Bundle\DemoDataBundle\Model\WeekendChecker;
+use OroCRMPro\Bundle\DemoDataBundle\Model\WeekendCheckerTrait;
 
 class LoadUsersCalendarData extends AbstractFixture implements OrderedFixtureInterface
 {
-    use WeekendChecker;
+    use WeekendCheckerTrait;
 
     /** @var CalendarRepository */
     protected $calendarRepository;

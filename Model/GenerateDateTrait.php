@@ -4,7 +4,7 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Model;
 
 use Oro\Bundle\FilterBundle\Provider\DateModifierProvider;
 
-trait GenerateDate
+trait GenerateDateTrait
 {
 
     /**

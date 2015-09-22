@@ -11,15 +11,28 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\MigrationBundle\Command\LoadDataFixturesCommand as BaseDataFixturesCommand;
 use OroCRM\Bundle\AnalyticsBundle\Command\CalculateAnalyticsCommand;
+use OroCRMPro\Bundle\DemoDataBundle\EventListener\ActivityListSubscriber;
 
 class LoadDataFixturesCommand extends BaseDataFixturesCommand
 {
     const COMMAND_NAME = 'oro:migration:live:demo:data:load';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $em         = $container->get('doctrine')->getManager();
+        $subscriber = new ActivityListSubscriber();
+        $em->getEventManager()->addEventSubscriber($subscriber);
+        parent::setContainer($container);
+    }
 
     /**
      * {@inheritdoc}

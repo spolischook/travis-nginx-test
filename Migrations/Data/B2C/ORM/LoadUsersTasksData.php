@@ -11,11 +11,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use OroCRM\Bundle\TaskBundle\Entity\Task;
 use OroCRM\Bundle\TaskBundle\Entity\TaskPriority;
-use OroCRMPro\Bundle\DemoDataBundle\Model\WeekendChecker;
+use OroCRMPro\Bundle\DemoDataBundle\Model\WeekendCheckerTrait;
 
 class LoadUsersTasksData extends AbstractFixture implements OrderedFixtureInterface
 {
-    use WeekendChecker;
+    use WeekendCheckerTrait;
 
     const DEFAULT_TASK_PRIORITY_NAME = 'low';
 
