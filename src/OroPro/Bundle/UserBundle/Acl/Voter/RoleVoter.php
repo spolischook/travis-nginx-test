@@ -82,7 +82,7 @@ class RoleVoter implements VoterInterface
         $user = $token->getUser();
         $provideAccess = $this->userHelper->isUserAssignedToSystemOrganization($user);
         if ($provideAccess) {
-            return self::ACCESS_GRANTED;
+            return self::ACCESS_ABSTAIN;
         }
 
         $roleOrganization = $object->getOrganization();
@@ -91,7 +91,7 @@ class RoleVoter implements VoterInterface
         }
 
         if ($provideAccess) {
-            return self::ACCESS_GRANTED;
+            return self::ACCESS_ABSTAIN;
         }
 
         return self::ACCESS_DENIED;

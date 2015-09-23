@@ -79,7 +79,7 @@ class RoleVoterTest extends \PHPUnit_Framework_TestCase
         $role = new Role();
 
         $result = $this->roleVoter->vote($this->token, $role, ['EDIT']);
-        $this->assertEquals(RoleVoter::ACCESS_GRANTED, $result);
+        $this->assertEquals(RoleVoter::ACCESS_ABSTAIN, $result);
     }
 
     public function classProvider()
