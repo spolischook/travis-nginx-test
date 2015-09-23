@@ -105,7 +105,7 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
         /** @var EntityManager $manager */
         $manager = $container->get('doctrine')->getManager();
 
-        $notificationBundleDoctrineListener = $container->get('oro_notification.docrine.event.listener');
+        $notificationBundleDoctrineListener = $container->get('oro_notification.doctrine.event.listener');
         // there is no point to send notifications when working with sample data
         $notificationBundleDoctrineListener->setEnabled(false);
 
