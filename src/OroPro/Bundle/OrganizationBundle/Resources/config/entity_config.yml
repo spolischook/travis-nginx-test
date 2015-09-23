@@ -8,8 +8,6 @@ oro_entity_config:
                 # so user can select specific organization(s) or "ALL" organizations
                 applicable:
                     options:
-                        indexed:            true
-                        indexed_type:       json
                         required_property:
                             config_id:
                                 scope:      extend
@@ -35,8 +33,6 @@ oro_entity_config:
                 # so user can select specific organization(s) or "ALL" organizations
                 applicable:
                     options:
-                        indexed:            true
-                        indexed_type:       json
                         required_property:
                             config_id:
                                 scope:      extend

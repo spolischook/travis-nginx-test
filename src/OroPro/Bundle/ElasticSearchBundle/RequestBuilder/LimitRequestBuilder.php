@@ -11,13 +11,14 @@ class LimitRequestBuilder implements RequestBuilderInterface
      */
     public function build(Query $query, array $request)
     {
-        $from = $query->getFirstResult();
+        $from = $query->getCriteria()->getFirstResult();
+
         if (null !== $from) {
             $request['body']['from'] = (int)$from;
         }
 
-        $size = $query->getMaxResults();
-        if (null !== $size) {
+        $size = $query->getCriteria()->getMaxResults();
+        if (null !== $size && $size) {
             $request['body']['size'] = (int)$size;
         }
 

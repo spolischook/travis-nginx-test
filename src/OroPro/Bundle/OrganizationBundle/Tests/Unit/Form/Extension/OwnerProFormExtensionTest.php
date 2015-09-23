@@ -17,6 +17,9 @@ class OwnerProFormExtensionTest extends \PHPUnit_Framework_TestCase
     /** @var SystemAccessModeOrganizationProvider */
     protected $organizationProvider;
 
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    protected $entityOwnerAccessor;
+
     public function setUp()
     {
         $doctrine = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
@@ -38,13 +41,26 @@ class OwnerProFormExtensionTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->entityOwnerAccessor = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\EntityOwnerAccessor')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->entityOwnerAccessor->expects($this->any())
+            ->method('getOwner')
+            ->willReturnCallback(
+                function ($entity) {
+                    return $entity->getOwner();
+                }
+            );
+
         $this->formExtension = new OwnerProFormExtension(
             $doctrine,
             $metadataProvider,
             $bUnitManager,
             $this->securityFacade,
             $aclVoter,
-            $treeProvider
+            $treeProvider,
+            $this->entityOwnerAccessor
         );
 
         $this->organizationProvider = new SystemAccessModeOrganizationProvider();

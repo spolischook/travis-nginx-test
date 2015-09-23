@@ -23,9 +23,7 @@ abstract class AbstractWherePartBuilder
      * @param string $type
      * @param string $operator
      * @param mixed $value
-     * @param string $keyword
-     * @param array $request
      * @return array
      */
-    abstract public function buildPart($field, $type, $operator, $value, $keyword, array $request);
+    abstract public function buildPart($field, $type, $operator, $value);
 }

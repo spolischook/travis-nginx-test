@@ -155,6 +155,28 @@ class KernelRequestListener
         } else {
             $selectedOrganizationId = $request->get('_sa_org_id');
         }
+        if (!$selectedOrganizationId) {
+            $selectedOrganizationId = $this->getContextOrganization($request);
+        }
+
+        return $selectedOrganizationId;
+    }
+
+    /**
+     * @param Request $request
+     * @return string|null
+     */
+    protected function getContextOrganization(Request $request)
+    {
+        $selectedOrganizationId = null;
+        $entityId = $request->get('entityId');
+        $entityClass = $request->get('entityClass');
+        if ($entityId && $entityClass) {
+            $targetEntity = $this->routingHelper->getEntity($entityClass, $entityId);
+            if ($targetEntity) {
+                $selectedOrganizationId = $targetEntity->getOrganization()->getId();
+            }
+        }
 
         return $selectedOrganizationId;
     }

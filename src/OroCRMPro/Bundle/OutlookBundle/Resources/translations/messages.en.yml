@@ -1,4 +1,6 @@
 orocrmpro_outlook:
+    view:
+        addin_label:                      MS Outlook Add-in
     form:
         outlook_settings:                 MS Outlook settings
         outlook_addin:                    MS Outlook Add-in
@@ -28,3 +30,5 @@ orocrmpro_outlook:
             choices:
                 orocrm_always_wins:  OroCRM always wins
                 outlook_always_wins: Outlook always wins
+    integration:
+        label: Outlook integration

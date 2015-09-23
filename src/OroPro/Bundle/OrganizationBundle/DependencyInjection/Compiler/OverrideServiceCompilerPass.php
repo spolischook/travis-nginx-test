@@ -10,9 +10,22 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function process(ContainerBuilder $container)
     {
+        /**
+         * Extension is responsible for showing organization in global organizaton in recipients autocomplete
+         */
+        $serviceId = 'oro_email.provider.email_recipients.helper';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Provider\EmailRecipientsHelper');
+            $definition->addMethodCall('setSecurityFacade', [new Reference('oro_security.security_facade')]);
+        }
+
         /**
          * Override Oro\Bundle\EntityExtendBundle\Grid\DynamicFieldsExtension
          * Extension is responsible for columns of custom fields on grids
@@ -106,6 +119,22 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             $definition->addMethodCall(
                 'setOrganizationProvider',
                 [new Reference('oropro_organization.system_mode_org_provider')]
+            );
+        }
+
+        /**
+         * Override Oro\Bundle\EntityExtendBundle\Twig\DynamicFieldsExtension
+         * Dialog two step form render
+         */
+        $serviceId = 'oro_windows.twig.extension';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Twig\WindowsExtension');
+            $definition->addArgument($container->getDefinition('security.context'));
+            $definition->addArgument(new Reference('doctrine.orm.entity_manager'));
+            $definition->addMethodCall(
+                'setRouter',
+                [new Reference('router')]
             );
         }
     }

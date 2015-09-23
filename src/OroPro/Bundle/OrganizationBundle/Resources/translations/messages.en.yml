@@ -2,6 +2,7 @@ oro:
     user.form.access_settings.label: Organization structure
     organization:
         is_global.label: System access
+        menu.list.description: List of Organizations
     security:
         access-level:
             GLOBAL: Organization

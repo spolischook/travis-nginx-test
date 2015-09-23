@@ -29,21 +29,8 @@ class RangeWherePartBuilder extends AbstractWherePartBuilder
     /**
      * {@inheritdoc}
      */
-    public function buildPart($field, $type, $operator, $value, $keyword, array $request)
+    public function buildPart($field, $type, $operator, $value)
     {
-        // define bool part
-        $boolPart = 'must';
-        if ($keyword == Query::KEYWORD_OR) {
-            $boolPart = 'should';
-        }
-
-        // find range modifier
-        $modifier = $this->operatorModifiers[$operator];
-
-        // add condition
-        $request['body']['query']['filtered']['query']['bool'][$boolPart][]
-            = ['range' => [$field => [$modifier => $value]]];
-
-        return $request;
+        return  ['range' => [$field => [$this->operatorModifiers[$operator] => $value]]];
     }
 }

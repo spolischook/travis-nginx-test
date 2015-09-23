@@ -12,7 +12,7 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
 
     const SYSTEM_MODE_ORG_PROVIDER = 'oropro_organization.system_mode_org_provider';
 
-    const SEARCH_LISTENER_SERVICE = 'oro_security.listener.search_listener';
+    const SEARCH_ACL_HELPER = 'oro_security.search.acl_helper';
 
     const USER_ACL_HANDLER_SERVICE = 'oro_user.autocomplete.user.search_acl_handler';
     const USER_ACL_HANDLER_CLASS   = 'OroPro\Bundle\SecurityBundle\Autocomplete\UserAclProHandler';
@@ -41,9 +41,9 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        // rewrite search_listener
-        if ($container->hasDefinition(self::SEARCH_LISTENER_SERVICE)) {
-            $definition = $container->getDefinition(self::SEARCH_LISTENER_SERVICE);
+        // rewrite search_helper
+        if ($container->hasDefinition(self::SEARCH_ACL_HELPER)) {
+            $definition = $container->getDefinition(self::SEARCH_ACL_HELPER);
             $this->setOrganizationProviderToService($definition);
         }
 

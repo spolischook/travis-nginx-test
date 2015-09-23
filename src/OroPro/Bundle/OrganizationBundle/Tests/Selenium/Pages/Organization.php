@@ -8,9 +8,9 @@ use Oro\Bundle\TestFrameworkBundle\Pages\AbstractPageEntity;
  * Class Organization
  *
  * @package OroPro\Bundle\OrganizationBundle\Tests\Selenium\Pages
- * @method Organization openOrganizations() openOrganizations(string)
- * @method Organization openOrganization() openOrganization(string)
- * @method Organization assertTitle() assertTitle($title, $message = '')
+ * @method Organization openOrganizations(string $bundlePath)
+ * @method Organization openOrganization(string $bundlePath)
+ * @method Organization assertTitle($title, $message = '')
  */
 class Organization extends AbstractPageEntity
 {

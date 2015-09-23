@@ -103,7 +103,9 @@ datagrid:
                         THEN true ELSE false END
                       END) as has_organization
             bind_parameters:
-                - organization_id
+                -
+                    name: organization_id
+                    default: null
         columns:
             has_organization:
                 label: oropro.organization.datagrid.has_organization.label

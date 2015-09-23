@@ -21,19 +21,13 @@ class ElasticSearch extends AbstractEngine
 {
     const ENGINE_NAME = 'elastic_search';
 
-    /**
-     * @var IndexAgent
-     */
+    /** @var IndexAgent */
     protected $indexAgent;
 
-    /**
-     * @var Client
-     */
+    /** @var Client */
     protected $client;
 
-    /**
-     * @var RequestBuilderInterface[]
-     */
+    /** @var RequestBuilderInterface[] */
     protected $requestBuilders = [];
 
     /**
@@ -42,7 +36,6 @@ class ElasticSearch extends AbstractEngine
      * @param DoctrineHelper           $doctrineHelper
      * @param ObjectMapper             $mapper
      * @param IndexAgent               $indexAgent
-     *
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -74,8 +67,8 @@ class ElasticSearch extends AbstractEngine
 
     /**
      * @param object|array $entity
-     * @param bool $realTime
-     * @param bool $isSave
+     * @param bool         $realTime
+     * @param bool         $isSave
      * @return bool
      */
     protected function processEntities($entity, $realTime, $isSave)
@@ -87,6 +80,7 @@ class ElasticSearch extends AbstractEngine
 
         if (!$realTime) {
             $this->scheduleIndexation($entities);
+
             return true;
         }
 
@@ -94,14 +88,14 @@ class ElasticSearch extends AbstractEngine
 
         foreach ($entities as $entity) {
             $type = $this->getEntityAlias($this->doctrineHelper->getEntityClass($entity));
-            $id   = (string)$this->doctrineHelper->getSingleEntityIdentifier($entity);
+            $id   = (string) $this->doctrineHelper->getSingleEntityIdentifier($entity);
             if (!$type || !$id) {
                 continue;
             }
 
             // need to recreate index to avoid saving of not used fields
             $indexIdentifier = ['_type' => $type, '_id' => $id];
-            $body[] = ['delete' => $indexIdentifier];
+            $body[]          = ['delete' => $indexIdentifier];
 
             if ($isSave) {
                 $indexData = $this->getIndexData($entity);
@@ -124,11 +118,11 @@ class ElasticSearch extends AbstractEngine
     /**
      * {@inheritdoc}
      */
-    public function reindex($class = null)
+    public function reindex($class = null, $offset = null, $limit = null)
     {
         if (null === $class) {
             $this->client = $this->indexAgent->recreateIndex();
-            $entityNames = $this->mapper->getEntities([Mode::NORMAL, Mode::WITH_DESCENDANTS]);
+            $entityNames  = $this->mapper->getEntities([Mode::NORMAL, Mode::WITH_DESCENDANTS]);
         } else {
             $entityNames = [$class];
             $mode        = $this->mapper->getEntityModeConfig($class);
@@ -138,8 +132,10 @@ class ElasticSearch extends AbstractEngine
                 $entityNames = $this->mapper->getRegisteredDescendants($class);
             }
 
-            foreach ($entityNames as $class) {
-                $this->indexAgent->recreateTypeMapping($this->getClient(), $class);
+            if ((null === $offset && null === $limit) || ($offset === 0 && $limit)) {
+                foreach ($entityNames as $class) {
+                    $this->indexAgent->recreateTypeMapping($this->getClient(), $class);
+                }
             }
         }
 
@@ -279,7 +275,7 @@ class ElasticSearch extends AbstractEngine
                 $value->setTimezone(new \DateTimeZone('UTC'));
                 $indexData[$key] = $value->format('Y-m-d H:i:s');
             } elseif (is_object($value)) {
-                $indexData[$key] = (string)$value;
+                $indexData[$key] = (string) $value;
             }
         }
 

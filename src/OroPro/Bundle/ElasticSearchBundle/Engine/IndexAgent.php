@@ -15,6 +15,8 @@ class IndexAgent
     const FULLTEXT_SEARCH_ANALYZER = 'fulltext_search_analyzer';
     const FULLTEXT_INDEX_ANALYZER  = 'fulltext_index_analyzer';
 
+    const FULLTEXT_ANALYZED_FIELD = 'analyzed';
+
     /**
      * @var ClientFactory
      */
@@ -42,15 +44,15 @@ class IndexAgent
         'analysis' => [
             'analyzer' => [
                 self::FULLTEXT_SEARCH_ANALYZER => [
-                    'tokenizer' => 'keyword',
+                    'tokenizer' => 'whitespace',
                     'filter'    => ['lowercase']
                 ],
-                self::FULLTEXT_INDEX_ANALYZER => [
+                self::FULLTEXT_INDEX_ANALYZER  => [
                     'tokenizer' => 'keyword',
                     'filter'    => ['lowercase', 'substring'],
                 ],
             ],
-            'filter' => [
+            'filter'   => [
                 'substring' => [
                     'type'     => 'nGram',
                     'min_gram' => 1,
@@ -61,8 +63,27 @@ class IndexAgent
     ];
 
     /**
-     * @param ClientFactory $clientFactory
-     * @param array $engineParameters
+     * For text fields we should create non analysed field for strict search (=, != operators)
+     * and subfield 'analyzed' for fuzzy search (~, !~ operators)
+     *
+     * @var array
+     */
+    protected $textFieldConfig = [
+        'type'   => 'string',
+        'store'  => true,
+        'index'  => 'not_analyzed',
+        'fields' => [
+            self::FULLTEXT_ANALYZED_FIELD => [
+                'type'            => 'string',
+                'search_analyzer' => self::FULLTEXT_SEARCH_ANALYZER,
+                'index_analyzer'  => self::FULLTEXT_INDEX_ANALYZER
+            ]
+        ]
+    ];
+
+    /**
+     * @param ClientFactory         $clientFactory
+     * @param array                 $engineParameters
      * @param SearchMappingProvider $mappingProvider
      */
     public function __construct(
@@ -70,9 +91,9 @@ class IndexAgent
         array $engineParameters,
         SearchMappingProvider $mappingProvider
     ) {
-        $this->clientFactory       = $clientFactory;
-        $this->engineParameters    = $engineParameters;
-        $this->mappingProvider     = $mappingProvider;
+        $this->clientFactory    = $clientFactory;
+        $this->engineParameters = $engineParameters;
+        $this->mappingProvider  = $mappingProvider;
     }
 
     /**
@@ -127,8 +148,8 @@ class IndexAgent
     public function recreateTypeMapping(Client $client, $entityName)
     {
         $typeMapping = $this->getTypeMapping($entityName);
-        $type = current(array_keys($typeMapping));
-        $body = current(array_values($typeMapping));
+        $type        = current(array_keys($typeMapping));
+        $body        = current(array_values($typeMapping));
 
         $indexName = $this->getIndexName();
         if ($client->indices()->existsType(['index' => $indexName, 'type' => $type])) {
@@ -152,6 +173,7 @@ class IndexAgent
     /**
      * @param Client $client
      * @param string $indexName
+     *
      * @return bool
      */
     protected function isIndexExists(Client $client, $indexName)
@@ -201,6 +223,7 @@ class IndexAgent
 
     /**
      * @param string $type
+     *
      * @return array
      * @throws \LogicException
      */
@@ -228,6 +251,7 @@ class IndexAgent
 
     /**
      * @param string $entityName
+     *
      * @return array
      * @throws \LogicException
      */
@@ -238,20 +262,19 @@ class IndexAgent
         }
 
         $configuration = $this->mappingProvider->getMappingConfig()[$entityName];
-        $properties = [];
+        $properties    = [];
 
         // entity fields properties
         foreach ($this->getFieldsWithTypes($configuration['fields']) as $field => $type) {
             $properties[$field] = $this->getFieldTypeMapping($type);
+
+            if ($type === 'text') {
+                $properties[$field] = $this->textFieldConfig;
+            }
         }
 
-        // all text property with nGram tokenizer
-        $properties[Indexer::TEXT_ALL_DATA_FIELD] = [
-            'type'            => 'string',
-            'store'           => true,
-            'search_analyzer' => self::FULLTEXT_SEARCH_ANALYZER,
-            'index_analyzer'  => self::FULLTEXT_INDEX_ANALYZER
-        ];
+        // all text field
+        $properties[Indexer::TEXT_ALL_DATA_FIELD] = $this->textFieldConfig;
 
         $alias = $configuration['alias'];
 
@@ -260,6 +283,7 @@ class IndexAgent
 
     /**
      * @param array $fields
+     *
      * @return array
      */
     protected function getFieldsWithTypes(array $fields)
@@ -268,7 +292,7 @@ class IndexAgent
 
         foreach ($fields as $field) {
             if (!empty($field['target_type'])) {
-                $targetType = $field['target_type'];
+                $targetType   = $field['target_type'];
                 $targetFields = isset($field['target_fields']) ? $field['target_fields'] : [$field['name']];
                 foreach ($targetFields as $targetField) {
                     $fieldsWithTypes[$targetField] = $targetType;

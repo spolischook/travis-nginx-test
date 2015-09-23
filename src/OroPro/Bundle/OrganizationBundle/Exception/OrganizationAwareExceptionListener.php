@@ -30,11 +30,16 @@ class OrganizationAwareExceptionListener
     {
         $exception = $event->getException();
         if ($exception instanceof OrganizationAwareException) {
+            $request = $event->getRequest();
+            $parameters['form_url'] = $event->getRequest()->getUri();
+            if ($request->get('_widgetContainer') === 'dialog') {
+                $parameters['_widgetContainer'] = 'dialog';
+            }
             $event->setResponse(
                 new RedirectResponse(
                     $this->router->generate(
                         'oropro_organization_selector_form',
-                        ['form_url' => $event->getRequest()->getUri()]
+                        $parameters
                     )
                 )
             );

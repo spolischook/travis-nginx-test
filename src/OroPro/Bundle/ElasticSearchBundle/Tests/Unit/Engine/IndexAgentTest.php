@@ -12,9 +12,16 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
      */
     protected $typeMapping = [
         'text' => [
-            'type'  => 'string',
-            'store' => true,
-            'index' => 'not_analyzed'
+            'type'            => 'string',
+            'store'           => true,
+            'index' => 'not_analyzed',
+            'fields' => [
+                'analyzed' => [
+                    'type'            => 'string',
+                    'search_analyzer' => IndexAgent::FULLTEXT_SEARCH_ANALYZER,
+                    'index_analyzer'  => IndexAgent::FULLTEXT_INDEX_ANALYZER
+                ]
+            ]
         ],
         'decimal' => [
             'type'  => 'double',
@@ -37,8 +44,14 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
     protected $allTextMapping = [
         'type'            => 'string',
         'store'           => true,
-        'search_analyzer' => IndexAgent::FULLTEXT_SEARCH_ANALYZER,
-        'index_analyzer'  => IndexAgent::FULLTEXT_INDEX_ANALYZER
+        'index' => 'not_analyzed',
+        'fields' => [
+            'analyzed' => [
+                'type'            => 'string',
+                'search_analyzer' => IndexAgent::FULLTEXT_SEARCH_ANALYZER,
+                'index_analyzer'  => IndexAgent::FULLTEXT_INDEX_ANALYZER
+            ]
+        ]
     ];
 
     /**
@@ -48,7 +61,7 @@ class IndexAgentTest extends \PHPUnit_Framework_TestCase
         'analysis' => [
             'analyzer' => [
                 IndexAgent::FULLTEXT_SEARCH_ANALYZER => [
-                    'tokenizer' => 'keyword',
+                    'tokenizer' => 'whitespace',
                     'filter'    => ['lowercase']
                 ],
                 IndexAgent::FULLTEXT_INDEX_ANALYZER => [

@@ -8,43 +8,23 @@ use Oro\Bundle\TestFrameworkBundle\Pages\AbstractPageFilteredGrid;
  * Class Organizations
  *
  * @package OroPro\Bundle\OrganizationBundle\Tests\Selenium\Pages
- * @method Organizations openOrganizations() openOrganizations(string)
+ * @method Organizations openOrganizations(string $bundlePath)
+ * @method Organization open(array $filter)
+ * @method Organization add()
  * {@inheritdoc}
  */
 class Organizations extends AbstractPageFilteredGrid
 {
+    const NEW_ENTITY_BUTTON = "//a[@title='Create Organization']";
     const URL = 'organization';
 
-    public function __construct($testCase, $redirect = true)
+    public function entityNew()
     {
-        $this->redirectUrl = self::URL;
-        parent::__construct($testCase, $redirect);
-    }
-
-    /**
-     * @return Organization
-     */
-    public function add()
-    {
-        $this->test->byXPath("//a[@title='Create Organization']")->click();
-        $this->waitPageToLoad();
-        $this->waitForAjax();
-
         return new Organization($this->test);
     }
 
-    /**
-     * @param array $entityData
-     * @return Organization
-     */
-    public function open($entityData = array())
+    public function entityView()
     {
-        $user = $this->getEntity($entityData);
-        $user->click();
-        sleep(1);
-        $this->waitPageToLoad();
-        $this->waitForAjax();
-
         return new Organization($this->test);
     }
 }

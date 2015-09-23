@@ -14,14 +14,12 @@ class InWherePartBuilder extends AbstractWherePartBuilder
     /**
      * {@inheritdoc}
      */
-    public function buildPart($field, $type, $operator, $value, $keyword, array $request)
+    public function buildPart($field, $type, $operator, $value)
     {
         // define bool part
-        $boolPart = 'must';
+        $boolPart = 'should';
         if ($operator == Query::OPERATOR_NOT_IN) {
             $boolPart = 'must_not';
-        } elseif ($keyword == Query::KEYWORD_OR) {
-            $boolPart = 'should';
         }
 
         // value must be array
@@ -35,10 +33,6 @@ class InWherePartBuilder extends AbstractWherePartBuilder
             $condition[] = ['term' => [$field => $valueItem]];
         }
 
-        if ($condition) {
-            $request['body']['query']['filtered']['filter']['bool'][$boolPart][] = ['or' => $condition];
-        }
-
-        return $request;
+        return ['bool' => [$boolPart => $condition]];
     }
 }
