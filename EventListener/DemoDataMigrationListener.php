@@ -19,14 +19,14 @@ class DemoDataMigrationListener extends BaseDataMigrationListener
     protected function isProcessingRequired(ConsoleEvent $event)
     {
         $processingRequiredDataFixtures = [
-            LoadDataFixturesCommand::DEMO_FIXTURES_TYPE,
             self::DEMO_FIXTURES_TYPE_MULTI,
             self::DEMO_FIXTURES_TYPE_B2C,
             self::DEMO_FIXTURES_TYPE_B2B,
         ];
 
-        return $event->getCommand() instanceof LoadDataFixturesCommand
-        && $event->getInput()->hasOption('fixtures-type')
-        && in_array($event->getInput()->getOption('fixtures-type'), $processingRequiredDataFixtures, true);
+        return parent::isProcessingRequired($event)
+        || ($event->getCommand() instanceof LoadDataFixturesCommand
+            && $event->getInput()->hasOption('fixtures-type')
+            && in_array($event->getInput()->getOption('fixtures-type'), $processingRequiredDataFixtures, true));
     }
 }
