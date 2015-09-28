@@ -1,329 +1,520 @@
 <UserControl 
-             xmlns:local="http://schemas.orocrm.com/presentation"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:clr="clr-namespace:System;assembly=mscorlib"
+             xmlns:sys="clr-namespace:System;assembly=system"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+            SnapsToDevicePixels="True" FontSize="11" UseLayoutRounding="true"
+            Foreground="#797979"
+            Background="White">
+
     <UserControl.Resources>
-        <local:EntityNameTemplateSelector x:Key="entityNameTemplateSelector"/>
-        <local:OutlookDateToVisibiltyConverter x:Key="OutlookDateToVisibiltyConverter"/>
+        <ResourceDictionary>
+            <x:Array Type="clr:String" x:Key="SupportedClientVersions">
+                <clr:String>1.3.0</clr:String>
+            </x:Array>
+            <BitmapImage x:Key="EmailLinked" UriSource="EmailLinked.png" />
+            <clr:String x:Key="EmailLinked_ToolTip">Unlink from current email</clr:String>
+            
+            <BitmapImage x:Key="EmailNotLinked" UriSource="EmailNotLinked.png" />
+            <clr:String x:Key="EmailNotLinked_ToolTip">Link to current email</clr:String>
+            
+            <BitmapImage x:Key="BusyIndicator" UriSource="BusyIndicator.png" />
+            <BitmapImage x:Key="sys_icon" UriSource="default.png" />
+            <BitmapImage x:Key="arrows" UriSource="arrows.png" />
+            <BitmapImage x:Key="viewincrm" UriSource="viewincrm.png" />
+            <BitmapImage x:Key="group_image" UriSource="group_expanded.png" />
+            <BitmapImage x:Key="group_image_over" UriSource="group_expanded_over.png" />
+            <BitmapImage x:Key="group_image_collapsed" UriSource="group_collapsed.png" />
+            <BitmapImage x:Key="group_image_collapsed_over" UriSource="group_collapsed_over.png" />
+            <BitmapImage x:Key="loupe" UriSource="loupe.png" />
+            <BitmapImage x:Key="logo" UriSource="logo.png" />
+            <BitmapImage x:Key="refreshImage" UriSource="refresh.png" />
+            <BitmapImage x:Key="cross" UriSource="cross.png" />
 
-        <Style x:Key="ListBoxItemStyle1" TargetType="{x:Type ListBoxItem}">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-            <Setter Property="Padding" Value="2,0,0,0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
-                            <ContentPresenter
-                                x:Name="CPMain"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content=""/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="true">
-                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
-                            </Trigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsSelected" Value="true"/>
-                                    <Condition Property="Selector.IsSelectionActive" Value="false"/>
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                            </MultiTrigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                            </Trigger>
+            <BitmapImage x:Key="emailButton" UriSource="EmailLinked.png" />
 
-                            <DataTrigger Binding="{Binding IsLoading}" Value="False">
-                                <Setter Property="Content" TargetName="CPMain" Value="{Binding Data}"/>
-                                <Setter Property="ContentTemplateSelector" TargetName="CPMain" Value="{StaticResource entityNameTemplateSelector}"/>
-                            </DataTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+            <BitmapImage x:Key="emailError" UriSource="EmailError.png" />
+            <clr:String x:Key="EmailError_ToolTip">Error</clr:String>
 
 
-        <Style TargetType="ToggleButton" x:Key="ts1">
-            <Style.Triggers>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Content" Value="Checked"/>
-                </Trigger>
+            <BitmapImage x:Key="picture.serverImage" UriSource="picture.png" />
+            <BitmapImage x:Key="picture.serverImage_error" UriSource="picture_error.png" />
+            <Visibility x:Key="picture.serverImage_error_visibility">Collapsed</Visibility>
+            <Visibility x:Key="picture.serverImage_loading">Collapsed</Visibility>
 
-                <Trigger Property="IsChecked" Value="False">
-                    <Setter Property="Content" Value="NotChecked"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+            <Visibility x:Key="RootControl_NoData">Collapsed</Visibility>
+            <Visibility x:Key="RootControl_Loading">Collapsed</Visibility>
+            <Visibility x:Key="RootControl_List">Collapsed</Visibility>
+            <Visibility x:Key="Details_Visibility">Collapsed</Visibility>
+            <Visibility x:Key="ViewInCRM_Visibility">Visible</Visibility>
+            <Visibility x:Key="Separator_Visibility">Visible</Visibility>
+            <Visibility x:Key="EmailBusy_Visibility">Collapsed</Visibility>
+            <Visibility x:Key="Email_Visibility">Visible</Visibility>
+            <Visibility x:Key="EmailError_Visibility">Collapsed</Visibility>
+            <Visibility x:Key="EmailButton_Visibility">Visible</Visibility>
+            <Visibility x:Key="SearchBarVisibility">Visible</Visibility>
+            <Visibility x:Key="SearchResultVisibility">Visible</Visibility>
+            <Thickness x:Key="ContentPadding">8,0,8,0</Thickness>
 
-        <ControlTemplate x:Key="toggleButtonTemplate" TargetType="ToggleButton">
-            <Grid
-                Background="Transparent">
-                <Image x:Name="ExpandImage"
-                      HorizontalAlignment="Left" 
-                      VerticalAlignment="Center" 
-                      Margin="1,1,1,1" Source="/OroCRMOutlookAddIn;component/Resources/notattached.png" />
-            </Grid>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsChecked"
-                     Value="True">
-                    <Setter Property="Source"
-                      TargetName="ExpandImage"
-                      Value="/OroCRMOutlookAddIn;component/Resources/attached.png"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
+            <clr:String x:Key="itemCount">0</clr:String>
 
-        <Style x:Key="toggleButtonStyle" TargetType="ToggleButton">
-            <Setter Property="Template" Value="{StaticResource toggleButtonTemplate}" />
-        </Style>
-
-        <Style x:Key="boldedTitle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-        </Style>
-
-        <Style x:Key="lightBlueText" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Foreground" Value="#FF5A77F3"/>
-        </Style>
+            
+            <clr:Int32 x:Key="PageSize">20</clr:Int32>
 
 
-        <DataTemplate x:Key="testTemplate1">
-            <!--<ContentControl ContentTemplateSelector=""/>-->
-            <ContentPresenter ContentTemplateSelector="{StaticResource entityNameTemplateSelector}" Content="{Binding Data}"/>
-        </DataTemplate>
+            <SolidColorBrush x:Key="TitleBrush" Color="#424242" />
+            <SolidColorBrush x:Key="TitleBrushOver" Color="#046EC2" />
+            <Style x:Key="oroButton" TargetType="Button">
+                <Setter Property="BorderThickness" Value="0,0,0,0" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="busyIndicatorStyle" TargetType="Image">
+                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="Width" Value="28" />
+                <Setter Property="Height" Value="28" />
+                <Setter Property="Source" Value="{DynamicResource BusyIndicator}" />
+                <Setter Property="RenderTransform" >
+                    <Setter.Value>
+                        <RotateTransform CenterX="14" CenterY="14"/>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)" To="360" Duration="0:0:1" RepeatBehavior="Forever"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
 
-        <DataTemplate x:Key="contacts.DataTemplate">
-            <local:OroExpander Margin="0"  Background="#FFCED6EA" IsExpanded="{Binding IsDetailedExpanded}">
-                <local:OroExpander.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80*"/>
-                            <ColumnDefinition Width="20*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource boldedTitle}" VerticalAlignment="Center" Grid.Column="0" Text="{Binding Title}" FontWeight="Bold"/>
-                        <ToggleButton 
-                            Margin="0,1,10,0"
-                                    HorizontalAlignment="Right"
-                                    Grid.Column="1" 
-                                              Style="{StaticResource toggleButtonStyle}" 
-                                              IsChecked="{Binding IsAssociated,Mode=OneWay}" Height="25" Command="{Binding AssignEmailCommand}">
-                        </ToggleButton>
-                    </Grid>
-                </local:OroExpander.Header>
-                <Grid Height="70" Margin="15,0,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="45"/>
-                        <ColumnDefinition Width="80*"/>
-                    </Grid.ColumnDefinitions>
-                    <Image
-                        Grid.Column="0" 
-                        Grid.RowSpan="2" 
-                        Source="{local:OroImage Src=contacts.photo}"
-                        HorizontalAlignment="Left"/>
-                    <TextBlock Grid.Column="1" Style="{StaticResource lightBlueText}"  Margin="20,0,0,0" Height="25" Grid.Row="0" Text="{Binding DetailedData[email],StringFormat=Емейл {0}}"/>
-                    <TextBlock Grid.Column="1" Margin="20,0,0,0" Height="25" Grid.Row="1" FontSize="13" Text="{Binding DetailedData[phone],StringFormat=Телефон {0}}"/>
-                </Grid>
-            </local:OroExpander>
-        </DataTemplate>
+            <Style x:Key="busyIndicatorStyle_details"  TargetType="Image" BasedOn="{StaticResource busyIndicatorStyle}">
+                <Setter Property="Width" Value="20" />
+                <Setter Property="Height" Value="20" />
+                <Setter Property="RenderTransform" >
+                    <Setter.Value>
+                        <RotateTransform CenterX="10" CenterY="10"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
-        <DataTemplate x:Key="leads.DataTemplate">
-            <local:OroExpander Margin="0"  Background="#FFBCC7B7" IsExpanded="{Binding IsDetailedExpanded}">
-                <local:OroExpander.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80*"/>
-                            <ColumnDefinition Width="20*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource boldedTitle}" VerticalAlignment="Center" Grid.Column="0" Text="{Binding Title}" FontWeight="Bold"/>
-                        <ToggleButton
-                  Margin="0,1,10,0"
-                          HorizontalAlignment="Right"
-                          Grid.Column="1"
-                                    Style="{StaticResource toggleButtonStyle}"
-                                    IsChecked="{Binding IsAssociated,Mode=OneWay}" Height="25" Command="{Binding AssignEmailCommand}">
-                        </ToggleButton>
-                    </Grid>
-                </local:OroExpander.Header>
-                <Grid Height="70" Margin="15,0,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="45"/>
-                        <ColumnDefinition Width="80*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="1" Style="{StaticResource lightBlueText}"  Margin="20,0,0,0" Height="25" Grid.Row="0" Text="{Binding DetailedData[firstName],StringFormat=Имя {0}}"/>
-                    <TextBlock Grid.Column="1" Style="{StaticResource lightBlueText}"  Margin="20,0,0,0" Height="25" Grid.Row="1" Text="{Binding DetailedData[lastName],StringFormat=Фамилия {0}}"/>
-                </Grid>
-            </local:OroExpander>
-        </DataTemplate>
+            <Style x:Key="busyIndicatorStyle_Small"  TargetType="Image" BasedOn="{StaticResource busyIndicatorStyle}">
+                <Setter Property="Width" Value="10" />
+                <Setter Property="Height" Value="10" />
+                <Setter Property="RenderTransform" >
+                    <Setter.Value>
+                        <RotateTransform CenterX="5" CenterY="5"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
+            <Style x:Key="dataRow" TargetType="TextBlock">
+                <Setter Property="Margin" Value="0,0,0,5" />
+            </Style>
+            <Style x:Key="detailsField" TargetType="TextBlock">
+                <Setter Property="Margin" Value="0,0,0,4" />
+                <Setter Property="Foreground" Value="#797979" />
+            </Style>
+            <Style x:Key="itemTitleStyle" TargetType="TextBlock">
+            </Style>
+            <Style x:Key="itemTitleStyle_Expanded" TargetType="TextBlock">
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Foreground" Value="#424242" />
+            </Style>
+            <Style x:Key="errorMessageStyle" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="Red" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+            </Style>
+            
+            <Style TargetType="Hyperlink">
+                <Setter Property="Foreground" Value="#2F8CD0" />
+                <Setter Property="TextDecorations" Value="None" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="#2F8CD0" />
+                        <Setter Property="TextDecorations" Value="Underline" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="groupIcon" TargetType="Image">
+                <Setter Property="Stretch" Value="None" />
+                <Setter Property="Source" Value="{DynamicResource group_image}"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Source" Value="{DynamicResource group_image_over}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
-        <DataTemplate x:Key="tasks.DataTemplate">
-            <local:OroExpander Margin="0"  Background="#FFECE2CC" IsExpanded="{Binding IsDetailedExpanded}">
-                <local:OroExpander.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80*"/>
-                            <ColumnDefinition Width="20*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource boldedTitle}" VerticalAlignment="Center" Grid.Column="0" Text="{Binding Title}" FontWeight="Bold"/>
-                        <ToggleButton
-                            Margin="0,1,10,0"
-                                    HorizontalAlignment="Right"
-                                    Grid.Column="1" 
-                                    Style="{StaticResource toggleButtonStyle}" 
-                                    IsChecked="{Binding IsAssociated,Mode=OneWay}" Height="25" Command="{Binding AssignEmailCommand}">
-                        </ToggleButton>
-                    </Grid>
-                </local:OroExpander.Header>
-                <Grid Height="50">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="28"/>
-                        <ColumnDefinition Width="80*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="1" Grid.Row="0" FontSize="13" Text="{Binding DetailedData[body]}"/>
-                    <TextBlock Grid.Column="1" 
-                               Visibility="{Binding DetailedData[start_date],Converter={StaticResource OutlookDateToVisibiltyConverter}}" 
-                               Style="{StaticResource lightBlueText}" Grid.Row="1" Text="{Binding DetailedData[start_date]}"/>
-                </Grid>
-            </local:OroExpander>
-        </DataTemplate>
-
-        <DataTemplate x:Key="events.DataTemplate">
-            <local:OroExpander Margin="0"  Background="AliceBlue" IsExpanded="{Binding IsDetailedExpanded}">
-                <local:OroExpander.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80*"/>
-                            <ColumnDefinition Width="20*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource boldedTitle}" VerticalAlignment="Center" Grid.Column="0" Text="{Binding Title}" FontWeight="Bold"/>
-                        <ToggleButton
-                            Margin="0,1,10,0"
-                                    HorizontalAlignment="Right"
-                                    Grid.Column="1" 
-                                    Style="{StaticResource toggleButtonStyle}" 
-                                    IsChecked="{Binding IsAssociated,Mode=OneWay}" Height="25" Command="{Binding AssignEmailCommand}">
-                        </ToggleButton>
-                    </Grid>
-                </local:OroExpander.Header>
-                <Grid Height="70">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="28"/>
-                        <ColumnDefinition Width="20*"/>
-                        <ColumnDefinition Width="80*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock FontSize="13" Grid.Column="1">Start</TextBlock>
-                    <TextBlock FontSize="13" Grid.Column="2" Grid.Row="0" Text="{Binding DetailedData[start]}"/>
-                    <TextBlock FontSize="13" Grid.Row="1" Grid.Column="1">End</TextBlock>
-                    <TextBlock FontSize="13" Grid.Column="2" Grid.Row="1" Text="{Binding DetailedData[end]}"/>
-                    <TextBlock FontSize="13" Grid.Row="2" Grid.Column="1">Duration</TextBlock>
-                    <TextBlock FontSize="13" Grid.Column="2" Grid.Row="2" Text="{Binding DetailedData[duration],StringFormat={}{0} min}"/>
-                    <TextBlock FontSize="13" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="3" Text="{Binding DetailedData[body]}"/>
-
-                </Grid>
-            </local:OroExpander>
-        </DataTemplate>
-
-
+        </ResourceDictionary>
     </UserControl.Resources>
-    <Grid x:Name="mailItemRoot" Background="White">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Button Command="{Binding ShowCreateLeadDialog}" IsEnabled="{Binding IsCanCreateLeads}">Созд. Lead</Button>
-        <Button Grid.Row="1" IsEnabled="False">Созд. Task</Button>
-        <Button Grid.Row="2" Command="{Binding ShowCreateOpportunityDialog}" IsEnabled="{Binding IsCanCreateOpportunities}">Созд. Oppotunity</Button>
-        <!--<local:AutoCompleteTextBox Grid.Row="3" Watermark="Search here"/>-->
-        <!---ItemsSource="{local:RootCollection EntityName=contacts, EntityKeyName=id}"-->
-        <!--ItemsSource="{local:RootCollection EntityName=contacts, EntityKeyName=id}"-->
-        <ListBox
-            Grid.Row="4"
-            DataContext="{local:RootCollection EntityName=contacts, EntityKeyName=id}"
-            ItemsSource="{Binding}"
-            ItemContainerStyle="{DynamicResource ListBoxItemStyle1}"
-                 Padding="0"
-                 HorizontalContentAlignment="Stretch" ItemsPanel="{DynamicResource ItemsPanelTemplate1}" Style="{DynamicResource ListBoxStyle1}">
-            <ListBox.Resources>
-                <SolidColorBrush x:Key="ListBorder" Color="#828790"/>
-                <Style x:Key="ListBoxStyle1" TargetType="{x:Type ListBox}">
-                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-                    <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
-                    <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
-                    <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ListBox}">
-                                <xctk:BusyIndicator Grid.Row="0" x:Name="busyIndicatorList" BusyContent="Загрузка страницы ..." IsBusy="{Binding IsLoading}">
-                                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="1" SnapsToDevicePixels="true">
-                                        <ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}">
-                                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
-                                        </ScrollViewer>
-                                    </Border>
-                                </xctk:BusyIndicator>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsEnabled" Value="false">
-                                        <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-                                    </Trigger>
-                                    <Trigger Property="IsGrouping" Value="false">
-                                        <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.Resources>
-            <!--
-            <ListBox.Resources>
-                <ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
-                    <xctk:BusyIndicator Grid.Row="0" x:Name="busyIndicatorTop" BusyContent="Sec please ..." IsBusy="False">
-                        <VirtualizingStackPanel IsItemsHost="True"/>
-                    </xctk:BusyIndicator>
-                </ItemsPanelTemplate>
-            </ListBox.Resources>-->
-            <!--
-            <ListBox.ItemTemplate>
-                <DataTemplate>
+    
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Margin="{DynamicResource ContentPadding}" Visibility="{DynamicResource SearchBarVisibility}">
+            <Border BorderThickness="1" BorderBrush="#A9A9A9" HorizontalAlignment="Stretch" Margin="0,2,0,13">
+                <DockPanel Margin="1">
+                    <Image DockPanel.Dock="Left" Source="{DynamicResource logo}"  Stretch="None" />
+                    <Button DockPanel.Dock="Right" Name="btnSearch" Style="{StaticResource oroButton}" Cursor="Hand" ToolTip="Search">
+                        <Image  Source="{DynamicResource loupe}" Stretch="None" />
+                    </Button>
+                    <Button DockPanel.Dock="Right" Name="btnClearSearch" Style="{StaticResource oroButton}" Visibility="Collapsed" Cursor="Hand" ToolTip="Clear search text">
+                        <Image  Source="{DynamicResource cross}" Stretch="None" />
+                    </Button>
+                    <TextBox Name="txtSearch" BorderThickness="0" />
+                </DockPanel>
+            </Border>
+        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" UseLayoutRounding="true" Padding="{DynamicResource ContentPadding}">
+            <DockPanel VerticalAlignment="Stretch">
+                <StackPanel Name="oroTemplates" DockPanel.Dock="Top" >
+                    <!-- Design time resources (will be removed at runtime) -->
+                    <StackPanel.Resources>
+                        <Visibility x:Key="picture_error_visibility">Visible</Visibility>
+                        <Visibility x:Key="picture_loading">Visible</Visibility>
+                        <sys:Uri x:Key="sys_ViewUrl">http://server/</sys:Uri>
+                        <Visibility x:Key="Details_Visibility">Visible</Visibility>
+                        <Visibility x:Key="RootControl_List">Visible</Visibility>
+                        <clr:String x:Key="sys_icon_tooltip">Icon title</clr:String>
+                        <clr:String x:Key="Email_ToolTip">EmailLinked_ToolTip</clr:String>
+                    </StackPanel.Resources>
+                
+                    <StackPanel  Name="ItemCollapsed" >
+                        <StackPanel.Resources>
+                            <clr:String x:Key="title">Title</clr:String>
+                            <clr:String x:Key="delay">15 min</clr:String>
+                            <clr:String x:Key="sys_ApiUrl">{PluralEntityAlias}/{ID}.json</clr:String>
+                            <sys:Uri x:Key="sys_ViewUrl">http://server/{EntityAlias}/view/{ID}</sys:Uri>
+                        </StackPanel.Resources>
+                        <DockPanel Height="28">
+                            <Button Name="btnEmail" DockPanel.Dock="Right" Margin="5,0,0,0" Style="{StaticResource oroButton}" Visibility="{DynamicResource EmailButton_Visibility}">
+                                <DockPanel>
+                                    <Grid DockPanel.Dock="Right">
+                                        <Image Source="{DynamicResource emailButton}" Stretch="None" Visibility="{DynamicResource Email_Visibility}" ToolTip="{DynamicResource Email_ToolTip}" Cursor="Hand" />
+                                        <Image Source="{DynamicResource emailError}" Stretch="None" Visibility="{DynamicResource EmailError_Visibility}" ToolTip="Error occurred during sync with OroCRM" />
+                                        <Image Style="{StaticResource busyIndicatorStyle_Small}" Visibility="{DynamicResource EmailBusy_Visibility}" />
+                                    </Grid>
+                                </DockPanel>
+                            </Button>
+                            <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right" Foreground="#FFC22E2E" Text="{DynamicResource delay}"/>
+                            <Button Name="btnTitle" Style="{StaticResource oroButton}" >
+                                <DockPanel>
+                                    <Image DockPanel.Dock="Left" Source="{DynamicResource sys_icon}" Stretch="None" Margin="0,0,5,0" ToolTip="{DynamicResource sys_icon_tooltip}" />
+                                    <TextBlock Style="{DynamicResource itemTitleStyle}" Foreground="{DynamicResource TitleBrush}" TextTrimming="CharacterEllipsis" Text="{DynamicResource title}" VerticalAlignment="Center" />
+                                </DockPanel>
+                            </Button>
+                        </DockPanel>
+                        <StackPanel Name="pnlDetails" Visibility="{DynamicResource Details_Visibility}">
+                            <StackPanel Name="pnlDetailsContent" Margin="0,4,0,0" />
 
-                </DataTemplate>
-            </ListBox.ItemTemplate>-->
-        </ListBox>
-    </Grid>
+                            <TextBlock DockPanel.Dock="Bottom" Style="{DynamicResource detailsField}" Margin="0,4,0,12" Visibility="{DynamicResource ViewInCRM_Visibility}">
+                                <Hyperlink FontFamily="Arail" FontSize="11" NavigateUri="{DynamicResource sys_ViewUrl}">
+                                    <Image Width="71" Height="10" Source="{DynamicResource viewincrm}" Stretch="None" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                        <Border  BorderThickness="0,0,0,1" BorderBrush="#E5E5E5" Background="White" Visibility="{DynamicResource Separator_Visibility}"></Border>
+                    </StackPanel>
+
+                    <Border Margin="0,5,0,5" BorderBrush="Black" BorderThickness="0,0,0,3"/>
+
+                    <StackPanel Name="DefaultDetailsTemplate">
+                        <StackPanel Visibility="Visible">
+                            <TextBlock Style="{DynamicResource dataRow}">
+                                <TextBlock Text="Created At:" />
+                                <TextBlock Text="{DynamicResource createdAt.formattedDateTime}" />
+                            </TextBlock>
+                            <TextBlock Style="{DynamicResource dataRow}">
+                                <TextBlock Text="Updated At:" />
+                                <TextBlock Text="{DynamicResource updatedAt.formattedDateTime}" />
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel.Resources>
+                            <BitmapImage x:Key="sys_icon" UriSource="default.png" />
+                            <BitmapImage x:Key="sys_icon_over" UriSource="default-hover.png" />
+                            <clr:String x:Key="createdAt.formattedDateTime">2015-07-01</clr:String>
+                            <clr:String x:Key="updatedAt.formattedDateTime">2015-07-01</clr:String>
+                        </StackPanel.Resources>
+                    </StackPanel>
+
+                    <StackPanel Name="OroCRM_Bundle_ContactBundle_Entity_Contact">
+                        <DockPanel>
+                            <Grid DockPanel.Dock="Left">
+                                <Image Width="35" Height="50" Stretch="Uniform" Source="{DynamicResource picture.serverImage}" VerticalAlignment="Top"/>
+                                <Image Style="{DynamicResource busyIndicatorStyle}" VerticalAlignment="Top" Visibility="{DynamicResource picture.serverImage_loading}" />
+                                <Image VerticalAlignment="Top" Width="20" HorizontalAlignment="Center" Margin="0,10,0,0" Source="{DynamicResource picture.serverImage_error}" Visibility="{DynamicResource picture.serverImage_error_visibility}" />
+                            </Grid>
+                            <StackPanel Margin="8,0,0,0">
+                                <TextBlock Style="{DynamicResource detailsField}" Tag="autoHide" Text="{DynamicResource phones[primary#true][0].phone}" />
+                                <TextBlock Style="{DynamicResource detailsField}" Tag="autoHide" Text="{DynamicResource phones[primary#false][0].phone}" />
+                                <TextBlock Style="{DynamicResource detailsField}" Tag="autoHide">
+                                    <Hyperlink NavigateUri="{DynamicResource email.uri}">
+                                        <TextBlock Text="{DynamicResource email}" />
+                                    </Hyperlink>
+                                </TextBlock>
+                                <TextBlock Style="{DynamicResource detailsField}" Tag="autoHide" Text="{DynamicResource jobTitle}" />
+                            </StackPanel>
+                        </DockPanel>
+                        <StackPanel.Resources>
+                            <BitmapImage x:Key="sys_icon" UriSource="contact.png" />
+                            <BitmapImage x:Key="sys_icon_over" UriSource="contact-hover.png" />
+                            <clr:String x:Key="sys_icon_tooltip">Contact</clr:String>
+                            <clr:String x:Key="phones[primary#true][0].phone" >215-800-7828</clr:String>
+                            <clr:String x:Key="phones[primary#false][0].phone">215-956-6587</clr:String>
+                            <clr:String x:Key="emails[primary#true][0].email">JamesGAdams@gustr.com</clr:String>
+                            <clr:String x:Key="email">JamesGAdams@gustr.com</clr:String>
+                            <sys:Uri x:Key="email.uri">JamesGAdams@gustr.com</sys:Uri>
+                            <clr:String x:Key="jobTitle">General Manager</clr:String>
+                            <BitmapImage x:Key="picture.serverImage" UriSource="picture.png" />
+                        </StackPanel.Resources>
+                    </StackPanel>
+
+                    <Border Margin="0,5,0,5" BorderBrush="Black" BorderThickness="0,0,0,3"/>
+
+                    <StackPanel Name="Oro_Bundle_UserBundle_Entity_User">
+                        <TextBlock Style="{DynamicResource dataRow}">
+                            <TextBlock Text="Username: " />
+                            <TextBlock Text="{DynamicResource username}" />
+                        </TextBlock>
+                        <TextBlock Style="{DynamicResource dataRow}">
+                            <TextBlock Text="Email:" />
+                            <TextBlock Style="{DynamicResource detailsField}" Tag="autoHide">
+                                <Hyperlink NavigateUri="{DynamicResource email.uri}">
+                                    <TextBlock Text="{DynamicResource email}" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </TextBlock>
+                        <StackPanel.Resources>
+                            <BitmapImage x:Key="sys_icon" UriSource="user.png" />
+                            <BitmapImage x:Key="sys_icon_over" UriSource="user-hover.png" />
+                            <clr:String x:Key="sys_icon_tooltip">User</clr:String>
+                            <clr:String x:Key="username" >admin</clr:String>
+                            <clr:String x:Key="email">JamesGAdams@gustr.com</clr:String>
+                            <sys:Uri x:Key="email.uri">JamesGAdams@gustr.com</sys:Uri>
+                        </StackPanel.Resources>
+                    </StackPanel>
+
+                    <Border Margin="0,5,0,5" BorderBrush="Black" BorderThickness="0,0,0,3"/>
+
+                    <StackPanel Name="OroCRM_Bundle_SalesBundle_Entity_B2bCustomer">
+                        <TextBlock Style="{DynamicResource dataRow}">
+                            <TextBlock Text="Created At:" />
+                            <TextBlock Text="{DynamicResource createdAt.formattedDateTime}" />
+                        </TextBlock>
+                        <TextBlock Style="{DynamicResource dataRow}">
+                            <TextBlock Text="Updated At:" />
+                            <TextBlock Text="{DynamicResource updatedAt.formattedDateTime}" />
+                        </TextBlock>
+                        <StackPanel.Resources>
+                            <BitmapImage x:Key="sys_icon" UriSource="b2b_customer.png" />
+                            <BitmapImage x:Key="sys_icon_over" UriSource="b2b_customer-hover.png" />
+                            <clr:String x:Key="sys_icon_tooltip">B2B Customer</clr:String>
+                            <clr:String x:Key="createdAt.formattedDateTime">2015-07-01</clr:String>
+                            <clr:String x:Key="updatedAt.formattedDateTime">2015-07-01</clr:String>
+                        </StackPanel.Resources>
+                    </StackPanel>
+
+                    <StackPanel Name="OroCRM_Bundle_MagentoBundle_Entity_Customer">
+                        <StackPanel Visibility="Collapsed">
+                            <TextBlock Style="{DynamicResource dataRow}">
+                                <TextBlock Text="Created At:" />
+                                <TextBlock Text="{DynamicResource createdAt.formattedDateTime}" />
+                            </TextBlock>
+                            <TextBlock Style="{DynamicResource dataRow}">
+                                <TextBlock Text="Updated At:" />
+                                <TextBlock Text="{DynamicResource updatedAt.formattedDateTime}" />
+                            </TextBlock>
+                        </StackPanel>                        
+                        <StackPanel.Resources>
+                            <BitmapImage x:Key="sys_icon" UriSource="user.png" />
+                            <BitmapImage x:Key="sys_icon_over" UriSource="user-hover.png" />
+                            <clr:String x:Key="sys_ApiUrl">NA</clr:String>
+                            <clr:String x:Key="sys_icon_tooltip">Magento Customer</clr:String>
+                            <sys:Uri x:Key="sys_ViewUrl">http://server/magento/customer/view/{ID}</sys:Uri>
+                            <clr:String x:Key="createdAt.formattedDateTime">2015-07-01</clr:String>
+                            <clr:String x:Key="updatedAt.formattedDateTime">2015-07-01</clr:String>
+                        </StackPanel.Resources>
+                    </StackPanel>
+
+                    <Border Margin="0,5,0,5" BorderBrush="Black" BorderThickness="0,0,0,3"/>
+
+                    <StackPanel Name="OroCRM_Bundle_AccountBundle_Entity_Account">
+                        <TextBlock Style="{DynamicResource dataRow}">
+                            <TextBlock Text="Created At:" />
+                            <TextBlock Text="{DynamicResource createdAt.formattedDateTime}" />
+                        </TextBlock>
+                        <TextBlock Style="{DynamicResource dataRow}">
+                            <TextBlock Text="Updated At:" />
+                            <TextBlock Text="{DynamicResource updatedAt.formattedDateTime}" />
+                        </TextBlock>
+                        <StackPanel.Resources>
+                            <BitmapImage x:Key="sys_icon" UriSource="account.png" />
+                            <BitmapImage x:Key="sys_icon_over" UriSource="account-hover.png" />
+                            <clr:String x:Key="sys_icon_tooltip">Account</clr:String>
+                            <clr:String x:Key="createdAt.formattedDateTime">2015-07-01</clr:String>
+                            <clr:String x:Key="updatedAt.formattedDateTime">2015-07-01</clr:String>
+                        </StackPanel.Resources>
+                    </StackPanel>
+
+                    <Border Margin="0,5,0,5" BorderBrush="Black" BorderThickness="0,0,0,3"/>
+
+                    <StackPanel Name="OroCRM_Bundle_SalesBundle_Entity_Lead">
+                        <TextBlock Style="{DynamicResource detailsField}" Tag="autoHide" Text="{DynamicResource jobTitle}" />
+                        <TextBlock Style="{DynamicResource detailsField}" Tag="autoHide" Text="{DynamicResource phoneNumber}" />
+                        <TextBlock Style="{DynamicResource detailsField}" Tag="autoHide">
+                                    <Hyperlink NavigateUri="{DynamicResource email.uri}">
+                                        <TextBlock Text="{DynamicResource email}" />
+                                    </Hyperlink>
+                                </TextBlock>
+                        <TextBlock Style="{DynamicResource dataRow}">
+                            <TextBlock Text="Updated on:" />
+                            <TextBlock Text="{DynamicResource updatedAt.formattedDateTime}" />
+                        </TextBlock>
+                        <StackPanel.Resources>
+                            <BitmapImage x:Key="sys_icon" UriSource="lead.png" />
+                            <BitmapImage x:Key="sys_icon_over" UriSource="lead-hover.png" />
+                            <clr:String x:Key="sys_icon_tooltip">Lead</clr:String>
+                            <clr:String x:Key="jobTitle">General Manager</clr:String>
+                            <clr:String x:Key="phoneNumber" >215-800-7828</clr:String>
+                            <clr:String x:Key="email">JamesGAdams@gustr.com</clr:String>
+                            <sys:Uri x:Key="email.uri">JamesGAdams@gustr.com</sys:Uri>
+                            <clr:String x:Key="updatedAt.formattedDateTime">2015-07-01</clr:String>
+                        </StackPanel.Resources>
+                    </StackPanel>
+
+                    <Border Margin="0,5,0,5" BorderBrush="Black" BorderThickness="0,0,0,3"/>
+
+
+                    <StackPanel Name="OroCRM_Bundle_SalesBundle_Entity_Opportunity">
+                        <TextBlock Style="{DynamicResource dataRow}">
+                            <TextBlock Text="Status:" />
+                            <TextBlock Text="{DynamicResource status}" />
+                        </TextBlock>
+                        <TextBlock Style="{DynamicResource dataRow}">
+                            <TextBlock Text="Probability:" />
+                            <TextBlock Text="{DynamicResource probability.probability}" />
+                        </TextBlock>
+                        <TextBlock Style="{DynamicResource dataRow}">
+                            <TextBlock Text="Budget:" />
+                            <TextBlock Text="{DynamicResource budgetAmount.currency}" />
+                        </TextBlock>
+                        <TextBlock Style="{DynamicResource dataRow}">
+                            <TextBlock Text="Close Date: " />
+                            <TextBlock Text="{DynamicResource closeDate.formattedDateTime}" />
+                        </TextBlock>
+                        <StackPanel.Resources>
+                            <BitmapImage x:Key="sys_icon" UriSource="opportunity.png" />
+                            <BitmapImage x:Key="sys_icon_over" UriSource="opportunity-hover.png" />
+                            <clr:String x:Key="sys_icon_tooltip">Opportunity</clr:String>
+                            <clr:String x:Key="status">In Progress</clr:String>
+                            <clr:String x:Key="probability.probability">80</clr:String>
+                            <clr:String x:Key="budgetAmount.currency">15666</clr:String>
+                            <clr:String x:Key="closeDate.formattedDateTime">Jul 6, 2015 9:16 PM</clr:String>
+                        </StackPanel.Resources>
+                    </StackPanel>
+
+                
+                    <Border Margin="0,5,0,5" BorderBrush="Black" BorderThickness="0,0,0,3"/>
+                
+                    <StackPanel Name="LoadingNextPage">
+                        <Image Style="{DynamicResource busyIndicatorStyle}" Margin="0,10,0,10" />
+                    </StackPanel>
+
+                    <Border Margin="0,5,0,5" BorderBrush="Black" BorderThickness="0,0,0,3"/>
+
+                    <StackPanel Name="LoadingDetails">
+                        <Image Style="{DynamicResource busyIndicatorStyle_details}" Margin="0,2,0,8" />
+                    </StackPanel>
+
+                    <Border Margin="0,5,0,5" BorderBrush="Black" BorderThickness="0,0,0,3"/>
+                
+                    <StackPanel Name="LoadMore" >
+                        <Button Name="btnLoadMore" Content="Load more" Padding="10,0,10,0" Margin="0,10,0,10" HorizontalAlignment="Center"></Button>
+                    </StackPanel>
+
+                    <Border Margin="0,5,0,5" BorderBrush="Black" BorderThickness="0,0,0,3"/>
+
+                    <StackPanel Name="PageLoadError">
+                        <TextBlock Text="An error occured during information loading." Style="{DynamicResource errorMessageStyle}" />
+                        <Button Name="btnTryAgain" Content="Try again" />
+                    </StackPanel>
+
+                    <Border Margin="0,5,0,5" BorderBrush="Black" BorderThickness="0,0,0,3"/>
+                
+                    <StackPanel Name="DetailsLoadError">
+                        <TextBlock Text="{DynamicResource errorMessage}" Style="{DynamicResource errorMessageStyle}"  />
+                        <Button Name="btnReloadDetails" Content="Try again" HorizontalAlignment="Center" Margin="0,5,0,5" />
+                        <StackPanel.Resources>
+                            <clr:String x:Key="errorMessage">unknown error</clr:String>
+                        </StackPanel.Resources>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <StackPanel Name="oroListContainer" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch" DockPanel.Dock="Top" Visibility="{DynamicResource RootControl_List}">
+                    <StackPanel Name="search_group" Visibility="{DynamicResource SearchResultVisibility}">
+                        <DockPanel Background="#F0F0F0" Height="26" Margin="0,2,0,5">
+                            <Button Name="search_btnGroup" Style="{StaticResource oroButton}" DockPanel.Dock="Left" Margin="5,2,5,0">
+                                <Image Style="{StaticResource groupIcon}" />
+                            </Button>
+
+                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Foreground="{DynamicResource TitleBrush}">
+                                <TextBlock >Search results (</TextBlock><TextBlock Text="{DynamicResource itemCount}"/><TextBlock>)</TextBlock>
+                            </TextBlock>
+                        </DockPanel>
+                        <StackPanel Name="search_oroList" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch" DockPanel.Dock="Top" />
+                    </StackPanel>
+                    
+                    <StackPanel Name="group">
+                        <DockPanel Background="#F0F0F0" Height="26" Margin="0,2,0,5">
+                            <Button Name="btnGroup" Style="{StaticResource oroButton}" DockPanel.Dock="Left" Margin="5,2,5,0">
+                                <Image Style="{StaticResource groupIcon}" />
+                            </Button>
+
+                            <Button Name="btnRefresh" Style="{StaticResource oroButton}" DockPanel.Dock="Right" Margin="0,0,5,0" Cursor="Hand" ToolTip="Referesh">
+                                <Image Source="{DynamicResource refreshImage}" Stretch="None" />
+                            </Button>
+
+                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Foreground="{DynamicResource TitleBrush}">
+                                <TextBlock >Related (</TextBlock><TextBlock Text="{DynamicResource itemCount}"/><TextBlock>)</TextBlock>
+                            </TextBlock>
+                        </DockPanel>
+                        <StackPanel Name="oroList" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch" DockPanel.Dock="Top" />
+                    </StackPanel>
+
+                    <StackPanel Name="suggested_group">
+                        <DockPanel Background="#F0F0F0" Height="26" Margin="0,2,0,5">
+                            <Button Name="suggested_btnGroup" Style="{StaticResource oroButton}" DockPanel.Dock="Left" Margin="5,2,5,0">
+                                <Image Style="{StaticResource groupIcon}" />
+                            </Button>
+
+                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Foreground="{DynamicResource TitleBrush}">
+                                <TextBlock >Suggestions (</TextBlock><TextBlock Text="{DynamicResource itemCount}"/><TextBlock>)</TextBlock>
+                            </TextBlock>
+                        </DockPanel>
+                        <StackPanel Name="suggested_oroList" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Stretch" DockPanel.Dock="Top" />
+                    </StackPanel>
+                </StackPanel>
+
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="{DynamicResource RootControl_NoData}">
+                        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center">No associations or suggestions are available</TextBlock>
+                    </DockPanel>
+                    <DockPanel VerticalAlignment="Stretch" Visibility="{DynamicResource RootControl_Loading}">
+                        <Image Style="{DynamicResource busyIndicatorStyle}" />
+                    </DockPanel>
+                </Grid>
+            </DockPanel>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>
