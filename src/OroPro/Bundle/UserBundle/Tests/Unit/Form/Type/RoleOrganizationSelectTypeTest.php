@@ -48,8 +48,8 @@ class RoleOrganizationSelectTypeTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->organizationHelper = $this->getMockBuilder(
-                'OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper'
-            )
+            'OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper'
+        )
             ->disableOriginalConstructor()
             ->getMock();
 

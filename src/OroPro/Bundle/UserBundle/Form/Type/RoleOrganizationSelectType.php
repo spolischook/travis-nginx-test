@@ -19,7 +19,6 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use OroPro\Bundle\UserBundle\Helper\UserProHelper;
 use OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper;
 
-
 /**
  * Class RoleOrganizationSelectType.
  *

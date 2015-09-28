@@ -54,7 +54,7 @@ class UserProHelper
     {
         $organizations = $this->getUser($user)->getOrganizations();
         $isAssigned = $organizations->exists(
-            function($key, $currentOrganization) use ($organization) {
+            function ($key, $currentOrganization) use ($organization) {
                 /** @var Organization $organization */
                 return ($currentOrganization->getId() === $organization->getId());
             }
