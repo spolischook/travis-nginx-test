@@ -2,29 +2,49 @@
 
 namespace OroPro\Bundle\UserBundle\EventListener\Datagrid;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 
+use OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper;
+use OroPro\Bundle\UserBundle\Helper\UserProHelper;
+
+/**
+ * Class RoleListener.
+ *
+ * Modifies grid of roles, adds Organization column, filter and sorter.
+ *
+ * Filters Roles based on these requirements:
+ * - User assigned and logged in to Global Organization is able to view all Roles;
+ * - Otherwise User is able to view Roles assigned only to current Organization or Roles without Organization.
+ */
 class RoleListener
 {
-    const ORGANIZATION_FIELD = 'organization';
-    const ORGANIZATION_ALIAS = 'org';
-    const ORGANIZATION_NAME_COLUMN = 'name';
+    /**
+     * @var TokenStorageInterface
+     */
+    protected $tokenStorage;
 
     /**
-     * @var ServiceLink
+     * @var UserProHelper
      */
-    protected $securityContextLink;
+    protected $userHelper;
 
     /**
-     * @param ServiceLink $securityContextLink
+     * @param UserProHelper $userHelper
+     * @param OrganizationProHelper $organizationHelper
+     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(ServiceLink $securityContextLink)
-    {
-        $this->securityContextLink = $securityContextLink;
+    public function __construct(
+        UserProHelper $userHelper,
+        OrganizationProHelper $organizationHelper,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->tokenStorage = $tokenStorage;
+        $this->userHelper = $userHelper;
+        $this->organizationHelper = $organizationHelper;
     }
 
     /**
@@ -43,11 +63,8 @@ class RoleListener
         // add where condition
         $this->processSourceQueryWhere($config);
 
-        // add column
-        $this->processColumns($config);
-
+        $this->addOrganizationColumn($config);
         $this->addOrganizationFilter($config);
-
         $this->addOrganizationSorter($config);
     }
 
@@ -61,8 +78,8 @@ class RoleListener
 
         $leftJoins = $config->offsetGetByPath('[source][query][join][left]', []);
         $leftJoins[] = [
-            'join' => $rootEntityAlias . '.' . self::ORGANIZATION_FIELD,
-            'alias' => self::ORGANIZATION_ALIAS
+            'join' => $rootEntityAlias . '.organization',
+            'alias' => 'org'
         ];
         $config->offsetSetByPath('[source][query][join][left]', $leftJoins);
     }
@@ -72,63 +89,58 @@ class RoleListener
      */
     protected function processSourceQuerySelect(DatagridConfiguration $config)
     {
-        $organizationSelect = self::ORGANIZATION_ALIAS . '.' . self::ORGANIZATION_NAME_COLUMN;
         $selects = $config->offsetGetByPath('[source][query][select]', []);
-        $selects[] = $organizationSelect;
+        $selects[] = 'org.name AS org_name';
         $config->offsetSetByPath('[source][query][select]', $selects);
     }
 
     /**
+     * User is able to view all roles if he is assigned and logged in to Global Organization.
+     * Otherwise user is able to view roles assigned to current organization or roles without organization.
+     *
      * @param DatagridConfiguration $config
      */
     protected function processSourceQueryWhere(DatagridConfiguration $config)
     {
-        /** @var SecurityContextInterface $securityContext */
-        $securityContext = $this->securityContextLink->getService();
-        $user = $securityContext->getToken()->getUser();
-        $organizations = $user->getOrganizations();
+        $token = $this->tokenStorage->getToken();
 
-        $where = $config->offsetGetByPath('[source][query][where][and]', []);
-
-        $param = self::ORGANIZATION_ALIAS . '.' . 'id';
-        // User in not assigned to any Organization
-        if (empty($organizations)) {
-            $where = array_merge(
-                $where,
-                [$param . ' IS NULL']
-            );
+        if (!$token instanceof OrganizationContextTokenInterface) {
+            return;
         }
 
-        $globalAccess = false;
-        $organizationsIds = [];
-        foreach ($organizations as $organization) {
-            if ($organization->getIsGlobal() == true) {
-                // User assigned to the System Organization
-                $globalAccess = true;
-            }
-            $organizationsIds[] = $organization->getId();
+        $organization = $token->getOrganizationContext();
+
+        if (!$organization) {
+            return;
         }
 
-        // Restrict access only to the organizations where user is assigned
-        if (!$globalAccess && !empty($organizations)) {
-            $where = array_merge(
-                $where,
-                [$param . ' IN (' . implode(',', $organizationsIds) . ') OR ' . $param . ' IS NULL']
-            );
+        if ($organization->getIsGlobal() && $this->userHelper->isUserAssignedToOrganization($organization)) {
+            return;
         }
 
-        if (count($where)) {
-            $config->offsetSetByPath('[source][query][where][and]', $where);
-        }
+        $config->offsetSetByPath(
+            '[source][query][where][and]',
+            [
+                sprintf(
+                    'org.id = %d OR org.id IS NULL',
+                    $organization->getId()
+                )
+            ]
+        );
     }
 
     /**
      * @param DatagridConfiguration $config
      */
-    protected function processColumns(DatagridConfiguration $config)
+    protected function addOrganizationColumn(DatagridConfiguration $config)
     {
         $columns = $config->offsetGetByPath('[columns]', []);
-        $columns[self::ORGANIZATION_NAME_COLUMN] = ['label' => 'oro.user.role.organization.label'];
+        $columns['org_name'] = [
+            'label' => 'oro.user.role.organization.label',
+            'type' => 'twig',
+            'frontend_type' => 'html',
+            'template' => 'OroProUserBundle:Role:Datagrid/Property/organization.html.twig',
+        ];
         $config->offsetSetByPath('[columns]', $columns);
     }
 
@@ -138,16 +150,15 @@ class RoleListener
     protected function addOrganizationFilter(DatagridConfiguration $config)
     {
         $filters = $config->offsetGetByPath('[filters][columns]', []);
-        $filters[self::ORGANIZATION_NAME_COLUMN] = [
-            'type' => 'entity',
+        $filters['org_name'] = [
+            'type'      => 'choice',
             'data_name' => 'org.id',
-            'enabled'      => true,
-            'options'      => [
+            'enabled'   => true,
+            'options'   => [
                 'field_options' => [
-                    'class'                => 'OroOrganizationBundle:Organization',
-                    'property'             => 'name',
+                    'choices'              => $this->organizationHelper->getOrganizationFilterChoices(),
+                    'translatable_options' => false,
                     'multiple'             => true,
-                    'translatable_options' => true
                 ]
             ]
         ];
@@ -160,8 +171,8 @@ class RoleListener
     protected function addOrganizationSorter(DatagridConfiguration $config)
     {
         $sorters = $config->offsetGetByPath('[sorters][columns]', []);
-        $sorters[self::ORGANIZATION_NAME_COLUMN] = [
-            'data_name' => self::ORGANIZATION_ALIAS . '.' . self::ORGANIZATION_NAME_COLUMN
+        $sorters['org_name'] = [
+            'data_name' => 'org_name'
         ];
         $config->offsetSetByPath('[sorters][columns]', $sorters);
     }

@@ -1,17 +1,14 @@
 <?php
 
-use Doctrine\Common\Collections\ArrayCollection;
+namespace OroPro\Bundle\UserBundle\Tests\Unit\Autocomplete;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Autocomplete\OrganizationSearchHandler as BaseOrganizationSearchHandler;
-use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 
 use OroPro\Bundle\UserBundle\Autocomplete\RoleOrganizationSearchHandler;
-use OroPro\Bundle\UserBundle\Helper\UserProHelper;
 
 class RoleOrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,19 +23,19 @@ class RoleOrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
     protected $baseHandler;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ServiceLink
+     * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface
      */
-    protected $serviceLink;
+    protected $tokenStorage;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|User
+     * @var \PHPUnit_Framework_MockObject_MockObject|OrganizationContextTokenInterface
      */
-    protected $user;
+    protected $token;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|UserProHelper
+     * @var \PHPUnit_Framework_MockObject_MockObject|Organization
      */
-    protected $userHelper;
+    protected $organization;
 
     protected function setUp()
     {
@@ -46,42 +43,40 @@ class RoleOrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Oro\Bundle\OrganizationBundle\Autocomplete\OrganizationSearchHandler')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->serviceLink = $this
-            ->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->userHelper = $this
-            ->getMockBuilder('OroPro\Bundle\UserBundle\Helper\UserProHelper')
-            ->getMock();
 
-        $this->handler = new RoleOrganizationSearchHandler($this->baseHandler, $this->serviceLink, $this->userHelper);
+        $this->tokenStorage = $this->getMock(
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
+        );
+
+        $this->token = $this->getMock(
+            'Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface'
+        );
+
+        $this->organization = $this->getMock(
+            'Oro\Bundle\OrganizationBundle\Entity\Organization',
+            ['getIsGlobal', 'getId']
+        );
+
+        $this->handler = new RoleOrganizationSearchHandler($this->baseHandler, $this->tokenStorage);
     }
 
-    protected function setUpServiceLinkMock()
+    public function testSearchIfUserLoggedInToGlobalOrganization()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|SecurityContextInterface $service */
-        $service = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        /** @var \PHPUnit_Framework_MockObject_MockObject|TokenInterface $token */
-        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
-        /** @var \PHPUnit_Framework_MockObject_MockObject|User $user */
-        $this->serviceLink->expects($this->once())->method('getService')->will($this->returnValue($service));
-        $service->expects($this->once())->method('getToken')->will($this->returnValue($token));
-
-        $this->user = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
-        $token->expects($this->once())->method('getUser')->will($this->returnValue($this->user));
-    }
-
-    public function testSearchIfUserAssignedToGlobalOrganization()
-    {
-        $this->setUpServiceLinkMock();
-
         $expectedSearchResults = ['results' => [['id' => 1], ['id' => 2]]];
         $this->baseHandler->expects($this->once())->method('search')
             ->with('org', 1, 10)
             ->will($this->returnValue($expectedSearchResults));
 
-        $this->userHelper->expects($this->once())
-            ->method('isUserAssignedToSystemOrganization')
+        $this->tokenStorage->expects($this->once())
+            ->method('getToken')
+            ->will($this->returnValue($this->token));
+
+        $this->token->expects($this->once())
+            ->method('getOrganizationContext')
+            ->will($this->returnValue($this->organization));
+
+        $this->organization->expects($this->once())
+            ->method('getIsGlobal')
             ->will($this->returnValue(true));
 
         $searchResults = $this->handler->search('org', 1, 10);
@@ -89,43 +84,29 @@ class RoleOrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedSearchResults, $searchResults);
     }
 
-    public function testSearchIfUserAssignedToNonGlobalOrganizations()
+    public function testSearchIfUserNotLoggedInToGlobalOrganization()
     {
-        $this->setUpServiceLinkMock();
-
-        $expectedSearchResults = ['results' => [['id' => 1], ['id' => 2]]];
-
+        $expectedSearchResults = ['results' => [['id' => 2]]];
+        $baseSearchResults = ['results' => [['id' => 1], ['id' => 2]]];
         $this->baseHandler->expects($this->once())->method('search')
             ->with('org', 1, 10)
-            ->will($this->returnValue(['results' => [['id' => 1], ['id' => 2], ['id' => 3]]]));
+            ->will($this->returnValue($baseSearchResults));
 
-        $this->userHelper->expects($this->once())
-            ->method('isUserAssignedToSystemOrganization')
+        $this->tokenStorage->expects($this->once())
+            ->method('getToken')
+            ->will($this->returnValue($this->token));
+
+        $this->token->expects($this->once())
+            ->method('getOrganizationContext')
+            ->will($this->returnValue($this->organization));
+
+        $this->organization->expects($this->once())
+            ->method('getIsGlobal')
             ->will($this->returnValue(false));
 
-        $firstRegularOrganization = $this
-            ->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
-            ->disableOriginalConstructor()
-            ->setMethods(['getId', 'getIsGlobal'])
-            ->getMock();
-        $secondRegularOrganization = $this
-            ->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
-            ->disableOriginalConstructor()
-            ->setMethods(['getId', 'getIsGlobal'])
-            ->getMock();
-
-        $firstRegularOrganization->expects($this->once())->method('getId')->will($this->returnValue(1));
-        $secondRegularOrganization->expects($this->once())->method('getId')->will($this->returnValue(2));
-
-        $userOrganizations = new ArrayCollection(
-            [
-                $firstRegularOrganization,
-                $secondRegularOrganization
-            ]
-        );
-
-        $this->user->expects($this->once())->method('getOrganizations')
-            ->will($this->returnValue($userOrganizations));
+        $this->organization->expects($this->atLeastOnce())
+            ->method('getId')
+            ->will($this->returnValue(2));
 
         $searchResults = $this->handler->search('org', 1, 10);
 

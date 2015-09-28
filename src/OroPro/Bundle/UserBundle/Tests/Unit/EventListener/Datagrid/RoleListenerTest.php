@@ -2,16 +2,17 @@
 
 namespace OroPro\Bundle\UserBundle\Tests\Unit\EventListener\Datagrid;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
-use Oro\Bundle\UserBundle\Entity\OrganizationAwareUserInterface;
-use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 
-use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
+use OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper;
 use OroPro\Bundle\UserBundle\EventListener\Datagrid\RoleListener;
+use OroPro\Bundle\UserBundle\Helper\UserProHelper;
 
 class RoleListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,145 +22,144 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
     protected $roleListener;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ServiceLink
+     * @var \PHPUnit_Framework_MockObject_MockObject|UserProHelper
      */
-    protected $serviceLink;
+    protected $userHelper;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|SecurityContextInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|OrganizationProHelper
      */
-    protected $securityContext;
+    protected $organizationHelper;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TokenInterface;
+     * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface
+     */
+    protected $tokenStorage;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|OrganizationContextTokenInterface
      */
     protected $token;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|OrganizationAwareUserInterface;
+     * @var \PHPUnit_Framework_MockObject_MockObject|Organization
      */
-    protected $user;
+    protected $organization;
 
     protected function setUp()
     {
-        $this->serviceLink = $this
-            ->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink')
+        $this->userHelper = $this->getMockBuilder('OroPro\Bundle\UserBundle\Helper\UserProHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->securityContext = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContextInterface')
+        $this->organizationHelper = $this->getMockBuilder(
+            'OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper'
+        )
+            ->disableOriginalConstructor()
             ->getMock();
 
-        $this->token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
-            ->getMock();
 
-        $this->user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\OrganizationAwareUserInterface')
-            ->getMock();
+        $this->tokenStorage = $this->getMock(
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
+        );
 
-        $this->roleListener = new RoleListener($this->serviceLink);
+        $this->token = $this->getMock(
+            'Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface'
+        );
+
+        $this->organization = $this->getMock(
+            'Oro\Bundle\OrganizationBundle\Entity\Organization',
+            ['getId', 'getIsGlobal']
+        );
+
+        $this->roleListener = new RoleListener(
+            $this->userHelper,
+            $this->organizationHelper,
+            $this->tokenStorage
+        );
     }
 
     protected function tearDown()
     {
         unset(
             $this->serviceLink,
-            $this->securityContext,
+            $this->tokenStorage,
             $this->token,
             $this->user,
             $this->roleListener
         );
     }
 
-    public function testOnBuildBeforeWhenUserIsNotAssignedToAnyOrganization()
+    public function testOnBuildBeforeWhenUserIsLoggedInToGlobalOrganization()
     {
         $config = $this->getConfig();
         $event = $this->createEvent($config);
 
-        $this->serviceLink->expects($this->once())
-            ->method('getService')
-            ->will($this->returnValue($this->securityContext));
-
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue($this->token));
 
         $this->token->expects($this->once())
-            ->method('getUser')
-            ->will($this->returnValue($this->user));
+            ->method('getOrganizationContext')
+            ->will($this->returnValue($this->organization));
 
-        $this->user->expects($this->once())
-            ->method('getOrganizations')
-            ->will($this->returnValue([]));
+        $this->organization->expects($this->once())
+            ->method('getIsGlobal')
+            ->will($this->returnValue(true));
+
+        $this->userHelper->expects($this->once())
+            ->method('isUserAssignedToOrganization')
+            ->with($this->organization)
+            ->will($this->returnValue(true));
+
+        $organizationChoices = ['1' => 'Foo', '2' => 'Bar'];
+
+        $this->organizationHelper->expects($this->once())
+            ->method('getOrganizationFilterChoices')
+            ->will($this->returnValue($organizationChoices));
 
         $this->roleListener->onBuildBefore($event);
 
-        $expectedConfig = $this->getExpectedConfig();
-        $param = RoleListener::ORGANIZATION_ALIAS . '.' . 'id';
-        $expectedConfig['source']['query']['where']['and'] = ['0' => $param . ' IS NULL'];
+        $expectedConfig = $this->getExpectedConfig($organizationChoices);
 
         $this->assertEquals($expectedConfig, $event->getConfig()->toArray());
     }
 
-    public function testOnBuildBeforeWhenUserIsAssignedToSystemOrganization()
+    public function testOnBuildBeforeWhenUserIsNotLoggedInToGlobalOrganization()
     {
         $config = $this->getConfig();
         $event = $this->createEvent($config);
 
-        $this->serviceLink->expects($this->once())
-            ->method('getService')
-            ->will($this->returnValue($this->securityContext));
-
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue($this->token));
 
         $this->token->expects($this->once())
-            ->method('getUser')
-            ->will($this->returnValue($this->user));
+            ->method('getOrganizationContext')
+            ->will($this->returnValue($this->organization));
 
-        $this->user->expects($this->once())
-            ->method('getOrganizations')
-            ->will($this->returnValue($this->getOrganizations()));
+        $this->organization->expects($this->once())
+            ->method('getIsGlobal')
+            ->will($this->returnValue(false));
 
-        $this->roleListener->onBuildBefore($event);
+        $this->organization->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(1));
 
-        $expectedConfig = $this->getExpectedConfig();
+        $this->userHelper->expects($this->never())
+            ->method($this->anything());
 
-        $this->assertEquals($expectedConfig, $event->getConfig()->toArray());
-    }
+        $organizationChoices = ['1' => 'Foo'];
 
-    public function testOnBuildBeforeWhenUserIsNotAssignedToSystemOrganization()
-    {
-        $config = $this->getConfig();
-        $event = $this->createEvent($config);
-
-        $this->serviceLink->expects($this->once())
-            ->method('getService')
-            ->will($this->returnValue($this->securityContext));
-
-        $this->securityContext->expects($this->once())
-            ->method('getToken')
-            ->will($this->returnValue($this->token));
-
-        $this->token->expects($this->once())
-            ->method('getUser')
-            ->will($this->returnValue($this->user));
-
-        $organization = new GlobalOrganization();
-        $organization->setId(1);
-        $organization->setIsGLobal(false);
-
-        $this->user->expects($this->once())
-            ->method('getOrganizations')
-            ->will($this->returnValue([$organization]));
+        $this->organizationHelper->expects($this->once())
+            ->method('getOrganizationFilterChoices')
+            ->will($this->returnValue($organizationChoices));
 
         $this->roleListener->onBuildBefore($event);
 
-        $expectedConfig = $this->getExpectedConfig();
-        $param = RoleListener::ORGANIZATION_ALIAS . '.' . 'id';
+        $expectedConfig = $this->getExpectedConfig($organizationChoices);
         $expectedConfig['source']['query']['where']['and'] =
-            ['0' => $param . ' IN (1) OR ' . $param . ' IS NULL'];
-
+            ['0' => 'org.id = 1 OR org.id IS NULL'];
 
         $this->assertEquals($expectedConfig, $event->getConfig()->toArray());
     }
@@ -192,7 +192,7 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    protected function getExpectedConfig()
+    protected function getExpectedConfig(array $organizationChoices = [])
     {
         return [
             'source' => [
@@ -202,7 +202,7 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
                         'field1',
                         'field2',
                         'field3',
-                        RoleListener::ORGANIZATION_ALIAS . '.' . RoleListener::ORGANIZATION_NAME_COLUMN
+                        'org.name AS org_name'
                     ],
                     'from' => [
                         [
@@ -213,30 +213,32 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
                     'join' => [
                         'left' => [
                             [
-                                'join' => 'testAlias' . '.' . RoleListener::ORGANIZATION_FIELD,
-                                'alias' => RoleListener::ORGANIZATION_ALIAS
+                                'join' => 'testAlias' . '.organization',
+                                'alias' => 'org'
                             ]
                         ]
                     ]
                 ]
             ],
             'columns' => [
-                RoleListener::ORGANIZATION_NAME_COLUMN => [
-                    'label' => 'oro.user.role.organization.label'
+                'org_name' => [
+                    'label' => 'oro.user.role.organization.label',
+                    'type' => 'twig',
+                    'frontend_type' => 'html',
+                    'template' => 'OroProUserBundle:Role:Datagrid/Property/organization.html.twig',
                 ]
             ],
             'filters' => [
                 'columns' => [
-                    RoleListener::ORGANIZATION_NAME_COLUMN => [
-                        'type' => 'entity',
+                    'org_name' => [
+                        'type' => 'choice',
                         'data_name' => 'org.id',
                         'enabled'      => true,
                         'options'      => [
                             'field_options' => [
-                                'class'                => 'OroOrganizationBundle:Organization',
-                                'property'             => 'name',
+                                'choices'              => $organizationChoices,
+                                'translatable_options' => false,
                                 'multiple'             => true,
-                                'translatable_options' => true
                             ]
                         ]
                     ]
@@ -244,30 +246,11 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
             ],
             'sorters' => [
                 'columns' => [
-                    RoleListener::ORGANIZATION_NAME_COLUMN => [
-                        'data_name' => RoleListener::ORGANIZATION_ALIAS . '.' . RoleListener::ORGANIZATION_NAME_COLUMN
+                    'org_name' => [
+                        'data_name' => 'org_name'
                     ]
                 ]
             ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getOrganizations()
-    {
-        $organization1 = new GlobalOrganization();
-        $organization1->setId(1);
-        $organization1->setIsGLobal(false);
-
-        $organization2 = new GlobalOrganization();
-        $organization2->setId(2);
-        $organization2->setIsGLobal(true);
-
-        return [
-            $organization1,
-            $organization2
         ];
     }
 

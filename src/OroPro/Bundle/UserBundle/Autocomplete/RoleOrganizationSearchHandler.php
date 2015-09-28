@@ -2,14 +2,17 @@
 
 namespace OroPro\Bundle\UserBundle\Autocomplete;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
 use Oro\Bundle\OrganizationBundle\Autocomplete\OrganizationSearchHandler as BaseOrganizationSearchHandler;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 
-use OroPro\Bundle\UserBundle\Helper\UserProHelper;
-
+/**
+ * Search handler for Organization select field on form of Role.
+ * It will return any Organization if user is assigned to Global Organization and logged in to it.
+ * Otherwise it's possible to select only current organization.
+ */
 class RoleOrganizationSearchHandler implements SearchHandlerInterface
 {
     /**
@@ -18,28 +21,20 @@ class RoleOrganizationSearchHandler implements SearchHandlerInterface
     protected $baseOrganizationSearchHandler;
 
     /**
-     * @var ServiceLink
+     * @var TokenStorageInterface
      */
-    protected $securityContextLink;
-
-    /**
-     * @var UserProHelper
-     */
-    protected $userHelper;
+    protected $tokenStorage;
 
     /**
      * @param BaseOrganizationSearchHandler $baseOrganizationSearchHandler
-     * @param ServiceLink $securityContextLink
-     * @param UserProHelper $userHelper
+     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         BaseOrganizationSearchHandler $baseOrganizationSearchHandler,
-        ServiceLink $securityContextLink,
-        UserProHelper $userHelper
+        TokenStorageInterface $tokenStorage
     ) {
         $this->baseOrganizationSearchHandler = $baseOrganizationSearchHandler;
-        $this->securityContextLink = $securityContextLink;
-        $this->userHelper = $userHelper;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -48,22 +43,21 @@ class RoleOrganizationSearchHandler implements SearchHandlerInterface
     public function search($query, $page, $perPage, $searchById = false)
     {
         $result = $this->baseOrganizationSearchHandler->search($query, $page, $perPage, $searchById);
-        /** @var User $user */
-        $user = $this->securityContextLink->getService()->getToken()->getUser();
-        $organizations = $user->getOrganizations();
-        $hasGlobalOrganization = $this->userHelper->isUserAssignedToSystemOrganization($user);
-        if (!$hasGlobalOrganization) {
-            $organizationIds = $organizations
-                ->map(
-                    function (Organization $organization) {
-                        return $organization->getId();
+
+        $token = $this->tokenStorage->getToken();
+        if (!$token instanceof OrganizationContextTokenInterface) {
+            return $result;
+        }
+        $currentOrganization = $token->getOrganizationContext();
+
+        if (!$currentOrganization->getIsGlobal()) {
+            $result['results'] = array_values(
+                array_filter(
+                    $result['results'],
+                    function ($element) use ($currentOrganization) {
+                        return $element['id'] == $currentOrganization->getId();
                     }
-                )->toArray();
-            $result['results'] = array_filter(
-                $result['results'],
-                function ($element) use ($organizationIds) {
-                    return in_array($element['id'], $organizationIds, true);
-                }
+                )
             );
         }
 

@@ -81,6 +81,7 @@ services:
         class: %oropro_organization.helper.class%
         arguments:
             - @doctrine
+            - @security.token_storage
 
     oropro_organization.listener.kernel_request_listener:
         class: %oropro_organization.listener.kernel_request_listener.class%
