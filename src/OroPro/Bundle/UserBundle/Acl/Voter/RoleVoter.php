@@ -124,8 +124,8 @@ class RoleVoter implements VoterInterface
         } else {
             // User can view/edit/delete roles without organization if there is no global organization
             // or he is assigned to system organization
-            $provideAccess = !$this->organizationHelper->isGlobalOrganizationExists() ||
-                $isUserAssignedToGlobalOrganization;
+            $provideAccess = $isUserAssignedToGlobalOrganization ||
+                !$this->organizationHelper->isGlobalOrganizationExists();
         }
 
         if ($provideAccess) {

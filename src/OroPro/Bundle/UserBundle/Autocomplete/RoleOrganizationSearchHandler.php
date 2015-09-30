@@ -50,7 +50,7 @@ class RoleOrganizationSearchHandler implements SearchHandlerInterface
         }
         $currentOrganization = $token->getOrganizationContext();
 
-        if (!$currentOrganization->getIsGlobal()) {
+        if ($currentOrganization && !$currentOrganization->getIsGlobal()) {
             $result['results'] = array_values(
                 array_filter(
                     $result['results'],

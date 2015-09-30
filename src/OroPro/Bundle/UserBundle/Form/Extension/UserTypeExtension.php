@@ -26,7 +26,8 @@ class UserTypeExtension extends AbstractTypeExtension
     protected $translator;
 
     /**
-     * @param ManagerRegistry $managerRegistry
+     * @param ManagerRegistry     $managerRegistry
+     * @param TranslatorInterface $translator
      */
     public function __construct(ManagerRegistry $managerRegistry, TranslatorInterface $translator)
     {
@@ -58,20 +59,24 @@ class UserTypeExtension extends AbstractTypeExtension
         /** @var Role[] $roles */
         $roles = $this->managerRegistry->getRepository('OroUserBundle:Role')
             ->createQueryBuilder('r')
+            ->addSelect('organization')
             ->andWhere('r.role <> :anon')
             ->setParameter('anon', User::ROLE_ANONYMOUS)
-            ->getQuery()->getResult();
+            ->leftJoin('r.organization', 'organization')
+            ->getQuery()
+            ->getResult();
 
         $permissionsMap = [];
         foreach ($roles as $role) {
             /** @var Organization $organization */
             $organization = $role->getOrganization();
-            $organizationName = $this->translator->trans('oropro.user.role.global_organization.label');
-            $organizationId = null;
             if ($organization) {
                 $organizationId = $organization->getId();
                 $organizationName = $organization->getName();
-            };
+            } else {
+                $organizationId = null;
+                $organizationName = $this->translator->trans('oropro.user.role.global_organization.label');
+            }
 
             $label = $role->getLabel() . ' [' . $organizationName . ']';
             $permissionsMap[$role->getId()] = [
