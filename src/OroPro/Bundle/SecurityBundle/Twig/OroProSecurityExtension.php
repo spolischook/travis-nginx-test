@@ -46,7 +46,9 @@ class OroProSecurityExtension extends BaseExtension
             $idB = (int) $sidB->getId();
 
             return $idA < $idB ? -1 : 1;
-        } elseif ($sidA instanceof OrganizationSecurityIdentity && ($sidB instanceof UserSecurityIdentity || $sidB instanceof BusinessUnitSecurityIdentity)) {
+        } elseif ($sidA instanceof OrganizationSecurityIdentity &&
+            ($sidB instanceof UserSecurityIdentity || $sidB instanceof BusinessUnitSecurityIdentity)
+        ) {
             return -1;
         } elseif ($sidA instanceof UserSecurityIdentity && $sidB instanceof OrganizationSecurityIdentity) {
             return 1;
