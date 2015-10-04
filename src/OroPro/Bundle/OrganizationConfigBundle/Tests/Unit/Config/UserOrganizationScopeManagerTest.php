@@ -23,9 +23,7 @@ class UserOrganizationScopeManagerTest extends \PHPUnit_Framework_TestCase
         $this->doctrine = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
             ->disableOriginalConstructor()
             ->getMock();
-        $cache          = $this->getMockBuilder('Doctrine\Common\Cache\CacheProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $cache          = $this->getMockForAbstractClass('Doctrine\Common\Cache\CacheProvider');
 
         $this->securityContext = $this
             ->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
