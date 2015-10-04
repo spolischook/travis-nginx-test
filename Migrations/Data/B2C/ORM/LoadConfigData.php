@@ -26,8 +26,7 @@ class LoadConfigData extends AbstractFixture
         $data = $this->getData();
 
         /** @var ConfigManager $configManager */
-        $configManager = $this->container->get('oro_config.manager');
-        $configManager->setScopeName('global');
+        $configManager = $this->container->get('oro_config.global');
 
         foreach ($data['configs'] as $config) {
             $configManager->set($config['name'], $config['value']);
