@@ -25,12 +25,12 @@ define(function(require) {
         /**
          * @inheritDoc
          */
-        _createViewModel: function (data) {
+        _createViewModel: function(data) {
             var model = ProGridViewsView.__super__._createViewModel.call(this, data);
 
             if (this.saOrgId) {
                 var saOrgId = this.saOrgId;
-                model.urlRoot = function () {
+                model.urlRoot = function() {
                     var urlParams = {};
                     if (this.isNew()) {
                         urlParams._sa_org_id = saOrgId;
