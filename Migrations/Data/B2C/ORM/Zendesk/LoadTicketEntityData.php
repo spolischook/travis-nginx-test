@@ -70,13 +70,6 @@ class LoadTicketEntityData extends AbstractFixture implements OrderedFixtureInte
             'tickets' => $this->loadData('zendesk/tickets.csv')
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
 
     /**
      * {@inheritdoc}
@@ -154,7 +147,7 @@ class LoadTicketEntityData extends AbstractFixture implements OrderedFixtureInte
         }
 
         $ticketEntity = new Ticket();
-        $this->setObjectValues($ticket, $ticketEntity);
+        $this->setObjectValues($ticketEntity, $ticket);
 
         return $ticketEntity;
     }
