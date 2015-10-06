@@ -9,6 +9,7 @@ use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
 use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\ReportBundle\Entity\Report;
 use Oro\Bundle\SegmentBundle\Entity\Segment;
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\TrackingBundle\Entity\TrackingEvent;
