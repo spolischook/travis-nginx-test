@@ -26,6 +26,8 @@ parameters:
 
     oropro_organization.acl.voter.organization.class: OroPro\Bundle\OrganizationBundle\Acl\Voter\OrganizationAnnotationVoter
 
+    oropro_organization.autocomplete.business_unit.search_handler.class:  OroPro\Bundle\OrganizationBundle\Autocomplete\BusinessUnitSearchHandler
+
 services:
     oropro_organization.twig.extension.organization:
         class: %oropro_organization.twig.extension.organization.class%
@@ -159,3 +161,13 @@ services:
             - %oro_organization.organization.entity.class%
         tags:
             - { name: security.voter, priority: -255 }
+
+    oropro_organization.autocomplete.business_unit.search_handler:
+            class: %oropro_organization.autocomplete.business_unit.search_handler.class%
+            parent: oro_form.autocomplete.search_handler
+            arguments:
+                - %oro_organization.business_unit.entity.class%
+                - ["name"]
+                - @oro_security.security_facade
+            tags:
+                - { name: oro_form.autocomplete.search_handler, alias: business_units, acl_resource: oro_business_unit_view }
