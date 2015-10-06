@@ -72,6 +72,11 @@ class OrganizationColumnExtension extends AbstractExtension
      */
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
+        $organization = $this->securityFacade->getOrganization();
+        if ($organization && $organization->getIsGlobal()) {
+            $data->offsetAddToArray('gridViews', ['_sa_org_id' => $organization->getId()]);
+        }
+
         $providedSystemOrganizationId = $this->organizationProvider->getOrganizationId();
         if ($providedSystemOrganizationId) {
             $data->offsetAddToArrayByPath(
