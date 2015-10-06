@@ -79,6 +79,7 @@ class LoadReportData extends AbstractFixture implements OrderedFixtureInterface
             $report->setType($this->getReportType($reportData['type']));
             $report->setOrganization($this->getOrganizationReference($reportData['organization uid']));
             $report->setOwner($this->getBusinessUnitReference($reportData['business unit uid']));
+            $this->setReportReference($reportData['uid'], $report);
             $manager->persist($report);
         }
         $manager->flush();

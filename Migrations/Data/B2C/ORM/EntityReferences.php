@@ -21,6 +21,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\CampaignBundle\Entity\Campaign;
 use OroCRM\Bundle\CampaignBundle\Entity\EmailCampaign;
+use OroCRM\Bundle\CaseBundle\Entity\CaseEntity;
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
@@ -356,6 +357,27 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     }
 
     /**
+     * @param                 $uid
+     * @param Integration     $integration
+     */
+    protected function setZendeskIntegrationReference($uid, Integration $integration)
+    {
+        $reference = 'ZendeskIntegration:' . $uid;
+        $this->setReference($reference, $integration);
+    }
+
+    /**
+     * @param $uid
+     * @return Integration
+     * @throws EntityNotFoundException
+     */
+    protected function getZendeskIntegrationReference($uid)
+    {
+        $reference = 'ZendeskIntegration:' . $uid;
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
      * @param $uid
      * @return Channel
      * @throws EntityNotFoundException
@@ -598,6 +620,28 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     * @return Report
+     * @throws EntityNotFoundException
+     */
+    protected function getReportReference($uid)
+    {
+        $reference = 'Report:' . $uid;
+
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param         $uid
+     * @param Report $report
+     */
+    protected function setReportReference($uid, Report $report)
+    {
+        $reference = 'Report:' . $uid;
+        $this->setReference($reference, $report);
+    }
+
+    /**
+     * @param $uid
      * @return Segment
      * @throws EntityNotFoundException
      */
@@ -616,6 +660,28 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     {
         $reference = 'Segment:' . $uid;
         $this->setReference($reference, $segment);
+    }
+
+    /**
+     * @param $uid
+     * @return CaseEntity
+     * @throws EntityNotFoundException
+     */
+    protected function getCaseReference($uid)
+    {
+        $reference = 'Case:' . $uid;
+
+        return $this->getReferenceByName($reference);
+    }
+
+    /**
+     * @param         $uid
+     * @param CaseEntity $case
+     */
+    protected function setCaseReference($uid, CaseEntity $case)
+    {
+        $reference = 'Case:' . $uid;
+        $this->setReference($reference, $case);
     }
 
     /**
