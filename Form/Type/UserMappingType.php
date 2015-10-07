@@ -9,7 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderInterface;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use OroCRMPro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
 
@@ -19,10 +19,13 @@ class UserMappingType extends AbstractType
 
     /** @var Registry */
     protected $registry;
-    /** @var ConfigProviderInterface */
+
+    /** @var ConfigProvider */
     private $importExportConfig;
-    /** @var ConfigProviderInterface */
+
+    /** @var ConfigProvider */
     private $entityConfig;
+
     /** @var string[] */
     private $requiredFields = [
         LdapUtils::USERNAME_MAPPING_ATTRIBUTE,
@@ -32,14 +35,14 @@ class UserMappingType extends AbstractType
     ];
 
     /**
-     * @param Registry                $registry
-     * @param ConfigProviderInterface $importExportConfig
-     * @param ConfigProviderInterface $entityConfig
+     * @param Registry       $registry
+     * @param ConfigProvider $importExportConfig
+     * @param ConfigProvider $entityConfig
      */
     public function __construct(
         Registry $registry,
-        ConfigProviderInterface $importExportConfig,
-        ConfigProviderInterface $entityConfig
+        ConfigProvider $importExportConfig,
+        ConfigProvider $entityConfig
     ) {
         $this->registry = $registry;
         $this->importExportConfig = $importExportConfig;
