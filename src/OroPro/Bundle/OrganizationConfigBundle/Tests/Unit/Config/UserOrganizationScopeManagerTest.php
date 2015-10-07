@@ -9,123 +9,149 @@ use OroPro\Bundle\OrganizationBundle\Entity\UserOrganization;
 
 class UserOrganizationScopeManagerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetScopedEntityName()
+    /** @var UserOrganizationScopeManager */
+    protected $manager;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    protected $securityContext;
+
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    protected $doctrine;
+
+    protected function setUp()
     {
-        $object = new UserOrganizationScopeManager($this->getMock('Doctrine\Common\Persistence\ObjectManager'));
-        $this->assertEquals(UserOrganizationScopeManager::SCOPED_ENTITY_NAME, $object->getScopedEntityName());
+        $this->doctrine = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $cache          = $this->getMockForAbstractClass('Doctrine\Common\Cache\CacheProvider');
+
+        $this->securityContext = $this
+            ->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
+
+        $this->manager = new UserOrganizationScopeManager($this->doctrine, $cache);
+        $this->manager->setSecurityContext($this->securityContext);
     }
 
-    public function testSetSecurity()
+    public function testGetScopedEntityName()
     {
-        $group1 = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
-        $group1->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue(2));
-        $group2 = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
-        $group2->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue(3));
+        $this->assertEquals('organization_user', $this->manager->getScopedEntityName());
+    }
 
+    public function testInitializeScopeId()
+    {
         $user = new User();
-        $user->setId(1)
-            ->addGroup($group1)
-            ->addGroup($group2);
+        $user->setId(123);
+
         $organization = new Organization();
-        $organization->setId(1);
+        $organization->setId(456);
+
         $userOrganization = new UserOrganization($user, $organization);
-        $class = new \ReflectionClass($userOrganization);
-        $prop = $class->getProperty('id');
+        $class            = new \ReflectionClass($userOrganization);
+        $prop             = $class->getProperty('id');
         $prop->setAccessible(true);
-        $prop->setValue($userOrganization, 3);
+        $prop->setValue($userOrganization, 789);
 
         $repo = $this->getMockBuilder('OroPro\Bundle\OrganizationBundle\Entity\Repository\UserOrganizationRepository')
             ->disableOriginalConstructor()
             ->getMock();
-        $repo->expects($this->once())
-            ->method('getUserOrganization')
-            ->will($this->returnValue($userOrganization));
-
-
-        $token = $this
-            ->getMockBuilder('Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken')
+        $em   = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->doctrine->expects($this->once())
+            ->method('getManagerForClass')
+            ->with('OroProOrganizationBundle:UserOrganization')
+            ->willReturn($em);
+        $em->expects($this->once())
+            ->method('getRepository')
+            ->with('OroProOrganizationBundle:UserOrganization')
+            ->willReturn($repo);
+        $repo->expects($this->any())
+            ->method('getUserOrganization')
+            ->with($this->identicalTo($user), $this->identicalTo($organization))
+            ->will($this->returnValue($userOrganization));
+
+        $token = $this->getMock('Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface');
+
+        $this->securityContext->expects($this->once())
+            ->method('getToken')
+            ->willReturn($token);
         $token->expects($this->once())
             ->method('getUser')
-            ->will($this->returnValue($user));
+            ->willReturn($user);
         $token->expects($this->once())
             ->method('getOrganizationContext')
-            ->will($this->returnValue($organization));
-        $om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $om->expects($this->any())
-            ->method('getRepository')
-            ->will($this->returnValue($repo));
+            ->willReturn($organization);
 
-        $object = $this->getMock(
-            'OroPro\Bundle\OrganizationConfigBundle\Config\UserOrganizationScopeManager',
-            ['loadStoredSettings'],
-            [$om]
-        );
-        $security = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $security->expects($this->once())
+        $this->assertEquals(789, $this->manager->getScopeId());
+    }
+
+    public function testInitializeScopeIdForNewOrganization()
+    {
+        $user = new User();
+        $user->setId(123);
+
+        $organization = new Organization();
+
+        $token = $this->getMock('Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface');
+
+        $this->securityContext->expects($this->once())
             ->method('getToken')
-            ->will($this->returnValue($token));
+            ->willReturn($token);
+        $token->expects($this->once())
+            ->method('getUser')
+            ->willReturn($user);
+        $token->expects($this->once())
+            ->method('getOrganizationContext')
+            ->willReturn($organization);
 
-        $object->setSecurity($security);
+        $this->assertEquals(0, $this->manager->getScopeId());
+    }
+
+    public function testInitializeScopeIdForNewUser()
+    {
+        $user = new User();
+
+        $token = $this->getMock('Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface');
+
+        $this->securityContext->expects($this->once())
+            ->method('getToken')
+            ->willReturn($token);
+        $token->expects($this->once())
+            ->method('getUser')
+            ->willReturn($user);
+
+        $this->assertEquals(0, $this->manager->getScopeId());
+    }
+
+    public function testInitializeScopeIdForUnsupportedUserObject()
+    {
+        $token = $this->getMock('Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface');
+
+        $this->securityContext->expects($this->once())
+            ->method('getToken')
+            ->willReturn($token);
+        $token->expects($this->once())
+            ->method('getUser')
+            ->willReturn('test user');
+
+        $this->assertEquals(0, $this->manager->getScopeId());
+    }
+
+    public function testInitializeScopeIdNoToken()
+    {
+        $this->securityContext->expects($this->once())
+            ->method('getToken')
+            ->willReturn(null);
+
+        $this->assertEquals(0, $this->manager->getScopeId());
     }
 
     public function testSetScopeId()
     {
-        $repo = $this->getMockBuilder('OroPro\Bundle\OrganizationBundle\Entity\Repository\UserOrganizationRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $group1 = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
-        $group1->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue(2));
-        $group2 = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
-        $group2->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue(3));
+        $this->securityContext->expects($this->never())
+            ->method('getToken');
 
-        $user = new User();
-        $user->setId(1)
-            ->addGroup($group1)
-            ->addGroup($group2);
-        $organization = new Organization();
-        $organization->setId(1);
-        $userOrganization = new UserOrganization($user, $organization);
-        $class = new \ReflectionClass($userOrganization);
-        $prop = $class->getProperty('id');
-        $prop->setAccessible(true);
-        $prop->setValue($userOrganization, 3);
-        $repo->expects($this->any())
-            ->method('getUserOrganization')
-            ->will($this->returnValue($userOrganization));
-
-        $token = $this
-            ->getMockBuilder('Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $token->expects($this->any())
-            ->method('getUser')
-            ->will($this->returnValue($user));
-        $token->expects($this->any())
-            ->method('getOrganizationContext')
-            ->will($this->returnValue($organization));
-        $om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $om->expects($this->any())
-            ->method('getRepository')
-            ->will($this->returnValue($repo));
-
-        $object = new UserOrganizationScopeManager($om);
-        $security = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $security->expects($this->any())
-            ->method('getToken')
-            ->will($this->returnValue($token));
-
-        $object->setSecurity($security);
-        $object->setScopeId();
-        $this->assertEquals($userOrganization->getId(), $object->getScopeId());
+        $this->manager->setScopeId(456);
+        $this->assertEquals(456, $this->manager->getScopeId());
     }
 }
