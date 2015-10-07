@@ -1,11 +1,11 @@
 <?php
 
-namespace OroPro\Bundle\OrganizationBundle\Entity\Manager;
+namespace OroPro\Bundle\OrganizationBundle\Provider\Filter;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager as BaseBusinessUnitManager;
+use Oro\Bundle\OrganizationBundle\Provider\Filter\ChoiceTreeBusinessUnitProvider as BaseChoiceTreeBusinessUnitProvider;
 
-class BusinessUnitManager extends BaseBusinessUnitManager
+class ChoiceTreeBusinessUnitProvider extends BaseChoiceTreeBusinessUnitProvider
 {
     /**
      * @param BusinessUnit $rootBusinessUnit

@@ -21,6 +21,7 @@ parameters:
     oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener
     oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
     oro_organization.form.extension.organization.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationProFormExtension
+    oro_organization.provider.filter.busines_unit_choice_tree.class: OroPro\Bundle\OrganizationBundle\Provider\Filter\ChoiceTreeBusinessUnitProvider
 
     oropro_organization.form.extension.organization_list.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationListExtension
 

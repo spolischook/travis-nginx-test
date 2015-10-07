@@ -137,15 +137,5 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
                 [new Reference('router')]
             );
         }
-
-        /**
-         * Override Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager
-         * Add logic to get business unit name if organization is global
-         */
-        $serviceId = 'oro_organization.business_unit_manager';
-        if ($container->hasDefinition($serviceId)) {
-            $definition = $container->getDefinition($serviceId);
-            $definition->setClass('OroPro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager');
-        }
     }
 }
