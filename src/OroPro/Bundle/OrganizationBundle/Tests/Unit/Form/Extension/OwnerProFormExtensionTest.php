@@ -22,7 +22,7 @@ class OwnerProFormExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $doctrine = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')
+        $doctrineHelper = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
             ->disableOriginalConstructor()
             ->getMock();
         $metadataProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider')
@@ -54,7 +54,7 @@ class OwnerProFormExtensionTest extends \PHPUnit_Framework_TestCase
             );
 
         $this->formExtension = new OwnerProFormExtension(
-            $doctrine,
+            $doctrineHelper,
             $metadataProvider,
             $bUnitManager,
             $this->securityFacade,

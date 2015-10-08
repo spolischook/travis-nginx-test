@@ -1,5 +1,11 @@
 config:
+    map:
+        '*':
+            'orodatagrid/js/datagrid/grid-views/view': 'oropro_organization/js/datagrid/grid-views/view'
+        'oropro_organization/js/datagrid/grid-views/view':
+            'orodatagrid/js/datagrid/grid-views/view': 'orodatagrid/js/datagrid/grid-views/view'
     paths:
         'oropro_organization/js/app/modules/organization-module': 'bundles/oroproorganization/js/app/modules/organization-module.js'
+        'oropro_organization/js/datagrid/grid-views/view': 'bundles/oroproorganization/js/datagrid/grid-views/view.js'
     appmodules:
         - oropro_organization/js/app/modules/organization-module

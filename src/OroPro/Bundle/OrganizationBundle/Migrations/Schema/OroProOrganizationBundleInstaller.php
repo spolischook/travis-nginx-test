@@ -4,7 +4,7 @@ namespace OroPro\Bundle\OrganizationBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 
-use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigModel;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\ExtendOptionsManager;
 use Oro\Bundle\EntityExtendBundle\Migration\OroOptions;
@@ -52,7 +52,7 @@ class OroProOrganizationBundleInstaller implements Installation
                     'extend' => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
                     'form' => ['form_type' => 'oropro_organization_is_global'],
                     'datagrid' => ['is_visible' => true],
-                    ExtendOptionsManager::MODE_OPTION => ConfigModelManager::MODE_READONLY
+                    ExtendOptionsManager::MODE_OPTION => ConfigModel::MODE_READONLY
                 ]
             ]
         );
