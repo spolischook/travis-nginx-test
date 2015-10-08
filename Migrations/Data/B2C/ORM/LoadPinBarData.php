@@ -114,28 +114,27 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
         ];
 
         foreach ([$defaultUser, $this->getUserReference(2001), $this->getUserReference(1001)] as $user) {
-            $pinTab = $this->createPinbar($params, $user);
-            $manager->persist($pinTab);
+            $this->createPinbar($manager, $params, $user);
         }
 
         $manager->flush();
     }
 
     /**
+     * @param ObjectManager $manager
      * @param array $params
      * @param User $user
      * @return null|object
      */
-    protected function createPinbar($params, $user)
+    protected function createPinbar(ObjectManager $manager, $params, $user)
     {
         $pinTab = null;
         foreach ($params as $param) {
             $param['user'] = $user;
             $pinTab        = $this->navigationFactory->createItem($param['type'], $param);
             $pinTab->getItem()->setOrganization($user->getOrganization());
+            $manager->persist($pinTab);
         }
-
-        return $pinTab;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Cases;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 
 use OroCRM\Bundle\CaseBundle\Entity\CaseComment;
 use OroCRM\Bundle\CaseBundle\Entity\CaseEntity;
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadCaseEntityData extends AbstractFixture implements OrderedFixtureInterface
 {
