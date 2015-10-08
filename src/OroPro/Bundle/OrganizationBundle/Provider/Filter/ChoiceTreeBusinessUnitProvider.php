@@ -8,21 +8,21 @@ use Oro\Bundle\OrganizationBundle\Provider\Filter\ChoiceTreeBusinessUnitProvider
 class ChoiceTreeBusinessUnitProvider extends BaseChoiceTreeBusinessUnitProvider
 {
     /**
-     * @param BusinessUnit $rootBusinessUnit
+     * @param BusinessUnit $businessUnit
      *
      * @return string
      */
-    protected function getBusinessUnitName(BusinessUnit $rootBusinessUnit)
+    protected function getBusinessUnitName(BusinessUnit $businessUnit)
     {
         $currentOrganization = $this->securityFacade->getOrganization();
         if ($currentOrganization && $currentOrganization->getIsGlobal()) {
             $name = sprintf(
                 '%s (%s)',
-                $rootBusinessUnit->getName(),
-                $rootBusinessUnit->getOrganization()->getName()
+                $businessUnit->getName(),
+                $businessUnit->getOrganization()->getName()
             );
         } else {
-            $name = $rootBusinessUnit->getName();
+            $name = $businessUnit->getName();
         }
 
         return  $name;
