@@ -45,7 +45,7 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $userStorageManager = $this->userManager->getStorageManager();
-        $users              = $userStorageManager->getRepository('OroUserBundle:User')->findAll();
+        $defaultUser = $userStorageManager->getRepository('OroUserBundle:User')->findOneBy(['username' => 'admin']);
         /** @var Account $account */
         $account = $this->getAccountReference(35);
         $accountName = $account->getName();
@@ -112,17 +112,30 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
                 "remove" => false
             ],
         ];
-        /** @var User $user */
-        foreach ($users as $user) {
-            $this->setSecurityContext($user);
-            foreach ($params as $param) {
-                $param['user'] = $user;
-                $pinTab        = $this->navigationFactory->createItem($param['type'], $param);
-                $pinTab->getItem()->setOrganization($user->getOrganization());
-                $manager->persist($pinTab);
-            }
+
+        foreach ([$defaultUser, $this->getUserReference(2001), $this->getUserReference(1001)] as  $user) {
+            $pinTab = $this->createPinbar($params, $user);
+            $manager->persist($pinTab);
         }
+
         $manager->flush();
+    }
+
+    /**
+     * @param array $params
+     * @param User $user
+     * @return null|object
+     */
+    protected function createPinbar($params, $user)
+    {
+        $pinTab = null;
+        foreach ($params as $param) {
+            $param['user'] = $user;
+            $pinTab        = $this->navigationFactory->createItem($param['type'], $param);
+            $pinTab->getItem()->setOrganization($user->getOrganization());
+        }
+
+        return $pinTab;
     }
 
     /**
