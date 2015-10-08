@@ -97,7 +97,6 @@ class ChoiceTreeBusinessUnitProviderTest extends \PHPUnit_Framework_TestCase
     protected function getTestBusinessUnits()
     {
         $organization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\BusinessUnit')
-//            ->setMethods(['getName'])
             ->disableOriginalConstructor()->getMock();
         $organization->expects($this->any())->method('getName')->willReturn('Organization 1');
 
