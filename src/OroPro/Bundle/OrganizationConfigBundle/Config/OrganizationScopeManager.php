@@ -2,51 +2,28 @@
 
 namespace OroPro\Bundle\OrganizationConfigBundle\Config;
 
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 use Oro\Bundle\ConfigBundle\Config\AbstractScopeManager;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 
 class OrganizationScopeManager extends AbstractScopeManager
 {
-    /** @var SecurityFacade */
-    protected $securityFacade;
+    /** @var TokenStorageInterface */
+    protected $securityContext;
 
     /** @var int */
     protected $scopeId;
 
     /**
-     * {@inheritdoc}
+     * Sets the security context
+     *
+     * @param TokenStorageInterface $securityContext
      */
-    public function getSettingValue($name, $full = false)
+    public function setSecurityContext(TokenStorageInterface $securityContext)
     {
-        if (is_null($this->scopeId) || $this->scopeId == 0) {
-            $this->setScopeId();
-        }
-
-        return parent::getSettingValue($name, $full);
-    }
-
-    /**
-     * @param SecurityFacade $securityFacade
-     */
-    public function setSecurity(SecurityFacade $securityFacade)
-    {
-        $this->securityFacade = $securityFacade;
-    }
-
-    /**
-     * @param null $scopeId
-     * @return $this
-     */
-    public function setScopeId($scopeId = null)
-    {
-        if (is_null($scopeId)) {
-            $scopeId = $this->securityFacade->getOrganizationId() ? : 0;
-        }
-
-        $this->scopeId = $scopeId;
-        $this->loadStoredSettings($this->getScopedEntityName(), $this->scopeId);
-
-        return $this;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -62,6 +39,36 @@ class OrganizationScopeManager extends AbstractScopeManager
      */
     public function getScopeId()
     {
+        $this->ensureScopeIdInitialized();
+
         return $this->scopeId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setScopeId($scopeId)
+    {
+        $this->scopeId = $scopeId;
+    }
+
+    /**
+     * Makes sure that the scope id is set
+     */
+    protected function ensureScopeIdInitialized()
+    {
+        if (null === $this->scopeId) {
+            $scopeId = 0;
+
+            $token = $this->securityContext->getToken();
+            if ($token instanceof OrganizationContextTokenInterface) {
+                $organization = $token->getOrganizationContext();
+                if ($organization instanceof Organization && $organization->getId()) {
+                    $scopeId = $organization->getId();
+                }
+            }
+
+            $this->scopeId = $scopeId;
+        }
     }
 }
