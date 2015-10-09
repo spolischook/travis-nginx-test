@@ -598,7 +598,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         ReflectionUtil::setId($new2EmailEntity, '123');
         
         $emailUser = new EmailUser();
-        $emailUser->setFolder($folder);
+        $emailUser->addFolder($folder);
         $newEmailEntity->addEmailUser($emailUser);
 
         $this->em->expects($this->once())
