@@ -465,15 +465,19 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $this->moveEmailToOtherFolder($existingEwsEmail, $folderInfo->ewsFolder, $email->getId());
             } else {
                 try {
-                    $emailUser = isset($existingEmailUsers[$email->getMessageId()])
-                        ? $existingEmailUsers[$email->getMessageId()]
-                        : $this->addEmailUser(
+                    if (!isset($existingEmailUsers[$email->getMessageId()])) {
+                        $emailUser = $this->addEmailUser(
                             $email,
                             $folder,
                             $email->isSeen(),
                             $this->currentUser,
                             $this->currentOrganization
                         );
+                    } else {
+                        $emailUser = $existingEmailUsers[$email->getMessageId()];
+                        $emailUser->addFolder($folder);
+                    }
+
                     $ewsEmail       = $this->createEwsEmail(
                         $email->getId(),
                         $emailUser,
