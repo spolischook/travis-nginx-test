@@ -130,7 +130,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
         $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector);
 
         $emailUser = $this->getTestEmailUser($this->getTestInternalOrigin());
-        $folder = $emailUser->getFolder();
+        $folder = $emailUser->getFolders()->first();
 
         $this->ewsEmailBodyLoader->loadEmailBody($folder, $emailUser->getEmail(), $this->em);
     }
