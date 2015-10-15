@@ -186,7 +186,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         );
         if ($distinguishedFolder) {
             $folderCount++;
-            $folderInfo             = $this->ensureFolderPersisted(
+            $folderInfo = $this->ensureFolderPersisted(
                 $origin,
                 $folders,
                 $distinguishedFolder->FolderId,
@@ -195,10 +195,10 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $folderType
             );
             $folderInfo->folderType = $folderType;
-            $childFolders           = $this->manager->getFolders($distinguishedFolder->FolderId, true);
+            $childFolders = $this->manager->getFolders($distinguishedFolder->FolderId, true);
             foreach ($childFolders as $childFolder) {
                 $folderCount++;
-                $folderInfo             = $this->ensureFolderPersisted(
+                $folderInfo = $this->ensureFolderPersisted(
                     $origin,
                     $folders,
                     $childFolder->FolderId,
@@ -465,15 +465,19 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $this->moveEmailToOtherFolder($existingEwsEmail, $folderInfo->ewsFolder, $email->getId());
             } else {
                 try {
-                    $emailUser = isset($existingEmailUsers[$email->getMessageId()])
-                        ? $existingEmailUsers[$email->getMessageId()]
-                        : $this->addEmailUser(
+                    if (!isset($existingEmailUsers[$email->getMessageId()])) {
+                        $emailUser = $this->addEmailUser(
                             $email,
                             $folder,
                             $email->isSeen(),
                             $this->currentUser,
                             $this->currentOrganization
                         );
+                    } else {
+                        $emailUser = $existingEmailUsers[$email->getMessageId()];
+                        $emailUser->addFolder($folder);
+                    }
+
                     $ewsEmail       = $this->createEwsEmail(
                         $email->getId(),
                         $emailUser,
@@ -576,7 +580,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
         $emailUser = $ewsEmail->getEmail()->getEmailUserByFolder($ewsEmail->getEwsFolder()->getFolder());
         if ($emailUser != null) {
-            $emailUser->setFolder($newEwsFolder->getFolder());
+            $emailUser->addFolder($newEwsFolder->getFolder());
         }
         $ewsEmail->setEwsFolder($newEwsFolder);
         $ewsEmail->setEwsId($newEwsEmailId->getId());
