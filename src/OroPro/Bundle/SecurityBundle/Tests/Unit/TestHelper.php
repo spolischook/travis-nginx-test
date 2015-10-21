@@ -4,15 +4,14 @@ namespace OroPro\Bundle\SecurityBundle\Tests\Unit;
 
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Owner\EntityOwnerAccessor;
+use Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
-
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Stub\OwnershipMetadataProviderStub;
 
 use OroPro\Bundle\SecurityBundle\Acl\Extension\EntityAclProExtension;
-use OroPro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker;
 
 class TestHelper
 {
