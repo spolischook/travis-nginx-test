@@ -38,7 +38,7 @@ class SetOrganizationShareGridConfig extends AbstractFixture implements Containe
         }
 
         $entityConfig = $configManager->getProvider('entity')->getConfig(self::ENTITY_CLASS);
-        $entityConfig->set('share_with_datagrid', 'share-with-organizations-datagrid');
+        $entityConfig->set('share_grid', 'share-with-organizations-datagrid');
         $configManager->persist($entityConfig);
         $configManager->flush();
     }
