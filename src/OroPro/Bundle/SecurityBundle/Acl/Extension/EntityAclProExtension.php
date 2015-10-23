@@ -3,7 +3,6 @@
 namespace OroPro\Bundle\SecurityBundle\Acl\Extension;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
@@ -61,12 +60,12 @@ class EntityAclProExtension extends EntityAclExtension
     /**
      * {@inheritdoc}
      */
-    protected function checkOrganizationContext($object, OrganizationContextTokenInterface $securityToken)
+    protected function isAccessDeniedByOrganizationContext($object, OrganizationContextTokenInterface $securityToken)
     {
         if ($securityToken->getOrganizationContext()->getIsGlobal()) {
-            return VoterInterface::ACCESS_ABSTAIN;
+            return false;
         }
 
-        return parent::checkOrganizationContext($object, $securityToken);
+        return parent::isAccessDeniedByOrganizationContext($object, $securityToken);
     }
 }

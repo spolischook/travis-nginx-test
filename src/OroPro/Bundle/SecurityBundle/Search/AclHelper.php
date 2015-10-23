@@ -20,21 +20,7 @@ class AclHelper extends BaseAclHelper
         $this->organizationProvider = $organizationProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClassNamesBySharingScopes(array $shareScopes)
-    {
-        $result = parent::getClassNamesBySharingScopes($shareScopes);
 
-        foreach ($shareScopes as $shareScope) {
-            if ($shareScope === Share::SHARE_SCOPE_ORGANIZATION) {
-                array_unshift($result, 'Oro\Bundle\OrganizationBundle\Entity\Organization');
-            }
-        }
-
-        return $result;
-    }
 
     /**
      * {@inheritdoc}

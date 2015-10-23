@@ -22,11 +22,7 @@ class SecurityIdentityRetrievalStrategy extends BaseStrategy
             $user = $token->getUser();
             if ($user instanceof User) {
                 foreach ($user->getOrganizations() as $organization) {
-                    try {
-                        $sids[] = OrganizationSecurityIdentity::fromOrganization($organization);
-                    } catch (\InvalidArgumentException $invalid) {
-                        // ignore, user has no organization security identity
-                    }
+                    $sids[] = OrganizationSecurityIdentity::fromOrganization($organization);
                 }
             }
         }
