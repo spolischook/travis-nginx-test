@@ -6,13 +6,28 @@ parameters:
     # Override Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
     # in enterprise edition user should be able to set Organization as Access level in "Default permission on entities"
     #
-    oro_security.acl.extension.entity.class:    OroPro\Bundle\SecurityBundle\Acl\Extension\EntityAclProExtension
+    oro_security.acl.extension.entity.class:     OroPro\Bundle\SecurityBundle\Acl\Extension\EntityAclProExtension
 
     oro_security.acl.privilege_repository.class: OroPro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeProRepository
-    oro_security.acl.voter.class:                OroPro\Bundle\SecurityBundle\Acl\Voter\AclProVoter
+    oro_security.acl.dbal.provider.class:        OroPro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
+    oro_security.acl.base_manager.class:         OroPro\Bundle\SecurityBundle\Acl\Persistence\BaseAclManager
     oro_security.listener.search_listener.class: OroPro\Bundle\SecurityBundle\EventListener\SearchProListener
+
     oro_security.search.acl_helper.class:        OroPro\Bundle\SecurityBundle\Search\AclHelper
     oro_security.twig.security_organization_extension: OroPro\Bundle\SecurityBundle\Twig\OroProSecurityOrganizationExtension
+
+    oro_security.acl.security_identity_retrieval_strategy.class: OroPro\Bundle\SecurityBundle\Acl\Domain\SecurityIdentityRetrievalStrategy
+
+    oro_security.form.model.factory.class:       OroPro\Bundle\SecurityBundle\Form\Model\Factory
+    oro_security.form.handler.share.class:       OroPro\Bundle\OrganizationBundle\Form\Handler\ShareHandler
+    oro_security.form.type.share_scope.class:    OroPro\Bundle\SecurityBundle\Form\Type\ShareScopeType
+
+    oro_security.ace.query.manager.class:        OroPro\Bundle\SecurityBundle\Model\Action\AceQueryManager
+
+    oro_security.twig.security_extension:        OroPro\Bundle\SecurityBundle\Twig\OroProSecurityExtension
+    oro_security.datasource.share.class:         OroPro\Bundle\SecurityBundle\Extension\ShareDatasource
+
+    oro_security.provider.share_scope_provider.class: Oro\Bundle\SecurityBundle\Provider\ShareScopeProvider
 
 services:
     oropro_security.licence.server_agent:

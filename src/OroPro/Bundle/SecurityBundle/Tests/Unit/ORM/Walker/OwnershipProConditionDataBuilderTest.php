@@ -92,6 +92,27 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
         $this->aclVoter = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter')
             ->disableOriginalConstructor()
             ->getMock();
+        $configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $strategy = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityRetrievalStrategyInterface');
+
+        $registry = $this->getMockBuilder('Symfony\Bridge\Doctrine\RegistryInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $om = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repository = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $om->expects(static::any())
+            ->method('getRepository')
+            ->will(static::returnValue($repository));
+        $registry
+            ->expects(static::any())
+            ->method('getManager')
+            ->will(static::returnValue($om));
 
         $this->builder = new OwnershipProConditionDataBuilder(
             $securityContextLink,
@@ -99,6 +120,9 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
             $entityMetadataProvider,
             $this->metadataProvider,
             $treeProvider,
+            $registry,
+            $configProvider,
+            $strategy,
             $this->aclVoter
         );
 
@@ -116,29 +140,6 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
             ->will(static::returnValue($this->globalOrganization));
 
         $this->builder->setOrganizationProvider($organizationProvider);
-
-        $registry = $this->getMockBuilder('Symfony\Bridge\Doctrine\RegistryInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $om = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $repository = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $om->expects(static::any())
-            ->method('getRepository')
-            ->will(static::returnValue($repository));
-
-        $registry
-            ->expects(static::any())
-            ->method('getManager')
-            ->will(static::returnValue($om));
-
-        $this->builder->setRegistry($registry);
     }
 
     private function buildTestTree()

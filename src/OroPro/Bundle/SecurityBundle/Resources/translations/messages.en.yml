@@ -1,0 +1,6 @@
+oro:
+    security:
+        share_scopes:
+            organization:
+                label: Organization
+                short_label: Org
