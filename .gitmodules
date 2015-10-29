@@ -31,3 +31,6 @@
 [submodule "src/OroCRMProPackages/src/OroCRMPro/Bundle/LDAPBundle"]
 	path = src/OroCRMProPackages/src/OroCRMPro/Bundle/LDAPBundle
 	url = git@github.com:laboro/OroLDAPBundle.git
+[submodule "src/OroCRMPackages/src/OroCRM/Bundle/HangoutsCallBundle"]
+	path = src/OroCRMPackages/src/OroCRM/Bundle/HangoutsCallBundle
+	url = git@github.com:laboro/OroCRMHangoutsCallBundle.git
