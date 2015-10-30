@@ -52,8 +52,8 @@ class EwsEmailRepositoryTest extends OrmTestCase
             . ' FROM OroPro\Bundle\EwsBundle\Entity\EwsEmail ews_email'
             . ' INNER JOIN ews_email.email email'
             . ' INNER JOIN email.emailUsers email_users'
-            . ' INNER JOIN email_users.folder folder'
-            . ' WHERE folder = :folder AND ews_email.ewsId IN (:ewsIds)',
+            . ' INNER JOIN email_users.folders folders'
+            . ' WHERE folders IN(:folder) AND ews_email.ewsId IN (:ewsIds)',
             $query->getDQL()
         );
 
@@ -78,8 +78,7 @@ class EwsEmailRepositoryTest extends OrmTestCase
             . ' INNER JOIN ews_email.ewsFolder ews_folder'
             . ' INNER JOIN ews_email.email email'
             . ' INNER JOIN email.emailUsers email_users'
-            . ' INNER JOIN email_users.folder folder'
-            . ' WHERE folder.origin = :origin AND email.messageId IN (:messageIds)',
+            . ' WHERE email_users.origin = :origin AND email.messageId IN (:messageIds)',
             $query->getDQL()
         );
 
