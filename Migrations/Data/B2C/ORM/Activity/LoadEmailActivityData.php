@@ -107,7 +107,7 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
 
             $emailUser = $this->createEmailUser($entity, $data['subject'], $type);
             $emailUser->getEmail()->setEmailBody($this->createEmailBody($data['body']));
-            $emailUser->setFolder($this->getFolder($origin, $type));
+            $emailUser->addFolder($this->getFolder($origin, $type));
             $emailUser->getEmail()->addActivityTarget($user);
             $emailUser->getEmail()->addActivityTarget($entity);
             $emailUser->getEmail()->setMessageId(sprintf('id.%s@%s', uniqid(), '@orocrm-pro.demo-data.generated'));
