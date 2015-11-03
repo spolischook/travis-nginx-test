@@ -9,10 +9,6 @@
         }
     },
    "repositories": {
-        "composer": {
-            "type": "composer",
-            "url": "http://packagist.orocrm.com"
-        },
         "enterprise": {
             "type": "vcs",
             "url": "https://github.com/orocrm/crm-enterprise.git"
@@ -24,6 +20,10 @@
         "platform": {
             "type": "vcs",
             "url": "https://github.com/orocrm/platform-enterprise-releases.git"
+        },
+        "composer": {
+            "type": "composer",
+            "url": "http://packagist.orocrm.com"
         }
     },
     "require": {
