@@ -77,7 +77,7 @@ class EwsEmailRepository extends EntityRepository
     public function getEmailsByMessageIds(EmailOrigin $origin, array $messageIds)
     {
         $rows = $this->getEmailsByMessageIdsQueryBuilder($origin, $messageIds)
-            ->select('ews_email, email, email_users, ews_folder, folder')
+            ->select('ews_email, email, email_users, ews_folder')
             ->getQuery()
             ->getResult();
 
