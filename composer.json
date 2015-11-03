@@ -15,11 +15,11 @@
         },
         "crm": {
             "type": "vcs",
-            "url": "https://github.com/orocrm/crm-enterprise-releases.git"
+            "url": "https://github.com/orocrm/crm-er.git"
         },
         "platform": {
             "type": "vcs",
-            "url": "https://github.com/orocrm/platform-enterprise-releases.git"
+            "url": "https://github.com/orocrm/platform-er.git"
         },
         "composer": {
             "type": "composer",
