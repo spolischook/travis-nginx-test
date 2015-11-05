@@ -27,7 +27,7 @@ parameters:
     oro_security.twig.security_extension:        OroPro\Bundle\SecurityBundle\Twig\OroProSecurityExtension
     oro_security.datasource.share.class:         OroPro\Bundle\SecurityBundle\Extension\ShareDatasource
 
-    oro_security.provider.share_scope_provider.class: Oro\Bundle\SecurityBundle\Provider\ShareScopeProvider
+    oro_security.provider.share_scope_provider.class: OroPro\Bundle\SecurityBundle\Provider\ShareScopeProvider
 
 services:
     oropro_security.licence.server_agent:
