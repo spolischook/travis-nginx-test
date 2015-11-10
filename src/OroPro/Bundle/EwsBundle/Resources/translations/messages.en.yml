@@ -8,3 +8,5 @@ oro_pro_ews:
         version:        Version
         domains:        Domain List
         is_enabled:     Enabled
+        tooltip:
+            domain_list: Single value or several items separated by comma (,).
