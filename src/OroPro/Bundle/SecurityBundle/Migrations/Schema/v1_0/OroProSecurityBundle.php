@@ -10,29 +10,120 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 class OroProSecurityBundle implements Migration
 {
+    protected static $entitiesShareScopesConfig = [
+        'oro_tracking_website',
+        'orocrm_account',
+        'orocrm_call',
+        'orocrm_campaign',
+        'orocrm_campaign_email',
+        'orocrm_case',
+        'orocrm_contact',
+        'orocrm_contactus_request',
+        'orocrm_marketing_list',
+        'orocrm_sales_lead',
+        'orocrm_sales_opportunity',
+        'orocrm_sales_funnel',
+        'orocrm_task',
+    ];
+
     /**
      * {@inheritdoc}
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $defaultShareScopes = ['user'];
+        self::addShareEntityConfig($schema);
+        self::updateAclTables($schema);
+    }
 
+    /**
+     * Add share_scopes attribute to security entity config
+     *
+     * @param Schema $schema
+     */
+    public static function addShareEntityConfig(Schema $schema)
+    {
+        $defaultShareScopes = ['user'];
         $options = new OroOptions();
         $options->append('security', 'share_scopes', $defaultShareScopes);
 
-        $this->addOptionToTable($schema, 'oro_tracking_website', $options);
-        $this->addOptionToTable($schema, 'orocrm_account', $options);
-        $this->addOptionToTable($schema, 'orocrm_call', $options);
-        $this->addOptionToTable($schema, 'orocrm_campaign', $options);
-        $this->addOptionToTable($schema, 'orocrm_campaign_email', $options);
-        $this->addOptionToTable($schema, 'orocrm_case', $options);
-        $this->addOptionToTable($schema, 'orocrm_contact', $options);
-        $this->addOptionToTable($schema, 'orocrm_contactus_request', $options);
-        $this->addOptionToTable($schema, 'orocrm_marketing_list', $options);
-        $this->addOptionToTable($schema, 'orocrm_sales_lead', $options);
-        $this->addOptionToTable($schema, 'orocrm_sales_opportunity', $options);
-        $this->addOptionToTable($schema, 'orocrm_sales_funnel', $options);
-        $this->addOptionToTable($schema, 'orocrm_task', $options);
+        foreach (self::$entitiesShareScopesConfig as $entityName) {
+            self::addOptionToTable($schema, $entityName, $options);
+        }
+
+        $options = new OroOptions();
+        $options->append('security', 'share_grid', 'share-with-business-units-datagrid');
+        self::addOptionToTable($schema, 'oro_business_unit', $options);
+    }
+
+    /**
+     * Updates acl tables.
+     *
+     * @param Schema $schema
+     *
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     */
+    public static function updateAclTables(Schema $schema)
+    {
+        // remove platform-depended sql parts, for example "ON UPDATE CASCADE" for MySql
+        $aclEntriesTable = $schema->getTable('acl_entries');
+        // additional column, which duplicates acl_object_identities.object_identifier field.
+        $aclEntriesTable->addColumn(
+            'record_id',
+            'bigint',
+            [
+                'unsigned' => true,
+                'notnull' => false,
+            ]
+        );
+        $aclEntriesTable->removeForeignKey('FK_46C8B806DF9183C9');
+        $aclEntriesTable->addForeignKeyConstraint(
+            $schema->getTable('acl_security_identities'),
+            ['security_identity_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE'],
+            'FK_46C8B806DF9183C9'
+        );
+
+
+        $aclEntriesTable->removeForeignKey('FK_46C8B8063D9AB4A6');
+        $aclEntriesTable->addForeignKeyConstraint(
+            $schema->getTable('acl_object_identities'),
+            ['object_identity_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE'],
+            'FK_46C8B8063D9AB4A6'
+        );
+
+        $aclEntriesTable->removeForeignKey('FK_46C8B806EA000B10');
+        $aclEntriesTable->addForeignKeyConstraint(
+            $schema->getTable('acl_classes'),
+            ['class_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE'],
+            'FK_46C8B806EA000B10'
+        );
+
+        $aclObjectIdentityAncestorsTable = $schema->getTable('acl_object_identity_ancestors');
+        $aclObjectIdentityAncestorsTable->removeForeignKey('FK_825DE299C671CEA1');
+        $aclObjectIdentityAncestorsTable->addForeignKeyConstraint(
+            $schema->getTable('acl_object_identities'),
+            ['ancestor_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE'],
+            'FK_825DE299C671CEA1'
+        );
+
+        $aclObjectIdentityAncestorsTable->removeForeignKey('FK_825DE2993D9AB4A6');
+        $aclObjectIdentityAncestorsTable->addForeignKeyConstraint(
+            $schema->getTable('acl_object_identities'),
+            ['object_identity_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE'],
+            'FK_825DE2993D9AB4A6'
+        );
+
+        $aclSecurityIdentityTable = $schema->getTable('acl_security_identities');
+        $aclSecurityIdentityTable->addIndex(['username'], 'acl_sids_username_idx');
     }
 
     /**
@@ -42,7 +133,7 @@ class OroProSecurityBundle implements Migration
      *
      * @throws \Doctrine\DBAL\Schema\SchemaException
      */
-    protected function addOptionToTable(Schema $schema, $name, OroOptions $options)
+    protected static function addOptionToTable(Schema $schema, $name, OroOptions $options)
     {
         $table = $schema->getTable($name);
         $table->addOption(OroOptions::KEY, $options);
