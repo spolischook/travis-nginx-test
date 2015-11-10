@@ -24,10 +24,11 @@ parameters:
 
     oro_security.ace.query.manager.class:        OroPro\Bundle\SecurityBundle\Model\Action\AceQueryManager
 
-    oro_security.twig.security_extension:        OroPro\Bundle\SecurityBundle\Twig\OroProSecurityExtension
     oro_security.datasource.share.class:         OroPro\Bundle\SecurityBundle\Extension\ShareDatasource
 
     oro_security.provider.share_scope_provider.class: OroPro\Bundle\SecurityBundle\Provider\ShareScopeProvider
+
+    oro_security.twig.security_share_extension.class: OroPro\Bundle\SecurityBundle\Twig\OroProSecurityShareExtension
 
 services:
     oropro_security.licence.server_agent:
@@ -39,3 +40,15 @@ services:
 
     oropro_security.licence.sender:
         class: %oropro_security.licence.sender.class%
+
+    oro_security.twig.security_share_extension:
+        class: %oro_security.twig.security_share_extension.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @security.acl.cache.doctrine
+            - @oro_security.security_facade
+            - @oro_locale.formatter.name
+            - @translator
+            - @oro_entity_config.provider.security
+        tags:
+            - { name: twig.extension }

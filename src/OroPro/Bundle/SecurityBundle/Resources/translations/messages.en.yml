@@ -4,3 +4,4 @@ oro:
             organization:
                 label: Organization
                 short_label: Org
+            label: Share Scopes
