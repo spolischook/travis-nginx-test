@@ -16,9 +16,9 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\LocaleBundle\Formatter\NameFormatter;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\SecurityBundle\Acl\Domain\BusinessUnitSecurityIdentity;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
+use OroPro\Bundle\SecurityBundle\Acl\Domain\BusinessUnitSecurityIdentity;
 use OroPro\Bundle\SecurityBundle\Acl\Domain\OrganizationSecurityIdentity;
 
 class OroProSecurityShareExtension extends \Twig_Extension

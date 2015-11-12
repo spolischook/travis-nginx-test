@@ -21,11 +21,11 @@ use Oro\Bundle\EntityBundle\Tools\EntityRoutingHelper;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Repository\BusinessUnitRepository;
 use Oro\Bundle\OrganizationBundle\Entity\Repository\OrganizationRepository;
-use Oro\Bundle\SecurityBundle\Formatter\ShareFormatter;
 use Oro\Bundle\UserBundle\Entity\Repository\UserRepository;
 
 use OroPro\Bundle\SecurityBundle\Acl\Domain\BusinessUnitSecurityIdentity;
 use OroPro\Bundle\SecurityBundle\Acl\Domain\OrganizationSecurityIdentity;
+use OroPro\Bundle\SecurityBundle\Formatter\ShareFormatter;
 
 class ShareDatasource implements DatasourceInterface
 {

@@ -9,10 +9,10 @@ use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 
 use Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider as BaseMutableAclProvider;
-use Oro\Bundle\SecurityBundle\Acl\Domain\BusinessUnitSecurityIdentity;
-use Oro\Bundle\SecurityBundle\Event\UpdateAcl;
 
+use OroPro\Bundle\SecurityBundle\Acl\Domain\BusinessUnitSecurityIdentity;
 use OroPro\Bundle\SecurityBundle\Acl\Domain\OrganizationSecurityIdentity;
+use OroPro\Bundle\SecurityBundle\Event\UpdateAcl;
 
 /**
  * This class extends the standard Oro MutableAclProvider.

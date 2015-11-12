@@ -10,20 +10,24 @@ use Doctrine\ORM\Query\AST\Subselect;
 use Doctrine\ORM\Query\AST\RangeVariableDeclaration;
 
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper as OroAclHelper;
-use Oro\Bundle\SecurityBundle\ORM\Walker\SqlWalker;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclWalker;
 
 /**
- * Class ACLHelper
- * This class analyse input query for acl and mark it with ORO_ACL_WALKER if it need to be ACL protected.
+ * Class build share condition and put it into query
  */
 class AclHelper extends OroAclHelper
 {
-    const ORO_ACL_OUTPUT_SQL_WALKER = 'Oro\Bundle\SecurityBundle\ORM\Walker\SqlWalker';
+    const ORO_ACL_OUTPUT_SQL_WALKER = 'OroPro\Bundle\SecurityBundle\ORM\Walker\SqlWalker';
 
     /** @var array */
     protected $queryComponents = [];
 
+    /** @var ShareConditionDataBuilder */
+    protected $shareDataBuilder;
+
+    public function setShareDataBuilder(ShareConditionDataBuilder $shareDataBuilder)
+    {
+        $this->shareDataBuilder = $shareDataBuilder;
+    }
 
     /**
      * {@inheritdoc}
@@ -56,7 +60,7 @@ class AclHelper extends OroAclHelper
      * @param Subselect|SelectStatement $select
      * @param string                    $permission
      *
-     * @return Node
+     * @return array
      */
     protected function processShareSelect($select, $permission)
     {
@@ -94,7 +98,7 @@ class AclHelper extends OroAclHelper
         $entityName = $rangeVariableDeclaration->abstractSchemaName;
         $entityAlias = $rangeVariableDeclaration->aliasIdentificationVariable;
 
-        $resultData = $this->builder->getAclShareData($entityName, $entityAlias, $permission);
+        $resultData = $this->shareDataBuilder->getAclShareData($entityName, $entityAlias, $permission);
 
         if (!empty($resultData)) {
             list($shareCondition, $queryComponents) = $resultData;
@@ -128,7 +132,7 @@ class AclHelper extends OroAclHelper
      * Add to query share condition
      *
      * @param Query     $query
-     * @param Node|null $shareCondition
+     * @param array $shareCondition
      */
     protected function addShareConditionToQuery(Query $query, $shareCondition)
     {
@@ -142,7 +146,7 @@ class AclHelper extends OroAclHelper
                 $customHints = [self::ORO_ACL_WALKER];
             }
             $query->setHint(Query::HINT_CUSTOM_TREE_WALKERS, $customHints);
-            $query->setHint(AclWalker::ORO_ACL_SHARE_CONDITION, $shareCondition);
+            $query->setHint(AclConditionalFactorBuilder::ORO_ACL_SHARE_CONDITION, $shareCondition);
         }
     }
 }
