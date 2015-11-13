@@ -4,7 +4,9 @@ namespace OroPro\Bundle\SecurityBundle\Tests\Twig;
 
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
+
 use OroPro\Bundle\SecurityBundle\Twig\OroProSecurityShareExtension;
 
 class OroProSecurityShareExtensionTest extends \PHPUnit_Framework_TestCase
@@ -39,6 +41,11 @@ class OroProSecurityShareExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $translator;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $configProvider;
+
     protected function setUp()
     {
         $this->manager = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
@@ -56,13 +63,17 @@ class OroProSecurityShareExtensionTest extends \PHPUnit_Framework_TestCase
         $this->translator = $this->getMockBuilder('Oro\Bundle\TranslationBundle\Translation\Translator')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $this->twigExtension = new OroSecurityExtension(
+        $this->twigExtension = new OroProSecurityShareExtension(
             $this->manager,
             $this->aclCache,
             $this->securityFacade,
             $this->nameFormatter,
-            $this->translator
+            $this->translator,
+            $this->configProvider
         );
     }
 
@@ -74,7 +85,7 @@ class OroProSecurityShareExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oro_security_extension', $this->twigExtension->getName());
+        $this->assertEquals('oro_security_share_extension', $this->twigExtension->getName());
     }
 
     public function testGetFunctions()
@@ -145,6 +156,35 @@ class OroProSecurityShareExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             'business_unit_label_translated, user_label_translated',
             $this->twigExtension->formatShareScopes(['business_unit', 'user'])
+        );
+    }
+
+    public function testFormatShareScopesWithEntityConfigModel()
+    {
+        $config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $config->expects($this->once())
+            ->method('get')
+            ->with('share_scopes')
+            ->willReturn(['business_unit', 'user']);
+        $this->configProvider->expects($this->once())
+            ->method('getConfig')
+            ->willReturn($config);
+
+        $this->translator->expects($this->at(0))
+            ->method('trans')
+            ->with('oro.security.share_scopes.business_unit.label')
+            ->willReturn('business_unit_label_translated');
+
+        $this->translator->expects($this->at(1))
+            ->method('trans')
+            ->with('oro.security.share_scopes.user.label')
+            ->willReturn('user_label_translated');
+
+        $this->assertEquals(
+            'business_unit_label_translated, user_label_translated',
+            $this->twigExtension->formatShareScopes(new EntityConfigModel())
         );
     }
 

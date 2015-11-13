@@ -8,17 +8,17 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
+use Oro\Bundle\SecurityBundle\Acl\Domain\OneShotIsGrantedObserver;
 use Oro\Bundle\SecurityBundle\Acl\Group\AclGroupProviderInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipConditionDataBuilder;
+use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Stub\OwnershipMetadataProviderStub;
-use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
-use Oro\Bundle\SecurityBundle\Acl\Domain\OneShotIsGrantedObserver;
 
 use OroPro\Bundle\SecurityBundle\ORM\Walker\OwnershipProConditionDataBuilder;
-use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProProviderStub;
-use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
 use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipProMetadata;
+use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
+use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProProviderStub;
 
 class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -92,27 +92,6 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
         $this->aclVoter = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter')
             ->disableOriginalConstructor()
             ->getMock();
-        $configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $strategy = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityRetrievalStrategyInterface');
-
-        $registry = $this->getMockBuilder('Symfony\Bridge\Doctrine\RegistryInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $om = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $repository = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $om->expects(static::any())
-            ->method('getRepository')
-            ->will(static::returnValue($repository));
-        $registry
-            ->expects(static::any())
-            ->method('getManager')
-            ->will(static::returnValue($om));
 
         $this->builder = new OwnershipProConditionDataBuilder(
             $securityContextLink,
@@ -120,9 +99,6 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
             $entityMetadataProvider,
             $this->metadataProvider,
             $treeProvider,
-            $registry,
-            $configProvider,
-            $strategy,
             $this->aclVoter
         );
 
@@ -140,6 +116,29 @@ class OwnershipProConditionDataBuilderTest extends \PHPUnit_Framework_TestCase
             ->will(static::returnValue($this->globalOrganization));
 
         $this->builder->setOrganizationProvider($organizationProvider);
+
+        $registry = $this->getMockBuilder('Symfony\Bridge\Doctrine\RegistryInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $om = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $repository = $this->getMockBuilder('Doctrine\Common\Persistence\ObjectRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $om->expects(static::any())
+            ->method('getRepository')
+            ->will(static::returnValue($repository));
+
+        $registry
+            ->expects(static::any())
+            ->method('getManager')
+            ->will(static::returnValue($om));
+
+        $this->builder->setRegistry($registry);
     }
 
     private function buildTestTree()

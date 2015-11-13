@@ -69,6 +69,7 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
         if ($container->hasDefinition(self::SQL_WALKER_BUILDER_SERVICE)) {
             $definition = $container->getDefinition(self::SQL_WALKER_BUILDER_SERVICE);
             $definition->setClass(self::SQL_WALKER_BUILDER_CLASS);
+            $definition->addMethodCall('setRegistry', [new Reference('doctrine')]);
 
             $this->setOrganizationProviderToService($definition);
         }

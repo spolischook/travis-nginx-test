@@ -2,6 +2,10 @@
 
 namespace OroPro\Bundle\SecurityBundle\ORM\Walker;
 
+use Doctrine\Common\Persistence\ObjectManager;
+
+use Symfony\Bridge\Doctrine\RegistryInterface;
+
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 use Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipConditionDataBuilder;
@@ -12,11 +16,30 @@ use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvid
 
 class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
 {
+    /** @var RegistryInterface */
+    protected $registry;
+
     /** @var SystemAccessModeOrganizationProvider */
     protected $organizationProvider;
 
     /** @var int */
     protected $globalOrganizationId;
+
+    /**
+    * @param RegistryInterface $registry
+    */
+    public function setRegistry(RegistryInterface $registry)
+    {
+        $this->registry = $registry;
+    }
+
+    /**
+     * @return ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return $this->registry->getManager();
+    }
 
     /**
      * @param SystemAccessModeOrganizationProvider $organizationProvider
