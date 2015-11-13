@@ -31,8 +31,8 @@ class OroProSecurityBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        self::addShareEntityConfig($schema);
         self::updateAclTables($schema);
+//        self::addShareEntityConfig($schema);
     }
 
     /**

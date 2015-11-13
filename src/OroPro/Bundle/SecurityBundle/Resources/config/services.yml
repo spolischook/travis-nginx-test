@@ -20,12 +20,15 @@ parameters:
     oro_security.provider.share_provider.class:       OroPro\Bundle\SecurityBundle\Provider\ShareProvider
     oro_security.provider.share_scope_provider.class: OroPro\Bundle\SecurityBundle\Provider\ShareScopeProvider
 
-    #forms and handlers
-    oro_security.form.type.share_scope.class:  OroPro\Bundle\SecurityBundle\Form\Type\ShareScopeType
-    oro_security.form.type.share_select.class: OroPro\Bundle\SecurityBundle\Form\Type\ShareSelectType
-    oro_security.form.type.share.class:        OroPro\Bundle\SecurityBundle\Form\Type\ShareType
-    oro_security.form.handler.share.class:     OroPro\Bundle\SecurityBundle\Form\Handler\ShareHandler
-    oro_security.form.model.factory.class:     OroPro\Bundle\SecurityBundle\Form\Model\Factory
+    #forms, handlers, extensions
+    oro_security.form.type.share_scope.class:   OroPro\Bundle\SecurityBundle\Form\Type\ShareScopeType
+    oro_security.form.type.share_select.class:  OroPro\Bundle\SecurityBundle\Form\Type\ShareSelectType
+    oro_security.form.type.share.class:         OroPro\Bundle\SecurityBundle\Form\Type\ShareType
+    oro_security.form.handler.share.class:      OroPro\Bundle\SecurityBundle\Form\Handler\ShareHandler
+    oro_security.form.model.factory.class:      OroPro\Bundle\SecurityBundle\Form\Model\Factory
+    oro_security.form.extension.oro_acl_permission_collection.class: OroPro\Bundle\SecurityBundle\Form\Extension\PermissionCollectionTypeExtension
+    oro_security.form.extension.oro_acl_privilege_collection.class: OroPro\Bundle\SecurityBundle\Form\Extension\PrivilegeCollectionTypeExtension
+    oro_user.handler.delete.class:              OroPro\Bundle\SecurityBundle\Form\Handler\UserDeleteHandler
 
     #placeholders
     oro_security.placeholder.filter.class: OroPro\Bundle\SecurityBundle\Placeholder\PlaceholderFilter
@@ -86,7 +89,7 @@ services:
         arguments:
             - @oro_entity_config.config_manager
 
-    #froms and handlers
+    #forms, handlers, extensions
     oro_security.form.type.share_scope:
         class: %oro_security.form.type.share_scope.class%
         arguments:
@@ -126,6 +129,16 @@ services:
         arguments:
             - 'oro_share_form'
             - 'oro_share'
+
+    oro_security.form.extension.oro_acl_permission_collection:
+        class: %oro_security.form.extension.oro_acl_permission_collection.class%
+        tags:
+            - { name: form.type_extension, alias: oro_acl_permission_collection }
+
+    oro_security.form.extension.oro_acl_privilege_collection:
+        class: %oro_security.form.extension.oro_acl_privilege_collection.class%
+        tags:
+            - { name: form.type_extension, alias: oro_acl_collection }
 
     #placeholders
     oro_security.placeholder.filter:

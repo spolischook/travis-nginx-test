@@ -14,6 +14,11 @@ class OroProAclConfigurationPass implements CompilerPassInterface
     const DEFAULT_ACL_SECURITY_ID_STRATEGY_CLASS = 'security.acl.security_identity_retrieval_strategy.class';
     const EVENT_DISPATCHER_LINK = 'event_dispatcher';
 
+    const BU_GRID_LISTENER_SERVICE = 'oro_organization.event.business_unit_grid_listener';
+    const BU_GRID_LISTENER_TAG_NAME = 'kernel.event_listener';
+    const BU_GRID_LISTENER_TAG_EVENT = 'oro_datagrid.datagrid.build.before.share-with-business-units-datagrid';
+    const BU_GRID_LISTENER_TAG_METHOD = 'onBuildBefore';
+
     /**
      * {@inheritDoc}
      */
@@ -47,6 +52,20 @@ class OroProAclConfigurationPass implements CompilerPassInterface
                     $container->getParameter(self::NEW_ACL_SECURITY_ID_STRATEGY_CLASS)
                 );
             }
+        }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function configureBUGridListener(ContainerBuilder $container)
+    {
+        if ($container->hasDefinition(self::BU_GRID_LISTENER_SERVICE)) {
+            $definition = $container->getDefinition(self::BU_GRID_LISTENER_SERVICE);
+            $definition->addTag(self::BU_GRID_LISTENER_TAG_NAME, [
+                'event' => self::BU_GRID_LISTENER_TAG_EVENT,
+                'method' => self::BU_GRID_LISTENER_TAG_METHOD,
+            ]);
         }
     }
 }

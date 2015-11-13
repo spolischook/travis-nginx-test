@@ -185,7 +185,7 @@ class SecurityIndexer
                 'classLabel' => $details['classLabel'],
                 'entityClass' => ClassUtils::getRealClass($object),
                 'entity' => $this->twig->render(
-                    'OroSecurityBundle:Share:Property/entity.html.twig',
+                    'OroProSecurityBundle:Share:Property/entity.html.twig',
                     [
                         'value' => $details,
                     ]

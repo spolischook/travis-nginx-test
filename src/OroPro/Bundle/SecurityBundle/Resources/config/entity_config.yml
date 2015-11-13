@@ -6,7 +6,9 @@ oro_entity_config:
                 global_view: # boolean
                     options:
                         auditable: false
-
+    security:
+        entity:
+            items:
                 # This attribute determines within which group an object can be shared. For example,
                 # if share_scope=[organization] than user can share the object only to organizations.
                 # Role permission "Share" says who can share, "Share Scope" says how object can be shared.

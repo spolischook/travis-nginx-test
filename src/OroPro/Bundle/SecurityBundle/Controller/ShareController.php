@@ -41,7 +41,7 @@ class ShareController extends Controller
 
     /**
      * @Route("/entities", name="oro_share_with_dialog")
-     * @Template("OroSecurityBundle:Share:share_with.html.twig")
+     * @Template("OroProSecurityBundle:Share:share_with.html.twig")
      */
     public function dialogAction()
     {
