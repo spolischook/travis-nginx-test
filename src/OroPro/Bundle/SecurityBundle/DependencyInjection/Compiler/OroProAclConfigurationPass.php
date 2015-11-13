@@ -19,6 +19,9 @@ class OroProAclConfigurationPass implements CompilerPassInterface
     const BU_GRID_LISTENER_TAG_EVENT = 'oro_datagrid.datagrid.build.before.share-with-business-units-datagrid';
     const BU_GRID_LISTENER_TAG_METHOD = 'onBuildBefore';
 
+    const USER_DELETE_HANDLER_SERVICE = 'oro_user.handler.delete';
+    const SHARE_PROVIDER_SERVICE = 'oro_security.provider.share_provider';
+
     /**
      * {@inheritDoc}
      */
@@ -26,6 +29,8 @@ class OroProAclConfigurationPass implements CompilerPassInterface
     {
         $this->configureDefaultAclProvider($container);
         $this->configureDefaultAclVoter($container);
+        $this->configureBUGridListener($container);
+        $this->configureUserDeleteHandler($container);
     }
 
     /**
@@ -66,6 +71,17 @@ class OroProAclConfigurationPass implements CompilerPassInterface
                 'event' => self::BU_GRID_LISTENER_TAG_EVENT,
                 'method' => self::BU_GRID_LISTENER_TAG_METHOD,
             ]);
+        }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function configureUserDeleteHandler(ContainerBuilder $container)
+    {
+        if ($container->hasDefinition(self::USER_DELETE_HANDLER_SERVICE)) {
+            $definition = $container->getDefinition(self::USER_DELETE_HANDLER_SERVICE);
+            $definition->addMethodCall('setShareProvider', [new Reference(self::SHARE_PROVIDER_SERVICE)]);
         }
     }
 }
