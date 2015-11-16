@@ -98,6 +98,7 @@ class ExchangeWebServices extends AbstractExchangeWebServices
 
         $server = $this->configurator->getServer();
         if ($server) {
+            $server = preg_replace('@https?://@i', '', $server);
             $options['location'] = 'https://' . $server . '/EWS/Exchange.asmx';
         }
         $version = $this->getVersion();
