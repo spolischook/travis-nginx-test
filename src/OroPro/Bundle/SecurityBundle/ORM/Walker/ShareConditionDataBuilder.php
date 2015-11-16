@@ -147,6 +147,10 @@ class ShareConditionDataBuilder
             return count($sidIds) === 1 ? $sidIds[0] : $sidIds;
         }
 
+        if (!$this->getSecurityContext()) {
+            return null;
+        }
+
         $sids = $this->sidStrategy->getSecurityIdentities($this->getSecurityContext()->getToken());
         $sidByDb = [];
 

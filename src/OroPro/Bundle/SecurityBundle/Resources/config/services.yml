@@ -197,7 +197,6 @@ services:
 
     #orm
     oro_security.orm.share_condition_data_builder:
-        public: false
         class: %oro_security.orm.share_condition_data_builder.class%
         arguments:
             - @oro_entity_config.link.security_context

@@ -10,6 +10,7 @@ use Doctrine\ORM\Query\AST\Subselect;
 use Doctrine\ORM\Query\AST\RangeVariableDeclaration;
 
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper as OroAclHelper;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclWalker;
 
 /**
  * Class build share condition and put it into query
@@ -36,6 +37,10 @@ class AclHelper extends OroAclHelper
     {
         /** @var Query $query */
         $query = parent::apply($query, $permission, $checkRelations);
+
+        if (!$query->hasHint(AclWalker::ORO_ACL_CONDITION)) {
+            return $query;
+        }
 
         $this->queryComponents = [];
 
