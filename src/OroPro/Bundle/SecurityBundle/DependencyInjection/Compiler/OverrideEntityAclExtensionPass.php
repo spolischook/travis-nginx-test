@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class OverrideEntityAclExtensionPass implements CompilerPassInterface
 {
-    const ACL_EXTENSION_SERVICE         = 'oro_security.acl.extension.entity';
+    const ACL_EXTENSION_SERVICE = 'oro_security.acl.extension.entity';
 
     const SYSTEM_MODE_ORG_PROVIDER = 'oropro_organization.system_mode_org_provider';
 
