@@ -84,6 +84,8 @@ oro_system_configuration:
                                           - oro_pro_ews.password
                                           - oro_pro_ews.version
                                           - oro_pro_ews.domain_list
+                                          - oro_pro_ews.check_connection
+
                           outlook_settings:
                               priority: -10
                               children:
