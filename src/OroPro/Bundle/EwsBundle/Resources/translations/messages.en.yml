@@ -11,3 +11,8 @@ oro_pro_ews:
         check_connection: Check Connection
         tooltip:
             domain_list: Single value or several items separated by comma (,).
+
+    controller:
+        message:
+            ok: Connection successful!
+            error: Connection failed!
