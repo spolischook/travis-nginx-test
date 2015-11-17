@@ -17,7 +17,7 @@ define(function(require) {
         var mediator = require('oroui/js/mediator');
 
         var onError = function(message) {
-            message = message || __('orocrm.mailchimp.integration_transport.api_key.check.message');
+            message = message || __('oropro.ews.integration_transport.connection.check.error');
             $status.removeClass('alert-info')
                 .addClass('alert-error')
                 .html(message);
