@@ -38,6 +38,8 @@ class EwsController extends Controller
             $response = $ewsConnector->getPasswordExpirationDate($login);
             if (!empty($response) && isset($response->PasswordExpirationDate)) {
                 $result = ['msg' => 'Connection successful!'];
+            } else {
+                $result = ['error' => 'Connection failed!'];
             }
         } catch (\Exception $exception) {
             $result = ['error' => 'Connection failed!'];
