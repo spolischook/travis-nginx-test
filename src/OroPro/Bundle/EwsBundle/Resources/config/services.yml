@@ -10,6 +10,7 @@ parameters:
     oro_pro_ews.email_sync_processor_factory.class:      OroPro\Bundle\EwsBundle\Sync\EwsEmailSynchronizationProcessorFactory
     oro_pro_ews.email_body_loader.class:                 OroPro\Bundle\EwsBundle\Provider\EwsEmailBodyLoader
     oro_pro_ews.email_origin_listener.class:             OroPro\Bundle\EwsBundle\EventListener\EmailOriginListener
+    oro_pro_ews.form.type.ews_transport_check.class:     OroPro\Bundle\EwsBundle\Form\Type\EwsCheckButtonType
 
 services:
     oro_pro_ews.connector:
@@ -88,3 +89,8 @@ services:
         class: %oro_pro_ews.email_origin_listener.class%
         tags:
             - { name: doctrine.event_listener, event: onFlush }
+
+    oro_pro_ews.form.type.ews_transport_check:
+        class: %oro_pro_ews.form.type.ews_transport_check.class%
+        tags:
+            - { name: form.type, alias: oro_pro_ews_check_button }
