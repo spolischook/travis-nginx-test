@@ -37,10 +37,12 @@ class EwsController extends Controller
             //use simple request to check connection
             $response = $ewsConnector->getPasswordExpirationDate($login);
             if (!empty($response) && isset($response->PasswordExpirationDate)) {
-                $result = ['msg' => 'Connection successful!'];
+                $result = ['msg' => $this->get('translator')->trans('oro_pro_ews.controller.message.ok')];
+            } else {
+                $result = ['error' => $this->get('translator')->trans('oro_pro_ews.controller.message.error')];
             }
         } catch (\Exception $exception) {
-            $result = ['error' => 'Connection failed!'];
+            $result = ['error' => $this->get('translator')->trans('oro_pro_ews.controller.message.error')];
         }
 
         return new JsonResponse($result);
