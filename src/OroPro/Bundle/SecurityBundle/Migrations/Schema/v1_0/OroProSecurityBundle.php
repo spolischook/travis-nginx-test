@@ -4,7 +4,6 @@ namespace OroPro\Bundle\SecurityBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Schema\Schema;
 
-use Oro\Bundle\EntityExtendBundle\Migration\OroOptions;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
@@ -32,27 +31,6 @@ class OroProSecurityBundle implements Migration
     public function up(Schema $schema, QueryBag $queries)
     {
         self::updateAclTables($schema);
-//        self::addShareEntityConfig($schema);
-    }
-
-    /**
-     * Add share_scopes attribute to security entity config
-     *
-     * @param Schema $schema
-     */
-    public static function addShareEntityConfig(Schema $schema)
-    {
-        $defaultShareScopes = ['user'];
-        $options = new OroOptions();
-        $options->append('security', 'share_scopes', $defaultShareScopes);
-
-        foreach (self::$entitiesShareScopesConfig as $entityName) {
-            self::addOptionToTable($schema, $entityName, $options);
-        }
-
-        $options = new OroOptions();
-        $options->append('security', 'share_grid', 'share-with-business-units-datagrid');
-        self::addOptionToTable($schema, 'oro_business_unit', $options);
     }
 
     /**
@@ -124,18 +102,5 @@ class OroProSecurityBundle implements Migration
 
         $aclSecurityIdentityTable = $schema->getTable('acl_security_identities');
         $aclSecurityIdentityTable->addIndex(['username'], 'acl_sids_username_idx');
-    }
-
-    /**
-     * @param Schema $schema
-     * @param string $name
-     * @param OroOptions $options
-     *
-     * @throws \Doctrine\DBAL\Schema\SchemaException
-     */
-    protected static function addOptionToTable(Schema $schema, $name, OroOptions $options)
-    {
-        $table = $schema->getTable($name);
-        $table->addOption(OroOptions::KEY, $options);
     }
 }

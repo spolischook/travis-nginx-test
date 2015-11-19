@@ -11,34 +11,34 @@ parameters:
 
     #acl
     oro_security.acl.dbal.provider.class:        OroPro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
-    oro_security.acl.security_identity_retrieval_strategy.class: OroPro\Bundle\SecurityBundle\Acl\Domain\SecurityIdentityRetrievalStrategy
+    oropro_security.acl.security_identity_retrieval_strategy.class: OroPro\Bundle\SecurityBundle\Acl\Domain\SecurityIdentityRetrievalStrategy
     oro_security.acl.privilege_repository.class: OroPro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeProRepository
     oro_security.acl.base_manager.class:         OroPro\Bundle\SecurityBundle\Acl\Persistence\BaseAclManager
 
     #providers
-    oro_security.provider.share_grid_provider.class:  OroPro\Bundle\SecurityBundle\Provider\ShareGridProvider
-    oro_security.provider.share_provider.class:       OroPro\Bundle\SecurityBundle\Provider\ShareProvider
-    oro_security.provider.share_scope_provider.class: OroPro\Bundle\SecurityBundle\Provider\ShareScopeProvider
+    oropro_security.provider.share_grid_provider.class:  OroPro\Bundle\SecurityBundle\Provider\ShareGridProvider
+    oropro_security.provider.share_provider.class:       OroPro\Bundle\SecurityBundle\Provider\ShareProvider
+    oropro_security.provider.share_scope_provider.class: OroPro\Bundle\SecurityBundle\Provider\ShareScopeProvider
 
     #forms, handlers, extensions
-    oro_security.form.type.share_scope.class:   OroPro\Bundle\SecurityBundle\Form\Type\ShareScopeType
-    oro_security.form.type.share_select.class:  OroPro\Bundle\SecurityBundle\Form\Type\ShareSelectType
-    oro_security.form.type.share.class:         OroPro\Bundle\SecurityBundle\Form\Type\ShareType
-    oro_security.form.handler.share.class:      OroPro\Bundle\SecurityBundle\Form\Handler\ShareHandler
-    oro_security.form.model.factory.class:      OroPro\Bundle\SecurityBundle\Form\Model\Factory
-    oro_security.form.extension.oro_acl_permission_collection.class: OroPro\Bundle\SecurityBundle\Form\Extension\PermissionCollectionTypeExtension
-    oro_security.form.extension.oro_acl_privilege_collection.class: OroPro\Bundle\SecurityBundle\Form\Extension\PrivilegeCollectionTypeExtension
-    oro_user.handler.delete.class:              OroPro\Bundle\SecurityBundle\Form\Handler\UserDeleteHandler
+    oropro_security.form.type.share_scope.class:  OroPro\Bundle\SecurityBundle\Form\Type\ShareScopeType
+    oropro_security.form.type.share_select.class: OroPro\Bundle\SecurityBundle\Form\Type\ShareSelectType
+    oropro_security.form.type.share.class:        OroPro\Bundle\SecurityBundle\Form\Type\ShareType
+    oropro_security.form.handler.share.class:     OroPro\Bundle\SecurityBundle\Form\Handler\ShareHandler
+    oropro_security.form.model.factory.class:     OroPro\Bundle\SecurityBundle\Form\Model\Factory
+    oropro_security.form.extension.oro_acl_permission_collection.class: OroPro\Bundle\SecurityBundle\Form\Extension\PermissionCollectionTypeExtension
+    oropro_security.form.extension.oro_acl_privilege_collection.class: OroPro\Bundle\SecurityBundle\Form\Extension\PrivilegeCollectionTypeExtension
+    oro_user.handler.delete.class:                OroPro\Bundle\SecurityBundle\Form\Handler\UserDeleteHandler
 
     #placeholders
-    oro_security.placeholder.filter.class: OroPro\Bundle\SecurityBundle\Placeholder\PlaceholderFilter
+    oropro_security.placeholder.filter.class: OroPro\Bundle\SecurityBundle\Placeholder\PlaceholderFilter
 
     #datagrid
-    oro_security.datasource.share.class:                   OroPro\Bundle\SecurityBundle\Extension\ShareDatasource
-    oro_security.event_listener.share_grid_listener.class: OroPro\Bundle\SecurityBundle\EventListener\Datagrid\ShareGridListener
+    oropro_security.datasource.share.class:                   OroPro\Bundle\SecurityBundle\Extension\ShareDatasource
+    oropro_security.event_listener.share_grid_listener.class: OroPro\Bundle\SecurityBundle\EventListener\Datagrid\ShareGridListener
 
     #twig
-    oro_security.twig.security_share_extension.class:  OroPro\Bundle\SecurityBundle\Twig\OroProSecurityShareExtension
+    oropro_security.twig.security_share_extension.class:  OroPro\Bundle\SecurityBundle\Twig\OroProSecurityShareExtension
     oro_security.twig.security_organization_extension: OroPro\Bundle\SecurityBundle\Twig\OroProSecurityOrganizationExtension
     oro_security.formatter.share_formatter.class:      OroPro\Bundle\SecurityBundle\Formatter\ShareFormatter
 
@@ -68,49 +68,49 @@ services:
         class: %oropro_security.licence.sender.class%
 
     #providers
-    oro_security.provider.share_grid_provider:
-        class: %oro_security.provider.share_grid_provider.class%
+    oropro_security.provider.share_grid_provider:
+        class: %oropro_security.provider.share_grid_provider.class%
         arguments:
             - @oro_security.security_facade
             - @oro_entity.entity_class_name_helper
             - @oro_entity_config.config_manager
-            - @oro_security.provider.share_scope_provider
+            - @oropro_security.provider.share_scope_provider
             - @translator
 
-    oro_security.provider.share_provider:
-        class: %oro_security.provider.share_provider.class%
+    oropro_security.provider.share_provider:
+        class: %oropro_security.provider.share_provider.class%
         arguments:
             - @doctrine
             - @security.acl.provider
             - @security.acl.security_identity_retrieval_strategy
 
-    oro_security.provider.share_scope_provider:
-        class: %oro_security.provider.share_scope_provider.class%
+    oropro_security.provider.share_scope_provider:
+        class: %oropro_security.provider.share_scope_provider.class%
         arguments:
             - @oro_entity_config.config_manager
 
     #forms, handlers, extensions
-    oro_security.form.type.share_scope:
-        class: %oro_security.form.type.share_scope.class%
+    oropro_security.form.type.share_scope:
+        class: %oropro_security.form.type.share_scope.class%
         arguments:
             - @oro_entity_config.config_manager
         tags:
             - { name: form.type, alias: oro_share_scope }
 
-    oro_security.form.type.share_select:
-        class: %oro_security.form.type.share_select.class%
+    oropro_security.form.type.share_select:
+        class: %oropro_security.form.type.share_select.class%
         arguments:
             - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: oro_share_select }
 
-    oro_security.form.type.share:
-        class: %oro_security.form.type.share.class%
+    oropro_security.form.type.share:
+        class: %oropro_security.form.type.share.class%
         tags:
             - { name: form.type, alias: oro_share }
 
-    oro_security.form.handler.share:
-        class: %oro_security.form.handler.share.class%
+    oropro_security.form.handler.share:
+        class: %oropro_security.form.handler.share.class%
         scope: request
         arguments:
             - @oro_security.form.share
@@ -119,8 +119,8 @@ services:
             - @doctrine.orm.entity_manager
             - @oro_entity_config.provider.security
 
-    oro_security.form.model.factory:
-        class: %oro_security.form.model.factory.class%
+    oropro_security.form.model.factory:
+        class: %oropro_security.form.model.factory.class%
 
     oro_security.form.share:
         class: Symfony\Component\Form\Form
@@ -130,26 +130,26 @@ services:
             - 'oro_share_form'
             - 'oro_share'
 
-    oro_security.form.extension.oro_acl_permission_collection:
-        class: %oro_security.form.extension.oro_acl_permission_collection.class%
+    oropro_security.form.extension.oro_acl_permission_collection:
+        class: %oropro_security.form.extension.oro_acl_permission_collection.class%
         tags:
             - { name: form.type_extension, alias: oro_acl_permission_collection }
 
-    oro_security.form.extension.oro_acl_privilege_collection:
-        class: %oro_security.form.extension.oro_acl_privilege_collection.class%
+    oropro_security.form.extension.oro_acl_privilege_collection:
+        class: %oropro_security.form.extension.oro_acl_privilege_collection.class%
         tags:
             - { name: form.type_extension, alias: oro_acl_collection }
 
     #placeholders
-    oro_security.placeholder.filter:
-        class: %oro_security.placeholder.filter.class%
+    oropro_security.placeholder.filter:
+        class: %oropro_security.placeholder.filter.class%
         arguments:
             - @oro_security.security_facade
             - @oro_entity_config.provider.security
 
     #datagrid
-    oro_security.datasource.share:
-        class: %oro_security.datasource.share.class%
+    oropro_security.datasource.share:
+        class: %oropro_security.datasource.share.class%
         arguments:
             - @security.acl.provider
             - @oro_entity.routing_helper
@@ -158,16 +158,16 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: share }
 
-    oro_security.event_listener.share_grid_listener:
-        class: %oro_security.event_listener.share_grid_listener.class%
+    oropro_security.event_listener.share_grid_listener:
+        class: %oropro_security.event_listener.share_grid_listener.class%
         arguments:
             - @request_stack
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.shared-datagrid, method: onBuildBefore }
 
     #twig
-    oro_security.twig.security_share_extension:
-        class: %oro_security.twig.security_share_extension.class%
+    oropro_security.twig.security_share_extension:
+        class: %oropro_security.twig.security_share_extension.class%
         arguments:
             - @doctrine.orm.entity_manager
             - @security.acl.cache.doctrine
@@ -193,7 +193,7 @@ services:
             - @oro_entity_config.config_manager
             - @oro_search.index
             - @oro_security.formatter.share_formatter
-            - @oro_security.provider.share_scope_provider
+            - @oropro_security.provider.share_scope_provider
 
     #orm
     oro_security.orm.share_condition_data_builder:

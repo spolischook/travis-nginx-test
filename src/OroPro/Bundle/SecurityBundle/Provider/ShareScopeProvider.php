@@ -3,6 +3,7 @@
 namespace OroPro\Bundle\SecurityBundle\Provider;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+
 use OroPro\Bundle\SecurityBundle\Form\Model\Share;
 
 class ShareScopeProvider

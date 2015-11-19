@@ -156,7 +156,6 @@ class MutableAclProvider extends BaseMutableAclProvider
         }
     }
 
-
     /**
      * {@inheritdoc}
      *

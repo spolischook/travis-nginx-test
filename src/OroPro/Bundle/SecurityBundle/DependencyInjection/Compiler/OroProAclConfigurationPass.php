@@ -10,7 +10,7 @@ use Oro\Bundle\SecurityBundle\DependencyInjection\Compiler\AclConfigurationPass;
 
 class OroProAclConfigurationPass implements CompilerPassInterface
 {
-    const NEW_ACL_SECURITY_ID_STRATEGY_CLASS = 'oro_security.acl.security_identity_retrieval_strategy.class';
+    const NEW_ACL_SECURITY_ID_STRATEGY_CLASS = 'oropro_security.acl.security_identity_retrieval_strategy.class';
     const DEFAULT_ACL_SECURITY_ID_STRATEGY_CLASS = 'security.acl.security_identity_retrieval_strategy.class';
     const EVENT_DISPATCHER_LINK = 'event_dispatcher';
 
