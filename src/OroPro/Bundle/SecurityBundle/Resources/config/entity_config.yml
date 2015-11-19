@@ -17,7 +17,7 @@ oro_entity_config:
                         priority: 250
                         indexed: true
                     form:
-                        type: oro_share_scope
+                        type: oropro_share_scope
                         options:
                             block: associations
                             required: false

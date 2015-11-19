@@ -23,7 +23,7 @@ class ShareScopeTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oro_share_scope', $this->type->getName());
+        $this->assertEquals('oropro_share_scope', $this->type->getName());
     }
 
     public function testGetParent()

@@ -164,7 +164,7 @@ class SecurityIndexer
     }
 
     /**
-     * Returns rows which are structured for "oro_share_select" form type
+     * Returns rows which are structured for "oropro_share_select" form type
      *
      * @param object[] $objects
      *

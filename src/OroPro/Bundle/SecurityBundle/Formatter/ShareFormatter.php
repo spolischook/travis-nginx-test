@@ -29,7 +29,7 @@ class ShareFormatter
 
     /**
      * Returns array of special entity data which is used, for example, in "Who has access" datagrid,
-     * "oro_share_select" form type search result.
+     * "oropro_share_select" form type search result.
      *
      * @param object $object
      *

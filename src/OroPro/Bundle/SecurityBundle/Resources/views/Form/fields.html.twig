@@ -1,4 +1,4 @@
-{% block oro_share_scope_widget %}
+{% block oropro_share_scope_widget %}
     {{ form_widget(form, {'attr': {'class': 'share-scopes'}}) }}
     <script type="text/javascript">
         require(['jquery', 'underscore', 'orotranslation/js/translator', 'oroui/js/modal'], function ($, _, __, Modal) {
@@ -38,7 +38,7 @@
     </script>
 {% endblock %}
 
-{% block oro_share_select_widget %}
+{% block oropro_share_select_widget %}
     {% import 'OroUIBundle::macros.html.twig' as UI %}
 
     {% set isButtonsEnabled = not disabled and not read_only %}
@@ -49,7 +49,7 @@
 
             {% if isButtonsEnabled %}
                 <button class="add-on btn entity-select-btn"
-                        data-url="{{ path('oro_share_with_dialog', {
+                        data-url="{{ path('oropro_share_with_dialog', {
                             entityClass: form.vars.entityClass
                         }) }}"
                         {{ UI.renderWidgetDataAttributes({

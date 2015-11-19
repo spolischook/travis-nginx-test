@@ -69,7 +69,7 @@ class ShareSelectType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_share_select';
+        return 'oropro_share_select';
     }
 
     /**

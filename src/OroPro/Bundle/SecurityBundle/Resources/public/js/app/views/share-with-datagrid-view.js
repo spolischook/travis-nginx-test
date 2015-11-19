@@ -42,7 +42,7 @@ define(function(require) {
                     return false;
                 }
                 var gridUrl = Routing.generate(
-                    'oro_share_with_datagrid',
+                    'oropro_share_with_datagrid',
                     {
                         entityClass: model.attributes.className
                     }

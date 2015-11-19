@@ -58,7 +58,7 @@ class ShareScopeType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_share_scope';
+        return 'oropro_share_scope';
     }
 
     /**

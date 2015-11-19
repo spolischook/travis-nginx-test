@@ -35,11 +35,11 @@ class ShareController extends FOSRestController
      */
     public function getSharingEntitiesAction()
     {
-        $user = $this->get('security.context')->getToken()->getUser();
-        $results = $this->get('oro_security_search.index')->searchSharingEntities(
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $results = $this->get('oropro_security_search.index')->searchSharingEntities(
             $user,
-            $this->getRequest()->get('entityClass'),
-            $this->getRequest()->get('query')
+            $this->get('request_stack')->getCurrentRequest()->get('entityClass'),
+            $this->get('request_stack')->getCurrentRequest()->get('query')
         );
 
         return new Response(json_encode(['results' => $results]), Codes::HTTP_OK);

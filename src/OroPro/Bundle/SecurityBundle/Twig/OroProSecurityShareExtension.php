@@ -47,6 +47,7 @@ class OroProSecurityShareExtension extends \Twig_Extension
      * @param SecurityFacade $securityFacade
      * @param NameFormatter $nameFormatter
      * @param TranslatorInterface $translator
+     * @param ConfigProvider $securityProvider
      */
     public function __construct(
         ObjectManager $manager,
@@ -73,8 +74,8 @@ class OroProSecurityShareExtension extends \Twig_Extension
     {
         return array(
             'format_share_scopes' => new \Twig_Function_Method($this, 'formatShareScopes'),
-            'oro_share_count' => new \Twig_Function_Method($this, 'getShareCount'),
-            'oro_shared_with_name' => new \Twig_Function_Method($this, 'getSharedWithName'),
+            'oropro_share_count' => new \Twig_Function_Method($this, 'getShareCount'),
+            'oropro_shared_with_name' => new \Twig_Function_Method($this, 'getSharedWithName'),
         );
     }
 
@@ -163,7 +164,7 @@ class OroProSecurityShareExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'oro_security_share_extension';
+        return 'oropro_security_share_extension';
     }
 
     /**

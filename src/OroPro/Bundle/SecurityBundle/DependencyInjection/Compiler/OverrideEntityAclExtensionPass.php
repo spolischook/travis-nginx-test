@@ -36,7 +36,7 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
 
     const ORM_ACL_HELPER_SERVICE = 'oro_security.acl_helper';
     const NEW_ORM_ACL_HELPER_CLASS = 'OroPro\Bundle\SecurityBundle\ORM\Walker\AclHelper';
-    const ORM_SHARE_CONDITION_DATA_BUILDER_SERVICE = 'oro_security.orm.share_condition_data_builder';
+    const ORM_SHARE_CONDITION_DATA_BUILDER_SERVICE = 'oropro_security.orm.share_condition_data_builder';
 
     /**
      * @param ContainerBuilder $container

@@ -1,18 +1,18 @@
 oro:
     security:
         share_scopes:
-            organization:
-                label: Organization
-                short_label: Org
             label: Share Scopes
             not_available: N/A
-            business_unit:
-                label: Business Unit
-                short_label: BU
+            widget.title: Sharing Settings
             user:
                 label: User
                 short_label: User
-            widget.title: Sharing Settings
+            business_unit:
+                label: Business Unit
+                short_label: BU
+            organization:
+                label: Organization
+                short_label: Org
         action:
             share: Share
             shared: Sharing settings were successfully applied

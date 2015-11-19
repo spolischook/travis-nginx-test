@@ -85,15 +85,15 @@ class OroProSecurityShareExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oro_security_share_extension', $this->twigExtension->getName());
+        $this->assertEquals('oropro_security_share_extension', $this->twigExtension->getName());
     }
 
     public function testGetFunctions()
     {
         $expectedFunctions = array(
             'format_share_scopes' => 'formatShareScopes',
-            'oro_share_count' => 'getShareCount',
-            'oro_shared_with_name' => 'getSharedWithName',
+            'oropro_share_count' => 'getShareCount',
+            'oropro_shared_with_name' => 'getSharedWithName',
         );
 
         $actualFunctions = $this->twigExtension->getFunctions();

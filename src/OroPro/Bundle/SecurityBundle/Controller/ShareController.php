@@ -17,7 +17,7 @@ use OroPro\Bundle\SecurityBundle\Form\Model\Share;
 class ShareController extends Controller
 {
     /**
-     * @Route("/update", name="oro_share_update")
+     * @Route("/update", name="oropro_share_update")
      * @Template("OroProSecurityBundle:Share:update.html.twig")
      */
     public function updateAction()
@@ -31,22 +31,22 @@ class ShareController extends Controller
         }
 
         $formAction = $entityRoutingHelper->generateUrlByRequest(
-            'oro_share_update',
+            'oropro_share_update',
             $this->getRequest(),
             $entityRoutingHelper->getRouteParameters($entityClass, $entityId)
         );
 
-        return $this->update($this->get('oro_security.form.model.factory')->getShare(), $entity, $formAction);
+        return $this->update($this->get('oropro_security.form.model.factory')->getShare(), $entity, $formAction);
     }
 
     /**
-     * @Route("/entities", name="oro_share_with_dialog")
+     * @Route("/entities", name="oropro_share_with_dialog")
      * @Template("OroProSecurityBundle:Share:share_with.html.twig")
      */
     public function dialogAction()
     {
         $entityClass = $this->get('request_stack')->getCurrentRequest()->get('entityClass');
-        $supportedGridsInfo = $this->get('oro_security.provider.share_grid_provider')
+        $supportedGridsInfo = $this->get('oropro_security.provider.share_grid_provider')
             ->getSupportedGridsInfo($entityClass);
         $gridEntityClass = '';
         if (isset($supportedGridsInfo[0]['className'])) {
@@ -58,7 +58,7 @@ class ShareController extends Controller
             'supportedGridsInfo' => $supportedGridsInfo,
             'params' => [
                 'grid_path' => $this->generateUrl(
-                    'oro_share_with_datagrid',
+                    'oropro_share_with_datagrid',
                     [],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 )
@@ -67,7 +67,7 @@ class ShareController extends Controller
     }
 
     /**
-     * @Route("/entities/grid", name="oro_share_with_datagrid")
+     * @Route("/entities/grid", name="oropro_share_with_datagrid")
      * @Template("OroDataGridBundle:Grid:dialog/widget.html.twig")
      */
     public function datagridAction()
@@ -77,7 +77,7 @@ class ShareController extends Controller
             'params' => [],
             'renderParams' => [],
             'multiselect' => true,
-            'gridName' => $this->get('oro_security.provider.share_grid_provider')->getGridName($entityClass),
+            'gridName' => $this->get('oropro_security.provider.share_grid_provider')->getGridName($entityClass),
         ];
     }
 
@@ -96,10 +96,10 @@ class ShareController extends Controller
             'saved' => false
         ];
 
-        if ($this->get('oro_security.form.handler.share')->process($model, $entity)) {
+        if ($this->get('oropro_security.form.handler.share')->process($model, $entity)) {
             $responseData['saved'] = true;
         }
-        $responseData['form'] = $this->get('oro_security.form.share')->createView();
+        $responseData['form'] = $this->get('oropro_security.form.share')->createView();
         $responseData['formAction'] = $formAction;
 
         return $responseData;

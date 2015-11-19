@@ -20,7 +20,7 @@ class OroProAclConfigurationPass implements CompilerPassInterface
     const BU_GRID_LISTENER_TAG_METHOD = 'onBuildBefore';
 
     const USER_DELETE_HANDLER_SERVICE = 'oro_user.handler.delete';
-    const SHARE_PROVIDER_SERVICE = 'oro_security.provider.share_provider';
+    const SHARE_PROVIDER_SERVICE = 'oropro_security.provider.share_provider';
 
     /**
      * {@inheritDoc}

@@ -132,16 +132,16 @@ define(function(require) {
                 grid.collection.sync('POST', grid.collection, {
                     method: 'POST',
                     url: routing.generate(
-                        'oro_share_update',
+                        'oropro_share_update',
                         {
                             'entityId': self.options.entityId,
                             '_widgetContainer': 'dialog'
                         }
                     ) + '&entityClass=' + self.options.entityClass,
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                    data: 'oro_share_form%5BentityClass%5D=' + self.options.entityClass +
-                        '&oro_share_form%5BentityId%5D=' + self.options.entityId +
-                        '&oro_share_form%5Bentities%5D=' + encodeURIComponent(entitiesParam.join(';')),
+                    data: 'oropro_share_form%5BentityClass%5D=' + self.options.entityClass +
+                        '&oropro_share_form%5BentityId%5D=' + self.options.entityId +
+                        '&oropro_share_form%5Bentities%5D=' + encodeURIComponent(entitiesParam.join(';')),
                     wait: true,
                     error: finallyFunc,
                     success: finallyFunc

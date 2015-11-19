@@ -1,9 +1,9 @@
 placeholders:
     view_navButtons_before:
         items:
-            oro_share: ~
+            oropro_share: ~
 
 items:
-    oro_share:
+    oropro_share:
         template: OroProSecurityBundle:Share:shareButton.html.twig
-        applicable: @oro_security.placeholder.filter->isShareEnabled($entity$)
+        applicable: @oropro_security.placeholder.filter->isShareEnabled($entity$)

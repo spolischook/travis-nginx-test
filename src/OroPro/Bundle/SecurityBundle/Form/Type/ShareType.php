@@ -20,7 +20,7 @@ class ShareType extends AbstractType
             ->add('entityId', 'hidden', ['required' => false])
             ->add(
                 'entities',
-                'oro_share_select',
+                'oropro_share_select',
                 [
                     'label' => 'oro.security.action.share_with',
                 ]
@@ -47,7 +47,7 @@ class ShareType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_share';
+        return 'oropro_share';
     }
 
     /**

@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Query\AST\PathExpression;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\BasicPermissionMap;
@@ -14,7 +14,6 @@ use Symfony\Component\Security\Acl\Model\SecurityIdentityRetrievalStrategyInterf
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 use OroPro\Bundle\SecurityBundle\Acl\Domain\BusinessUnitSecurityIdentity;
 use OroPro\Bundle\SecurityBundle\Acl\Domain\OrganizationSecurityIdentity;
@@ -29,8 +28,8 @@ class ShareConditionDataBuilder
     const ACL_ENTRIES_CLASS_ID = 'class';
     const ACL_ENTRIES_SECURITY_ID = 'securityIdentity';
 
-    /** @var ServiceLink */
-    protected $securityContextLink;
+    /* @var TokenStorageInterface */
+    protected $securityTokenStorage;
 
     /** @var ConfigProvider */
     protected $configProvider;
@@ -45,29 +44,21 @@ class ShareConditionDataBuilder
     protected $sids = null;
 
     /**
-     * @param ServiceLink                    $securityContextLink
-     * @param ManagerRegistry                $registry
-     * @param ConfigProvider                 $configProvider
+     * @param TokenStorageInterface $securityTokenStorage
+     * @param ManagerRegistry $registry
+     * @param ConfigProvider $configProvider
      * @param SecurityIdentityRetrievalStrategyInterface $sidStrategy
      */
     public function __construct(
-        ServiceLink $securityContextLink,
+        TokenStorageInterface $securityTokenStorage,
         ManagerRegistry $registry,
         ConfigProvider $configProvider,
         SecurityIdentityRetrievalStrategyInterface $sidStrategy
     ) {
-        $this->securityContextLink = $securityContextLink;
+        $this->securityTokenStorage = $securityTokenStorage;
         $this->registry = $registry;
         $this->configProvider = $configProvider;
         $this->sidStrategy = $sidStrategy;
-    }
-
-    /**
-     * @return SecurityContextInterface
-     */
-    protected function getSecurityContext()
-    {
-        return $this->securityContextLink->getService();
     }
 
     /**
@@ -147,11 +138,11 @@ class ShareConditionDataBuilder
             return count($sidIds) === 1 ? $sidIds[0] : $sidIds;
         }
 
-        if (!$this->getSecurityContext()) {
+        if (!$this->securityTokenStorage->getToken()) {
             return null;
         }
 
-        $sids = $this->sidStrategy->getSecurityIdentities($this->getSecurityContext()->getToken());
+        $sids = $this->sidStrategy->getSecurityIdentities($this->securityTokenStorage->getToken());
         $sidByDb = [];
 
         foreach ($sids as $sid) {
