@@ -8,10 +8,10 @@
                     $(el).on('change', function (e) {
                         if (!anyElementChanged) {
                             var confirmModal = new Modal({
-                                title: __("oro.security.share_scopes.confirmModal.title"),
-                                okText: __("oro.security.share_scopes.confirmModal.okText"),
-                                cancelText: __("oro.security.share_scopes.confirmModal.cancelText"),
-                                content: __("oro.security.share_scopes.confirmModal.content", {
+                                title: __("oropro.security.share_scopes.confirmModal.title"),
+                                okText: __("oropro.security.share_scopes.confirmModal.okText"),
+                                cancelText: __("oropro.security.share_scopes.confirmModal.cancelText"),
+                                content: __("oropro.security.share_scopes.confirmModal.content", {
                                     scope_name: $(el).parent().find('label').text().trim(),
                                     entity_name_plural: $('input[name="oro_entity_config_type[entity][plural_label]"]').val().trim(),
                                     entity_name: $('input[name="oro_entity_config_type[entity][label]"]').val().trim()

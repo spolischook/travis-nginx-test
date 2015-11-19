@@ -9,22 +9,6 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 class OroProSecurityBundle implements Migration
 {
-    protected static $entitiesShareScopesConfig = [
-        'oro_tracking_website',
-        'orocrm_account',
-        'orocrm_call',
-        'orocrm_campaign',
-        'orocrm_campaign_email',
-        'orocrm_case',
-        'orocrm_contact',
-        'orocrm_contactus_request',
-        'orocrm_marketing_list',
-        'orocrm_sales_lead',
-        'orocrm_sales_opportunity',
-        'orocrm_sales_funnel',
-        'orocrm_task',
-    ];
-
     /**
      * {@inheritdoc}
      */

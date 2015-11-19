@@ -30,9 +30,9 @@ define(function(require) {
             this.options = _.defaults(options || {}, this.options);
 
             _.defaults(this.options.messages, {
-                sharedSuccess: __('oro.security.action.shared_success'),
-                sharedError: __('oro.security.action.shared_error'),
-                forbiddenError: __('oro.security.action.forbidden_error')
+                sharedSuccess: __('oropro.security.action.shared_success'),
+                sharedError: __('oropro.security.action.shared_error'),
+                forbiddenError: __('oropro.security.action.forbidden_error')
             });
         },
 
