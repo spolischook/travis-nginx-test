@@ -261,7 +261,7 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
             ->method('GetAttachment')
             ->with($attMsgRequest)
             ->will($this->returnValue($attMsgResponse));
-        $ewsMock->expects($this->once())
+        $ewsMock->expects($this->any())
             ->method('getVersion')
             ->will($this->returnValue(EwsType\ExchangeVersionType::EXCHANGE2007));
 

@@ -509,4 +509,12 @@ class EwsConnector
 
         return $this->ews->GetPasswordExpirationDate($request);
     }
+
+    /**
+     * @return bool
+     */
+    public function isExchange2007()
+    {
+        return $this->ews->isExchange2007();
+    }
 }
