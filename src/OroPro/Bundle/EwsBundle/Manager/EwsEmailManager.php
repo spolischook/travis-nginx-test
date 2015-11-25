@@ -207,21 +207,24 @@ class EwsEmailManager
                 $ids,
                 function (EwsType\GetItemType $request) {
                     $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
-                    $additionalPropertiesBuilder->addUnindexedFieldUris(
-                        [
-                            EwsType\UnindexedFieldURIType::MESSAGE_FROM,
-                            EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
-                            EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
-                            EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
-                            EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
-                            EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
-                            EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
-                            EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
-                            EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
-                            EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
-                            EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID,
-                        ]
-                    );
+                    $fieldUris = [
+                        EwsType\UnindexedFieldURIType::MESSAGE_FROM,
+                        EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
+                        EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
+                        EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
+                        EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
+                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
+                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
+                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
+                        EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
+                        EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
+                    ];
+
+                    if (!$this->connector->isExchange2007()) {
+                        $fieldUris[] = EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID;
+                    }
+
+                    $additionalPropertiesBuilder->addUnindexedFieldUris($fieldUris);
                     $request->ItemShape->AdditionalProperties = $additionalPropertiesBuilder->get();
                 }
             );
@@ -255,24 +258,29 @@ class EwsEmailManager
             $ewsItemId,
             function (EwsType\GetItemType $request) {
                 $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
-                $additionalPropertiesBuilder->addUnindexedFieldUris(
-                    [
-                        EwsType\UnindexedFieldURIType::MESSAGE_FROM,
-                        EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
-                        EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
-                        EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
-                        EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
-                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
-                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
-                        EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
-                        EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
-                        EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
-                        EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID,
-                        EwsType\UnindexedFieldURIType::ITEM_BODY,
-                        EwsType\UnindexedFieldURIType::ITEM_HAS_ATTACHMENTS,
-                        EwsType\UnindexedFieldURIType::ITEM_ATTACHMENTS,
-                    ]
-                );
+
+                $fieldUris = [
+                    EwsType\UnindexedFieldURIType::MESSAGE_FROM,
+                    EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
+                    EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
+                    EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
+                    EwsType\UnindexedFieldURIType::ITEM_BODY,
+                    EwsType\UnindexedFieldURIType::ITEM_HAS_ATTACHMENTS,
+                    EwsType\UnindexedFieldURIType::ITEM_ATTACHMENTS,
+                ];
+
+                if (!$this->connector->isExchange2007()) {
+                    $fieldUris[] = EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID;
+                }
+
+                $additionalPropertiesBuilder->addUnindexedFieldUris($fieldUris);
+
                 $request->ItemShape->AdditionalProperties = $additionalPropertiesBuilder->get();
             }
         );

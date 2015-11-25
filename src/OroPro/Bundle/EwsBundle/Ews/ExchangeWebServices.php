@@ -249,12 +249,21 @@ class ExchangeWebServices extends AbstractExchangeWebServices
      */
     public function isQueryStringSupported()
     {
-        $version        = $this->getVersion();
+        return !$this->isExchange2007();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExchange2007()
+    {
+        $version = $this->getVersion();
+
         $isExchange2007 = (
             $version === EwsType\ExchangeVersionType::EXCHANGE2007
             || $version === EwsType\ExchangeVersionType::EXCHANGE2007_SP1
         );
 
-        return !$isExchange2007;
+        return $isExchange2007;
     }
 }
