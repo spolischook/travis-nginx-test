@@ -4,6 +4,7 @@ oro_system_configuration:
           platform:
               children:
                   general_setup:
+                      priority: 20
                       children:
                           localization:
                               priority: 255
@@ -73,6 +74,7 @@ oro_system_configuration:
                                           - oro_attachment.upload_file_mime_types
                                           - oro_attachment.upload_image_mime_types
                   integrations:
+                      priority: 10
                       children:
                           integration_email_settings:
                               children:
