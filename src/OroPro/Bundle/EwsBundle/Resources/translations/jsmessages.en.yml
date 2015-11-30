@@ -2,4 +2,4 @@ oropro:
     ews:
         integration_transport:
             connection:
-                check.error: 'Check connection faild'
+                check.error: 'Check connection failed'
