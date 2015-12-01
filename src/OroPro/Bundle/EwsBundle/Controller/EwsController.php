@@ -2,10 +2,12 @@
 
 namespace OroPro\Bundle\EwsBundle\Controller;
 
-use OroPro\Bundle\EwsBundle\Ews\EwsType\DistinguishedFolderIdNameType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
+use OroPro\Bundle\EwsBundle\Ews\EwsType\DistinguishedFolderIdNameType;
 
 /**
  * Class EwsController
