@@ -8,7 +8,7 @@ define(function(require) {
     return function(options) {
         var $source = options._sourceElement;
         var $server = $('input[id*="server_value"]');
-        var $version = $('select[id*="version_value"] option:selected');
+        var $version = $('select[id*="version_value"]');
         var $login = $('input[id*="login_value"]');
         var $password = $('input[id*="password_value"]');
         var $domainList = $('input[id*="domain_list_value"]');

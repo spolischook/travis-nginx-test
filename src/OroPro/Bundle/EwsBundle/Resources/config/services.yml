@@ -12,6 +12,8 @@ parameters:
     oro_pro_ews.email_origin_listener.class:             OroPro\Bundle\EwsBundle\EventListener\EmailOriginListener
     oro_pro_ews.form.type.ews_transport_check.class:     OroPro\Bundle\EwsBundle\Form\Type\EwsCheckButtonType
 
+    oro_pro_ews.transport_check.service_configurator.class: OroPro\Bundle\EwsBundle\Provider\EwsTransportCheckServiceConfigurator
+
 services:
     oro_pro_ews.connector:
         class: %oro_pro_ews.connector.class%
@@ -94,3 +96,22 @@ services:
         class: %oro_pro_ews.form.type.ews_transport_check.class%
         tags:
             - { name: form.type, alias: oro_pro_ews_check_button }
+
+    oro_pro_ews.transport_check.connector:
+        class: %oro_pro_ews.connector.class%
+        arguments:
+            - @oro_pro_ews.transport_check.services
+
+    oro_pro_ews.transport_check.services:
+        public: false
+        class: %oro_pro_ews.services.class%
+        arguments:
+            - @oro_pro_ews.transport_check.service_configurator
+
+    oro_pro_ews.transport_check.service_configurator:
+        class: %oro_pro_ews.transport_check.service_configurator.class%
+        arguments:
+            - @oro_config.user
+            - @oro_security.encoder.mcrypt
+            - %oro_pro_ews.wsdl_endpoint%
+            - false                         # ignoreFailedResponseMessages
