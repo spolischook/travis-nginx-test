@@ -60,7 +60,7 @@ class EntityConfigListener
                 );
                 $removeScopes = [];
 
-                if ($changeSet) {
+                if ($changeSet && !empty($changeSet['share_scopes'])) {
                     $removeScopes = array_diff($changeSet['share_scopes'][0], $changeSet['share_scopes'][1]);
                 }
 

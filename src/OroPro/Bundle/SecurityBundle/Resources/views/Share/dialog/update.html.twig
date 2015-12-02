@@ -52,7 +52,7 @@
                         {% set options = {
                             gridName: gridName,
                             entityId: form.vars.entityId,
-                            entityClass: form.vars.entityClass|url_encode
+                            entityClass: form.vars.entityClass
                         } %}
                         <div data-page-component-module="oroprosecurity/js/app/components/shared-datagrid-component"
                              data-page-component-options="{{ options|json_encode }}"></div>

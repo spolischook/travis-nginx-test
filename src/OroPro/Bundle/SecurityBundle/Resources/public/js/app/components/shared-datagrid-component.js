@@ -135,9 +135,10 @@ define(function(require) {
                         'oropro_share_update',
                         {
                             'entityId': self.options.entityId,
-                            '_widgetContainer': 'dialog'
+                            '_widgetContainer': 'dialog',
+                            'entityClass': self.options.entityClass
                         }
-                    ) + '&entityClass=' + self.options.entityClass,
+                    ),
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     data: 'oropro_share_form%5BentityClass%5D=' + self.options.entityClass +
                         '&oropro_share_form%5BentityId%5D=' + self.options.entityId +
