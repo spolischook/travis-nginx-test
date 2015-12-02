@@ -28,6 +28,8 @@ class EwsController extends Controller
 
         try {
             $ewsConnector = $this->get('oro_pro_ews.transport_check.connector');
+            $defaultConfigurator = $this->get('oro_pro_ews.service_configurator');
+            $password = ($password === '' || is_null($password)) ? $defaultConfigurator->getPassword() : $password;
             //set config values, so these values will be used by EWS service
             $configurator = $this->get('oro_pro_ews.transport_check.service_configurator');
             $configurator->setServer($server);
