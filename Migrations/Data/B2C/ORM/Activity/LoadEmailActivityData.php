@@ -128,8 +128,10 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
      */
     protected function createEmailUser($entity, $subject, $type = FolderType::SENT)
     {
-        $from = $entity->getOwner()->getEmail();
-        $to   = $entity->getEmail();
+        $from = $entity->getOwner()->getFullName() . ' <' . $entity->getOwner()->getEmail() . '>';
+        $to   = $entity->getFirstName() . ' ' . $entity->getLastName()
+            . ' <' . $entity->getEmail() . '>';
+
         if ($type === FolderType::INBOX) {
             $from = $entity->getEmail();
             $to   = $entity->getOwner()->getEmail();
