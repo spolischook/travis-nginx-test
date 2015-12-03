@@ -20,9 +20,9 @@ class LdapIntegrationTest extends Selenium2TestCase
     {
         $ldapIntegration = array(
             'name' => 'testLDAP'.mt_rand(10, 99),
-//            'hostname' => '88.198.43.162',
+            //'hostname' => '88.198.43.162',
             'hostname' => '127.0.0.1',
-//            'port' => '399',
+            //'port' => '399',
             'port' => '389',
             'encryption' => 'none',
             'basedistinguishedname' => 'dc=orocrm,dc=com',
