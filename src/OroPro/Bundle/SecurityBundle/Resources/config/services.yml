@@ -10,7 +10,6 @@ parameters:
     oro_security.acl.extension.entity.class:     OroPro\Bundle\SecurityBundle\Acl\Extension\EntityAclProExtension
 
     #acl
-    oro_security.acl.dbal.provider.class:        OroPro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
     oropro_security.acl.security_identity_retrieval_strategy.class: OroPro\Bundle\SecurityBundle\Acl\Domain\SecurityIdentityRetrievalStrategy
     oro_security.acl.privilege_repository.class: OroPro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeProRepository
     oro_security.acl.base_manager.class:         OroPro\Bundle\SecurityBundle\Acl\Persistence\BaseAclManager
@@ -28,7 +27,6 @@ parameters:
     oropro_security.form.model.factory.class:     OroPro\Bundle\SecurityBundle\Form\Model\Factory
     oropro_security.form.extension.oro_acl_permission_collection.class: OroPro\Bundle\SecurityBundle\Form\Extension\PermissionCollectionTypeExtension
     oropro_security.form.extension.oro_acl_privilege_collection.class: OroPro\Bundle\SecurityBundle\Form\Extension\PrivilegeCollectionTypeExtension
-    oro_user.handler.delete.class:                OroPro\Bundle\SecurityBundle\Form\Handler\UserDeleteHandler
 
     #placeholders
     oropro_security.placeholder.filter.class: OroPro\Bundle\SecurityBundle\Placeholder\PlaceholderFilter

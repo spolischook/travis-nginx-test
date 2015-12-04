@@ -12,6 +12,7 @@ class OroProAclConfigurationPass implements CompilerPassInterface
 {
     const NEW_ACL_SECURITY_ID_STRATEGY_CLASS = 'oropro_security.acl.security_identity_retrieval_strategy.class';
     const DEFAULT_ACL_SECURITY_ID_STRATEGY_CLASS = 'security.acl.security_identity_retrieval_strategy.class';
+    const NEW_ACL_PROVIDER_CLASS = 'OroPro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider';
     const EVENT_DISPATCHER_LINK = 'event_dispatcher';
 
     const BU_GRID_LISTENER_SERVICE = 'oro_organization.event.business_unit_grid_listener';
@@ -20,6 +21,7 @@ class OroProAclConfigurationPass implements CompilerPassInterface
     const BU_GRID_LISTENER_TAG_METHOD = 'onBuildBefore';
 
     const USER_DELETE_HANDLER_SERVICE = 'oro_user.handler.delete';
+    const NEW_USER_DELETE_HANDLER_SERVICE_CLASS = 'OroPro\Bundle\SecurityBundle\Form\Handler\UserDeleteHandler';
     const SHARE_PROVIDER_SERVICE = 'oropro_security.provider.share_provider';
 
     /**
@@ -40,6 +42,7 @@ class OroProAclConfigurationPass implements CompilerPassInterface
     {
         if ($container->hasDefinition(AclConfigurationPass::DEFAULT_ACL_PROVIDER)) {
             $providerDef = $container->getDefinition(AclConfigurationPass::DEFAULT_ACL_PROVIDER);
+            $providerDef->setClass(self::NEW_ACL_PROVIDER_CLASS);
             $providerDef->addMethodCall('setEventDispatcher', [new Reference(self::EVENT_DISPATCHER_LINK)]);
         }
     }
@@ -81,6 +84,7 @@ class OroProAclConfigurationPass implements CompilerPassInterface
     {
         if ($container->hasDefinition(self::USER_DELETE_HANDLER_SERVICE)) {
             $definition = $container->getDefinition(self::USER_DELETE_HANDLER_SERVICE);
+            $definition->setClass(self::NEW_USER_DELETE_HANDLER_SERVICE_CLASS);
             $definition->addMethodCall('setShareProvider', [new Reference(self::SHARE_PROVIDER_SERVICE)]);
         }
     }
