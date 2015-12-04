@@ -2,10 +2,9 @@
 
 namespace OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain;
 
-use Oro\Bundle\SecurityBundle\Acl\Domain\BusinessUnitSecurityIdentity;
-
-use OroPro\Bundle\SecurityBundle\Acl\Domain\SecurityIdentityRetrievalStrategy;
+use OroPro\Bundle\SecurityBundle\Acl\Domain\BusinessUnitSecurityIdentity;
 use OroPro\Bundle\SecurityBundle\Acl\Domain\OrganizationSecurityIdentity;
+use OroPro\Bundle\SecurityBundle\Acl\Domain\SecurityIdentityRetrievalStrategy;
 
 class SecurityIdentityRetrievalStrategyTest extends \PHPUnit_Framework_TestCase
 {
@@ -53,7 +52,7 @@ class SecurityIdentityRetrievalStrategyTest extends \PHPUnit_Framework_TestCase
         $token->expects($this->once())
             ->method('getRoles')
             ->willReturn([]);
-        $token->expects($this->exactly(3))
+        $token->expects($this->exactly(2))
             ->method('getUser')
             ->willReturn($user);
         $organization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface')

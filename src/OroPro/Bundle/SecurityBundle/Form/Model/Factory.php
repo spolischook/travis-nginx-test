@@ -2,9 +2,10 @@
 
 namespace OroPro\Bundle\SecurityBundle\Form\Model;
 
-use Oro\Bundle\SecurityBundle\Form\Model\Factory as BaseFactory;
-
-class Factory extends BaseFactory
+/**
+ * Factory is intended to provide flexible way to extend form models
+ */
+class Factory
 {
     /**
      * @return Share

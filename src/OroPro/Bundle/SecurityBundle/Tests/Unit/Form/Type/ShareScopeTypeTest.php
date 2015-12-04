@@ -21,6 +21,16 @@ class ShareScopeTypeTest extends \PHPUnit_Framework_TestCase
         $this->type = new ShareScopeType($configManager);
     }
 
+    public function testGetName()
+    {
+        $this->assertEquals('oropro_share_scope', $this->type->getName());
+    }
+
+    public function testGetParent()
+    {
+        $this->assertEquals('choice', $this->type->getParent());
+    }
+
     public function testSetDefaultOptions()
     {
         $resolver = $this->getMockBuilder('Symfony\Component\OptionsResolver\OptionsResolverInterface')
