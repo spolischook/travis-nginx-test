@@ -1,0 +1,7 @@
+oro_entity:
+   exclusions:
+       - { entity: OroPro\Bundle\SecurityBundle\Entity\AclClass }
+       - { entity: OroPro\Bundle\SecurityBundle\Entity\AclEntry }
+       - { entity: OroPro\Bundle\SecurityBundle\Entity\AclObjectIdentity }
+       - { entity: OroPro\Bundle\SecurityBundle\Entity\AclObjectIdentityAncestor }
+       - { entity: OroPro\Bundle\SecurityBundle\Entity\AclSecurityIdentity }
