@@ -65,11 +65,38 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'with subject' => [
-                'subject' => 'Subject'
+                'subject' => 'Subject',
+                'exchangeVersion' => EwsType\ExchangeVersionType::EXCHANGE2010_SP2,
+                'fieldUris' => [
+                    EwsType\UnindexedFieldURIType::MESSAGE_FROM,
+                    EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
+                    EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
+                    EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
+                    EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID,
+                ]
             ],
             'without subject' => [
-                'subject' => null
-            ]
+                'subject' => null,
+                'exchangeVersion' => EwsType\ExchangeVersionType::EXCHANGE2007,
+                'fieldUris' => [
+                    EwsType\UnindexedFieldURIType::MESSAGE_FROM,
+                    EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
+                    EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
+                    EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
+                ]
+            ],
         ];
     }
 
@@ -77,10 +104,12 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      *
      * @param string $subject
+     * @param string $exchangeVersion
+     * @param array  $fieldUris
      *
      * @dataProvider getEmailsProvider
      */
-    public function testGetEmails($subject)
+    public function testGetEmails($subject, $exchangeVersion, $fieldUris)
     {
         $ewsMock = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Ews\ExchangeWebServices')
             ->disableOriginalConstructor()
@@ -191,21 +220,7 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $msgRequest->ItemShape->BaseShape = EwsType\DefaultShapeNamesType::ID_ONLY;
         $msgRequest->ItemShape->BodyType = EwsType\BodyTypeResponseType::BEST;
         $additionalPropertiesBuilder = new EwsAdditionalPropertiesBuilder();
-        $additionalPropertiesBuilder->addUnindexedFieldUris(
-            [
-                EwsType\UnindexedFieldURIType::MESSAGE_FROM,
-                EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
-                EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
-                EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
-                EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
-                EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
-                EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
-                EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
-                EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
-                EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
-                EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID,
-            ]
-        );
+        $additionalPropertiesBuilder->addUnindexedFieldUris($fieldUris);
         $msgRequest->ItemShape->AdditionalProperties = $additionalPropertiesBuilder->get();
         $msgRequest->ItemIds = new EwsType\NonEmptyArrayOfBaseItemIdsType();
         $msgRequest->ItemIds->ItemId = [];
@@ -261,9 +276,9 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
             ->method('GetAttachment')
             ->with($attMsgRequest)
             ->will($this->returnValue($attMsgResponse));
-        $ewsMock->expects($this->once())
+        $ewsMock->expects($this->any())
             ->method('getVersion')
-            ->will($this->returnValue(EwsType\ExchangeVersionType::EXCHANGE2007));
+            ->will($this->returnValue($exchangeVersion));
 
         $emails = $manager->getEmails($query);
 

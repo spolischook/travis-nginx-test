@@ -56,4 +56,16 @@ class EntityAclProExtension extends EntityAclExtension
 
         return AccessLevel::getAccessLevelNames($minLevel);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function isAccessDeniedByOrganizationContext($object, OrganizationContextTokenInterface $securityToken)
+    {
+        if ($securityToken->getOrganizationContext()->getIsGlobal()) {
+            return false;
+        }
+
+        return parent::isAccessDeniedByOrganizationContext($object, $securityToken);
+    }
 }

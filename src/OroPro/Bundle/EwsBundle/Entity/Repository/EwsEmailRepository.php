@@ -19,11 +19,13 @@ class EwsEmailRepository extends EntityRepository
      */
     public function getEmailsByEwsIdsQueryBuilder(EmailFolder $folder, array $ewsIds)
     {
-        return $this->createQueryBuilder('ews_email')
+        $qb = $this->createQueryBuilder('ews_email');
+        return $qb
             ->innerJoin('ews_email.email', 'email')
             ->innerJoin('email.emailUsers', 'email_users')
-            ->innerJoin('email_users.folder', 'folder')
-            ->where('folder = :folder AND ews_email.ewsId IN (:ewsIds)')
+            ->innerJoin('email_users.folders', 'folders')
+            ->andWhere($qb->expr()->in('folders', ':folder'))
+            ->andWhere('ews_email.ewsId IN (:ewsIds)')
             ->setParameter('folder', $folder)
             ->setParameter('ewsIds', $ewsIds);
     }
@@ -61,8 +63,7 @@ class EwsEmailRepository extends EntityRepository
             ->innerJoin('ews_email.ewsFolder', 'ews_folder')
             ->innerJoin('ews_email.email', 'email')
             ->innerJoin('email.emailUsers', 'email_users')
-            ->innerJoin('email_users.folder', 'folder')
-            ->where('folder.origin = :origin AND email.messageId IN (:messageIds)')
+            ->where('email_users.origin = :origin AND email.messageId IN (:messageIds)')
             ->setParameter('origin', $origin)
             ->setParameter('messageIds', $messageIds);
     }
@@ -76,7 +77,7 @@ class EwsEmailRepository extends EntityRepository
     public function getEmailsByMessageIds(EmailOrigin $origin, array $messageIds)
     {
         $rows = $this->getEmailsByMessageIdsQueryBuilder($origin, $messageIds)
-            ->select('ews_email, email, email_users, ews_folder, folder')
+            ->select('ews_email, email, email_users, ews_folder')
             ->getQuery()
             ->getResult();
 

@@ -495,7 +495,6 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
                 $item['id'],
                 null,
                 null,
-                $item['text'],
                 $entityConfiguration
             );
         }
@@ -532,8 +531,8 @@ class ElasticSearchTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
                 'items' => [
-                    ['class' => self::TEST_CLASS, 'id' => 1, 'text' => 'first'],
-                    ['class' => self::TEST_CLASS, 'id' => 2, 'text' => null],
+                    ['class' => self::TEST_CLASS, 'id' => 1],
+                    ['class' => self::TEST_CLASS, 'id' => 2],
 
                 ],
                 'count' => 5

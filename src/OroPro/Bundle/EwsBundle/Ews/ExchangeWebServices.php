@@ -98,6 +98,7 @@ class ExchangeWebServices extends AbstractExchangeWebServices
 
         $server = $this->configurator->getServer();
         if ($server) {
+            $server = preg_replace('@https?://@i', '', $server);
             $options['location'] = 'https://' . $server . '/EWS/Exchange.asmx';
         }
         $version = $this->getVersion();
@@ -248,12 +249,21 @@ class ExchangeWebServices extends AbstractExchangeWebServices
      */
     public function isQueryStringSupported()
     {
-        $version        = $this->getVersion();
+        return !$this->isExchange2007();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExchange2007()
+    {
+        $version = $this->getVersion();
+
         $isExchange2007 = (
             $version === EwsType\ExchangeVersionType::EXCHANGE2007
             || $version === EwsType\ExchangeVersionType::EXCHANGE2007_SP1
         );
 
-        return !$isExchange2007;
+        return $isExchange2007;
     }
 }
