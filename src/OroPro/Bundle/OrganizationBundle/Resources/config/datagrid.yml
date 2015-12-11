@@ -79,8 +79,8 @@ datagrid:
                     options:
                         field_options:
                             choices:
-                                false: Inactive
-                                true:  Active
+                                'false': Inactive
+                                'true':  Active
                 createdAt:
                     type: datetime
                     data_name: u.createdAt
@@ -115,10 +115,16 @@ datagrid:
                 label: oro.user.first_name.label
             lastName:
                 label: oro.user.last_name.label
-            username:
-                label: oro.user.username.label
             email:
                 label: oro.user.email.label
+            username:
+                label: oro.user.username.label
+            enabled:
+                label: oro.user.enabled.label
+                frontend_type: select
+                choices:
+                   - Inactive
+                   - Active
         filters:
             columns:
                 has_organization:
@@ -130,12 +136,20 @@ datagrid:
                 lastName:
                     type: string
                     data_name: u.lastName
-                username:
-                    type: string
-                    data_name: u.username
                 email:
                     type: string
                     data_name: u.email
+                username:
+                    type: string
+                    data_name: u.username
+                enabled:
+                    type: choice
+                    data_name: u.enabled
+                    options:
+                        field_options:
+                            choices:
+                                'false': Inactive
+                                'true':  Active
         sorters:
             multiple_sorting: true
             columns:
@@ -168,10 +182,16 @@ datagrid:
                     label: oro.user.first_name.label
                 lastName:
                     label: oro.user.last_name.label
-                username:
-                    label: oro.user.username.label
                 email:
                     label: oro.user.email.label
+                username:
+                    label: oro.user.username.label
+                enabled:
+                    label: oro.user.enabled.label
+                    frontend_type: select
+                    choices:
+                       - Inactive
+                       - Active
             sorters:
                 default:
                     lastName: ASC
@@ -183,9 +203,17 @@ datagrid:
                     lastName:
                         type: string
                         data_name: u.lastName
-                    username:
-                        type: string
-                        data_name: u.username
                     email:
                         type: string
                         data_name: u.email
+                    username:
+                        type: string
+                        data_name: u.username
+                    enabled:
+                        type: choice
+                        data_name: u.enabled
+                        options:
+                            field_options:
+                                choices:
+                                    'false': Inactive
+                                    'true':  Active

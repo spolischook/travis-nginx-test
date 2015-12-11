@@ -2,9 +2,9 @@
 
 namespace OroPro\Bundle\SecurityBundle\ORM\Walker;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-
 use Doctrine\Common\Persistence\ObjectManager;
+
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
@@ -16,14 +16,30 @@ use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvid
 
 class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
 {
+    /** @var RegistryInterface */
+    protected $registry;
+
     /** @var SystemAccessModeOrganizationProvider */
     protected $organizationProvider;
 
     /** @var int */
     protected $globalOrganizationId;
 
-    /** @var RegistryInterface */
-    protected $registry;
+    /**
+    * @param RegistryInterface $registry
+    */
+    public function setRegistry(RegistryInterface $registry)
+    {
+        $this->registry = $registry;
+    }
+
+    /**
+     * @return ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return $this->registry->getManager();
+    }
 
     /**
      * @param SystemAccessModeOrganizationProvider $organizationProvider
@@ -31,14 +47,6 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
     public function setOrganizationProvider(SystemAccessModeOrganizationProvider $organizationProvider)
     {
         $this->organizationProvider = $organizationProvider;
-    }
-
-    /**
-     * @param RegistryInterface $registry
-     */
-    public function setRegistry(RegistryInterface $registry)
-    {
-        $this->registry = $registry;
     }
 
     /**
@@ -119,13 +127,5 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
         }
 
         return $this->globalOrganizationId;
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return $this->registry->getManager();
     }
 }

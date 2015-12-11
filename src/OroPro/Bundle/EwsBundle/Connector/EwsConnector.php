@@ -496,4 +496,25 @@ class EwsConnector
             }
         }
     }
+
+    /**
+     * @param string $login
+     *
+     * @return EwsType\GetPasswordExpirationDateResponseMessageType
+     */
+    public function getPasswordExpirationDate($login)
+    {
+        $request = new EwsType\GetPasswordExpirationDateType();
+        $request->MailboxSmtpAddress = $login;
+
+        return $this->ews->GetPasswordExpirationDate($request);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExchange2007()
+    {
+        return $this->ews->isExchange2007();
+    }
 }

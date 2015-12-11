@@ -209,18 +209,12 @@ class ElasticSearch extends AbstractEngine
             return null;
         }
 
-        $recordText = null;
-        if (!empty($hit['_source'][Indexer::TEXT_ALL_DATA_FIELD])) {
-            $recordText = $hit['_source'][Indexer::TEXT_ALL_DATA_FIELD];
-        }
-
         return new Item(
             $this->registry->getManagerForClass($entityName),
             $entityName,
             $id,
             null,
             null,
-            $recordText,
             $this->mapper->getEntityConfig($entityName)
         );
     }

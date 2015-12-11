@@ -93,10 +93,10 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getDoctrineMocks()));
 
         $emailUser = $this->getTestEmailUser($this->getTestEwsOrigin());
-        $folder = $emailUser->getFolder();
-        $ewsFolder->setFolder($folder);
+        $folders = $emailUser->getFolders();
+        $ewsFolder->setFolder($folders->first());
 
-        $this->ewsEmailBodyLoader->loadEmailBody($folder, $emailUser->getEmail(), $this->em);
+        $this->ewsEmailBodyLoader->loadEmailBody($folders->first(), $emailUser->getEmail(), $this->em);
     }
 
     /**
@@ -130,7 +130,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
         $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector);
 
         $emailUser = $this->getTestEmailUser($this->getTestInternalOrigin());
-        $folder = $emailUser->getFolder();
+        $folder = $emailUser->getFolders()->first();
 
         $this->ewsEmailBodyLoader->loadEmailBody($folder, $emailUser->getEmail(), $this->em);
     }
@@ -250,7 +250,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
         $emailUser
             ->setEmail($email)
             ->setReceivedAt(new \DateTime('now', new \DateTimeZone('UTC')))
-            ->setFolder($origin->getFolder(FolderType::SENT));
+            ->addFolder($origin->getFolder(FolderType::SENT));
 
         return $emailUser;
     }

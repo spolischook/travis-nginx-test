@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class OverrideEntityAclExtensionPass implements CompilerPassInterface
 {
-    const ACL_EXTENSION_SERVICE         = 'oro_security.acl.extension.entity';
+    const ACL_EXTENSION_SERVICE = 'oro_security.acl.extension.entity';
 
     const SYSTEM_MODE_ORG_PROVIDER = 'oropro_organization.system_mode_org_provider';
 
@@ -33,6 +33,10 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
 
     const OWNERSHIP_METADATA_SERVICE = 'oro_security.owner.ownership_metadata_provider';
     const OWNERSHIP_METADATA_CLASS   = 'OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProProvider';
+
+    const ORM_ACL_HELPER_SERVICE = 'oro_security.acl_helper';
+    const NEW_ORM_ACL_HELPER_CLASS = 'OroPro\Bundle\SecurityBundle\ORM\Walker\AclHelper';
+    const ORM_SHARE_CONDITION_DATA_BUILDER_SERVICE = 'oropro_security.orm.share_condition_data_builder';
 
     /**
      * @param ContainerBuilder $container
@@ -96,6 +100,16 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
         if ($container->hasDefinition(self::OWNERSHIP_METADATA_SERVICE)) {
             $definition = $container->getDefinition(self::OWNERSHIP_METADATA_SERVICE);
             $definition->setClass(self::OWNERSHIP_METADATA_CLASS);
+        }
+
+        // rewrite orm_acl_helper
+        if ($container->hasDefinition(self::ORM_ACL_HELPER_SERVICE)) {
+            $definition = $container->getDefinition(self::ORM_ACL_HELPER_SERVICE);
+            $definition->setClass(self::NEW_ORM_ACL_HELPER_CLASS);
+            $definition->addMethodCall(
+                'setShareDataBuilder',
+                [new Reference(self::ORM_SHARE_CONDITION_DATA_BUILDER_SERVICE)]
+            );
         }
     }
 

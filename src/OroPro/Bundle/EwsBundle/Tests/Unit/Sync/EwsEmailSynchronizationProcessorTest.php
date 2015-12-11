@@ -598,7 +598,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         ReflectionUtil::setId($new2EmailEntity, '123');
         
         $emailUser = new EmailUser();
-        $emailUser->setFolder($folder);
+        $emailUser->addFolder($folder);
         $newEmailEntity->addEmailUser($emailUser);
 
         $this->em->expects($this->once())
@@ -619,7 +619,7 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($email2->getXThreadId(), $newEmailEntity->getXThreadId());
         $this->assertEquals($email2->isSeen(), $newEmailUserEntity->isSeen());
         $this->assertEquals($email2->getRefs(), implode('', $newEmailEntity->getRefs()));
-        $this->assertEquals($folder, $newEmailUserEntity->getFolder());
+        $this->assertEquals($folder, $newEmailUserEntity->getFolders()->first());
     }
 
     /**

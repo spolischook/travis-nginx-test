@@ -56,7 +56,7 @@ oro_system_configuration:
                     Exchange2010:     Exchange 2010
                     Exchange2010_SP1: Exchange 2010 SP1
                     Exchange2010_SP2: Exchange 2010 SP2
-                    Exchange2013:     Exchange 2013
+                    Exchange2013:     Exchange 2013 (or Office 365)
                 required: false
                 resettable: false
 
@@ -69,6 +69,14 @@ oro_system_configuration:
                 tooltip: oro_pro_ews.form.tooltip.domain_list
                 resettable: false
                 required: false
+
+        oro_pro_ews.check_connection:
+            type: oro_pro_ews_check_button
+            ui_only: true
+            options:
+                label: false
+                required: false
+                resettable: false
 
     tree:
         system_configuration:
@@ -86,6 +94,7 @@ oro_system_configuration:
                                             - oro_pro_ews.password
                                             - oro_pro_ews.version
                                             - oro_pro_ews.domain_list
+                                            - oro_pro_ews.check_connection
 
     api_tree:
         ews:
