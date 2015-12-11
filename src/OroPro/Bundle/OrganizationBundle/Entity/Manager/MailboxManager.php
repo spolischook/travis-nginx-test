@@ -25,5 +25,4 @@ class MailboxManager extends BaseMailboxManager
 
         return $qb->getQuery()->getResult();
     }
-
 }
