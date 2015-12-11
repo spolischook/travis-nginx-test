@@ -2,24 +2,37 @@
 
 namespace OroPro\Bundle\UserBundle\Form\Extension;
 
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Translation\TranslatorInterface;
 
-use Doctrine\ORM\EntityManager;
-
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
 
 class UserTypeExtension extends AbstractTypeExtension
 {
     /**
-     * @param EntityManager $em
+     * @var ManagerRegistry
      */
-    public function __construct(EntityManager $em)
+    protected $managerRegistry;
+
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * @param ManagerRegistry     $managerRegistry
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(ManagerRegistry $managerRegistry, TranslatorInterface $translator)
     {
-        $this->em = $em;
+        $this->managerRegistry = $managerRegistry;
+        $this->translator = $translator;
     }
 
     /**
@@ -44,23 +57,32 @@ class UserTypeExtension extends AbstractTypeExtension
     protected function getRolesToOrganizationsMap()
     {
         /** @var Role[] $roles */
-        $roles = $this->em->createQueryBuilder()
-            ->select('r')
-            ->from('Oro\Bundle\UserBundle\Entity\Role', 'r')
+        $roles = $this->managerRegistry->getRepository('OroUserBundle:Role')
+            ->createQueryBuilder('r')
+            ->addSelect('organization')
             ->andWhere('r.role <> :anon')
             ->setParameter('anon', User::ROLE_ANONYMOUS)
-            ->getQuery()->getResult();
-
+            ->leftJoin('r.organization', 'organization')
+            ->getQuery()
+            ->getResult();
 
         $permissionsMap = [];
         foreach ($roles as $role) {
             /** @var Organization $organization */
             $organization = $role->getOrganization();
-            $orgId = null;
             if ($organization) {
-                $orgId = $organization->getId();
-            };
-            $permissionsMap[$role->getId()] = $orgId;
+                $organizationId = $organization->getId();
+                $organizationName = $organization->getName();
+            } else {
+                $organizationId = null;
+                $organizationName = $this->translator->trans('oropro.user.role.global_organization.label');
+            }
+
+            $label = $role->getLabel() . ' [' . $organizationName . ']';
+            $permissionsMap[$role->getId()] = [
+                'org_id' => $organizationId,
+                'label' => $label,
+            ];
         }
 
         return $permissionsMap;

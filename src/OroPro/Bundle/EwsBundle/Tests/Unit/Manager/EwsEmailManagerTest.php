@@ -84,7 +84,7 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
     {
         $ewsMock = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Ews\ExchangeWebServices')
             ->disableOriginalConstructor()
-            ->setMethods(array('FindItem', 'GetItem', 'GetAttachment'))
+            ->setMethods(array('FindItem', 'GetItem', 'GetAttachment', 'getVersion'))
             ->getMock();
 
         $connector = new EwsConnector($ewsMock);
@@ -236,25 +236,34 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $attMsgRequest->AttachmentIds->AttachmentId[0] = new EwsType\RequestAttachmentIdType();
         $attMsgRequest->AttachmentIds->AttachmentId[0]->Id = 'attId';
 
-        $ewsMock->expects($this->at(0))
+        $ewsMock->expects($this->once())
             ->method('FindItem')
             ->with($this->equalTo($findItemRequest))
             ->will($this->returnValue($findResponse));
-        $ewsMock->expects($this->at(1))
+        $ewsMock->expects($this->exactly(2))
             ->method('GetItem')
-            ->with($msgRequest)
-            ->will($this->returnValue($msgResponse));
+            ->will(
+                $this->returnCallback(
+                    function ($request) use ($msgRequest, $msgResponse, $bodyMsgRequest, $bodyMsgResponse) {
+                        if ($request == $msgRequest) {
+                            return $msgResponse;
+                        }
+                        if ($request == $bodyMsgRequest) {
+                            return $bodyMsgResponse;
+                        }
+                    }
+                )
+            );
         $emailId = new EwsType\ItemIdType();
         $emailId->Id = 'Id';
         $emailId->ChangeKey = 'ChangeKey';
-        $ewsMock->expects($this->at(2))
-            ->method('GetItem')
-            ->with($bodyMsgRequest)
-            ->will($this->returnValue($bodyMsgResponse));
-        $ewsMock->expects($this->at(3))
+        $ewsMock->expects($this->once())
             ->method('GetAttachment')
             ->with($attMsgRequest)
             ->will($this->returnValue($attMsgResponse));
+        $ewsMock->expects($this->once())
+            ->method('getVersion')
+            ->will($this->returnValue(EwsType\ExchangeVersionType::EXCHANGE2007));
 
         $emails = $manager->getEmails($query);
 

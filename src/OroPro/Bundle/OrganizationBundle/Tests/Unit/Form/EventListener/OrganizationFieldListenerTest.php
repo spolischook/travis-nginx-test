@@ -41,7 +41,7 @@ class OrganizationFieldListenerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $event->expects($this->once())->method('getTwigEnvironment')->will($this->returnValue($env));
         $event->expects($this->once())->method('getFormData')->will($this->returnValue($formData));
-        $event->expects($this->exactly(2))->method('getForm')->will($this->returnValue($formView));
+        $event->expects($this->once())->method('getForm')->will($this->returnValue($formView));
 
         array_unshift($formData['dataBlocks'][0]['subblocks'][0]['data'], $newField);
         $event->expects($this->once())->method('setFormData')->with($formData);
@@ -74,35 +74,18 @@ class OrganizationFieldListenerTest extends \PHPUnit_Framework_TestCase
         $listener->addOrganizationField($event);
     }
 
-    public function testAddOrganizationFieldWhenOrganizationIsNoGlobalAndFormEntityIsNotRole()
+    public function testAddOrganizationFieldWhenOrganizationIsNoGlobal()
     {
-        $formView = $this->getMockBuilder('Symfony\Component\Form\FormView')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $formView->vars = [
-            'value' => 'TEST',
-            'attr' => []
-        ];
-
         $event = $this->getMockBuilder('Oro\Bundle\UIBundle\Event\BeforeFormRenderEvent')
             ->disableOriginalConstructor()
             ->getMock();
 
         $event->expects($this->never())->method('getTwigEnvironment');
 
-        $provider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $provider->expects($this->any())
-            ->method('hasConfig')
-            ->will($this->returnValue(false));
         $configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $configManager->expects($this->any())
-            ->method('getProvider')
-            ->will($this->returnValue($provider));
+        $configManager->expects($this->never())->method($this->anything());
 
         $securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()
@@ -115,7 +98,7 @@ class OrganizationFieldListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getOrganization')
             ->willReturn($organization);
 
-        $event->expects($this->once())->method('getForm')->will($this->returnValue($formView));
+        $event->expects($this->never())->method($this->anything());
 
         $listener = new OrganizationFieldListener($configManager, $securityFacade);
 

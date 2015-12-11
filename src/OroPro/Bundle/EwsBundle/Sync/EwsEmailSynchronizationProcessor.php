@@ -385,7 +385,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             if (!$this->isApplicableEmail(
                 $email,
                 $folderType,
-                $this->currentUser->getId(),
+                $this->currentUser,
                 $this->currentOrganization
             )) {
                 continue;
@@ -429,10 +429,10 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         $folder = $folderInfo->ewsFolder->getFolder();
         $existingEwsIds  = $this->getExistingEwsIds($folder, $emails);
 
-        $existingEwsEmails = $this->getExistingEwsEmails(
-            $folder->getOrigin(),
-            $this->getNewMessageIds($emails, $existingEwsIds)
-        );
+        $messageIds        = $this->getNewMessageIds($emails, $existingEwsIds);
+        $existingEwsEmails = $this->getExistingEwsEmails($folder->getOrigin(), $messageIds);
+
+        $existingEmailUsers = $this->getExistingEmailUsers($folder, $messageIds);
 
         /** @var EwsEmail[] $newEwsEmails */
         $newEwsEmails = [];
@@ -465,15 +465,18 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 $this->moveEmailToOtherFolder($existingEwsEmail, $folderInfo->ewsFolder, $email->getId());
             } else {
                 try {
-                    $ewsEmail       = $this->createEwsEmail(
-                        $email->getId(),
-                        $this->addEmailUser(
+                    $emailUser = isset($existingEmailUsers[$email->getMessageId()])
+                        ? $existingEmailUsers[$email->getMessageId()]
+                        : $this->addEmailUser(
                             $email,
                             $folder,
                             $email->isSeen(),
                             $this->currentUser,
                             $this->currentOrganization
-                        ),
+                        );
+                    $ewsEmail       = $this->createEwsEmail(
+                        $email->getId(),
+                        $emailUser,
                         $folderInfo->ewsFolder
                     );
                     $newEwsEmails[] = $ewsEmail;

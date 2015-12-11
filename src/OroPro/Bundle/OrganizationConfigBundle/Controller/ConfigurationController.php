@@ -35,6 +35,8 @@ class ConfigurationController extends Controller
             $form = $provider->getForm($activeSubGroup);
 
             $manager = $this->get('oro_config.organization');
+
+            $prevScopeId = $manager->getScopeId();
             $manager->setScopeId($entity->getId());
 
             if ($this->get('oro_config.form.handler.config')
@@ -53,7 +55,7 @@ class ConfigurationController extends Controller
                 $sender->send($sender->getGenerator()->generate($taggableData));
             }
 
-            $manager->setScopeId();
+            $manager->setScopeId($prevScopeId);
         }
 
         return array(

@@ -3,10 +3,13 @@
 namespace OroPro\Bundle\UserBundle\Tests\Unit\Acl\Voter;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
+
+use OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
 use OroPro\Bundle\UserBundle\Helper\UserProHelper;
 use OroPro\Bundle\UserBundle\Acl\Voter\RoleVoter;
@@ -24,16 +27,31 @@ class RoleVoterTest extends \PHPUnit_Framework_TestCase
     protected $userHelper;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TokenInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|OrganizationProHelper
+     */
+    protected $organizationHelper;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|OrganizationContextTokenInterface
      */
     protected $token;
 
     protected function setUp()
     {
         $this->userHelper = $this->getMockBuilder('OroPro\Bundle\UserBundle\Helper\UserProHelper')
+            ->disableOriginalConstructor()
             ->getMock();
-        $this->token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
-        $this->roleVoter = new RoleVoter($this->userHelper);
+
+        $this->organizationHelper = $this->getMockBuilder(
+            'OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper'
+        )
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->token = $this->getMock(
+            'Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface'
+        );
+        $this->roleVoter = new RoleVoter($this->userHelper, $this->organizationHelper);
     }
 
     protected function tearDown()
@@ -61,22 +79,177 @@ class RoleVoterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($isSupported, $this->roleVoter->supportsClass($class));
     }
 
-    public function testVoteWhenUserIsAssignedToSystemOrganization()
+    public function testVoteWhenUserIsAssignedAndLoggedInToGlobalOrganization()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|User $user */
-        $user = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
+        /** @var \PHPUnit_Framework_MockObject_MockObject|User $currentUser */
+        $currentUser = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
+            ->getMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Organization $currentOrganization */
+        $currentOrganization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
+            ->setMethods(['getIsGlobal'])
+            ->getMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Organization $roleOrganization */
+        $roleOrganization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
+            ->getMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Role $role */
+        $role = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\Role')
+            ->setMethods(['getOrganization'])
             ->getMock();
 
         $this->token->expects($this->once())
             ->method('getUser')
-            ->will($this->returnValue($user));
+            ->will($this->returnValue($currentUser));
+
+        $this->token->expects($this->once())
+            ->method('getOrganizationContext')
+            ->will($this->returnValue($currentOrganization));
 
         $this->userHelper->expects($this->once())
-            ->method('isUserAssignedToSystemOrganization')
-            ->with($user)
+            ->method('isUserAssignedToGlobalOrganization')
             ->will($this->returnValue(true));
 
-        $role = new Role();
+        $currentOrganization->expects($this->once())
+            ->method('getIsGlobal')
+            ->will($this->returnValue(true));
+
+        $result = $this->roleVoter->vote($this->token, $role, ['EDIT']);
+        $this->assertEquals(RoleVoter::ACCESS_ABSTAIN, $result);
+    }
+
+    public function testVoteGlobalRoleWhenUserIsAssignedButNotLoggedInToGlobalOrganization()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|User $currentUser */
+        $currentUser = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
+            ->getMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Organization $currentOrganization */
+        $currentOrganization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
+            ->setMethods(['getIsGlobal'])
+            ->getMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Organization $roleOrganization */
+        $roleOrganization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
+            ->getMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Role $role */
+        $role = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\Role')
+            ->setMethods(['getOrganization'])
+            ->getMock();
+
+        $this->token->expects($this->once())
+            ->method('getUser')
+            ->will($this->returnValue($currentUser));
+
+        $this->token->expects($this->once())
+            ->method('getOrganizationContext')
+            ->will($this->returnValue($currentOrganization));
+
+        $this->userHelper->expects($this->once())
+            ->method('isUserAssignedToGlobalOrganization')
+            ->will($this->returnValue(true));
+
+        $currentOrganization->expects($this->once())
+            ->method('getIsGlobal')
+            ->will($this->returnValue(false));
+
+        $role->expects($this->once())
+            ->method('getOrganization')
+            ->will($this->returnValue(null));
+
+        $result = $this->roleVoter->vote($this->token, $role, ['EDIT']);
+        $this->assertEquals(RoleVoter::ACCESS_ABSTAIN, $result);
+    }
+
+    public function testVoteGlobalRoleWhenThereAreNoGlobalOrganization()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|User $currentUser */
+        $currentUser = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
+            ->getMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Organization $currentOrganization */
+        $currentOrganization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
+            ->setMethods(['getIsGlobal'])
+            ->getMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Role $role */
+        $role = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\Role')
+            ->setMethods(['getOrganization'])
+            ->getMock();
+
+        $this->token->expects($this->once())
+            ->method('getUser')
+            ->will($this->returnValue($currentUser));
+
+        $this->token->expects($this->once())
+            ->method('getOrganizationContext')
+            ->will($this->returnValue($currentOrganization));
+
+        $this->userHelper->expects($this->once())
+            ->method('isUserAssignedToGlobalOrganization')
+            ->will($this->returnValue(false));
+
+        $role->expects($this->once())
+            ->method('getOrganization')
+            ->will($this->returnValue(null));
+
+        $this->organizationHelper->expects($this->once())
+            ->method('isGlobalOrganizationExists')
+            ->will($this->returnValue(false));
+
+        $result = $this->roleVoter->vote($this->token, $role, ['EDIT']);
+        $this->assertEquals(RoleVoter::ACCESS_ABSTAIN, $result);
+    }
+
+    public function testVoteOrganizationRoleWhenUserAssignedToOrganization()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|User $currentUser */
+        $currentUser = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\User')
+            ->getMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Organization $currentOrganization */
+        $currentOrganization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
+            ->getMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Organization $roleOrganization */
+        $roleOrganization = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Organization')
+            ->getMock();
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Role $role */
+        $role = $this->getMockBuilder('Oro\Bundle\UserBundle\Entity\Role')
+            ->setMethods(['getOrganization'])
+            ->getMock();
+
+        $this->token->expects($this->once())
+            ->method('getUser')
+            ->will($this->returnValue($currentUser));
+
+        $this->token->expects($this->once())
+            ->method('getOrganizationContext')
+            ->will($this->returnValue($currentOrganization));
+
+        $this->userHelper->expects($this->once())
+            ->method('isUserAssignedToGlobalOrganization')
+            ->will($this->returnValue(false));
+
+        $role->expects($this->once())
+            ->method('getOrganization')
+            ->will($this->returnValue($roleOrganization));
+
+        $this->userHelper->expects($this->once())
+            ->method('isUserAssignedToOrganization')
+            ->with($roleOrganization, $currentUser)
+            ->will($this->returnValue(true));
+
+        $currentOrganization->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(1));
+
+        $roleOrganization->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(1));
 
         $result = $this->roleVoter->vote($this->token, $role, ['EDIT']);
         $this->assertEquals(RoleVoter::ACCESS_ABSTAIN, $result);

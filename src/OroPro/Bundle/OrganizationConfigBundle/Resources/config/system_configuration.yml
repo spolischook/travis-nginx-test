@@ -61,6 +61,9 @@ oro_system_configuration:
                                   signature_configuration:
                                       children:
                                           - oro_email.signature
+                                  mailboxes:
+                                      children:
+                                          - oro_email.mailbox_grid
 
                           attachment_settings:
                               priority: -10

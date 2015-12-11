@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Oro\Bundle\EntityBundle\Provider\ExclusionProviderInterface;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
 class OrganizationExclusionProvider implements ExclusionProviderInterface
 {
@@ -48,6 +47,11 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      */
     public function isIgnoredField(ClassMetadata $metadata, $fieldName)
     {
+        if (!$metadata->hasField($fieldName)) {
+            // skip virtual fields
+            return false;
+        }
+
         return $this->isIgnored($metadata->getName(), $fieldName);
     }
 
@@ -56,6 +60,11 @@ class OrganizationExclusionProvider implements ExclusionProviderInterface
      */
     public function isIgnoredRelation(ClassMetadata $metadata, $associationName)
     {
+        if (!$metadata->hasAssociation($associationName)) {
+            // skip virtual relations
+            return false;
+        }
+
         return $this->isIgnored($metadata->getName(), $associationName);
     }
 

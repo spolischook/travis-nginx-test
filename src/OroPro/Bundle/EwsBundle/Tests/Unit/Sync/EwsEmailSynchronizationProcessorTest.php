@@ -410,6 +410,16 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $folders[$ewsFolder1->getEwsId()] = new FolderInfo($ewsFolder1, false);
         $folders[$ewsFolder2->getEwsId()] = new FolderInfo($ewsFolder2, true);
 
+        $this->em->expects($this->any())
+            ->method('getRepository')
+            ->will(
+                $this->returnValue(
+                    $this->getMockBuilder('Oro\Bundle\EmailBundle\Entity\Repository\MailboxRepository')
+                        ->disableOriginalConstructor()
+                        ->getMock()
+                )
+            );
+
         $sqb = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder')
             ->disableOriginalConstructor()
             ->getMock();
@@ -423,6 +433,13 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->will($this->returnValue($sq));
 
+        $mailboxRepository = $this->getMockbuilder('Oro\Bundle\EmailBundle\Entity\Repository\MailboxRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->em->expects($this->once())
+            ->method('getRepository')
+            ->with('OroEmailBundle:Mailbox')
+            ->will($this->returnValue($mailboxRepository));
         $this->manager->expects($this->once())
             ->method('selectUser')
             ->with('test@example.com');
@@ -509,11 +526,17 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
         $repo = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Entity\Repository\EwsEmailRepository')
             ->disableOriginalConstructor()
             ->getMock();
+        $emailUserRepo = $this->getMockBuilder('Oro\Bundle\EmailBundle\Entity\Repository\EmailUserRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->em->expects($this->any())
             ->method('getRepository')
-            ->with('OroProEwsBundle:EwsEmail')
-            ->will($this->returnValue($repo));
-
+            ->willReturnMap(
+                [
+                    ['OroProEwsBundle:EwsEmail', $repo],
+                    ['OroEmailBundle:EmailUser', $emailUserRepo],
+                ]
+            );
         $repo->expects($this->once())
             ->method('getExistingEwsIds')
             ->with($this->identicalTo($folder), [$email1Id->getId(), $email2Id->getId()])
@@ -522,6 +545,9 @@ class EwsEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
             ->method('getEmailsByMessageIds')
             ->with($this->identicalTo($origin))
             ->will($this->returnValue([]));
+        $emailUserRepo->expects($this->once())
+            ->method('getEmailUsersByFolderAndMessageIds')
+            ->willReturn([]);
 
         $newEmailUserEntity = new EmailUser();
         $newEmailEntity = new EmailEntity();

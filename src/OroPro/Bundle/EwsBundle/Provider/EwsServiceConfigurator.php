@@ -19,6 +19,12 @@ class EwsServiceConfigurator
     /** @var boolean */
     protected $ignoreFailedResponseMessages;
 
+    /**
+     * @param ConfigManager $cm
+     * @param Mcrypt        $encryptor
+     * @param string        $wsdlEndpoint
+     * @param bool          $ignoreFailedResponseMessages
+     */
     public function __construct(
         ConfigManager $cm,
         Mcrypt $encryptor,
@@ -32,6 +38,8 @@ class EwsServiceConfigurator
     }
 
     /**
+     * The path to WSDL file describes Exchange Web Services (EWS).
+     *
      * @return string
      */
     public function getEndpoint()
@@ -60,6 +68,8 @@ class EwsServiceConfigurator
     }
 
     /**
+     * Gets the password is used to login to the Exchange Server.
+     *
      * @return string
      */
     public function getPassword()
@@ -71,8 +81,9 @@ class EwsServiceConfigurator
 
     /**
      * Gets the Exchange Server version.
+     * @see EwsType\ExchangeVersionType
      *
-     * @return string
+     * @return string one of the ExchangeVersionType::* constants
      */
     public function getVersion()
     {
@@ -88,6 +99,13 @@ class EwsServiceConfigurator
     }
 
     /**
+     * As an EWS function call may return several response messages, it may be helpful
+     * to filter failed ones.
+     * If this flag is true the failed response messages are ignored and returned in
+     * the EWS function call result together with success response messages.
+     * If this flag is false (default behaviour) an exception is thrown is at least one
+     * failed response message exists in the result.
+     *
      * @return bool
      */
     public function isIgnoreFailedResponseMessages()
