@@ -118,7 +118,7 @@ class RoleListener
             return;
         }
 
-        $config->offsetSetByPath(
+        $config->offsetAddToArrayByPath(
             '[source][query][where][and]',
             [
                 sprintf(
