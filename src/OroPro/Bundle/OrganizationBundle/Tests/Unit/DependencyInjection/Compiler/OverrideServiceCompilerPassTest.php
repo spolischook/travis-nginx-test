@@ -56,7 +56,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnSelf());
         $definition
-            ->expects($this->exactly(6))
+            ->expects($this->exactly(4))
             ->method('addArgument');
 
         $containerMock = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
@@ -79,7 +79,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue(true));
 
-        $containerMock->expects($this->exactly(14))
+        $containerMock->expects($this->exactly(13))
             ->method('getDefinition')
             ->with(
                 $this->logicalOr(
