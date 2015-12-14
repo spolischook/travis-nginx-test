@@ -42,7 +42,7 @@ class MailboxGridListener extends BaseMailboxGridListener
     {
         $config = $event->getDatagrid()->getConfig();
         $directParams = $config->offsetGetByPath(static::PATH_UPDATE_LINK_DIRECT_PARAMS, []);
-        if (!isset($directParams[static::REDIRECT_DATA_KEY], $directParams[static::REDIRECT_DATA_KEY]['route'])) {
+        if (!isset($directParams[static::REDIRECT_DATA_KEY])) {
             return false;
         }
 
