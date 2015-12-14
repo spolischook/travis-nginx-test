@@ -4,13 +4,13 @@ namespace OroPro\Bundle\UserBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigModel;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\EntityExtendBundle\Migration\ExtendOptionsManager;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 
 class OroProUserBundleInstaller implements Installation, ExtendExtensionAwareInterface
 {
@@ -47,7 +47,7 @@ class OroProUserBundleInstaller implements Installation, ExtendExtensionAwareInt
             'oro_organization',
             'id',
             [
-                ExtendOptionsManager::MODE_OPTION => ConfigModelManager::MODE_READONLY,
+                ExtendOptionsManager::MODE_OPTION => ConfigModel::MODE_READONLY,
                 'extend' => [
                     'owner' => ExtendScope::OWNER_CUSTOM,
                     'is_extend' => true,
