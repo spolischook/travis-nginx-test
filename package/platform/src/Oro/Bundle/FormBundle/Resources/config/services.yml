@@ -1,0 +1,38 @@
+parameters:
+    oro_form.validator.constraint_factory.class: Oro\Bundle\FormBundle\Validator\ConstraintFactory
+    oro_form.twig.form.class:                    Oro\Bundle\FormBundle\Twig\FormExtension
+    oro_form.twig.js_validation_extension.class: Oro\Bundle\FormBundle\Twig\JsValidationExtension
+    oro_form.model.update_handler.class:         Oro\Bundle\FormBundle\Model\UpdateHandler
+    oro_form.provider.html_tag_provider.class:   Oro\Bundle\FormBundle\Provider\HtmlTagProvider
+
+services:
+    oro_form.validator.constraint_factory:
+        class: %oro_form.validator.constraint_factory.class%
+
+    oro_form.twig.form_extension:
+        class: %oro_form.twig.form.class%
+        tags:
+            - { name: twig.extension }
+
+    oro_form.twig.js_validation_extension:
+        class: %oro_form.twig.js_validation_extension.class%
+        tags:
+            - { name: twig.extension }
+
+    oro_form.model.update_handler:
+        class: %oro_form.model.update_handler.class%
+        scope: request
+        arguments:
+            - @request
+            - @session
+            - @oro_ui.router
+            - @oro_entity.doctrine_helper
+            - @event_dispatcher
+
+    oro_form.provider.html_tag_provider:
+        class: %oro_form.provider.html_tag_provider.class%
+
+    oro_form.count_query_optimization_listener:
+        class: Oro\Bundle\FormBundle\EventListener\CountQueryOptimizationListener
+        tags:
+            - { name: kernel.event_listener, event: oro.entity.count_query.optimize, method: onOptimize }
