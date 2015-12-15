@@ -23,7 +23,7 @@ Development flow is not different from any composer based application and consis
 NOTE: symlinks for path repository not supported on Windows environment. Please remove packages copy from vendor
 folder and use `mklink` command instead. For example, to enable platform package in platform application after 
 `composer install` run following commands in the administrator mode:
-gi```
+```
 rm -rf application/platform/vendor/oro/platform
 mklink /J "./application/platform/vendor/oro/platform" "./package/platform"
 ```
