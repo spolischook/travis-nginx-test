@@ -1,0 +1,2 @@
+Uid,Organization uid,Integration uid,Campaign Email uid,Origin_id,Web_id,Title,Subject,Content_type,Type,Status,Emails_sent,Tests_sent,Opens,Clicks,Forwards,Hard_bounces,Soft_bounces,Unsubscribes,Abuse_reports
+1,1,1,1,1,1,"Contact campaign",Subject,template,regular,send,66,2,20,5,2,0,0,4,0

@@ -1,0 +1,21 @@
+{
+    "name": "oro/crm-pro-demo-data-bundle",
+    "type": "symfony-bundle",
+    "description": "OroCRM Demo Data Bundle",
+    "keywords": ["OroCRM", "Pro", "Demo Data"],
+    "license": "MIT",
+    "require": {
+      "php": ">=5.4.9",
+      "symfony/symfony": "2.7.*"
+    },
+    "autoload": {
+        "psr-0": { "OroCRMPro\\Bundle\\DemoDataBundle": "" }
+    },
+    "target-dir": "OroCRMPro/Bundle/DemoDataBundle",
+    "minimum-stability": "dev",
+    "extra": {
+      "branch-alias": {
+          "dev-master": "1.0-dev"
+        }
+    }
+}

@@ -1,0 +1,217 @@
+Uid,Contact uid,Street,City,Region,PostalCode,Country,Label
+1,1,4712 Cedarstone Drive,Toledo,OH,43604,US,Primary address
+2,1,787 Robinson Court,Saginaw,MI,48607,US,Second address
+3,2,1859 Black Oak Hollow Road,San Jose,CA,95113,US,Primary address
+4,2,2574 Broadway Avenue,Kingsport,TN,37660,US,Second address
+5,3,679 Pearl Street,Sacramento,CA,95815,US,Primary address
+6,3,2186 Poe Road,Pinehurst,TX,77362,US,Second address
+7,4,2620 Oakmound Drive,Hickory Hills,IL,60457,US,Primary address
+8,4,3291 Hott Street,Oklahoma City,OK,73102,US,Second address
+10,5,37 Lodgeville Road,Eagan,MN,55121,US,Primary address
+11,6,2450 Grasselli Street,New Boston,NH,3070,US,Primary address
+12,6,1927 Steve Hunt Road,Miami,FL,33176,US,Second address
+13,7,1798 Bryan Avenue,Minneapolis,MN,55404,US,Primary address
+14,7,1388 Forest Drive,Mclean,VA,22101,US,Second address
+15,8,2424 Elk Creek Road,Smyrna,GA,30080,US,Primary address
+17,9,1858 Summit Park Avenue,Bloomfield Township,MI,48302,US,Primary address
+19,10,2493 Hillside Drive,Bedford,MA,1730,US,Primary address
+20,10,2241 Norma Avenue,Dayton,OH,45402,US,Second address
+21,11,2928 Bryan Street,Greensboro,NC,27407,US,Primary address
+22,11,510 Dogwood Road,Phoenix,AZ,85040,US,Second address
+23,12,3609 Hickory Heights Drive,Hanover,MD,21076,US,Primary address
+24,12,4015 Daffodil Lane,Arlington,VA,22202,US,Second address
+25,13,888 Oakridge Lane,Dallas,TX,75207,US,Primary address
+26,14,2209 Blue Spruce Lane,Cockeysville,MD,21030,US,Primary address
+27,15,3439 Francis Mine,Central Valley,CA,96019,US,Primary address
+28,15,198 Masonic Drive,Billings,MT,59102,US,Second address
+29,16,1805 Elm Drive,New York,NY,10018,US,Primary address
+30,16,1783 Sycamore Street,Santa Clara,CA,95054,US,Second address
+31,17,4076 Little Street,Tallmadge,OH,44278,US,Primary address
+32,17,4885 Timberbrook Lane,Greeley,CO,80631,US,Second address
+34,18,1530 Bailey Drive,Cedar Rapids,IA,52401,US,Primary address
+36,19,1051 Fincham Road,San Diego,CA,92103,US,Primary address
+37,20,2198 Burke Street,Boston,MA,2210,US,Primary address
+38,20,3863 Copperhead Road,Hartford,CT,6103,US,Second address
+39,21,2227 Kembery Drive,Lombard,IL,60148,US,Primary address
+41,22,1620 Settlers Lane,New York,NY,10007,US,Primary address
+42,22,4841 Morningview Lane,New York,NY,10007,US,Second address
+44,24,879 Franklin Avenue,Lake City,FL,32025,US,Primary address
+45,25,2366 Laurel Lane,Midland,TX,79701,US,Primary address
+46,26,239 Maple Street,Santa Ana,CA,92705,US,Primary address
+47,27,4159 Dawson Drive,Little Rock,AR,72211,US,Primary address
+49,29,3909 Monroe Street,Houston,TX,77026,US,Primary address
+50,30,4562 Badger Pond Lane,Tampa,FL,33634,US,Primary address
+51,31,2671 Hope Street,Mesquite,TX,75149,US,Primary address
+52,26,204 Radford Street,Louisville,KY,40203,US,Second address
+53,27,2878 Mount Street,Mount Pleasant,MI,48858,US,Second address
+54,28,2495 Stratford Drive,Wailuku,HI,96793,US,Primary address
+55,29,3500 Saints Alley,Tampa,FL,33610,US,Second address
+56,30,150 Franklee Lane,Conshohocken,PA,19428,US,Second address
+57,31,1614 Duffy Street,Elmhurst,IN,60126,US,Second address
+58,32,3609 Sycamore Street,San Jose,CA,95129,US,Primary address
+59,33,3420 Willis Avenue,Daytona Beach,FL,32114,US,Primary address
+60,33,3277 Arrowood Drive,Jacksonville,FL,32216,US,Second address
+62,34,4250 Augusta Park,Charleston,WV,25313,US,Primary address
+63,35,3350 Still Street,Gibsonburg,OH,43431,US,Primary address
+64,35,2813 Pine Garden Lane,Atlanta,GA,30339,US,Second address
+65,36,4721 Shady Pines Drive,Owensboro,KY,42301,US,Primary address
+66,36,4337 Tea Berry Lane,Marinette,WI,54143,US,Second address
+67,37,4924 Daffodil Lane,Arlington,VA,22201,US,Primary address
+68,37,779 Clarence Court,Jacksonville,NC,28540,US,Second address
+69,38,449 Wetzel Lane,Harbor Springs,MI,49740,US,Primary address
+70,38,3331 Lynn Street,North Billerica,MA,1862,US,Second address
+71,39,1228 Seneca Drive,Portland,OR,97205,US,Primary address
+72,39,1340 Losh Lane,Pittsburgh,PA,15213,US,Second address
+73,40,1743 Stone Lane,Wayne,PA,19088,US,Primary address
+75,41,4200 Red Bud Lane,Newark,NJ,7102,US,Primary address
+76,41,3194 Sand Fork Road,Elkhart,IN,46516,US,Second address
+77,42,1019 Heritage Road,Ivanhoe,CA,93235,US,Primary address
+78,42,3209 Bungalow Road,Omaha,NE,68104,US,Second address
+79,43,719 Marshville Road,Poughkeepsie,NY,12601,US,Primary address
+80,43,2876 Levy Court,Acton,MA,1720,US,Second address
+81,45,60 Bell Street,New York,NY,10025,US,Primary address
+82,45,1155 Flinderation Road,Chicago,IL,60631,US,Second address
+83,46,1264 Grim Avenue,San Diego,CA,92103,US,Primary address
+84,46,2179 Farm Meadow Drive,Monterey,TN,38574,US,Second address
+85,47,1651 Church Street,Far Rockaway,NY,11691,US,Primary address
+86,48,4772 Davis Place,Maumee,OH,43537,US,Primary address
+87,49,4969 Hide A Way Road,San Jose,CA,95136,US,Primary address
+88,50,1442 Duck Creek Road,Pescadero,CA,94060,US,Primary address
+90,52,2970 Braxton Street,Rockford,IL,61101,US,Primary address
+92,54,3598 Water Street,Oakland,CA,94612,US,Primary address
+93,55,3445 Lynn Street,Cambridge,MA,2141,US,Primary address
+94,56,3538 Havanna Street,Greensboro,NC,27401,US,Primary address
+95,57,3858 Hurry Street,Fredericksburg,VA,22408,US,Primary address
+96,58,1698 Devils Hill Road,Jackson,MS,39211,US,Primary address
+97,59,3211 Stratford Court,Durham,NC,27701,US,Primary address
+98,60,3256 Pearlman Avenue,Cambridge,MA,2142,US,Primary address
+99,61,2867 Charles Street,Ypsilanti,MI,48198,US,Primary address
+100,62,2467 Frank Avenue,Springfield,MA,1103,US,Primary address
+102,64,4059 Chapmans Lane,Albuquerque,NM,87121,US,Primary address
+104,66,1132 Spruce Drive,New Wilmington,PA,16142,US,Primary address
+105,66,1608 Hickory Ridge Drive,Las Vegas,NV,89109,US,Second address
+106,67,4057 Conifer Drive,Redmond,WA,98052,US,Primary address
+107,68,2319 Keyser Ridge Road,Greensboro,NC,27455,US,Primary address
+108,69,4384 Tetrick Road,Polk City,FL,33868,US,Primary address
+109,70,6810 Gentle Downs,Acklocknayke,DC,22201,US,Primary address
+110,71,8477 Quaking Creek Promenade,Tunnel,WA,28540,US,Primary address
+111,72,2216 Red Estates,Metropolis,WI,49740,US,Primary address
+112,73,2392 Old Private,Weweantic,AZ,1862,US,Primary address
+113,74,7833 Stony Robin Ridge,Peace Dale,NE,97205,US,Primary address
+114,75,1840 Little View Carrefour,Mishopshnow,WY,15213,US,Primary address
+115,76,3344 Easy Rabbit End,Crookston,NM,19088,US,Primary address
+116,77,9382 Honey Bank,Wilkie,WI,7102,US,Primary address
+117,78,7866 Heather Hickory Woods,Sunizona,ME,46516,US,Primary address
+118,79,9915 Colonial Cider Lookout,Rimbey,SD,93235,US,Primary address
+119,80,9394 Shady Circle,Bowstring,ND,68104,US,Primary address
+120,81,8360 Thunder Meadow,Meadow Lake,TX,12601,US,Primary address
+121,82,5026 Noble Mountain,Turkey Foot Corner,MN,1720,US,Primary address
+122,83,3049 High Beacon Common,Prettyboy,UT,10025,US,Primary address
+123,84,4796 Quiet Fox Wood,Treasure Island,NE,60631,US,Primary address
+124,85,7667 Wishing Pony Village,Ah Fong Village,GA,92103,US,Primary address
+125,86,856 Jagged Grove,Zula,NM,38574,US,Primary address
+126,87,3426 Fallen Pioneer Round,Orderville,MO,11691,US,Primary address
+127,88,4855 Green Embers Park,Social,AL,43537,US,Primary address
+128,89,6611 Velvet Island Street,Tribune,MD,95136,US,Primary address
+129,90,1512 Emerald Bear Green,Negro Prairie,MO,94060,US,Primary address
+130,91,1909 Hidden Sky Townline,Pronto,RI,61101,US,Primary address
+131,92,8530 Foggy Spring Glade,Greasy Creek,MN,94612,US,Primary address
+132,93,7965 Middle Pines,Omemee,VA,2141,US,Primary address
+133,94,5782 Tawny Lake Gate,Revenge,OH,27401,US,Primary address
+134,95,2281 Merry Hollow,Utopia,IN,22408,US,Primary address
+135,96,5618 Round Cloud Extension,Funkstown,SC,39211,US,Primary address
+136,97,80 Dusty Fawn Canyon,Beaver Bay,PA,27701,US,Primary address
+137,98,6345 Iron Farm,Gold Bar,AK,2142,US,Primary address
+138,99,8281 Silent Campus,Squaw Crossing,MA,48198,US,Primary address
+139,100,9217 Blue Wharf,Middleton,IN,1103,US,Primary address
+140,101,2748 Broad Leaf Forest,Bigfoot,ND,87121,US,Primary address
+141,102,2094 Rustic Range,Slapout,SD,16142,US,Primary address
+142,103,3144 Sleepy Path,Chicken Bristle,VT,89109,US,Primary address
+143,104,1990 Rocky Hill,Vanscoy,MN,98052,US,Primary address
+144,105,9636 Lost Expressway,Wyomanock,MN,27455,US,Primary address
+145,106,8205 Bright Row,Carriage Stop,VA,33868,US,Primary address
+146,107,8356 Amber Bend,Colorado,FL,22201,US,Primary address
+147,108,2837 Burning Dale,Liars Corner,NY,28540,US,Primary address
+148,109,3132 Pleasant Timber Highway,Cat Elbow Corner,GA,49740,US,Primary address
+149,110,4203 Dewy Grove Landing,Igo,WA,1862,US,Primary address
+150,111,3795 Clear Pine Trail,Wideawake,WV,97205,US,Primary address
+151,112,6054 Misty Shadow Close,Competition,WI,15213,US,Primary address
+152,113,466 Cozy Island,Possum Trot,SC,19088,US,Primary address
+153,114,7002 Cinder Mews,Kinley,GA,7102,US,Primary address
+154,115,3541 Silver Deer Bay,Estanifanulga,AK,46516,US,Primary address
+155,116,4696 Umber Horse Maze,Gator Field,DE,93235,US,Primary address
+156,117,6292 Hazy Glen,Indian Hammock,PA,68104,US,Primary address
+157,118,2461 Cotton Nectar Terrace,Hicksville,UT,12601,US,Primary address
+158,119,3738 Grand Hills Vista,Ocheeseulga,NC,1720,US,Primary address
+159,120,9887 Cinder Rise Pathway,Kamsack,TX,10025,US,Primary address
+160,121,799 Misty Spring Maze,Fireworks,ID,60631,US,Primary address
+161,122,4608 Wishing Ledge,Westville,FL,92103,US,Primary address
+162,123,3103 Easy Gate,Strange Creek,FL,38574,US,Primary address
+163,124,1409 Amber Apple Passage,Village Seven,VT,11691,US,Primary address
+164,125,3212 Middle Brook Circuit,Komak Wuacho,IL,43537,US,Primary address
+165,70,3903 Jagged Pioneer Nook,Surprise,MI,95136,US,Second address
+166,71,407 Dewy Log Dell,Cosmos,DC,94060,US,Second address
+167,72,8716 Merry Fawn Vista,Lunenburg,MO,61101,US,Second address
+168,73,1196 Grand Parkway,Happytown,CO,94612,US,Second address
+169,74,3649 Thunder Blossom Meadow,Red Warrior,WV,2141,US,Second address
+170,75,5231 Velvet Pony Cape,Meek,MS,27401,US,Second address
+171,76,9842 Broad Hill,Underkoflers Corner,WY,22408,US,Second address
+172,77,3655 Hazy Beach,Henry Clay,IN,39211,US,Second address
+173,78,8034 Rustic Mountain Crest,Falcon Crest,LA,27701,US,Second address
+174,79,1002 Shady Parade,Canwood,DE,2142,US,Second address
+175,80,7310 Burning Trace,Littlelot,NC,48198,US,Second address
+176,81,3406 Umber Hollow,Chickville,OH,1103,US,Second address
+177,82,2558 Blue Chase,Ten Sleep,MD,87121,US,Second address
+178,83,6469 Quaking Crescent,Many,WA,16142,US,Second address
+179,84,5996 Stony River Mountain,Nanatlugunyi,VA,89109,US,Second address
+180,85,9052 Honey Horse Alley,Maryfield,TN,98052,US,Second address
+181,86,7514 Colonial Forest Jetty,Blue Anchor,VA,27455,US,Second address
+182,87,3133 High Fox Corners,Angels Camp,NM,33868,US,Second address
+183,88,1070 Red Freeway,Caronport,AK,22201,US,Second address
+184,89,2792 Quiet Key,Cornwall,WA,28540,US,Second address
+185,90,8185 Sleepy View Swale,Scooba,NM,49740,US,Second address
+186,91,9963 Harvest Barn Close,Dog Walk,UT,1862,US,Second address
+187,92,5020 Emerald Island Grounds,Talking Rock,GA,97205,US,Second address
+188,93,796 Sunny Leaf Avenue,Hard Luck Crossing,VT,15213,US,Second address
+189,94,4308 Lost Estates,Gunsight,MN,19088,US,Second address
+190,95,977 Tawny Robin Circle,Overshot,MI,7102,US,Second address
+191,96,3597 Old Inlet,Tiger Point,RI,46516,US,Second address
+192,97,3536 Cotton Grove,Moonshine Hill,AK,93235,US,Second address
+193,98,892 Hidden Cider Crossing,Noonday,NC,68104,US,Second address
+194,99,121 Crystal Wagon Manor,Freeze,NE,12601,US,Second address
+195,100,9685 Lazy Rise,Fond du Lac,NC,1720,US,Second address
+196,101,6787 Bright Park,Mortlach,GA,10025,US,Second address
+197,102,8631 Cozy Front,Mountainair,CO,60631,US,Second address
+198,103,3431 Fallen Wharf,Dundurn,ND,92103,US,Second address
+199,104,4249 Iron Sky Port,Czar,KS,38574,US,Second address
+200,105,4420 Noble Hills Thicket,Coffee,UT,11691,US,Second address
+201,106,4245 Golden Village,Thrifty,MI,43537,US,Second address
+202,107,463 Silent Embers Orchard,Kaneohe,CA,95136,US,Second address
+203,108,8003 Silver Panda Turnabout,Warrior,TX,94060,US,Second address
+204,109,2320 Round Vale,Humorist,NH,61101,US,Second address
+205,110,3055 Foggy Deer Bank,Mudlick,IA,94612,US,Second address
+206,111,3929 Indian Beacon Farms,Grand Detour,CT,2141,US,Second address
+207,112,7679 Gentle Timber Route,North Portal,OK,27401,US,Second address
+208,113,2806 Green Terrace,Ballstown,MN,22408,US,Second address
+209,114,9254 Heather Glade,Tiger Bluff Landing,UT,39211,US,Second address
+210,115,7050 Colonial Hills Loop,Atmautluak,NM,27701,US,Second address
+211,116,5167 Lazy Subdivision,Taylors Gut Landing,MI,2142,US,Second address
+212,117,9068 Foggy Oak Turnabout,King Arthur Court,OR,48198,US,Second address
+213,118,1139 Emerald Corner,Katy Lick,MO,1103,US,Second address
+214,119,9623 Red Lagoon Vista,Wahkiacus,IA,87121,US,Second address
+215,120,5140 Broad Brook Bay,Postboy,SC,16142,US,Second address
+216,121,3889 Quiet Maze,Fish House,SC,89109,US,Second address
+217,122,7114 Burning Rise Thicket,Smackover,PA,98052,US,Second address
+218,123,2575 Honey Pony Centre,Burnt Hills,VA,27455,US,Second address
+219,124,3470 Quaking Wagon Farms,Kealakekua,CA,33868,US,Second address
+220,125,7453 Rocky Nectar Trail,Galilee,DC,27455,US,Second address
+221,126,2124 Misty Nook,Three Legs Town,OH,1103,US,Primary address
+222,127,6178 Broad Branch Bend,Belle Plaine,MI,87121,US,Primary address
+223,128,8877 Quaking Street,Gold Bar,CA,16142,US,Primary address
+224,129,7285 Wishing Anchor Round,Tillicum,TN,89109,US,Primary address
+225,130,4414 Velvet Pond Plaza,Eek,CA,98052,US,Primary address
+226,131,1025 Gentle River Heights,Hanley,TX,27455,US,Primary address
+227,132,7502 Colonial Fox Maze,Swisher,IL,33868,US,Primary address
+228,133,704 Fallen Trace,Pikmiktalik,OK,22201,US,Primary address
+229,134,1956 Umber Prairie Place,Killdeer,MN,28540,US,Primary address
+230,135,3311 Bright Fawn Glade,Awakening,NH,49740,US,Primary address
