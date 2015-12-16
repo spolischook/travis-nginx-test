@@ -48,23 +48,23 @@ class EntityConfigListener
         foreach ($event->getModels() as $model) {
             /** @var EntityConfigModel $model */
             if ($model instanceof EntityConfigModel) {
-                $aclClass = $this->registry->getRepository('OroProSecurityBundle:AclClass')
-                    ->findOneBy(['classType' => $model->getClassName()]);
-
-                if (!$aclClass) {
-                    continue;
-                }
-
                 $changeSet = $configManager->getConfigChangeSet(
                     $configManager->getProvider('security')->getConfig($model->getClassName())
                 );
                 $removeScopes = [];
 
-                if ($changeSet && !empty($changeSet['share_scopes'])) {
+                if ($changeSet && !empty($changeSet['share_scopes']) && $changeSet['share_scopes'][0]) {
                     $removeScopes = array_diff($changeSet['share_scopes'][0], $changeSet['share_scopes'][1]);
                 }
 
                 if (empty($removeScopes)) {
+                    continue;
+                }
+
+                $aclClass = $this->registry->getRepository('OroProSecurityBundle:AclClass')
+                    ->findOneBy(['classType' => $model->getClassName()]);
+
+                if (!$aclClass) {
                     continue;
                 }
 
