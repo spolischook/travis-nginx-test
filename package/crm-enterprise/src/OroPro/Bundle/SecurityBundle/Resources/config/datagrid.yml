@@ -131,6 +131,7 @@ datagrid:
                                 'true':  Active
 
     share-with-business-units-datagrid:
+        extended_entity_name: %oro_organization.business_unit.entity.class%
         options:
             entityHint: business unit
             skip_acl_check: true
