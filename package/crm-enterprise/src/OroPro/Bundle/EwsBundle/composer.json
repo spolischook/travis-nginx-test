@@ -1,0 +1,23 @@
+{
+    "name": "oro-professional/ews-bundle",
+    "type": "symfony-bundle",
+    "description": "BAPP Exchange Server Web Services Bundle",
+    "keywords": ["BAPP"],
+    "homepage": "https://github.com/laboro/platform-professional/src/OroPro/Bundle/EwsBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.7.*",
+        "oro/log": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "OroPro\\Bundle\\EwsBundle": "" }
+    },
+    "target-dir": "OroPro/Bundle/EwsBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

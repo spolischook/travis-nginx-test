@@ -1,0 +1,2 @@
+bundles:
+    - { name: OroCRMPro\Bundle\OutlookBundle\OroCRMProOutlookBundle }

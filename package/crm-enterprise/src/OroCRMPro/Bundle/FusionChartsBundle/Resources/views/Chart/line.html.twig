@@ -1,0 +1,103 @@
+{% set chartData = {} %}
+{% set containerId = "chart-container-" ~ random() %}
+
+{% if data|length > 0 %}
+    <div class="chart-container">
+        <div class="clearfix">
+            <div id="{{ containerId }}-chart" class="line-chart chart"></div>
+        </div>
+    </div>
+
+    {% set isMobileVersion = isMobileVersion() %}
+    {% set json = {
+        'chart': {
+            'canvasPadding': 40,
+            'labelPadding': 10,
+            'yAxisValuesPadding': 10,
+            'xAxisNamePadding': 10,
+            'yAxisNamePadding': 10,
+            'showValues': isMobileVersion ? '0' : '1',
+            'maxColWidth': '50',
+            'showCanvasBg': '0',
+            'showCanvasBase': '0',
+            'animation': '0',
+            'valuePadding': '10',
+            'rotateXAxisName': '0',
+            'bgColor': 'transparent',
+            'showZeroPlane': '0',
+            'canvasBgColor': 'transparent',
+            'canvasBorderThickness ': '0',
+            'borderColor': 'transparent',
+            'xaxisname': options.data_schema.label.label,
+            'yaxisname': options.data_schema.value.label,
+            'showShadow': '0',
+            'formatNumberScale': '0',
+            'decimals': '2',
+            'divLineColor': 'eaeaea',
+            'showVLineLabelBorder': '0',
+            'showAlternateHGridColor': '0',
+            'paletteColors': options.settings.chartColors
+        },
+        'data': data
+    } %}
+
+    {% if options.settings.connect_dots_with_line == false %}
+        {% set json = json|merge({
+            'chart':{
+                'anchorBgColor': options.settings.chartColors,
+                'anchorBorderColor': options.settings.chartColors,
+                'lineColor': 'transparent'
+            }|merge(json.chart)
+        }) %}
+    {% endif %}
+
+    <script type="text/javascript">
+        require(
+                [
+                    'jquery',
+                    'oroui/js/mediator',
+                    'orocrmprofusioncharts/js/fusion-data-handler',
+                    'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin'
+                ],
+                function ($, mediator, dataHandler) {
+                    var schema = {{ options.data_schema|json_encode|raw }};
+                    var dataSource = {{ json|json_encode|raw }};
+                    var isCurrencyPrepend = {{ oro_currency_symbol_prepend()|json_encode|raw }};
+                    var handler = new dataHandler(dataSource, schema, isCurrencyPrepend);
+                    dataSource = handler.getDataSource();
+                    var max = handler.getMaxValue();
+                    var min = handler.getMinValue();
+                    var delta = (max-min)/10;
+                    delta = delta == 0 ? 1 : delta;
+                    max += delta;
+
+                    var noNegativeValues = min >= 0;
+
+                    min -= delta;
+
+                    dataSource.chart.yAxisMaxValue = Math.round(max);
+                    if (!noNegativeValues || min > 0) {
+                        dataSource.chart.yAxisMinValue = Math.floor(min);
+                    }
+
+                    $('#{{ containerId }}-chart').insertFusionCharts({
+                        type: 'Line',
+                        dataSource: dataSource,
+                        dataFormat: 'json',
+                        width: '100%',
+                        height: 300,
+                        id: '{{ containerId }}'
+                    });
+                    mediator.once('page:beforeChange', function () {
+                        $('#{{ containerId }}-chart').disposeFusionCharts();
+                    });
+                }
+        );
+    </script>
+{% else %}
+    <div class="container-fluid">
+        <div class="clearfix no-data">
+            <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
+        </div>
+    </div>
+{% endif %}
