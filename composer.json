@@ -9,17 +9,9 @@
         }
     },
    "repositories": {
-        "enterprise": {
-            "type": "vcs",
-            "url": "https://github.com/orocrm/crm-enterprise.git"
-        },
-        "crm": {
-            "type": "vcs",
-            "url": "https://github.com/orocrm/crm-er.git"
-        },
-        "platform": {
-            "type": "vcs",
-            "url": "https://github.com/orocrm/platform-er.git"
+        "local": {
+          "type": "path",
+          "url": "../../package/*"
         },
         "composer": {
             "type": "composer",
