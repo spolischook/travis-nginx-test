@@ -1,0 +1,410 @@
+datagrid:
+    base-orders-grid:
+        extended_entity_name: %orob2b_order.entity.order.class%
+        options:
+            entityHint:        order
+            entity_pagination: true
+        source:
+            type:         orm
+            query:
+                select:
+                    - order1.id
+                    - order1.identifier
+                    - order1.poNumber
+                    - order1.currency
+                    - order1.subtotal
+                    - order1.shipUntil
+                    - order1.createdAt
+                    - order1.updatedAt
+                    - paymentTerm.label as paymentTermLabel
+                from:
+                    - { table: %orob2b_order.entity.order.class%, alias: order1 }
+                join:
+                    left:
+                        - { join: order1.paymentTerm, alias: paymentTerm }
+        columns:
+            identifier:
+                label:         orob2b.order.identifier.label
+            poNumber:
+                label:         orob2b.order.po_number.label
+            shipUntil:
+                label:         orob2b.order.ship_until.label
+                frontend_type: date
+            currency:
+                label:         orob2b.order.currency.label
+            subtotal:
+                label:         orob2b.order.subtotal.label
+                type:          twig
+                frontend_type: html
+                template:      OroB2BOrderBundle:Order:Datagrid/subtotal.html.twig
+        sorters:
+            columns:
+                identifier:
+                    data_name: order1.identifier
+                poNumber:
+                    data_name: order1.poNumber
+                shipUntil:
+                    data_name: order1.shipUntil
+                currency:
+                    data_name: order1.currency
+                subtotal:
+                    data_name: order1.subtotal
+            default:
+                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                identifier:
+                    type:      string
+                    data_name: order1.identifier
+                poNumber:
+                    type:      string
+                    data_name: order1.poNumber
+                shipUntil:
+                    type:      date
+                    data_name: order1.shipUntil
+                currency:
+                    type:      choice
+                    data_name: order1.currency
+                    options:
+                        field_options:
+                            choices: @orob2b_pricing.provider.currency->getAvailableCurrencies
+                subtotal:
+                    type:      number
+                    data_name: order1.subtotal
+        properties:
+            id: ~
+            view_link:
+                type:  url
+                params: [ id ]
+            update_link:
+                type: url
+                params: [ id ]
+            delete_link:
+                type: url
+                params: [ id ]
+        actions:
+            view:
+                type:          navigate
+                label:         oro.grid.action.view
+                link:          view_link
+                icon:          eye-open
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         oro.grid.action.update
+                link:          update_link
+                icon:          edit
+            delete:
+                type:          delete
+                label:         oro.grid.action.delete
+                link:          delete_link
+                icon:          trash
+
+    frontend-orders-grid:
+        extends: base-orders-grid
+        source:
+            acl_resource: orob2b_order_frontend_view
+        columns:
+            paymentTermLabel:
+                label:         orob2b.order.payment_term.label
+            poNumber:
+                label:         orob2b.order.po_number.label
+            shipUntil:
+                label:         orob2b.order.ship_until.label
+                frontend_type: date
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        sorters:
+            columns:
+                paymentTermLabel:
+                    data_name: paymentTermLabel
+                poNumber:
+                    data_name: order1.poNumber
+                shipUntil:
+                    data_name: order1.shipUntil
+                createdAt:
+                    data_name: order1.createdAt
+                updatedAt:
+                    data_name: order1.updatedAt
+        filters:
+            columns:
+                paymentTermLabel:
+                    type:      string
+                    data_name: paymentTermLabel
+                poNumber:
+                    type:      string
+                    data_name: order1.poNumber
+                shipUntil:
+                    type:      date
+                    data_name: order1.shipUntil
+                createdAt:
+                    type:      datetime
+                    data_name: order1.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: order1.updatedAt
+        properties:
+            id: ~
+            view_link:
+                route: orob2b_order_frontend_view
+            update_link:
+                route: orob2b_order_frontend_update
+            delete_link:
+                route: orob2b_api_frontend_delete_order
+        actions:
+            view:
+                acl_resource:  orob2b_order_frontend_view
+            update:
+                acl_resource:  orob2b_order_frontend_update
+            delete:
+                acl_resource:  orob2b_order_frontend_delete
+
+    orders-grid:
+        extends: base-orders-grid
+        source:
+            acl_resource: orob2b_order_view
+            query:
+                select:
+                    - CONCAT(order_owner.firstName, ' ', order_owner.lastName) as owner
+                    - CONCAT(accountUser.firstName, ' ', accountUser.lastName) as accountUserName
+                    - account.name as accountName
+                join:
+                    left:
+                        - { join: order1.owner, alias: order_owner }
+                        - { join: order1.accountUser, alias: accountUser }
+                        - { join: order1.account, alias: account }
+        columns:
+            accountName:
+                label:         orob2b.order.account.label
+            accountUserName:
+                label:         orob2b.order.account_user.label
+            owner:
+                label:         orob2b.order.owner.label
+            paymentTermLabel:
+                label:         orob2b.order.payment_term.label
+            poNumber:
+                label:         orob2b.order.po_number.label
+            shipUntil:
+                label:         orob2b.order.ship_until.label
+                frontend_type: date
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        sorters:
+            columns:
+                accountName:
+                    data_name: accountName
+                accountUserName:
+                    data_name: accountUserName
+                owner:
+                    data_name: owner
+                paymentTermLabel:
+                    data_name: paymentTermLabel
+                poNumber:
+                    data_name: order1.poNumber
+                shipUntil:
+                    data_name: order1.shipUntil
+                createdAt:
+                    data_name: order1.createdAt
+                updatedAt:
+                    data_name: order1.updatedAt
+        filters:
+            columns:
+                accountName:
+                    type:      string
+                    data_name: accountName
+                accountUserName:
+                    type:      string
+                    data_name: accountUserName
+                owner:
+                    type:      string
+                    data_name: owner
+                paymentTermLabel:
+                    type:      entity
+                    data_name: paymentTerm.id
+                    options:
+                        field_type: entity
+                        field_options:
+                            class:    %orob2b_payment.entity.payment_term.class%
+                            property: label
+                            multiple: true
+
+                poNumber:
+                    type:      string
+                    data_name: order1.poNumber
+                shipUntil:
+                    type:      date
+                    data_name: order1.shipUntil
+                createdAt:
+                    type:      datetime
+                    data_name: order1.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: order1.updatedAt
+        properties:
+            id: ~
+            view_link:
+                route: orob2b_order_view
+            update_link:
+                route: orob2b_order_update
+            delete_link:
+                route: orob2b_api_delete_order
+        actions:
+            view:
+                acl_resource:  orob2b_order_view
+            update:
+                acl_resource:  orob2b_order_update
+            delete:
+                acl_resource:  orob2b_order_delete
+
+    embed-orders-grid:
+        extended_entity_name: %orob2b_order.entity.order.class%
+        options:
+            entityHint:        order
+            entity_pagination: true
+        source:
+            type:         orm
+            acl_resource: orob2b_order_view
+            query:
+                select:
+                    - order1.id
+                    - order1.identifier
+                    - order1.subtotal
+                    - order1.poNumber
+                    - order1.shipUntil
+                    - COUNT(lineItems.id) as lineItemsCount
+                    - order1.createdAt
+                    - order1.updatedAt
+                from:
+                    - { table: %orob2b_order.entity.order.class%, alias: order1 }
+                join:
+                    left:
+                        - { join: order1.lineItems, alias: lineItems}
+        columns:
+            identifier:
+                label:         orob2b.order.identifier.label
+            subtotal:
+                label:         orob2b.order.subtotal.label
+                type:          twig
+                frontend_type: html
+                template:      OroB2BOrderBundle:Order:Datagrid/subtotal.html.twig
+            lineItemsCount:
+                label:         orob2b.order.line_items_count.label
+                type: field
+                frontend_type: integer
+            poNumber:
+                label:         orob2b.order.po_number.label
+            shipUntil:
+                label:         orob2b.order.ship_until.label
+                frontend_type: date
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        sorters:
+            columns:
+                identifier:
+                    data_name: order1.identifier
+                subtotal:
+                    data_name: order1.subtotal
+                lineItemsCount:
+                    data_name: lineItemsCount
+                poNumber:
+                    data_name: order1.poNumber
+                shipUntil:
+                    data_name: order1.shipUntil
+                createdAt:
+                    data_name: order1.createdAt
+                updatedAt:
+                    data_name: order1.updatedAt
+            default:
+                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                identifier:
+                    type:      string
+                    data_name: order1.identifier
+                subtotal:
+                    type:      number
+                    data_name: order1.subtotal
+                lineItemsCount:
+                    type:      number
+                    data_name: lineItemsCount
+                    filter_by_having: true
+                poNumber:
+                    type:      string
+                    data_name: order1.poNumber
+                shipUntil:
+                    type:      date
+                    data_name: order1.shipUntil
+                createdAt:
+                    type: datetime
+                    data_name: order1.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: order1.updatedAt
+        properties:
+            id: ~
+            view_link:
+                route: orob2b_order_view
+                type:  url
+                params: [ id ]
+        actions:
+            view:
+                acl_resource:  orob2b_order_view
+                type:          navigate
+                label:         oro.grid.action.view
+                link:          view_link
+                icon:          eye-open
+                rowAction:     true
+
+    account-user-orders-grid:
+        extends: embed-orders-grid
+        source:
+            query:
+                join:
+                    left:
+                        - { join: order1.accountUser, alias: accountUser }
+                where:
+                    and:
+                        - order1.accountUser = :account_user_id
+            bind_parameters:
+                - account_user_id
+
+    account-orders-grid:
+        extends: embed-orders-grid
+        source:
+            query:
+            query:
+                select:
+                    - CONCAT(accountUser.firstName, ' ', accountUser.lastName) as accountUserName
+                join:
+                    left:
+                        - { join: order1.account, alias: account }
+                        - { join: order1.accountUser, alias: accountUser }
+                where:
+                    and:
+                        - order1.account = :account_id
+            bind_parameters:
+                - account_id
+        columns:
+            accountUserName:
+                label:         orob2b.order.account_user.label
+        sorters:
+            columns:
+                accountUserName:
+                    data_name: accountUserName
+        filters:
+            columns:
+                accountUserName:
+                    type:      string
+                    data_name: accountUserName

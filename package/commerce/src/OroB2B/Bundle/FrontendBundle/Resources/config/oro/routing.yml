@@ -1,0 +1,38 @@
+_frontend:
+    resource:     "@OroB2BFrontendBundle/Controller/FrontendController.php"
+    type:         annotation
+    options:
+        frontend: true
+
+orob2b_installer:
+    resource: "@OroInstallerBundle/Resources/config/oro/routing.yml"
+    options:
+        frontend: true
+
+orob2b_frontend_datagrid_index:
+    path: /datagrid/{gridName}
+    defaults: { _controller: OroDataGridBundle:Grid:get }
+    requirements:
+        gridName: '[\w\:-]+'
+    options:
+        frontend: true
+
+orob2b_frontend_datagrid_widget:
+    path: /datagrid/widget/{gridName}
+    defaults: { _controller: OroDataGridBundle:Grid:widget }
+    requirements:
+        gridName: '[\w\:-]+'
+    options:
+        frontend: true
+
+orob2b_frontend_windows_api:
+    resource: "@OroB2BFrontendBundle/Controller/Api/Rest/FrontendWindowsStateController.php"
+    type: rest
+    prefix: api/rest/{version}/
+    requirements:
+        version:  latest|v1
+        _format:  json
+    defaults:
+        version: latest
+    options:
+        frontend: true

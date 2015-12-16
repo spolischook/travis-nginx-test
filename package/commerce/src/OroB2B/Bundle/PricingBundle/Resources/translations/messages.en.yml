@@ -1,0 +1,101 @@
+orob2b.pricing:
+    pricelist:
+        entity_label: Price List
+        entity_plural_label: Price Lists
+        entity_description: Represents price list information
+        id.label: Id
+        name.label: Name
+        default.label: Is Default
+        currencies.label: Currencies
+        has_price_list.label: Has Price List
+        set_default:
+            label: Set default
+            message: The "{{ priceListName }}" has been made default
+        account_groups.label: Account Groups
+        accounts.label: Accounts
+        websites.label: Websites
+        prices.label: Prices
+        priority.label: Priority
+
+        form:
+            pricelist_required: Please select a price list first...
+    quantity.label: Quantity
+    unit.label: Unit
+    price.label: Price
+    add_product_price: Add Product Price
+    add_price_list: Add Price List
+    no_price_lists: No price lists
+
+    productprice:
+        entity_label: Product Price
+        entity_plural_label: Product Prices
+        entity_description: Represents product price
+        id.label: ID
+        product.label: Product
+        product_sku.label: Product SKU
+        product_name.label: Product name
+        price_list.label: Proce List
+        currency.label: Currency
+        quantity.label: Quantity
+        value.label: Value
+        unit:
+            label: Unit
+            choose: Choose unit...
+        unit_code.label: Unit
+        price.label: Price
+        import: Import Product Prices
+        show_tier_prices.label: Show Tier Prices
+        price_in_%currency%: 'Price (%currency%)'
+        price_%unit%_in_%currency%: 'Price (%currency%/%unit%)'
+        action:
+            save: Save
+            cancel: Cancel
+        save.success: Product Price has been added
+
+    menu:
+        price_lists_tab.label: Price lists management
+        price_lists_list.description: List of existing price lists
+        shortcut_new_price_list.label: Create new price list
+        shortcut_new_price_list.description: Create new price list item
+        shortcut_price_lists.description: Show list of existing price lists
+
+    sections:
+        general: General
+
+    widgets:
+        pricing_information: Price List Information
+
+    controller:
+        price_list.saved.message: Price List has been saved
+        product_price.saved.message: Product Price has been saved
+
+    form:
+        choose_price_list: Choose a Price List...
+
+    grid:
+        action:
+            view:
+                price_list: View Price List
+                product: View Product
+
+    system_configuration:
+        price_lists: Price Lists
+        default_price_lists: Default Price Lists
+        groups:
+            product_price_settings.title: Pricing Settings
+        fields:
+            rounding_type:
+                label: Pricing Rounding Type
+                tooltip: Select the rounding type that can be used for product prices.
+                choices:
+                    half_up.label: Half Up
+                    half_down.label: Half Down
+                    ceil.label: Ceil
+                    floor.label: Floor
+
+oro:
+    importexport:
+        import:
+            orob2b_pricing_product_price:
+                add_or_replace: Add and Replace
+                reset: Reset and Add

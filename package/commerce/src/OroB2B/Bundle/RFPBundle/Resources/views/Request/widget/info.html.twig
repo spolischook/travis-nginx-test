@@ -1,0 +1,34 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEmailBundle::actions.html.twig' as EmailActions %}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ UI.renderProperty('orob2b.rfp.request.first_name.label'|trans, entity.firstName) }}
+            {{ UI.renderProperty('orob2b.rfp.request.last_name.label'|trans, entity.lastName) }}
+            {{ UI.renderHtmlProperty('orob2b.rfp.request.email.label'|trans, EmailActions.sendEmailLink(entity.email, entity))}}
+            {{ UI.renderProperty('orob2b.rfp.request.phone.label'|trans, entity.phone) }}
+            {{ UI.renderProperty('orob2b.rfp.request.company.label'|trans, entity.company|default('N/A'|trans)) }}
+            {{ UI.renderProperty('orob2b.rfp.request.role.label'|trans, entity.role|default('N/A'|trans)) }}
+            {{ UI.renderProperty('orob2b.rfp.request.po_number.label'|trans, entity.poNumber|default('N/A'|trans)) }}
+            {{ UI.renderProperty('orob2b.rfp.request.ship_until.label'|trans, entity.shipUntil|oro_format_date|default('N/A'|trans)) }}
+            {% if entity.account %}
+                {% if resource_granted('VIEW', entity.account) %}
+                    {% set accountView = UI.renderUrl(path('orob2b_account_view', {'id': entity.account.id}), entity.account.name) %}
+                {% else %}
+                    {% set accountView = entity.account.name|escape %}
+                {% endif %}
+                {{ UI.renderHtmlProperty('orob2b.rfp.request.account.label'|trans, accountView) }}
+            {% endif %}
+            {% if entity.accountUser %}
+                {% if resource_granted('VIEW', entity.accountUser) %}
+                    {% set accountUserView = UI.renderUrl(path('orob2b_account_account_user_view', {'id': entity.accountUser.id}), entity.accountUser.username) %}
+                {% else %}
+                    {% set accountUserView = entity.accountUser|escape %}
+                {% endif %}
+                {{ UI.renderHtmlProperty('orob2b.rfp.request.account_user.label'|trans, accountUserView) }}
+            {% endif %}
+            {{ UI.renderProperty('orob2b.rfp.request.status.label'|trans, entity.status.label) }}
+        </div>
+    </div>
+</div>

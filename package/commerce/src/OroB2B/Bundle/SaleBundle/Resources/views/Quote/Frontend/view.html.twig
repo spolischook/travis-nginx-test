@@ -1,0 +1,121 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% oro_title_set({params : {'%id%': entity.qid }}) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('orob2b_sale_quote_frontend_index'),
+        'indexLabel': 'orob2b.frontend.sale.quote.entity_plural_label'|trans,
+        'entityTitle': 'orob2b.sale.navigation.view'|trans({
+            '%id%': entity.qid|default('N/A'|trans)
+        })
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% if resource_granted('orob2b_order_frontend_create') %}
+        {% if entity.hasOfferVariants() %}
+            {{ UI.button({
+                'path': 'javascript:void(0);',
+                'data': {
+                    'url': path('orob2b_sale_frontend_quote_create_order_from_widget', { 'id': entity.id }),
+                    'page-component-module': 'orob2bsale/js/app/components/quote-to-order-widget-component',
+                    'page-component-options': {
+                        'options': {
+                            'title': 'orob2b.frontend.sale.btn.accept_quote_create_order'|trans,
+                        }
+                    }|json_encode|raw
+                },
+                'label': 'orob2b.frontend.sale.btn.accept_quote_create_order'|trans,
+                'class': 'no-hash',
+                'iCss': 'icon-edit'
+            }) }}
+        {% else %}
+            {{ UI.button({
+                'path': path('orob2b_sale_frontend_quote_create_order', {'id': entity.id}),
+                'label': 'orob2b.frontend.sale.btn.accept_quote_create_order'|trans,
+                'iCss': 'icon-edit'
+            }) }}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block content_data %}
+    {% set quoteInformationWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'title': 'orob2b.frontend.sale.quote.widgets.quote_information'|trans,
+            'url': path('orob2b_sale_quote_frontend_info', {'id': entity.id})
+        }) }}
+    {% endset %}
+    {% set quoteProducts %}
+        <div class="quote-line-items-info grid-container">
+            <table class="grid table table-bordered table-condensed quote-line-items">
+                <thead>
+                    <tr>
+                        <th><span>{{ 'orob2b.product.sku.label'|trans }}</span></th>
+                        <th><span>{{ 'orob2b.frontend.sale.quoteproduct.column.product'|trans }}</span></th>
+                        <th class="quote-line_item-quantity"><span>{{ 'orob2b.frontend.sale.quoteproductoffer.quantity.label'|trans }}</span></th>
+                        <th class="quote-line_item-price"><span>{{ 'orob2b.frontend.sale.quoteproductoffer.unit_price.label'|trans }}</span></th>
+                        <th><span>{{ 'orob2b.frontend.sale.quoteproduct.comment_account.label'|trans }}</span></th>
+                        <th><span>{{ 'orob2b.frontend.sale.quoteproduct.comment.label'|trans }}</span></th>
+                    </tr>
+                </thead>
+                {% for quoteProduct in entity.quoteProducts %}
+                    {% set numSubItems = quoteProduct.quoteProductOffers|length %}
+                    {% if numSubItems > 1 %}<tbody class="hasrs">{% else %}<tbody>{% endif %}
+                        {% for quoteProductOffer in quoteProduct.quoteProductOffers %}
+                            <tr>
+                                {% if loop.first %}
+                                    <td rowspan="{{ numSubItems }}">
+                                        {% if quoteProduct.isTypeNotAvailable %}
+                                            {{ quoteProduct.productReplacementSku }}
+                                        {% else %}
+                                            {{ quoteProduct.productSku }}
+                                        {% endif %}
+                                    </td>
+                                    <td rowspan="{{ numSubItems }}">{{ quoteProduct.productName }}</td>
+                                {% endif %}
+                                <td class="quote-line_item-quantity quote-line_item-quantity-{% if loop.first %}first{% else %}not_first{% endif %}">
+                                    {{ quoteProductOffer.quantity|orob2b_format_short_product_unit_value(quoteProductOffer.productUnit) }}
+                                    {% if quoteProductOffer.allowIncrements %}{{ 'orob2b.frontend.sale.quoteproductoffer.allow_increments.label'|trans }}{% endif %}
+                                </td>
+                                <td class="quote-line_item-price quote-line_item-price-{% if loop.first %}first{% else %}not_first{% endif %}">
+                                    {{ quoteProductOffer.price|oro_format_price }}
+                                </td>
+                                {% if loop.first %}
+                                    <td rowspan="{{ numSubItems }}">{{ quoteProduct.commentAccount }}</td>
+                                    <td rowspan="{{ numSubItems }}">{{ quoteProduct.comment }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                {% endfor %}
+            </table>
+        </div>
+    {% endset %}
+
+    {% set id = 'frontend-quote-view' %}
+
+    {% set generalBlock = {
+        'title': 'orob2b.frontend.sale.quote.sections.general'|trans,
+        'class': 'active',
+        'subblocks': [{'data' : [quoteInformationWidget]}]
+    } %}
+
+    {% set lineItemsBlock = {
+        'title': 'orob2b.frontend.sale.quote.sections.quote_products'|trans,
+        'subblocks': [{'data' : [quoteProducts]}]
+    } %}
+
+    {% if entity.quoteProducts | length %}
+        {% set data = {'dataBlocks': [generalBlock, lineItemsBlock]} %}
+    {% else %}
+        {% set data = {'dataBlocks': [generalBlock]} %}
+    {% endif %}
+
+    {{ UI.scrollData(id, data) }}
+{% endblock content_data %}
