@@ -9,6 +9,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Event\StrategyEvent;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ImportStrategyHelper;
 
@@ -30,6 +31,9 @@ class ImportValidationSubscriber implements EventSubscriberInterface
 
     /** @var array */
     protected $existingUniqueValues = [];
+
+    /** @var ContextInterface */
+    protected $lastContext;
 
     /**
      * @param DoctrineHelper $doctrineHelper
@@ -59,6 +63,7 @@ class ImportValidationSubscriber implements EventSubscriberInterface
         if (!$event->getStrategy() instanceof UserImportStrategy) {
             return;
         }
+        $this->updateContext($event->getContext());
 
         $entity = $event->getEntity();
         $violations = $this->validateEntityUniqueFields($entity);
@@ -84,6 +89,19 @@ class ImportValidationSubscriber implements EventSubscriberInterface
             );
             $event->setEntity(null);
         }
+    }
+
+    /**
+     * @param ContextInterface $context
+     */
+    protected function updateContext(ContextInterface $context)
+    {
+        if ($this->lastContext === $context) {
+            return;
+        }
+
+        $this->lastContext = $context;
+        $this->existingUniqueValues = [];
     }
 
     /**
