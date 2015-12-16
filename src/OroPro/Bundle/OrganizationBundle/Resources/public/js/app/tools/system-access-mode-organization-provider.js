@@ -5,7 +5,7 @@ define([
 
     return {
         getOrganizationId: function() {
-            var urlParts = window.location.href.split('?');
+            var urlParts = this._getCurrentUrl().split('?');
             if (urlParts.length !== 2) {
                 return;
             }
@@ -19,6 +19,9 @@ define([
                 })
                 .last()
                 .value();
+        },
+        _getCurrentUrl: function() {
+            return window.location.href;
         }
     };
 });
