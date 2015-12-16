@@ -1,0 +1,2 @@
+bundles:
+    - { name: OroCRMPro\Bundle\LDAPBundle\OroCRMProLDAPBundle, priority: 110 }

@@ -1,0 +1,63 @@
+oro:
+    user:
+        createdat.label: Created At
+        updatedat.label: Updated At
+        ldap_distinguished_names.label: LDAP Distinguished Names
+orocrmpro:
+    ldap:
+        ldap_encryption:
+            none:   None
+            ssl:    SSL
+            tls:    TLS
+        ldaptransport.entity_label:       LDAP Transport
+        integration:
+            channel:
+                label:                        LDAP
+                fields:
+                    host.label:                   Hostname
+                    host.tooltip:                 The hostname of LDAP server.
+                    port.label:                   Port
+                    port.tooltip:                 The port of LDAP server.
+                    encryption.label:             Encryption
+                    encryption.tooltip:           Encryption type used for communication.
+                    baseDn.label:                 Base Distinguished Name
+                    baseDn.tooltip: >
+                        The default base DN used for searching (e.g., for accounts). This option is required for most account
+                        related operations and should indicate the DN under which accounts are located.
+                    username.label:               Username
+                    username.tooltip: >
+                        The default credentials username. Some servers require that this be in DN form. This must be given in DN
+                        form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.
+                    password.label:               Password
+                    password.tooltip:             The default credentials password (used only with username above).
+                    accountDomainName.label:      Account Domain Name
+                    accountDomainName.tooltip: >
+                        The FQDN domain for which the target LDAP server is an authority (e.g., example.com).
+                    accountDomainNameShort.label: Short Account Domain Name
+                    accountDomainNameShort.tooltip: >
+                        The ‘short’ domain for which the target LDAP server is an authority. This is usually used to specify the
+                        NetBIOS domain name for Windows networks but may also be used by non-AD servers.
+                    connectionCheck.label:        Check Connection
+            transport:
+                label:                        LDAP Transport
+                mapping:
+                    userFilter.label:             User Filter
+                    userFilter.tooltip:           This filter will be used to search for users in LDAP.
+                    userMapping.label:            User Mapping:
+                    userMapping.tooltip:          Name of corresponding attribute in LDAP.
+                    roleFilter.label:             Role Filter
+                    roleFilter.tooltip:           This filter will be used to search for roles in LDAP.
+                    roleMapping.label:            Role Mapping:
+                    roleMapping.tooltip: >
+                        Mapping of LDAP Roles to one, or multiple CRM roles. These roles will be set for imported users.
+                    userInformation.label:        User Information
+                    roleLdapName.label:           LDAP Role Name
+                    roleCrmName.label:            CRM Role Names
+                    roleIdAttribute.label:        Role Id Attribute
+                    roleIdAttribute.tooltip: >
+                        Attribute in LDAP representing role id in CRM. This is where role name from role mapping is found.
+                    roleUserIdAttribute.label:    Role User Id Attribute
+                    exportUserBaseDn.label:       Export User Base Distinguished Name
+                    exportUserObjectClass.label:  Export User Object Class
+            connector:
+                user.label:                   LDAP User Connector
