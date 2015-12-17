@@ -3,17 +3,19 @@
     "description": "OroCommerce - an open-source Business to Business Commerce application.\\This package contains a sample application.",
     "autoload": {
         "psr-0": {
-            "Oro\\Component": "src/Oro/src",
-            "Oro\\Bundle": ["src/Oro/src", "src/OroPackages/src", "src/OroB2B/src"],
-            "OroB2B\\Component": "src/OroB2B/src",
-            "OroB2B\\Bundle": ["src/OroB2B/src"],
             "": "src/"
-        },
-        "psr-4": {
-            "Oro\\Component\\Testing\\": "src/OroB2B/src/Oro/Component/Testing/",
-            "Oro\\Bundle\\SearchBundle\\Test\\Functional\\": "src/OroB2B/src/Oro/Bundle/SearchBundle/Test/Functional/"
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../package/*"
+        },
+        {
+            "type": "composer",
+            "url": "http://packagist.orocrm.com"
+        }
+    ],
     "require": {
         "php": ">=5.4.9",
         "ext-intl": "*",
@@ -74,7 +76,10 @@
         "components/font-awesome": "~4.3.0",
         "piwik/device-detector": "~3.0",
         "oro/jsplumb": "~1.7",
-        "oro/moment-timezone": "0.3.*"
+        "oro/moment-timezone": "0.3.*",
+        "oro/platform": "1.x-dev",
+        "oro/commerce": "0.x-dev",
+        "oro/platform-serialised-fields": "1.x-dev"
     },
     "require-dev": {
         "sensio/generator-bundle": "2.5.3"
@@ -106,11 +111,5 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packagist.orocrm.com"
-        }
-    ]
+    }
 }
