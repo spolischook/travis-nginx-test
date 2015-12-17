@@ -75,4 +75,4 @@ services:
             - @oro_entity.doctrine_helper
             - @oro_importexport.strategy.import.helper
         tags:
-            - { name: kernel.event_subscriber }
+            - { name: kernel.event_listener, event: oro_importexport.strategy.process_before, method: beforeProcess }

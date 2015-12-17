@@ -1,6 +1,6 @@
 <?php
 
-namespace OroCRMPro\Bundle\LDAPBundle\Tests\Integration\EventListener;
+namespace OroCRMPro\Bundle\LDAPBundle\Tests\Functional\EventListener;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

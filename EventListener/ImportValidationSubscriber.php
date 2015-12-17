@@ -4,7 +4,6 @@ namespace OroCRMPro\Bundle\LDAPBundle\EventListener;
 
 use Doctrine\Common\Util\ClassUtils;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -15,7 +14,7 @@ use Oro\Bundle\ImportExportBundle\Strategy\Import\ImportStrategyHelper;
 
 use OroCRMPro\Bundle\LDAPBundle\ImportExport\UserImportStrategy;
 
-class ImportValidationSubscriber implements EventSubscriberInterface
+class ImportValidationSubscriber
 {
     /** @var DoctrineHelper */
     protected $doctrineHelper;
@@ -43,16 +42,6 @@ class ImportValidationSubscriber implements EventSubscriberInterface
     {
         $this->doctrineHelper = $doctrineHelper;
         $this->strategyHelper = $strategyHelper;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
-    {
-        return [
-            StrategyEvent::PROCESS_BEFORE => 'beforeProcess',
-        ];
     }
 
     /**
