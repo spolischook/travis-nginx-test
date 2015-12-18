@@ -9,6 +9,7 @@ atlassian-ide-plugin.xml
 composer.phar
 composer.lock
 /vendor
+node_modules/
 build/
 /cov
 /web/bundles
@@ -17,6 +18,8 @@ build/
 /web/uploads/users/*
 /web/media/cache
 /web/build.js
+/app/phpunit.xml
+/app/karma.conf.js
 /app/config/parameters.yml
 /app/config/parameters_test.yml
 *~

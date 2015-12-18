@@ -361,13 +361,16 @@ class OroRequirements extends SymfonyRequirements
     protected function checkCliRequirements()
     {
         $finder  = new PhpExecutableFinder();
-        $command = sprintf(
-            '%s %soro-check.php',
-            $finder->find(),
-            __DIR__ . DIRECTORY_SEPARATOR
+        $builder = new ProcessBuilder(
+            array(
+                $finder->find(),
+                sprintf('%soro-check.php', __DIR__ . DIRECTORY_SEPARATOR)
+            )
         );
+        $process = $builder->getProcess();
+        $process->run();
 
-        return shell_exec($command);
+        return $process->getOutput();
     }
 }
 
