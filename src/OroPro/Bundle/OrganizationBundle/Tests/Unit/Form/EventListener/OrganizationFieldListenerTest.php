@@ -7,7 +7,9 @@ use OroPro\Bundle\OrganizationBundle\Tests\Unit\Fixture\GlobalOrganization;
 
 class OrganizationFieldListenerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testAddOrganizationField()
+    const ROLE_CLASS_NAME = 'use Oro\Bundle\UserBundle\Entity\Role';
+
+    public function testAddOrganizationFieldWhenOrganizationIsGlobal()
     {
         $env      = $this->getMockBuilder('Twig_Environment')
             ->disableOriginalConstructor()
@@ -17,6 +19,12 @@ class OrganizationFieldListenerTest extends \PHPUnit_Framework_TestCase
         $formView        = $this->getMockBuilder('Symfony\Component\Form\FormView')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $formView->vars = [
+            'value' => self::ROLE_CLASS_NAME,
+            'attr' => []
+        ];
+
         $currentFormData = 'someHTML';
         $formData        = [
             'dataBlocks' => [
@@ -60,6 +68,37 @@ class OrganizationFieldListenerTest extends \PHPUnit_Framework_TestCase
         $securityFacade->expects($this->once())
             ->method('getOrganization')
             ->willReturn($organization);
+
+        $listener = new OrganizationFieldListener($configManager, $securityFacade);
+
+        $listener->addOrganizationField($event);
+    }
+
+    public function testAddOrganizationFieldWhenOrganizationIsNoGlobal()
+    {
+        $event = $this->getMockBuilder('Oro\Bundle\UIBundle\Event\BeforeFormRenderEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $event->expects($this->never())->method('getTwigEnvironment');
+
+        $configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $configManager->expects($this->never())->method($this->anything());
+
+        $securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $organization = new GlobalOrganization();
+        $organization->setIsGlobal(false);
+
+        $securityFacade->expects($this->once())
+            ->method('getOrganization')
+            ->willReturn($organization);
+
+        $event->expects($this->never())->method($this->anything());
 
         $listener = new OrganizationFieldListener($configManager, $securityFacade);
 
