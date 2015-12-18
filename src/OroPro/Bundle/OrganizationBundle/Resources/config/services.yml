@@ -24,6 +24,7 @@ parameters:
     oro_organization.provider.filter.busines_unit_choice_tree.class: OroPro\Bundle\OrganizationBundle\Provider\Filter\ChoiceTreeBusinessUnitProvider
 
     oropro_organization.form.extension.organization_list.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationListExtension
+    oropro_organization.form.extension.imap_check_button.class: OroPro\Bundle\OrganizationBundle\Form\Extension\ImapCheckButtonExtension
 
     oropro_organization.acl.voter.organization.class: OroPro\Bundle\OrganizationBundle\Acl\Voter\OrganizationAnnotationVoter
 
@@ -154,6 +155,13 @@ services:
         scope: request
         tags:
             - { name: form.type_extension, alias: oro_organization_choice_select2 }
+
+    oropro_organization.form.extension.imap_check_button:
+        class: %oropro_organization.form.extension.imap_check_button.class%
+        arguments:
+            - @oro_security.security_facade
+        tags:
+            - { name: form.type_extension, alias: oro_imap_configuration_check }
 
     oropro_organization.acl.voter.organization:
         class: %oropro_organization.acl.voter.organization.class%
