@@ -22,6 +22,7 @@ parameters:
     oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
     oro_organization.form.extension.organization.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationProFormExtension
     oro_organization.provider.filter.busines_unit_choice_tree.class: OroPro\Bundle\OrganizationBundle\Provider\Filter\ChoiceTreeBusinessUnitProvider
+    oro_email.datagrid_query_factory.class: OroPro\Bundle\OrganizationBundle\Datagrid\EmailQueryFactory
 
     oropro_organization.form.extension.organization_list.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationListExtension
     oropro_organization.form.extension.imap_check_button.class: OroPro\Bundle\OrganizationBundle\Form\Extension\ImapCheckButtonExtension
