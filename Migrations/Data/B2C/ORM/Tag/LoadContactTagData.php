@@ -1,6 +1,7 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Tag;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
@@ -73,8 +74,7 @@ class LoadContactTagData extends AbstractFixture implements OrderedFixtureInterf
         foreach ($info as $contactUid => $contactData) {
             /** @var Contact $contact */
             $contact = $contactData['contact'];
-            $contact->setTags(['owner' => $contactData['tags'], 'all' => []]);
-            $manager->persist($contact);
+            $this->tagManager->setTags($contact, new ArrayCollection($contactData['tags']));
 
             $this->tagManager->saveTagging($contact, false);
         }

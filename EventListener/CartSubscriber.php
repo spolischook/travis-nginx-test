@@ -88,7 +88,7 @@ class CartSubscriber implements EventSubscriber
 
         $steps = array_values($steps);
         if (empty($steps)) {
-            throw new EntityNotFoundException('WorkflowStep by cart status ' . $name . 'not found');
+            throw new EntityNotFoundException('WorkflowStep by cart status ' . $name . ' not found');
         }
 
         /** @var WorkflowStep $step */
@@ -105,13 +105,7 @@ class CartSubscriber implements EventSubscriber
         if (empty($this->statuses[$name])) {
             throw new \InvalidArgumentException('Invalid cart status ' . $name);
         }
-
         $workflowName = $this->statuses[$name];
-
-        /** Random set for open WorkflowStep */
-        if ($name === 'open' && rand(0, 1)) {
-            $workflowName = 'contacted';
-        }
 
         return $workflowName;
     }
