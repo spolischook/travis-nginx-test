@@ -7,7 +7,8 @@
     {% if app.request.attributes.get('_route') == 'oropro_organization_config' %}
         {% set parameters = {
             'organization_id': app.request.attributes.get('_route_params')['id'],
-            'redirectData': redirectData
+            'redirectData': redirectData,
+            'form': {'_sa_org_id': app.request.attributes.get('_route_params')['id']},
         } %}
     {% else %}
         {% set parameters = {

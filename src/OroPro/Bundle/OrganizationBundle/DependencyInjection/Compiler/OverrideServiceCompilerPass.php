@@ -17,6 +17,25 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         /**
+         * This override is responsible for making all mailboxes available to users logged under global organization.
+         */
+        $serviceId = 'oro_email.mailbox.manager';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Entity\Manager\MailboxManager');
+        }
+
+        /**
+         * Shows mailboxes for all organizations in system configuration if logged under global organization
+         */
+        $serviceId = 'oro_email.listener.datagrid.mailbox_grid';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\EventListener\MailboxGridListener');
+            $definition->addMethodCall('setSecurityFacade', [new Reference('oro_security.security_facade')]);
+        }
+
+        /**
          * Extension is responsible for showing organization in global organizaton in recipients autocomplete
          */
         $serviceId = 'oro_email.provider.email_recipients.helper';
