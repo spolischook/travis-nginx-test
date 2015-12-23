@@ -13,9 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+use Oro\Bundle\ActionBundle\Helper\ApplicationsHelper;
+use Oro\Bundle\ActionBundle\Helper\ContextHelper;
 use Oro\Bundle\ActionBundle\Model\ActionData;
 use Oro\Bundle\ActionBundle\Model\ActionManager;
-use Oro\Bundle\ActionBundle\Model\ContextHelper;
 
 class WidgetController extends Controller
 {
@@ -29,7 +30,10 @@ class WidgetController extends Controller
     {
         return [
             'actions' => $this->getActionManager()->getActions(),
-            'context' => $this->getContextHelper()->getContext()
+            'context' => $this->getContextHelper()->getContext(),
+            'actionData' => $this->getContextHelper()->getActionData(),
+            'dialogRoute' => $this->getApplicationsHelper()->getDialogRoute(),
+            'executionRoute' => $this->getApplicationsHelper()->getExecutionRoute(),
         ];
     }
 
@@ -87,13 +91,21 @@ class WidgetController extends Controller
     }
 
     /**
+     * @return ApplicationsHelper
+     */
+    protected function getApplicationsHelper()
+    {
+        return $this->get('oro_action.helper.applications');
+    }
+
+    /**
      * @param ActionData $context
      * @return array
      */
     protected function getResponse(ActionData $context)
     {
         /* @var $session Session */
-        $session = $this->getRequest()->getSession();
+        $session = $this->get('session');
 
         $response = [];
         if ($context->getRedirectUrl()) {
