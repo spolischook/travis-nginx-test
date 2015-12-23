@@ -2,7 +2,6 @@ parameters:
     #licence
     oropro_security.licence.server_agent.class: OroPro\Bundle\SecurityBundle\Licence\ServerAgent
     oropro_security.licence.sender.class:       OroPro\Bundle\SecurityBundle\Licence\Sender
-
     #
     # Override Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
     # in enterprise edition user should be able to set Organization as Access level in "Default permission on entities"

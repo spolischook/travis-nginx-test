@@ -22,8 +22,10 @@ parameters:
     oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
     oro_organization.form.extension.organization.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationProFormExtension
     oro_organization.provider.filter.busines_unit_choice_tree.class: OroPro\Bundle\OrganizationBundle\Provider\Filter\ChoiceTreeBusinessUnitProvider
+    oro_email.datagrid_query_factory.class: OroPro\Bundle\OrganizationBundle\Datagrid\EmailQueryFactory
 
     oropro_organization.form.extension.organization_list.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationListExtension
+    oropro_organization.form.extension.imap_check_button.class: OroPro\Bundle\OrganizationBundle\Form\Extension\ImapCheckButtonExtension
 
     oropro_organization.acl.voter.organization.class: OroPro\Bundle\OrganizationBundle\Acl\Voter\OrganizationAnnotationVoter
 
@@ -84,6 +86,7 @@ services:
         class: %oropro_organization.helper.class%
         arguments:
             - @doctrine
+            - @security.token_storage
 
     oropro_organization.listener.kernel_request_listener:
         class: %oropro_organization.listener.kernel_request_listener.class%
@@ -154,6 +157,13 @@ services:
         scope: request
         tags:
             - { name: form.type_extension, alias: oro_organization_choice_select2 }
+
+    oropro_organization.form.extension.imap_check_button:
+        class: %oropro_organization.form.extension.imap_check_button.class%
+        arguments:
+            - @oro_security.security_facade
+        tags:
+            - { name: form.type_extension, alias: oro_imap_configuration_check }
 
     oropro_organization.acl.voter.organization:
         class: %oropro_organization.acl.voter.organization.class%
