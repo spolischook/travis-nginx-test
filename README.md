@@ -88,6 +88,14 @@ And ensure that timeout has default value
 
 See [Optimizing InnoDB Disk I/O][3] for more
 
+## PostgreSQL installation notes
+
+You need to load `uuid-ossp` extension for proper doctrine's `guid` type handling.
+Log into database and run sql query:
+
+```
+CREATE EXTENSION "uuid-ossp";
+```
 
 ## Loading Demo Data using command line
 
