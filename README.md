@@ -24,7 +24,7 @@ NOTE: symlinks for path repository not supported on Windows environment. Please 
 folder and use `mklink` command instead. For example, to enable platform package in platform application after 
 `composer install` run following commands in the administrator mode:
 ```
-rm -rf application/platform/vendor/oro/platform
+rd /s /q "application/platform/vendor/oro/platform"
 mklink /J "./application/platform/vendor/oro/platform" "./package/platform"
 ```
 
