@@ -65,7 +65,7 @@ class LoadAccountTagData extends AbstractFixture implements OrderedFixtureInterf
         foreach ($info as $accountUid => $accountData) {
             /** @var Account $account */
             $account = $accountData['account'];
-            $this->tagManager->setTags($account,  new ArrayCollection($accountData['tags']));
+            $this->tagManager->setTags($account, new ArrayCollection($accountData['tags']));
 
             $this->tagManager->saveTagging($account, false);
         }
