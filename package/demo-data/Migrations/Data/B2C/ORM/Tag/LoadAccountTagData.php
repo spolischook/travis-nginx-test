@@ -1,6 +1,7 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Tag;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
@@ -57,19 +58,18 @@ class LoadAccountTagData extends AbstractFixture implements OrderedFixtureInterf
                 $info[$accountTag['account uid']]['tags'][] = $tag;
             }
         }
-
+        $this->setSecurityContext($this->getMainUser());
         /**
          * Need for saveTagging
          */
         foreach ($info as $accountUid => $accountData) {
             /** @var Account $account */
             $account = $accountData['account'];
-            $account->setTags(['owner' => $accountData['tags'], 'all' => []]);
-            $manager->persist($account);
+            $this->tagManager->setTags($account, new ArrayCollection($accountData['tags']));
 
-            $this->setSecurityContext($account->getOwner());
-            $this->tagManager->saveTagging($account);
+            $this->tagManager->saveTagging($account, false);
         }
+        $manager->flush();
     }
 
     /**

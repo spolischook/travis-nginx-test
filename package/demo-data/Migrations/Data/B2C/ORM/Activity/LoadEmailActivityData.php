@@ -7,6 +7,8 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
+
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailBody;
@@ -34,7 +36,10 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
      */
     protected $mailerProcessor;
 
-    /**
+    /** @var EntityNameResolver */
+    protected $entityNameResolver;
+
+        /**
      * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
@@ -43,6 +48,7 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
 
         $this->emailEntityBuilder = $container->get('oro_email.email.entity.builder');
         $this->mailerProcessor    = $container->get('oro_email.mailer.processor');
+        $this->entityNameResolver = $container->get('oro_entity.entity_name_resolver');
     }
 
     /**
@@ -129,8 +135,7 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
     protected function createEmailUser($entity, $subject, $type = FolderType::SENT)
     {
         $from = $entity->getOwner()->getFullName() . ' <' . $entity->getOwner()->getEmail() . '>';
-        $to   = $entity->getFirstName() . ' ' . $entity->getLastName()
-            . ' <' . $entity->getEmail() . '>';
+        $to = $this->entityNameResolver->getName($entity) . ' <' . $entity->getEmail() . '>';
 
         if ($type === FolderType::INBOX) {
             $from = $entity->getEmail();

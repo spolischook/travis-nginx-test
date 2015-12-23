@@ -13,16 +13,6 @@ use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 class CartSubscriber implements EventSubscriber
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getSubscribedEvents()
-    {
-        // @codingStandardsIgnoreStart
-        return [Events::preUpdate];
-        // @codingStandardsIgnoreEnd
-    }
-
     /** @var EntityManager */
     protected $em;
 
@@ -40,6 +30,16 @@ class CartSubscriber implements EventSubscriber
         'purchased'                => 'converted',
         'converted_to_opportunity' => 'converted',
     ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubscribedEvents()
+    {
+        return [
+            Events::preUpdate
+        ];
+    }
 
     /**
      * @param PreUpdateEventArgs $args
@@ -64,6 +64,7 @@ class CartSubscriber implements EventSubscriber
 
     /**
      * @param $name
+     *
      * @return WorkflowStep
      * @throws EntityNotFoundException
      */
@@ -88,15 +89,16 @@ class CartSubscriber implements EventSubscriber
 
         $steps = array_values($steps);
         if (empty($steps)) {
-            throw new EntityNotFoundException('WorkflowStep by cart status ' . $name . 'not found');
+            throw new EntityNotFoundException('WorkflowStep by cart status ' . $name . ' not found');
         }
 
         /** @var WorkflowStep $step */
-        return $steps[0];
+        return reset($steps);
     }
 
     /**
      * @param $name
+     *
      * @return string
      * @throws \InvalidArgumentException
      */
@@ -105,13 +107,7 @@ class CartSubscriber implements EventSubscriber
         if (empty($this->statuses[$name])) {
             throw new \InvalidArgumentException('Invalid cart status ' . $name);
         }
-
         $workflowName = $this->statuses[$name];
-
-        /** Random set for open WorkflowStep */
-        if ($name === 'open' && rand(0, 1)) {
-            $workflowName = 'contacted';
-        }
 
         return $workflowName;
     }
