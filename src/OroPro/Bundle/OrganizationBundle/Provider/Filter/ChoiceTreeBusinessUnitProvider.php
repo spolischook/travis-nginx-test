@@ -4,13 +4,12 @@ namespace OroPro\Bundle\OrganizationBundle\Provider\Filter;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Provider\Filter\ChoiceTreeBusinessUnitProvider as BaseChoiceTreeBusinessUnitProvider;
+use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 
 class ChoiceTreeBusinessUnitProvider extends BaseChoiceTreeBusinessUnitProvider
 {
     /**
-     * @param BusinessUnit $businessUnit
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function getBusinessUnitName(BusinessUnit $businessUnit)
     {
@@ -26,5 +25,17 @@ class ChoiceTreeBusinessUnitProvider extends BaseChoiceTreeBusinessUnitProvider
         }
 
         return  $name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getBusinessUnitIds()
+    {
+        $user = $this->getUser();
+        /** @var OwnerTree $tree */
+        $tree = $this->treeProvider->getTree();
+
+        return $tree->getBusinessUnitsIdByUserOrganizations($user->getId());
     }
 }
