@@ -18,39 +18,39 @@
     </logging>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="Project_Test_Suite">
             <directory suffix="Test.php">../vendor/oro/*/src/*/Component/*/Tests/Unit</directory>
             <directory suffix="Test.php">../vendor/oro/*/src/*/Bundle/*Bundle/Tests/Unit</directory>
             <directory suffix="Test.php">../vendor/oro/*/src/*/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
-        <testsuite name="Unit Tests">
+        <testsuite name="Unit_Tests">
             <directory suffix="Test.php">../vendor/oro/*/src/*/Component/*/Tests/Unit</directory>
             <directory suffix="Test.php">../vendor/oro/*/src/*/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
-        <testsuite name="Functional Tests">
+        <testsuite name="Functional_Tests">
             <directory suffix="Test.php">../vendor/oro/*/src/*/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
-        <testsuite name="Project OroCRM Unit Tests">
+        <testsuite name="OroCRM_Unit_Tests">
             <directory suffix="Test.php">../vendor/oro/*/src/OroCRM/Bundle/*Bundle/Tests/Unit</directory>
             <directory suffix="Test.php">../vendor/oro/*/src/OroCRMPro/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
-        <testsuite name="Project OroCRM Functional Tests">
+        <testsuite name="OroCRM_Functional_Tests">
             <directory suffix="Test.php">../vendor/oro/*/src/OroCRM/Bundle/*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">../vendor/oro/*/src/OroCRMPro/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
-        <testsuite name="Project Oro Unit Tests">
+        <testsuite name="Oro_Unit_Tests">
             <directory suffix="Test.php">../vendor/oro/*/src/Oro/Component/*/Tests/Unit</directory>
             <directory suffix="Test.php">../vendor/oro/*/src/Oro/Bundle/*Bundle/Tests/Unit</directory>
             <directory suffix="Test.php">../vendor/oro/*/src/OroPro/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
-        <testsuite name="Project Oro Functional Tests">
+        <testsuite name="Oro_Functional_Tests">
             <directory suffix="Test.php">../vendor/oro/*/src/Oro/Bundle/*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">../vendor/oro/*/src/OroPro/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
-        <testsuite name="Project Selenium Tests">
+        <testsuite name="Selenium_Tests">
             <directory suffix="Test.php">../vendor/oro/*/src/*/Bundle/*Bundle/Tests/Selenium</directory>
         </testsuite>
-        <testsuite name="Project Behat Tests">
+        <testsuite name="Behat_Tests">
             <directory suffix="Test.php">../vendor/oro/*/src/Oro*/Bundle/*Bundle/Tests/Behat</directory>
         </testsuite>
     </testsuites>
