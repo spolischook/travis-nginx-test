@@ -1,0 +1,5 @@
+{% block _oro_user_user_form_roles_widget %}
+    {{ form_widget(form) }}
+    {% import 'OroProUserBundle:Form:javascript.html.twig' as js %}
+    {{ js.filterRoles(form.parent)}}
+{% endblock %}
