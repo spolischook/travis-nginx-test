@@ -11,24 +11,6 @@ class MailboxManager extends BaseMailboxManager
     /**
      * {@inheritdoc}
      */
-    public function findAvailableMailboxes($user, Organization $organization = null)
-    {
-        /*
-         * If global organization is used, don't filter by organization.
-         */
-        if (!$organization || $organization->getIsGlobal()) {
-            $organization = null;
-        }
-
-        $qb = $this->registry->getRepository('OroEmailBundle:Mailbox')
-            ->createAvailableMailboxesQuery($user, $organization);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findAvailableOrigins(User $user, Organization $organization)
     {
         if (!$organization->getIsGlobal()) {
@@ -39,5 +21,20 @@ class MailboxManager extends BaseMailboxManager
             'owner' => $user,
             'isActive' => true,
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createAvailableMailboxesQuery($user, Organization $organization = null)
+    {
+        /*
+         * If global organization is used, don't filter by organization.
+         */
+        if (!$organization || $organization->getIsGlobal()) {
+            $organization = null;
+        }
+
+        return parent::createAvailableMailboxesQuery($user, $organization);
     }
 }
