@@ -3,8 +3,8 @@ datagrid:
         extended_entity_name: %oro_organization.organization.entity.class%
         options:
             entityHint: organization
+        acl_resource: oro_organization_view
         source:
-            acl_resource: oro_organization_view
             type: orm
             query:
                 select:
@@ -90,8 +90,8 @@ datagrid:
 
     organization-users-grid:
         extends: user-relation-grid
+        acl_resource: oro_organization_update
         source:
-            acl_resource: oro_organization_update
             query:
                 select:
                     - >
@@ -168,52 +168,52 @@ datagrid:
                     excluded: '#organizationRemoveUsers'
 
     organization-view-users-grid:
-            extends: user-relation-grid
-            source:
-                acl_resource: oro_organization_view
-                query:
-                    where:
-                        and:
-                            - :organization_id MEMBER OF u.organizations
-                bind_parameters:
-                    - organization_id
+        extends: user-relation-grid
+        acl_resource: oro_organization_view
+        source:
+            query:
+                where:
+                    and:
+                        - :organization_id MEMBER OF u.organizations
+            bind_parameters:
+                - organization_id
+        columns:
+            firstName:
+                label: oro.user.first_name.label
+            lastName:
+                label: oro.user.last_name.label
+            email:
+                label: oro.user.email.label
+            username:
+                label: oro.user.username.label
+            enabled:
+                label: oro.user.enabled.label
+                frontend_type: select
+                choices:
+                   - Inactive
+                   - Active
+        sorters:
+            default:
+                lastName: ASC
+        filters:
             columns:
                 firstName:
-                    label: oro.user.first_name.label
+                    type: string
+                    data_name: u.firstName
                 lastName:
-                    label: oro.user.last_name.label
+                    type: string
+                    data_name: u.lastName
                 email:
-                    label: oro.user.email.label
+                    type: string
+                    data_name: u.email
                 username:
-                    label: oro.user.username.label
+                    type: string
+                    data_name: u.username
                 enabled:
-                    label: oro.user.enabled.label
-                    frontend_type: select
-                    choices:
-                       - Inactive
-                       - Active
-            sorters:
-                default:
-                    lastName: ASC
-            filters:
-                columns:
-                    firstName:
-                        type: string
-                        data_name: u.firstName
-                    lastName:
-                        type: string
-                        data_name: u.lastName
-                    email:
-                        type: string
-                        data_name: u.email
-                    username:
-                        type: string
-                        data_name: u.username
-                    enabled:
-                        type: choice
-                        data_name: u.enabled
-                        options:
-                            field_options:
-                                choices:
-                                    'false': Inactive
-                                    'true':  Active
+                    type: choice
+                    data_name: u.enabled
+                    options:
+                        field_options:
+                            choices:
+                                'false': Inactive
+                                'true':  Active
