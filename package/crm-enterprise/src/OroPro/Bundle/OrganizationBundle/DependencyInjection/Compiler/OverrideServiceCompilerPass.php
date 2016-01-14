@@ -149,8 +149,6 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
             $definition->setClass('OroPro\Bundle\OrganizationBundle\Twig\WindowsExtension');
-            $definition->addArgument($container->getDefinition('security.context'));
-            $definition->addArgument(new Reference('doctrine.orm.entity_manager'));
             $definition->addMethodCall(
                 'setRouter',
                 [new Reference('router')]
