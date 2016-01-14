@@ -76,6 +76,7 @@
         "components/font-awesome": "~4.3.0",
         "piwik/device-detector": "~3.0",
         "oro/jsplumb": "~1.7",
+        "vakata/jstree": "^3.2"
         "oro/moment-timezone": "0.3.*",
         "oro/platform": "1.x-dev",
         "oro/commerce": "0.x-dev",
@@ -93,14 +94,16 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
-            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets"
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
-            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets"
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
         ]
     },
     "minimum-stability": "dev",
