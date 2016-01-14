@@ -35,5 +35,6 @@ parameters:
     secret:                 ThisTokenIsNotSoSecretChangeIt
     installed:              ~
     assets_version:         ~
+    assets_version_strategy: time_hash
 
     enterprise_licence:     ~
