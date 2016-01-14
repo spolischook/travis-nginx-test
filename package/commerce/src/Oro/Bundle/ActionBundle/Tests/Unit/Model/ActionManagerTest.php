@@ -361,6 +361,9 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
         $actionDefinition->expects($this->once())
             ->method('getEntities')
             ->willReturn(['stdClass']);
+        $actionDefinition->expects($this->once())
+            ->method('getDatagrids')
+            ->willReturn(['datagrid1']);
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|Action $action */
         $action = $this->getMockBuilder('Oro\Bundle\ActionBundle\Model\Action')
@@ -463,25 +466,26 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getDialogTemplateDataProvider
+     * @dataProvider getFrontendTemplateDataProvider
      *
      * @param string $actionName
      * @param string $expected
      */
-    public function testGetDialogTemplate($actionName, $expected)
+    public function testGetFrontendTemplate($actionName, $expected)
     {
         $this->assertApplicationsHelperCalled();
         $this->assertContextHelperCalled(
             [
                 'route' => 'route1',
                 'entityClass' => 'stdClass',
-                'entityId' => 1
+                'entityId' => 1,
+                'datagrid' => 'datagrid_name',
             ],
             0,
             1
         );
 
-        $this->assertEquals($expected, $this->manager->getDialogTemplate($actionName));
+        $this->assertEquals($expected, $this->manager->getFrontendTemplate($actionName));
     }
 
     /**
@@ -494,7 +498,7 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getContext')
             ->willReturnCallback(function ($context) {
                 return array_merge(
-                    ['route' => null, 'entityId' => null, 'entityClass' => null],
+                    ['route' => null, 'entityId' => null, 'entityClass' => null, 'datagrid' => null],
                     $context
                 );
             });
@@ -520,7 +524,8 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
                     [
                         'route' => null,
                         'entityId' => null,
-                        'entityClass' => null
+                        'entityClass' => null,
+                        'datagrid' => null,
                     ],
                     $context
                 )
@@ -642,12 +647,16 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function getDialogTemplateDataProvider()
+    public function getFrontendTemplateDataProvider()
     {
         return [
             [
                 'actionName' => 'action2',
-                'expected' => ActionManager::DEFAULT_DIALOG_TEMPLATE
+                'expected' => ActionManager::DEFAULT_FORM_TEMPLATE
+            ],
+            [
+                'actionName' => 'action1',
+                'expected' => ActionManager::DEFAULT_PAGE_TEMPLATE
             ],
             [
                 'actionName' => 'action4',
@@ -667,6 +676,7 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
                 'routes' => [],
                 'entities' => [],
                 'order' => 50,
+                'frontend_options' => ['show_dialog' => false]
             ],
             'action2' => [
                 'label' => 'Label2',
@@ -675,6 +685,7 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
                 ],
                 'entities' => [],
                 'order' => 40,
+                'frontend_options' => ['show_dialog' => true]
             ],
             'action3' => [
                 'label' => 'Label3',
@@ -683,6 +694,7 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
                     'Oro\Bundle\ActionBundle\Tests\Unit\Stub\TestEntity1',
                 ],
                 'order' => 30,
+                'frontend_options' => ['show_dialog' => true]
             ],
             'action4' => [
                 'label' => 'Label4',
@@ -695,9 +707,10 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
                     'Oro\Bundle\ActionBundle\Tests\Unit\Stub\TestEntity2',
                 ],
                 'frontend_options' => [
-                    'dialog_template' => 'test.html.twig'
+                    'template' => 'test.html.twig',
+                    'show_dialog' => true
                 ],
-                'order' => 20,
+                'order' => 20
             ],
             'action5' => [
                 'label' => 'Label5',
@@ -712,6 +725,7 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
                 ],
                 'order' => 10,
                 'enabled' => false,
+                'frontend_options' => ['show_dialog' => true]
             ],
             'action6' => [
                 'label' => 'Label6',
@@ -720,6 +734,7 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
                 'entities' => ['Oro\Bundle\ActionBundle\Tests\Unit\Stub\TestEntity1'],
                 'order' => 50,
                 'enabled' => true,
+                'frontend_options' => ['show_dialog' => true]
             ],
             'action7' => [
                 'label' => 'Label7',
@@ -736,6 +751,7 @@ class ActionManagerTest extends \PHPUnit_Framework_TestCase
                 ],
                 'order' => 50,
                 'enabled' => true,
+                'frontend_options' => ['show_dialog' => true]
             ],
         ];
     }

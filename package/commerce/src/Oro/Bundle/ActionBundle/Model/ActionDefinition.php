@@ -2,11 +2,14 @@
 
 namespace Oro\Bundle\ActionBundle\Model;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ */
 class ActionDefinition
 {
     const PREFUNCTIONS = 'prefunctions';
-    const INITFUNCTIONS = 'initfunctions';
-    const POSTFUNCTIONS = 'postfunctions';
+    const FORM_INIT = 'form_init';
+    const FUNCTIONS = 'functions';
 
     const PRECONDITIONS = 'preconditions';
     const CONDITIONS = 'conditions';
@@ -24,6 +27,9 @@ class ActionDefinition
     private $entities = [];
 
     /** @var array */
+    private $datagrids = [];
+
+    /** @var array */
     private $routes = [];
 
     /** @var array */
@@ -33,7 +39,13 @@ class ActionDefinition
     private $order = 0;
 
     /** @var array */
+    private $buttonOptions = [];
+
+    /** @var array */
     private $frontendOptions = [];
+
+    /** @var array */
+    private $datagridOptions = [];
 
     /** @var string */
     private $formType;
@@ -63,7 +75,7 @@ class ActionDefinition
      */
     public static function getAllowedFunctions()
     {
-        return [self::PREFUNCTIONS, self::INITFUNCTIONS, self::POSTFUNCTIONS];
+        return [self::PREFUNCTIONS, self::FORM_INIT, self::FUNCTIONS];
     }
 
     /**
@@ -164,6 +176,25 @@ class ActionDefinition
     /**
      * @return array
      */
+    public function getDatagrids()
+    {
+        return $this->datagrids;
+    }
+
+    /**
+     * @param array $datagrids
+     * @return $this
+     */
+    public function setDatagrids(array $datagrids)
+    {
+        $this->datagrids = $datagrids;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
     public function getApplications()
     {
         return $this->applications;
@@ -195,6 +226,44 @@ class ActionDefinition
     public function setRoutes(array $routes)
     {
         $this->routes = $routes;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getButtonOptions()
+    {
+        return $this->buttonOptions;
+    }
+
+    /**
+     * @param array $buttonOptions
+     * @return $this
+     */
+    public function setButtonOptions(array $buttonOptions)
+    {
+        $this->buttonOptions = $buttonOptions;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDatagridOptions()
+    {
+        return $this->datagridOptions;
+    }
+
+    /**
+     * @param array $datagridOptions
+     * @return $this
+     */
+    public function setDatagridOptions(array $datagridOptions)
+    {
+        $this->datagridOptions = $datagridOptions;
 
         return $this;
     }

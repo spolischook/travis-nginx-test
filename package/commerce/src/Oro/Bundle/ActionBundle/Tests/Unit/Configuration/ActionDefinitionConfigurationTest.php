@@ -63,48 +63,67 @@ class ActionDefinitionConfigurationTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
                 'expected' => [
+                    'replace' => [],
                     'label' => 'Test Label 1',
                     'applications' => [],
                     'entities' => [],
                     'routes' => [],
+                    'datagrids' => [],
                     'order' => 0,
                     'enabled' => true,
                     'prefunctions' => [],
                     'preconditions' => [],
                     'conditions' => [],
-                    'initfunctions' => [],
-                    'postfunctions' => [],
+                    'form_init' => [],
+                    'functions' => [],
                     'attributes' => [],
                     'frontend_options' => [
-                        'dialog_options' => [],
+                        'options' => [],
+                        'show_dialog' => true
+                    ],
+                    'button_options' => [
                         'page_component_options' => [],
                         'data' => []
                     ],
+                    'datagrid_options' => [
+                        'mass_action' => []
+                    ]
                 ],
             ],
             'full valid configuration' => [
                 'input' => [
                     'action' => [
+                        'replace' => 'test_replace',
                         'label' => 'Test Label 2',
                         'applications' => ['app1', 'app2', 'app3'],
                         'entities' => ['Entity1', 'Entity2'],
                         'routes' => ['route_1', 'route_2'],
+                        'datagrids' => ['datagrid_1', 'datagrid_2'],
                         'order' => 15,
                         'enabled' => false,
                         'frontend_options' => [
+                            'template' => 'template',
+                            'title' => 'dialog title',
+                            'options' => ['width' => 400],
+                            'confirmation' => 'Confirmation message',
+                            'show_dialog' => false
+                        ],
+                        'button_options' => [
                             'icon' => 'icon',
                             'class' => 'class',
                             'group' => 'group label',
                             'template' => 'template',
-                            'dialog_template' => 'template',
-                            'dialog_title' => 'dialog title',
-                            'dialog_options' => ['width' => 400],
                             'page_component_module' => 'testbundle/app/component',
                             'page_component_options' => [
                                 'param' => 'value'
                             ],
                             'data' => [
                                 'attribute' => 'attrValue'
+                            ]
+                        ],
+                        'datagrid_options' => [
+                            'mass_action' => [
+                                'icon' => 'test'
                             ]
                         ],
                         'form_options' => [
@@ -126,10 +145,10 @@ class ActionDefinitionConfigurationTest extends \PHPUnit_Framework_TestCase
                         'preconditions' => [
                             '@equal' => ['$field1', 'value1'],
                         ],
-                        'initfunctions' => [
+                        'form_init' => [
                             '@assign_value' => ['$field1', 'value2'],
                         ],
-                        'postfunctions' => [
+                        'functions' => [
                             '@call_method' => [],
                         ],
                         'attributes' => [
@@ -141,10 +160,12 @@ class ActionDefinitionConfigurationTest extends \PHPUnit_Framework_TestCase
                     ],
                 ],
                 'expected' => [
+                    'replace' => ['test_replace'],
                     'label' => 'Test Label 2',
                     'applications' => ['app1', 'app2', 'app3'],
                     'entities' => ['Entity1', 'Entity2'],
                     'routes' => ['route_1', 'route_2'],
+                    'datagrids' => ['datagrid_1', 'datagrid_2'],
                     'order' => 15,
                     'enabled' => false,
                     'prefunctions' => [
@@ -154,10 +175,10 @@ class ActionDefinitionConfigurationTest extends \PHPUnit_Framework_TestCase
                         '@equal' => ['$field1', 'value1'],
                     ],
                     'conditions' => [],
-                    'initfunctions' => [
+                    'form_init' => [
                         '@assign_value' => ['$field1', 'value2'],
                     ],
-                    'postfunctions' => [
+                    'functions' => [
                         '@call_method' => [],
                     ],
                     'attributes' => [
@@ -169,13 +190,17 @@ class ActionDefinitionConfigurationTest extends \PHPUnit_Framework_TestCase
                         ]
                     ],
                     'frontend_options' => [
+                        'template' => 'template',
+                        'title' => 'dialog title',
+                        'options' => ['width' => 400],
+                        'confirmation' => 'Confirmation message',
+                        'show_dialog' => false
+                    ],
+                    'button_options' => [
                         'icon' => 'icon',
                         'class' => 'class',
                         'group' => 'group label',
                         'template' => 'template',
-                        'dialog_template' => 'template',
-                        'dialog_title' => 'dialog title',
-                        'dialog_options' => ['width' => 400],
                         'page_component_module' => 'testbundle/app/component',
                         'page_component_options' => [
                             'param' => 'value'
@@ -197,6 +222,11 @@ class ActionDefinitionConfigurationTest extends \PHPUnit_Framework_TestCase
                             'attribute_1' => 'value 1',
                         ]
                     ],
+                    'datagrid_options' => [
+                        'mass_action' => [
+                            'icon' => 'test'
+                        ]
+                    ]
                 ],
             ],
         ];
@@ -211,7 +241,8 @@ class ActionDefinitionConfigurationTest extends \PHPUnit_Framework_TestCase
             $this->invalidConfigurationProvider(),
             $this->invalidAttributeProvider(),
             $this->invalidFormOptionsProvider(),
-            $this->invalidAttributesProvider()
+            $this->invalidAttributesProvider(),
+            $this->invalidDatagridOptionsProvider()
         );
     }
 
@@ -586,6 +617,39 @@ class ActionDefinitionConfigurationTest extends \PHPUnit_Framework_TestCase
                 'message' =>
                     'Invalid configuration for path "action.attributes.attribute9": ' .
                     'Option "class" cannot be used for "bool" type'
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function invaliddatagridOptionsProvider()
+    {
+        return [
+            'incorrect action[datagrid_options]' => [
+                'input' => [
+                    'action' => [
+                        'label' => 'Test Label',
+                        'datagrid_options' => '',
+                    ],
+                ],
+                'message' => 'Invalid type for path "action.datagrid_options". Expected array, but got string'
+            ],
+            'specified both options of action[datagrid_options]' => [
+                'input' => [
+                    'action' => [
+                        'label' => 'Test Label',
+                        'datagrid_options' => [
+                            'mass_action_provider' => 'test',
+                            'mass_action' => [
+                                'data' => 'value'
+                            ]
+                        ],
+                    ],
+                ],
+                'message' => 'Invalid configuration for path "action.datagrid_options": ' .
+                    'Must be specified only one parameter "mass_action_provider" or "mass_action"'
             ],
         ];
     }

@@ -3,30 +3,24 @@
 define(function(require) {
     'use strict';
 
-    var ButtonsComponent;
     var BaseComponent = require('oroui/js/app/components/base/component');
+    var ActionManager = require('oroaction/js/action-manager');
     var _ = require('underscore');
-    var __ = require('orotranslation/js/translator');
     var $ = require('jquery');
-    var mediator = require('oroui/js/mediator');
-    var messenger = require('oroui/js/messenger');
-    var DialogWidget = require('oro/dialog-widget');
 
-    ButtonsComponent = BaseComponent.extend({
-        /**
-         * @property {Object}
-         */
-        options: {},
+    var ButtonsComponent = BaseComponent.extend({
 
         /**
          * @property {jQuery.Element}
          */
-        $container: {},
+        $container: null,
 
         /**
          * @inheritDoc
          */
         initialize: function(options) {
+            ButtonsComponent.__super__.initialize.apply(this, arguments);
+
             this.options = _.defaults(options || {}, this.options);
 
             this.$container = $(this.options._sourceElement);
@@ -40,110 +34,32 @@ define(function(require) {
         onClick: function(e) {
             e.preventDefault();
 
-            var $element = $(e.currentTarget);
-            if ($element.data('dialog-url')) {
-                var widget = new DialogWidget(this._getDialogOptions($element));
-
-                this.listenTo(widget, 'formSave', _.bind(function(response) {
-                    widget.remove();
-                    this.doResponse(e, response);
-                }, this));
-
-                widget.render();
-            } else {
-                mediator.execute('showLoading');
-
-                $.getJSON($element.attr('href'))
-                    .done(_.bind(function(response) {
-                        this.doResponse(e, response);
-                    }, this))
-                    .fail(function(jqXHR) {
-                        var message = __('Could not perform action');
-                        if (jqXHR.statusText) {
-                            message += ': ' + jqXHR.statusText;
-                        }
-
-                        if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-                            message += ': ' + jqXHR.responseJSON.message;
-                        }
-
-                        mediator.execute('hideLoading');
-                        messenger.notificationFlashMessage('error', message);
-                    });
-            }
+            this._getActionManager($(e.currentTarget)).execute(e);
         },
 
         /**
          * @param {jQuery.Element} $element
-         * @return {Object}
+         * @returns {ActionManager}
+         * @private
          */
-        _getDialogOptions: function($element) {
-            var dialogOptions = {
-                title: 'action',
-                url: $element.data('dialog-url'),
-                stateEnabled: false,
-                incrementalPosition: false,
-                loadingMaskEnabled: true,
-                dialogOptions: {
-                    modal: true,
-                    resizable: true,
-                    width: 475,
-                    autoResize: true
-                }
-            };
-
-            var additionalOptions = $element.data('dialog-options');
-            if (additionalOptions) {
-                if (additionalOptions.dialogOptions !== undefined) {
-                    additionalOptions.dialogOptions = _.extend(
-                        dialogOptions.dialogOptions,
-                        additionalOptions.dialogOptions
-                    );
-                }
-
-                dialogOptions = _.extend(dialogOptions, additionalOptions);
-            }
-
-            return dialogOptions;
-        },
-
-        /**
-         * @param {jQuery.Event} e
-         * @param {Object} response
-         */
-        doResponse: function(e, response) {
-            mediator.execute('hideLoading');
-
-            if (response.flashMessages) {
-                for (var type in response.flashMessages) {
-                    var messages = response.flashMessages[type];
-                    for (var k in messages) {
-                        messenger.notificationFlashMessage(type, messages[k]);
+        _getActionManager: function($element) {
+            if (!$element.data('action-manager')) {
+                var options = {
+                    showDialog: Boolean($element.data('dialog-url')),
+                    dialogUrl: $element.data('dialog-url'),
+                    dialogOptions: $element.data('dialog-options'),
+                    redirectUrl: $element.data('page-url'),
+                    url: $element.attr('href'),
+                    confirmation: Boolean($element.data('confirmation')),
+                    messages: {
+                        confirm_content: $element.data('confirmation')
                     }
-                }
+                };
+
+                $element.data('action-manager', new ActionManager(options));
             }
 
-            if (response.redirectUrl) {
-                e.stopImmediatePropagation();
-                this.doRedirect(response.redirectUrl);
-            } else if (response.refreshGrid) {
-                for (var k in response.refreshGrid) {
-                    mediator.trigger('datagrid:doRefresh:' + response.refreshGrid[k]);
-                }
-            } else {
-                this.doPageReload();
-            }
-        },
-
-        /**
-         * @param {String} redirectUrl
-         */
-        doRedirect: function(redirectUrl) {
-            mediator.execute('redirectTo', {url: redirectUrl});
-        },
-
-        doPageReload: function() {
-            mediator.execute('refreshPage');
+            return $element.data('action-manager');
         },
 
         dispose: function() {
