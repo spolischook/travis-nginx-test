@@ -1,17 +1,21 @@
 <?php
 namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM;
 
-use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
-use OroCRM\Bundle\SalesBundle\Entity\Lead;
-use OroCRM\Bundle\SalesBundle\Entity\Opportunity;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
 use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Bundle\ReportBundle\Entity\Report;
+
+use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
+use OroCRM\Bundle\SalesBundle\Entity\Lead;
+use OroCRM\Bundle\SalesBundle\Entity\Opportunity;
 
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
@@ -111,13 +115,18 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
                 "remove" => false
             ],
         ];
+        $tokenStorage = $this->container->get('security.token_storage');
+
         /** @var User $user */
+        /** @var Organization $organization */
         foreach ($users as $user) {
-            $this->setSecurityContext($user);
+            $organization = $user->getOrganization();
+            $token        = new UsernamePasswordOrganizationToken($user, $user->getUsername(), 'main', $organization);
+            $tokenStorage->setToken($token);
             foreach ($params as $param) {
                 $param['user'] = $user;
                 $pinTab        = $this->navigationFactory->createItem($param['type'], $param);
-                $pinTab->getItem()->setOrganization($user->getOrganization());
+                $pinTab->getItem()->setOrganization($organization);
                 $manager->persist($pinTab);
             }
         }
@@ -129,6 +138,6 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 55;
+        return 56;
     }
 }
