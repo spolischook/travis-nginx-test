@@ -8,22 +8,20 @@ define(function(require) {
     require('jquery.select2');
 
     Select2ShareView = BaseView.extend({
-        select2Selector: '.select2.select2-offscreen',
+        events: {
+            'select2-selecting': 'onSelect'
+        },
 
-        /**
-         * @constructor
-         * @param {Object} options
-         */
-        initialize: function(options) {
-            this.options = options;
+        initialize: function() {
+            Select2ShareView.__super__.initialize.apply(this, arguments);
+            this.$el.select2('open');
+        },
 
-            $(this.select2Selector).on('select2-selecting', function(e) {
-                e.stopPropagation();
-                mediator.trigger('datagrid:shared-datagrid:add:data-from-select2', e.object);
-                $(e.currentTarget).select2('close');
-
-                return false;
-            });
+        onSelect: function(e) {
+            e.stopPropagation();
+            mediator.trigger('datagrid:shared-datagrid:add:data-from-select2', e.object);
+            $(e.currentTarget).select2('close');
+            return false;
         }
     });
 

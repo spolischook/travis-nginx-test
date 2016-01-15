@@ -50,7 +50,7 @@
             {% if isButtonsEnabled %}
                 <button class="add-on btn entity-select-btn"
                         data-url="{{ path('oropro_share_with_dialog', {
-                            entityClass: form.vars.entityClass
+                            entityClass: form.vars.configs.route_parameters.entityClass
                         }) }}"
                         {{ UI.renderWidgetDataAttributes({
                             'type': 'dialog',
