@@ -5,12 +5,12 @@ namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Twig;
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 
-use OroPro\Bundle\OrganizationBundle\Twig\SearchResultOrganizationExtension;
+use OroPro\Bundle\OrganizationBundle\Twig\GlobalOrganizationExtension;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
 
-class SearchResultOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
+class GlobalOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var SearchResultOrganizationExtension */
+    /** @var GlobalOrganizationExtension */
     protected $searchExtension;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
@@ -33,7 +33,7 @@ class SearchResultOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
         $this->securityFacade  = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->searchExtension = new SearchResultOrganizationExtension(
+        $this->searchExtension = new GlobalOrganizationExtension(
             $this->securityFacade,
             $this->configProvider,
             $this->doctrineHelper
@@ -43,14 +43,15 @@ class SearchResultOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetFunctions()
     {
         $result = $this->searchExtension->getFunctions();
-        $this->assertCount(2, $result);
+        $this->assertCount(3, $result);
         $this->assertEquals('oropro_entity_organization_name', $result[0]->getName());
         $this->assertEquals('oropro_entity_organization_info', $result[1]->getName());
+        $this->assertEquals('oropro_entity_organization', $result[2]->getName());
     }
 
     public function testGetName()
     {
-        $this->assertEquals('oropro_search_organization', $this->searchExtension->getName());
+        $this->assertEquals('oropro_global_organization', $this->searchExtension->getName());
     }
 
     /**

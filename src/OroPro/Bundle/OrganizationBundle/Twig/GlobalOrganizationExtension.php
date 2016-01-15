@@ -11,9 +11,9 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-class SearchResultOrganizationExtension extends \Twig_Extension
+class GlobalOrganizationExtension extends \Twig_Extension
 {
-    const NAME = 'oropro_search_organization';
+    const NAME = 'oropro_global_organization';
 
     const ORGANIZATION_INFO_TEMPLATE = 'OroProOrganizationBundle::organizationInfo.html.twig';
 
@@ -55,6 +55,10 @@ class SearchResultOrganizationExtension extends \Twig_Extension
                 'oropro_entity_organization_info',
                 [$this, 'getOrganizationInfo'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
+            ),
+            new \Twig_SimpleFunction(
+                'oropro_entity_organization',
+                [$this, 'getGlobalOrganization']
             ),
         ];
     }
@@ -102,6 +106,16 @@ class SearchResultOrganizationExtension extends \Twig_Extension
         }
 
         return null;
+    }
+
+    /**
+     * @param $entity
+     *
+     * @return Organization|null
+     */
+    public function getGlobalOrganization($entity)
+    {
+        return $this->getEntityOrganization($entity);
     }
 
     /**
