@@ -43,10 +43,9 @@ class GlobalOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetFunctions()
     {
         $result = $this->searchExtension->getFunctions();
-        $this->assertCount(3, $result);
+        $this->assertCount(2, $result);
         $this->assertEquals('oropro_entity_organization_name', $result[0]->getName());
-        $this->assertEquals('oropro_entity_organization_info', $result[1]->getName());
-        $this->assertEquals('oropro_entity_organization', $result[2]->getName());
+        $this->assertEquals('oropro_entity_organization', $result[1]->getName());
     }
 
     public function testGetName()
@@ -60,7 +59,7 @@ class GlobalOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
      * @param bool               $isGlobal
      * @param Config|null        $config
      * @param object             $testEntity
-     * @param mixed              $expectedResult
+     * @param string|null        $expectedResult
      * @param GlobalOrganization $expectedOrg
      */
     public function testGetOrganizationName($isGlobal, $config, $testEntity, $expectedResult, $expectedOrg)
@@ -91,10 +90,10 @@ class GlobalOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
      * @param bool               $isGlobal
      * @param Config|null        $config
      * @param object             $testEntity
-     * @param mixed              $expectedResult
+     * @param string|null        $expectedResult
      * @param GlobalOrganization $expectedOrg
      */
-    public function testGetOrganizationInfo($isGlobal, $config, $testEntity, $expectedResult, $expectedOrg)
+    public function testGetGlobalOrganization($isGlobal, $config, $testEntity, $expectedResult, $expectedOrg)
     {
         $organization = new GlobalOrganization();
         $organization->setIsGlobal($isGlobal);
@@ -117,25 +116,7 @@ class GlobalOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
             ->with('Acme\Test\TestEntity')
             ->willReturn($config);
 
-        $environment = $this->getMockBuilder('\Twig_Environment')->disableOriginalConstructor()->getMock();
-
-        $template = $this->getMockBuilder('\Twig_Template')->disableOriginalConstructor()
-            ->setMethods(['doDisplay', 'getTemplateName', 'render'])
-            ->getMock();
-
-        if (!is_null($expectedResult)) {
-            $environment->expects($this->once())
-                ->method('loadTemplate')
-                ->willReturn($template);
-            $template->expects($this->once())
-                ->method('render')
-                ->with(['organization' => $expectedOrg]);
-        } else {
-            $environment->expects($this->never())
-                ->method('loadTemplate');
-        }
-
-        $this->searchExtension->getOrganizationInfo($environment, $testEntity);
+        $this->assertEquals($expectedOrg, $this->searchExtension->getGlobalOrganization($testEntity));
     }
 
     public function dataProvider()

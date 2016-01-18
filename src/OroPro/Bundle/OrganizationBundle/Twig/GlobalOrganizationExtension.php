@@ -15,8 +15,6 @@ class GlobalOrganizationExtension extends \Twig_Extension
 {
     const NAME = 'oropro_global_organization';
 
-    const ORGANIZATION_INFO_TEMPLATE = 'OroProOrganizationBundle::organizationInfo.html.twig';
-
     /** @var SecurityFacade */
     protected $securityFacade;
 
@@ -52,11 +50,6 @@ class GlobalOrganizationExtension extends \Twig_Extension
                 [$this, 'getOrganizationName']
             ),
             new \Twig_SimpleFunction(
-                'oropro_entity_organization_info',
-                [$this, 'getOrganizationInfo'],
-                ['is_safe' => ['html'], 'needs_environment' => true]
-            ),
-            new \Twig_SimpleFunction(
                 'oropro_entity_organization',
                 [$this, 'getGlobalOrganization']
             ),
@@ -69,27 +62,6 @@ class GlobalOrganizationExtension extends \Twig_Extension
     public function getName()
     {
         return self::NAME;
-    }
-
-    /**
-     * Return entity organization name with hidden organization id field
-     *
-     * @param \Twig_Environment $environment
-     * @param object            $entity
-     * @return string
-     */
-    public function getOrganizationInfo(\Twig_Environment $environment, $entity)
-    {
-        $organization = $this->getEntityOrganization($entity);
-        if ($organization) {
-            return $environment->loadTemplate(self::ORGANIZATION_INFO_TEMPLATE)->render(
-                [
-                    'organization' => $organization
-                ]
-            );
-        }
-
-        return '';
     }
 
     /**
