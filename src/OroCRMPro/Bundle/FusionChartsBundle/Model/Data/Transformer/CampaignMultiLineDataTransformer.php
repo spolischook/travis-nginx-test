@@ -2,9 +2,10 @@
 
 namespace OroCRMPro\Bundle\FusionChartsBundle\Model\Data\Transformer;
 
+use Oro\Component\PhpUtils\ArrayUtil;
+
 use Oro\Bundle\ChartBundle\Model\Data\ArrayData;
 use Oro\Bundle\ChartBundle\Model\Data\DataInterface;
-use Oro\Bundle\UIBundle\Tools\ArrayUtils;
 use OroCRM\Bundle\CampaignBundle\Model\Data\Transformer\MultiLineDataTransformer as BaseTransformer;
 
 class CampaignMultiLineDataTransformer extends BaseTransformer
@@ -25,7 +26,7 @@ class CampaignMultiLineDataTransformer extends BaseTransformer
 
         $dataSet = [];
         $labels  = $this->getLabels();
-        $keys    = array_unique(ArrayUtils::arrayColumn($this->sourceData, $this->groupingOption));
+        $keys    = array_unique(ArrayUtil::arrayColumn($this->sourceData, $this->groupingOption));
         foreach ($keys as $key) {
             $data = array_map(
                 function ($label) use ($key) {
