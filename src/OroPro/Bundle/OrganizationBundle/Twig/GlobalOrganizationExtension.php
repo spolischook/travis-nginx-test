@@ -11,11 +11,9 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-class SearchResultOrganizationExtension extends \Twig_Extension
+class GlobalOrganizationExtension extends \Twig_Extension
 {
-    const NAME = 'oropro_search_organization';
-
-    const ORGANIZATION_INFO_TEMPLATE = 'OroProOrganizationBundle::organizationInfo.html.twig';
+    const NAME = 'oropro_global_organization';
 
     /** @var SecurityFacade */
     protected $securityFacade;
@@ -52,9 +50,8 @@ class SearchResultOrganizationExtension extends \Twig_Extension
                 [$this, 'getOrganizationName']
             ),
             new \Twig_SimpleFunction(
-                'oropro_entity_organization_info',
-                [$this, 'getOrganizationInfo'],
-                ['is_safe' => ['html'], 'needs_environment' => true]
+                'oropro_entity_organization',
+                [$this, 'getGlobalOrganization']
             ),
         ];
     }
@@ -65,27 +62,6 @@ class SearchResultOrganizationExtension extends \Twig_Extension
     public function getName()
     {
         return self::NAME;
-    }
-
-    /**
-     * Return entity organization name with hidden organization id field
-     *
-     * @param \Twig_Environment $environment
-     * @param object            $entity
-     * @return string
-     */
-    public function getOrganizationInfo(\Twig_Environment $environment, $entity)
-    {
-        $organization = $this->getEntityOrganization($entity);
-        if ($organization) {
-            return $environment->loadTemplate(self::ORGANIZATION_INFO_TEMPLATE)->render(
-                [
-                    'organization' => $organization
-                ]
-            );
-        }
-
-        return '';
     }
 
     /**
@@ -102,6 +78,16 @@ class SearchResultOrganizationExtension extends \Twig_Extension
         }
 
         return null;
+    }
+
+    /**
+     * @param $entity
+     *
+     * @return Organization|null
+     */
+    public function getGlobalOrganization($entity)
+    {
+        return $this->getEntityOrganization($entity);
     }
 
     /**
