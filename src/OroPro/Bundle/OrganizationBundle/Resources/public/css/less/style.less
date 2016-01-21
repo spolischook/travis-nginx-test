@@ -8,6 +8,9 @@
   z-index: 902; /* less than organization selector, but equals to menu */
 
   .popover {
+    &.open {
+      display: block;
+    }
     .popover-close {
       color: @warningText;
     }
@@ -31,6 +34,9 @@
 .mobile-version {
   .oropro-organization-notice-holder {
     bottom: 15px;
+    right: 10px;
+    width: auto;
+    max-width: 400px;
     .popover .arrow {
       left: 20%;
     }

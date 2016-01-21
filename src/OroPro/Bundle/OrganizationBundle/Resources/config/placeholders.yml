@@ -4,7 +4,7 @@ placeholders:
             organization_info: ~
     additional_owner_info:
         items:
-            organization_view_entity_info: ~
+            view_entity_owner_info: ~
     organization_selector:
         items:
             organization_notice: ~
@@ -13,8 +13,8 @@ items:
     organization_info:
         template: OroProOrganizationBundle::searchResultOrganizationInfo.html.twig
 
-    organization_view_entity_info:
-        template: OroProOrganizationBundle::viewOrganizationInfo.html.twig
+    view_entity_owner_info:
+        template: OroProOrganizationBundle::viewOwnerInfo.html.twig
 
     organization_notice:
         template: OroProOrganizationBundle:Placeholder:organizationNotice.html.twig
