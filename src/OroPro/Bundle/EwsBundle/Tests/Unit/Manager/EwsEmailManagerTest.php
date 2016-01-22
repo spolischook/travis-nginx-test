@@ -336,4 +336,132 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('attContentType', $attachments[0]->getContentType());
         $this->assertEquals('BINARY', $attachments[0]->getContentTransferEncoding());
     }
+
+    /**
+     * @dataProvider findEmailDataProvider
+     */
+    public function testFindEmail($message)
+    {
+        $message = $message();
+
+        $connector = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Connector\EwsConnector')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connector->expects(self::once())->method('getItem')->will(self::returnValue($message));
+
+        $itemId = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Manager\DTO\ItemId')
+            ->setMethods(['getId', 'getChangeKey'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $itemId->expects(self::once())->method('getId')->will(self::returnValue(1));
+        $itemId->expects(self::once())->method('getChangeKey')->will(self::returnValue('ChangeKey'));
+
+        $manager = new EwsEmailManager($connector);
+        $manager->findEmail($itemId);
+    }
+
+    /**
+     * @return array
+     */
+    public function findEmailDataProvider()
+    {
+        $msg = new EwsType\ItemInfoResponseMessageType();
+        $msg->Items = new EwsType\ArrayOfRealItemsType();
+        $msg->Items->Message = array();
+        $msg->Items->Message[] = new EwsType\MessageType();
+
+        $msg->Items->Message[0]->ItemId = new EwsType\ItemIdType();
+        $msg->Items->Message[0]->ItemId->Id = 'Id';
+        $msg->Items->Message[0]->ItemId->ChangeKey = 'ChangeKey';
+
+        $msg->Items->Message[0]->Subject = 'subject';
+        $msg->Items->Message[0]->From = new EwsType\SingleRecipientType();
+
+        $msg->Items->Message[0]->From->Mailbox = new EwsType\EmailAddressType();
+        $msg->Items->Message[0]->From->Mailbox->EmailAddress = 'fromEmail';
+
+        $msg->Items->Message[0]->DateTimeSent = '2011-06-30 23:59:59 +0';
+        $msg->Items->Message[0]->DateTimeReceived = '2012-06-30 23:59:59 +0';
+        $msg->Items->Message[0]->DateTimeCreated = '2013-06-30 23:59:59 +0';
+        $msg->Items->Message[0]->IsRead = true;
+        $msg->Items->Message[0]->References = '<testId@test.tst>';
+        $msg->Items->Message[0]->Importance = 'Normal';
+        $msg->Items->Message[0]->InternetMessageId = 'MessageId';
+
+        $msg->Items->Message[0]->ConversationId = new EwsType\ItemIdType();
+        $msg->Items->Message[0]->ConversationId->Id = 'ConversationId';
+
+        $msg->Items->Message[0]->ToRecipients = new EwsType\ArrayOfRecipientsType();
+        $msg->Items->Message[0]->ToRecipients->Mailbox = [];
+        $msg->Items->Message[0]->ToRecipients->Mailbox[] = new EwsType\EmailAddressType();
+        $msg->Items->Message[0]->ToRecipients->Mailbox[0]->EmailAddress = 'toEmail';
+
+        $msg->Items->Message[0]->CcRecipients = new EwsType\ArrayOfRecipientsType();
+        $msg->Items->Message[0]->CcRecipients->Mailbox = [];
+        $msg->Items->Message[0]->CcRecipients->Mailbox[] = new EwsType\EmailAddressType();
+        $msg->Items->Message[0]->CcRecipients->Mailbox[0]->EmailAddress = 'ccEmail';
+
+        $msg->Items->Message[0]->BccRecipients = new EwsType\ArrayOfRecipientsType();
+        $msg->Items->Message[0]->BccRecipients->Mailbox = [];
+        $msg->Items->Message[0]->BccRecipients->Mailbox[] = new EwsType\EmailAddressType();
+        $msg->Items->Message[0]->BccRecipients->Mailbox[0]->EmailAddress = 'bccEmail';
+
+        $msg->Items->Message[0]->Attachments = new EwsType\NonEmptyArrayOfAttachmentsType();
+        $msg->Items->Message[0]->Attachments->FileAttachment = [];
+        $msg->Items->Message[0]->Attachments->FileAttachment[] = new EwsType\FileAttachmentType();
+        $msg->Items->Message[0]->Attachments->FileAttachment[0]->AttachmentId = new EwsType\AttachmentIdType();
+        $msg->Items->Message[0]->Attachments->FileAttachment[0]->AttachmentId->Id = 'attId';
+
+        return [
+            'full message'          => [
+                function () use ($msg) {
+                    return $msg;
+                }
+            ],
+            'without ToRecipients'  => [
+                function () use ($msg) {
+                    $msg->Items->Message[0]->ToRecipients = null;
+
+                    return $msg;
+                }
+            ],
+            'without CcRecipients'  => [
+                function () use ($msg) {
+                    $msg->Items->Message[0]->CcRecipients = null;
+
+                    return $msg;
+                }
+            ],
+            'without BccRecipients' => [
+                function () use ($msg) {
+                    $msg->Items->Message[0]->BccRecipients = null;
+
+                    return $msg;
+                }
+            ],
+            'without Attachments' => [
+                function () use ($msg) {
+                    $msg->Items->Message[0]->Attachments = null;
+
+                    return $msg;
+                }
+            ],
+            'without Subject' => [
+                function () use ($msg) {
+                    $msg->Items->Message[0]->Subject = null;
+
+                    return $msg;
+                }
+            ],
+            'without ConversationId' => [
+                function () use ($msg) {
+                    $msg->Items->Message[0]->ConversationId = null;
+
+                    return $msg;
+                }
+            ],
+        ];
+    }
 }
