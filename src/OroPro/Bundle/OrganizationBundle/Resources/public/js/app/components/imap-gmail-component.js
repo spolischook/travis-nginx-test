@@ -9,12 +9,20 @@ define([
     ImapGmailComponent = BaseComponent.extend({
         isGlobalOrg: false,
 
+        /**
+         * @param options
+         */
         initialize: function(options) {
             ImapGmailComponent.__super__.initialize.apply(this, arguments);
             this.isGlobalOrg = options.viewOptions.isGlobalOrg;
             this.organization = options.organization;
         },
 
+        /**
+         * Prepare parameters for getUrl method
+         * @returns {*|{}}
+         * @private
+         */
         _getUrlParams: function() {
             var params = ImapGmailComponent.__super__._getUrlParams.apply(this, arguments);
 
