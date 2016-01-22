@@ -10,7 +10,6 @@ define([
         isGlobalOrg: false,
 
         /**
-         *
          * @param options
          */
         initialize: function(options) {
