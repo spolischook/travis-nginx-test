@@ -248,4 +248,25 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         $this->assertEquals($expectedSql, $actualSql);
     }
+
+    public function testSyncNoOrigin()
+    {
+        $maxConcurrentTasks = 3;
+        $minExecPeriodInMin = 1;
+
+        $this->ewsConfigurator
+            ->expects(self::exactly(2))
+            ->method('getServer')
+            ->will(self::returnValue('test'));
+        $this->ewsConfigurator
+            ->expects(self::exactly(2))
+            ->method('isEnabled')
+            ->will(self::returnValue(false));
+
+        $this->logger->expects(self::once())->method('notice');
+
+        self::assertFalse($this->sync->callCheckConfiguration());
+
+        $this->sync->sync($maxConcurrentTasks, $minExecPeriodInMin);
+    }
 }
