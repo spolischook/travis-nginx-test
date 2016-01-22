@@ -25,6 +25,8 @@ parameters:
 
     oropro_organization.form.extension.organization_list.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationListExtension
     oropro_organization.form.extension.imap_check_button.class: OroPro\Bundle\OrganizationBundle\Form\Extension\ImapCheckButtonExtension
+    oropro_organization.form.extension.choice_account_type.class: OroPro\Bundle\OrganizationBundle\Form\Extension\ChoiceAccountTypeExtension
+    oropro_organization.form.extension.configuration_gmail_type.class: OroPro\Bundle\OrganizationBundle\Form\Extension\ConfigurationGmailTypeExtension
 
     oropro_organization.acl.voter.organization.class: OroPro\Bundle\OrganizationBundle\Acl\Voter\OrganizationAnnotationVoter
 
@@ -181,3 +183,18 @@ services:
                 - @oro_security.security_facade
             tags:
                 - { name: oro_form.autocomplete.search_handler, alias: business_units, acl_resource: oro_business_unit_view }
+
+    oropro_organization.form.extension.choice_account_type:
+        class: %oropro_organization.form.extension.choice_account_type.class%
+        arguments:
+            - @oro_security.security_facade
+        tags:
+            - { name: form.type_extension, alias: oro_imap_choice_account_type }
+
+    oropro_organization.form.extension.configuration_gmail_type:
+        class: %oropro_organization.form.extension.configuration_gmail_type.class%
+        arguments:
+            - @oro_security.security_facade
+        tags:
+            - { name: form.type_extension, alias: oro_imap_configuration_gmail }
+
