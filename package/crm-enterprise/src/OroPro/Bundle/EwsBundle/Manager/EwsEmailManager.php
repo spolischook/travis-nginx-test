@@ -9,6 +9,7 @@ use OroPro\Bundle\EwsBundle\Connector\EwsConnector;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder;
 use OroPro\Bundle\EwsBundle\Ews\EwsType as EwsType;
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
+use OroPro\Bundle\EwsBundle\Ews\EwsType\ArrayOfRecipientsType;
 use OroPro\Bundle\EwsBundle\Manager\DTO\EmailAttachment;
 use OroPro\Bundle\EwsBundle\Manager\DTO\ItemId;
 use OroPro\Bundle\EwsBundle\Manager\DTO\Email;
@@ -478,17 +479,20 @@ class EwsEmailManager
             ->setXMessageId($msg->ItemId->Id)
             ->setXThreadId($msg->ConversationId != null ? $msg->ConversationId->Id : null);
 
-        foreach ($msg->ToRecipients->Mailbox as $mailbox) {
-            $email->addToRecipient($mailbox->EmailAddress);
+
+        if ($msg->ToRecipients instanceof ArrayOfRecipientsType) {
+            foreach ($msg->ToRecipients->Mailbox as $mailbox) {
+                $email->addToRecipient($mailbox->EmailAddress);
+            }
         }
 
-        if (null != $msg->CcRecipients) {
+        if ($msg->CcRecipients instanceof ArrayOfRecipientsType) {
             foreach ($msg->CcRecipients->Mailbox as $mailbox) {
                 $email->addCcRecipient($mailbox->EmailAddress);
             }
         }
 
-        if (null != $msg->BccRecipients) {
+        if ($msg->BccRecipients instanceof ArrayOfRecipientsType) {
             foreach ($msg->BccRecipients->Mailbox as $mailbox) {
                 $email->addBccRecipient($mailbox->EmailAddress);
             }

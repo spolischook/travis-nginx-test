@@ -10,6 +10,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Router;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
@@ -102,7 +103,7 @@ class KernelRequestListener
                 $entityClass = $this->routingHelper->resolveEntityClass($request->attributes->get('entityName'));
                 if ($entityClass && $request->attributes->get('id')) {
                     $entity  = $this->doctrine->getRepository($entityClass)->find($request->attributes->get('id'));
-                    $organizationField = $this->metadataProvider->getMetadata($entityClass)->getOrganizationFieldName();
+                    $organizationField = $this->metadataProvider->getMetadata($entityClass)->getGlobalOwnerFieldName();
                     if ($organizationField) {
                         $accessor = PropertyAccess::createPropertyAccessor();
                         $this->organizationProvider->setOrganization($accessor->getValue($entity, $organizationField));
@@ -118,7 +119,7 @@ class KernelRequestListener
                         ->getWorkflow($request->attributes->get('workflowName'))
                         ->getDefinition()
                         ->getRelatedEntity();
-                    if ($this->metadataProvider->getMetadata($relatedEntity)->getOrganizationFieldName()
+                    if ($this->metadataProvider->getMetadata($relatedEntity)->getGlobalOwnerFieldName()
                         && $request->query->get('entityId') == '0'
                     ) {
                         $event->setResponse(
@@ -174,7 +175,13 @@ class KernelRequestListener
         if ($entityId && $entityClass) {
             $targetEntity = $this->routingHelper->getEntity($entityClass, $entityId);
             if ($targetEntity) {
-                $selectedOrganizationId = $targetEntity->getOrganization()->getId();
+                $organizationField = $this->metadataProvider->getMetadata($entityClass)->getGlobalOwnerFieldName();
+                if ($organizationField) {
+                    $accessor = PropertyAccess::createPropertyAccessor();
+                    /** @var Organization $selectedOrganization */
+                    $selectedOrganization = $accessor->getValue($targetEntity, $organizationField);
+                    return $selectedOrganization->getId();
+                }
             }
         }
 
