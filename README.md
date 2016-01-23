@@ -27,10 +27,20 @@ folder and use `mklink` command instead. For example, to enable platform package
 rd /s /q "application/platform/vendor/oro/platform"
 mklink /J "./application/platform/vendor/oro/platform" "./package/platform"
 ```
+3. Enable PHPStorm configuration for application you will be working on with: 
+ ```s
+ php -f tool/phpstorm-application.php {application_name}
+ ```
+4. Create feature branch
+5. Do code changes
+6. Push code to remote repository and create a pull request
 
-3. Create feature branch
-4. Do code changes
-5. Push code to remote repository and create a pull request
+### IDE
+
+PHPStorm is the recommended IDE for Oro projects. Following plugins will help to improve developer experience:
+
+* Symfony2 - allows to simplify code navigation within an application
+* Markdown - helps with Markdown (*.md) files
 
 ## Maintenance
 
