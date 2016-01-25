@@ -1,0 +1,48 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set bracket_parts = [] %}
+{% set organization = oropro_entity_organization(entity) %}
+{% if organization is not null %}
+    {% if resource_granted('VIEW', organization) %}
+        {% set bracket_parts = [UI.renderUrl(path('oropro_organization_view', {'id': organization.id}), organization.name)] %}
+    {% else %}
+        {% set bracket_parts = [organization.name] %}
+    {% endif %}
+{% endif %}
+{% include 'OroOrganizationBundle::viewOwnerInfo.html.twig' with {'bracket_parts': bracket_parts} %}
+{% if organization is not null %}
+    <input type="hidden" value="{{ organization.id }}" name="_sa_org_id" id="_sa_org_id" />
+    <script type="text/javascript">
+        require(['jquery', 'underscore'], function($, _) {
+            'use strict';
+            $(function() {
+                var saOrgId = $('input#_sa_org_id').val();
+                if (saOrgId) {
+                    var saOrgParam = {
+                        '_sa_org_id': saOrgId
+                    };
+
+                    $('#container .navigation a').each(function () {
+                        if ($(this).data('url')) {
+                            var url = $(this).data('url')
+                                    + ($(this).data('url').indexOf('?') == -1 ? '?' : '&')
+                                    + $.param(saOrgParam);
+                            $(this).data('url', url);
+                        }
+                        else if ($(this).data('purpose') == 'open-dialog-widget') {
+                            $(this).data(
+                                    'route_additional_params',
+                                    _.extend($(this).data('route_additional_params') || {}, saOrgParam)
+                            );
+                        }
+                        else if ($(this).hasClass('action-link') && $(this).attr('href')) {
+                            var url = $(this).attr('href')
+                                    + ($(this).attr('href').indexOf('?') == -1 ? '?' : '&')
+                                    + $.param(saOrgParam);
+                            $(this).attr('href', url);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{% endif %}
