@@ -115,7 +115,7 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
             new FieldConfigId('datagrid', self::ENTITY_CLASS, self::FIELD_NAME, $fieldType)
         );
         $this->datagridConfigProvider
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('getConfig')
             ->with(self::ENTITY_CLASS, self::FIELD_NAME)
             ->will($this->returnValue($datagridFieldConfig));
