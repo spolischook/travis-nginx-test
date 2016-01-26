@@ -3,7 +3,7 @@
   cursor: pointer;
   padding: 0 7px 0 7px;
   white-space: nowrap;
-  .active {
+  &:hover, &.active {
     background-color: #ebebeb;
   }
 }
@@ -24,46 +24,45 @@
   font-weight: bold;
   color: #666666;
 }
-h5.shared-datagrid-title {
-  margin-top: 10px;
-  margin-bottom: -5px;
-}
-.shared-datagrid .other-scroll-container {
-  margin: 10px 20px 21px 0;
-}
-.shared-datagrid .grid .share-info .share-info-details {
-  font-size: 11px;
-  margin-top: -5px;
-}
-.shared-datagrid .grid .share-info .share-info-image {
-  float: left;
-}
-.shared-datagrid .grid .share-info .share-info-text {
-  float: left;
-  padding-left:5px;
-}
-.shared-datagrid.control-group {
-  margin-left: 20px;
-  width: 403px;
-}
-.shared-datagrid .grid-toolbar .pagination-centered {
-  width: 100%;
-  text-align: left;
-  padding-left: 0;
-}
-.shared-datagrid .grid-toolbar {
-  padding-left: 0;
-}
-#oropro_share_form .control-group .control-label.wrap {
-  margin-left: 20px;
-  margin-right: 20px;
-  text-align: left;
-  width: 70px;
-}
-#oropro_share_form .control-group .controls {
-  margin-left: 0;
-}
-.share-with-entity-item:hover, .share-with-entity-item.active {
-  background-color: #ebebeb;
+#oropro_share_form {
+  .control-group {
+    margin: 0 20px;
+    .control-label.wrap {
+      text-align: left;
+      width: auto;
+    }
+    .controls {
+      margin: 0;
+      float: right;
+      .select2-container-multi .select2-choices .select2-search-field input {
+        padding-top: 4px;
+      }
+    }
+    &.shared-datagrid {
+      margin: 0;
+      .shared-datagrid-title {
+        margin: 10px 20px 0;
+      }
+      .grid-toolbar .pagination-centered {
+        width: 100%;
+        text-align: left;
+        padding-left: 0;
+      }
+      .grid .share-info {
+        .share-info-details {
+          font-size: 11px;
+          margin-top: -5px;
+        }
+        .share-info-image {
+          float: left;
+        }
+        .share-info-text {
+          float: left;
+          padding-left:5px;
+        }
+      }
+    }
+  }
 }
 
+@import "mobile/share";

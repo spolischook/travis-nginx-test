@@ -12,16 +12,9 @@ define(function(require) {
          */
         initialize: function(options) {
             Select2ShareComponent.__super__.initialize.call(this, options);
-
-            this.init();
-        },
-
-        init: function() {
-            this.initView();
-        },
-
-        initView: function() {
-            this.select2ShareView = new Select2ShareView({});
+            this.select2ShareView = new Select2ShareView({
+                el: options._sourceElement
+            });
         }
     });
 
