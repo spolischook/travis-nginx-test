@@ -5,6 +5,9 @@ namespace OroCRMPro\Bundle\OutlookBundle\Tests\Functional\Api;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
+/**
+ * @dbIsolation
+ */
 class ActivityRelationAssignmentTest extends WebTestCase
 {
     /** @var User */
