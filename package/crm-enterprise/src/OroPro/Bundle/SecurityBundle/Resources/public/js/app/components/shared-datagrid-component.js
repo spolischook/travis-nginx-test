@@ -83,6 +83,7 @@ define(function(require) {
                             grid.collection.add(newModel);
                         }
                         grid.collection.get(newModel).trigger('backgrid:select', newModel, true);
+                        grid.trigger('layout:update');
                     }
                 });
             });
@@ -102,6 +103,7 @@ define(function(require) {
                         grid.collection.add(model);
                     }
                     grid.collection.get(model).trigger('backgrid:select', model, true);
+                    grid.trigger('layout:update');
                 }
             });
         },

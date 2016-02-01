@@ -44,6 +44,7 @@ oro_entity_config:
                         type:               html
                         label:              oropro.organization.entity_config.organization.field.items.grid.applicable
                         template:           OroProOrganizationBundle:Organization:propertyLabel.html.twig
+                        sortable:           true
                     form:
                         type:               oro_type_choice_organization_type
                         options:

@@ -8,8 +8,21 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Oro\Bundle\EntityBundle\Tools\EntityClassNameHelper;
+
 class ShareType extends AbstractType
 {
+    /** @var EntityClassNameHelper */
+    protected $entityClassNameHelper;
+
+    /**
+     * @param EntityClassNameHelper $entityClassNameHelper
+     */
+    public function __construct(EntityClassNameHelper $entityClassNameHelper)
+    {
+        $this->entityClassNameHelper = $entityClassNameHelper;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -61,7 +74,9 @@ class ShareType extends AbstractType
         $routeParameters = isset($view->children['entities']->vars['configs']['route_parameters'])
             ? $view->children['entities']->vars['configs']['route_parameters']
             : [];
-        $routeParameters['entityClass'] = $form->get('entityClass')->getData();
+        $routeParameters['entityClass'] = $this->entityClassNameHelper->getUrlSafeClassName(
+            $form->get('entityClass')->getData()
+        );
 
         $view->children['entities']->vars['configs']['route_parameters'] = $routeParameters;
     }
