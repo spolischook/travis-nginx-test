@@ -263,7 +263,7 @@ class EwsEmailSynchronizerTest extends OrmTestCase
             ->method('isEnabled')
             ->will(self::returnValue(false));
 
-        $this->logger->expects(self::once())->method('notice');
+        $this->logger->expects(self::once())->method('info');
 
         self::assertFalse($this->sync->callCheckConfiguration());
 
