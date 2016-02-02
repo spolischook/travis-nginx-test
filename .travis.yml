@@ -9,6 +9,7 @@ env:
   - APPLICATION_DIR=application/platform
 
 script:
+  - conposer self-update
   - cd $APPLICATION_DIR
   - composer install
   - phpunit
