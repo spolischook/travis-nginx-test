@@ -1,0 +1,14 @@
+language: php
+
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+
+env:
+  - APPLICATION_DIR=application/platform
+
+script:
+  - cd $APPLICATION_DIR
+  - composer install
+  - phpunit
