@@ -103,7 +103,7 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getOrganizationContext')
             ->will($this->returnValue($this->organization));
 
-        $this->organization->expects($this->once())
+        $this->organization->expects($this->exactly(2))
             ->method('getIsGlobal')
             ->will($this->returnValue(true));
 
@@ -138,7 +138,7 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getOrganizationContext')
             ->will($this->returnValue($this->organization));
 
-        $this->organization->expects($this->once())
+        $this->organization->expects($this->exactly(2))
             ->method('getIsGlobal')
             ->will($this->returnValue(false));
 
@@ -151,15 +151,16 @@ class RoleListenerTest extends \PHPUnit_Framework_TestCase
 
         $organizationChoices = ['1' => 'Foo'];
 
-        $this->organizationHelper->expects($this->once())
-            ->method('getOrganizationFilterChoices')
-            ->will($this->returnValue($organizationChoices));
+        $this->organizationHelper->expects($this->never())
+            ->method('getOrganizationFilterChoices');
 
         $this->roleListener->onBuildBefore($event);
 
-        $expectedConfig = $this->getExpectedConfig($organizationChoices);
-        $expectedConfig['source']['query']['where']['and'] =
+        $completeConfig = $this->getExpectedConfig($organizationChoices);
+        $completeConfig['source']['query']['where']['and'] =
             ['0' => 'org.id = 1 OR org.id IS NULL'];
+
+        $expectedConfig['source'] = $completeConfig['source'];
 
         $this->assertEquals($expectedConfig, $event->getConfig()->toArray());
     }

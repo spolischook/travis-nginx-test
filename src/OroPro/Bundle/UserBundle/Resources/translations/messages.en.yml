@@ -6,4 +6,4 @@ oro:
 oropro:
     user:
         role:
-            global_organization.label: System
+            global_organization.label: System-wide

@@ -123,9 +123,7 @@ class RoleOrganizationSelectType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        if ($this->isRequired()) {
             $view->vars['required'] = true;
-        }
     }
 
     /**
@@ -135,7 +133,8 @@ class RoleOrganizationSelectType extends AbstractType
     {
         $defaults = [
             'configs' => [
-                'placeholder' => 'oro.organization.form.choose_organization',
+                'placeholder' => 'oropro.user.role.global_organization.label',
+
             ],
             'autocomplete_alias' => 'oropro_user_role_organizations',
         ];
@@ -143,6 +142,7 @@ class RoleOrganizationSelectType extends AbstractType
         if ($this->isRequired()) {
             $defaults['constraints'] = [new Assert\NotBlank()];
             $defaults['attr']['data-validation'] = json_encode(['NotBlank' => []]);
+            $defaults['read_only'] = true;
         }
 
         $resolver->setDefaults($defaults);

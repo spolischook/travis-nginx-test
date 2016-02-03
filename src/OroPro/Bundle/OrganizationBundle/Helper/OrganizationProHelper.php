@@ -19,12 +19,17 @@ class OrganizationProHelper
     protected $tokenStorage;
 
     /**
-     * @param ManagerRegistry $doctrine
+     * @var null|bool|Organization
+     */
+    private $systemOrganization = null;
+
+    /**
+     * @param ManagerRegistry       $doctrine
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(ManagerRegistry $doctrine, TokenStorageInterface $tokenStorage)
     {
-        $this->doctrine = $doctrine;
+        $this->doctrine     = $doctrine;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -35,14 +40,9 @@ class OrganizationProHelper
      */
     public function isGlobalOrganizationExists()
     {
-        $count = $this->getRepo()->createQueryBuilder('org')
-            ->select('COUNT(org.id)')
-            ->where('org.is_global = :isGlobal')
-            ->setParameter('isGlobal', true)
-            ->getQuery()
-            ->getSingleScalarResult();
+        $organization = $this->getGlobalOrganization();
 
-        return $count ? true : false;
+        return $organization ? true : false;
     }
 
     /**
@@ -52,14 +52,29 @@ class OrganizationProHelper
      */
     public function getGlobalOrganizationId()
     {
-        $result = $this->getRepo()->createQueryBuilder('org')
-            ->select('org.id as id')
-            ->where('org.is_global = :isGlobal')
-            ->setParameter('isGlobal', true)
-            ->getQuery()
-            ->getOneOrNullResult();
+        $organization = $this->getGlobalOrganization();
 
-        return is_null($result) ? null : $result['id'];
+        return $organization ? $organization->getId() : null;
+    }
+
+    /**
+     * Return global organization or false if global organization is not exists
+     *
+     * @return Organization|false
+     */
+    public function getGlobalOrganization()
+    {
+        if ($this->systemOrganization === null) {
+            $organization = $this->getRepo()->createQueryBuilder('org')
+                ->select('org')
+                ->where('org.is_global = :isGlobal')
+                ->setParameter('isGlobal', true)
+                ->getQuery()
+                ->getOneOrNullResult();
+            $this->systemOrganization = $organization ?: false;
+        }
+
+        return $this->systemOrganization;
     }
 
     /**
