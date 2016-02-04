@@ -18,9 +18,7 @@ class OrganizationProHelper
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /**
-     * @var null|bool|Organization
-     */
+    /** @var null|bool|Organization */
     private $systemOrganization = null;
 
     /**
