@@ -40,9 +40,7 @@ class OrganizationProHelper
      */
     public function isGlobalOrganizationExists()
     {
-        $organization = $this->getGlobalOrganization();
-
-        return $organization ? true : false;
+        return $this->getGlobalOrganization() ? true : false;
     }
 
     /**
