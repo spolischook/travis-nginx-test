@@ -21,6 +21,6 @@ before_script:
 
 script:
   - cd $APPLICATION_DIR
-  - travis_wait composer install
+  - travis_wait composer install --no-interaction
   - phpunit
   - ./vendor/bin/phpcs ./vendor/oro/platform -p --encoding=utf-8 --extensions=php --standard=psr2
