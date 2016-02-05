@@ -21,7 +21,6 @@ before_script:
 
 script:
   - cd $APPLICATION_DIR
-  - travis_wait composer install --no-dev
-  - travis_wait composer require squizlabs/php_codesniffer:2.3.3 --prefer-dist --update-no-dev
+  - travis_wait composer install
   - phpunit
   - ./vendor/bin/phpcs ./vendor/oro/platform -p --encoding=utf-8 --extensions=php --standard=psr2
