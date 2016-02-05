@@ -19,8 +19,6 @@
         }
     },
     "require": {
-        "oro/platform": "@dev",
-        "oro/crm": "@dev",
         "oro/crm-enterprise" : "@dev"
     },
     "require-dev": {
