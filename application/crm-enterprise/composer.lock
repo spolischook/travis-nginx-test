@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d618d03528eebc19587abf7aff9c7546",
-    "content-hash": "babbf28d02820f26daca791d954bbc01",
+    "hash": "287809482a55f27aafee3eea15c24e97",
+    "content-hash": "d0a1800a0c6df38aaecfd4b36343ead1",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3902,23 +3902,18 @@
         },
         {
             "name": "oro/crm",
-            "version": "dev-composer-p",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "../../package/crm/",
-                "reference": "b5b71b02c0e3e15ddb201e6a2184bb6abe0f2b21",
+                "reference": "b022c33f1e19d2f9a873f0b170387c01f3ad4f9d",
                 "shasum": null
             },
             "require": {
-                "oro/platform": "@dev",
+                "oro/platform": "self.version",
                 "php": ">=5.4.9"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "OroCRM\\Bundle": "src/"
@@ -3938,24 +3933,19 @@
         },
         {
             "name": "oro/crm-enterprise",
-            "version": "dev-composer-p",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "../../package/crm-enterprise/",
-                "reference": "d8834887222e9e2a2d0c66519ba0da7ebf66c1f3",
+                "reference": "42973386b83fff12c9304c6a11d8b539ef47a8b9",
                 "shasum": null
             },
             "require": {
                 "elasticsearch/elasticsearch": "1.2.2",
-                "oro/crm": "@dev",
+                "oro/crm": "self.version",
                 "php": ">=5.4.9"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "OroCRMPro\\Bundle": "src/",
@@ -4132,11 +4122,11 @@
         },
         {
             "name": "oro/platform",
-            "version": "dev-composer-p",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "../../package/platform/",
-                "reference": "01c5d1bd8ded6058ffa68b6de1dce29122ba87c5",
+                "reference": "b3d34467a8496d241364afea0e175ad8e8e5d12f",
                 "shasum": null
             },
             "require": {
@@ -4206,11 +4196,6 @@
                 "sensio/generator-bundle": "2.5.3"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Oro\\Component": "src/",
