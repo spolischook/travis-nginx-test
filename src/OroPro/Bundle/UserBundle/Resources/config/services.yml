@@ -21,6 +21,7 @@ services:
         arguments:
             - @oro_organization.autocomplete.organization_search_handler
             - @security.token_storage
+            - @oropro_organization.helper
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: oropro_user_role_organizations }
         lazy: true

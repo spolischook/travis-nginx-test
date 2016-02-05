@@ -8,6 +8,8 @@ use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
 use Oro\Bundle\OrganizationBundle\Autocomplete\OrganizationSearchHandler as BaseOrganizationSearchHandler;
 use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
 
+use OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper;
+
 /**
  * Search handler for Organization select field on form of Role.
  * It will return any Organization if user is assigned to Global Organization and logged in to it.
@@ -26,15 +28,23 @@ class RoleOrganizationSearchHandler implements SearchHandlerInterface
     protected $tokenStorage;
 
     /**
+     * @var OrganizationProHelper
+     */
+    protected $organizationHelper;
+
+    /**
      * @param BaseOrganizationSearchHandler $baseOrganizationSearchHandler
-     * @param TokenStorageInterface $tokenStorage
+     * @param TokenStorageInterface         $tokenStorage
+     * @param OrganizationProHelper         $organizationHelper
      */
     public function __construct(
         BaseOrganizationSearchHandler $baseOrganizationSearchHandler,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        OrganizationProHelper $organizationHelper
     ) {
         $this->baseOrganizationSearchHandler = $baseOrganizationSearchHandler;
         $this->tokenStorage = $tokenStorage;
+        $this->organizationHelper = $organizationHelper;
     }
 
     /**
@@ -50,7 +60,10 @@ class RoleOrganizationSearchHandler implements SearchHandlerInterface
         }
         $currentOrganization = $token->getOrganizationContext();
 
-        if ($currentOrganization && !$currentOrganization->getIsGlobal()) {
+        if ($currentOrganization
+            && !$currentOrganization->getIsGlobal()
+            && $this->organizationHelper->isGlobalOrganizationExists()
+        ) {
             $result['results'] = array_values(
                 array_filter(
                     $result['results'],

@@ -2,6 +2,7 @@
 
 namespace OroPro\Bundle\UserBundle\EventListener\Datagrid;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
@@ -33,6 +34,11 @@ class RoleListener
     protected $userHelper;
 
     /**
+     * @var null|Organization
+     */
+    private $organization = null;
+
+    /**
      * @param UserProHelper $userHelper
      * @param OrganizationProHelper $organizationHelper
      * @param TokenStorageInterface $tokenStorage
@@ -52,6 +58,12 @@ class RoleListener
      */
     public function onBuildBefore(BuildBefore $event)
     {
+        $organization = $this->getCurrentOrganization();
+
+        if (!$organization) {
+            return;
+        }
+
         $config = $event->getConfig();
 
         // add left join
@@ -63,9 +75,11 @@ class RoleListener
         // add where condition
         $this->processSourceQueryWhere($config);
 
-        $this->addOrganizationColumn($config);
-        $this->addOrganizationFilter($config);
-        $this->addOrganizationSorter($config);
+        if ($organization->getIsGlobal()) {
+            $this->addOrganizationColumn($config);
+            $this->addOrganizationFilter($config);
+            $this->addOrganizationSorter($config);
+        }
     }
 
     /**
@@ -102,17 +116,7 @@ class RoleListener
      */
     protected function processSourceQueryWhere(DatagridConfiguration $config)
     {
-        $token = $this->tokenStorage->getToken();
-
-        if (!$token instanceof OrganizationContextTokenInterface) {
-            return;
-        }
-
-        $organization = $token->getOrganizationContext();
-
-        if (!$organization) {
-            return;
-        }
+        $organization = $this->getCurrentOrganization();
 
         if ($organization->getIsGlobal() && $this->userHelper->isUserAssignedToOrganization($organization)) {
             return;
@@ -175,5 +179,21 @@ class RoleListener
             'data_name' => 'org_name'
         ];
         $config->offsetSetByPath('[sorters][columns]', $sorters);
+    }
+
+    /**
+     * @return null|Organization
+     */
+    protected function getCurrentOrganization()
+    {
+        if (!$this->organization) {
+            $token = $this->tokenStorage->getToken();
+
+            if ($token instanceof OrganizationContextTokenInterface) {
+                $this->organization = $token->getOrganizationContext();
+            }
+        }
+
+        return $this->organization;
     }
 }
