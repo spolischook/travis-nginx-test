@@ -18,6 +18,7 @@ env:
      - APPLICATION=platform 
      - APPLICATION=crm 
      - APPLICATION=crm-enterprise
+     - APPLICATION=commerce
 
 before_script:
   - phpenv config-rm xdebug.ini
