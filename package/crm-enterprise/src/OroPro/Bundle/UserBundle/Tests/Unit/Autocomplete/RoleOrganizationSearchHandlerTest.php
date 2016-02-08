@@ -37,6 +37,11 @@ class RoleOrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected $organization;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|Organization
+     */
+    protected $organizationHelper;
+
     protected function setUp()
     {
         $this->baseHandler = $this
@@ -57,7 +62,16 @@ class RoleOrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
             ['getIsGlobal', 'getId']
         );
 
-        $this->handler = new RoleOrganizationSearchHandler($this->baseHandler, $this->tokenStorage);
+        $this->organizationHelper = $this
+            ->getMockBuilder('OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->handler = new RoleOrganizationSearchHandler(
+            $this->baseHandler,
+            $this->tokenStorage,
+            $this->organizationHelper
+        );
     }
 
     public function testSearchIfUserLoggedInToGlobalOrganization()
@@ -78,6 +92,9 @@ class RoleOrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
         $this->organization->expects($this->once())
             ->method('getIsGlobal')
             ->will($this->returnValue(true));
+
+        $this->organizationHelper->expects($this->never())
+            ->method('isGlobalOrganizationExists');
 
         $searchResults = $this->handler->search('org', 1, 10);
 
@@ -108,6 +125,41 @@ class RoleOrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue(2));
 
+        $this->organizationHelper->expects($this->once())
+            ->method('isGlobalOrganizationExists')
+            ->willReturn(true);
+
+        $searchResults = $this->handler->search('org', 1, 10);
+
+        $this->assertEquals($expectedSearchResults, $searchResults);
+    }
+
+    public function testSearchIfGlobalOrganizationDoesNotExists()
+    {
+        $expectedSearchResults = ['results' => [['id' => 1], ['id' => 2]]];
+        $this->baseHandler->expects($this->once())->method('search')
+            ->with('org', 1, 10)
+            ->will($this->returnValue($expectedSearchResults));
+
+        $this->tokenStorage->expects($this->once())
+            ->method('getToken')
+            ->will($this->returnValue($this->token));
+
+        $this->token->expects($this->once())
+            ->method('getOrganizationContext')
+            ->will($this->returnValue($this->organization));
+
+        $this->organization->expects($this->once())
+            ->method('getIsGlobal')
+            ->will($this->returnValue(false));
+
+        $this->organization->expects($this->never())
+            ->method('getId');
+
+        $this->organizationHelper->expects($this->once())
+            ->method('isGlobalOrganizationExists')
+            ->willReturn(false);
+
         $searchResults = $this->handler->search('org', 1, 10);
 
         $this->assertEquals($expectedSearchResults, $searchResults);
@@ -137,7 +189,7 @@ class RoleOrganizationSearchHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertItem()
     {
-        $organization = new Organization();
+        $organization   = new Organization();
         $expectedResult = ['field' => 'value'];
         $this->baseHandler->expects($this->once())->method('convertItem')
             ->with($organization)

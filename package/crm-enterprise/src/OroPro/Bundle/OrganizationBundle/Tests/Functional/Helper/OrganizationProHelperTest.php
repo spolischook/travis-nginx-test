@@ -17,7 +17,6 @@ class OrganizationProHelperTest extends WebTestCase
     public function testIsGlobalOrganizationExists()
     {
         $helper = $this->getContainer()->get('oropro_organization.helper');
-        $this->assertFalse($helper->isGlobalOrganizationExists());
         $this->loadFixtures(
             [
                 'OroPro\Bundle\OrganizationBundle\Tests\Functional\Fixture\LoadSystemAccessModeOrganizationData'
@@ -33,5 +32,16 @@ class OrganizationProHelperTest extends WebTestCase
     {
         $helper = $this->getContainer()->get('oropro_organization.helper');
         $this->assertTrue($helper->getGlobalOrganizationId() > 0);
+    }
+
+    /**
+     * @depends testIsGlobalOrganizationExists
+     */
+    public function testGetGlobalOrganization()
+    {
+        $this->assertSame(
+            'test system access org',
+            $this->getContainer()->get('oropro_organization.helper')->getGlobalOrganization()->getName()
+        );
     }
 }
