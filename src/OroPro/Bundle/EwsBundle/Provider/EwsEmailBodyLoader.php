@@ -21,6 +21,9 @@ use OroPro\Bundle\EwsBundle\Manager\EwsEmailManager;
 
 class EwsEmailBodyLoader implements EmailBodyLoaderInterface
 {
+    const ORO_EMAIL_ATTACHMENT_SYNC_ENABLE = 'oro_email.attachment_sync_enable';
+    const ORO_EMAIL_ATTACHMENT_SYNC_MAX_SIZE = 'oro_email.attachment_sync_max_size';
+
     /** @var EwsConnector */
     protected $connector;
 
@@ -110,8 +113,12 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
     protected function getManager(EmailFolder $folder, Email $email)
     {
         $manager = new EwsEmailManager($this->connector);
-        $manager->setAttachmentSyncEnabled($this->configManager->get('oro_email.attachment_sync_enable'));
-        $manager->setAttachmentMaxSize($this->configManager->get('oro_email.attachment_sync_max_size'));
+        $manager->setAttachmentSyncEnabled(
+            $this->configManager->get(self::ORO_EMAIL_ATTACHMENT_SYNC_ENABLE)
+        );
+        $manager->setAttachmentMaxSize(
+            $this->configManager->get(self::ORO_EMAIL_ATTACHMENT_SYNC_MAX_SIZE)
+        );
 
         $origin  = $folder->getOrigin();
         if ($origin instanceof EwsEmailOrigin) {

@@ -541,7 +541,7 @@ class EwsEmailManager
 
         if ($this->attachmentSyncEnabled && null !== $msg->Attachments) {
             foreach ($msg->Attachments->FileAttachment as $attachment) {
-                if ($this->attachmentMaxSize === 0 || $attachment->Size / 1024 / 1024 < $this->attachmentMaxSize) {
+                if ($this->attachmentMaxSize === 0 || $attachment->Size / 1024 / 1024 <= $this->attachmentMaxSize) {
                     $email->addAttachmentId($attachment->AttachmentId->Id);
                 }
             }
