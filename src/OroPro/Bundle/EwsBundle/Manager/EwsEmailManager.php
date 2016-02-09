@@ -38,6 +38,16 @@ class EwsEmailManager
     protected $connector;
 
     /**
+     * @var boolean
+     */
+    protected $attachmentSyncEnabled;
+
+    /**
+     * @var int
+     */
+    protected $attachmentMaxSize;
+
+    /**
      * A mailbox name all email related actions are performed for
      *
      * @var EwsType\DistinguishedFolderIdType|EwsType\FolderIdType
@@ -52,8 +62,30 @@ class EwsEmailManager
     public function __construct(EwsConnector $connector)
     {
         $this->connector = $connector;
+        $this->attachmentSyncEnabled = true;
+        $this->attachmentMaxSize = 0;
 
         $this->selectFolder(FolderType::INBOX);
+    }
+
+    /**
+     * Set enable/disable attachment sync
+     *
+     * @param bool $enabled
+     */
+    public function setAttachmentSyncEnabled($enabled)
+    {
+        $this->attachmentSyncEnabled = $enabled;
+    }
+
+    /**
+     * Maximum allowed attachment size. 0 - unlimited
+     *
+     * @param int $size
+     */
+    public function setAttachmentMaxSize($size)
+    {
+        $this->attachmentMaxSize = $size;
     }
 
     /**
@@ -341,6 +373,7 @@ class EwsEmailManager
                     $attachment = new EmailAttachment();
                     $attachment
                         ->setFileName($msg->Name)
+                        ->setFileSize(strlen($msg->Content))
                         ->setContentType($msg->ContentType)
                         ->setContent($msg->Content)
                         ->setContentTransferEncoding('BINARY');
@@ -506,9 +539,11 @@ class EwsEmailManager
             $email->setBody($body);
         }
 
-        if (null != $msg->Attachments) {
+        if ($this->attachmentSyncEnabled && null !== $msg->Attachments) {
             foreach ($msg->Attachments->FileAttachment as $attachment) {
-                $email->addAttachmentId($attachment->AttachmentId->Id);
+                if ($this->attachmentMaxSize === 0 || $attachment->Size / 1024 / 1024 <= $this->attachmentMaxSize) {
+                    $email->addAttachmentId($attachment->AttachmentId->Id);
+                }
             }
         }
 

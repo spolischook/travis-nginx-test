@@ -10,6 +10,7 @@ use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Provider\EmailBodyLoaderInterface;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use OroPro\Bundle\EwsBundle\Connector\EwsConnector;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmail;
@@ -20,15 +21,23 @@ use OroPro\Bundle\EwsBundle\Manager\EwsEmailManager;
 
 class EwsEmailBodyLoader implements EmailBodyLoaderInterface
 {
+    const ORO_EMAIL_ATTACHMENT_SYNC_ENABLE = 'oro_email.attachment_sync_enable';
+    const ORO_EMAIL_ATTACHMENT_SYNC_MAX_SIZE = 'oro_email.attachment_sync_max_size';
+
     /** @var EwsConnector */
     protected $connector;
 
+    /** @var ConfigManager */
+    protected $configManager;
+
     /**
      * @param EwsConnector $connector
+     * @param ConfigManager $configManager
      */
-    public function __construct(EwsConnector $connector)
+    public function __construct(EwsConnector $connector, ConfigManager $configManager)
     {
         $this->connector = $connector;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -69,7 +78,7 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
             );
         }
 
-        $builder = new EmailBodyBuilder();
+        $builder = new EmailBodyBuilder($this->configManager);
 
         $builder->setEmailBody(
             $loadedEmail->getBody()->getContent(),
@@ -84,7 +93,9 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
                     $fileAttachment->getFileName(),
                     $fileAttachment->getContent(),
                     $fileAttachment->getContentType(),
-                    $fileAttachment->getContentTransferEncoding()
+                    $fileAttachment->getContentTransferEncoding(),
+                    null,
+                    $fileAttachment->getFileSize()
                 );
             }
         }
@@ -102,6 +113,12 @@ class EwsEmailBodyLoader implements EmailBodyLoaderInterface
     protected function getManager(EmailFolder $folder, Email $email)
     {
         $manager = new EwsEmailManager($this->connector);
+        $manager->setAttachmentSyncEnabled(
+            $this->configManager->get(self::ORO_EMAIL_ATTACHMENT_SYNC_ENABLE)
+        );
+        $manager->setAttachmentMaxSize(
+            $this->configManager->get(self::ORO_EMAIL_ATTACHMENT_SYNC_MAX_SIZE)
+        );
 
         $origin  = $folder->getOrigin();
         if ($origin instanceof EwsEmailOrigin) {
