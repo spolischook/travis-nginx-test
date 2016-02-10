@@ -33,6 +33,7 @@ class Update extends RootCommand
         'package/zendesk'               => 'git@github.com:laboro/OroCRMZendeskBundle.git',
         'package/magento-contact-us'    => 'git@github.com:laboro/OroCRMMagentoContactUsBundle.git',
 
+        'documentation'                 => 'git@github.com:orocrm/documentation.git',
     );
     /**
      * {@inheritdoc}
@@ -77,7 +78,7 @@ class Update extends RootCommand
         exec('git remote', $remotes);
 
         foreach ($repositories as $codePath => $repository) {
-            $alias = $codePath;
+            $alias = $codePath . '_upstream';
             $output->writeln("Working on {$codePath} subtree from {$repository} repository.");
             if (in_array($alias, $remotes)) {
                 /* Fetch master from remote */
