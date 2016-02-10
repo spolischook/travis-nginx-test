@@ -13,6 +13,7 @@ use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
 use Oro\Bundle\EmailBundle\Model\FolderType;
 use Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures\EmailAddress;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
@@ -33,11 +34,18 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|EwsEmailBodyLoader */
     protected $ewsEmailBodyLoader;
 
+    /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject */
+    protected $configManager;
+
     protected function setUp()
     {
         $this->connector = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Connector\EwsConnector')
             ->disableOriginalConstructor()
             ->setMethods(['getItem', 'setTargetUser'])
+            ->getMock();
+
+        $this->configManager = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\ConfigManager')
+            ->disableOriginalConstructor()
             ->getMock();
 
         $configuration = $this->getMockBuilder('Doctrine\ORM\Configuration')
@@ -60,7 +68,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testSupports()
     {
-        $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector);
+        $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector, $this->configManager);
 
         $this->assertEquals(true, $this->ewsEmailBodyLoader->supports(new EwsEmailOrigin()));
         $this->assertEquals(false, $this->ewsEmailBodyLoader->supports(new UserEmailOrigin()));
@@ -77,7 +85,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getTestDTOEmail($ewsEmailManager)));
 
         $this->ewsEmailBodyLoader = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Provider\EwsEmailBodyLoader')
-            ->setConstructorArgs([$this->connector])
+            ->setConstructorArgs([$this->connector, $this->configManager])
             ->setMethods(['getManager'])
             ->getMock();
         $this->ewsEmailBodyLoader->expects($this->once())
@@ -110,7 +118,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
             ->with('OroProEwsBundle:EwsEmail')
             ->will($this->returnValue($this->getDoctrineMocks()));
 
-        $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector);
+        $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector, $this->configManager);
 
         $folder = new EmailFolder();
         $folder->setType(FolderType::SENT);
@@ -127,7 +135,7 @@ class EwsEmailBodyLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetManagerException()
     {
-        $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector);
+        $this->ewsEmailBodyLoader = new EwsEmailBodyLoader($this->connector, $this->configManager);
 
         $emailUser = $this->getTestEmailUser($this->getTestInternalOrigin());
         $folder = $emailUser->getFolders()->first();

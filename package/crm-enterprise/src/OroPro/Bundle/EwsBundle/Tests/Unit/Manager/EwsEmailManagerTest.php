@@ -79,7 +79,10 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
                     EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
                     EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
                     EwsType\UnindexedFieldURIType::ITEM_CONVERSATION_ID,
-                ]
+                ],
+                'enable' => true,
+                'maxSize' => 0,
+                'expectedAttachments' => 1
             ],
             'without subject' => [
                 'subject' => null,
@@ -95,7 +98,48 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
                     EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
                     EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
                     EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
-                ]
+                ],
+                'enable' => true,
+                'maxSize' => 0,
+                'expectedAttachments' => 1
+            ],
+            'attachments not allowed' => [
+                'subject' => null,
+                'exchangeVersion' => EwsType\ExchangeVersionType::EXCHANGE2007,
+                'fieldUris' => [
+                    EwsType\UnindexedFieldURIType::MESSAGE_FROM,
+                    EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
+                    EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
+                    EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
+                ],
+                'enable' => false,
+                'maxSize' => 0,
+                'expectedAttachments' => 0
+            ],
+            'attachments size more than allowed' => [
+                'subject' => null,
+                'exchangeVersion' => EwsType\ExchangeVersionType::EXCHANGE2007,
+                'fieldUris' => [
+                    EwsType\UnindexedFieldURIType::MESSAGE_FROM,
+                    EwsType\UnindexedFieldURIType::MESSAGE_TO_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::MESSAGE_CC_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::MESSAGE_BCC_RECIPIENTS,
+                    EwsType\UnindexedFieldURIType::ITEM_SUBJECT,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_SENT,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_RECEIVED,
+                    EwsType\UnindexedFieldURIType::ITEM_DATE_TIME_CREATED,
+                    EwsType\UnindexedFieldURIType::ITEM_IMPORTANCE,
+                    EwsType\UnindexedFieldURIType::MESSAGE_INTERNET_MESSAGE_ID,
+                ],
+                'enable' => true,
+                'maxSize' => 0.01,
+                'expectedAttachments' => 0
             ],
         ];
     }
@@ -106,11 +150,20 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
      * @param string $subject
      * @param string $exchangeVersion
      * @param array  $fieldUris
+     * @param bool   $attachmentEnabled
+     * @param int    $maxSize
+     * @param int    $expectedAttachments
      *
      * @dataProvider getEmailsProvider
      */
-    public function testGetEmails($subject, $exchangeVersion, $fieldUris)
-    {
+    public function testGetEmails(
+        $subject,
+        $exchangeVersion,
+        $fieldUris,
+        $attachmentEnabled,
+        $maxSize,
+        $expectedAttachments
+    ) {
         $ewsMock = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Ews\ExchangeWebServices')
             ->disableOriginalConstructor()
             ->setMethods(array('FindItem', 'GetItem', 'GetAttachment', 'getVersion'))
@@ -118,6 +171,8 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
 
         $connector = new EwsConnector($ewsMock);
         $manager = new EwsEmailManager($connector);
+        $manager->setAttachmentSyncEnabled($attachmentEnabled);
+        $manager->setAttachmentMaxSize($maxSize);
 
         $query = $this->getMockBuilder('OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery')
             ->disableOriginalConstructor()
@@ -177,6 +232,7 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $msg->Items->Message[0]->Attachments->FileAttachment[0]->AttachmentId =
             new EwsType\AttachmentIdType();
         $msg->Items->Message[0]->Attachments->FileAttachment[0]->AttachmentId->Id = 'attId';
+        $msg->Items->Message[0]->Attachments->FileAttachment[0]->Size = 1000000;
         $msgResponse = new EwsType\GetItemResponseType();
         $msgResponse->ResponseMessages = new EwsType\ArrayOfResponseMessagesType();
         $msgResponse->ResponseMessages->GetItemResponseMessage = [];
@@ -272,7 +328,7 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $emailId = new EwsType\ItemIdType();
         $emailId->Id = 'Id';
         $emailId->ChangeKey = 'ChangeKey';
-        $ewsMock->expects($this->once())
+        $ewsMock->expects($this->exactly($expectedAttachments))
             ->method('GetAttachment')
             ->with($attMsgRequest)
             ->will($this->returnValue($attMsgResponse));
@@ -321,8 +377,11 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
         $bccRecipients = $email->getBccRecipients();
         $this->assertEquals('bccEmail', $bccRecipients[0]);
         $attachmentIds = $email->getAttachmentIds();
-        $this->assertEquals('attId', $attachmentIds[0]);
-
+        if ($expectedAttachments > 0) {
+            $this->assertEquals('attId', $attachmentIds[0]);
+        } else {
+            $this->assertEmpty($attachmentIds);
+        }
         $body = $email->getBody();
 
         $this->assertEquals('bodyContent', $body->getContent());
@@ -330,11 +389,13 @@ class EwsEmailManagerTest extends \PHPUnit_Framework_TestCase
 
         $attachments = $email->getAttachments();
 
-        $this->assertCount(1, $attachments);
-        $this->assertEquals('file', $attachments[0]->getFileName());
-        $this->assertEquals('attContent', $attachments[0]->getContent());
-        $this->assertEquals('attContentType', $attachments[0]->getContentType());
-        $this->assertEquals('BINARY', $attachments[0]->getContentTransferEncoding());
+        if ($expectedAttachments > 0) {
+            $this->assertCount($expectedAttachments, $attachments);
+            $this->assertEquals('file', $attachments[0]->getFileName());
+            $this->assertEquals('attContent', $attachments[0]->getContent());
+            $this->assertEquals('attContentType', $attachments[0]->getContentType());
+            $this->assertEquals('BINARY', $attachments[0]->getContentTransferEncoding());
+        }
     }
 
     /**
