@@ -3849,18 +3849,13 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/commerce/",
-                "reference": "3ebafb83f50c0f165ebe0dd1d360f908936b7d05",
+                "reference": "babad7f4441be607debeef7436512fb7d4db5557",
                 "shasum": null
             },
             "require": {
-                "oro/platform": "1.x-dev"
+                "oro/platform": "self.version"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Oro\\Component": "src/",
@@ -4040,16 +4035,11 @@
         {
             "name": "oro/platform",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/orocrm/platform.git",
-                "reference": "a6e567bb7a3f19ed735e79c4c02acbc040b91c86"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/platform/zipball/a6e567bb7a3f19ed735e79c4c02acbc040b91c86",
-                "reference": "a6e567bb7a3f19ed735e79c4c02acbc040b91c86",
-                "shasum": ""
+                "type": "path",
+                "url": "../../package/platform/",
+                "reference": "b3d34467a8496d241364afea0e175ad8e8e5d12f",
+                "shasum": null
             },
             "require": {
                 "a2lix/translation-form-bundle": "1.3",
@@ -4118,18 +4108,12 @@
                 "sensio/generator-bundle": "2.5.3"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Oro\\Component": "src/",
                     "Oro\\Bundle": "src/"
                 }
             },
-            "notification-url": "http://packagist.orocrm.com/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4140,8 +4124,7 @@
                 }
             ],
             "description": "Business Application Platform (BAP)",
-            "homepage": "https://github.com/orocrm/platform.git",
-            "time": "2016-01-26 06:32:18"
+            "homepage": "https://github.com/orocrm/platform.git"
         },
         {
             "name": "oro/platform-serialised-fields",
