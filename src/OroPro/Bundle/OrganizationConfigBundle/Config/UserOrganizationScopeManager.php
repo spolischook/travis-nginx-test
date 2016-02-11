@@ -22,7 +22,7 @@ class UserOrganizationScopeManager extends UserScopeManager
      */
     protected function ensureScopeIdInitialized()
     {
-        if (null === $this->scopeId) {
+        if (!$this->scopeId) {
             $scopeId = 0;
 
             $token = $this->securityContext->getToken();
