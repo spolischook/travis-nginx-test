@@ -57,7 +57,7 @@ class OrganizationScopeManager extends AbstractScopeManager
      */
     protected function ensureScopeIdInitialized()
     {
-        if (null === $this->scopeId) {
+        if (!$this->scopeId) {
             $scopeId = 0;
 
             $token = $this->securityContext->getToken();
