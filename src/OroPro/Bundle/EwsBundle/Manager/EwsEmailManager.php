@@ -492,8 +492,6 @@ class EwsEmailManager
      *
      * @param EwsType\MessageType $msg
      * @return Email
-     *
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function convertToEmail(EwsType\MessageType $msg)
     {
