@@ -19,9 +19,10 @@ env:
   matrix: 
      include:
      - php: 5.4
-         APPLICATION="crm" TESTSUITE="functional"     
-     - APPLICATION="crm" TESTSUITE="unit"
-     - APPLICATION="crm-enterprise" TESTSUITE="unit"
+       env:  APPLICATION="crm" TESTSUITE="functional"     
+
+  - APPLICATION="crm" TESTSUITE="unit"
+  - APPLICATION="crm-enterprise" TESTSUITE="unit"
 
 before_script:
   - phpenv config-rm xdebug.ini
