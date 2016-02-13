@@ -34,9 +34,12 @@ before_script:
   - composer config -g github-oauth.github.com ${GITHUB_OAUTH}
   - phpenv config-add travis.php.ini
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -u root -e 'create database IF NOT EXISTS oro_crm_test'; fi"
+  - mysql --version
 
 script:
   - cd application/${APPLICATION}
   - travis_wait composer install --no-interaction
+  - cp app/config/parameters_test.yml.dist app/config/parameters_test.yml
+  - php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --timeout 600
   - phpunit --testsuite ${TESTSUITE}
   - ./vendor/bin/phpcs ./vendor/oro/${APPLICATION} -p --encoding=utf-8 --extensions=php --standard=psr2
