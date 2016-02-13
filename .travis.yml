@@ -9,6 +9,9 @@ php:
   - 5.4
   - 5.5
 
+services:
+  - mysql
+
 cache:
   directories:
     - $HOME/.composer/cache/files
@@ -23,13 +26,14 @@ env:
 matrix: 
      include:
      - php: 5.4
-       env:  APPLICATION="crm" TESTSUITE="functional"     
+       env:  APPLICATION="crm" TESTSUITE="functional" DB=mysql     
 
 before_script:
   - phpenv config-rm xdebug.ini
   - composer self-update
   - composer config -g github-oauth.github.com ${GITHUB_OAUTH}
   - phpenv config-add travis.php.ini
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -u root -e 'create database IF NOT EXISTS oro_crm_test'; fi"
 
 script:
   - cd application/${APPLICATION}
