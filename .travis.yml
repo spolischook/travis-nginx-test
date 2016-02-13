@@ -20,7 +20,7 @@ env:
   global:
      - secure: "gmQOqXchZLf9vPDRKUCGcIQB1HsxlHHWdCTqY1e1OJs9yXyqg1aRodgkCB2P86w/PVqDBnwR0xKaavKrL386SGJ7XvJcZ5ZZPWAozRJFwYBNr2oGv+Ib21sp7+dM01rZxQsPTGyoVeNrldXw5f7uX6IzrGGEmwfGECKqidpFT2zqCgX7cSC9Vnm+GtnWoyAykUIGusO62JgWoiwWYswIZ5iZkHFujZuyfzRIl+DRmke62n2fAFNv1i1k57N8VpRmB+XaJflh798tEtlpvJlW8o1LeGzG6k6Wdx0eCtVxEWt3HqqzQX8FrrOgNvI7Jgp3EaL2Wrwez9xE1084AC+Gj0oZbvsiDzYuZ1ZasFETeA2fHDO3ek6jCkMJQZHMu3JdOP0BmPPddQMgL7er/5XzfHedel/GW5JBki0FBNeVGkib0QdpipgAvt+C6Sh8UyLawjhL6nK4aA5ntKFmBtwA404iXAEJbPn8m1dzia5oCmWz8xSw/z5rnjh9UTZ1vgSk4/a4wdtIUqNC5FbJP/UHGnawLzciLuhDUGo3n+YQ7+LjzaTNrbPAHUKn2/4mb65CiTuBzmhyHMDbdEnShHbpDZ7iRzN7EWXbxIyAleBmCaAEN2JG7Cq4kWBaf5Dwf4cHdkIDdqXE+rb8WjekBGDSMyHbbeLnNcxk4P2eBZSWbyM="
   matrix: 
-     - APPLICATION="crm" TESTSUITE="unit"
+     - APPLICATION="crm" TESTSUITE="unit" CS="YES"
 #     - APPLICATION="crm-enterprise" TESTSUITE="unit"
 
 matrix: 
@@ -41,5 +41,5 @@ script:
   - travis_wait composer install --no-interaction
   - cp app/config/parameters_test.yml.dist app/config/parameters_test.yml
   - if [ ! -z "$DB" ]; then php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --timeout 600; fi
-  - phpunit --testsuite ${TESTSUITE}
-  - ./vendor/bin/phpcs ./vendor/oro/${APPLICATION} -p --encoding=utf-8 --extensions=php --standard=psr2
+  - phpunit --stderr --testsuite ${TESTSUITE}
+  - if [ -z "$CS" ]; then ./vendor/bin/phpcs ./vendor/oro/${APPLICATION} -p --encoding=utf-8 --extensions=php --standard=psr2; fi
