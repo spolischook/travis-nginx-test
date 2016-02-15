@@ -8,11 +8,13 @@
          bootstrap="app/autoload.php"
 >
     <testsuites>
-        <testsuite name="Bundles Unit Tests">
+        <testsuite name="unit">
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/*Bundle/Tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Components Unit Tests">
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Component/*/Tests/Unit</directory>
+        </testsuite>
+        <testsuite name="functional">
+            <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/*Bundle/Tests/Funcational</directory>
+            <directory suffix="Test.php">vendor/oro/commerce/src/*/Component/*/Tests/Functional</directory>
         </testsuite>
     </testsuites>
 </phpunit>
