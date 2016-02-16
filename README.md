@@ -31,14 +31,14 @@ Development flow is not different from any composer based application and consis
   NOTE: symlinks for path repository not supported on Windows environment. Please remove packages copy from vendor
 folder and use `mklink` command instead. For example, to enable platform package in platform application after 
 `composer install` run following commands in the administrator mode:
-```
-rd /s /q "application/platform/vendor/oro/platform"
-mklink /J "./application/platform/vendor/oro/platform" "./package/platform"
-```
+  ```
+  rd /s /q "application/platform/vendor/oro/platform"
+  mklink /J "./application/platform/vendor/oro/platform" "./package/platform"
+  ```
 * Enable PHPStorm configuration for application you will be working on with: 
- ```
- php tool/console phpstorm:init-application {application_name}
- ```
+  ```
+  php tool/console phpstorm:init-application {application_name}
+  ```
 * Create feature branch
 * Do code changes
 * Push code to remote repository and create a pull request
