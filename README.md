@@ -36,6 +36,7 @@ folder and use `mklink` command instead. For example, to enable platform package
   mklink /J "./application/platform/vendor/oro/platform" "./package/platform"
   ```
 * Enable PHPStorm configuration for application you will be working on with: 
+
   ```
   php tool/console phpstorm:init-application {application_name}
   ```
