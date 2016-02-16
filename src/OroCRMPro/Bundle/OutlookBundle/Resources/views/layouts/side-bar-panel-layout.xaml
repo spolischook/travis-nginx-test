@@ -65,12 +65,14 @@
             <Visibility x:Key="CreateButton_Visibility">Collapsed</Visibility>
             <Visibility x:Key="EmailRelatedElements_Visibility">Visible</Visibility>
             <Visibility x:Key="EmailRelatedElements_Inverted_Visibility">Collapsed</Visibility>
+            <Visibility x:Key="CreateArrow_Visibility">Visible</Visibility>
+
             <HorizontalAlignment  x:Key="CreateButton_Alignment">Left</HorizontalAlignment>
 
             <Thickness x:Key="ContentPadding">8,0,8,0</Thickness>
 
             <clr:String x:Key="itemCount">0</clr:String>
-
+            <clr:String x:Key="onlyEntityToCreate">.</clr:String>
 
             <clr:Int32 x:Key="PageSize">20</clr:Int32>
 
@@ -248,23 +250,31 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <Grid Width="34" Height="1" Visibility="{DynamicResource EmailRelatedElements_Inverted_Visibility}" />
+                        <Grid Width="{Binding ElementName=createButtonRightSpace, Path=ActualWidth}" Height="5" Visibility="{DynamicResource EmailRelatedElements_Inverted_Visibility}" />
                         <Grid MinWidth="110" Name="popupGrid" Grid.Column="1" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
                             <Button Name="btnCreate" Style="{DynamicResource DynamicButton}" HorizontalAlignment="Left" Background="#0073C6" Height="20" BorderThickness="0" Padding="0">
                                 <Button.Resources>
                                     <Brush x:Key="ButtonMouseOverBrush">#0073C6</Brush>
                                 </Button.Resources>
                                 <StackPanel>
                                     <DockPanel Name="createButtonMainPanel">
-                                        <Image Stretch="None" Source="{DynamicResource createarrow}" DockPanel.Dock="Right" />
+                                        <Image Stretch="None" Source="{DynamicResource createarrow}" DockPanel.Dock="Right" Visibility="{DynamicResource CreateArrow_Visibility}" />
                                         <Grid>
                                             <Grid Height="19" VerticalAlignment="Top">
-                                                <TextBlock VerticalAlignment="Center" Foreground="White" Text="CREATE" FontSize="11" Margin="9,0,9,0" />
+                                                <TextBlock VerticalAlignment="Center" Foreground="White" FontSize="11" Margin="9,0,9,0">
+                                                    <TextBlock Text="CREATE" />
+                                                    <TextBlock Text="{DynamicResource onlyEntityToCreate}" />
+                                                </TextBlock>
                                             </Grid>
                                         </Grid>
                                     </DockPanel>
                                 </StackPanel>
                             </Button>
+                            <Grid Name="createButtonRightSpace" Grid.Column="1" Height="5" HorizontalAlignment="Stretch" />
                         </Grid>
                     </Grid>
                     <Popup StaysOpen="False" Name="CreatePopup" VerticalOffset="2" HorizontalOffset="-1" MinWidth="110"
