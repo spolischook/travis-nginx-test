@@ -22,6 +22,7 @@ Development flow is not different from any composer based application and consis
 * Install tools
   * go to the `tool` folder
   * run `composer install`
+  * go back to the root folder, for example `cd ..`
 * Install application(s)
   * go to the application folder, for example `cd application/crm-enterprise`
   * run `composer install`
