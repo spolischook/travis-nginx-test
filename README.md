@@ -20,7 +20,7 @@ Development flow is not different from any composer based application and consis
 
 * Clone repository
 * Install tools
-  * go to the `tool` folder
+  * go to the `tool` folder, for example `cd tool`
   * run `composer install`
   * go back to the root folder, for example `cd ..`
 * Install application(s)
