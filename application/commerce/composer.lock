@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "113680d59ebf7525a915de2da7534fa2",
-    "content-hash": "1a1ba98983f119f629435dd179636eaf",
+    "hash": "5fab869de04419a6203ee08ae094dad6",
+    "content-hash": "2f2a7ea9154f8387633f93c0c76d2a21",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3847,6 +3847,43 @@
             "time": "2014-01-07 05:10:44"
         },
         {
+            "name": "nicholas-eden/math",
+            "version": "0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nicholas-eden/math.git",
+                "reference": "56137c34383c451f6ed0d18d6b5147783f014bba"
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brick\\Math\\": "src/",
+                    "Brick\\Math\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Arbitrary-precision arithmetic library",
+            "keywords": [
+                "Arbitrary-precision",
+                "Arithmetic",
+                "BigDecimal",
+                "BigInteger",
+                "BigRational",
+                "Brick",
+                "Math"
+            ],
+            "time": "2015-10-21 19:56:08"
+        },
+        {
             "name": "ocramius/proxy-manager",
             "version": "0.4.1",
             "source": {
@@ -3914,12 +3951,14 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/commerce/",
-                "reference": "affe9aa20f67ee6d0c178043357d77b3475a8ce3",
+                "reference": "57bc13fc5ad393f628eeaf25cacbae5578074989",
                 "shasum": null
             },
             "require": {
                 "box/spout": "2.3.*",
-                "oro/platform": "self.version"
+                "nicholas-eden/math": "0.6.*",
+                "oro/platform": "self.version",
+                "oro/platform-serialised-fields": "self.version"
             },
             "type": "library",
             "autoload": {
@@ -4337,16 +4376,16 @@
         },
         {
             "name": "piwik/device-detector",
-            "version": "3.5.1",
+            "version": "3.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/piwik/device-detector.git",
-                "reference": "29830f9bd67c8300e37828db0688161dd6f5f7a5"
+                "reference": "e46f0574e545b77c919f529a6941a23a58d4c515"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/piwik/device-detector/zipball/29830f9bd67c8300e37828db0688161dd6f5f7a5",
-                "reference": "29830f9bd67c8300e37828db0688161dd6f5f7a5",
+                "url": "https://api.github.com/repos/piwik/device-detector/zipball/e46f0574e545b77c919f529a6941a23a58d4c515",
+                "reference": "e46f0574e545b77c919f529a6941a23a58d4c515",
                 "shasum": ""
             },
             "require": {
@@ -4384,7 +4423,7 @@
                 "parser",
                 "useragent"
             ],
-            "time": "2016-01-21 22:26:37"
+            "time": "2016-02-11 23:21:53"
         },
         {
             "name": "psr/log",
@@ -6339,8 +6378,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "oro/commerce": 20,
-        "oro/platform-serialised-fields": 20
+        "oro/commerce": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
