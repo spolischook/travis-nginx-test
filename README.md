@@ -12,37 +12,26 @@ Monolithic repository created based individual package and application repositor
 
 - application - all application repositories with dependency on packages that are handled with 
 [path](https://getcomposer.org/doc/05-repositories.md#path) repository type from composer
+- documentation - all products documentation
 - package - functional packages that are used to build certain applications
+- tool - CLI and other tools necessary for repository and code maintenance 
+
+## Installation and Initialization
+
+* [Install composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) globally 
+* Clone repository to the local environment: `git clone git@github.com:laboro/dev.git`
+* Install tools in `tool` folder: `cd dev/tool/ && composer install && cd ../`
+* Install all dependencies for the application(s) you are going to work on (crm application used as example): 
+`cd application/crm && composer install && cd ../../`
+* Install application via web or command line interface
 
 ## Development Experience
 
-Development flow is not different from any composer based application and consists of the following steps:
-
-* Clone repository
-* Install tools
-  * go to the `tool` folder, for example `cd tool`
-  * run `composer install`
-  * go back to the root folder, for example `cd ..`
-* Install application(s)
-  * go to the application folder, for example `cd application/crm-enterprise`
-  * run `composer install`
-  * go back to the root folder, for example `cd ../..`
-
-  NOTE: symlinks for path repository not supported on Windows environment. Please remove packages copy from vendor
-folder and use `mklink` command instead. For example, to enable platform package in platform application after 
-`composer install` run following commands in the administrator mode:
-  ```
-  rd /s /q "application/platform/vendor/oro/platform"
-  mklink /J "./application/platform/vendor/oro/platform" "./package/platform"
-  ```
 * Enable PHPStorm configuration for application you will be working on with: 
-
-  ```
-  php tool/console phpstorm:init-application {application_name}
-  ```
+`php tool/console phpstorm:init-application {application_name}`
 * Create feature branch
 * Do code changes
-* Push code to remote repository and create a pull request
+* Push branch to remote repository and create a pull request
 
 ### IDE
 
@@ -59,27 +48,20 @@ Maintenance cycle includes a few typical tasks:
 
 ### Adding new subtree
 
-If you would like to add new code from existing repository, you should run following command:
-
-```
-git subtree add --prefix={{code/folder}} {{code repository}} {{branch}}
-```
-
-- {{code/folder}} - destination folder where code will be added. In you adding an application, you'll typically use
- `application/{application name}` and `package/{package name}` for packages.
-- {{code repository}} - URL of the original code repository
-- {{branch}} - code branch or revision, typically you will use `master`
+If you would like to add new code from existing upstream repository, you should add new record to `$repositories` in
+`Oro\Cli\Command\Repositor\Update` class and run `tool/console repository:update REPO_NAME` command.
 
 ### Merge changes from the original repository
 
 In order to update subtree with code from original repository you will need to run following commands:
 
 ```
-git remote add -f {{origin-name}} {{code repository}}
-git subtree add --prefix={{code/folder}} {{origin-name}} {{branch}} 
-git fetch {{origin-name}} {{branch}}
-git subtree pull --prefix={{code/folder}} {{origin-name}} {{branch}}
+tool/console repository:update
 ```
+
+*Note:* please pay attention to command output, if conflict will occure during subtree merge you'll need to resolve it
+and run command again. If you notice *Working tree has modifications.  Cannot add.* in the output, it indicates that
+you either have local changes that should be commited or conflict occured during merge and it should be resolved.
 
 ### Merge changes to the original repository
 
