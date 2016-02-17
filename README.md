@@ -19,18 +19,27 @@ Monolithic repository created based individual package and application repositor
 Development flow is not different from any composer based application and consists of the following steps:
 
 * Clone repository
+* Install tools
+  * go to the `tool` folder, for example `cd tool`
+  * run `composer install`
+  * go back to the root folder, for example `cd ..`
 * Install application(s)
-NOTE: symlinks for path repository not supported on Windows environment. Please remove packages copy from vendor
+  * go to the application folder, for example `cd application/crm-enterprise`
+  * run `composer install`
+  * go back to the root folder, for example `cd ../..`
+
+  NOTE: symlinks for path repository not supported on Windows environment. Please remove packages copy from vendor
 folder and use `mklink` command instead. For example, to enable platform package in platform application after 
 `composer install` run following commands in the administrator mode:
-```
-rd /s /q "application/platform/vendor/oro/platform"
-mklink /J "./application/platform/vendor/oro/platform" "./package/platform"
-```
+  ```
+  rd /s /q "application/platform/vendor/oro/platform"
+  mklink /J "./application/platform/vendor/oro/platform" "./package/platform"
+  ```
 * Enable PHPStorm configuration for application you will be working on with: 
- ```
- php -f tool/phpstorm-application.php {application_name}
- ```
+
+  ```
+  php tool/console phpstorm:init-application {application_name}
+  ```
 * Create feature branch
 * Do code changes
 * Push code to remote repository and create a pull request
