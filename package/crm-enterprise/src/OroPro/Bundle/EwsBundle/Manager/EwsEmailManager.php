@@ -492,8 +492,6 @@ class EwsEmailManager
      *
      * @param EwsType\MessageType $msg
      * @return Email
-     *
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function convertToEmail(EwsType\MessageType $msg)
     {
@@ -512,7 +510,19 @@ class EwsEmailManager
             ->setXMessageId($msg->ItemId->Id)
             ->setXThreadId($msg->ConversationId != null ? $msg->ConversationId->Id : null);
 
+        $this->copyRecipients($msg, $email);
+        $this->copyEmailBody($msg, $email);
+        $this->copyAttachments($msg, $email);
 
+        return $email;
+    }
+
+    /**
+     * @param EwsType\MessageType $msg
+     * @param Email $email
+     */
+    protected function copyRecipients(EwsType\MessageType $msg, Email $email)
+    {
         if ($msg->ToRecipients instanceof ArrayOfRecipientsType) {
             foreach ($msg->ToRecipients->Mailbox as $mailbox) {
                 $email->addToRecipient($mailbox->EmailAddress);
@@ -530,7 +540,14 @@ class EwsEmailManager
                 $email->addBccRecipient($mailbox->EmailAddress);
             }
         }
+    }
 
+    /**
+     * @param EwsType\MessageType $msg
+     * @param Email $email
+     */
+    protected function copyEmailBody(EwsType\MessageType $msg, Email $email)
+    {
         if (null != $msg->Body) {
             $body = new EmailBody();
             $body
@@ -538,7 +555,14 @@ class EwsEmailManager
                 ->setBodyIsText($msg->Body->BodyType === EwsType\BodyTypeType::TEXT);
             $email->setBody($body);
         }
+    }
 
+    /**
+     * @param EwsType\MessageType $msg
+     * @param Email $email
+     */
+    protected function copyAttachments(EwsType\MessageType $msg, Email $email)
+    {
         if ($this->attachmentSyncEnabled && null !== $msg->Attachments) {
             foreach ($msg->Attachments->FileAttachment as $attachment) {
                 if ($this->attachmentMaxSize === 0 || $attachment->Size / 1024 / 1024 <= $this->attachmentMaxSize) {
@@ -546,7 +570,5 @@ class EwsEmailManager
                 }
             }
         }
-
-        return $email;
     }
 }
