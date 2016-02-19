@@ -17,33 +17,59 @@ cache:
   directories:
     - $HOME/.composer/cache/files
 
+matrix:
+     exclude:
+     - php: 5.5
+       env: APPLICATION="application/crm" TESTSUITE="functional" DB=mysql 
+     - php: 5.6
+       env: APPLICATION="application/crm" TESTSUITE="functional" DB=mysql
+     include:
+     - php: 5.6
+       env: APPLICATION="package" CS="YES"
+     - language: python
+       python: 2.6       
+       env: APPLICATION="documentation"
+
 env:
   global:
      - secure: "gmQOqXchZLf9vPDRKUCGcIQB1HsxlHHWdCTqY1e1OJs9yXyqg1aRodgkCB2P86w/PVqDBnwR0xKaavKrL386SGJ7XvJcZ5ZZPWAozRJFwYBNr2oGv+Ib21sp7+dM01rZxQsPTGyoVeNrldXw5f7uX6IzrGGEmwfGECKqidpFT2zqCgX7cSC9Vnm+GtnWoyAykUIGusO62JgWoiwWYswIZ5iZkHFujZuyfzRIl+DRmke62n2fAFNv1i1k57N8VpRmB+XaJflh798tEtlpvJlW8o1LeGzG6k6Wdx0eCtVxEWt3HqqzQX8FrrOgNvI7Jgp3EaL2Wrwez9xE1084AC+Gj0oZbvsiDzYuZ1ZasFETeA2fHDO3ek6jCkMJQZHMu3JdOP0BmPPddQMgL7er/5XzfHedel/GW5JBki0FBNeVGkib0QdpipgAvt+C6Sh8UyLawjhL6nK4aA5ntKFmBtwA404iXAEJbPn8m1dzia5oCmWz8xSw/z5rnjh9UTZ1vgSk4/a4wdtIUqNC5FbJP/UHGnawLzciLuhDUGo3n+YQ7+LjzaTNrbPAHUKn2/4mb65CiTuBzmhyHMDbdEnShHbpDZ7iRzN7EWXbxIyAleBmCaAEN2JG7Cq4kWBaf5Dwf4cHdkIDdqXE+rb8WjekBGDSMyHbbeLnNcxk4P2eBZSWbyM="
   matrix: 
-     - APPLICATION="platform" TESTSUITE="unit" CS="YES" 
-     - APPLICATION="crm" TESTSUITE="unit" CS="YES"
-     - APPLICATION="crm-enterprise" TESTSUITE="unit" CS="YES"
-     - APPLICATION="commerce" TESTSUITE="unit" CS="YES"
+     - APPLICATION="application/crm" TESTSUITE="functional" DB=mysql
+     - APPLICATION="application/platform" TESTSUITE="unit" 
+     - APPLICATION="application/crm" TESTSUITE="unit"
+     - APPLICATION="application/crm-enterprise" TESTSUITE="unit"
+     - APPLICATION="application/commerce" TESTSUITE="unit"
 
-matrix: 
-     include:
-     - php: 5.4
-       env:  APPLICATION="crm" TESTSUITE="functional" DB=mysql     
+install:
+   - if [ ! -z "$TRAVIS_PHP_VERSION" ]; then 
+        phpenv config-rm xdebug.ini;
+        phpenv config-add travis.php.ini; 
+        composer self-update;
+        composer config -g github-oauth.github.com ${GITHUB_OAUTH};
+     fi  
+   - cd ${APPLICATION};
+   - if [[ "$APPLICATION" == "documentation" ]]; then 
+        pip install -q -r requirements.txt --use-mirrors;
+        pip install git+https://github.com/fabpot/sphinx-php.git; 
+     fi  
 
 before_script:
-  - phpenv config-rm xdebug.ini
-  - composer self-update
-  - composer config -g github-oauth.github.com ${GITHUB_OAUTH}
-  - phpenv config-add travis.php.ini
   - if [[ "$DB" = "mysql" ]]; then mysql -u root -e 'create database IF NOT EXISTS oro_crm_test'; fi
-  - mysql --version
 
 script:
-  - cd application/${APPLICATION}
-  - travis_wait composer install --no-interaction
-  - cp app/config/parameters_test.yml.dist app/config/parameters_test.yml
-  - if [ ! -z "$DB" ]; then php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --timeout 600; fi
-  - if [ ! -z "$DB" ]; then php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures; fi
-  - phpunit --stderr --testsuite ${TESTSUITE}
-  - if [ ! -z "$CS" ]; then ./vendor/bin/phpcs ./vendor/oro/${APPLICATION} -p --encoding=utf-8 --extensions=php --standard=psr2; fi
+  - if [[ "$APPLICATION" == "documentation" ]]; then 
+       sphinx-build -nW -b html -d _build/doctrees . _build/html; 
+    fi
+  - if [ ! -z "$TESTSUITE" ]; then 
+       travis_wait composer install --no-interaction;
+       cp app/config/parameters_test.yml.dist app/config/parameters_test.yml; 
+       if [ ! -z "$DB" ]; then 
+          php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --timeout 600;
+          php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures; 
+       fi;
+       phpunit --stderr --testsuite ${TESTSUITE};
+    fi
+  - if [ ! -z "$CS" ]; then
+       travis_wait composer global require "squizlabs/php_codesniffer=2.3.3"; 
+       $HOME/.composer/vendor/bin/phpcs . -p --encoding=utf-8 --extensions=php --standard=psr2; 
+    fi
