@@ -29,6 +29,9 @@ matrix:
      - language: python
        python: 2.6       
        env: APPLICATION="documentation"
+     - language: python
+       python: 2.7       
+       env: APPLICATION="documentation"
 
 env:
   global:
