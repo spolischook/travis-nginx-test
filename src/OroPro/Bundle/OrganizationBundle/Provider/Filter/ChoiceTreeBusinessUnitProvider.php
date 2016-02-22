@@ -2,7 +2,8 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Provider\Filter;
 
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Doctrine\ORM\QueryBuilder;
+
 use Oro\Bundle\OrganizationBundle\Provider\Filter\ChoiceTreeBusinessUnitProvider as BaseChoiceTreeBusinessUnitProvider;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 
@@ -11,20 +12,25 @@ class ChoiceTreeBusinessUnitProvider extends BaseChoiceTreeBusinessUnitProvider
     /**
      * {@inheritdoc}
      */
-    protected function getBusinessUnitName(BusinessUnit $businessUnit)
+    protected function addBusinessUnitName(QueryBuilder $qb)
     {
         $currentOrganization = $this->securityFacade->getOrganization();
-        if ($currentOrganization && $currentOrganization->getIsGlobal()) {
-            $name = sprintf(
-                '%s (%s)',
-                $businessUnit->getName(),
-                $businessUnit->getOrganization()->getName()
-            );
-        } else {
-            $name = $businessUnit->getName();
+        if (!$currentOrganization || !$currentOrganization->getIsGlobal()) {
+            parent::addBusinessUnitName($qb);
+
+            return;
         }
 
-        return  $name;
+        $qb
+            ->addSelect(<<<'DQL'
+                CASE WHEN o.id IS NOT NULL
+                    THEN businessUnit.name
+                    ELSE CONCAT(businessUnit.name, ' (', org.name, ')')
+                END AS name
+DQL
+            )
+            ->leftJoin('businessUnit.organization', 'org')
+        ;
     }
 
     /**
