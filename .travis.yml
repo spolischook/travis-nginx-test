@@ -10,8 +10,12 @@ php:
   - 5.5
   - 5.6
 
+addons:
+  postgresql: "9.3"
+
 services:
   - mysql
+  - postgresql
 
 cache:
   directories:
@@ -32,7 +36,9 @@ matrix:
      - language: python
        python: 2.7       
        env: APPLICATION="documentation"
-
+     - php: 5.6
+       env: APPLICATION="application/crm" TESTSUITE="functional" DB=postgresql 
+  
 env:
   global:
      - secure: "gmQOqXchZLf9vPDRKUCGcIQB1HsxlHHWdCTqY1e1OJs9yXyqg1aRodgkCB2P86w/PVqDBnwR0xKaavKrL386SGJ7XvJcZ5ZZPWAozRJFwYBNr2oGv+Ib21sp7+dM01rZxQsPTGyoVeNrldXw5f7uX6IzrGGEmwfGECKqidpFT2zqCgX7cSC9Vnm+GtnWoyAykUIGusO62JgWoiwWYswIZ5iZkHFujZuyfzRIl+DRmke62n2fAFNv1i1k57N8VpRmB+XaJflh798tEtlpvJlW8o1LeGzG6k6Wdx0eCtVxEWt3HqqzQX8FrrOgNvI7Jgp3EaL2Wrwez9xE1084AC+Gj0oZbvsiDzYuZ1ZasFETeA2fHDO3ek6jCkMJQZHMu3JdOP0BmPPddQMgL7er/5XzfHedel/GW5JBki0FBNeVGkib0QdpipgAvt+C6Sh8UyLawjhL6nK4aA5ntKFmBtwA404iXAEJbPn8m1dzia5oCmWz8xSw/z5rnjh9UTZ1vgSk4/a4wdtIUqNC5FbJP/UHGnawLzciLuhDUGo3n+YQ7+LjzaTNrbPAHUKn2/4mb65CiTuBzmhyHMDbdEnShHbpDZ7iRzN7EWXbxIyAleBmCaAEN2JG7Cq4kWBaf5Dwf4cHdkIDdqXE+rb8WjekBGDSMyHbbeLnNcxk4P2eBZSWbyM="
@@ -49,7 +55,10 @@ install:
         phpenv config-add travis.php.ini; 
         composer self-update;
         composer config -g github-oauth.github.com ${GITHUB_OAUTH};
-     fi  
+     fi
+   - if [ ! -z "$CS" ]; then
+       travis_wait composer global require "squizlabs/php_codesniffer=2.3.3"; 
+     fi
    - cd ${APPLICATION};
    - if [[ "$APPLICATION" == "documentation" ]]; then 
         pip install -q -r requirements.txt --use-mirrors;
@@ -57,7 +66,15 @@ install:
      fi  
 
 before_script:
+  - if [ ! -z "$DB" ]; then 
+       cp app/config/parameters_test.yml.dist app/config/parameters_test.yml;
+    fi 
   - if [[ "$DB" = "mysql" ]]; then mysql -u root -e 'create database IF NOT EXISTS oro_crm_test'; fi
+  - if [[ "$DB" = "postgresql" ]]; then 
+       psql -U postgres -c "CREATE DATABASE oro_crm_test WITH lc_collate = 'C' template = template0;";
+       psql -U postgres -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' -d oro_crm_test; 
+       sed -i "s/database_driver"\:".*/database_driver"\:" pdo_pgsql/g; s/database_user"\:".*/database_user"\:" postgres/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
+    fi
 
 script:
   - if [[ "$APPLICATION" == "documentation" ]]; then 
@@ -65,7 +82,6 @@ script:
     fi
   - if [ ! -z "$TESTSUITE" ]; then 
        travis_wait composer install --no-interaction;
-       cp app/config/parameters_test.yml.dist app/config/parameters_test.yml; 
        if [ ! -z "$DB" ]; then 
           php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --timeout 600;
           php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures; 
@@ -73,6 +89,5 @@ script:
        phpunit --stderr --testsuite ${TESTSUITE};
     fi
   - if [ ! -z "$CS" ]; then
-       travis_wait composer global require "squizlabs/php_codesniffer=2.3.3"; 
        $HOME/.composer/vendor/bin/phpcs . -p --encoding=utf-8 --extensions=php --standard=psr2; 
     fi
