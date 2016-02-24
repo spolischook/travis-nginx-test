@@ -5,6 +5,7 @@ global impact (affect all applications for example) so code organization should 
 
 Monolithic repository is used by product development team and contains all supported applications code.
 
+[![Build Status](https://travis-ci.com/laboro/dev.svg?token=xpj6qKNzq4qGqYEzx4Vm&branch=master)](https://travis-ci.com/laboro/dev)
 
 ## Repository Structure
 
