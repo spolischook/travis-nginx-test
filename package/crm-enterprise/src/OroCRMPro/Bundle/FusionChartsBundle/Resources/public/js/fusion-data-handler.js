@@ -1,12 +1,14 @@
-define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotranslation/js/translator'],
-    function(dataFormatter, localeSettings, __) {
+define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'underscore', 'orotranslation/js/translator'],
+    function(dataFormatter, localeSettings, _, __) {
         'use strict';
 
         /**
          * @export orocrmprofusioncharts/js/fusion-data-handler
          * @name   dataHandler
          */
-        return function(dataSource, schema, isCurrencyPrepend) {
+        var FusionDataHandler;
+        FusionDataHandler = function(dataSource, schema, isCurrencyPrepend) {
+
             /**
              * Order data labels(fusion chart not ordered labels)
              */
@@ -70,28 +72,35 @@ define(['orochart/js/data_formatter', 'orolocale/js/locale-settings', 'orotransl
                 }
 
                 dataSource.data[i] = point;
+                dataSource.chart.yAxisValuesStep = 1;
             }
+            this.dataSource = dataSource;
+            this.min = min;
+            this.max = max;
+        };
+
+        _.extend(FusionDataHandler.prototype, {
+            /**
+             * @return {int|float}
+             */
+            getMaxValue: function() {
+                return this.max;
+            },
 
             /**
              * @return {int|float}
              */
-            this.getMaxValue = function() {
-                return max;
-            };
-
-            /**
-             * @return {int|float}
-             */
-            this.getMinValue = function() {
-                return min;
-            };
+            getMinValue: function() {
+                return this.min;
+            },
 
             /**
              * @return {object}
              */
-            this.getDataSource = function() {
-                return dataSource;
-            };
-        };
+            getDataSource: function() {
+                return this.dataSource;
+            }
+        });
+        return FusionDataHandler;
     }
 );
