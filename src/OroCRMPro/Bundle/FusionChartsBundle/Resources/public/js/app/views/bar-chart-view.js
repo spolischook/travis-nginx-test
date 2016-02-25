@@ -54,28 +54,29 @@ define(function(require) {
         },
 
         prepareDataSource: function() {
+            var step;
+            var roundMax;
             var options = this.chartOptions;
             var handler = new DataHandler(options.dataSource, options.schema, options.isCurrencyPrepend);
             var dataSource = handler.getDataSource();
-            var max = Math.ceil(handler.getMaxValue() * 1.2); // left space to label with value above
-            var precision = Math.pow(10, Math.floor(Math.log10(max / options.averageLineQuantity)));
-            var step = this._mround(max / options.averageLineQuantity, precision);
-            var roundMax = this._mround(max, step);
+            var max = Math.ceil(handler.getMaxValue() * 1.12); // left space to label with value above
+            var precision = Math.pow(10, Math.floor(Math.log10(max)));
+            if (max / precision < 1) {
+                step = 1;
+            } else if (max / precision < 2) {
+                step = 2;
+            } else if (max / precision < 4) {
+                step = 5;
+            } else if (max / precision < 8) {
+                step = 10;
+            } else {
+                step = 20;
+            }
+            step *= precision / 10;
+            roundMax = Math.ceil(max / step) * step;
             dataSource.chart.yAxisMaxValue = roundMax;
-            dataSource.chart.numDivLines = Math.floor(roundMax / step) - 1;
+            dataSource.chart.numDivLines = roundMax / step - 1;
             return dataSource;
-        },
-
-        /**
-         * Returns a number rounded to the desired multiple.
-         *
-         * @param number
-         * @param multiple
-         * @returns {number}
-         * @private
-         */
-        _mround: function(number, multiple) {
-            return Math.round(number / multiple) * multiple;
         }
     });
 
