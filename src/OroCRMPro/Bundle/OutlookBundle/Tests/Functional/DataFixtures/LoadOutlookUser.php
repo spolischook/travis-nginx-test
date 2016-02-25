@@ -64,10 +64,6 @@ class LoadOutlookUser extends AbstractFixture implements ContainerAwareInterface
         $aclManager->setPermission($sid, $oid, $mask);
 
         $oid  = $aclManager->getOid('entity:Oro\Bundle\EmailBundle\Entity\EmailUser');
-        $mask = $aclManager->getMaskBuilder($oid)->get();
-        $aclManager->setPermission($sid, $oid, $mask);
-
-        $oid  = $aclManager->getOid('entity:Oro\Bundle\EmailBundle\Entity\Email');
         $mask = $aclManager->getMaskBuilder($oid)
             ->add('CREATE_SYSTEM')
             ->add('VIEW_SYSTEM')
