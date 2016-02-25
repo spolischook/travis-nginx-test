@@ -1,91 +1,57 @@
 {% set max = 0 %}
 {% set containerId = "chart-container-" ~ random() %}
 {% if data|length > 0 %}
+    {% set componentOptions = {
+        view: 'orocrmprofusioncharts/js/app/views/bar-chart-view',
+        autoRender: true,
+        chartOptions: {
+            containerId: containerId,
+            averageLineQuantity: 7,
+            dataSource: {
+                'chart': {
+                    'showValues': isMobileVersion() ? '0' : '1',
+                    'maxColWidth': '50',
+                    'showCanvasBg': '0',
+                    'showCanvasBase': '0',
+                    'animation': '0',
+                    'valuePadding': '10',
+                    'rotateXAxisName': '0',
+                    'formatNumberScale': '0',
+                    'labelPadding': 10,
+                    'yAxisValuesPadding': 10,
+                    'xAxisNamePadding': 10,
+                    'yAxisNamePadding': 10,
+                    'drawAnchors': 0,
+                    'divLineColor': 'eaeaea',
+                    'paletteColors': options.settings.chartColors
+                },
+                'data': data,
+                'trendlines': [{
+                    'line': [
+                        {
+                            'startvalue': '0',
+                            'color': '666666',
+                            'alpha': '10'
+                        },
+                        {
+                            'startvalue': max,
+                            'color': '666666',
+                            'alpha': '10'
+                        }
+                    ]
+                }]
+            },
+            schema: options.data_schema,
+            isCurrencyPrepend: oro_currency_symbol_prepend()
+        }
+    } %}
     <div class="chart-container">
         <div class="clearfix">
-            <div id="{{ containerId }}-chart" class="column-chart chart"></div>
+            <div id="{{ containerId }}-chart" class="column-chart chart"
+                 data-page-component-module="oroui/js/app/components/view-component"
+                 data-page-component-options="{{ componentOptions|json_encode }}"></div>
         </div>
     </div>
-
-    {% set isMobileVersion = isMobileVersion() %}
-    {% set json = {
-        'chart': {
-            'showValues': isMobileVersion ? '0' : '1',
-            'maxColWidth': '50',
-            'showCanvasBg': '0',
-            'showCanvasBase': '0',
-            'animation': '0',
-            'valuePadding': '10',
-            'rotateXAxisName': '0',
-            'formatNumberScale': '0',
-            'labelPadding': 10,
-            'yAxisValuesPadding': 10,
-            'xAxisNamePadding': 10,
-            'yAxisNamePadding': 10,
-            'drawAnchors': 0,
-            'divLineColor': 'eaeaea',
-            'paletteColors': options.settings.chartColors
-
-        },
-        'data': data,
-        'trendlines': [{
-            'line': [
-                {
-                    'startvalue': '0',
-                    'color': '666666',
-                    'alpha': '10'
-                },
-                {
-                    'startvalue': max,
-                    'color': '666666',
-                    'alpha': '10'
-                }
-            ]
-        }]
-    } %}
-
-    <script type="text/javascript">
-        require(
-                [
-                    'jquery',
-                    'orocrmprofusioncharts/js/fusion-data-handler',
-                    'oroui/js/mediator',
-                    'orocrmprofusioncharts/lib/FusionCharts'
-                ],
-                function ($, dataHandler, mediator) {
-                    $(document).ready(function(){
-                        var dataSource = {{ json|json_encode|raw }};
-                        var schema = {{ options.data_schema|json_encode|raw }};
-                        var isCurrencyPrepend = {{ oro_currency_symbol_prepend()|json_encode|raw }};
-                        var handler = new dataHandler(dataSource, schema, isCurrencyPrepend);
-                        dataSource = handler.getDataSource();
-                        var max = handler.getMaxValue();
-                        max += max/5;
-                        dataSource.chart.yAxisMaxValue = Math.round(max);
-                        var chartObj = new FusionCharts({
-                            type: 'Column3D',
-                            dataSource: {
-                                'chart': dataSource.chart,
-                                'trendlines': dataSource.trendlines,
-                                'data': []
-                            },
-                            dataFormat: 'json',
-                            width: '100%',
-                            height: 300,
-                            id: '{{ containerId }}',
-                            renderAt: '{{ containerId }}-chart'
-                        });
-
-                        mediator.once('page:beforeChange', function () {
-                            chartObj.dispose();
-                        });
-
-                        chartObj.setJSONData(dataSource);
-                        chartObj.render();
-                    });
-                }
-        );
-    </script>
 {% else %}
     <div class="container-fluid">
         <div class="clearfix no-data">
