@@ -39,25 +39,34 @@
         <div {{ block('widget_container_attributes') }}>
             {% if form.vars.show_organizations_selector is defined %}
                 {% set globalOrgId = oropro_global_org_id() %}
-                {% for org in form.vars.organization_tree_ids %}
-                    <div class="oro-clearfix">
-                        <input type="checkbox"
-                               id="{{ form.vars.id }}_organizations_{{ org.id }}"
-                               name="{{ form.vars.full_name }}[organizations][]" value="{{ org.id }}"
-                                {% if org.id in form.vars.selected_organizations %} checked="checked" {% endif %}
-                               class="org org-id-{{ org.id }}"
-                        />
-                        <label for="{{ form.vars.id }}_organizations_{{ org.id }}">
-                            <b>{{ org.name }}</b>
-                            {% if globalOrgId and globalOrgId == org.id %}
-                                ({{ 'oropro.organization.is_global_organization'|trans }})
-                            {% endif %}
-                        </label>
-                    </div>
-                    {% if org.children %}
-                        {{ _self.renderOrganizationChildren(form, org.id, org.children, form.vars.selected_business_units) }}
-                    {% endif %}
-                {% endfor %}
+                <div class="accordion organization-structure">
+                    {% for org in form.vars.organization_tree_ids %}
+                        <div class="accordion-group">
+                            <div class="accordion-heding">
+                                <div class="oro-clearfix">
+                                    <a class="accordion-toggle" data-toggle="collapse" href="#organization_{{ org.id }}">+</a>
+                                    <label>
+                                        <input type="checkbox"
+                                               name="{{ form.vars.full_name }}[organizations][]" value="{{ org.id }}"
+                                               {% if org.id in form.vars.selected_organizations %} checked="checked" {% endif %}
+                                               class="org org-id-{{ org.id }}"/>
+                                        <b>{{ org.name }}</b>
+                                        {% if globalOrgId and globalOrgId == org.id %}
+                                            ({{ 'oropro.organization.is_global_organization'|trans }})
+                                        {% endif %}
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="organization_{{ org.id }}" class="accordion-body collapse hide">
+                                <div class="accordion-inner">
+                                {% if org.children %}
+                                    {{ _self.renderOrganizationChildren(form, org.id, org.children, form.vars.selected_business_units) }}
+                                {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             {% else %}
                 <input type="hidden" name="{{ form.vars.full_name }}[organizations][]" value="{{ form.default_organization.vars.value }}" />
                 {{ _self.renderOrganizationChildren(
@@ -71,22 +80,26 @@
         </div>
         {% if form.vars.show_organizations_selector is defined %}
             <script type="text/javascript">
-                require(['jquery'],
-                    function($) {
+                require([
+                    'jquery'
+                ], function($) {
                         'use strict';
-                        $(function() {
-                            $(document).on('change', 'input.bu:checkbox', function (e) {
-                                var org_id = $(this).data('organization');
-                                $('input.org-id-' + org_id + ':checkbox').prop('checked', true);
-                            });
-                            $(document).on('change', 'input.org:checkbox', function (e) {
-                                if($(this).prop('checked') == false) {
-                                    $('input.bu:checkbox[data-organization="' + $(this).val() + '"]')
-                                        .each(function(index, el){
-                                            $(el).prop('checked', false);
-                                        });
-                                }
-                            });
+                        $(document).on('change', 'input.bu:checkbox', function (e) {
+                            var org_id = $(this).data('organization');
+                            $('input.org-id-' + org_id + ':checkbox').prop('checked', true);
+                        });
+                        $(document).on('change', 'input.org:checkbox', function (e) {
+                            if($(this).prop('checked') == false) {
+                                $('input.bu:checkbox[data-organization="' + $(this).val() + '"]')
+                                    .each(function(index, el){
+                                        $(el).prop('checked', false);
+                                    });
+                            }
+                        });
+
+                        $('.accordion.organization-structure').on('click', 'a.accordion-toggle', function(e) {
+                            var href = $(e.target).attr('href');
+                            $(href).removeClass('hide');
                         });
                     });
             </script>
@@ -98,25 +111,20 @@
     {% for child in children %}
         <div class="oro-clearfix">
             <span style="float:left;">
-            {% if level != 0 %}
-                {% for i in 1..level %}
-                    {% for si in 0..5 %}{{ '&nbsp;' }}{% endfor %}
-                {% endfor %}
-            {% endif %}
+            {% for si in 0..(5 * level) %}{{ '&nbsp;' }}{% endfor %}
             </span>
-            <input type="checkbox"
-                   id="{{ form.vars.id }}_businessUnits_{{ child.id }}"
-                   name="{{ form.vars.full_name }}[businessUnits][]"
-                   value="{{ child.id }}"
-                    {% if child.id in selected %} checked="checked" {% endif %}
-                   class="bu"
-                   data-organization="{{ org_id }}"
-            />
-            <label for="{{ form.vars.id }}_businessUnits_{{ child.id }}">{{ child.name }}</label>
+            <label>
+                <input type="checkbox"
+                       name="{{ form.vars.full_name }}[businessUnits][]"
+                       value="{{ child.id }}"
+                        {% if child.id in selected %} checked="checked" {% endif %}
+                       class="bu"
+                       data-organization="{{ org_id }}"/>
+                {{ child.name }}
+            </label>
         </div>
         {% if child.children is defined %}
-            {% set sublevel = level + 1 %}
-            {{ _self.renderOrganizationChildren(form, org_id, child.children, selected, sublevel) }}
+            {{ _self.renderOrganizationChildren(form, org_id, child.children, selected, sublevel + 1) }}
         {% endif %}
     {% endfor %}
 {% endmacro %}

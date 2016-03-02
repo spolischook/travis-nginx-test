@@ -33,7 +33,6 @@ class OrganizationsProSelectType extends OrganizationsSelectType
             'oro_business_unit_tree',
             [
                 'multiple' => true,
-                'expanded' => true,
                 'required' => false,
             ]
         );
