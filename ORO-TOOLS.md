@@ -28,17 +28,6 @@ Below is an example snippet from Nginx config that adds maintenance mode ability
                 rewrite ^(.*)$ /maintenance.html break;
         }
 ```
-And also maintenance mode rewrite rules for Apache (can be used from .htaccess):
-
-```bash
-	RewriteEngine On
-	RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
-	RewriteCond %{DOCUMENT_ROOT}/maintenance.lock -f
-	RewriteCond %{SCRIPT_FILENAME} !maintenance.html
-	RewriteRule ^.*$ /maintenance.html [R=503,L]
-	ErrorDocument 503 /maintenance.html
-	Header Set Cache-Control "max-age=0, no-store"
-```
 
 - General description
 
