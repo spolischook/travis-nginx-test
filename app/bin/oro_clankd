@@ -14,23 +14,28 @@ case "$1" in
 			cd $WEB_ROOT/$ORO_NAME/;
 			setsid php app/console clank:server --env prod 0<&- &> $CLANK_LOG &
 			sleep 1;
+			CLANK_PID="$(ps aux | grep clank:server | grep -v grep | awk {'print $2'})"
+			echo $CLANK_PID > /tmp/ws_$CLANK_PID.pid;
 			echo "	OK"
 		else
 			echo "Oro Clank service is already running, aborting!"
 			exit 1;
 		fi
 		;;
+
 	stop)
 		if [ -n "$CLANK_PID" ]; then
 			echo -n "Oro Clank service stopping..."
 			kill -15 $CLANK_PID &>/dev/null;
-			sleep 1;
+			sleep 3;
+			rm -f /tmp/ws_$CLANK_PID.pid;
 			echo "	OK"
 		else
 			echo "Oro Clank server is not running, aborting!"
 			exit 1;
 		fi
 		;;
+
 	status)
 		if [ -n "$CLANK_PID" ]; then
 			echo "Oro Clank server is running"
@@ -40,6 +45,7 @@ case "$1" in
 			echo "Oro Clank status is invalid"
 		fi
 		;;
+
 	*)
 		echo "Usage: $0 start|stop|status"
 		exit 1
