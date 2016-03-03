@@ -39,7 +39,10 @@
         <div {{ block('widget_container_attributes') }}>
             {% if form.vars.show_organizations_selector is defined %}
                 {% set globalOrgId = oropro_global_org_id() %}
-                <div class="accordion organization-structure{% if not accordion_enabled %} disabled{% endif %}">
+                {% set options= {} %}
+                <div class="accordion organization-structure{% if not accordion_enabled %} disabled{% endif %}"
+                     data-page-component-module="oroorganization/js/app/components/organization-structure-tree-component"
+                     data-page-component-options="{{ options|json_encode }}">
                     {% for org in form.vars.organization_tree_ids %}
                         <div class="accordion-group">
                             <div class="accordion-heding">
@@ -78,27 +81,6 @@
                 ) }}
             {% endif %}
         </div>
-        {% if form.vars.show_organizations_selector is defined %}
-            <script type="text/javascript">
-                require([
-                    'jquery'
-                ], function($) {
-                    'use strict';
-                    $(document).on('change', 'input.bu:checkbox', function (e) {
-                        var org_id = $(this).data('organization');
-                        $('input.org-id-' + org_id + ':checkbox').prop('checked', true);
-                    });
-                    $(document).on('change', 'input.org:checkbox', function (e) {
-                        if($(this).prop('checked') == false) {
-                            $('input.bu:checkbox[data-organization="' + $(this).val() + '"]')
-                                .each(function(index, el){
-                                    $(el).prop('checked', false);
-                                });
-                        }
-                    });
-                });
-            </script>
-        {% endif %}
     {% endspaceless %}
 {% endblock %}
 
