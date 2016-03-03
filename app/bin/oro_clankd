@@ -5,7 +5,7 @@
 source app/config/oro_env.conf;
 
 unset CLANK_PID;
-CLANK_PID="$(ps aux | grep clank | grep -v oro_clankd | grep -v grep | awk {'print $2'})"
+CLANK_PID="$(ps aux | grep clank:server | grep -v grep | awk {'print $2'})"
 
 case "$1" in
 	start)
