@@ -11,7 +11,7 @@ Some configuration maybe done in configuration file app/config/oro_env.conf (def
 Below is snipped from Nginx config that adds maintenance mode ability:
 
 ```bash
-        if (-f $document_root/maintenance.lock) {
+        if (try_files $document_root/maintenance.lock) {
                 return 503;
         }
         
