@@ -74,5 +74,6 @@ class OrganizationsProSelectType extends OrganizationsSelectType
 
         $view->vars['selected_organizations']  = $organizationsData;
         $view->vars['selected_business_units'] = $businessUnitData;
+        $view->vars['accordion_enabled'] = $this->buManager->getTreeNodesCount($buTree) > 1000;
     }
 }
