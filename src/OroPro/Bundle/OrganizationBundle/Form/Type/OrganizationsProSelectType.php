@@ -7,6 +7,8 @@ use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 use Oro\Bundle\OrganizationBundle\Form\Type\OrganizationsSelectType;
 
@@ -17,6 +19,10 @@ class OrganizationsProSelectType extends OrganizationsSelectType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $event->setData(json_decode($event->getData(), true));
+        });
+
         $builder->add(
             'organizations',
             'entity',

@@ -39,7 +39,9 @@
         <div {{ block('widget_container_attributes') }}>
             {% if form.vars.show_organizations_selector is defined %}
                 {% set globalOrgId = oropro_global_org_id() %}
-                {% set options= {} %}
+                {% set options = {
+                    dataInputSelector: 'input[name="' ~ form.vars.full_name ~ '"]',
+                } %}
                 <div class="accordion organization-structure{% if not accordion_enabled %} disabled{% endif %}"
                      data-page-component-module="oroorganization/js/app/components/organization-structure-tree-component"
                      data-page-component-options="{{ options|json_encode }}">
@@ -50,7 +52,8 @@
                                     <a class="accordion-toggle collapsed" data-toggle="collapse" href="#organization_{{ org.id }}"></a>
                                     <label>
                                         <input type="checkbox"
-                                               name="{{ form.vars.full_name }}[organizations][]" value="{{ org.id }}"
+                                               data-name="organization"
+                                               value="{{ org.id }}"
                                                {% if org.id in form.vars.selected_organizations %} checked="checked" {% endif %}
                                                class="org org-id-{{ org.id }}"/>
                                         <b>{{ org.name }}</b>
@@ -69,6 +72,7 @@
                             </div>
                         </div>
                     {% endfor %}
+                    <input type="hidden" name="{{ form.vars.full_name }}">
                 </div>
             {% else %}
                 <input type="hidden" name="{{ form.vars.full_name }}[organizations][]" value="{{ form.default_organization.vars.value }}" />
@@ -92,9 +96,12 @@
             </span>
             <label>
                 <input type="checkbox"
-                       name="{{ form.vars.full_name }}[businessUnits][]"
+                       data-name="businessUnit"
+                       {% if form.vars.show_organizations_selector is not defined %}
+                           name="{{ form.vars.full_name }}[businessUnits][]"
+                       {% endif %}
                        value="{{ child.id }}"
-                        {% if child.id in selected %} checked="checked" {% endif %}
+                       {% if child.id in selected %} checked="checked" {% endif %}
                        class="bu"
                        data-organization="{{ org_id }}"/>
                 {{ child.name }}
