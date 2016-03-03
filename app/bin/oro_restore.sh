@@ -3,8 +3,6 @@
 
 set -e
 
-cdir="$(pwd)"
-
 # Includes #
 source app/config/oro_env.conf;
 source app/bin/oro_env.stdlib;
@@ -20,7 +18,7 @@ fi
 
 app/bin/oro_maintenance_on.sh;
 app/bin/oro_code_restore.sh;
-cd $cdir;
+cd $WEB_ROOT/$ORO_NAME;
 app/bin/oro_db_restore.sh;
 app/bin/oro_maintenance_off.sh;
 
