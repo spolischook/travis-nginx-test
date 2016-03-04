@@ -8,23 +8,23 @@ source app/bin/oro_env.stdlib;
 # Testing if we have all set #
 
 if [ ! -f $DB_CONF ]; then
-        echo "Oro backup configuration not found, aborting!"
-        exit 1;
+    echo "Oro backup configuration not found, aborting!"
+    exit 1;
 fi
 
 if [ ! -d "$DB_BACKUP_DIR" ]; then
-        mkdir -p $DB_BACKUP_DIR;
+    mkdir -p $DB_BACKUP_DIR;
 fi
 
 # Main #
 
 if [ $DB_TYPE == "pdo_mysql" ]; then
-        mysql_backup;
+    mysql_backup;
 elif [ $DB_TYPE == "pdo_pgsql" ]; then
-        pgsql_backup;
+    pgsql_backup;
 else
-        echo "Invalid Database driver, aborting!"
-        exit 1;
+    echo "Invalid Database driver, aborting!"
+    exit 1;
 fi
 
 # EOF #

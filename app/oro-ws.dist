@@ -7,8 +7,10 @@
 #
 
 # Update this with real path to OroCRM and PHP user
-DIR='/var/www/orocrm/crm-application/'
-USER='nginx'
+DIR='/var/www/orocrm/crm-application/' # Path to OroCRM installation
+USER='nginx'                           # Oro files owner
+#
+
 CASE=$1
 
 # Call Oro clank script as PHP user
