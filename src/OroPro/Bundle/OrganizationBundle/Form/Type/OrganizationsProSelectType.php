@@ -4,7 +4,6 @@ namespace OroPro\Bundle\OrganizationBundle\Form\Type;
 
 use Doctrine\ORM\PersistentCollection;
 
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
