@@ -74,7 +74,9 @@
                             </div>
                         </div>
                     {% endfor %}
-                    <input type="hidden" name="{{ form.vars.full_name }}">
+                    <input type="hidden" name="{{ form.vars.full_name }}"
+                           value="{{ {organizations: form.vars.selected_organizations,
+                                      businessUnits: form.vars.selected_business_units}|json_encode }}">
                 </div>
             {% else %}
                 <input type="hidden" name="{{ form.vars.full_name }}[organizations][]" value="{{ form.default_organization.vars.value }}" />
