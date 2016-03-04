@@ -16,8 +16,6 @@ class OrganizationsProSelectType extends OrganizationsSelectType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['show_organizations_selector'] = true;
-
         $buTree = $this->buManager->getBusinessUnitRepo()->getOrganizationBusinessUnitsTree(
             null,
             ['is_global' => 'DESC']

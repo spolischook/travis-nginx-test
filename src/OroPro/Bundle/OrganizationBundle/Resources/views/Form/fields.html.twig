@@ -37,84 +37,48 @@
         {% set attr = attr|merge({'class': attr.class is defined ? attr.class ~ ' horizontal' : 'horizontal'}) %}
         {% set attr = attr|merge({'class': attr.class ~ ' validate-group'}) %}
         <div {{ block('widget_container_attributes') }}>
-            {% if form.vars.show_organizations_selector is defined %}
-                {% set globalOrgId = oropro_global_org_id() %}
-                {% set options = {
-                    dataInputSelector: 'input[name="' ~ form.vars.full_name ~ '"]',
-                    tree: form.vars.organization_tree_ids,
-                    selectedBusinessUnits: form.vars.selected_business_units,
-                    selectedOrganizations: form.vars.selected_organizations,
-                    accordionEnabled: accordion_enabled
-                } %}
-                {% include 'OroOrganizationBundle:Js:organizationStructure.js.twig' %}
-                <div class="accordion organization-structure{% if not accordion_enabled %} disabled{% endif %}"
-                     data-page-component-module="oroorganization/js/app/components/organization-structure-tree-component"
-                     data-page-component-options="{{ options|json_encode }}">
-                    {% for org in form.vars.organization_tree_ids %}
-                        <div class="accordion-group">
-                            <div class="accordion-heding">
-                                <div class="oro-clearfix">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" href="#organization_{{ org.id }}"></a>
-                                    <label>
-                                        <input type="checkbox"
-                                               data-name="organization"
-                                               value="{{ org.id }}"
-                                               {% if org.id in form.vars.selected_organizations %} checked="checked" {% endif %}
-                                               class="org org-id-{{ org.id }}"/>
-                                        <b>{{ org.name }}</b>
-                                        {% if globalOrgId and globalOrgId == org.id %}
-                                            ({{ 'oropro.organization.is_global_organization'|trans }})
-                                        {% endif %}
-                                    </label>
-                                </div>
-                            </div>
-                            <div id="organization_{{ org.id }}" class="accordion-body collapse{% if not accordion_enabled %} in{% endif %}">
-                                <div class="accordion-inner"></div>
+            {% set globalOrgId = oropro_global_org_id() %}
+            {% set options = {
+                dataInputSelector: 'input[name="' ~ form.vars.full_name ~ '"]',
+                tree: form.vars.organization_tree_ids,
+                selectedBusinessUnits: form.vars.selected_business_units,
+                selectedOrganizations: form.vars.selected_organizations,
+                accordionEnabled: accordion_enabled
+            } %}
+            {% include 'OroOrganizationBundle:Js:organizationStructure.js.twig' %}
+            <div class="accordion organization-structure{% if not accordion_enabled %} disabled{% endif %}"
+                 data-page-component-module="oroorganization/js/app/components/organization-structure-tree-component"
+                 data-page-component-options="{{ options|json_encode }}">
+                {% for org in form.vars.organization_tree_ids %}
+                    <div class="accordion-group">
+                        <div class="accordion-heding">
+                            <div class="oro-clearfix">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" href="#organization_{{ org.id }}"></a>
+                                <label>
+                                    <input type="checkbox"
+                                           data-name="organization"
+                                           value="{{ org.id }}"
+                                           {% if org.id in form.vars.selected_organizations %} checked="checked" {% endif %}
+                                           class="org org-id-{{ org.id }}"/>
+                                    <b>{{ org.name }}</b>
+                                    {% if globalOrgId and globalOrgId == org.id %}
+                                        ({{ 'oropro.organization.is_global_organization'|trans }})
+                                    {% endif %}
+                                </label>
                             </div>
                         </div>
-                    {% endfor %}
-                    <input type="hidden" name="{{ form.vars.full_name }}"
-                           value="{{ {organizations: form.vars.selected_organizations,
-                                      businessUnits: form.vars.selected_business_units}|json_encode }}">
-                </div>
-            {% else %}
-                <input type="hidden" name="{{ form.vars.full_name }}[organizations][]" value="{{ form.default_organization.vars.value }}" />
-                {{ _self.renderOrganizationChildren(
-                    form,
-                    form.vars.organization_tree_ids[0].organization,
-                    form.vars.organization_tree_ids,
-                    form.vars.selected_business_units,
-                    0
-                ) }}
-            {% endif %}
+                        <div id="organization_{{ org.id }}" class="accordion-body collapse{% if not accordion_enabled %} in{% endif %}">
+                            <div class="accordion-inner"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <input type="hidden" name="{{ form.vars.full_name }}"
+                       value="{{ {organizations: form.vars.selected_organizations,
+                                  businessUnits: form.vars.selected_business_units}|json_encode }}">
+            </div>
         </div>
     {% endspaceless %}
 {% endblock %}
-
-{% macro renderOrganizationChildren(form, org_id, children = {}, selected = {}, level = 1) %}
-    {% for child in children %}
-        <div class="oro-clearfix">
-            <span style="float:left;">
-            {% for si in 0..(5 * level) %}{{ '&nbsp;' }}{% endfor %}
-            </span>
-            <label>
-                <input type="checkbox"
-                       data-name="businessUnit"
-                       {% if form.vars.show_organizations_selector is not defined %}
-                           name="{{ form.vars.full_name }}[businessUnits][]"
-                       {% endif %}
-                       value="{{ child.id }}"
-                       {% if child.id in selected %} checked="checked" {% endif %}
-                       class="bu"
-                       data-organization="{{ org_id }}"/>
-                {{ child.name }}
-            </label>
-        </div>
-        {% if child.children is defined %}
-            {{ _self.renderOrganizationChildren(form, org_id, child.children, selected, sublevel + 1) }}
-        {% endif %}
-    {% endfor %}
-{% endmacro %}
 
 {% block oropro_organization_label_widget %}
     {% spaceless %}
