@@ -12,11 +12,6 @@ if [ ! -f $DB_CONF ]; then
         exit 1;
 fi
 
-if [ ! -f $DB_CONF ]; then
-        echo "OroCRM configuration file not found, aborting!"
-        exit 1;
-fi
-
 if [ ! -d "$DB_BACKUP_DIR" ]; then
         mkdir -p $DB_BACKUP_DIR;
 fi
