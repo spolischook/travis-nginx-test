@@ -41,10 +41,16 @@
                 {% set globalOrgId = oropro_global_org_id() %}
                 {% set options = {
                     dataInputSelector: 'input[name="' ~ form.vars.full_name ~ '"]',
+                    tree: form.vars.organization_tree_ids,
+                    selectedBusinessUnits: form.vars.selected_business_units,
+                    selectedOrganizations: form.vars.selected_organizations,
+                    accordionEnabled: accordion_enabled
                 } %}
+                {% include 'OroOrganizationBundle:Js:organizationStructure.js.twig' %}
                 <div class="accordion organization-structure{% if not accordion_enabled %} disabled{% endif %}"
                      data-page-component-module="oroorganization/js/app/components/organization-structure-tree-component"
-                     data-page-component-options="{{ options|json_encode }}">
+                     data-page-component-options="{{ options|json_encode }}"
+                     >
                     {% for org in form.vars.organization_tree_ids %}
                         <div class="accordion-group">
                             <div class="accordion-heding">
@@ -64,11 +70,7 @@
                                 </div>
                             </div>
                             <div id="organization_{{ org.id }}" class="accordion-body collapse{% if not accordion_enabled %} in{% endif %}">
-                                <div class="accordion-inner">
-                                {% if org.children %}
-                                    {{ _self.renderOrganizationChildren(form, org.id, org.children, form.vars.selected_business_units) }}
-                                {% endif %}
-                                </div>
+                                <div class="accordion-inner"></div>
                             </div>
                         </div>
                     {% endfor %}
