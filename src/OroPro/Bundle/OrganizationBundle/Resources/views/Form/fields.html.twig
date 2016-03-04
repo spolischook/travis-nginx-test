@@ -49,8 +49,7 @@
                 {% include 'OroOrganizationBundle:Js:organizationStructure.js.twig' %}
                 <div class="accordion organization-structure{% if not accordion_enabled %} disabled{% endif %}"
                      data-page-component-module="oroorganization/js/app/components/organization-structure-tree-component"
-                     data-page-component-options="{{ options|json_encode }}"
-                     >
+                     data-page-component-options="{{ options|json_encode }}">
                     {% for org in form.vars.organization_tree_ids %}
                         <div class="accordion-group">
                             <div class="accordion-heding">

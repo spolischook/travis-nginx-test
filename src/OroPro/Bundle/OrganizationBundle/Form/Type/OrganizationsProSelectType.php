@@ -7,43 +7,11 @@ use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 use Oro\Bundle\OrganizationBundle\Form\Type\OrganizationsSelectType;
 
 class OrganizationsProSelectType extends OrganizationsSelectType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $event->setData(json_decode($event->getData(), true));
-        });
-
-        $builder->add(
-            'organizations',
-            'entity',
-            [
-                'class'    => 'OroOrganizationBundle:Organization',
-                'property' => 'name',
-                'multiple' => true,
-                'expanded' => true,
-                'choices'  => $this->getOrganizationOptions(),
-            ]
-        );
-        $builder->add(
-            'businessUnits',
-            'oro_business_unit_tree',
-            [
-                'multiple' => true,
-                'required' => false,
-            ]
-        );
-    }
-
     /**
      * {@inheritdoc}
      */
