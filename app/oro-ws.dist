@@ -11,6 +11,16 @@ DIR='/var/www/orocrm/crm-application/' # Path to OroCRM installation
 USER='nginx'                           # Oro files owner
 #
 
+ls $DIR >/dev/null 2>&1 || {
+    echo "OroCRM root directory $DIR not found, aborting!";
+    exit 1;
+}
+
+id $USER >/dev/null 2>&1 || {
+    echo "User $USER not found, aborting!";
+    exit 1;
+}    
+
 CASE=$1
 
 # Call Oro clank script as PHP user
