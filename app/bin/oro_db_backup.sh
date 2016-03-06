@@ -19,9 +19,9 @@ fi
 # Main #
 
 if [ $DB_TYPE == "pdo_mysql" ]; then
-    mysql_backup;
+    mysql_backup $1;
 elif [ $DB_TYPE == "pdo_pgsql" ]; then
-    pgsql_backup;
+    pgsql_backup $1;
 else
     echo "Invalid Database driver, aborting!"
     exit 1;

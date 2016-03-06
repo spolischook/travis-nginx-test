@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script does total code and dataabase backup safely with maintenance mode #
+# This script does total code and database backup safely with maintenance mode #
 
 set -e
 
