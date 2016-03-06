@@ -42,7 +42,7 @@ case "$1" in
         elif [ -z "$CLANK_PID" ]; then
             echo "Oro Clank server is not running"
         else
-        echo "Oro Clank status is invalid"
+            echo "Oro Clank status is invalid"
         fi
         ;;
 
