@@ -6,7 +6,7 @@ These tools are plced in app/bin/ directory of the appliction. Below is breif de
 - Requirements and limitations
 
 These tools are environment agnostic and require very little from environment to be working (just some Nginx server configuration preparation, Apache will use customized .htaccess)
-Some configuration maybe done in configuration file app/config/oro_env.conf (default values will work fine in most simple cases).
+Some configuration should be done in configuration file app/config/oro_env.conf (please adjust file pathes to Oro installation, etc, as per commments in app/config/oro_env.conf).
 
 However, it is REQUIRED that these scripts MUST run from the same user as webserver/PHP processes owner, it MUST be run from OroCRM application root directory and user it runs from must have write access to application directory, plus directory one level up (../$oro_web_root_dir) and system temporary directory (/tmp). It does not require root privileges.
 
