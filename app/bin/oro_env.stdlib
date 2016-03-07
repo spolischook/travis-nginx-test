@@ -167,12 +167,12 @@ pgsql_restore () {
 }
 
 jms_proc_counter () {
-    JMS_PROCS="$(ps aux | grep 'gms-job' | grep -v grep | wc -l)"
+    JMS_PROCS="$(ps aux | grep 'jms-job' | grep -v grep | wc -l)"
 }
 
 ctl_cleanup () {
     echo "got interrupted, exiting maintenance mode..."
-    "Exit";
+    echo "Exit";
     exit 1;
 }
 
