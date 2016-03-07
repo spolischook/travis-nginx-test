@@ -167,26 +167,25 @@ pgsql_restore () {
 }
 
 jms_proc_counter () {
-    JMS_PROCS="$(ps aux | grep 'app/console' | grep -v grep | wc -l)"
+    JMS_PROCS="$(ps aux | grep 'gms-job' | grep -v grep | wc -l)"
 }
 
-# not implemented so far
-#ctrl_cleanup () {
-#    echo " got interrupted, disabling maintenance..."
-#    touch /tmp/oro-jobs.lock;
-#    maintenance_off;
-#}
+ctl_cleanup () {
+    echo "got interrupted, exiting maintenance mode..."
+    "Exit";
+    exit 1;
+}
 
 graceful_wait () {
-#    trap ctrl_cleanup INT
+    echo "Waiting for JMS jobs completion or stopping to proceed, please turn off Job Queue."
+    echo "(Press CTL+C if you want to abort)"
+    echo ""
     jms_proc_counter;
+    trap 'ctl_cleanup' INT
         while [ "$JMS_PROCS" -gt "0" ]; do
-            echo "Waiting for JMS jobs completion or stopping to proceed, please turn off Job Queue."
-#            echo "(Press CTL+C if you want to abort)"
-            echo ""
-            sleep 11;
+            sleep 3;
             jms_proc_counter;
-	done 
+        done
 }
 
 code_backup () {
