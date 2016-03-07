@@ -1,0 +1,244 @@
+# This is standard library for other Oro shell scripts #
+
+# Configuration #
+
+source app/config/oro_env.conf;
+
+# Variables #
+
+DB_TYPE="$(cat $DB_CONF | grep database_driver | awk {'print $2'})"
+DB_HOST="$(cat $DB_CONF | grep database_host | awk {'print $2'})"
+DB_PORT="$(cat $DB_CONF | grep database_port | awk {'print $2'})"
+DB_NAME="$(cat $DB_CONF | grep database_name | awk {'print $2'})"
+DB_USER="$(cat $DB_CONF | grep database_user | awk {'print $2'})"
+DB_PSWD="$(cat $DB_CONF | grep database_password | awk {'print $2'})"
+
+# Function definitions #
+
+maintenance_on () {
+    ls $LOCK_FILE >/dev/null 2>&1 && {
+        echo "Maintenance is already on, aborting!"
+        exit 1;
+    }
+    echo "Entering maintenance mode..."
+    graceful_wait;
+    touch $LOCK_FILE;
+    crond_stop;
+    cd $WEB_ROOT/$ORO_NAME;
+    app/bin/oro_clankd stop;
+    echo "Maintenance is on!"
+}
+
+maintenance_off () {
+    ls $LOCK_FILE >/dev/null 2>&1 || {
+        echo "Maintenance is already off, aborting!"
+        exit 1;
+    }
+    echo "Entering production operation..."
+    crond_start;
+    cd $WEB_ROOT/$ORO_NAME;
+    app/bin/oro_clankd start;
+    rm -f $LOCK_FILE;
+    echo "Maintenance is off!"
+    exit 0;
+}
+
+mysql_backup () {
+    echo "Running MySQL_DUMP..."
+    DATE=$(date +"%F-%H:%M");
+    mysqldump --single-transaction -h $DB_HOST -P $DB_PORT -u $DB_USER $DB_NAME -p$DB_PSWD > $DB_BACKUP_DIR/$DB_NAME.$DATE.sql || {
+        echo "mysqldump has failed, aborting!";
+        exit 1;
+    }
+    echo "Compressing database dump...";
+    gzip $DB_BACKUP_DIR/$DB_NAME.$DATE.sql || {
+        echo "gzip has failed, aborting!";
+        exit 1;
+    }
+    echo "OK"
+    echo $DB_BACKUP_DIR/$DB_NAME.$DATE.sql.gz
+    echo "Done"
+}
+
+pgsql_backup () {
+    echo "Running PG_DUMP...";
+    DATE=$(date +"%F-%H:%M");
+    echo $DB_HOST:$DB_PORT:$DB_NAME:$DB_USER:$DB_PSWD > ~/.pgpass
+    chmod 0600 ~/.pgpass
+    pg_dump -w -c -h $DB_HOST -p $DB_PORT -U $DB_USER $DB_NAME > $DB_BACKUP_DIR/$DB_NAME.$DATE.sql || {
+        rm -f $DB_BACKUP_DIR/$DB_NAME.$DATE.sql;
+        rm -f ~/.pgpass;
+        echo "pg_dump has failed, aborting!";
+        exit 1;
+        }
+    rm -f ~/.pgpass;
+    echo "Compressing database dump...";
+    gzip $DB_BACKUP_DIR/$DB_NAME.$DATE.sql || {
+        echo "gzip has failed, aborting!";
+        exit 1;
+    }
+    echo "OK"
+    echo $DB_BACKUP_DIR/$DB_NAME.$DATE.sql.gz
+    echo "Done"
+}
+
+db_rotate () {
+    find $DB_BACKUP_DIR -type f -mtime $DAYS -exec rm -f {} \;
+}
+
+code_rotate () {
+    find $CODE_BACKUP_DIR -type f -mtime $DAYS -exec rm -f {} \;
+}
+
+mysql_restore () {
+    LATEST_DUMP="$(ls -t $DB_BACKUP_DIR/*.sql.gz | head -1)";
+    echo "Restoring database from MySQL_DUMP..."
+    if [ ! -z "$DUMP" ]; then
+        ls $DB_BACKUP_DIR/$DUMP >/dev/null 2>&1 || {
+            echo "Database dump $DUMP not found, aborting!";
+            exit 1;
+        }
+        gzip -d < $DB_BACKUP_DIR/$DUMP > $DB_BACKUP_DIR/$DUMP.sql || {
+            "Database dump $DUMP cannot be uncompressed,aborting!";
+            exit 1;
+        }
+        mysql -h $DB_HOST -P $DB_PORT -u $DB_USER $DB_NAME -p$DB_PSWD < $DB_BACKUP_DIR/$DUMP.sql || {
+            rm -f $DB_BACKUP_DIR/$DUMP.sql;
+            echo "Can't restore MySQL database from this dump, aborting!";
+            exit 1;
+        }
+        rm -f $DB_BACKUP_DIR/$DUMP.sql;
+        echo "Restored from dump file $DB_BACKUP_DIR/$DUMP";
+        echo "OK";
+    else
+        gzip -d < $LATEST_DUMP > $DB_BACKUP_DIR/$DUMP.sql || {
+            "Database dump $DUMP cannot be uncompressed,aborting!";
+            exit 1;
+        }
+        mysql -h $DB_HOST -P $DB_PORT -u $DB_USER $DB_NAME -p$DB_PSWD < $DB_BACKUP_DIR/$DUMP.sql || {
+            rm -f $DB_BACKUP_DIR/$DUMP.sql;
+            echo "Can't restore MySQL database from this dump, aborting!";
+            exit 1;
+        }
+        rm -f $DB_BACKUP_DIR/$DUMP.sql;
+        echo "Restored from dump file $LATEST_DUMP";
+        echo "OK"
+    fi
+    echo "Done"
+}
+
+pgsql_restore () {
+    LATEST_DUMP="$(ls -t $DB_BACKUP_DIR/*.sql.gz | head -1)"
+    echo "Restoring database from PG_DUMP..."
+    echo $DB_HOST:$DB_PORT:$DB_NAME:$DB_USER:$DB_PSWD > ~/.pgpass
+    chmod 0600 ~/.pgpass
+    if [ ! -z "$DUMP" ]; then
+        ls $DB_BACKUP_DIR/$DUMP >/dev/null 2>&1 || {
+            echo "Database dump $DUMP not found, aborting!";
+            exit 1;
+        }
+        gzip -d < $DB_BACKUP_DIR/$DUMP > $DB_BACKUP_DIR/$DUMP.sql || {
+            echo "Database dump $DUMP cannot be uncompressed,aborting!";
+            exit 1;
+        }
+        psql -q -w -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME < $DB_BACKUP_DIR/$DUMP.sql &>/dev/null || {
+            rm -f $DB_BACKUP_DIR/$DUMP.sql;
+            echo "Can't restore PgSQL database from this dump, aborting!";
+            exit 1;
+        }
+        rm -f $DB_BACKUP_DIR/$DUMP.sql;
+        echo "Restored from dump file $DB_BACKUP_DIR/$DUMP";
+        echo "OK"
+    else
+        gzip -d < $LATEST_DUMP > $DB_BACKUP_DIR/$DUMP.sql || {
+            echo "Database dump $DUMP cannot be uncompressed,aborting!";
+            exit 1;
+        }
+        psql -q -w -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME < $DB_BACKUP_DIR/$DUMP.sql &>/dev/null || {
+            rm -f $DB_BACKUP_DIR/$DUMP.sql;
+            echo "Can't restore PgSQL database from this dump, aborting!";
+            exit 1;
+        }
+        rm -f $DB_BACKUP_DIR/$DUMP.sql;
+        echo "Restored from dump file $LATEST_DUMP";
+        echo "OK"
+    fi
+    echo "Done"
+}
+
+jms_proc_counter () {
+    JMS_PROCS="$(ps aux | grep 'jms-job' | grep -v grep | wc -l)"
+}
+
+ctl_cleanup () {
+    echo "got interrupted, exiting maintenance mode..."
+    echo "Exit";
+    exit 1;
+}
+
+graceful_wait () {
+    echo "Waiting for JMS jobs completion or stopping to proceed, please turn off Job Queue."
+    echo "(Press CTL+C if you want to abort)"
+    echo ""
+    jms_proc_counter;
+    trap 'ctl_cleanup' INT
+        while [ "$JMS_PROCS" -gt "0" ]; do
+            sleep 3;
+            jms_proc_counter;
+        done
+}
+
+code_backup () {
+    echo "Running OroCRM code backup..."
+    DATE=$(date +"%F")
+    tar -czf $CODE_BACKUP_DIR/orocrm-$DATE.tar.gz -C $WEB_ROOT $ORO_NAME/;
+    ls $CODE_BACKUP_DIR/orocrm-$DATE.tar.gz >/dev/null 2>&1 || {
+        echo "Can't create archive with code, aborting!";
+        rm -f $CODE_BACKUP_DIR/orocrm-$DATE.tar.gz
+        exit 1;
+    }
+    echo "OK"
+    echo $CODE_BACKUP_DIR/orocrm-$DATE.tar.gz
+    echo "Done" 
+}
+
+code_restore () {
+    LATEST_CODE="$(ls -t $CODE_BACKUP_DIR/*.tar.gz | head -1)";
+    echo "Clean up OroCRM web root..."
+    shopt -s extglob
+    cd $WEB_ROOT/$ORO_NAME; rm -fr !web
+    cd $WEB_ROOT/$ORO_NAME/web; rm -fr '!^maintenance\.(html|lock)';
+    cd $WEB_ROOT/
+    cp $LATEST_CODE $WEB_ROOT/
+    echo "Restoring OroCRM code from backup..."
+    tar -xzf orocrm-*.tar.gz || {
+        echo "Can't extract files from archive from $LATEST_CODE, aborting!";
+        rm -f orocrm-*.tar.gz;
+        exit 1;
+    }
+    rm -f orocrm-*.tar.gz;
+    cd $WEB_ROOT/$ORO_NAME;
+    echo "Restored from archive file $LATEST_CODE"
+    echo "OK"
+    echo "Done"
+}
+
+crond_stop () {
+    crontab -l >/dev/null 2>&1 || {
+        echo "No crontab, skipping crond_stop...";
+        return;
+    }
+    crontab -l | sed 's/^*/#*/g' | crontab -
+    echo "Cron tasks disabled."
+}
+
+crond_start () {
+    crontab -l >/dev/null 2>&1 || {
+        echo "No crontab, skipping crond_start...";
+        return;
+    }
+    crontab -l | sed 's/^#\*/\*/g' | crontab -	
+    echo "Cron tasks enabled."
+}
+
+# EOF #
