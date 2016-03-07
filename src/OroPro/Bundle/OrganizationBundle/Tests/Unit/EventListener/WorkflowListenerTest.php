@@ -3,9 +3,9 @@
 namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\EventListener;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Event\ExecuteActionEvent;
 use Oro\Bundle\WorkflowBundle\Event\StartTransitionEvent;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Component\Action\Event\ExecuteActionEvent;
 
 use OroPro\Bundle\OrganizationBundle\EventListener\WorkflowListener;
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;

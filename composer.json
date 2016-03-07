@@ -18,7 +18,7 @@
     "repositories": {
         "composer": {
             "type": "composer",
-            "url": "http://packagist.orocrm.com"
+            "url": "https://packagist.orocrm.com"
         },
         "enterprise": {
             "type": "vcs",
