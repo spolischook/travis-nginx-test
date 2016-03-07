@@ -10,10 +10,10 @@ use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Event\ExecuteActionEvent;
 use Oro\Bundle\WorkflowBundle\Event\StartTransitionEvent;
-use Oro\Bundle\WorkflowBundle\Model\Action\CreateEntity;
 use Oro\Bundle\WorkflowBundle\Model\Action\CreateRelatedEntity;
+use Oro\Component\Action\Action\CreateEntity;
+use Oro\Component\Action\Event\ExecuteActionEvent;
 
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
