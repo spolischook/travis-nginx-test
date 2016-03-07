@@ -10,10 +10,12 @@ Some configuration should be done in configuration file app/config/oro_env.conf 
 
 However, it is REQUIRED that these scripts MUST run from the same user as webserver/PHP processes owner, it MUST be run from OroCRM application root directory and user it runs from must have write access to application directory, plus directory one level up (../$oro_web_root_dir) and system temporary directory (/tmp). It does not require root privileges.
 
-It is also possible to run it by root or other sudo user via su like this:
+It is also possible to run it by root or any other sudo user via sudo on befalf of OroCRM files and Webserver/PHP-FPM owner like this:
 
 ```bash
-        su - nginx -c "cd /var/www/oro/crm-application/; ./app/bin/oro_backup.sh"
+	cd /var/www/oro/crm-application/
+	sudo -u nginx ./app/bin/oro_backup.sh
+	sudo -u nginx ./app/bin/oro_restore.sh
 ```
 
 - Maintenance mode support
