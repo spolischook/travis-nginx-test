@@ -21,6 +21,7 @@ Monolithic repository created based individual package and application repositor
 
 * [Install composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) globally 
 * Clone repository to the local environment: `git clone git@github.com:laboro/dev.git`
+* Go to the root folder: `cd dev`
 * Install tools in `tool` folder: `cd dev/tool/ && composer install && cd ../`
 * Install all dependencies for the application(s) you are going to work on (crm application used as example): 
 `cd application/crm && composer install && cd ../../`
