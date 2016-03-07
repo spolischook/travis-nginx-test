@@ -21,17 +21,17 @@ maintenance_on () {
         exit 1;
     }
     echo "Entering maintenance mode..."
+    graceful_wait;
     touch $LOCK_FILE;
     crond_stop;
     cd $WEB_ROOT/$ORO_NAME;
     app/bin/oro_clankd stop;
-    graceful_wait;	
     echo "Maintenance is on!"
 }
 
 maintenance_off () {
     ls $LOCK_FILE >/dev/null 2>&1 || {
-        echo "Maintenance is already on, aborting!"
+        echo "Maintenance is already off, aborting!"
         exit 1;
     }
     echo "Entering production operation..."
@@ -170,18 +170,19 @@ jms_proc_counter () {
     JMS_PROCS="$(ps aux | grep 'app/console' | grep -v grep | wc -l)"
 }
 
-ctrl_cleanup () {
-    echo " got interrupted, disabling maintenance..."
-    touch /tmp/oro-jobs.lock;
-    maintenance_off;
-}
+# not implemented so far
+#ctrl_cleanup () {
+#    echo " got interrupted, disabling maintenance..."
+#    touch /tmp/oro-jobs.lock;
+#    maintenance_off;
+#}
 
 graceful_wait () {
-    trap ctrl_cleanup INT
+#    trap ctrl_cleanup INT
     jms_proc_counter;
         while [ "$JMS_PROCS" -gt "0" ]; do
             echo "Waiting for JMS jobs completion or stopping to proceed, please turn off Job Queue."
-            echo "(Press CTL+C if you want to abort)"
+#            echo "(Press CTL+C if you want to abort)"
             echo ""
             sleep 11;
             jms_proc_counter;
