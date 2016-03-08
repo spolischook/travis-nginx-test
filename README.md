@@ -61,9 +61,9 @@ In order to update subtree with code from original repository you will need to r
 tool/console repository:update
 ```
 
-*Note:* please pay attention to command output, if conflict will occure during subtree merge you'll need to resolve it
+*Note:* please pay attention to command output, if conflict will occur during subtree merge you'll need to resolve it
 and run command again. If you notice *Working tree has modifications.  Cannot add.* in the output, it indicates that
-you either have local changes that should be commited or conflict occured during merge and it should be resolved.
+you either have local changes that should be committed or conflict occurred during merge and it should be resolved.
 
 ### Merge changes to the original repository
 
