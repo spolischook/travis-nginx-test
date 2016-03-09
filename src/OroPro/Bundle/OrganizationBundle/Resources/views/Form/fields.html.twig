@@ -40,7 +40,7 @@
             {% if form.vars.show_organizations_selector is defined %}
                 {% set globalOrgId = oropro_global_org_id() %}
                 {% for org in form.vars.organization_tree_ids %}
-                    <div class="oro-clearfix">
+                    <div class="oro-clearfix{{ not form.vars.show_organizations_selector ? ' hide' : '' }}">
                         <input type="checkbox"
                                id="{{ form.vars.id }}_organizations_{{ org.id }}"
                                name="{{ form.vars.full_name }}[organizations][]" value="{{ org.id }}"

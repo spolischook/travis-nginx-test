@@ -154,5 +154,24 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
                 [new Reference('router')]
             );
         }
+
+        $this->overrideOrganizationsSelect($container);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function overrideOrganizationsSelect(ContainerBuilder $container)
+    {
+        $serviceId = 'oro_organization.form.type.organizations_select';
+        if (!$container->hasDefinition($serviceId)) {
+            return;
+        }
+
+        $definition = $container->getDefinition($serviceId);
+        $definition->addMethodCall(
+            'setOrganizationProHelper',
+            [new Reference('oropro_organization.helper')]
+        );
     }
 }
