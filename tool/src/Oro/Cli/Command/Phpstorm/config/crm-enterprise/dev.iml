@@ -5,6 +5,18 @@
       <excludeFolder url="file://$MODULE_DIR$/application/commerce/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/application/platform/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/platform" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/platform-serialised-fields" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-hangouts-call-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-abandoned-cart" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-magento-embedded-contact-us" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-mail-chimp" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-dotmailer" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-zendesk" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-enterprise" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-pro-ldap-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-pro-demo-data-bundle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

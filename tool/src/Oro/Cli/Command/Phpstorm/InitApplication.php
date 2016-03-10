@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * Command copy PHPStorm fonfiguration from config folder to root .idea folder so proper application settings
+ * Prepares PHPStorm configuration from config folder to root .idea folder so proper application settings
  * could be activated.
  *
  * Add or update application config files if any PHPStorm configuration changes should be done.
@@ -28,30 +28,132 @@ class InitApplication extends RootCommand
 
     /**
      * {@inheritdoc}
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $application  = $input->getArgument('application');
 
-        $applicationDir = __DIR__ . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . $application;
+        $srcDir = __DIR__ . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . $application;
 
-        if (is_dir($applicationDir)) {
-            $configDir = $this->getRootDir() . DIRECTORY_SEPARATOR . '.idea';
-
-            $files = glob($applicationDir . DIRECTORY_SEPARATOR . "*.*");
-            foreach ($files as $file) {
-                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                    $output->writeln("Copying {$file} to {$configDir}");
-                }
-                copy($file, str_replace($applicationDir, $configDir, $file));
-            }
+        if (is_dir($srcDir)) {
+            $this->updateConfigs(
+                $output,
+                $srcDir,
+                $this->getRootDir() . DIRECTORY_SEPARATOR . '.idea'
+            );
 
             $output->writeln("Configuration updated. Please restart PHPStorm.");
         } else {
             $output->writeln("Configuration for application \"{$application}\" doesn't exist");
         }
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param string          $srcDir
+     * @param string          $destDir
+     */
+    protected function updateConfigs(OutputInterface $output, $srcDir, $destDir)
+    {
+        $this->copyFile($output, $srcDir, $destDir, 'dev.iml', true);
+        $this->updateSymfony2PluginConfig($output, $srcDir, $destDir);
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param string          $srcDir
+     * @param string          $destDir
+     * @param string          $fileName
+     * @param bool            $override
+     *
+     * @return bool TRUE if the file copied;
+     *              FALSE if the destination file already exists and override was not requested
+     */
+    protected function copyFile(OutputInterface $output, $srcDir, $destDir, $fileName, $override = false)
+    {
+        $destFile = $destDir . DIRECTORY_SEPARATOR . $fileName;
+        if (!$override && is_file($destFile)) {
+            return false;
+        }
+
+        $srcFile = $srcDir . DIRECTORY_SEPARATOR . $fileName;
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $output->writeln("Copying {$srcFile} to {$destDir}");
+        }
+        copy($srcFile, $destFile);
+
+        return true;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param string          $srcDir
+     * @param string          $destDir
+     */
+    protected function updateSymfony2PluginConfig(OutputInterface $output, $srcDir, $destDir)
+    {
+        $fileName = 'symfony2.xml';
+        if ($this->copyFile($output, $srcDir, $destDir, $fileName)) {
+            return;
+        }
+
+        $srcFile = $srcDir . DIRECTORY_SEPARATOR . $fileName;
+        $destFile = $destDir . DIRECTORY_SEPARATOR . $fileName;
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $output->writeln("Updating {$destFile}");
+        }
+
+        $rootNodePath = "/project/component[@name='Symfony2PluginSettings']";
+        $optionNames = ['directoryToApp', 'directoryToWeb', 'pathToUrlGenerator', 'pathToTranslation'];
+        $xPathExpr = sprintf(
+            $rootNodePath . "/option[%s]",
+            implode(
+                ' or ',
+                array_map(
+                    function ($name) {
+                        return "@name='{$name}'";
+                    },
+                    $optionNames
+                )
+            )
+        );
+
+        $destXmlDoc = $this->loadXmlDocument($destFile);
+        $destNode = $this->findByXPath($destXmlDoc, $rootNodePath)->item(0);
+        foreach ($this->findByXPath($destXmlDoc, $xPathExpr) as $element) {
+            $destNode->removeChild($element);
+        }
+        foreach ($this->findByXPath($this->loadXmlDocument($srcFile), $xPathExpr) as $element) {
+            $destNode->appendChild($destXmlDoc->importNode($element, false));
+        }
+        $destXmlDoc->save($destFile);
+    }
+
+    /**
+     * @param string $file
+     *
+     * @return \DOMDocument
+     */
+    protected function loadXmlDocument($file)
+    {
+        $xmlDoc = new \DOMDocument();
+        $xmlDoc->preserveWhiteSpace = false;
+        $xmlDoc->formatOutput = true;
+        $xmlDoc->load($file);
+
+        return $xmlDoc;
+    }
+
+    /**
+     * @param \DOMDocument $xmlDoc
+     * @param string       $expression
+     *
+     * @return \DOMNodeList
+     */
+    protected function findByXPath(\DOMDocument $xmlDoc, $expression)
+    {
+        $xPath = new \DOMXPath($xmlDoc);
+
+        return $xPath->query($expression);
     }
 }

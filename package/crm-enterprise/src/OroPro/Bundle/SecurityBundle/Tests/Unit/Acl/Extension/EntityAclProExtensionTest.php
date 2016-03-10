@@ -54,11 +54,11 @@ class EntityAclProExtensionTest extends \PHPUnit_Framework_TestCase
     public function decideIsGrantingDataProvider()
     {
         return [
-            [EntityMaskBuilder::MASK_VIEW_SYSTEM, true],
-            [EntityMaskBuilder::MASK_VIEW_BASIC, false],
-            [EntityMaskBuilder::MASK_VIEW_DEEP, false],
-            [EntityMaskBuilder::MASK_VIEW_LOCAL, false],
-            [EntityMaskBuilder::MASK_VIEW_GLOBAL, false],
+            [1 << 4 /* MASK_VIEW_SYSTEM */, true],
+            [1 << 0 /*MASK_VIEW_BASIC */, false],
+            [1 << 2 /*MASK_VIEW_DEEP */, false],
+            [1 << 1 /*MASK_VIEW_LOCAL */, false],
+            [1 << 3 /*MASK_VIEW_GLOBAL */, false],
         ];
     }
 
@@ -144,7 +144,7 @@ class EntityAclProExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             AccessLevel::SYSTEM_LEVEL,
-            $this->extension->getAccessLevel(EntityMaskBuilder::MASK_VIEW_SYSTEM, null, new \stdClass())
+            $this->extension->getAccessLevel(1 << 4 /* MASK_VIEW_SYSTEM */, null, new \stdClass())
         );
     }
 }

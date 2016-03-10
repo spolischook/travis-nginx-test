@@ -5,6 +5,8 @@
       <excludeFolder url="file://$MODULE_DIR$/application/commerce/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/application/platform/vendor/oro/platform" />
+      <excludeFolder url="file://$MODULE_DIR$/application/platform/vendor/oro/platform-serialised-fields" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

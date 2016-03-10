@@ -5,6 +5,8 @@ namespace OroPro\Bundle\SecurityBundle\Tests\Unit;
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
+use Oro\Bundle\SecurityBundle\Acl\Group\AclGroupProviderInterface;
+use Oro\Bundle\SecurityBundle\Acl\Permission\PermissionManager;
 use Oro\Bundle\SecurityBundle\Owner\EntityOwnerAccessor;
 use Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
@@ -121,7 +123,49 @@ class TestHelper
             new EntityClassResolver($doctrine),
             $entityMetadataProvider,
             $metadataProvider,
-            $decisionMaker
+            $decisionMaker,
+            $this->getPermissionManagerMock($this->testCase),
+            $this->getGroupProviderMock($this->testCase)
         );
+    }
+
+
+    /**
+     * @param \PHPUnit_Framework_TestCase $testCase
+     *
+     * @return PermissionManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getPermissionManagerMock(\PHPUnit_Framework_TestCase $testCase)
+    {
+        $mock = $testCase->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Permission\PermissionManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock->expects($testCase->any())
+            ->method('getPermissionsMap')
+            ->willReturn([
+                'VIEW'   => 1,
+                'CREATE' => 2,
+                'EDIT'   => 3,
+                'DELETE' => 4,
+                'ASSIGN' => 5,
+                'SHARE'  => 6
+            ]);
+
+        return $mock;
+    }
+
+    /**
+     * @param \PHPUnit_Framework_TestCase $testCase
+     *
+     * @return AclGroupProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getGroupProviderMock(\PHPUnit_Framework_TestCase $testCase)
+    {
+        $mock = $testCase->getMock('Oro\Bundle\SecurityBundle\Acl\Group\AclGroupProviderInterface');
+        $mock->expects($testCase->any())
+            ->method('getGroup')
+            ->willReturn(AclGroupProviderInterface::DEFAULT_SECURITY_GROUP);
+
+        return $mock;
     }
 }
