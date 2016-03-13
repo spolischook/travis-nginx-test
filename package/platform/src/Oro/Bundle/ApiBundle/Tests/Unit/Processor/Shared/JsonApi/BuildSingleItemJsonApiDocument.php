@@ -4,10 +4,10 @@ namespace Oro\Bundle\ApiBundle\Tests\Unit\Processor\Get\JsonApi;
 
 use Oro\Bundle\ApiBundle\Metadata\EntityMetadata;
 use Oro\Bundle\ApiBundle\Model\Error;
-use Oro\Bundle\ApiBundle\Processor\Get\JsonApi\BuildJsonApiDocument;
+use Oro\Bundle\ApiBundle\Processor\Shared\JsonApi\BuildSingleItemJsonApiDocument;
 use Oro\Bundle\ApiBundle\Tests\Unit\Processor\Get\GetProcessorTestCase;
 
-class BuildJsonApiDocumentTest extends GetProcessorTestCase
+class BuildSingleItemJsonApiDocumentTest extends GetProcessorTestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $documentBuilder;
@@ -15,7 +15,7 @@ class BuildJsonApiDocumentTest extends GetProcessorTestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $documentBuilderFactory;
 
-    /** @var BuildJsonApiDocument */
+    /** @var BuildSingleItemJsonApiDocument */
     protected $processor;
 
     protected function setUp()
@@ -31,7 +31,7 @@ class BuildJsonApiDocumentTest extends GetProcessorTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->processor = new BuildJsonApiDocument($this->documentBuilderFactory);
+        $this->processor = new BuildSingleItemJsonApiDocument($this->documentBuilderFactory);
     }
 
     public function testProcessContextWithoutErrorsOnEmptyResult()
