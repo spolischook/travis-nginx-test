@@ -1,8 +1,9 @@
 #!/bin/bash
-#set -e
+set -e
 step=$1
 case $step in
      before_install)
+           set +e; 
            echo "Before installing...";
            diff=$(git diff --name-only $TRAVIS_COMMIT_RANGE);
            filteredDiff=$(git diff --name-only --diff-filter=ACMR $TRAVIS_COMMIT_RANGE);
