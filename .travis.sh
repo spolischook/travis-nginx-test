@@ -106,7 +106,7 @@ case $step in
            if [ ! -z "$CS" ]; then
               cd ..; 
               TEST_FILES=${TRAVIS_CS_FILES-.};
-              $HOME/.composer/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --standard=psr2;
+              $HOME/.composer/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
            fi
     ;;
 esac
