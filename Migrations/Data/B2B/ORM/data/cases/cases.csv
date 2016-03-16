@@ -1,0 +1,11 @@
+Uid,Organization uid,AssignedTo uid,Subject,Text
+1,1,1,"Wrong zip code: order #23000321","I was just checking my order and noticed I put the wrong zip code. It is supposed to be 53022. I'm hoping this can be changed. Thank you!"
+2,1,2,"Problem with order?","I ordered some Christmas gifts on October 25rd and they still say they're processing. Here is my order number: #23000326"
+3,1,3,"Subscribe","Could you tell me how to get back on the newsletter list? Thank you"
+4,1,4,"Gift Tags", "Are the gift Tags on the site today from only or is there to as well?"
+5,1,5,"Will I get a call before delivery is attempted?","Will I get a call before delivery is attempted? Can I choose my preferred courier company?"
+6,1,6,"Click the Place Order button, but nothing happens","Click the Place Order button, but nothing happens"
+7,1,7,"What if I don't want to receive any more SMS Alerts service messages?","What if I don't want to receive any more SMS Alerts service messages?"
+8,1,8,"How do I track my order?","How do I track my order?"
+9,1,9,"Refund","I placed an order. Can I now receive refund in my bank account?"
+10,1,10,"Voicemail from: Support Caller",
