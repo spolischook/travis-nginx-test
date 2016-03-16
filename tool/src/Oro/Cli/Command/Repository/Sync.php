@@ -8,10 +8,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-class Update extends RootCommand
+class Sync extends RootCommand
 {
     /**
-     * @var array list of supported repositories mapped to code folders
+     * @var array list of supported upstream repositories mapped to local subtrees
      */
     protected $repositories = array(
         'application/platform'          => 'git@github.com:laboro/platform-application.git',
@@ -40,9 +40,9 @@ class Update extends RootCommand
      */
     protected function configure()
     {
-        $this->setName('repository:update')
-            ->addArgument('path', InputArgument::OPTIONAL, 'Path to application or package code')
-            ->setDescription('Update repository subtrees from upstream application and package srepositories.')
+        $this->setName('repository:sync')
+            ->addArgument('path', InputArgument::OPTIONAL, 'Path to subtree folder')
+            ->setDescription('Synchronize repository subtrees with upstream application and package repositories.')
             ->addUsage('application/crm')
             ->addUsage('package/platform');
     }
@@ -93,6 +93,9 @@ class Update extends RootCommand
 
             /* Pull all updates from remote master */
             exec("git subtree pull --prefix={$codePath} {$alias} master");
+
+            /* Push all subtree changes to remote upstream repository */
+            exec("git subtree push --prefix={$codePath} {$alias} master");
         }
         chdir($currentDir);
     }

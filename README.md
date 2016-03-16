@@ -53,21 +53,14 @@ Maintenance cycle includes a few typical tasks:
 If you would like to add new code from existing upstream repository, you should add new record to `$repositories` in
 `Oro\Cli\Command\Repositor\Update` class and run `tool/console repository:update REPO_NAME` command.
 
-### Merge changes from the original repository
+### Syncronize subtree and upstream repository changes
 
-In order to update subtree with code from original repository you will need to run following commands:
+In order to synchronize subtree and upstream repository you will need to run following command:
 
 ```
-tool/console repository:update
+tool/console repository:sync
 ```
 
 *Note:* please pay attention to command output, if conflict will occur during subtree merge you'll need to resolve it
 and run command again. If you notice *Working tree has modifications.  Cannot add.* in the output, it indicates that
 you either have local changes that should be committed or conflict occurred during merge and it should be resolved.
-
-### Merge changes to the original repository
-
-```
-git remote add -f {{origin-name}} {{code repository}}
-git subtree push --prefix={{code/folder}} {{origin-name}} {{branch}}
-```
