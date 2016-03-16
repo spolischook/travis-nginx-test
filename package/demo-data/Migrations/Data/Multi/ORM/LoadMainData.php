@@ -58,8 +58,6 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
             static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteEventData',
             static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteVisitData',
             static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteVisitEventData',
-            /** Activities data */
-            static::B2C_NAMESPACE . '\\Cases\LoadCaseEntityData',
             /** Zendesk data */
             static::B2C_NAMESPACE . '\\Zendesk\LoadZendeskIntegrationData',
             static::B2C_NAMESPACE . '\\Zendesk\LoadTicketEntityData',

@@ -84,11 +84,12 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
     /**
      * Filter and return data relations for Rule
      *
-     * @param Array $data
-     * @param       $uid
+     * @param array $data
+     * @param int   $uid
+     *
      * @return array
      */
-    protected function filterRuleData(Array $data, $uid)
+    protected function filterRuleData(array $data, $uid)
     {
         return array_filter(
             $data,
