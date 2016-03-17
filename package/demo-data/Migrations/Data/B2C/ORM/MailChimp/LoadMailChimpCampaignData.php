@@ -35,7 +35,7 @@ class LoadMailChimpCampaignData extends AbstractFixture implements OrderedFixtur
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -53,7 +53,7 @@ class LoadMailChimpCampaignData extends AbstractFixture implements OrderedFixtur
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

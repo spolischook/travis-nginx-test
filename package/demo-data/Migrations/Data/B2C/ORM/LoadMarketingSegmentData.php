@@ -18,7 +18,7 @@ class LoadMarketingSegmentData extends AbstractFixture implements OrderedFixture
     protected $segmentTypeRepository;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -53,7 +53,7 @@ class LoadMarketingSegmentData extends AbstractFixture implements OrderedFixture
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -118,7 +118,7 @@ class LoadMarketingSegmentData extends AbstractFixture implements OrderedFixture
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

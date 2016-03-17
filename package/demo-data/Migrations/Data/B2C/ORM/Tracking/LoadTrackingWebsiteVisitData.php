@@ -35,7 +35,7 @@ class LoadTrackingWebsiteVisitData extends AbstractFixture implements OrderedFix
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -60,7 +60,7 @@ class LoadTrackingWebsiteVisitData extends AbstractFixture implements OrderedFix
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

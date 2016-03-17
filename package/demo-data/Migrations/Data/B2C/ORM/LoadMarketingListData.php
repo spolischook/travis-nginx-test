@@ -19,7 +19,7 @@ class LoadMarketingListData extends AbstractFixture implements OrderedFixtureInt
     protected $marketingListTypeRepository;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -54,7 +54,7 @@ class LoadMarketingListData extends AbstractFixture implements OrderedFixtureInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -94,7 +94,7 @@ class LoadMarketingListData extends AbstractFixture implements OrderedFixtureInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

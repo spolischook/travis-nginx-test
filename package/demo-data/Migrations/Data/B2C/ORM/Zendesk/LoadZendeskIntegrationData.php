@@ -26,7 +26,7 @@ class LoadZendeskIntegrationData extends AbstractFixture implements OrderedFixtu
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -62,7 +62,7 @@ class LoadZendeskIntegrationData extends AbstractFixture implements OrderedFixtu
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

@@ -27,7 +27,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -138,7 +138,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDependencies()
     {

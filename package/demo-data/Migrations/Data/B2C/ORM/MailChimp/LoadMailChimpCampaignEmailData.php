@@ -1,12 +1,15 @@
 <?php
-namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM;
+namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\MailChimp;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use OroCRM\Bundle\CampaignBundle\Entity\EmailCampaign;
+use OroCRM\Bundle\MailChimpBundle\Entity\MailChimpTransportSettings;
 
-class LoadCampaignEmailData extends AbstractFixture implements OrderedFixtureInterface
+use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
+
+class LoadMailChimpCampaignEmailData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @return array
@@ -34,13 +37,15 @@ class LoadCampaignEmailData extends AbstractFixture implements OrderedFixtureInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
         $data = $this->getData();
         foreach ($data['campaigns_emails'] as $campaignData) {
             $emailCampaign = new EmailCampaign();
+            $transportSettings = new MailChimpTransportSettings();
+            $emailCampaign->setTransportSettings($transportSettings);
             $emailCampaign->setOwner($this->getUserReference($campaignData['user uid']));
             $emailCampaign->setOrganization($this->getOrganizationReference($campaignData['organization uid']));
             $emailCampaign->setMarketingList($this->getMarketingListReference($campaignData['marketing list uid']));
@@ -54,10 +59,10 @@ class LoadCampaignEmailData extends AbstractFixture implements OrderedFixtureInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {
-        return 14;
+        return 34;
     }
 }

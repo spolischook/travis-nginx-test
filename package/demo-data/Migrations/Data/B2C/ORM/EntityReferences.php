@@ -46,6 +46,7 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $reference
+     *
      * @return object
      * @throws EntityNotFoundException
      */
@@ -54,14 +55,13 @@ abstract class EntityReferences extends DoctrineAbstractFixture
         if ($this->hasReference($reference)) {
             return $this->getReference($reference);
         }
-        echo $reference, "\n";
         throw new EntityNotFoundException('Reference ' . $reference . ' not found.');
     }
 
     /**
      * @param $uid
+     *
      * @return Organization
-     * @throws EntityNotFoundException
      */
     protected function getOrganizationReference($uid)
     {
@@ -82,8 +82,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return User
-     * @throws EntityNotFoundException
      */
     protected function getUserReference($uid)
     {
@@ -94,6 +94,7 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return bool
      */
     protected function hasUserReference($uid)
@@ -115,8 +116,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Tag
-     * @throws EntityNotFoundException
      */
     protected function getTagReference($uid)
     {
@@ -137,8 +138,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Account
-     * @throws EntityNotFoundException
      */
     protected function getAccountReference($uid)
     {
@@ -159,8 +160,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return BusinessUnit
-     * @throws EntityNotFoundException
      */
     protected function getBusinessUnitReference($uid)
     {
@@ -181,8 +182,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Contact
-     * @throws EntityNotFoundException
      */
     protected function getContactReference($uid)
     {
@@ -194,8 +195,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     /**
      * @param         $uid
      * @param Contact $contact
+     *
      * @return object
-     * @throws EntityNotFoundException
      */
     protected function setContactReference($uid, Contact $contact)
     {
@@ -205,8 +206,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
-     * @return Customer
-     * @throws EntityNotFoundException
+     *
+     * @return Customer|B2bCustomer
      */
     protected function getCustomerReference($uid)
     {
@@ -216,10 +217,10 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     }
 
     /**
-     * @param          $uid
-     * @param Customer $customer
+     * @param                      $uid
+     * @param Customer|B2bCustomer $customer
      */
-    protected function setCustomerReference($uid, Customer $customer)
+    protected function setCustomerReference($uid, $customer)
     {
         $reference = 'Customer:' . $uid;
         $this->setReference($reference, $customer);
@@ -227,8 +228,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Cart
-     * @throws EntityNotFoundException
      */
     protected function getCartReference($uid)
     {
@@ -249,8 +250,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Store
-     * @throws EntityNotFoundException
      */
     protected function getStoreReference($uid)
     {
@@ -271,8 +272,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return CustomerGroup
-     * @throws EntityNotFoundException
      */
     protected function getCustomerGroupReference($uid)
     {
@@ -293,8 +294,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Integration
-     * @throws EntityNotFoundException
      */
     protected function getIntegrationReference($uid)
     {
@@ -315,8 +316,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Integration
-     * @throws EntityNotFoundException
      */
     protected function getMailChimpIntegrationReference($uid)
     {
@@ -337,8 +338,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return SubscribersList
-     * @throws EntityNotFoundException
      */
     protected function getMailChimpSubscriberListReference($uid)
     {
@@ -369,19 +370,20 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Integration
-     * @throws EntityNotFoundException
      */
     protected function getZendeskIntegrationReference($uid)
     {
         $reference = 'ZendeskIntegration:' . $uid;
+
         return $this->getReferenceByName($reference);
     }
 
     /**
      * @param $uid
+     *
      * @return Channel
-     * @throws EntityNotFoundException
      */
     protected function getChannelReference($uid)
     {
@@ -402,29 +404,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
-     * @return Channel
-     * @throws EntityNotFoundException
-     */
-    protected function getMagentoChannelReference($uid)
-    {
-        $reference = 'MagentoChannel:' . $uid;
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param         $uid
-     * @param Channel $dataChannel
-     */
-    protected function setMagentoChannelReference($uid, Channel $dataChannel)
-    {
-        $reference = 'MagentoChannel:' . $uid;
-        $this->setReference($reference, $dataChannel);
-    }
-
-    /**
-     * @param $uid
+     *
      * @return Website
-     * @throws EntityNotFoundException
      */
     protected function getWebsiteReference($uid)
     {
@@ -445,8 +426,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return TrackingWebsite
-     * @throws EntityNotFoundException
      */
     protected function getTrackingWebsiteReference($uid)
     {
@@ -467,8 +448,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return TrackingEventDictionary
-     * @throws EntityNotFoundException
      */
     protected function getTrackingEventDictionaryReference($uid)
     {
@@ -489,8 +470,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return TrackingVisit
-     * @throws EntityNotFoundException
      */
     protected function getTrackingVisitReference($uid)
     {
@@ -511,8 +492,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return TrackingEvent
-     * @throws EntityNotFoundException
      */
     protected function getTrackingEventReference($uid)
     {
@@ -533,8 +514,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Dashboard
-     * @throws EntityNotFoundException
      */
     protected function getDashboardReference($uid)
     {
@@ -555,8 +536,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Group
-     * @throws EntityNotFoundException
      */
     protected function getGroupReference($uid)
     {
@@ -577,8 +558,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return MarketingList
-     * @throws EntityNotFoundException
      */
     protected function getMarketingListReference($uid)
     {
@@ -589,7 +570,6 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param               $uid
-     * @param MarketingList $list
      */
     protected function setMarketingListReference($uid, MarketingList $list)
     {
@@ -599,8 +579,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return EmailCampaign
-     * @throws EntityNotFoundException
      */
     protected function getEmailCampaignReference($uid)
     {
@@ -621,8 +601,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Report
-     * @throws EntityNotFoundException
      */
     protected function getReportReference($uid)
     {
@@ -633,7 +613,7 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param         $uid
-     * @param Report $report
+     * @param Report  $report
      */
     protected function setReportReference($uid, Report $report)
     {
@@ -643,8 +623,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Segment
-     * @throws EntityNotFoundException
      */
     protected function getSegmentReference($uid)
     {
@@ -665,8 +645,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return CaseEntity
-     * @throws EntityNotFoundException
      */
     protected function getCaseReference($uid)
     {
@@ -676,7 +656,7 @@ abstract class EntityReferences extends DoctrineAbstractFixture
     }
 
     /**
-     * @param         $uid
+     * @param            $uid
      * @param CaseEntity $case
      */
     protected function setCaseReference($uid, CaseEntity $case)
@@ -697,8 +677,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Address
-     * @throws EntityNotFoundException
      */
     protected function getAddressReference($uid)
     {
@@ -719,8 +699,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return AbstractEnumValue
-     * @throws EntityNotFoundException
      */
     protected function getLeadSourceReference($uid)
     {
@@ -741,34 +721,12 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Lead
-     * @throws EntityNotFoundException
      */
     protected function getLeadReference($uid)
     {
         $reference = 'Lead:' . $uid;
-
-        return $this->getReferenceByName($reference);
-    }
-
-    /**
-     * @param             $uid
-     * @param B2BCustomer $customer
-     */
-    protected function setB2bCustomerReference($uid, B2bCustomer $customer)
-    {
-        $reference = 'B2bCustomer:' . $uid;
-        $this->setReference($reference, $customer);
-    }
-
-    /**
-     * @param $uid
-     * @return B2bCustomer
-     * @throws EntityNotFoundException
-     */
-    protected function getB2bCustomerReference($uid)
-    {
-        $reference = 'B2bCustomer:' . $uid;
 
         return $this->getReferenceByName($reference);
     }
@@ -785,8 +743,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Opportunity
-     * @throws EntityNotFoundException
      */
     protected function getOpportunityReference($uid)
     {
@@ -807,8 +765,8 @@ abstract class EntityReferences extends DoctrineAbstractFixture
 
     /**
      * @param $uid
+     *
      * @return Campaign
-     * @throws EntityNotFoundException
      */
     protected function getCampaignReference($uid)
     {
