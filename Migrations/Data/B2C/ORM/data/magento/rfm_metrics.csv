@@ -1,17 +1,16 @@
-Uid,Integration uid,Organization uid,Type,Index,Min,Max
-1,1,1,recency,1,-1,7
-2,1,1,recency,2,7,30
-3,1,1,recency,3,30,90
-4,1,1,recency,4,90,365
-5,1,1,recency,5,365,730
-6,1,1,frequency,1,52,104
-7,1,1,frequency,2,12,52
-8,1,1,frequency,3,4,12
-9,1,1,frequency,4,2,4
-10,1,1,frequency,5,-1,2
-11,1,1,monetary,1,10000,100000
-12,1,1,monetary,2,1000,10000
-13,1,1,monetary,3,100,1000
-14,1,1,monetary,4,10,100
-15,1,1,monetary,5,-1,10
-
+Uid,Channel uid,Organization uid,Type,Index,Min,Max
+1,Magento:1,1,recency,1,-1,7
+2,Magento:1,1,recency,2,7,30
+3,Magento:1,1,recency,3,30,90
+4,Magento:1,1,recency,4,90,365
+5,Magento:1,1,recency,5,365,730
+6,Magento:1,1,frequency,1,52,104
+7,Magento:1,1,frequency,2,12,52
+8,Magento:1,1,frequency,3,4,12
+9,Magento:1,1,frequency,4,2,4
+10,Magento:1,1,frequency,5,-1,2
+11,Magento:1,1,monetary,1,10000,100000
+12,Magento:1,1,monetary,2,1000,10000
+13,Magento:1,1,monetary,3,100,1000
+14,Magento:1,1,monetary,4,10,100
+15,Magento:1,1,monetary,5,-1,10

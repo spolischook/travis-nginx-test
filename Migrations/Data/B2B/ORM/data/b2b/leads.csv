@@ -1,101 +1,101 @@
 Uid,User uid,FirstName,Lastname,Email,PhoneNumber,CompanyName,Status Name,Lead Source uid,Channel uid,Customer uid,Contact uid,Campaign uid
-1,main,Ramona,Venters,RamonaCVenters@gustr.com,517-782-7343,Sure Save,new,1,1,1,1,1
-2,1001,Beverly,Linton,BeverlyDLinton@superrito.com,808-572-3324,Handy Andy Home Improvement Center,new,1,1,2,2,1
-3,2001,Aisha,Lechuga,AishaELechuga@dayrep.com,410-794-7279,Avant Garde Interior Designs,new,1,1,3,3,2
-4,3,Clarence,Golden,ClarenceNGolden@armyspy.com,518-441-4708,H.C. Bohack,new,1,1,4,4,
-5,4,Stanley,Lyons,StanleyGLyons@armyspy.com,804-477-5590,Monk House Sales,new,1,1,5,5,2
-6,5,Leonida,Dixon,LeonidaMDixon@einrot.com,707-348-9487,Life's Gold,new,1,1,6,6,2
-7,10,Lola,Hall,LolaJHall@einrot.com,707-947-4901,Leo's Stereo,new,2,1,7,7,1
-8,15,Darlene,Ramos,DarleneVRamos@armyspy.com,912-342-9593,Modern Architecture Design,new,2,1,8,8,3
-9,20,Jerry,Martin,JerryNMartin@dayrep.com,928-862-3347,Allied Radio,new,2,1,9,9,
-10,25,Michael,Williams,MichaelMWilliams@cuvox.de,608-743-3485,Ruehl No. 925,new,2,1,10,10,1
-11,30,Marshall,Tacker,MarshallMTacker@armyspy.com,979-234-6303,Ole's,new,2,1,11,11,3
-12,35,Phillip,Baker,PhillipABaker@armyspy.com,845-508-9364,Gov Mart,new,2,1,12,12,
-13,40,David,Stringham,DavidRStringham@armyspy.com,330-668-8830,Casa Bonita,new,2,1,13,13,1
-14,40,Aubrey,Tingley,AubreyHTingley@cuvox.de,308-366-0524,Piccolo Mondo,new,2,1,14,14,
-15,45,Alejandrina,Ayer,AlejandrinaHAyer@teleworm.us,410-313-0414,Harvest Foods,new,2,1,15,15,
-16,50,John,Wright,JohnJWright@einrot.com,610-826-6577,Musicland,new,2,1,16,16,3
-17,1,Saundra,Hoots,SaundraVHoots@cuvox.de,860-677-3172,Monsource,new,2,1,17,17,3
-18,2,Avery,Viers,AveryDViers@dayrep.com,740-597-5172,Formula Gray,new,2,1,18,18,2
-19,3,Kelly,Feinstein,KellyLFeinstein@teleworm.us,650-733-4527,Super Shops,new,2,1,19,19,
-20,4,Connie,Huang,ConnieJHuang@einrot.com,615-578-0662,Brendle's,new,2,1,20,20,2
-21,5,Ron,Bennett,RonLBennett@gustr.com,678-557-7183,Alexander's,new,2,1,21,21,3
-22,6,Glenn,Poole,GlennCPoole@cuvox.de,770-992-5718,Isaly's,new,2,1,22,22,3
-23,7,Kenneth,Fowler,KennethMFowler@dayrep.com,978-423-5919,Gamma Gas,new,2,1,23,23,2
-24,8,George,Moreno,GeorgeJMoreno@cuvox.de,646-602-2074,County Market,new,3,1,24,24,3
-25,9,Chris,Heavener,ChrisJHeavener@superrito.com,906-774-7957,Cherry & Webb,new,2,1,25,25,1
-26,10,Mei,Bell,MeiFBell@armyspy.com,610-453-4749,Mansmann's Department Store,new,2,1,26,26,
-27,11,Joy,Avey,JoyRAvey@gustr.com,469-446-1959,Weenie Beenie,new,2,1,27,27,1
-28,12,Sam,Jacobson,SamKJacobson@cuvox.de,507-263-9822,Allied Radio,new,2,1,28,28,3
-29,13,Scotty,Williams,ScottyTWilliams@armyspy.com,315-791-1273,Harmony House,new,2,1,29,29,1
-30,14,Paul,Williams,PaulMWilliams@armyspy.com,786-217-4707,Fireball,new,2,1,30,30,3
-31,15,Angela,Sullivan,AngelaRSullivan@dayrep.com,919-628-3623,Master Builder Design Services,new,3,1,31,31,3
-32,16,Gerald,Dickson,GeraldMDickson@dayrep.com,919-918-1714,Kent's,new,3,1,32,32,1
-33,17,James,Landers,JamesPLanders@armyspy.com,910-770-9457,Casa Bonita,new,3,1,33,33,
-34,18,Joe,Hale,JoeLHale@teleworm.us,708-326-3396,Formula Grey,new,3,1,34,34,2
-35,19,Faye,Church,FayeRChurch@einrot.com,252-200-2298,Service Merchandise,new,3,1,35,35,3
-36,20,Michael,Johnson,MichaelNJohnson@teleworm.us,217-401-8159,Showbiz Pizza Place,new,4,1,36,36,
-37,22,Elaine,Parham,ElaineWParham@teleworm.us,517-677-0691,Boston Sea Party,new,4,1,37,37,2
-38,24,Lettie,Rainville,LettieJRainville@superrito.com,985-509-3817,MVP Sports,new,4,1,38,38,3
-39,26,Deborah,Williams,DeborahPWilliams@superrito.com,518-348-5353,Allied City Stores,new,4,1,39,39,
-40,28,Rodrigo,Deluca,RodrigoWDeluca@teleworm.us,248-664-3142,Gamma Grays,new,4,1,40,40,2
-41,30,Jerome,Perry,JeromeAPerry@superrito.com,509-967-5559,Electronic Geek,new,4,1,1,41,3
-42,32,Hayley,Meaney,HayleyLMeaney@teleworm.us,417-938-3029,De-Jaiz Mens Clothing,new,4,1,2,42,
-43,34,Dorothy,Moore,DorothyMMoore@cuvox.de,818-646-6121,The Royal Canadian Pancake Houses,new,4,1,3,43,1
-44,36,Tracy,Goodlow,TracyGGoodlow@cuvox.de,701-240-4787,Balanced Fortune,new,4,1,4,44,
-45,38,Donna,Sanders,DonnaASanders@superrito.com,317-722-4218,Strong Life,new,4,1,5,45,3
-46,40,Richard,Alderson,RichardSAlderson@dayrep.com,937-455-2486,Simply Save,new,4,1,6,46,1
-47,42,Bob,Baker,BobEBaker@dayrep.com,731-415-7808,Wealth Zone Group,new,4,1,7,47,
-48,44,Deborah,Archambault,DeborahJArchambault@einrot.com,425-675-2248,Carter's Foods,new,4,1,8,48,3
-49,46,Todd,Sears,ToddSSears@einrot.com,480-726-7173,Peter Reeves,new,4,1,9,49,
-50,48,Emma,Zellers,EmmaWZellers@dayrep.com,917-541-1762,Dick Fischers,new,4,1,10,50,1
-51,50,Claudia,Howard,ClaudiaJHoward@cuvox.de,217-417-9298,Team Designers and Associates,new,4,1,11,51,1
-52,1,Ruth,Chavez,RuthJChavez@einrot.com,586-755-0517,Mr. AG's,new,4,1,12,52,1
-53,2,John,Watkins,JohnSWatkins@gustr.com,419-468-8316,Pak and Save,new,4,1,13,53,3
-54,3,Steven,Riding,StevenIRiding@gustr.com,517-927-8422,Millenia Life,new,4,1,14,54,2
-55,4,Ronald,Velazquez,RonaldBVelazquez@superrito.com,906-406-2616,Integra Investment Service,new,4,1,15,55,2
-56,5,Terese,Beverly,TereseBBeverly@dayrep.com,419-832-3233,Idea Infinity,new,4,1,16,56,1
-57,6,Richard,Lydon,RichardRLydon@dayrep.com,330-768-4737,Cougar Investment,new,4,1,17,57,2
-58,7,Micheal,Mercado,MichealJMercado@armyspy.com,281-623-5140,Perisolution,new,4,1,18,58,1
-59,8,Peter,Gonzalez,PeterTGonzalez@dayrep.com,305-459-6683,Modern Architecture Design,new,4,1,19,59,2
-60,9,Jimmy,Griffin,JimmyAGriffin@gustr.com,443-507-6224,Grey Fade,new,4,1,20,60,
-61,10,Marion,Johnson,MarionLJohnson@armyspy.com,615-535-9149,Dream Home Real Estate Service,new,4,1,21,61,1
-62,11,Billie,Goodyear,BillieMGoodyear@einrot.com,715-592-4801,Signa Air,new,4,1,22,62,3
-63,12,Hubert,Gay,HubertLGay@superrito.com,229-505-3624,Albers Super Markets,new,4,1,23,63,2
-64,13,Randy,Collins,RandyACollins@gustr.com,513-200-0509,Shoe Town,new,5,1,24,64,2
-65,14,Sean,Waterfield,SeanMWaterfield@cuvox.de,520-483-6772,Pantry Pride,new,5,1,25,65,
-66,15,James,Little,JamesALittle@armyspy.com,919-688-1425,Maurice The Pants Man,new,5,1,26,66,3
-67,16,Jack,Holbrook,JackNHolbrook@dayrep.com,708-614-8639,The Goose and Duck,new,5,1,27,67,1
-68,17,Martin,Markham,MartinRMarkham@gustr.com,505-979-1343,Consumers Food and Drug,new,5,1,28,68,2
-69,18,Douglas,Andersen,DouglasVAndersen@einrot.com,408-561-6870,Network Air,new,5,1,29,69,1
-70,19,Henry,Ellard,HenryMEllard@teleworm.us,786-351-6268,Kleinhans,new,5,1,30,1,2
-71,20,Paul,Clapp,PaulKClapp@armyspy.com,209-817-1435,Matrix Architectural Service ,new,5,1,31,2,2
-72,23,Jessica,Jeffrey,JessicaJJeffrey@teleworm.us,409-971-7396,Kragen Auto Parts,new,5,1,32,3,2
-73,25,Herbert,Zelaya,HerbertHZelaya@cuvox.de,678-578-0870,Pro Star,new,5,1,33,4,1
-74,27,Suzanne,Stiles,SuzanneJStiles@superrito.com,401-828-2067,Omni Superstore,new,5,1,34,5,
-75,29,Daniel,Peres,DanielTPeres@superrito.com,813-425-5248,Budget Power,new,5,1,35,6,3
-76,31,Eileen,Dyson,EileenKDyson@teleworm.us,818-876-3647,Zantigo,new,5,1,36,7,1
-77,33,Doris,Bilodeau,DorisSBilodeau@armyspy.com,508-420-7533,Hanover Shoe,new,5,1,37,8,
-78,35,Michael,Straka,MichaelLStraka@gustr.com,940-391-8042,Stratacard,new,5,1,38,9,3
-79,37,Grace,Ruis,GraceJRuis@armyspy.com,307-868-1270,Asian Plan,new,5,1,39,10,
-80,39,Shawn,Bryson,ShawnLBryson@gustr.com,630-242-4645,Matrix Interior Design,qualified,5,1,40,11,1
-81,41,Theodore,Knight,TheodoreBKnight@armyspy.com,913-644-7299,Realty Depot,qualified,5,1,1,12,3
-82,43,Dee,Wright,DeeRWright@armyspy.com,208-674-6632,Lawn N' Order Garden Care,qualified,5,1,2,13,2
-83,45,Jay,Key,JayEKey@einrot.com,661-695-4146,On Cue,qualified,5,1,3,14,3
-84,47,Maurice,Sherman,MauriceCSherman@cuvox.de,919-410-4924,Anderson-Little,qualified,5,1,4,15,2
-85,49,Ema,Bade,EmaIBade@einrot.com,815-399-3013,Buckeye Furniture,qualified,5,1,5,16,1
-86,1,Margie,Rupe,MargieGRupe@superrito.com,660-675-0640,Simple Solutions,qualified,5,1,6,17,
-87,1,David,Dimas,DavidADimas@armyspy.com,305-710-3927,Mervyn's,qualified,5,1,7,18,1
-88,1,Sidney,Price,SidneyMPrice@armyspy.com,202-829-9187,DGS HomeSource,qualified,5,1,8,19,3
-89,2,Elease,Moore,EleaseJMoore@gustr.com,605-694-4291,HomeBase,qualified,5,1,9,20,2
-90,2,Karen,Sprague,KarenDSprague@dayrep.com,859-881-5712,Sound Advice,canceled,5,1,10,21,
-91,7,James,Adams,JamesGAdams@gustr.com,215-800-7828,Lionel Playworld,canceled,5,1,11,22,
-92,7,Ruby,Scott,RubyRScott@dayrep.com,760-928-5373,Magna Architectural Design,canceled,5,1,12,23,
-93,10,John,Lee,JohnDLee@gustr.com,772-425-8759,Shabby Chic,canceled,5,1,13,24,2
-94,15,Jeffrey,Maynard,JeffreyBMaynard@gustr.com,910-827-9945,Cal Stereo,canceled,5,1,14,25,2
-95,main,Brenda,Bradley,BrendaRBradley@superrito.com,810-664-5574,Pleasures and Pasttimes,canceled,5,1,15,26,
-96,1001,Alexander,Redmond,AlexanderDRedmond@armyspy.com,914-310-3462,Practi-Plan,canceled,5,1,16,27,1
-97,2001,Ryan,Banks,RyanJBanks@gustr.com,912-554-2528,Price Savers,canceled,5,1,17,28,3
-98,1,Rita,Sams,RitaPSams@superrito.com,952-808-3280,Family Toy,canceled,5,1,18,29,3
-99,2,Jennifer,Bowman,JenniferHBowman@einrot.com,843-477-4776,Stop N Shop,canceled,5,1,19,30,1
-100,8,William,Kerr,WilliamBKerr@armyspy.com,510-761-0833,Magna Gases,canceled,5,1,20,31,2
+1,main,Ramona,Venters,RamonaCVenters@gustr.com,517-782-7343,Sure Save,new,1,1,B2B:1,1,1
+2,1001,Beverly,Linton,BeverlyDLinton@superrito.com,808-572-3324,Handy Andy Home Improvement Center,new,1,1,B2B:2,2,1
+3,2001,Aisha,Lechuga,AishaELechuga@dayrep.com,410-794-7279,Avant Garde Interior Designs,new,1,1,B2B:3,3,2
+4,3,Clarence,Golden,ClarenceNGolden@armyspy.com,518-441-4708,H.C. Bohack,new,1,1,B2B:4,4,
+5,4,Stanley,Lyons,StanleyGLyons@armyspy.com,804-477-5590,Monk House Sales,new,1,1,B2B:5,5,2
+6,5,Leonida,Dixon,LeonidaMDixon@einrot.com,707-348-9487,Life's Gold,new,1,1,B2B:6,6,2
+7,10,Lola,Hall,LolaJHall@einrot.com,707-947-4901,Leo's Stereo,new,2,1,B2B:7,7,1
+8,15,Darlene,Ramos,DarleneVRamos@armyspy.com,912-342-9593,Modern Architecture Design,new,2,1,B2B:8,8,3
+9,20,Jerry,Martin,JerryNMartin@dayrep.com,928-862-3347,Allied Radio,new,2,1,B2B:9,9,
+10,25,Michael,Williams,MichaelMWilliams@cuvox.de,608-743-3485,Ruehl No. 925,new,2,1,B2B:10,10,1
+11,30,Marshall,Tacker,MarshallMTacker@armyspy.com,979-234-6303,Ole's,new,2,1,B2B:11,11,3
+12,35,Phillip,Baker,PhillipABaker@armyspy.com,845-508-9364,Gov Mart,new,2,1,B2B:12,12,
+13,40,David,Stringham,DavidRStringham@armyspy.com,330-668-8830,Casa Bonita,new,2,1,B2B:13,13,1
+14,40,Aubrey,Tingley,AubreyHTingley@cuvox.de,308-366-0524,Piccolo Mondo,new,2,1,B2B:14,14,
+15,45,Alejandrina,Ayer,AlejandrinaHAyer@teleworm.us,410-313-0414,Harvest Foods,new,2,1,B2B:15,15,
+16,50,John,Wright,JohnJWright@einrot.com,610-826-6577,Musicland,new,2,1,B2B:16,16,3
+17,1,Saundra,Hoots,SaundraVHoots@cuvox.de,860-677-3172,Monsource,new,2,1,B2B:17,17,3
+18,2,Avery,Viers,AveryDViers@dayrep.com,740-597-5172,Formula Gray,new,2,1,B2B:18,18,2
+19,3,Kelly,Feinstein,KellyLFeinstein@teleworm.us,650-733-4527,Super Shops,new,2,1,B2B:19,19,
+20,4,Connie,Huang,ConnieJHuang@einrot.com,615-578-0662,Brendle's,new,2,1,B2B:20,20,2
+21,5,Ron,Bennett,RonLBennett@gustr.com,678-557-7183,Alexander's,new,2,1,B2B:21,21,3
+22,6,Glenn,Poole,GlennCPoole@cuvox.de,770-992-5718,Isaly's,new,2,1,B2B:22,22,3
+23,7,Kenneth,Fowler,KennethMFowler@dayrep.com,978-423-5919,Gamma Gas,new,2,1,B2B:23,23,2
+24,8,George,Moreno,GeorgeJMoreno@cuvox.de,646-602-2074,County Market,new,3,1,B2B:24,24,3
+25,9,Chris,Heavener,ChrisJHeavener@superrito.com,906-774-7957,Cherry & Webb,new,2,1,B2B:25,25,1
+26,10,Mei,Bell,MeiFBell@armyspy.com,610-453-4749,Mansmann's Department Store,new,2,1,B2B:26,26,
+27,11,Joy,Avey,JoyRAvey@gustr.com,469-446-1959,Weenie Beenie,new,2,1,B2B:27,27,1
+28,12,Sam,Jacobson,SamKJacobson@cuvox.de,507-263-9822,Allied Radio,new,2,1,B2B:28,28,3
+29,13,Scotty,Williams,ScottyTWilliams@armyspy.com,315-791-1273,Harmony House,new,2,1,B2B:29,29,1
+30,14,Paul,Williams,PaulMWilliams@armyspy.com,786-217-4707,Fireball,new,2,1,B2B:30,30,3
+31,15,Angela,Sullivan,AngelaRSullivan@dayrep.com,919-628-3623,Master Builder Design Services,new,3,1,B2B:31,31,3
+32,16,Gerald,Dickson,GeraldMDickson@dayrep.com,919-918-1714,Kent's,new,3,1,B2B:32,32,1
+33,17,James,Landers,JamesPLanders@armyspy.com,910-770-9457,Casa Bonita,new,3,1,B2B:33,33,
+34,18,Joe,Hale,JoeLHale@teleworm.us,708-326-3396,Formula Grey,new,3,1,B2B:34,34,2
+35,19,Faye,Church,FayeRChurch@einrot.com,252-200-2298,Service Merchandise,new,3,1,B2B:35,35,3
+36,20,Michael,Johnson,MichaelNJohnson@teleworm.us,217-401-8159,Showbiz Pizza Place,new,4,1,B2B:36,36,
+37,22,Elaine,Parham,ElaineWParham@teleworm.us,517-677-0691,Boston Sea Party,new,4,1,B2B:37,37,2
+38,24,Lettie,Rainville,LettieJRainville@superrito.com,985-509-3817,MVP Sports,new,4,1,B2B:38,38,3
+39,26,Deborah,Williams,DeborahPWilliams@superrito.com,518-348-5353,Allied City Stores,new,4,1,B2B:39,39,
+40,28,Rodrigo,Deluca,RodrigoWDeluca@teleworm.us,248-664-3142,Gamma Grays,new,4,1,B2B:40,40,2
+41,30,Jerome,Perry,JeromeAPerry@superrito.com,509-967-5559,Electronic Geek,new,4,1,B2B:1,41,3
+42,32,Hayley,Meaney,HayleyLMeaney@teleworm.us,417-938-3029,De-Jaiz Mens Clothing,new,4,1,B2B:2,42,
+43,34,Dorothy,Moore,DorothyMMoore@cuvox.de,818-646-6121,The Royal Canadian Pancake Houses,new,4,1,B2B:3,43,1
+44,36,Tracy,Goodlow,TracyGGoodlow@cuvox.de,701-240-4787,Balanced Fortune,new,4,1,B2B:4,44,
+45,38,Donna,Sanders,DonnaASanders@superrito.com,317-722-4218,Strong Life,new,4,1,B2B:5,45,3
+46,40,Richard,Alderson,RichardSAlderson@dayrep.com,937-455-2486,Simply Save,new,4,1,B2B:6,46,1
+47,42,Bob,Baker,BobEBaker@dayrep.com,731-415-7808,Wealth Zone Group,new,4,1,B2B:7,47,
+48,44,Deborah,Archambault,DeborahJArchambault@einrot.com,425-675-2248,Carter's Foods,new,4,1,B2B:8,48,3
+49,46,Todd,Sears,ToddSSears@einrot.com,480-726-7173,Peter Reeves,new,4,1,B2B:9,49,
+50,48,Emma,Zellers,EmmaWZellers@dayrep.com,917-541-1762,Dick Fischers,new,4,1,B2B:10,50,1
+51,50,Claudia,Howard,ClaudiaJHoward@cuvox.de,217-417-9298,Team Designers and Associates,new,4,1,B2B:11,51,1
+52,1,Ruth,Chavez,RuthJChavez@einrot.com,586-755-0517,Mr. AG's,new,4,1,B2B:12,52,1
+53,2,John,Watkins,JohnSWatkins@gustr.com,419-468-8316,Pak and Save,new,4,1,B2B:13,53,3
+54,3,Steven,Riding,StevenIRiding@gustr.com,517-927-8422,Millenia Life,new,4,1,B2B:14,54,2
+55,4,Ronald,Velazquez,RonaldBVelazquez@superrito.com,906-406-2616,Integra Investment Service,new,4,1,B2B:15,55,2
+56,5,Terese,Beverly,TereseBBeverly@dayrep.com,419-832-3233,Idea Infinity,new,4,1,B2B:16,56,1
+57,6,Richard,Lydon,RichardRLydon@dayrep.com,330-768-4737,Cougar Investment,new,4,1,B2B:17,57,2
+58,7,Micheal,Mercado,MichealJMercado@armyspy.com,281-623-5140,Perisolution,new,4,1,B2B:18,58,1
+59,8,Peter,Gonzalez,PeterTGonzalez@dayrep.com,305-459-6683,Modern Architecture Design,new,4,1,B2B:19,59,2
+60,9,Jimmy,Griffin,JimmyAGriffin@gustr.com,443-507-6224,Grey Fade,new,4,1,B2B:20,60,
+61,10,Marion,Johnson,MarionLJohnson@armyspy.com,615-535-9149,Dream Home Real Estate Service,new,4,1,B2B:21,61,1
+62,11,Billie,Goodyear,BillieMGoodyear@einrot.com,715-592-4801,Signa Air,new,4,1,B2B:22,62,3
+63,12,Hubert,Gay,HubertLGay@superrito.com,229-505-3624,Albers Super Markets,new,4,1,B2B:23,63,2
+64,13,Randy,Collins,RandyACollins@gustr.com,513-200-0509,Shoe Town,new,5,1,B2B:24,64,2
+65,14,Sean,Waterfield,SeanMWaterfield@cuvox.de,520-483-6772,Pantry Pride,new,5,1,B2B:25,65,
+66,15,James,Little,JamesALittle@armyspy.com,919-688-1425,Maurice The Pants Man,new,5,1,B2B:26,66,3
+67,16,Jack,Holbrook,JackNHolbrook@dayrep.com,708-614-8639,The Goose and Duck,new,5,1,B2B:27,67,1
+68,17,Martin,Markham,MartinRMarkham@gustr.com,505-979-1343,Consumers Food and Drug,new,5,1,B2B:28,68,2
+69,18,Douglas,Andersen,DouglasVAndersen@einrot.com,408-561-6870,Network Air,new,5,1,B2B:29,69,1
+70,19,Henry,Ellard,HenryMEllard@teleworm.us,786-351-6268,Kleinhans,new,5,1,B2B:30,1,2
+71,20,Paul,Clapp,PaulKClapp@armyspy.com,209-817-1435,Matrix Architectural Service ,new,5,1,B2B:31,2,2
+72,23,Jessica,Jeffrey,JessicaJJeffrey@teleworm.us,409-971-7396,Kragen Auto Parts,new,5,1,B2B:32,3,2
+73,25,Herbert,Zelaya,HerbertHZelaya@cuvox.de,678-578-0870,Pro Star,new,5,1,B2B:33,4,1
+74,27,Suzanne,Stiles,SuzanneJStiles@superrito.com,401-828-2067,Omni Superstore,new,5,1,B2B:34,5,
+75,29,Daniel,Peres,DanielTPeres@superrito.com,813-425-5248,Budget Power,new,5,1,B2B:35,6,3
+76,31,Eileen,Dyson,EileenKDyson@teleworm.us,818-876-3647,Zantigo,new,5,1,B2B:36,7,1
+77,33,Doris,Bilodeau,DorisSBilodeau@armyspy.com,508-420-7533,Hanover Shoe,new,5,1,B2B:37,8,
+78,35,Michael,Straka,MichaelLStraka@gustr.com,940-391-8042,Stratacard,new,5,1,B2B:38,9,3
+79,37,Grace,Ruis,GraceJRuis@armyspy.com,307-868-1270,Asian Plan,new,5,1,B2B:39,10,
+80,39,Shawn,Bryson,ShawnLBryson@gustr.com,630-242-4645,Matrix Interior Design,qualified,5,1,B2B:40,11,1
+81,41,Theodore,Knight,TheodoreBKnight@armyspy.com,913-644-7299,Realty Depot,qualified,5,1,B2B:1,12,3
+82,43,Dee,Wright,DeeRWright@armyspy.com,208-674-6632,Lawn N' Order Garden Care,qualified,5,1,B2B:2,13,2
+83,45,Jay,Key,JayEKey@einrot.com,661-695-4146,On Cue,qualified,5,1,B2B:3,14,3
+84,47,Maurice,Sherman,MauriceCSherman@cuvox.de,919-410-4924,Anderson-Little,qualified,5,1,B2B:4,15,2
+85,49,Ema,Bade,EmaIBade@einrot.com,815-399-3013,Buckeye Furniture,qualified,5,1,B2B:5,16,1
+86,1,Margie,Rupe,MargieGRupe@superrito.com,660-675-0640,Simple Solutions,qualified,5,1,B2B:6,17,
+87,1,David,Dimas,DavidADimas@armyspy.com,305-710-3927,Mervyn's,qualified,5,1,B2B:7,18,1
+88,1,Sidney,Price,SidneyMPrice@armyspy.com,202-829-9187,DGS HomeSource,qualified,5,1,B2B:8,19,3
+89,2,Elease,Moore,EleaseJMoore@gustr.com,605-694-4291,HomeBase,qualified,5,1,B2B:9,20,2
+90,2,Karen,Sprague,KarenDSprague@dayrep.com,859-881-5712,Sound Advice,canceled,5,1,B2B:10,21,
+91,7,James,Adams,JamesGAdams@gustr.com,215-800-7828,Lionel Playworld,canceled,5,1,B2B:11,22,
+92,7,Ruby,Scott,RubyRScott@dayrep.com,760-928-5373,Magna Architectural Design,canceled,5,1,B2B:12,23,
+93,10,John,Lee,JohnDLee@gustr.com,772-425-8759,Shabby Chic,canceled,5,1,B2B:13,24,2
+94,15,Jeffrey,Maynard,JeffreyBMaynard@gustr.com,910-827-9945,Cal Stereo,canceled,5,1,B2B:14,25,2
+95,main,Brenda,Bradley,BrendaRBradley@superrito.com,810-664-5574,Pleasures and Pasttimes,canceled,5,1,B2B:15,26,
+96,1001,Alexander,Redmond,AlexanderDRedmond@armyspy.com,914-310-3462,Practi-Plan,canceled,5,1,B2B:16,27,1
+97,2001,Ryan,Banks,RyanJBanks@gustr.com,912-554-2528,Price Savers,canceled,5,1,B2B:17,28,3
+98,1,Rita,Sams,RitaPSams@superrito.com,952-808-3280,Family Toy,canceled,5,1,B2B:18,29,3
+99,2,Jennifer,Bowman,JenniferHBowman@einrot.com,843-477-4776,Stop N Shop,canceled,5,1,B2B:19,30,1
+100,8,William,Kerr,WilliamBKerr@armyspy.com,510-761-0833,Magna Gases,canceled,5,1,B2B:20,31,2

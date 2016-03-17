@@ -34,7 +34,7 @@ class LoadCampaignData extends AbstractFixture implements OrderedFixtureInterfac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -45,6 +45,8 @@ class LoadCampaignData extends AbstractFixture implements OrderedFixtureInterfac
             $campaign = new Campaign();
             $campaign->setOwner($user);
             $campaign->setOrganization($this->getOrganizationreference($campaignData['organization uid']));
+            $campaign->setStartDate($this->generateCreatedDate());
+            $campaign->setEndDate($this->generateUpdatedDate($campaign->getStartDate()));
 
             $this->setObjectValues($campaign, $campaignData);
             $manager->persist($campaign);
@@ -54,7 +56,7 @@ class LoadCampaignData extends AbstractFixture implements OrderedFixtureInterfac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

@@ -31,12 +31,11 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
             /** Marketing data */
             static::B2C_NAMESPACE . '\\LoadMarketingSegmentData',
             static::B2C_NAMESPACE . '\\LoadMarketingListData',
-            /** Campaign data */
-            static::B2C_NAMESPACE . '\\LoadCampaignEmailData',
             /** Users data */
             static::B2C_NAMESPACE . '\\LoadUsersCalendarData',
             static::B2C_NAMESPACE . '\\LoadUsersTasksData',
             /** MailChimp data */
+            static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpCampaignEmailData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpIntegrationData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpCampaignData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpSubscriberListData',
@@ -52,12 +51,6 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
             static::B2C_NAMESPACE . '\\Magento\LoadRFMMetricData',
             static::B2C_NAMESPACE . '\\Magento\LoadStoreData',
             static::B2C_NAMESPACE . '\\Magento\LoadWebsiteData',
-            /** Tracking data */
-            static::B2C_NAMESPACE . '\\Tracking\LoadTrackingEventDictionaryData',
-            static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteData',
-            static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteEventData',
-            static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteVisitData',
-            static::B2C_NAMESPACE . '\\Tracking\LoadTrackingWebsiteVisitEventData',
             /** Zendesk data */
             static::B2C_NAMESPACE . '\\Zendesk\LoadZendeskIntegrationData',
             static::B2C_NAMESPACE . '\\Zendesk\LoadTicketEntityData',

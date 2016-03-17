@@ -34,7 +34,7 @@ class LoadTrackingEventDictionaryData extends AbstractFixture implements Ordered
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -54,7 +54,7 @@ class LoadTrackingEventDictionaryData extends AbstractFixture implements Ordered
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

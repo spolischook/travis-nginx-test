@@ -48,7 +48,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -80,7 +80,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
         $created = $this->generateCreatedDate();
         /** @var Organization $organization */
         $organization = $user->getOrganization();
-        $customer     = $this->getB2bCustomerReference($leadData['customer uid']);
+        $customer     = $this->getCustomerReference($leadData['customer uid']);
 
         $lead = new Lead();
         $lead->setSource($this->getLeadSourceReference($leadData['lead source uid']));
@@ -132,7 +132,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

@@ -27,7 +27,7 @@ class LoadCustomerCartData extends AbstractFixture implements OrderedFixtureInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -93,7 +93,7 @@ class LoadCustomerCartData extends AbstractFixture implements OrderedFixtureInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

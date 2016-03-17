@@ -17,7 +17,7 @@ class LoadDashboardWidgetData extends AbstractFixture implements OrderedFixtureI
     protected $dashboardManager;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -95,7 +95,7 @@ class LoadDashboardWidgetData extends AbstractFixture implements OrderedFixtureI
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {
