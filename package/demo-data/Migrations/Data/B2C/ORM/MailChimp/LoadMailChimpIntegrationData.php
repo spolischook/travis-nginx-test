@@ -23,7 +23,7 @@ class LoadMailChimpIntegrationData extends AbstractFixture implements OrderedFix
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -32,6 +32,9 @@ class LoadMailChimpIntegrationData extends AbstractFixture implements OrderedFix
         foreach ($data['integrations'] as $integrationData) {
             $transport = new MailChimpTransport();
             $transport->setApiKey($integrationData['api key']);
+            $transport->setActivityUpdateInterval(0);
+            // Call for setup parameters bag
+            $transport->getSettingsBag();
             $manager->persist($transport);
 
             $integration = new Integration();
@@ -61,7 +64,7 @@ class LoadMailChimpIntegrationData extends AbstractFixture implements OrderedFix
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

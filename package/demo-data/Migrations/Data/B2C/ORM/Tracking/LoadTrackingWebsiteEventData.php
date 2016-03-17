@@ -34,10 +34,12 @@ class LoadTrackingWebsiteEventData extends AbstractFixture implements OrderedFix
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
+        $manager->getClassMetadata('Oro\Bundle\TrackingBundle\Entity\TrackingEvent')->setLifecycleCallbacks([]);
+
         $data = $this->getData();
 
         foreach ($data['events'] as $eventData) {
@@ -47,8 +49,6 @@ class LoadTrackingWebsiteEventData extends AbstractFixture implements OrderedFix
             $event->setCreatedAt($this->generateCreatedDate());
             $event->setLoggedAt($event->getCreatedAt());
 
-            $manager->getClassMetadata(get_class($event))->setLifecycleCallbacks([]);
-
             $this->setTrackingEventReference($eventData['uid'], $event);
             $manager->persist($event);
         }
@@ -56,7 +56,7 @@ class LoadTrackingWebsiteEventData extends AbstractFixture implements OrderedFix
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

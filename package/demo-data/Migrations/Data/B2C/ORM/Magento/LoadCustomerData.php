@@ -24,7 +24,7 @@ class LoadCustomerData extends AbstractFixture implements OrderedFixtureInterfac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -35,7 +35,7 @@ class LoadCustomerData extends AbstractFixture implements OrderedFixtureInterfac
             $customerGroup = $this->getCustomerGroupReference($customerData['customer group uid']);
             $integration   = $this->getIntegrationReference($customerData['integration uid']);
             $contact       = $this->getContactReference($customerData['contact uid']);
-            $dataChannel   = $this->getMagentoChannelReference($customerData['integration uid']);
+            $dataChannel   = $this->getChannelReference($customerData['integration uid']);
 
             $customer = new Customer();
             $customer->setWebsite($website)
@@ -84,7 +84,7 @@ class LoadCustomerData extends AbstractFixture implements OrderedFixtureInterfac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

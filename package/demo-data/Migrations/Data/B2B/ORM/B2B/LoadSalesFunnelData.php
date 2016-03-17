@@ -34,7 +34,7 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
     protected $workflowManager;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -54,7 +54,7 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -306,7 +306,7 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

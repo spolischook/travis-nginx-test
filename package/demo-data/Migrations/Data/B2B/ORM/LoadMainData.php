@@ -34,11 +34,11 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
             static::B2C_NAMESPACE . '\\LoadMarketingListData',
             /** Campaign data */
             static::B2C_NAMESPACE . '\\LoadCampaignData',
-            static::B2C_NAMESPACE . '\\LoadCampaignEmailData',
             /** User data */
             static::B2C_NAMESPACE . '\\LoadUsersCalendarData',
             static::B2C_NAMESPACE . '\\LoadUsersTasksData',
             /** Mailchimp data*/
+            static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpCampaignEmailData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpIntegrationData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpCampaignData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpSubscriberListData',
