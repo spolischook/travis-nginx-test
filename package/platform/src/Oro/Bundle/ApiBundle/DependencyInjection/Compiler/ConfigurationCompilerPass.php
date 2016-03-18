@@ -30,12 +30,12 @@ class ConfigurationCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $config = $this->getConfig($container);
-        $this->registerTaggedServices(
-            $container,
-            self::CONFIG_EXTENSION_REGISTRY_SERVICE_ID,
-            self::CONFIG_EXTENSION_TAG,
-            'addExtension'
-        );
+//        $this->registerTaggedServices(
+//            $container,
+//            self::CONFIG_EXTENSION_REGISTRY_SERVICE_ID,
+//            self::CONFIG_EXTENSION_TAG,
+//            'addExtension'
+//        );
         $this->registerProcessingGroups($container, $config);
         $this->registerActionProcessors($container);
         $this->registerTaggedServices(
