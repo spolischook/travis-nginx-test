@@ -1,10 +1,12 @@
 #!/bin/bash
-#set -e
+set -e
 step=$1
 case $step in
      before_install)
+           set +e; 
            echo "Before installing...";
            diff=$(git diff --name-only $TRAVIS_COMMIT_RANGE);
+           filteredDiff=$(git diff --name-only --diff-filter=ACMR $TRAVIS_COMMIT_RANGE);
            case $APPLICATION in
                 documentation)
                        echo "Defining strategy for Documentation Tests...";
@@ -42,7 +44,7 @@ case $step in
                         fi;;
                   package/* | package)
                         echo "Defining strategy for CodeStyle...";
-                        files=$(echo -e "$diff" | grep -e "^package/");
+                        files=$(echo -e "$filteredDiff" | grep -e "^package/.*\.php$");
                         if [ ! -e "$CS" ] && [[ $files ]]; then
                            echo -e "Source code changes were detected:\n$files";
                            echo -e "Pass files to PHPCS";
@@ -104,7 +106,7 @@ case $step in
            if [ ! -z "$CS" ]; then
               cd ..; 
               TEST_FILES=${TRAVIS_CS_FILES-.};
-              $HOME/.composer/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2; 
+              $HOME/.composer/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
            fi
     ;;
 esac
