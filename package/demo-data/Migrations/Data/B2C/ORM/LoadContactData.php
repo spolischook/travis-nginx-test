@@ -109,9 +109,11 @@ class LoadContactData extends AbstractFixture implements OrderedFixtureInterface
             }
 
             $uid = $contactData['uid'];
-
             $this->setObjectValues($contact, $contactData);
-            $account->setDefaultContact($contact);
+            if($account->getDefaultContact() === null) {
+                $account->setDefaultContact($contact);
+            }
+            $account->addContact($contact);
             $this->loadPhones($contact, $uid);
             $this->loadEmails($contact, $uid);
             $this->loadAddresses($contact, $uid);
