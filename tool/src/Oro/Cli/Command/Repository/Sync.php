@@ -18,7 +18,7 @@ class Sync extends RootCommand
         'application/platform'       => 'git@github.com:laboro/platform-application.git',
         'application/crm'            => 'git@github.com:laboro/crm-application.git',
         'application/crm-enterprise' => 'git@github.com:laboro/crm-enterprise-application.git',
-        'application/commerce'       => 'git@github.com:laboro/b2b-dev.git',
+//        'application/commerce'       => 'git@github.com:laboro/b2b-dev.git',
 
         'package/platform'               => 'git@github.com:laboro/platform.git',
         'package/crm'                    => 'git@github.com:laboro/crm.git',
@@ -108,7 +108,7 @@ class Sync extends RootCommand
             /* Pull all updates from remote master */
             if ($this->execCmd("git subtree pull --prefix={$codePath} {$alias} master")) {
                 /* Push all subtree changes to remote upstream repository */
-                //$this->execCmd("git subtree push --prefix={$codePath} {$alias} master");
+                $this->execCmd("git subtree push --prefix={$codePath} {$alias} master");
             }
         }
     }
