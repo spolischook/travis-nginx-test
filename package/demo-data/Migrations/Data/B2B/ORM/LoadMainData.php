@@ -29,16 +29,13 @@ class LoadMainData extends AbstractFixture implements DependentFixtureInterface
             static::B2C_NAMESPACE . '\\Tag\LoadTagData',
             static::B2C_NAMESPACE . '\\Tag\LoadAccountTagData',
             static::B2C_NAMESPACE . '\\Tag\LoadContactTagData',
-            /** Marketing data */
-            static::B2C_NAMESPACE . '\\LoadMarketingSegmentData',
-            static::B2C_NAMESPACE . '\\LoadMarketingListData',
             /** User data */
             static::B2C_NAMESPACE . '\\LoadUsersCalendarData',
             static::B2C_NAMESPACE . '\\LoadUsersTasksData',
             /** Mailchimp data*/
-            static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpCampaignEmailData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM\MailChimp\LoadMailChimpCampaignEmailData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpIntegrationData',
-            static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpCampaignData',
+            'OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM\MailChimp\LoadMailChimpCampaignData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpSubscriberListData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpStaticSegmentData',
             static::B2C_NAMESPACE . '\\MailChimp\LoadMailChimpMemberData',
