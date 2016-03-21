@@ -44,6 +44,12 @@ class Sync extends RootCommand
     {
         $this->setName('repository:sync')
             ->addArgument('path', InputArgument::OPTIONAL, 'Path to subtree folder')
+            ->addOption(
+                'two-way',
+                null,
+                InputOption::VALUE_NONE,
+                'Whether the synchronization of upstream repositories is needed'
+            )
             ->setDescription('Synchronize repository subtrees with upstream application and package repositories.')
             ->addUsage('application/crm')
             ->addUsage('package/platform');
@@ -55,6 +61,7 @@ class Sync extends RootCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $path = $input->getArgument('path');
+        $twoWay = $input->getOption('two-way');
 
         if ($path) {
             if (isset($this->repositories[$path])) {
@@ -74,7 +81,7 @@ class Sync extends RootCommand
         $currentDir = getcwd();
         chdir($this->getRootDir());
         try {
-            $this->doSync($output, $repositories);
+            $this->doSync($output, $repositories, $twoWay);
         } catch (\Exception $e) {
             $output->writeln($e->getMessage());
         }
@@ -85,8 +92,9 @@ class Sync extends RootCommand
     /**
      * @param OutputInterface $output
      * @param array           $repositories
+     * @param bool            $twoWay
      */
-    protected function doSync(OutputInterface $output, array $repositories)
+    protected function doSync(OutputInterface $output, array $repositories, $twoWay)
     {
         $remotes = [];
         $this->execCmd('git remote', true, $remotes);
@@ -106,7 +114,7 @@ class Sync extends RootCommand
             $this->execCmd("git subtree add --prefix={$codePath} {$alias} master", false);
 
             /* Pull all updates from remote master */
-            if ($this->execCmd("git subtree pull --prefix={$codePath} {$alias} master")) {
+            if ($this->execCmd("git subtree pull --prefix={$codePath} {$alias} master") && $twoWay) {
                 /* Push all subtree changes to remote upstream repository */
                 $this->execCmd("git subtree push --prefix={$codePath} {$alias} master");
             }

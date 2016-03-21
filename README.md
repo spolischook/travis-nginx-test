@@ -48,6 +48,11 @@ php tool/console phpstorm:init-application {application_name}
 * Do code changes
 * Push branch to remote repository and create a pull request
 
+*Note:* to see all existing applications run `phpstorm:init-application` without parameters:
+```bash
+php tool/console phpstorm:init-application
+```
+
 ### IDE
 
 PHPStorm is the recommended IDE for Oro projects. Following plugins will help to improve developer experience:
@@ -72,10 +77,16 @@ php tool/console repository:sync REPO_NAME
 
 ### Syncronize subtree and upstream repository changes
 
-In order to synchronize subtree and upstream repository you will need to run following command:
+In order to update subtree with code from original repository you will need to run following commands:
 
 ```bash
 php tool/console repository:sync
+```
+
+In order to synchronize subtree and upstream repository you will need to run following command:
+
+```bash
+php tool/console repository:sync --two-way
 ```
 
 *Note:* please pay attention to command output, if conflict will occur during subtree merge you'll need to resolve it
