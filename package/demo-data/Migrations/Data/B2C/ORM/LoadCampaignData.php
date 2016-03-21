@@ -45,8 +45,9 @@ class LoadCampaignData extends AbstractFixture implements OrderedFixtureInterfac
             $campaign = new Campaign();
             $campaign->setOwner($user);
             $campaign->setOrganization($this->getOrganizationreference($campaignData['organization uid']));
-            $campaign->setStartDate($this->generateCreatedDate());
-            $campaign->setEndDate($this->generateUpdatedDate($campaign->getStartDate()));
+            $created = $this->generateCreatedDate();
+            $campaign->setEndDate($this->generateUpdatedDate($created));
+            $campaign->setStartDate($created->modify('-1 week'));
 
             $this->setObjectValues($campaign, $campaignData);
             $manager->persist($campaign);
