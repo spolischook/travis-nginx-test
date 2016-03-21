@@ -1,5 +1,4 @@
 Uid,User uid,Organization uid,Name,Description,Code,Budget
-1,main,1,MTV Channel Commercials,,mtv,1200
-2,main,1,Sports Sponsorship,,sports,1600
-3,main,1,Radio One Commercials,,rone,1300
-4,main,1,Promotion,,promotion,2500
+1,main,1,MTV Channel Commercials,"TV promotions, sales promotions, information on the featured product of the month.",mtv,1200
+2,main,1,Sports Sponsorship,"Advertising, attracting attention.",sports,1600
+3,main,1,Radio One Commercials,"Radio promotion, sales promotions,  information on the featured product of the month.",rone,1300
