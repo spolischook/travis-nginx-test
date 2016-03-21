@@ -1,0 +1,4 @@
+Uid,User uid,Organization uid,Name,Description,Code,Budget
+1,main,1,Email Newsletter,"Email promotions, information on the featured product of the month, featured article.",email,800
+2,main,1,Google AdWords,"Track conversions, promotion, signing up for a newsletter.",google,900
+3,main,1,ABC Channel Commercials,"Information on the featured product of the month,  making a purchase, clicking a banner.",abc,12000

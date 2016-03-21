@@ -19,7 +19,8 @@ class LoadTrackingCampaignSummaryData extends AbstractFixture implements Ordered
             parent::getExcludeProperties(),
             [
                 'website uid',
-                'campaign uid'
+                'campaign uid',
+                'coefficient'
             ]
         );
     }
@@ -43,13 +44,13 @@ class LoadTrackingCampaignSummaryData extends AbstractFixture implements Ordered
 
         foreach ($data['campaign_summary'] as $summaryData) {
             $campaign = $this->getCampaignReference($summaryData['campaign uid']);
-            $start    = $campaign->getStartDate();
-            $end      = $campaign->getEndDate();
+            $start    = clone $campaign->getStartDate();
+            $end      = clone $campaign->getEndDate();
 
             $website = $this->getTrackingWebsiteReference($summaryData['website uid']);
             for (; $start < $end; $start->modify('+1 day')) {
                 $summary = new TrackingEventSummary();
-                $summary->setVisitCount(rand(100, 1000));
+                $summary->setVisitCount($this->generateVisitCount($summaryData['coefficient']));
                 $summary->setLoggedAt(clone $start);
                 $summary->setCode($campaign->getCode());
                 $summary->setWebsite($website);
@@ -58,6 +59,13 @@ class LoadTrackingCampaignSummaryData extends AbstractFixture implements Ordered
             }
         }
         $manager->flush();
+    }
+
+    public function generateVisitCount($coefficient = 1)
+    {
+        $coefficient = (int)$coefficient;
+
+        return rand(1 * $coefficient, 10 * $coefficient);
     }
 
     /**
