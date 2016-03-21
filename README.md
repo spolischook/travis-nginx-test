@@ -67,7 +67,7 @@ If you would like to add new code from existing upstream repository, you should 
 [Oro\Cli\Command\Repository\Sync](./tool/src/Oro/Cli/Command/Repository/Sync.php) class and run following command:
 
 ```bash
-php tool/console repository:update REPO_NAME
+php tool/console repository:sync REPO_NAME
 ```
 
 ### Syncronize subtree and upstream repository changes
