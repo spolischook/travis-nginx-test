@@ -185,28 +185,17 @@ An example of configuration section loader:
 namespace Acme\Bundle\AcmeBundle\Api;
 
 use Oro\Bundle\ApiBundle\Config\AbstractConfigLoader;
-use Oro\Bundle\ApiBundle\Config\ConfigLoaderInterface;
 
-class MyConfigLoader extends AbstractConfigLoader implements ConfigLoaderInterface
+class MyConfigLoader extends AbstractConfigLoader
 {
-    /** @var array */
-    protected $methodMap = [
-        'some_option' => 'setSomeOption'
-    ];
-
     /**
      * {@inheritdoc}
      */
     public function load(array $config)
     {
         $result = new MyConfigSection();
-
         foreach ($config as $key => $value) {
-            if (isset($this->methodMap[$key])) {
-                $this->callSetter($result, $this->methodMap[$key], $value);
-            } else {
-                $this->setValue($result, $key, $value);
-            }
+            $this->loadConfigValue($result, $key, $value);
         }
 
         return $result;

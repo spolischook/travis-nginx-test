@@ -2,9 +2,13 @@
 
 namespace Oro\Bundle\ApiBundle\Config;
 
-
-class ActionsConfigLoader extends AbstractConfigLoader implements ConfigLoaderInterface
+class ActionsConfigLoader extends AbstractConfigLoader
 {
+    /** @var array */
+    protected $methodMap = [
+        ActionConfig::EXCLUDE => 'setExcluded',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -12,9 +16,26 @@ class ActionsConfigLoader extends AbstractConfigLoader implements ConfigLoaderIn
     {
         $actions = new ActionsConfig();
         foreach ($config as $key => $value) {
-            $actions->set($key, $value);
+            if (!empty($value)) {
+                $actions->addAction($key, $this->loadAction($value));
+            }
         }
 
         return $actions;
+    }
+
+    /**
+     * @param array $config
+     *
+     * @return ActionConfig
+     */
+    protected function loadAction(array $config)
+    {
+        $action = new ActionConfig();
+        foreach ($config as $key => $value) {
+            $this->loadConfigValue($action, $key, $value, $this->methodMap);
+        }
+
+        return $action;
     }
 }
