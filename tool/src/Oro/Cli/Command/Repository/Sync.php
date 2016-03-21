@@ -130,11 +130,11 @@ class Sync extends RootCommand
         if ($throwException && $returnCode) {
             throw new \RuntimeException(
                 sprintf(
-                    '<error>The </error>"%s"<error> command failed. Return code: %s.</error>' . "\n"
+                    '<error>The "%s" command failed. Return code: %s.</error>' . "\n"
                     . '<error>Please fix the issue and'
-                    . ' run the </error>"repository:sync"<error> command again.</error>' . "\n"
-                    . '<error>The </error>"git reset --hard origin/master"<error> command can be used'
-                    . ' to rollback changes made by </error>"repository:sync"<error> command.</error>',
+                    . ' run the "repository:sync" command again.</error>' . "\n"
+                    . '<error>The "git reset --hard origin/master" command can be used'
+                    . ' to rollback changes made by "repository:sync" command.</error>',
                     $cmd,
                     $returnCode
                 )
