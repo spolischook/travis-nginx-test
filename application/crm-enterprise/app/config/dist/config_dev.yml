@@ -8,9 +8,3 @@ framework:
 web_profiler:
     toolbar: true
     intercept_redirects: false
-
-connections:
-        # A collection of different named connections (e.g. default, conn2, etc)
-        default:
-                # when true, queries are logged to a "doctrine" monolog channel
-            logging: true
