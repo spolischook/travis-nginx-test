@@ -72,10 +72,16 @@ php tool/console repository:sync REPO_NAME
 
 ### Syncronize subtree and upstream repository changes
 
-In order to synchronize subtree and upstream repository you will need to run following command:
+In order to update subtree with code from original repository you will need to run following commands:
 
 ```bash
 php tool/console repository:sync
+```
+
+In order to synchronize subtree and upstream repository you will need to run following command:
+
+```bash
+php tool/console repository:sync --two-way
 ```
 
 *Note:* please pay attention to command output, if conflict will occur during subtree merge you'll need to resolve it
