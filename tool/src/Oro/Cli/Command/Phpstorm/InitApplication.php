@@ -2,11 +2,12 @@
 
 namespace Oro\Cli\Command\Phpstorm;
 
-use Oro\Cli\Command\RootCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+
+use Oro\Cli\Command\RootCommand;
 
 /**
  * Prepares PHPStorm configuration from config folder to root .idea folder so proper application settings
