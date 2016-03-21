@@ -48,6 +48,11 @@ php tool/console phpstorm:init-application {application_name}
 * Do code changes
 * Push branch to remote repository and create a pull request
 
+*Note:* to see all existing applications run `phpstorm:init-application` without parameters:
+```bash
+php tool/console phpstorm:init-application
+```
+
 ### IDE
 
 PHPStorm is the recommended IDE for Oro projects. Following plugins will help to improve developer experience:
