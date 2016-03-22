@@ -80,11 +80,20 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
         $created = $this->generateCreatedDate();
         /** @var Organization $organization */
         $organization = $user->getOrganization();
-        $customer     = $this->getCustomerReference($leadData['customer uid']);
-
         $lead = new Lead();
         $lead->setSource($this->getLeadSourceReference($leadData['lead source uid']));
-        $lead->setCustomer($customer);
+
+        if (!empty($leadData['customer uid'])) {
+            $customer = $this->getCustomerReference($leadData['customer uid']);
+            $lead->setCustomer($customer);
+            $this->addAddress($lead, $customer);
+        }
+
+        if (!empty($leadData['contact uid'])) {
+            $contact = $this->getContactReference($leadData['contact uid']);
+            $lead->setContact($contact);
+        }
+
         if (!empty($leadData['channel uid'])) {
             $lead->setDataChannel($this->getChannelReference($leadData['channel uid']));
         }
@@ -98,8 +107,6 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
             ->setUpdatedAt($this->generateUpdatedDate($created));
         $this->setObjectValues($lead, $leadData);
         $lead->setName($lead->getCompanyName());
-
-        $this->addAddress($lead, $customer);
 
         return $lead;
     }
