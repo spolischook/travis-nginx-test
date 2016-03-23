@@ -1,255 +1,255 @@
 Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
-1,1, visit,1, id=guest; visitor-id=90, http://b2b-oro.com/index.php?pk_campaign=second, Home page,home
-2,1, visit,1, id=guest; visitor-id=90, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-3,1, registration,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-4,1, visit,1, id=guest; visitor-id=90, http://b2b-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
-5,1, visit,1, id=guest; visitor-id=90, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-6,1, order placed,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-7,1, visit,1, id=guest; visitor-id=90, http://b2b-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,product
-8,1, user entered checkout,1, id=guest; visitor-id=90, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-9,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-10,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/, Home page,home
-11,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/, Home page,home
-12,1, visit,1, id=guest; visitor-id=88, http://b2b-oro.com/, Home page,home
-13,1, visit,1, id=guest; visitor-id=88, http://b2b-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1""",product
-14,1, visit,1, id=guest; visitor-id=88, http://b2b-oro.com/electronics.html, Electronics,category
-15,1, visit,1, id=guest; visitor-id=88, http://b2b-oro.com/apparel.html, Apparel,category
-16,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
-17,1, visit,1, id=guest; visitor-id=88, http://b2b-oro.com/apparel.html?cat=5, Apparel,category
-18,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/electronics.html, Electronics,category
-19,1, visit,1, id=guest; visitor-id=88, http://b2b-oro.com/cn-clogs-beach-garden-clog.html, CN Clogs Beach/Garden Clog,product
-20,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/apparel/shirts.html, Shirts - Apparel,category
-21,1, visit,1, id=guest; visitor-id=88, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-22,1, cart item added,1, id=guest; visitor-id=88, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-23,1, user entered checkout,1, id=guest; visitor-id=88, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-24,1, visit,1, id=guest; visitor-id=90, http://b2b-oro.com/furniture.html, Furniture,category
-25,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-26,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/, Home page,home
-27,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/electronics.html, Electronics,category
-28,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/furniture.html, Furniture,category
-29,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/furniture.html?price=2000-, Furniture,category
-30,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/barcelona-bamboo-platform-bed.html, Barcelona Bamboo Platform Bed,category
-31,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/furniture.html, Furniture,category
-32,1, cart item added,1, id=guest; visitor-id=85, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-33,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-34,1, user entered checkout,1, id=guest; visitor-id=85, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-35,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-36,1, registration,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-37,1, user logged in,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-38,1, order placed,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-39,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-40,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/, Home page,home
-41,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics.html, Electronics,category
-42,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones.html?manufacturer=2, Cell Phones - Electronics,category
-43,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/furniture.html, Furniture,category
-44,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/apparel.html, Apparel,category
-45,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics.html, Electronics,category
-46,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/electronics.html, Electronics,category
-47,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones.html?manufacturer=2, Cell Phones - Electronics,category
-48,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/apparel/shirts.html, Shirts - Apparel,category
-49,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/, Home page,home
-50,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/apparel/shirts.html?color=26, Shirts - Apparel,category
-51,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/olympus-stylus-750-7-1mp-digital-camera.html, Olympus Stylus 750 7.1MP Digital Camera with Digital Image Stabilized 5x Optical Zoom and CCD Shift Stabilization (Silver),product
-52,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/apparel/shirts/zolof-the-rock-and-roll-destroyer-lol-cat-t-shirt.html, Zolof The Rock And Roll Destroyer: LOL Cat T-shirt,product
-53,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics.html, Electronics,category
-54,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/apparel/shirts.html, Shirts - Apparel,category
-55,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/apparel/shirts.html?color=60, Shirts - Apparel,category
-56,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,product
-57,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,product
-58,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/electronics.html, Electronics,category
-59,1, cart item added,1, id=guest; visitor-id=86, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-60,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-61,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/furniture/living-room.html, Living Room - Furniture,category
-62,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/apparel/shirts.html, Shirts - Apparel,category
-63,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/furniture/living-room.html, Living Room - Furniture,category
-64,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,product
-65,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-66,1, cart item added,1, id=guest; visitor-id=86, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-67,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-68,1, cart item added,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-69,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-70,1, cart item added,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-71,1, user entered checkout,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-72,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-73,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-74,1, user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-75,1, user entered checkout,1, id=guest; visitor-id=86, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-76,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-77,1, order placed,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-78,1, order placed,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-79,1, user logged in,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-80,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-81,1, registration,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-82,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-83,1, user logged out,1, id=guest; visitor-id=85, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-84,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-85,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/, Home page,home
-86,1, user logged out,1, id=guest; visitor-id=87, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-87,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-88,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-89,1, user logged in,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-90,1, order placed,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-91,1, registration,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-92,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/, Home page,home
-93,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-94,1, user logged out,1, id=guest; visitor-id=86, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-95,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,category
-96,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/electronics/cell-phones/blackberry-8100-pearl.html, BlackBerry 8100 Pearl,product
-97,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/apparel/shirts.html, Shirts - Apparel,category
-98,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/apparel/shirts/coalesce-functioning-on-impatience-t-shirt.html, Coalesce: Functioning On Impatience T-Shirt,product
-99,1, visit,1, id=guest; visitor-id=86, http://b2b-oro.com/furniture.html, Furniture,category
-100,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/?pk_campaign=test_campaign, Home page,home
-101,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/?pk_campaign=test_campaign, Home page,home
-102,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/acer-ferrari-3200-notebook-computer-pc.html, Acer Ferrari 3200 Notebook Computer PC,product
-103,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
-104,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/universal-camera-charger.html, Universal Camera Charger,product
-105,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,category
-106,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-107,1, cart item added,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-108,1, cart item added,1, id=guest; visitor-id=85, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-109,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-110,1, user entered checkout,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-111,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-112,1, user entered checkout,1, id=guest; visitor-id=85, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-113,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-114,1, registration,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-115,1, user logged in,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-116,1, order placed,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-117,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-118,1, user logged in,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-119,1, order placed,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-120,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-121,1, registration,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-122,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/furniture.html, Furniture,category
-123,1, visit,1, id=guest; visitor-id=85, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-124,1, user logged out,1, id=guest; visitor-id=85, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-125,1, user logged out,1, id=guest; visitor-id=87, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-126,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/apparel/shirts/coalesce-functioning-on-impatience-t-shirt.html, Coalesce: Functioning On Impatience T-Shirt,product
-127,1, visit,1, id=guest; visitor-id=88, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-128,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-129,1, cart item added,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-130,1, user entered checkout,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-131,1, visit,1, id=guest; visitor-id=87, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-132,1, order placed,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-133,1, registration,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-134,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-135,1, user logged in,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-136,1, visit,1, id=guest; visitor-id=89, http://b2b-oro.com/?pk_campaign=test_campaign, Home page,home
-137,1, visit,1, id=guest; visitor-id=89, http://b2b-oro.com/index.php?pk_campaign=test_campaign, Home page,home
-138,1, visit,1, id=guest; visitor-id=89, http://b2b-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
-139,1, visit,1, id=guest; visitor-id=89, http://b2b-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,category
-140,1, visit,1, id=guest; visitor-id=89, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-141,1, cart item added,1, id=guest; visitor-id=89, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-142,1, visit,1, id=guest; visitor-id=89, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-143,1, user entered checkout,1, id=guest; visitor-id=89, http://b2b-oro.com/checkout/onepage/, Checkout,checkout
-144,1, registration,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-145,1, user logged in,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-146,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-147,1, order placed,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-148,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/furniture/living-room.html, Living Room - Furniture,category
-149,1, visit,1, id=guest; visitor-id=89, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-150,1, user logged out,1, id=guest; visitor-id=89, http://b2b-oro.com/customer/account/logoutSuccess/, b2b Commerce,commerce
-151,1, cart item added,1, id=guest; visitor-id=90, http://b2b-oro.com/checkout/cart/, Shopping Cart,cart
-152,1, user logged in,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/checkout/onepage/success/, b2b Commerce,commerce
-153,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-154,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-155,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES1,product
-156,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-157,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5322,product
-158,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-159,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 3,product
-160,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-161,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-162,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES2,product
-163,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-164,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5323,product
-165,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-166,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 4,product
-167,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-168,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-169,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES3,product
-170,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-171,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5324,product
-172,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-173,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 5,product
-174,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-175,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-176,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES4,product
-177,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-178,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5325,product
-179,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-180,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 6,product
-181,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-182,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-183,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES5,product
-184,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-185,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5326,product
-186,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-187,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 7,product
-188,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-189,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-190,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES6,product
-191,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-192,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5327,product
-193,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-194,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 8,product
-195,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-196,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-197,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES7,product
-198,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-199,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5328,product
-200,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-201,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 9,product
-202,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-203,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-204,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES8,product
-205,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-206,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5329,product
-207,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-208,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 10,product
-209,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-210,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-211,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES9,product
-212,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-213,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5330,product
-214,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-215,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 11,product
-216,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-217,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-218,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES10,product
-219,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-220,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5331,product
-221,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-222,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 12,product
-223,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-224,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-225,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES11,product
-226,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-227,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5332,product
-228,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-229,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 13,product
-230,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-231,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-232,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES12,product
-233,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-234,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5333,product
-235,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-236,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 14,product
-237,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-238,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-239,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES13,product
-240,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-241,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5334,product
-242,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-243,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 15,product
-244,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-245,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-246,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES14,product
-247,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-248,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://b2b-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5335,product
-249,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-250,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 16,product
-251,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-252,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-253,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://b2b-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES15,product
-254,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://b2b-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
+1,1,visit,1, id=guest; visitor-id=90,http://b2b-oro.com/,Home page,google
+2,1,visit,1, id=guest; visitor-id=90,http://b2b-oro.com/banner/,Banner Click,google
+3,1,commerce,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/commerce/,B2B Commerce,abc
+4,1,visit,1, id=guest; visitor-id=90,http://b2b-oro.com/,Home,google
+5,1,visit,1, id=guest; visitor-id=90,http://b2b-oro.com/login,Login,email
+6,1,commerce,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/commerce/,B2B Commerce,abc
+7,1,visit,1, id=guest; visitor-id=90,http://b2b-oro.com/,Home,google
+8,1,login,1, id=guest; visitor-id=90,http://b2b-oro.com/login,Login,email
+9,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+10,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/,Home page,google
+11,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home page,google
+12,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/,Home page,google
+13,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/,Home,google
+14,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/registration,Registration,abc
+15,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/registration,Registration,abc
+16,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
+17,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/registration,Registration,abc
+18,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/registration,Registration,abc
+19,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/,Home,google
+20,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/registration,Registration,abc
+21,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/banner/,Banner Click,google
+22,1,banner click,1, id=guest; visitor-id=88,http://b2b-oro.com/banner/,Banner Click,google
+23,1,login,1, id=guest; visitor-id=88,http://b2b-oro.com/login,Login,email
+24,1,visit,1, id=guest; visitor-id=90,http://b2b-oro.com/registration,Registration,abc
+25,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/commerce/,B2B Commerce,abc
+26,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/,Home page,google
+27,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
+28,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
+29,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
+30,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
+31,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
+32,1,banner click,1, id=guest; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
+33,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
+34,1,login,1, id=guest; visitor-id=85,http://b2b-oro.com/login,Login,email
+35,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/login,Login,email
+36,1,commerce,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+37,1,commerce,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+38,1,commerce,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+39,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+40,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home page,google
+41,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
+42,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
+43,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
+44,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
+45,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
+46,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/registration,Registration,google
+47,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
+48,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/registration,Registration,email
+49,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home page,google
+50,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/registration,Registration,email
+51,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+52,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/,Home,google
+53,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,email
+54,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/registration,Registration,email
+55,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/registration,Registration,email
+56,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/,Home,google
+57,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
+58,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/registration,Registration,email
+59,1,banner click,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,google
+60,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,google
+61,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,email
+62,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/login,Login,google
+63,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/login,Login,google
+64,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
+65,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,google
+66,1,banner click,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,google
+67,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
+68,1,banner click,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
+69,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,google
+70,1,banner click,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,google
+71,1,login,1, id=guest; visitor-id=87,http://b2b-oro.com/login,Login,google
+72,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/login,Login,google
+73,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/logout,Logout,email
+74,1,login,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/logout,Logout,email
+75,1,logout,1, id=guest; visitor-id=86,http://b2b-oro.com/logout,Logout,email
+76,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/logout,Logout,email
+77,1,commerce,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+78,1,commerce,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+79,1,commerce,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+80,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+81,1,commerce,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+82,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+83,1,logout,1, id=guest; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+84,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+85,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/,Home page,google
+86,1,logout,1, id=guest; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+87,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+88,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/commerce/,B2B Commerce,abc
+89,1,commerce,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/commerce/,B2B Commerce,abc
+90,1,commerce,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/commerce/,B2B Commerce,abc
+91,1,commerce,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/commerce/,B2B Commerce,abc
+92,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home page,google
+93,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/commerce/,B2B Commerce,abc
+94,1,logout,1, id=guest; visitor-id=86,http://b2b-oro.com/commerce/,B2B Commerce,abc
+95,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,google
+96,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/,Home,google
+97,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,google
+98,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/,Home,google
+99,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,google
+100,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/,Home page,google
+101,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home page,google
+102,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
+103,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/,Home,google
+104,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
+105,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/login,Login,abc
+106,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,google
+107,1,banner click,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,google
+108,1,banner click,1, id=guest; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
+109,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
+110,1,logout,1, id=guest; visitor-id=87,http://b2b-oro.com/logout,Logout,google
+111,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/logout,Logout,google
+112,1,logout,1, id=guest; visitor-id=85,http://b2b-oro.com/logout,Logout,google
+113,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/logout,Logout,google
+114,1,commerce,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+115,1,commerce,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+116,1,commerce,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+117,1,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+118,1,commerce,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+119,1,commerce,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+120,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+121,1,commerce,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+122,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/login,Login,abc
+123,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+124,1,logout,1, id=guest; visitor-id=85,http://b2b-oro.com/commerce/,B2B Commerce,abc
+125,1,logout,1, id=guest; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
+126,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
+127,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/logout,Logout,google
+128,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,google
+129,1,banner click,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,google
+130,1,logout,1, id=guest; visitor-id=87,http://b2b-oro.com/logout,Logout,google
+131,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/logout,Logout,google
+132,1,commerce,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/commerce/,B2B Commerce,abc
+133,1,commerce,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/commerce/,B2B Commerce,abc
+134,1,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/commerce/,B2B Commerce,abc
+135,1,commerce,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/commerce/,B2B Commerce,abc
+136,1,visit,1, id=guest; visitor-id=89,http://b2b-oro.com/,Home page,google
+137,1,visit,1, id=guest; visitor-id=89,http://b2b-oro.com/,Home page,google
+138,1,visit,1, id=guest; visitor-id=89,http://b2b-oro.com/,Home,google
+139,1,visit,1, id=guest; visitor-id=89,http://b2b-oro.com/login,Login,abc
+140,1,visit,1, id=guest; visitor-id=89,http://b2b-oro.com/banner/,Banner Click,google
+141,1,banner click,1, id=guest; visitor-id=89,http://b2b-oro.com/banner/,Banner Click,google
+142,1,visit,1, id=guest; visitor-id=89,http://b2b-oro.com/logout,Logout,abc
+143,1,logout,1, id=guest; visitor-id=89,http://b2b-oro.com/logout,Logout,abc
+144,1,commerce,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/commerce/,B2B Commerce,abc
+145,1,commerce,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/commerce/,B2B Commerce,abc
+146,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/commerce/,B2B Commerce,abc
+147,1,commerce,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/commerce/,B2B Commerce,abc
+148,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/login,Login,abc
+149,1,visit,1, id=guest; visitor-id=89,http://b2b-oro.com/commerce/,B2B Commerce,abc
+150,1,logout,1, id=guest; visitor-id=89,http://b2b-oro.com/commerce/,B2B Commerce,abc
+151,1,banner click,1, id=guest; visitor-id=90,http://b2b-oro.com/banner/,Banner Click,google
+152,1,commerce,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/commerce/,B2B Commerce,abc
+153,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,google
+154,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,google
+155,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,google
+156,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+157,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+158,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+159,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+160,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+161,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+162,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+163,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+164,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+165,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+166,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+167,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+168,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+169,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+170,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+171,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+172,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+173,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+174,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+175,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+176,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
+177,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
+178,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
+179,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
+180,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+181,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,google
+182,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,google
+183,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,google
+184,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,google
+185,1,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,google
+186,1,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,google
+187,1,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,google
+188,1,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,google
+189,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,email
+190,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,email
+191,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,email
+192,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,email
+193,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,email
+194,1,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,email
+195,1,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,email
+196,1,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,email
+197,1,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,email
+198,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
+199,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
+200,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
+201,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
+202,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
+203,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,email
+204,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,email
+205,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,email
+206,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,email
+207,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+208,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+209,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+210,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+211,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+212,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+213,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+214,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+215,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+216,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+217,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+218,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+219,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+220,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+221,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+222,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+223,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+224,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+225,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+226,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+227,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,email
+228,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,email
+229,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,email
+230,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,email
+231,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+232,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,email
+233,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,email
+234,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,email
+235,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,email
+236,1,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,email
+237,1,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,email
+238,1,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,email
+239,1,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,abc
+240,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,abc
+241,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,abc
+242,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,abc
+243,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,abc
+244,1,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,abc
+245,1,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,abc
+246,1,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,abc
+247,1,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,abc
+248,1,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,abc
+249,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,abc
+250,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,abc
+251,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,abc
+252,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,abc
+253,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,abc
+254,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,abc

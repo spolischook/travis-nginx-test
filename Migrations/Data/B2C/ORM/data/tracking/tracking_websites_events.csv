@@ -1,255 +1,255 @@
 Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
-1,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/index.php?pk_campaign=second, Home page,home
-2,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-3,1, registration,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-4,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
-5,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-6,1, order placed,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-7,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,product
-8,1, user entered checkout,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-9,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-10,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,home
-11,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/, Home page,home
-12,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/, Home page,home
-13,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1""",product
-14,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/electronics.html, Electronics,category
-15,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/apparel.html, Apparel,category
-16,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
-17,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/apparel.html?cat=5, Apparel,category
-18,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/electronics.html, Electronics,category
-19,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/cn-clogs-beach-garden-clog.html, CN Clogs Beach/Garden Clog,product
-20,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,category
-21,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-22,1, cart item added,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-23,1, user entered checkout,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-24,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/furniture.html, Furniture,category
-25,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-26,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,home
-27,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,category
-28,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,category
-29,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html?price=2000-, Furniture,category
-30,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/barcelona-bamboo-platform-bed.html, Barcelona Bamboo Platform Bed,category
-31,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,category
-32,1, cart item added,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-33,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-34,1, user entered checkout,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-35,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-36,1, registration,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-37,1, user logged in,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-38,1, order placed,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-39,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-40,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/, Home page,home
-41,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,category
-42,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html?manufacturer=2, Cell Phones - Electronics,category
-43,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,category
-44,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apparel.html, Apparel,category
-45,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,category
-46,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/electronics.html, Electronics,category
-47,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html?manufacturer=2, Cell Phones - Electronics,category
-48,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,category
-49,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/, Home page,home
-50,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html?color=26, Shirts - Apparel,category
-51,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/olympus-stylus-750-7-1mp-digital-camera.html, Olympus Stylus 750 7.1MP Digital Camera with Digital Image Stabilized 5x Optical Zoom and CCD Shift Stabilization (Silver),product
-52,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts/zolof-the-rock-and-roll-destroyer-lol-cat-t-shirt.html, Zolof The Rock And Roll Destroyer: LOL Cat T-shirt,product
-53,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,category
-54,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,category
-55,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html?color=60, Shirts - Apparel,category
-56,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,product
-57,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,product
-58,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/electronics.html, Electronics,category
-59,1, cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-60,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-61,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,category
-62,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,category
-63,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,category
-64,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,product
-65,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-66,1, cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-67,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-68,1, cart item added,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-69,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-70,1, cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-71,1, user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-72,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-73,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-74,1, user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-75,1, user entered checkout,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-76,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-77,1, order placed,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-78,1, order placed,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-79,1, user logged in,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-80,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-81,1, registration,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-82,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-83,1, user logged out,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-84,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-85,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,home
-86,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-87,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-88,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-89,1, user logged in,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-90,1, order placed,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-91,1, registration,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-92,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/, Home page,home
-93,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-94,1, user logged out,1, id=guest; visitor-id=86, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-95,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,category
-96,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/electronics/cell-phones/blackberry-8100-pearl.html, BlackBerry 8100 Pearl,product
-97,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,category
-98,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts/coalesce-functioning-on-impatience-t-shirt.html, Coalesce: Functioning On Impatience T-Shirt,product
-99,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/furniture.html, Furniture,category
-100,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/?pk_campaign=test_campaign, Home page,home
-101,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/?pk_campaign=test_campaign, Home page,home
-102,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/acer-ferrari-3200-notebook-computer-pc.html, Acer Ferrari 3200 Notebook Computer PC,product
-103,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
-104,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/universal-camera-charger.html, Universal Camera Charger,product
-105,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,category
-106,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-107,1, cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-108,1, cart item added,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-109,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-110,1, user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-111,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-112,1, user entered checkout,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-113,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-114,1, registration,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-115,1, user logged in,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-116,1, order placed,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-117,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-118,1, user logged in,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-119,1, order placed,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-120,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-121,1, registration,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-122,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,category
-123,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-124,1, user logged out,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-125,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-126,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/apparel/shirts/coalesce-functioning-on-impatience-t-shirt.html, Coalesce: Functioning On Impatience T-Shirt,product
-127,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-128,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-129,1, cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-130,1, user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-131,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-132,1, order placed,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-133,1, registration,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-134,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-135,1, user logged in,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-136,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/?pk_campaign=test_campaign, Home page,home
-137,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/index.php?pk_campaign=test_campaign, Home page,home
-138,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",product
-139,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,category
-140,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-141,1, cart item added,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-142,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-143,1, user entered checkout,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/onepage/, Checkout,checkout
-144,1, registration,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-145,1, user logged in,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-146,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-147,1, order placed,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-148,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,category
-149,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-150,1, user logged out,1, id=guest; visitor-id=89, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,commerce
-151,1, cart item added,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/cart/, Shopping Cart,cart
-152,1, user logged in,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,commerce
-153,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-154,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-155,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES1,product
-156,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-157,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5322,product
-158,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-159,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 3,product
-160,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-161,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-162,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES2,product
-163,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-164,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5323,product
-165,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-166,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 4,product
-167,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-168,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-169,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES3,product
-170,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-171,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5324,product
-172,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-173,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 5,product
-174,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-175,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-176,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES4,product
-177,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-178,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5325,product
-179,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-180,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 6,product
-181,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-182,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-183,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES5,product
-184,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-185,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5326,product
-186,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-187,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 7,product
-188,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-189,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-190,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES6,product
-191,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-192,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5327,product
-193,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-194,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 8,product
-195,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-196,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-197,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES7,product
-198,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-199,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5328,product
-200,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-201,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 9,product
-202,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-203,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-204,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES8,product
-205,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-206,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5329,product
-207,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-208,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 10,product
-209,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-210,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-211,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES9,product
-212,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-213,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5330,product
-214,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-215,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 11,product
-216,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-217,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-218,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES10,product
-219,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-220,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5331,product
-221,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-222,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 12,product
-223,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-224,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-225,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES11,product
-226,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-227,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5332,product
-228,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-229,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 13,product
-230,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-231,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-232,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES12,product
-233,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-234,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5333,product
-235,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-236,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 14,product
-237,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-238,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-239,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES13,product
-240,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-241,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5334,product
-242,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-243,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 15,product
-244,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-245,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-246,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES14,product
-247,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
-248,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5335,product
-249,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,product
-250,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 16,product
-251,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,product
-252,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,product
-253,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES15,product
-254,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,product
+1,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/index.php?pk_campaign=second, Home page,sports
+2,1,cart item added,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
+3,1,user entered checkout,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
+4,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",mtv
+5,1,user entered checkout,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/onepage/, Checkout,sports
+6,1,user entered checkout,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
+7,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,mtv
+8,1,user entered checkout,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/onepage/, Checkout,sports
+9,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,sports
+10,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,sports
+11,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/, Home page,sports
+12,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/, Home page,rone
+13,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1""",mtv
+14,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/electronics.html, Electronics,mtv
+15,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/apparel.html, Apparel,mtv
+16,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",mtv
+17,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/apparel.html?cat=5, Apparel,mtv
+18,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/electronics.html, Electronics,mtv
+19,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/cn-clogs-beach-garden-clog.html, CN Clogs Beach/Garden Clog,mtv
+20,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,mtv
+21,1,cart item added,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
+22,1,cart item added,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
+23,1,user entered checkout,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/onepage/, Checkout,sports
+24,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/furniture.html, Furniture,mtv
+25,1,user entered checkout,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
+26,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,rone
+27,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,mtv
+28,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,mtv
+29,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html?price=2000-, Furniture,sports
+30,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/barcelona-bamboo-platform-bed.html, Barcelona Bamboo Platform Bed,sports
+31,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,sports
+32,1,cart item added,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
+33,1,cart item added,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
+34,1,user entered checkout,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,rone
+35,1,user entered checkout,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,rone
+36,1,user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
+37,1,user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+38,1,user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+39,1,user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+40,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/, Home page,rone
+41,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,sports
+42,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html?manufacturer=2, Cell Phones - Electronics,sports
+43,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,sports
+44,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apparel.html, Apparel,sports
+45,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,rone
+46,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/electronics.html, Electronics,rone
+47,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html?manufacturer=2, Cell Phones - Electronics,rone
+48,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,rone
+49,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/, Home page,rone
+50,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html?color=26, Shirts - Apparel,rone
+51,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/olympus-stylus-750-7-1mp-digital-camera.html, Olympus Stylus 750 7.1MP Digital Camera with Digital Image Stabilized 5x Optical Zoom and CCD Shift Stabilization (Silver),sports
+52,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts/zolof-the-rock-and-roll-destroyer-lol-cat-t-shirt.html, Zolof The Rock And Roll Destroyer: LOL Cat T-shirt,sports
+53,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,rone
+54,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,rone
+55,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html?color=60, Shirts - Apparel,mtv
+56,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,sports
+57,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,sports
+58,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/electronics.html, Electronics,mtv
+59,1,cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
+60,1,cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
+61,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,mtv
+62,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,mtv
+63,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,mtv
+64,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,sports
+65,1,cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
+66,1,cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
+67,1,cart item added,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
+68,1,cart item added,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
+69,1,cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
+70,1,cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
+71,1,user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,rone
+72,1,user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,rone
+73,1,user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,rone
+74,1,user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,rone
+75,1,user entered checkout,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/onepage/, Checkout,rone
+76,1,user entered checkout,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/onepage/, Checkout,mtv
+77,1,user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+78,1,user entered checkout,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+79,1,user entered checkout,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+80,1,user entered checkout,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+81,1,user entered checkout,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+82,1,user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+83,1, user logged out,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,mtv
+84,1, user logged out,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,mtv
+85,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,rone
+86,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,mtv
+87,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,mtv
+88,1,user entered checkout,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+89,1,user entered checkout,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+90,1,user entered checkout,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
+91,1,user entered checkout,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
+92,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/, Home page,rone
+93,1, user logged out,1, id=guest; visitor-id=86, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,sports
+94,1, user logged out,1, id=guest; visitor-id=86, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,sports
+95,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,mtv
+96,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/electronics/cell-phones/blackberry-8100-pearl.html, BlackBerry 8100 Pearl,sports
+97,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,mtv
+98,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts/coalesce-functioning-on-impatience-t-shirt.html, Coalesce: Functioning On Impatience T-Shirt,sports
+99,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/furniture.html, Furniture,mtv
+100,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/?pk_campaign=test_campaign, Home page,rone
+101,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/?pk_campaign=test_campaign, Home page,mtv
+102,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/acer-ferrari-3200-notebook-computer-pc.html, Acer Ferrari 3200 Notebook Computer PC,rone
+103,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",rone
+104,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/universal-camera-charger.html, Universal Camera Charger,rone
+105,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,sports
+106,1,cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
+107,1,cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
+108,1,cart item added,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,rone
+109,1,cart item added,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,rone
+110,1,user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,mtv
+111,1,user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,mtv
+112,1,user entered checkout,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,mtv
+113,1,user entered checkout,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,mtv
+114,1,user entered checkout,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
+115,1,user entered checkout,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
+116,1,user entered checkout,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
+117,1,user entered checkout,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+118,1,user entered checkout,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+119,1,user entered checkout,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+120,1,user entered checkout,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+121,1,user entered checkout,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+122,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,sports
+123,1, user logged out,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,rone
+124,1, user logged out,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,rone
+125,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,mtv
+126,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/apparel/shirts/coalesce-functioning-on-impatience-t-shirt.html, Coalesce: Functioning On Impatience T-Shirt,rone
+127,1,user entered checkout,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/onepage/, Checkout,mtv
+128,1,cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,rone
+129,1,cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,rone
+130,1,user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,mtv
+131,1,user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,mtv
+132,1,user entered checkout,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+133,1,user entered checkout,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+134,1,user entered checkout,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+135,1,user entered checkout,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+136,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/?pk_campaign=test_campaign, Home page,mtv
+137,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/index.php?pk_campaign=test_campaign, Home page,mtv
+138,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",rone
+139,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,sports
+140,1,cart item added,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/cart/, Shopping Cart,rone
+141,1,cart item added,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/cart/, Shopping Cart,rone
+142,1,user entered checkout,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/onepage/, Checkout,sports
+143,1,user entered checkout,1, id=guest; visitor-id=89, http://magento-oro.com/checkout/onepage/, Checkout,sports
+144,1,user entered checkout,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+145,1,user entered checkout,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+146,1,user entered checkout,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+147,1,user entered checkout,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
+148,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,sports
+149,1, user logged out,1, id=guest; visitor-id=89, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,sports
+150,1, user logged out,1, id=guest; visitor-id=89, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,sports
+151,1,cart item added,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/cart/, Shopping Cart,rone
+152,1,user entered checkout,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
+153,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,rone
+154,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,rone
+155,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES1,mtv
+156,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,mtv
+157,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5322,mtv
+158,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,mtv
+159,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 3,mtv
+160,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,mtv
+161,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,mtv
+162,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES2,mtv
+163,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,sports
+164,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5323,sports
+165,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,sports
+166,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 4,sports
+167,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,sports
+168,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,sports
+169,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES3,sports
+170,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,rone
+171,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5324,rone
+172,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,rone
+173,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 5,rone
+174,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,rone
+175,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,rone
+176,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES4,rone
+177,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,mtv
+178,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5325,mtv
+179,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,mtv
+180,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 6,mtv
+181,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,mtv
+182,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,mtv
+183,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES5,mtv
+184,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,mtv
+185,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5326,sports
+186,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,sports
+187,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 7,sports
+188,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,sports
+189,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,sports
+190,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES6,sports
+191,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,sports
+192,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5327,rone
+193,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,rone
+194,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 8,rone
+195,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,rone
+196,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,rone
+197,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES7,rone
+198,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,rone
+199,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5328,mtv
+200,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,mtv
+201,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 9,mtv
+202,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,mtv
+203,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,mtv
+204,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES8,mtv
+205,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,mtv
+206,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5329,mtv
+207,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,sports
+208,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 10,sports
+209,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,sports
+210,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,sports
+211,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES9,sports
+212,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,sports
+213,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5330,sports
+214,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,rone
+215,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 11,rone
+216,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,rone
+217,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,rone
+218,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES10,rone
+219,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,rone
+220,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5331,rone
+221,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,mtv
+222,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 12,mtv
+223,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,mtv
+224,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,mtv
+225,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES11,mtv
+226,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,mtv
+227,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5332,mtv
+228,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,mtv
+229,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 13,sports
+230,1, visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,sports
+231,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,sports
+232,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES12,sports
+233,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,sports
+234,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5333,sports
+235,1, visit,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,sports
+236,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 14,rone
+237,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,rone
+238,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,rone
+239,1, visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES13,rone
+240,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,rone
+241,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5334,rone
+242,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,rone
+243,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 15,mtv
+244,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,mtv
+245,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,mtv
+246,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES14,mtv
+247,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,mtv
+248,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5335,mtv
+249,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,mtv
+250,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 16,mtv
+251,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,sports
+252,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,sports
+253,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES15,sports
+254,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,sports
