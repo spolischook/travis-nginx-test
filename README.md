@@ -20,20 +20,38 @@ Monolithic repository created based individual package and application repositor
 ## Installation and Initialization
 
 * [Install composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) globally 
-* Clone repository to the local environment: `git clone git@github.com:laboro/dev.git`
-* Go to the root folder: `cd dev`
-* Install tools in `tool` folder: `cd tool && composer install && cd ..`
-* Install all dependencies for the application(s) you are going to work on (crm application used as example): 
-`cd application/crm && composer install && cd ../..`
+* Clone repository to the local environment:
+```bash
+git clone git@github.com:laboro/dev.git
+```
+* Go to the root folder:
+```bash
+cd dev
+```
+* Install tools in `tool` folder:
+```bash
+cd tool && composer install && cd ..
+```
+* Install all dependencies for the application(s) you are going to work on (crm application used as example):
+```bash
+cd application/crm && composer install && cd ../..
+```
 * Install application via web or command line interface
 
 ## Development Experience
 
-* Enable PHPStorm configuration for application you will be working on with: 
-`php tool/console phpstorm:init-application {application_name}`
+* Enable PHPStorm configuration for application you will be working on with:
+```bash
+php tool/console phpstorm:init-application {application_name}
+```
 * Create feature branch
 * Do code changes
 * Push branch to remote repository and create a pull request
+
+*Note:* to see all existing applications run `phpstorm:init-application` without parameters:
+```bash
+php tool/console phpstorm:init-application
+```
 
 ### IDE
 
@@ -51,23 +69,26 @@ Maintenance cycle includes a few typical tasks:
 ### Adding new subtree
 
 If you would like to add new code from existing upstream repository, you should add new record to `$repositories` in
-`Oro\Cli\Command\Repositor\Update` class and run `tool/console repository:update REPO_NAME` command.
+[Oro\Cli\Command\Repository\Sync](./tool/src/Oro/Cli/Command/Repository/Sync.php) class and run following command:
 
-### Merge changes from the original repository
+```bash
+php tool/console repository:sync REPO_NAME
+```
+
+### Syncronize subtree and upstream repository changes
 
 In order to update subtree with code from original repository you will need to run following commands:
 
+```bash
+php tool/console repository:sync
 ```
-tool/console repository:update
+
+In order to synchronize subtree and upstream repository you will need to run following command:
+
+```bash
+php tool/console repository:sync --two-way
 ```
 
 *Note:* please pay attention to command output, if conflict will occur during subtree merge you'll need to resolve it
-and run command again. If you notice *Working tree has modifications.  Cannot add.* in the output, it indicates that
+and run command again. If you notice **Working tree has modifications.  Cannot add.** in the output, it indicates that
 you either have local changes that should be committed or conflict occurred during merge and it should be resolved.
-
-### Merge changes to the original repository
-
-```
-git remote add -f {{origin-name}} {{code repository}}
-git subtree push --prefix={{code/folder}} {{origin-name}} {{branch}}
-```
