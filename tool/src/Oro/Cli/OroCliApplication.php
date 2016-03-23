@@ -26,7 +26,7 @@ class OroCliApplication extends Application
     public function getCommands()
     {
         $commands = [];
-        $commands[] = new Command\Repository\Update();
+        $commands[] = new Command\Repository\Sync();
         $commands[] = new Command\Phpstorm\InitApplication();
 
         return $commands;
