@@ -41,16 +41,20 @@ class LoadMailChimpCampaignEmailData extends AbstractFixture implements OrderedF
      */
     public function load(ObjectManager $manager)
     {
+        $manager->getClassMetadata('OroCRM\Bundle\CampaignBundle\Entity\EmailCampaign')->setLifecycleCallbacks([]);
+
         $data = $this->getData();
         foreach ($data['campaigns_emails'] as $campaignData) {
-            $emailCampaign = new EmailCampaign();
+            $emailCampaign     = new EmailCampaign();
             $transportSettings = new MailChimpTransportSettings();
             $emailCampaign->setTransportSettings($transportSettings);
             $emailCampaign->setOwner($this->getUserReference($campaignData['user uid']));
             $emailCampaign->setOrganization($this->getOrganizationReference($campaignData['organization uid']));
             $emailCampaign->setMarketingList($this->getMarketingListReference($campaignData['marketing list uid']));
             $this->setObjectValues($emailCampaign, $campaignData);
-
+            $emailCampaign->setCreatedAt($this->generateCreatedDate());
+            $emailCampaign->setUpdatedAt($this->generateUpdatedDate($emailCampaign->getCreatedAt()));
+            $emailCampaign->setSentAt($emailCampaign->getUpdatedAt());
             $this->setCampaignEmailReference($campaignData['uid'], $emailCampaign);
             $manager->persist($emailCampaign);
         }
