@@ -17,7 +17,7 @@ class BranchSync extends AbstractSync
     /**
      * @var bool
      */
-    protected $useCurrentBranchNameAsLocal;
+    protected $generateBranchName;
 
     /**
      * {@inheritdoc}
@@ -48,19 +48,22 @@ class BranchSync extends AbstractSync
     {
         $branches = [];
         $this->execCmd('git branch -a  | grep remotes/', true, $branches);
-        $filteredCodePathArray = [];
+        $branches = array_map(function($branchName){
+           return trim($branchName);
+        }, $branches);
+        $filteredRepositories = [];
         foreach ($this->repositories as $codePath => $origin) {
-            $branchNameWithPath = 'remotes/'.$this->getAlias($codePath).$this->branchName;
+            $branchNameWithPath = 'remotes/'.$this->getAlias($codePath).'/'.$this->branchName;
             if (in_array($branchNameWithPath, $branches)) {
                 $filteredRepositories[$codePath] = $origin;
             }
         }
 
-        if (!count($filteredCodePathArray)) {
-            throw new \Exception("There is no remote repositories that contain branch {$this->branchName} !");
+        if (!count($filteredRepositories)) {
+            throw new \Exception("There is no remote repositories that contain branch '{$this->branchName}' !");
         }
 
-        return $filteredCodePathArray;
+        return $filteredRepositories;
     }
 
     /**
@@ -71,7 +74,7 @@ class BranchSync extends AbstractSync
         $path = $input->getArgument('path');
         $twoWay = $input->getOption('two-way');
         $this->branchName = $input->getArgument('branch-name');
-        $this->useCurrentBranchNameAsLocal = $input->getOption('generate-branch-name');
+        $this->generateBranchName = $input->getOption('generate-branch-name');
 
         try {
             $this->validateWorkingTree();
@@ -90,22 +93,26 @@ class BranchSync extends AbstractSync
      */
     protected function doSync(OutputInterface $output, array $repositories, $twoWay)
     {
+        $previousLocalBranchName = '';
+
         foreach ($repositories as $codePath => $repository) {
             $alias = $this->getAlias($codePath);
             $output->writeln("Working on {$codePath} subtree from {$repository} repository.");
             $this->fetchLatestDataFromRemoteBranch($alias, $repository, $this->branchName);
 
             $branchInfo = [];
-            $localBranchName = $this->useCurrentBranchNameAsLocal ? $this->branchName :
-                $codePath.'-'.$this->branchName;
+            $localBranchName = $this->generateBranchName ? $codePath.'-'.$this->branchName : $this->branchName;
 
-            $this->execCmd("git branch --list {$localBranchName}", false, $branchInfo);
-            if ($branchInfo) {
-                $this->execCmd("git checkout {$localBranchName}", true);
-            } else {
-                /* We want make branch only from master */
-                $this->execCmd("git checkout master", true);
-                $this->execCmd("git checkout -b {$localBranchName}", true);
+            if ($previousLocalBranchName !== $localBranchName) {
+                $this->execCmd("git branch --list {$localBranchName}", false, $branchInfo);
+                if ($branchInfo) {
+                    $this->execCmd("git checkout {$localBranchName}", true);
+                } else {
+                    /* We want make branch only from master */
+                    $this->execCmd("git checkout master", true);
+                    $this->execCmd("git checkout -b {$localBranchName}", true);
+                }
+                $previousLocalBranchName = $localBranchName;
             }
 
             $this->updateSubtree($codePath, $twoWay, $this->branchName);

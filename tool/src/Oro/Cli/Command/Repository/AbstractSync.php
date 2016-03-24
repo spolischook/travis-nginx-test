@@ -95,7 +95,7 @@ abstract class AbstractSync extends RootCommand
     {
         $untrackedFiles = [];
         $this->execCmd('git status --porcelain', true, $untrackedFiles);
-        if (0 === count($untrackedFiles)) {
+        if (count($untrackedFiles)) {
             throw new \Exception('There are untracked files in working tree, to continue please clean the working tree.');
         }
     }
