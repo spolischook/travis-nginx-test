@@ -9,8 +9,9 @@
 >
     <testsuites>
         <testsuite name="unit">
-            <directory suffix="Test.php">vendor/oro/crm-enterprise/src/*/Bundle/*Bundle/Tests/Unit</directory>
-            <directory suffix="Test.php">vendor/oro/crm-enterprise/src/*/Component/*/Tests/Unit</directory>
+            <directory suffix="Test.php">../../package/platform/src/*/Bundle/ApiBundle/Tests/Unit</directory>
+            <directory suffix="Test.php">vendor1/oro/crm-enterprise/src/*/Bundle/*Bundle/Tests/Unit</directory>
+            <directory suffix="Test.php">vendor1/oro/crm-enterprise/src/*/Component/*/Tests/Unit</directory>
         </testsuite>
         <testsuite name="functional">
             <directory suffix="Test.php">vendor/oro/crm-enterprise/src/*/Bundle/*Bundle/Tests/Functional</directory>
