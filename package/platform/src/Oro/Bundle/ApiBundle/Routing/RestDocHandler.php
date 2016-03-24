@@ -42,6 +42,13 @@ class RestDocHandler implements HandlerInterface
             'description_key'      => EntityDefinitionConfig::PLURAL_LABEL,
             'documentation_key'    => EntityDefinitionConfig::DESCRIPTION
         ],
+        'delete' => [
+            'description'          => 'Delete {name}',
+            'fallback_description' => 'Delete an record of {class} class',
+            'get_name_method'      => 'getEntityClassName',
+            'description_key'      => EntityDefinitionConfig::LABEL,
+            'documentation_key'    => EntityDefinitionConfig::DESCRIPTION
+        ],
     ];
 
     /** @var RestDocViewDetector */
@@ -271,6 +278,10 @@ class RestDocHandler implements HandlerInterface
                 $default = $filter->getDefaultValueString();
                 if (!empty($default)) {
                     $options['default'] = $default;
+                }
+                $operators = $filter->getSupportedOperators();
+                if (!empty($operators) && !(count($operators) === 1 && $operators[0] === StandaloneFilter::EQ)) {
+                    $options['operators'] = implode(',', $operators);
                 }
                 $annotation->addFilter($key, $options);
             }

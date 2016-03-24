@@ -89,7 +89,7 @@ class MyConfigExtension extends AbstractConfigExtension
     {
         return [
             'entities.entity' => function (array $config) {
-	            // do something
+                // do something
                 return $config;
             }
         ];
@@ -102,7 +102,7 @@ class MyConfigExtension extends AbstractConfigExtension
     {
         return [
             'entities.entity' => function (array $config) {
-	            // do something
+                // do something
                 return $config;
             }
         ];
@@ -131,7 +131,7 @@ class MyConfiguration implements ConfigurationSectionInterface
         array $preProcessCallbacks,
         array $postProcessCallbacks
     ) {
-	    $node->scalarNode('some_option');
+        $node->scalarNode('some_option');
     }
 }
 ```
@@ -166,7 +166,7 @@ class MyConfiguration extends AbstractConfigurationSection implements Configurat
                     }
                 );
         $this->callConfigureCallbacks($node, $configureCallbacks, $sectionName);
-	    $node->scalarNode('some_option');
+        $node->scalarNode('some_option');
         $parentNode
             ->validate()
                 ->always(
@@ -185,28 +185,17 @@ An example of configuration section loader:
 namespace Acme\Bundle\AcmeBundle\Api;
 
 use Oro\Bundle\ApiBundle\Config\AbstractConfigLoader;
-use Oro\Bundle\ApiBundle\Config\ConfigLoaderInterface;
 
-class MyConfigLoader extends AbstractConfigLoader implements ConfigLoaderInterface
+class MyConfigLoader extends AbstractConfigLoader
 {
-    /** @var array */
-    protected $methodMap = [
-        'some_option' => 'setSomeOption'
-    ];
-
     /**
      * {@inheritdoc}
      */
     public function load(array $config)
     {
         $result = new MyConfigSection();
-
         foreach ($config as $key => $value) {
-            if (isset($this->methodMap[$key])) {
-                $this->callSetter($result, $this->methodMap[$key], $value);
-            } else {
-                $this->setValue($result, $key, $value);
-            }
+            $this->loadConfigValue($result, $key, $value);
         }
 
         return $result;
