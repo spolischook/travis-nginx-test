@@ -3,8 +3,6 @@ set -e
 step=$1
 case $step in
      before_install)
-           # run all tests for master branch
-           if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then exit; fi; 
            set +e; 
            echo "Before installing...";
            diff=$(git diff --name-only $TRAVIS_COMMIT_RANGE);
