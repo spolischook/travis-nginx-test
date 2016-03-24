@@ -90,7 +90,6 @@ case $step in
           esac
     ;;
     script)
-          set -e
           echo  "Script...";
           cd ${APPLICATION};
           if [[ "$APPLICATION" == "documentation" ]]; then
