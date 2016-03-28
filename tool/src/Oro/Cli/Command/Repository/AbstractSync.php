@@ -2,6 +2,9 @@
 
 namespace Oro\Cli\Command\Repository;
 
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Oro\Cli\Command\RootCommand;
@@ -9,95 +12,116 @@ use Oro\Cli\Command\RootCommand;
 abstract class AbstractSync extends RootCommand
 {
     /**
-     * @var array Contains list of remote aliases
-     */
-    protected $remotes;
-
-    /**
      * @var array list of supported upstream repositories mapped to local subtrees
      */
-    protected $repositories = array(
-        'application/platform' => 'git@github.com:laboro/platform-application.git',
-        'application/crm' => 'git@github.com:laboro/crm-application.git',
+    protected $repositories = [
+        'application/platform'       => 'git@github.com:laboro/platform-application.git',
+        'application/crm'            => 'git@github.com:laboro/crm-application.git',
         'application/crm-enterprise' => 'git@github.com:laboro/crm-enterprise-application.git',
-        //        'application/commerce'       => 'git@github.com:laboro/b2b-dev.git',
+        // 'application/commerce'       => 'git@github.com:laboro/commerce-dev.git',
 
-        'package/platform' => 'git@github.com:laboro/platform.git',
-        'package/crm' => 'git@github.com:laboro/crm.git',
-        'package/crm-enterprise' => 'git@github.com:laboro/crm-enterprise.git',
-        'package/commerce' => 'git@github.com:laboro/b2b.git',
-        'package/dotmailer' => 'git@github.com:laboro/OroCRMDotmailerBundle.git',
-        'package/ldap' => 'git@github.com:laboro/OroCRMProLDAPBundle.git',
-        'package/mailchimp' => 'git@github.com:laboro/OroCRMMailChimpBundle.git',
+        'package/platform'               => 'git@github.com:laboro/platform.git',
+        'package/crm'                    => 'git@github.com:laboro/crm.git',
+        'package/crm-enterprise'         => 'git@github.com:laboro/crm-enterprise.git',
+        'package/commerce'               => 'git@github.com:laboro/commerce.git',
+        'package/dotmailer'              => 'git@github.com:laboro/OroCRMDotmailerBundle.git',
+        'package/ldap'                   => 'git@github.com:laboro/OroCRMProLDAPBundle.git',
+        'package/mailchimp'              => 'git@github.com:laboro/OroCRMMailChimpBundle.git',
         'package/magento-abandoned-cart' => 'git@github.com:laboro/OroCRMAbandonedCartBundle.git',
-        'package/google-hangout' => 'git@github.com:laboro/OroCRMHangoutsCallBundle.git',
-        'package/serialized-fields' => 'git@github.com:laboro/OroEntitySerializedFieldsBundle.git',
-        'package/demo-data' => 'git@github.com:laboro/OroCRMProDemoDataBundle.git',
-        'package/zendesk' => 'git@github.com:laboro/OroCRMZendeskBundle.git',
-        'package/magento-contact-us' => 'git@github.com:laboro/OroCRMMagentoContactUsBundle.git',
+        'package/google-hangout'         => 'git@github.com:laboro/OroCRMHangoutsCallBundle.git',
+        'package/serialized-fields'      => 'git@github.com:laboro/OroEntitySerializedFieldsBundle.git',
+        'package/demo-data'              => 'git@github.com:laboro/OroCRMProDemoDataBundle.git',
+        'package/zendesk'                => 'git@github.com:laboro/OroCRMZendeskBundle.git',
+        'package/magento-contact-us'     => 'git@github.com:laboro/OroCRMMagentoContactUsBundle.git',
 
         'documentation' => 'git@github.com:orocrm/documentation.git',
-    );
+    ];
 
-    protected function getAlias($codePath)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
     {
-        return $codePath.'_upstream';
+        $this
+            ->addArgument('path', InputArgument::OPTIONAL, 'Path to subtree folder')
+            ->addOption(
+                'two-way',
+                null,
+                InputOption::VALUE_NONE,
+                'Whether the synchronization of upstream repositories is needed'
+            );
     }
 
     /**
-     * Get list of remote aliases
-     *
-     * @return array
+     * @throws \RuntimeException
      */
-    protected function getRemotes()
+    protected function assertWorkingTreeEmpty()
     {
-        if (is_null($this->remotes)) {
-            $this->remotes = [];
-            $this->execCmd('git remote', true, $this->remotes);
+        $untrackedFiles = [];
+        $this->execCmd('git status --porcelain', true, $untrackedFiles);
+        if (!empty($untrackedFiles)) {
+            throw new \RuntimeException(
+                'There are untracked files in the working tree, to continue please clean the working tree.' . "\n"
+                . 'Use "git status" command to see details.'
+            );
+        }
+    }
+
+    /**
+     * @param InputInterface $input
+     *
+     * @return string[]
+     *
+     * @throws \InvalidArgumentException if invalid path is specified
+     */
+    protected function getRepositories(InputInterface $input)
+    {
+        $path = $input->getArgument('path');
+        if ($path) {
+            if (!isset($this->repositories[$path])) {
+                throw new \InvalidArgumentException(
+                    "There are no repository registered for the \"{$path}\" path."
+                );
+            }
+            $repositories = [$path => $this->repositories[$path]];
+        } else {
+            $repositories = $this->getAllRepositories($input);
         }
 
-        return $this->remotes;
+        return $repositories;
     }
 
     /**
-     * @return array
+     * @param InputInterface $input
+     *
+     * @return string[]
      */
-    protected function getRepositoriesIfPathIsNull()
+    protected function getAllRepositories(InputInterface $input)
     {
         return $this->repositories;
     }
 
     /**
-     * @param string $path
+     * @param string $codePath
      *
-     * @return array
-     * @throws \Exception
+     * @return string
      */
-    protected function getRepositoriesFromThePath($path)
+    protected function getAlias($codePath)
     {
-        if (is_null($path)) {
-            return $this->getRepositoriesIfPathIsNull();
-        }
-
-        if (isset($this->repositories[$path])) {
-            return array(
-                $path => $this->repositories[$path],
-            );
-        }
-
-        throw new \Exception("There are no repository registered for \"{$path}\" path.");
+        return $codePath . '_upstream';
     }
 
     /**
-     * @throws \Exception
+     * Gets aliases of remote repositories
+     *
+     * @return string[]
      */
-    protected function validateWorkingTree()
+    protected function getRemoteAliases()
     {
-        $untrackedFiles = [];
-        $this->execCmd('git status --porcelain', true, $untrackedFiles);
-        if (count($untrackedFiles)) {
-            throw new \Exception('There are untracked files in working tree, to continue please clean the working tree.');
-        }
+        $remotes = [];
+        $this->execCmd('git remote', true, $remotes);
+
+        return $remotes;
     }
 
     /**
@@ -107,7 +131,7 @@ abstract class AbstractSync extends RootCommand
      */
     protected function fetchLatestDataFromRemoteBranch($alias, $repository, $branchName = 'master')
     {
-        $remotes = $this->getRemotes();
+        $remotes = $this->getRemoteAliases();
         if (!in_array($alias, $remotes, true)) {
             /* Add remote repository if it was not added yet */
             $this->execCmd("git remote add -f {$alias} {$repository}");
@@ -135,17 +159,17 @@ abstract class AbstractSync extends RootCommand
     }
 
     /**
+     * @param InputInterface  $input
      * @param OutputInterface $output
      * @param array           $repositories
-     * @param bool            $twoWay
      */
-    public function processSync($output, $repositories, $twoWay)
+    public function processSync(InputInterface $input, OutputInterface $output, $repositories)
     {
         /* Changing directory as subtree commands must be executed from the repository root */
         $currentDir = getcwd();
         chdir($this->getRootDir());
         try {
-            $this->doSync($output, $repositories, $twoWay);
+            $this->doSync($input, $output, $repositories);
         } catch (\Exception $e) {
             $output->writeln($e->getMessage());
         }
@@ -154,12 +178,12 @@ abstract class AbstractSync extends RootCommand
     }
 
     /**
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param array           $repositories
-     * @param bool            $twoWay
+     * @param string[]        $repositories
      *
      */
-    abstract protected function doSync(OutputInterface $output, array $repositories, $twoWay);
+    abstract protected function doSync(InputInterface $input, OutputInterface $output, array $repositories);
 
     /**
      * Executes an external program.
@@ -170,7 +194,7 @@ abstract class AbstractSync extends RootCommand
      *
      * @return bool The execution status. TRUE if no errors; otherwise, FALSE.
      */
-    protected function execCmd($cmd, $throwException = true, array &$output = array())
+    protected function execCmd($cmd, $throwException = true, array &$output = [])
     {
         $returnCode = 0;
 
@@ -179,11 +203,10 @@ abstract class AbstractSync extends RootCommand
         if ($throwException && $returnCode) {
             throw new \RuntimeException(
                 sprintf(
-                    '<error>The "%s" command failed. Return code: %s.</error>'."\n"
-                    .'<error>Please fix the issue and'
-                    .' run the "repository:sync" command again.</error>'."\n"
-                    .'<error>The "git reset --hard origin/master" command can be used'
-                    .' to rollback changes made by "repository:sync" command.</error>',
+                    'The "%s" command failed. Return code: %s.' . "\n"
+                    . 'Please fix the issue and run the "repository:sync" command again.' . "\n"
+                    . 'The "git reset --hard origin/master" command can be used'
+                    . ' to rollback changes made by "repository:sync" command.',
                     $cmd,
                     $returnCode
                 )

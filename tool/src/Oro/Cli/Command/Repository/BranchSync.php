@@ -10,60 +10,24 @@ use Symfony\Component\Console\Input\InputArgument;
 class BranchSync extends AbstractSync
 {
     /**
-     * @var string
-     */
-    protected $branchName;
-
-    /**
-     * @var bool
-     */
-    protected $generateBranchName;
-
-    /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this->setName('repository:branch-sync')
-            ->addArgument('branch-name', InputArgument::REQUIRED, 'Branch name that you want use')
-            ->addArgument('path', InputArgument::OPTIONAL, 'Path to subtree folder')
-            ->addOption(
-                'two-way',
-                null,
-                InputOption::VALUE_NONE,
-                'Whether the synchronization of upstream repositories is needed'
-            )
+            ->addArgument('branch-name', InputArgument::REQUIRED, 'Branch name')
             ->addOption(
                 'generate-branch-name',
                 null,
                 InputOption::VALUE_NONE,
-                'Generate branch name base on next rule \'{codePath}-{branch-name}\''
+                'Generate branch name base on next rule "{codePath}-{branch-name}"'
             )
-            ->setDescription('Synchronize repository subtrees with specific branch in upstream application or package repositories.')
-            ->addUsage('application/crm task/TA-123')
-            ->addUsage('package/platform feature/FA-234');
-    }
-
-    protected function getRepositoriesIfPathIsNull()
-    {
-        $branches = [];
-        $this->execCmd('git branch -a  | grep remotes/', true, $branches);
-        $branches = array_map(function($branchName){
-           return trim($branchName);
-        }, $branches);
-        $filteredRepositories = [];
-        foreach ($this->repositories as $codePath => $origin) {
-            $branchNameWithPath = 'remotes/'.$this->getAlias($codePath).'/'.$this->branchName;
-            if (in_array($branchNameWithPath, $branches)) {
-                $filteredRepositories[$codePath] = $origin;
-            }
-        }
-
-        if (!count($filteredRepositories)) {
-            throw new \Exception("There is no remote repositories that contain branch '{$this->branchName}' !");
-        }
-
-        return $filteredRepositories;
+            ->setDescription(
+                'Synchronize the specific branch of the monolithic repository subtrees with upstream repositories.'
+            )
+            ->addUsage('task/TA-123 application/crm')
+            ->addUsage('feature/FA-234 package/platform');
+        parent::configure();
     }
 
     /**
@@ -71,37 +35,67 @@ class BranchSync extends AbstractSync
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $input->getArgument('path');
-        $twoWay = $input->getOption('two-way');
-        $this->branchName = $input->getArgument('branch-name');
-        $this->generateBranchName = $input->getOption('generate-branch-name');
-
-        try {
-            $this->validateWorkingTree();
-            $repositories = $this->getRepositoriesFromThePath($path);
-        } catch (\Exception $e) {
-            $output->writeln($e->getMessage());
-
-            return;
-        }
-
-        $this->processSync($output, $repositories, $twoWay);
+        $this->assertWorkingTreeEmpty();
+        $this->processSync($input, $output, $this->getRepositories($input));
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doSync(OutputInterface $output, array $repositories, $twoWay)
+    protected function getAllRepositories(InputInterface $input)
     {
-        $previousLocalBranchName = '';
+        $branchName = $input->getArgument('branch-name');
 
+        $branches = $this->getRemoteBranches();
+
+        $filteredRepositories = [];
+        foreach ($this->repositories as $codePath => $origin) {
+            $branchNameWithPath = 'remotes/' . $this->getAlias($codePath) . '/' . $branchName;
+            if (in_array($branchNameWithPath, $branches, true)) {
+                $filteredRepositories[$codePath] = $origin;
+            }
+        }
+
+        if (empty($filteredRepositories)) {
+            throw new \RuntimeException(
+                "There is no remote repositories that contain the \"{$branchName}\" branch."
+            );
+        }
+
+        return $filteredRepositories;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getRemoteBranches()
+    {
+        $branches = [];
+        $this->execCmd('git branch -a | grep remotes/', true, $branches);
+        $branches = array_map('trim', $branches);
+
+        return $branches;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doSync(InputInterface $input, OutputInterface $output, array $repositories)
+    {
+        $twoWay = $input->getOption('two-way');
+        $branchName = $input->getArgument('branch-name');
+        $generateBranchName = $input->getOption('generate-branch-name');
+
+        $previousLocalBranchName = '';
         foreach ($repositories as $codePath => $repository) {
             $alias = $this->getAlias($codePath);
-            $output->writeln("Working on {$codePath} subtree from {$repository} repository.");
-            $this->fetchLatestDataFromRemoteBranch($alias, $repository, $this->branchName);
+            $output->writeln("Working on \"{$codePath}\" subtree from \"{$repository}\" repository.");
+            $this->fetchLatestDataFromRemoteBranch($alias, $repository, $branchName);
 
             $branchInfo = [];
-            $localBranchName = $this->generateBranchName ? $codePath.'-'.$this->branchName : $this->branchName;
+            $localBranchName = $generateBranchName
+                ? $codePath . '-' . $branchName
+                : $branchName;
 
             if ($previousLocalBranchName !== $localBranchName) {
                 $this->execCmd("git branch --list {$localBranchName}", false, $branchInfo);
@@ -115,7 +109,7 @@ class BranchSync extends AbstractSync
                 $previousLocalBranchName = $localBranchName;
             }
 
-            $this->updateSubtree($codePath, $twoWay, $this->branchName);
+            $this->updateSubtree($codePath, $twoWay, $branchName);
         }
     }
 }
