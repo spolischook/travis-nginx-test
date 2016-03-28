@@ -55,6 +55,7 @@ class BranchSync extends AbstractSync
     {
         $branchName = $input->getArgument('branch');
 
+        $this->updateAllRemotes();
         $remoteBranches = $this->getRemoteBranches();
 
         $filteredRepositories = [];
@@ -72,6 +73,17 @@ class BranchSync extends AbstractSync
         }
 
         return $filteredRepositories;
+    }
+
+    /**
+     * Get the latest changes from remotes
+     */
+    protected function updateAllRemotes()
+    {
+        foreach ($this->repositories as $codePath => $repository) {
+            $alias = $this->getAlias($codePath);
+            $this->fetchLatestDataFromRemoteBranch($alias, $repository, false);
+        }
     }
 
     /**
@@ -104,7 +116,6 @@ class BranchSync extends AbstractSync
 
         foreach ($repositories as $codePath => $repository) {
             $output->writeln("Working on \"{$codePath}\" subtree from \"{$repository}\" repository.");
-            $this->fetchLatestDataFromRemoteBranch($this->getAlias($codePath), $repository, $branchName);
             $this->updateSubtree($codePath, $twoWay, $branchName);
         }
     }

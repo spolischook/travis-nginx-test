@@ -127,9 +127,10 @@ abstract class AbstractSync extends RootCommand
     /**
      * @param string $alias
      * @param string $repository
-     * @param string $branchName
+     * @param bool $fetchAllBranches
+     *
      */
-    protected function fetchLatestDataFromRemoteBranch($alias, $repository, $branchName = 'master')
+    protected function fetchLatestDataFromRemoteBranch($alias, $repository, $fetchOnlyMaster = true)
     {
         $remotes = $this->getRemoteAliases();
         if (!in_array($alias, $remotes, true)) {
@@ -137,7 +138,8 @@ abstract class AbstractSync extends RootCommand
             $this->execCmd("git remote add -f {$alias} {$repository}");
         }
 
-        $this->execCmd("git fetch {$alias} {$branchName}");
+        $fetchCommand = $fetchOnlyMaster ? "git fetch {$alias} master" : "git fetch {$alias}";
+        $this->execCmd($fetchCommand);
     }
 
     /**
