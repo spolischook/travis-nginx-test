@@ -53,7 +53,7 @@ class BranchSync extends AbstractSync
      */
     protected function getAllRepositories(InputInterface $input)
     {
-        $branchName = $input->getArgument('branch-name');
+        $branchName = $input->getArgument('branch');
 
         $remoteBranches = $this->getRemoteBranches();
 
@@ -92,7 +92,7 @@ class BranchSync extends AbstractSync
     protected function doSync(InputInterface $input, OutputInterface $output, array $repositories)
     {
         $twoWay = $input->getOption('two-way');
-        $branchName = $input->getArgument('branch-name');
+        $branchName = $input->getArgument('branch');
 
         if ($this->isLocalBranchExist($branchName)) {
             $this->execCmd("git checkout {$branchName}", true);
