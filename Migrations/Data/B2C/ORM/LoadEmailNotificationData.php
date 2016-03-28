@@ -84,11 +84,12 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
     /**
      * Filter and return data relations for Rule
      *
-     * @param Array $data
+     * @param array $data
      * @param       $uid
+     *
      * @return array
      */
-    protected function filterRuleData(Array $data, $uid)
+    protected function filterRuleData(array $data, $uid)
     {
         return array_filter(
             $data,
@@ -102,6 +103,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
      * Get notification event
      *
      * @param $name
+     *
      * @return Event
      * @throws EntityNotFoundException
      */
@@ -115,6 +117,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
         if (!$entity) {
             throw new EntityNotFoundException('Event ' . $name . ' not found.');
         }
+
         return $entity;
     }
 
@@ -122,6 +125,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
      * Get notification email template
      *
      * @param $name
+     *
      * @return EmailTemplate
      * @throws EntityNotFoundException
      */
@@ -133,6 +137,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
         if (!$entity) {
             throw new EntityNotFoundException('EmailTemplate ' . $name . ' not found.');
         }
+
         return $entity;
     }
 
