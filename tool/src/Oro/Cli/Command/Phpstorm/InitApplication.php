@@ -2,11 +2,11 @@
 
 namespace Oro\Cli\Command\Phpstorm;
 
-use Oro\Cli\Command\RootCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+
+use Oro\Cli\Command\RootCommand;
 
 /**
  * Prepares PHPStorm configuration from config folder to root .idea folder so proper application settings
@@ -22,7 +22,7 @@ class InitApplication extends RootCommand
     protected function configure()
     {
         $this->setName('phpstorm:init-application')
-            ->addArgument('application', InputArgument::REQUIRED, 'Application name')
+            ->addArgument('application', InputArgument::OPTIONAL, 'Application name')
             ->setDescription('Switch PHPStorm settings and optimize developer experience for requested application.');
     }
 
@@ -31,20 +31,30 @@ class InitApplication extends RootCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $application  = $input->getArgument('application');
+        $application = $input->getArgument('application');
+        $rootSrcDir = __DIR__ . DIRECTORY_SEPARATOR . "config";
 
-        $srcDir = __DIR__ . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . $application;
+        if ($application) {
+            $srcDir = $rootSrcDir . DIRECTORY_SEPARATOR . $application;
+            if (is_dir($srcDir)) {
+                $this->updateConfigs(
+                    $output,
+                    $srcDir,
+                    $this->getRootDir() . DIRECTORY_SEPARATOR . '.idea'
+                );
 
-        if (is_dir($srcDir)) {
-            $this->updateConfigs(
-                $output,
-                $srcDir,
-                $this->getRootDir() . DIRECTORY_SEPARATOR . '.idea'
-            );
-
-            $output->writeln("Configuration updated. Please restart PHPStorm.");
+                $output->writeln("Configuration updated. Please restart PHPStorm.");
+            } else {
+                $output->writeln("Configuration for application \"{$application}\" doesn't exist");
+            }
         } else {
-            $output->writeln("Configuration for application \"{$application}\" doesn't exist");
+            $output->writeln('Existing applications:');
+            $files = scandir($rootSrcDir);
+            foreach ($files as $name) {
+                if (!in_array($name, array('.', '..'), true) && is_dir($rootSrcDir . DIRECTORY_SEPARATOR . $name)) {
+                    $output->writeln('  ' . $name);
+                }
+            }
         }
     }
 
@@ -98,6 +108,10 @@ class InitApplication extends RootCommand
         }
 
         $srcFile = $srcDir . DIRECTORY_SEPARATOR . $fileName;
+        if (!is_file($srcFile)) {
+            return;
+        }
+
         $destFile = $destDir . DIRECTORY_SEPARATOR . $fileName;
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $output->writeln("Updating {$destFile}");

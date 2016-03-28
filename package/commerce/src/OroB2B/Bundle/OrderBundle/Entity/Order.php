@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Oro\Bundle\CurrencyBundle\Entity\CurrencyAwareInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
@@ -17,8 +18,11 @@ use Oro\Bundle\CurrencyBundle\Entity\Price;
 use OroB2B\Bundle\AccountBundle\Entity\Account;
 use OroB2B\Bundle\AccountBundle\Entity\AccountOwnerAwareInterface;
 use OroB2B\Bundle\AccountBundle\Entity\AccountUser;
-use OroB2B\Bundle\PaymentBundle\Entity\PaymentTerm;
+use OroB2B\Bundle\OrderBundle\Model\DiscountAwareInterface;
+use OroB2B\Bundle\OrderBundle\Model\ShippingAwareInterface;
 use OroB2B\Bundle\OrderBundle\Model\ExtendOrder;
+use OroB2B\Bundle\PaymentBundle\Entity\PaymentTerm;
+use OroB2B\Bundle\PricingBundle\SubtotalProcessor\Model\LineItemsAwareInterface;
 use OroB2B\Bundle\WebsiteBundle\Entity\Website;
 
 /**
@@ -27,6 +31,14 @@ use OroB2B\Bundle\WebsiteBundle\Entity\Website;
  * @Config(
  *      routeName="orob2b_order_index",
  *      routeView="orob2b_order_view",
+ *      routeCreate="orob2b_order_create",
+ *      routeUpdate="orob2b_order_update",
+ *      routeDelete="orob2b_api_delete_order",
+ *      routeCommerceName="orob2b_order_frontend_index",
+ *      routeCommerceView="orob2b_order_frontend_view",
+ *      routeCommerceCreate="orob2b_order_frontend_create",
+ *      routeCommerceUpdate="orob2b_order_frontend_update",
+ *      routeCommerceDelete="orob2b_order_frontend_delete",
  *      defaultValues={
  *          "entity"={
  *              "icon"="icon-briefcase"
@@ -52,10 +64,20 @@ use OroB2B\Bundle\WebsiteBundle\Entity\Website;
  * )
  * @ORM\HasLifecycleCallbacks()
  * @SuppressWarnings(PHPMD.TooManyFields)
+ * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Order extends ExtendOrder implements OrganizationAwareInterface, EmailHolderInterface, AccountOwnerAwareInterface
+class Order extends ExtendOrder implements
+    OrganizationAwareInterface,
+    EmailHolderInterface,
+    AccountOwnerAwareInterface,
+    LineItemsAwareInterface,
+    ShippingAwareInterface,
+    CurrencyAwareInterface,
+    DiscountAwareInterface
 {
     /**
      * @var integer
@@ -167,6 +189,7 @@ class Order extends ExtendOrder implements OrganizationAwareInterface, EmailHold
      * )
      */
     protected $shippingAddress;
+
     /**
      * @var string
      *
@@ -340,6 +363,55 @@ class Order extends ExtendOrder implements OrganizationAwareInterface, EmailHold
     protected $shippingCost;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="source_entity_class", type="string", length=255, nullable=true)
+     */
+    protected $sourceEntityClass;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="source_entity_id", type="integer", nullable=true )
+     */
+    protected $sourceEntityId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="source_entity_identifier", type="string", length=255, nullable=true)
+     */
+    protected $sourceEntityIdentifier;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="total_discounts_amount", type="money", nullable=true)
+     */
+    protected $totalDiscountsAmount;
+
+    /**
+     * @var Price
+     */
+    protected $totalDiscounts;
+
+    /**
+     * @var Collection|OrderDiscount[]
+     *
+     * @ORM\OneToMany(targetEntity="OroB2B\Bundle\OrderBundle\Entity\OrderDiscount",
+     *      mappedBy="order", cascade={"ALL"}, orphanRemoval=true
+     * )
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $discounts;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -347,6 +419,7 @@ class Order extends ExtendOrder implements OrganizationAwareInterface, EmailHold
         parent::__construct();
 
         $this->lineItems = new ArrayCollection();
+        $this->discounts = new ArrayCollection();
     }
 
     /**
@@ -776,6 +849,21 @@ class Order extends ExtendOrder implements OrganizationAwareInterface, EmailHold
     }
 
     /**
+     * @param Collection|OrderLineItem[] $lineItems
+     * @return $this
+     */
+    public function setLineItems(Collection $lineItems)
+    {
+        foreach ($lineItems as $lineItem) {
+            $lineItem->setOrder($this);
+        }
+
+        $this->lineItems = $lineItems;
+
+        return $this;
+    }
+
+    /**
      * Get orderProducts
      *
      * @return Collection|OrderLineItem[]
@@ -849,6 +937,10 @@ class Order extends ExtendOrder implements OrganizationAwareInterface, EmailHold
         if (null !== $this->shippingCostAmount && null !== $this->currency) {
             $this->shippingCost = Price::create($this->shippingCostAmount, $this->currency);
         }
+
+        if (null !== $this->totalDiscountsAmount && null !== $this->currency) {
+            $this->totalDiscounts = Price::create($this->totalDiscountsAmount, $this->currency);
+        }
     }
 
     /**
@@ -858,5 +950,184 @@ class Order extends ExtendOrder implements OrganizationAwareInterface, EmailHold
     public function updateShippingCost()
     {
         $this->shippingCostAmount = $this->shippingCost ? $this->shippingCost->getValue() : null;
+    }
+
+    /**
+     * Get Source Entity Class
+     *
+     * @return string
+     */
+    public function getSourceEntityClass()
+    {
+        return $this->sourceEntityClass;
+    }
+
+    /**
+     * Set Source Entity Class
+     *
+     * @param string $sourceEntityClass
+     *
+     * @return $this
+     */
+    public function setSourceEntityClass($sourceEntityClass)
+    {
+        $this->sourceEntityClass = $sourceEntityClass;
+
+        return $this;
+    }
+
+    /**
+     * Get Source Entity Id
+     *
+     * @return string
+     */
+    public function getSourceEntityId()
+    {
+        return $this->sourceEntityId;
+    }
+
+    /**
+     * Set Source Entity Id
+     *
+     * @param integer $sourceEntityId
+     *
+     * @return $this
+     */
+    public function setSourceEntityId($sourceEntityId)
+    {
+        $this->sourceEntityId = (int)$sourceEntityId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSourceEntityIdentifier()
+    {
+        return $this->sourceEntityIdentifier;
+    }
+
+    /**
+     * @param string|null $sourceEntityIdentifier
+     *
+     * @return $this
+     */
+    public function setSourceEntityIdentifier($sourceEntityIdentifier = null)
+    {
+        $this->sourceEntityIdentifier = $sourceEntityIdentifier;
+
+        return $this;
+    }
+
+    /**
+     * Get total discounts
+     *
+     * @return Price|null
+     */
+    public function getTotalDiscounts()
+    {
+        return $this->totalDiscounts;
+    }
+
+    /**
+     * Set total discounts
+     *
+     * @param Price $totalDiscounts
+     * @return $this
+     */
+    public function setTotalDiscounts(Price $totalDiscounts = null)
+    {
+        $this->totalDiscounts = $totalDiscounts;
+
+        $this->updateTotalDiscounts();
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updateTotalDiscounts()
+    {
+        $this->totalDiscountsAmount = $this->totalDiscounts ? $this->totalDiscounts->getValue() : null;
+    }
+
+    /**
+     * @param OrderDiscount $discount
+     *
+     * @return bool
+     */
+    public function hasDiscount(OrderDiscount $discount)
+    {
+        return $this->discounts->contains($discount);
+    }
+
+    /**
+     * Add discount
+     *
+     * @param OrderDiscount $discount
+     *
+     * @return Order
+     */
+    public function addDiscount(OrderDiscount $discount)
+    {
+        if (!$this->hasDiscount($discount)) {
+            $this->discounts[] = $discount;
+            $discount->setOrder($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove discount
+     *
+     * @param OrderDiscount $discount
+     *
+     * @return Order
+     */
+    public function removeDiscount(OrderDiscount $discount)
+    {
+        if ($this->hasDiscount($discount)) {
+            $this->discounts->removeElement($discount);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get order discounts
+     *
+     * @return Collection|OrderDiscount[]
+     */
+    public function getDiscounts()
+    {
+        return $this->discounts;
+    }
+
+    /**
+     * Reset order discounts
+     *
+     * @return Order
+     */
+    public function resetDiscounts()
+    {
+        $this->discounts = new ArrayCollection();
+
+        return $this;
+    }
+
+    /**
+     * Reset order line items
+     *
+     * @return Order
+     */
+    public function resetLineItems()
+    {
+        $this->lineItems = new ArrayCollection();
+
+        return $this;
     }
 }

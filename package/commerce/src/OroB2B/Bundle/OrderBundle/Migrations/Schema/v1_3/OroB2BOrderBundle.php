@@ -14,11 +14,17 @@ class OroB2BOrderBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $table = $schema->getTable('orob2b_order');
-        $table->addColumn(
-            'total',
-            'money',
-            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
-        );
+        $this->alterAddressTable($schema);
+    }
+
+    /**
+     * @param Schema $schema
+     *
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     */
+    protected function alterAddressTable(Schema $schema)
+    {
+        $table = $schema->getTable('orob2b_order_address');
+        $table->addColumn('phone', 'string', ['notnull' => false, 'length' => 255]);
     }
 }

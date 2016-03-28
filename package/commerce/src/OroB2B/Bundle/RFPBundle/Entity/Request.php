@@ -51,7 +51,9 @@ use OroB2B\Bundle\RFPBundle\Model\ExtendRequest;
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class Request extends ExtendRequest implements AccountOwnerAwareInterface, SoftDeleteableInterface
+class Request extends ExtendRequest implements
+    AccountOwnerAwareInterface,
+    SoftDeleteableInterface
 {
     use SoftDeleteableTrait;
 
@@ -839,5 +841,13 @@ class Request extends ExtendRequest implements AccountOwnerAwareInterface, SoftD
         $this->cancellationReason = $cancellationReason;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->getPoNumber();
     }
 }

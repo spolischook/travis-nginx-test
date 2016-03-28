@@ -15,7 +15,10 @@ orob2b:
         current.label: Current
         default.label: Default
         items.label: 'Item|Items'
-
+        subtotal.label: Subtotal
+        total.label: Grand Total
+        currency.label: Currency
+        website.label: Website
         btn:
             create_order: 'Create Order'
 
@@ -53,6 +56,7 @@ orob2b:
         sections:
             general: General
             additional: Additional
+            subtotals: Totals
 
         controller:
             shopping_list.saved.message: Shopping List has been saved
@@ -62,7 +66,8 @@ orob2b:
             entity_plural_label: Shopping List Line Items
             id.label: ID
             notes.label: Notes
-            product_sku.label: Product SKU
+            product_sku.label: SKU
+            product_name.label: Product
             quantity:
                 label: Quantity
                 enter: Enter a QTY
@@ -130,3 +135,5 @@ orob2b:
                 request_quote_create_rfp: 'Request a Quote'
                 create_order: 'Create Order'
                 delete: 'Delete Shooping List'
+            workflow:
+                remove_source.label: Clear the shopping list

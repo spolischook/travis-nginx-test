@@ -14,8 +14,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\AddressBundle\Entity\AddressType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\LayoutBundle\Annotation\Layout;
 
 use OroB2B\Bundle\AccountBundle\Entity\AccountUser;
+use OroB2B\Bundle\PricingBundle\SubtotalProcessor\TotalProcessorProvider;
 use OroB2B\Bundle\OrderBundle\Controller\AbstractOrderController;
 use OroB2B\Bundle\OrderBundle\Entity\Order;
 use OroB2B\Bundle\OrderBundle\Form\Type\FrontendOrderType;
@@ -25,7 +27,7 @@ class OrderController extends AbstractOrderController
 {
     /**
      * @Route("/", name="orob2b_order_frontend_index")
-     * @Template("OroB2BOrderBundle:Order/Frontend:index.html.twig")
+     * @Layout(vars={"entity_class"})
      * @Acl(
      *      id="orob2b_order_frontend_view",
      *      type="entity",
@@ -53,15 +55,9 @@ class OrderController extends AbstractOrderController
      */
     public function viewAction(Order $order)
     {
-        $subtotals = $this->get('orob2b_order.provider.total')->getSubtotals($order);
-        $total = $this->get('orob2b_order.provider.total')->getTotal($order);
-
         return [
             'entity' => $order,
-            'totals' => [
-                'total' => $total,
-                'subtotals' => $subtotals
-            ]
+            'totals' => $this->getTotalProcessor()->getTotalWithSubtotalsAsArray($order)
         ];
     }
 
@@ -127,6 +123,31 @@ class OrderController extends AbstractOrderController
     }
 
     /**
+     * Success order
+     *
+     * @Route("/success/{id}", name="orob2b_order_frontend_success", requirements={"id"="\d+"})
+     * @Layout()
+     * @Acl(
+     *      id="orob2b_order_view",
+     *      type="entity",
+     *      class="OroB2BOrderBundle:Order",
+     *      permission="EDIT"
+     * )
+     *
+     * @param Order $order
+     *
+     * @return array
+     */
+    public function successAction(Order $order)
+    {
+        return [
+            'data' => [
+                'order' => $order,
+            ],
+        ];
+    }
+
+    /**
      * @param Order $order
      * @param Request $request
      *
@@ -164,9 +185,7 @@ class OrderController extends AbstractOrderController
         $handler = new OrderHandler(
             $form,
             $request,
-            $this->getDoctrine()->getManagerForClass(ClassUtils::getClass($order)),
-            $this->get('orob2b_order.provider.total'),
-            $this->get('orob2b_order.provider.subtotal_line_item')
+            $this->getDoctrine()->getManagerForClass(ClassUtils::getClass($order))
         );
 
         return $this->get('oro_form.model.update_handler')->handleUpdate(
@@ -190,10 +209,7 @@ class OrderController extends AbstractOrderController
                 return [
                     'form' => $form->createView(),
                     'entity' => $order,
-                    'totals' => [
-                        'total' =>  $this->get('orob2b_order.provider.total')->getTotal($order),
-                        'subtotals' => $this->get('orob2b_order.provider.total')->getSubtotals($order)
-                    ],
+                    'totals' => $this->getTotalProcessor()->getTotalWithSubtotalsAsArray($order),
                     'isWidgetContext' => (bool)$request->get('_wid', false),
                     'isShippingAddressGranted' => $this->getOrderAddressSecurityProvider()
                         ->isAddressGranted($order, AddressType::TYPE_SHIPPING),
@@ -204,5 +220,13 @@ class OrderController extends AbstractOrderController
                 ];
             }
         );
+    }
+
+    /**
+     * @return TotalProcessorProvider
+     */
+    protected function getTotalProcessor()
+    {
+        return $this->get('orob2b_pricing.subtotal_processor.total_processor_provider');
     }
 }
