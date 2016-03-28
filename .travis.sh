@@ -5,50 +5,33 @@ case $step in
      before_install)
            set +e; 
            echo "Before installing...";
+           PR=$(https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST);
+           export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo `curl -s $PR | jq -r .head.ref`; fi);
            diff=$(git diff --name-only $TRAVIS_COMMIT_RANGE);
            filteredDiff=$(git diff --name-only --diff-filter=ACMR $TRAVIS_COMMIT_RANGE);
            case $APPLICATION in
                 documentation)
                        echo "Defining strategy for Documentation Tests...";
                        files=$(echo -e "$diff" | grep -e "^documentation/");
-                       if [[ $files ]]; then
+                       if [[ $files ]] && [[ $BRANCH != "master" ]]; then
                           echo -e "Documentation changes were detected:\n$files";
+                       elif [[ $BRANCH == "master" ]]; then
+                          echo -e "Make documentation build.";
                        else
                           echo -e "Documentation build not required!";
                           export TRAVIS_SKIP="true";
                        fi;;
-                 application/*)
-                        echo "Defining strategy for Tests...";
-                        files=$(echo -e "$diff" | grep -e "^application/" -e "^package/" | awk -F"/" '{print $2}');
-                        if [ ! -e "$TESTSUITE" ] && [[ $files ]]; then
-                           echo -e "Source code changes were detected:\n$files";
-                           echo -e "Building rules...";
-                           echo -e "Detecting scope changes"
-                           platform=$(echo -e "$files" | grep -e "^platform$");
-                           crm=$(echo -e "$files" | grep -e "^crm$");
-                           crm_enterprise=$(echo -e "$files" | grep -e "^crm-enterprise$");
-                           commerce=$(echo -e "$files" | grep -e "^commerce$");
-                           if [[ $platform ]]; then echo "Platform is detected. Run all";
-                           elif [[ $crm ]] && [[ $APPLICATION == */crm* ]]; then echo "CRM is detected. Run CRM and Enterprise";
-                           elif [[ crm_enterprise ]] && [[ $APPLICATION == */crm-enterprise ]]; then echo "Enterprise is detected. Run Enterprise";
-                           elif [[ commerce ]] && [[ $APPLICATION == */commerce ]]; then echo "Commerce is detected. Run Commerce";
-                           # TODO: add other cases for example Extensions tests 
-                           else
-                               echo "Tests build not required!";
-                               export TRAVIS_SKIP="true";
-                           fi
-                        else
-                           echo "Source code changes were not detected";
-                           echo "Tests build not required!";
-                           export TRAVIS_SKIP="true";
-                        fi;;
-                  package/* | package)
+                application/*)
+                        ;;
+                package/* | package)
                         echo "Defining strategy for CodeStyle...";
                         files=$(echo -e "$filteredDiff" | grep -e "^package/.*\.php$");
-                        if [ ! -e "$CS" ] && [[ $files ]]; then
+                        if [ ! -e "$CS" ] && [[ $files ]] && [[ $BRANCH != "master" ]]; then
                            echo -e "Source code changes were detected:\n$files";
                            echo -e "Pass files to PHPCS";
                            export TRAVIS_CS_FILES=$files;
+                        elif [[ $BRANCH == "master" ]]; then
+                           echo -e "Check all php files in PHPCS."
                         else
                            echo "Code Style build not required!";
                            export TRAVIS_SKIP="true";
@@ -102,11 +85,12 @@ case $step in
                 php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures; 
              fi;
              phpunit --stderr --testsuite ${TESTSUITE};
-           fi
-           if [ ! -z "$CS" ]; then
-              cd ..; 
-              TEST_FILES=${TRAVIS_CS_FILES-.};
-              $HOME/.composer/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
-           fi
+          fi
+          if [ ! -z "$CS" ]; then
+             APPLICATION_PWD=$PWD
+             cd ..;
+             TEST_FILES=$(if [ ! -z "$TRAVIS_CS_FILES" ]; then echo $TRAVIS_CS_FILES; else echo "$APPLICATION_PWD/."; fi);
+             $HOME/.composer/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
+          fi
     ;;
 esac
