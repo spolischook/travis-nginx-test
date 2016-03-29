@@ -11,10 +11,10 @@ Uid,User uid,FirstName,Lastname,Email,PhoneNumber,CompanyName,Status Name,Lead S
 10,25,Judy,Harris,JudyHarris@t.co,608-743-3485,Demimbu,qualified,4,1,B2B:10,14,1
 11,30,Lillian,Oliver,LillianOliver@time.com,979-234-6303,Livetube,qualified,5,1,B2B:11,16,3
 12,35,Arthur,Fisher,ArthurFisher@lulu.com,845-508-9364,Livetube,qualified,6,1,B2B:12,17,4
-13,40,Donald,Ramos,DonaldRamos@gmail.com,330-668-8830,Realcube,qualified,1,1,B2B:13,18,1
+13,40,Donald,Ramos,DonaldRamos@gmail.com,330-668-8830,Livetube,qualified,1,1,B2B:13,18,1
 14,40,Patricia,Oliver,PatriciaOliver@lulu.com,308-366-0524,Realcube,qualified,2,1,B2B:14,19,4
 15,45,Rachel,Lane,RachelLane@gmail.com,410-313-0414,Realcube,qualified,3,1,B2B:15,20,4
-16,50,Lillian,Oliver,LillianOliver@lulu.com,610-826-6577,Livetube,qualified,4,1,B2B:16,22,3
+16,50,Lillian,Oliver,LillianOliver@lulu.com,610-826-6577,Wordware,qualified,4,1,B2B:16,22,3
 17,1,Shirley,Graham,ShirleyGraham@gmail.com,860-677-3172,Wordware,qualified,5,1,B2B:17,23,3
 18,2,Carolyn,Perkins,CarolynPerkins@gmail.com,740-597-5172,Wordpedia,qualified,6,1,B2B:18,25,2
 19,3,Helen,Peters,HelenPeters@intel.com,650-733-4527,Wordpedia,qualified,1,1,B2B:19,26,4
