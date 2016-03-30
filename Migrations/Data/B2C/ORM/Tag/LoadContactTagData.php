@@ -43,7 +43,7 @@ class LoadContactTagData extends AbstractFixture implements OrderedFixtureInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -82,7 +82,7 @@ class LoadContactTagData extends AbstractFixture implements OrderedFixtureInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

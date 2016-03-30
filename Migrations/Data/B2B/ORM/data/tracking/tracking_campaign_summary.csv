@@ -1,0 +1,24 @@
+Uid,Website uid,Campaign uid,Coefficient,Name
+1,1,1,1000,visit
+2,1,1,300,home
+3,1,1,100,registration
+4,1,1,100,opens
+5,1,1,100,login
+6,1,1,300,clicks
+7,1,2,1000,visit
+8,1,2,300,home
+9,1,2,100,registration
+10,1,2,100,opens
+11,1,2,100,login
+12,1,2,300,clicks
+13,1,3,1000,visit
+14,1,3,300,home
+15,1,3,100,registration
+16,1,3,100,opens
+17,1,3,100,login
+18,1,3,300,clicks
+19,1,4,100,home
+20,1,4,50,registration
+21,1,4,50,login
+22,1,4,150,visit
+23,1,4,100,clicks
