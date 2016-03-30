@@ -34,7 +34,7 @@ class LoadTagData extends AbstractFixture implements OrderedFixtureInterface
 
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -54,7 +54,7 @@ class LoadTagData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

@@ -48,7 +48,7 @@ class LoadMailChimpStaticSegmentData extends AbstractFixture implements OrderedF
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -70,7 +70,7 @@ class LoadMailChimpStaticSegmentData extends AbstractFixture implements OrderedF
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

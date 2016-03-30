@@ -17,7 +17,7 @@ use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 class LoadNoteActivityData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -62,7 +62,7 @@ class LoadNoteActivityData extends AbstractFixture implements OrderedFixtureInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -102,7 +102,7 @@ class LoadNoteActivityData extends AbstractFixture implements OrderedFixtureInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

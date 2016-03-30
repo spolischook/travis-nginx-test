@@ -56,7 +56,7 @@ class LoadCallActivityData extends AbstractFixture implements OrderedFixtureInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -123,7 +123,7 @@ class LoadCallActivityData extends AbstractFixture implements OrderedFixtureInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

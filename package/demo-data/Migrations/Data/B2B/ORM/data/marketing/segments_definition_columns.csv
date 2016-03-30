@@ -1,0 +1,9 @@
+Uid,Segment uid,Name,Label
+1,1,name,Name
+2,2,firstName,First name
+3,2,lastName,Last name
+4,2,primaryEmail,Primary Email
+5,2,primaryPhone,Primary Phone
+
+
+

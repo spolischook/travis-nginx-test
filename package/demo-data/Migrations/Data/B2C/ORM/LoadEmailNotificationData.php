@@ -27,7 +27,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -85,7 +85,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
      * Filter and return data relations for Rule
      *
      * @param array $data
-     * @param       $uid
+     * @param int   $uid
      *
      * @return array
      */
@@ -142,7 +142,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDependencies()
     {

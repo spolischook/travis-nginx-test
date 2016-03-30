@@ -76,10 +76,16 @@ class LoadDataFixturesCommand extends BaseDataFixturesCommand
         if ($force) {
             $parentReturnCode = parent::execute($input, $output);
             if ($parentReturnCode === 0) {
-                $commandName = CalculateAnalyticsCommand::COMMAND_NAME;
-                $command     = $this->getApplication()->find($commandName);
-                $input       = new ArrayInput(['command' => $commandName]);
-                $command->run($input, $output);
+                $commands = [
+                    CalculateAnalyticsCommand::COMMAND_NAME => [],
+                    'oro:b2b:lifetime:recalculate'          => ['--force' => true]
+                ];
+
+                foreach ($commands as $commandName => $options) {
+                    $command = $this->getApplication()->find($commandName);
+                    $input   = new ArrayInput(array_merge(['command' => $commandName], $options));
+                    $command->run($input, $output);
+                }
             }
 
             return $parentReturnCode;

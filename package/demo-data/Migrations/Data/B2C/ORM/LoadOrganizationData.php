@@ -19,7 +19,7 @@ class LoadOrganizationData extends AbstractFixture implements OrderedFixtureInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -43,7 +43,7 @@ class LoadOrganizationData extends AbstractFixture implements OrderedFixtureInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

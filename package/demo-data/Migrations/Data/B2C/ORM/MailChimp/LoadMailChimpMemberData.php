@@ -36,7 +36,7 @@ class LoadMailChimpMemberData extends AbstractFixture implements OrderedFixtureI
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -55,7 +55,7 @@ class LoadMailChimpMemberData extends AbstractFixture implements OrderedFixtureI
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {
