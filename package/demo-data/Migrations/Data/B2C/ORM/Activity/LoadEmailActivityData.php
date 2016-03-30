@@ -70,7 +70,6 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
         return [
             'contact_emails'  => $this->loadData('activities/contact/emails.csv'),
             'incoming_emails' => $this->loadData('activities/contact/incoming_emails.csv'),
-            'account_emails'  => $this->loadData('activities/account/emails.csv'),
         ];
     }
 
@@ -80,11 +79,6 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
     public function load(ObjectManager $manager)
     {
         $data = $this->getData();
-
-        foreach ($data['account_emails'] as $emailData) {
-            $account = $this->getAccountReference($emailData['account uid']);
-            $this->addEmailUser($account, $emailData);
-        }
 
         foreach ($data['contact_emails'] as $emailData) {
             $contact = $this->getContactReference($emailData['contact uid']);
@@ -112,6 +106,7 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
             $origin = $this->mailerProcessor->getEmailOrigin($user->getEmail());
 
             $emailUser = $this->createEmailUser($entity, $data['subject'], $type);
+            $emailUser->setOrganization($entity->getOrganization());
             $emailUser->getEmail()->setEmailBody($this->createEmailBody($data['body']));
             $emailUser->addFolder($this->getFolder($origin, $type));
             $emailUser->getEmail()->addActivityTarget($user);
