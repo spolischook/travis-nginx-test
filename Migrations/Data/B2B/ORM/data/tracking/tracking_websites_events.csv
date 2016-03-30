@@ -15,18 +15,18 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 14,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/registration,Registration,abc
 15,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/registration,Registration,abc
 16,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
-17,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/registration,Registration,abc
+17,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/registration,Registration,bestsellers
 18,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/registration,Registration,abc
 19,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/,Home,google
-20,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/registration,Registration,abc
+20,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/registration,Registration,bestsellers
 21,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/banner/,Banner Click,google
 22,1,banner click,1, id=guest; visitor-id=88,http://b2b-oro.com/banner/,Banner Click,google
-23,1,login,1, id=guest; visitor-id=88,http://b2b-oro.com/login,Login,email
+23,1,login,1, id=guest; visitor-id=88,http://b2b-oro.com/login,Login,bestsellers
 24,1,visit,1, id=guest; visitor-id=90,http://b2b-oro.com/registration,Registration,abc
 25,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/commerce/,B2B Commerce,abc
 26,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/,Home page,google
 27,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
-28,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
+28,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,bestsellers
 29,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
 30,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
 31,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
@@ -41,14 +41,14 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 40,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home page,google
 41,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
 42,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
-43,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
+43,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,bestsellers
 44,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
-45,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
+45,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,bestsellers
 46,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/registration,Registration,google
 47,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
 48,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/registration,Registration,email
 49,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home page,google
-50,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/registration,Registration,email
+50,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/registration,Registration,bestsellers
 51,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 52,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/,Home,google
 53,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,email
@@ -61,7 +61,7 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 60,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,google
 61,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,email
 62,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/login,Login,google
-63,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/login,Login,google
+63,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/login,Login,bestsellers
 64,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
 65,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,google
 66,1,banner click,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,google
@@ -95,18 +95,18 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 94,1,logout,1, id=guest; visitor-id=86,http://b2b-oro.com/commerce/,B2B Commerce,abc
 95,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,google
 96,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/,Home,google
-97,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,google
+97,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,bestsellers
 98,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/,Home,google
-99,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,google
+99,1,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,bestsellers
 100,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/,Home page,google
 101,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home page,google
 102,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
 103,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/,Home,google
 104,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
 105,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/login,Login,abc
-106,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,google
+106,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,bestsellers
 107,1,banner click,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,google
-108,1,banner click,1, id=guest; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
+108,1,banner click,1, id=guest; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,bestsellers
 109,1,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
 110,1,logout,1, id=guest; visitor-id=87,http://b2b-oro.com/logout,Logout,google
 111,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/logout,Logout,google
@@ -126,7 +126,7 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 125,1,logout,1, id=guest; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
 126,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
 127,1,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/logout,Logout,google
-128,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,google
+128,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,bestsellers
 129,1,banner click,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,google
 130,1,logout,1, id=guest; visitor-id=87,http://b2b-oro.com/logout,Logout,google
 131,1,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/logout,Logout,google
@@ -152,36 +152,36 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 151,1,banner click,1, id=guest; visitor-id=90,http://b2b-oro.com/banner/,Banner Click,google
 152,1,commerce,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/commerce/,B2B Commerce,abc
 153,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,google
-154,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,google
+154,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,bestsellers
 155,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,google
 156,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
-157,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+157,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,bestsellers
 158,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 159,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 160,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
-161,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+161,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,bestsellers
 162,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 163,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 164,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 165,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
-166,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+166,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,bestsellers
 167,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
-168,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+168,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,bestsellers
 169,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 170,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 171,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 172,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
-173,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+173,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,bestsellers
 174,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
-175,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+175,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,bestsellers
 176,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
 177,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
 178,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
-179,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
+179,1,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,bestsellers
 180,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 181,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,google
 182,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,google
-183,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,google
+183,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,bestsellers
 184,1,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,google
 185,1,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,google
 186,1,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,google
@@ -198,7 +198,7 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 197,1,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,email
 198,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
 199,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
-200,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
+200,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,bestsellers
 201,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
 202,1,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
 203,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,email
@@ -206,11 +206,11 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 205,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,email
 206,1,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,email
 207,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
-208,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+208,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,bestsellers
 209,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 210,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 211,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
-212,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+212,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,bestsellers
 213,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 214,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 215,1,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email

@@ -1,22 +1,22 @@
 Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 1,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/index.php?pk_campaign=second, Home page,sports
-2,1,cart item added,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
+2,1,cart item added,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/cart/, Shopping Cart,bestsellers
 3,1,user entered checkout,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
-4,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",mtv
-5,1,user entered checkout,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/onepage/, Checkout,sports
+4,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html,Sony VAIO VGN-TXN27N/B 11.1" Notebook PC,mtv
+5,1,user entered checkout,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/onepage/, Checkout,bestsellers
 6,1,user entered checkout,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
 7,1, visit,1, id=guest; visitor-id=90, http://magento-oro.com/electronics/cell-phones.html, Cell Phones - Electronics,mtv
 8,1,user entered checkout,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/onepage/, Checkout,sports
-9,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,sports
+9,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,bestsellers
 10,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,sports
 11,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/, Home page,sports
 12,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/, Home page,rone
-13,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1""",mtv
+13,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html,Sony VAIO VGN-TXN27N/B 11.1",mtv
 14,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/electronics.html, Electronics,mtv
 15,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/apparel.html, Apparel,mtv
-16,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html," Sony VAIO VGN-TXN27N/B 11.1"" Notebook PC",mtv
+16,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/sony-vaio-vgn-txn27n-b-11-1-notebook-pc.html,Sony VAIO VGN-TXN27N/B 11.1" Notebook PC,bestsellers
 17,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/apparel.html?cat=5, Apparel,mtv
-18,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/electronics.html, Electronics,mtv
+18,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/electronics.html, Electronics,bestsellers
 19,1, visit,1, id=guest; visitor-id=88, http://magento-oro.com/cn-clogs-beach-garden-clog.html, CN Clogs Beach/Garden Clog,mtv
 20,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,mtv
 21,1,cart item added,1, id=guest; visitor-id=88, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
@@ -28,10 +28,10 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 27,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,mtv
 28,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,mtv
 29,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html?price=2000-, Furniture,sports
-30,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/barcelona-bamboo-platform-bed.html, Barcelona Bamboo Platform Bed,sports
+30,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/barcelona-bamboo-platform-bed.html, Barcelona Bamboo Platform Bed,bestsellers
 31,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,sports
 32,1,cart item added,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
-33,1,cart item added,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
+33,1,cart item added,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,bestsellers
 34,1,user entered checkout,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,rone
 35,1,user entered checkout,1, id=guest; visitor-id=85, http://magento-oro.com/checkout/onepage/, Checkout,rone
 36,1,user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
@@ -40,10 +40,10 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 39,1,user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
 40,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/, Home page,rone
 41,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,sports
-42,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html?manufacturer=2, Cell Phones - Electronics,sports
+42,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html?manufacturer=2, Cell Phones - Electronics,bestsellers
 43,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/furniture.html, Furniture,sports
 44,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apparel.html, Apparel,sports
-45,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,rone
+45,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,bestsellers
 46,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/electronics.html, Electronics,rone
 47,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones.html?manufacturer=2, Cell Phones - Electronics,rone
 48,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,rone
@@ -51,14 +51,14 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 50,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html?color=26, Shirts - Apparel,rone
 51,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/olympus-stylus-750-7-1mp-digital-camera.html, Olympus Stylus 750 7.1MP Digital Camera with Digital Image Stabilized 5x Optical Zoom and CCD Shift Stabilization (Silver),sports
 52,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts/zolof-the-rock-and-roll-destroyer-lol-cat-t-shirt.html, Zolof The Rock And Roll Destroyer: LOL Cat T-shirt,sports
-53,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,rone
+53,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics.html, Electronics,bestsellers
 54,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,rone
 55,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/apparel/shirts.html?color=60, Shirts - Apparel,mtv
 56,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,sports
 57,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/the-only-children-paisley-t-shirt.html, The Only Children: Paisley T-Shirt,sports
 58,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/electronics.html, Electronics,mtv
 59,1,cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
-60,1,cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,mtv
+60,1,cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,bestsellers
 61,1, visit,1, id=guest; visitor-id=86, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,mtv
 62,1, visit,1, id=guest; visitor-id=87, http://magento-oro.com/apparel/shirts.html, Shirts - Apparel,mtv
 63,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,mtv
@@ -67,7 +67,7 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 66,1,cart item added,1, id=guest; visitor-id=86, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
 67,1,cart item added,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
 68,1,cart item added,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
-69,1,cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
+69,1,cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,bestsellers
 70,1,cart item added,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/cart/, Shopping Cart,sports
 71,1,user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,rone
 72,1,user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,rone
@@ -83,10 +83,10 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 82,1,user entered checkout,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
 83,1, user logged out,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,mtv
 84,1, user logged out,1, id=guest; visitor-id=85, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,mtv
-85,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,rone
+85,1, visit,1, id=guest; visitor-id=85, http://magento-oro.com/, Home page,bestsellers
 86,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,mtv
 87,1, user logged out,1, id=guest; visitor-id=87, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,mtv
-88,1,user entered checkout,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+88,1,user entered checkout,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,bestsellers
 89,1,user entered checkout,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
 90,1,user entered checkout,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
 91,1,user entered checkout,1, id=114; email=erg@fwffwe.com; visitor-id=86, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
@@ -116,7 +116,7 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 115,1,user entered checkout,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
 116,1,user entered checkout,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
 117,1,user entered checkout,1, id=115; email=ertetr@ewfq.com; visitor-id=87, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
-118,1,user entered checkout,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
+118,1,user entered checkout,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,bestsellers
 119,1,user entered checkout,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
 120,1,user entered checkout,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
 121,1,user entered checkout,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,rone
@@ -132,7 +132,7 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 131,1,user entered checkout,1, id=guest; visitor-id=87, http://magento-oro.com/checkout/onepage/, Checkout,mtv
 132,1,user entered checkout,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
 133,1,user entered checkout,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
-134,1,user entered checkout,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
+134,1,user entered checkout,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,bestsellers
 135,1,user entered checkout,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
 136,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/?pk_campaign=test_campaign, Home page,mtv
 137,1, visit,1, id=guest; visitor-id=89, http://magento-oro.com/index.php?pk_campaign=test_campaign, Home page,mtv
@@ -147,7 +147,7 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 146,1,user entered checkout,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,mtv
 147,1,user entered checkout,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
 148,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/furniture/living-room.html, Living Room - Furniture,sports
-149,1, user logged out,1, id=guest; visitor-id=89, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,sports
+149,1, user logged out,1, id=guest; visitor-id=89, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,bestsellers
 150,1, user logged out,1, id=guest; visitor-id=89, http://magento-oro.com/customer/account/logoutSuccess/, Magento Commerce,sports
 151,1,cart item added,1, id=guest; visitor-id=90, http://magento-oro.com/checkout/cart/, Shopping Cart,rone
 152,1,user entered checkout,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/checkout/onepage/success/, Magento Commerce,sports
@@ -155,7 +155,7 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 154,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,rone
 155,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES1,mtv
 156,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,mtv
-157,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5322,mtv
+157,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5322,bestsellers
 158,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,mtv
 159,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 3,mtv
 160,1, visit,1, id=112; email=qasd@local.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,mtv
@@ -242,14 +242,14 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 241,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5334,rone
 242,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,rone
 243,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 15,mtv
-244,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,mtv
+244,1, visit,1, id=116; email=gerg@rge.com; visitor-id=85, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,bestsellers
 245,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,mtv
-246,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES14,mtv
+246,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES14,bestsellers
 247,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,mtv
 248,1, visit,1, id=117; email=45y@erg.com; visitor-id=88, http://magento-oro.com/sony_xperia_t2_ultra_dual_purple.html,Sony Xperia T2 Ultra Dual D5335,mtv
 249,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/microsoft_lumia_640xl.html,Microsoft Lumia 640 XL,mtv
 250,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/apple_ipad_mini_3.html,Apple A1600 iPad mini 16,mtv
-251,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,sports
+251,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/electronics/cell-phones/apple_iphone_6_plus_64gb_gold.html,Apple iPhone 6 Plus 64GB Gold,bestsellers
 252,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/electronics/cell-phones/samsung_gt_s5611msasek.html,Samsung S5611 Metallic Silver,sports
 253,1, visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89, http://magento-oro.com/acer_aspire_es1-111m.html,Acer Aspire ES15,sports
 254,1, visit,1, id=119; email=fffff@fff.com; visitor-id=90, http://magento-oro.com/electronics/cell-phones/samsung_galaxy_note_4_frost_white.html,Samsung Galaxy Note 4 N910H White,sports
@@ -263,8 +263,8 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 262,2,login,1, id=guest; visitor-id=90,http://b2b-oro.com/login,Login,email
 263,2,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/commerce/,B2B Commerce,abc
 264,2,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/,Home page,google
-265,2,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home page,google
-266,2,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/,Home page,google
+265,2,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home page,b2b-bestsellers
+266,2,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/,Home page,b2b-bestsellers
 267,2,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/,Home,google
 268,2,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/registration,Registration,abc
 269,2,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/registration,Registration,abc
@@ -273,16 +273,16 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 272,2,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/registration,Registration,abc
 273,2,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/,Home,google
 274,2,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/registration,Registration,abc
-275,2,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/banner/,Banner Click,google
+275,2,visit,1, id=guest; visitor-id=88,http://b2b-oro.com/banner/,Banner Click,b2b-bestsellers
 276,2,banner click,1, id=guest; visitor-id=88,http://b2b-oro.com/banner/,Banner Click,google
 277,2,login,1, id=guest; visitor-id=88,http://b2b-oro.com/login,Login,email
 278,2,visit,1, id=guest; visitor-id=90,http://b2b-oro.com/registration,Registration,abc
-279,2,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/commerce/,B2B Commerce,abc
+279,2,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/commerce/,B2B Commerce,b2b-bestsellers
 280,2,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/,Home page,google
 281,2,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
 282,2,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
 283,2,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
-284,2,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
+284,2,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,b2b-bestsellers
 285,2,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
 286,2,banner click,1, id=guest; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
 287,2,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
@@ -295,7 +295,7 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 294,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home page,google
 295,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,abc
 296,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
-297,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
+297,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,b2b-bestsellers
 298,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
 299,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/registration,Registration,google
 300,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/registration,Registration,google
@@ -311,14 +311,14 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 310,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/,Home,google
 311,2,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
 312,2,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/registration,Registration,email
-313,2,banner click,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,google
-314,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,google
+313,2,banner click,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,b2b-bestsellers
+314,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,b2b-bestsellers
 315,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,email
 316,2,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/login,Login,google
 317,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/login,Login,google
 318,2,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/,Home,google
 319,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,google
-320,2,banner click,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,google
+320,2,banner click,1, id=guest; visitor-id=86,http://b2b-oro.com/banner/,Banner Click,b2b-bestsellers
 321,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
 322,2,banner click,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/banner/,Banner Click,google
 323,2,visit,1, id=guest; visitor-id=87,http://b2b-oro.com/banner/,Banner Click,google
@@ -348,8 +348,8 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 347,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/commerce/,B2B Commerce,abc
 348,2,logout,1, id=guest; visitor-id=86,http://b2b-oro.com/commerce/,B2B Commerce,abc
 349,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,google
-350,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/,Home,google
-351,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,google
+350,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/,Home,b2b-bestsellers
+351,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,b2b-bestsellers
 352,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/,Home,google
 353,2,visit,1, id=guest; visitor-id=86,http://b2b-oro.com/login,Login,google
 354,2,visit,1, id=guest; visitor-id=85,http://b2b-oro.com/,Home page,google
@@ -409,11 +409,11 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 408,2,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,google
 409,2,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,google
 410,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
-411,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+411,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,b2b-bestsellers
 412,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 413,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 414,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
-415,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+415,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,b2b-bestsellers
 416,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 417,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 418,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
@@ -424,15 +424,15 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 423,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 424,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 425,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
-426,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+426,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,b2b-bestsellers
 427,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 428,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
 429,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
-430,2,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
+430,2,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,b2b-bestsellers
 431,2,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
 432,2,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
 433,2,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,google
-434,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,google
+434,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,b2b-bestsellers
 435,2,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,google
 436,2,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,google
 437,2,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,google
@@ -447,14 +447,14 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 446,2,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,email
 447,2,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,email
 448,2,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,email
-449,2,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,email
+449,2,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,b2b-bestsellers
 450,2,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,email
 451,2,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,email
 452,2,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
 453,2,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
 454,2,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
 455,2,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
-456,2,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,email
+456,2,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,b2b-bestsellers
 457,2,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,email
 458,2,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,email
 459,2,visit,1, id=119; email=fffff@fff.com; visitor-id=90,http://b2b-oro.com/,Home,email
@@ -467,23 +467,23 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 466,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 467,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 468,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
-469,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+469,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,b2b-bestsellers
 470,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 471,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 472,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 473,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 474,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 475,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
-476,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+476,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,b2b-bestsellers
 477,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 478,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
-479,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+479,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,b2b-bestsellers
 480,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
 481,2,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,email
 482,2,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,email
 483,2,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,email
 484,2,visit,1, id=113; email=45t45t@oiuhoiuh.com; visitor-id=87,http://b2b-oro.com/,Home,email
-485,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,email
+485,2,visit,1, id=112; email=qasd@local.com; visitor-id=85,http://b2b-oro.com/,Home,b2b-bestsellers
 486,2,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,email
 487,2,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,email
 488,2,visit,1, id=114; email=erg@fwffwe.com; visitor-id=86,http://b2b-oro.com/,Home,email
@@ -492,7 +492,7 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 491,2,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,email
 492,2,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,email
 493,2,visit,1, id=115; email=ertetr@ewfq.com; visitor-id=87,http://b2b-oro.com/,Home,abc
-494,2,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,abc
+494,2,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,b2b-bestsellers
 495,2,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,abc
 496,2,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,abc
 497,2,visit,1, id=116; email=gerg@rge.com; visitor-id=85,http://b2b-oro.com/,Home,abc
@@ -500,7 +500,7 @@ Uid,Website uid,Name,Value,User_identifier,Url,Title,Code
 499,2,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,abc
 500,2,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,abc
 501,2,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,abc
-502,2,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,abc
+502,2,visit,1, id=117; email=45y@erg.com; visitor-id=88,http://b2b-oro.com/,Home,b2b-bestsellers
 503,2,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,abc
 504,2,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,abc
 505,2,visit,1, id=118; email=ergerg@oiuhgrew.com; visitor-id=89,http://b2b-oro.com/,Home,abc
