@@ -35,3 +35,14 @@ Uid,Website uid,Campaign uid,Coefficient,Name
 34,2,6,100,opens
 35,2,6,100,login
 36,2,6,300,clicks
+37,1,7,100,home
+38,1,7,50,registration
+39,1,7,50,cart item added
+40,1,7,150,visit
+41,1,7,50,order placed
+42,1,7,25,user entered checkout
+43,1,8,100,home
+44,1,8,50,registration
+45,1,8,50,login
+46,1,8,150,visit
+47,1,8,100,clicks

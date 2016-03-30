@@ -5,5 +5,5 @@ Uid,User uid,Organization uid,Name,Description,Code,Budget,Start date,End date
 4,main,2,Email Newsletter,"Email promotions, information on the featured product of the month, featured article.",email,800,,
 5,main,2,Google AdWords,"Track conversions, promotion, signing up for a newsletter.",google,900,,
 6,main,2,ABC Channel Commercials,"Information on the featured product of the month,  making a purchase, clicking a banner.",abc,12000,,
-7,main,1,Physical mailer,Christmas gift catalog,physical,1400,First day of December this year - 1 year,Last day of December this year - 1 year
-8,main,2,B2B Physical mailer,Christmas gift catalog,b2b-physical,1400,First day of December this year - 1 year,Last day of December this year - 1 year
+7,main,1,Bestsellers catalog,Bestsellers catalog,bestsellers,1400,First day of December this year - 1 year,Last day of December this year - 1 year
+8,main,2,Bestsellers catalog,Bestsellers catalog,b2b-bestsellers,1400,First day of December this year - 1 year,Last day of December this year - 1 year

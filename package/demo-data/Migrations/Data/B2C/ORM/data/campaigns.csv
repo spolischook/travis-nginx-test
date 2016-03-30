@@ -2,4 +2,4 @@ Uid,User uid,Organization uid,Name,Description,Code,Budget,Start date,End date
 1,main,1,MTV Channel Commercials,"TV promotions, sales promotions, information on the featured product of the month.",mtv,1200,,
 2,main,1,Sports Sponsorship,"Advertising, attracting attention.",sports,1600,,
 3,main,1,Radio One Commercials,"Radio promotion, sales promotions,  information on the featured product of the month.",rone,1300,,
-4,main,1,Physical mailer,Christmas gift catalog,physical,1400,First day of December this year - 1 year,Last day of December this year - 1 year + 2 weeks
+4,main,1,Bestsellers catalog,Bestsellers catalog,bestsellers,1400,First day of December this year - 1 year,Last day of December this year - 1 year + 2 weeks
