@@ -48,7 +48,7 @@ class LoadCampaignData extends AbstractFixture implements OrderedFixtureInterfac
             $campaign->setOwner($user);
             $campaign->setOrganization($this->getOrganizationreference($campaignData['organization uid']));
 
-            if(!empty($campaignData['start date']) && !empty($campaignData['end date'])){
+            if (!empty($campaignData['start date']) && !empty($campaignData['end date'])) {
                 $campaign->setStartDate(new \DateTime($campaignData['start date']));
                 $campaign->setEndDate(new \DateTime($campaignData['end date']));
             } else {
