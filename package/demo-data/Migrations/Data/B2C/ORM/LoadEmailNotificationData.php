@@ -103,6 +103,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
      * Get notification event
      *
      * @param $name
+     *
      * @return Event
      * @throws EntityNotFoundException
      */
@@ -116,6 +117,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
         if (!$entity) {
             throw new EntityNotFoundException('Event ' . $name . ' not found.');
         }
+
         return $entity;
     }
 
@@ -123,6 +125,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
      * Get notification email template
      *
      * @param $name
+     *
      * @return EmailTemplate
      * @throws EntityNotFoundException
      */
@@ -134,6 +137,7 @@ class LoadEmailNotificationData extends AbstractFixture implements DependentFixt
         if (!$entity) {
             throw new EntityNotFoundException('EmailTemplate ' . $name . ' not found.');
         }
+
         return $entity;
     }
 
