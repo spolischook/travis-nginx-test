@@ -33,7 +33,7 @@ class LoadMailChimpCampaignEmailRecipientData extends AbstractFixture implements
             // Fetch entity by uid and campaign class
             $class     = $campaign->getMarketingList()->getEntity();
             $reference = substr($class, strrpos($class, '\\') + 1);
-            $reference = str_replace('B2B', '', $reference);
+            $reference = str_replace('B2b', '', $reference);
             $entity    = $this->getReferenceByName(sprintf('%s:%s', $reference, $recipientsData['entity uid']));
 
             $marketingListItem = new MarketingListItem();
@@ -46,7 +46,7 @@ class LoadMailChimpCampaignEmailRecipientData extends AbstractFixture implements
 
             $emailCampaignStatistics = new EmailCampaignStatistics();
             $emailCampaignStatistics->setOwner($entity->getOwner());
-            $emailCampaignStatistics->setOrganization($entity->getOwner()->getOrganization());
+            $emailCampaignStatistics->setOrganization($campaign->getOrganization());
             $emailCampaignStatistics->setEmailCampaign($campaign);
             $emailCampaignStatistics->setMarketingListItem($marketingListItem);
             $emailCampaignStatistics->setCreatedAt($this->generateCreatedDate());
@@ -65,6 +65,6 @@ class LoadMailChimpCampaignEmailRecipientData extends AbstractFixture implements
      */
     public function getOrder()
     {
-        return 35;
+        return 60;
     }
 }
