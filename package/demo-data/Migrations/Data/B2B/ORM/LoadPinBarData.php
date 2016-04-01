@@ -35,7 +35,7 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
     protected $navigationFactory;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -45,14 +45,14 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
         $userStorageManager = $this->userManager->getStorageManager();
         $users              = $userStorageManager->getRepository('OroUserBundle:User')->findAll();
         /** @var B2bCustomer $customer */
-        $customer = $this->getB2bCustomerReference(3);
+        $customer = $this->getCustomerReference('B2B:3');
         $customerName = $customer->getName();
         /** @var Lead $lead */
         $lead = $this->getLeadReference(3);
@@ -134,7 +134,7 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

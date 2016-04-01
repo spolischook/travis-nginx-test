@@ -2,4 +2,4 @@ Uid,Segment uid,Name,Description,User uid,Organization uid,Entity,Type
 1,1,Customer list,Customer list,main,1,OroCRM\Bundle\MagentoBundle\Entity\Customer,dynamic
 2,2,Contact list,Contact list,main,1,OroCRM\Bundle\ContactBundle\Entity\Contact,dynamic
 3,3,Shopping Cart list,Shopping Cart list,main,1,OroCRM\Bundle\MagentoBundle\Entity\Cart,dynamic
-
+4,2,Best sales,Best sales,main,1,OroCRM\Bundle\ContactBundle\Entity\Contact,dynamic

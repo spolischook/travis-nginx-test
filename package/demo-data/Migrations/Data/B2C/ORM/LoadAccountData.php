@@ -35,7 +35,7 @@ class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface
 
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -62,7 +62,7 @@ class LoadAccountData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

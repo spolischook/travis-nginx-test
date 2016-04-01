@@ -144,7 +144,7 @@ class LoadDefaultUserData extends AbstractFixture implements OrderedFixtureInter
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

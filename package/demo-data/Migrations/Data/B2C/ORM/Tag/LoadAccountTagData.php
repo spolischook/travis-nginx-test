@@ -19,7 +19,7 @@ class LoadAccountTagData extends AbstractFixture implements OrderedFixtureInterf
     protected $tagManager;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -38,7 +38,7 @@ class LoadAccountTagData extends AbstractFixture implements OrderedFixtureInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -73,7 +73,7 @@ class LoadAccountTagData extends AbstractFixture implements OrderedFixtureInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

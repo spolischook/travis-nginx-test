@@ -141,7 +141,7 @@ class LoadUsersCalendarData extends AbstractFixture implements OrderedFixtureInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {
