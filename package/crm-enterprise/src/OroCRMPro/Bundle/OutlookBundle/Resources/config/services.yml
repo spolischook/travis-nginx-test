@@ -6,4 +6,4 @@ services:
     orocrmpro_outlook.data_transformer.layout:
         class: OroCRMPro\Bundle\OutlookBundle\Config\LayoutDataTransformer
         arguments:
-            - @translator
+            - "@translator"
