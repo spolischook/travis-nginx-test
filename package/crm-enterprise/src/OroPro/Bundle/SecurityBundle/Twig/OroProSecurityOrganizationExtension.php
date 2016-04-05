@@ -23,6 +23,13 @@ class OroProSecurityOrganizationExtension extends OroSecurityOrganizationExtensi
                 usort(
                     $userOrganizations,
                     function (Organization $firstOrg, Organization $secondOrg) {
+                        /**
+                         *  Change return code to fixed issue with changes in usort algorithm in php7
+                         *  https://bugs.php.net/bug.php?id=69158
+                         */
+                        if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
+                            return $secondOrg->getIsGlobal() ? 1 : 0;
+                        }
                         return (int)!$firstOrg->getIsGlobal();
                     }
                 );
