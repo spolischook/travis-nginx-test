@@ -12,6 +12,7 @@ use Oro\Bundle\ApiBundle\Util\ConfigUtil;
 class ApiConfiguration implements ConfigurationInterface
 {
     const EXCLUSIONS_SECTION = 'exclusions';
+    const INCLUSIONS_SECTION = 'inclusions';
     const ENTITY_ATTRIBUTE   = 'entity';
     const FIELD_ATTRIBUTE    = 'field';
     const ENTITIES_SECTION   = 'entities';
@@ -50,8 +51,6 @@ class ApiConfiguration implements ConfigurationInterface
             $preProcessCallbacks,
             $postProcessCallbacks
             ) = $this->extensionRegistry->getConfigurationSettings();
-
-        $this->addExclusionsSection($children);
 
         $entityNode = $this->addEntitySection(
             $children,
@@ -92,22 +91,6 @@ class ApiConfiguration implements ConfigurationInterface
     }
 
     /**
-     * @param NodeBuilder $parentNode
-     */
-    protected function addExclusionsSection(NodeBuilder $parentNode)
-    {
-        $parentNode
-            ->arrayNode(self::EXCLUSIONS_SECTION)
-                ->prototype('array')
-                ->children()
-                    ->scalarNode(self::ENTITY_ATTRIBUTE)
-                        ->isRequired()
-                        ->cannotBeEmpty()
-                    ->end()
-                    ->scalarNode(self::FIELD_ATTRIBUTE)->end();
-    }
-
-    /**
      * @param NodeBuilder         $parentNode
      * @param EntityConfiguration $entityConfiguration
      * @param array               $configureCallbacks
@@ -140,41 +123,35 @@ class ApiConfiguration implements ConfigurationInterface
      */
     protected function postProcessConfig(array $config)
     {
+        $config[self::EXCLUSIONS_SECTION] = [];
+        $config[self::INCLUSIONS_SECTION] = [];
         if (!empty($config[self::ENTITIES_SECTION])) {
             foreach ($config[self::ENTITIES_SECTION] as $entityClass => &$entityConfig) {
-                if (!empty($entityConfig) && array_key_exists(ConfigUtil::EXCLUDE, $entityConfig)) {
-                    if ($entityConfig[ConfigUtil::EXCLUDE]
-                        && !$this->hasEntityExclusion($config[self::EXCLUSIONS_SECTION], $entityClass)
-                    ) {
-                        $config[self::EXCLUSIONS_SECTION][] = [self::ENTITY_ATTRIBUTE => $entityClass];
+                if (!empty($entityConfig)) {
+                    if (array_key_exists(ConfigUtil::EXCLUDE, $entityConfig)) {
+                        if ($entityConfig[ConfigUtil::EXCLUDE]) {
+                            $config[self::EXCLUSIONS_SECTION][] = [self::ENTITY_ATTRIBUTE => $entityClass];
+                        } else {
+                            $config[self::INCLUSIONS_SECTION][] = [self::ENTITY_ATTRIBUTE => $entityClass];
+                        }
+                        unset($entityConfig[ConfigUtil::EXCLUDE]);
                     }
-                    unset($entityConfig[ConfigUtil::EXCLUDE]);
+                    if (!empty($entityConfig[ConfigUtil::FIELDS])) {
+                        foreach ($entityConfig[ConfigUtil::FIELDS] as $fieldName => $fieldConfig) {
+                            if (array_key_exists(ConfigUtil::EXCLUDE, $fieldConfig)
+                                && !$fieldConfig[ConfigUtil::EXCLUDE]
+                            ) {
+                                $config[self::INCLUSIONS_SECTION][] = [
+                                    self::ENTITY_ATTRIBUTE => $entityClass,
+                                    self::FIELD_ATTRIBUTE  => $fieldName
+                                ];
+                            }
+                        }
+                    }
                 }
             }
         }
 
         return $config;
-    }
-
-    /**
-     * @param array  $exclusions
-     * @param string $entityClass
-     *
-     * @return bool
-     */
-    protected function hasEntityExclusion($exclusions, $entityClass)
-    {
-        $result = false;
-        foreach ($exclusions as $exclusion) {
-            if (array_key_exists(self::ENTITY_ATTRIBUTE, $exclusion)
-                && $exclusion[self::ENTITY_ATTRIBUTE] === $entityClass
-                && count($exclusion) === 1
-            ) {
-                $result = true;
-                break;
-            }
-        }
-
-        return $result;
     }
 }

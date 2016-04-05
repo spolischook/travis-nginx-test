@@ -5,7 +5,7 @@ Table of Contents
 -----------------
  - [Overview](#overview)
  - [Configuration structure](#configuration-structure)
- - ["exclusions" configuration section & "exclude" flag](#exclusions-configuration-section--exclude-flag)
+ - ["exclude" option](#exclude-option)
  - ["entities" configuration section](#entities-configuration-section)
  - ["relations" configuration section](#relations-configuration-section)
  - ["actions" configuration section](#actions-configuration-section)
@@ -48,7 +48,6 @@ parameters:
 
 The first level sections of configuration are:
 
-* [exclusions](#exclusions-configuration-section--exclude-flag) - describes entities and fields that should be excluded from Data API. This can be useful for example to exclude security specific data from being accessible via Data API.
 * [entities](#entities-configuration-section)   - describes the configuration of entities.
 * [relations](#relations-configuration-section)  - describes the configuration of relationships.
 
@@ -56,8 +55,6 @@ Top level configuration example:
 
 ```yaml
 oro_api:
-    exclusions:
-        ...
     entities:
         Acme\Bundle\AcmeBundle\Entity\AcmeEntity:
             exclude: ~
@@ -87,41 +84,25 @@ oro_api:
         ...
 ```
 
-"exclusions" configuration section & "exclude" flag
----------------------------------------------------
+"exclude" option
+----------------
 
-The `exclusions` configuration section describes whether whole entity or some of its fields should be excluded from Data API.
-
-Each item has next properties:
-
-* **entity** *string* The fully-Qualified Class Name of an entity.
-* **field** *string* The name of a field. This is optional property.
+The `exclude` configuration option describes whether an entity or some of its fields should be excluded from Data API.
 
 Example:
 
 ```yaml
 oro_api:
-    exclusions:
-        # whole entity exclusion
-        - { entity: Acme\Bundle\AcmeBundle\Entity\AcmeEntity1 }
-        # exclude field1 of Acme\Bundle\AcmeBundle\Entity\Entity2 entity
-        - { entity: Acme\Bundle\AcmeBundle\Entity\AcmeEntity2, field: field1 }
-```
-
-The same behavior can be reached using the `exclude` property under the  configuration of an entity, e.g.
-
-```yaml
-oro_api:
     entities:
         Acme\Bundle\AcmeBundle\Entity\AcmeEntity1:
-            exclude: true
+            exclude: true # exclude the entity from Data API
         Acme\Bundle\AcmeBundle\Entity\AcmeEntity2:
             fields:
                 field1:
-                    exclude: true
+                    exclude: true # exclude the field from Data API
 ```
 
-Also the `exclude` property can be used to indicate whether filtering or sorting for certain field should be disabled. Please note that filtering and sorting for the excluded field are disabled automatically, so it's not possible to filter or sort by excluded field.
+Also the `exclude` option can be used to indicate whether filtering or sorting for certain field should be disabled. Please note that filtering and sorting for the excluded field are disabled automatically, so it's not possible to filter or sort by excluded field.
 
 Example:
 
@@ -139,7 +120,7 @@ oro_api:
                         exclude: true
 ```
 
-Please note that `oro_api.exclusions` rules are applicable only for Data API. In case if an entity or its' field(s) should be excluded globally use `Resources/config/oro/entity.yml`, e.g.:
+Please note that `exclude` option are applicable only for Data API. In case if an entity or its' field(s) should be excluded globally use `Resources/config/oro/entity.yml`, e.g.:
 
 ```yaml
 oro_entity:
@@ -292,7 +273,7 @@ oro_api:
                     fields: targetField1
 ```
 
-* **exclude** *boolean* Indicates whether the field should be excluded. This property is described above in ["exclusions" configuration section & "exclude" flag](#exclusions-configuration-section--exclude-flag).
+* **exclude** *boolean* Indicates whether the field should be excluded. This property is described above in ["exclude" option](#exclude-option).
 
 Example:
 
