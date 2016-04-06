@@ -6,7 +6,6 @@ use Oro\Bundle\OrganizationBundle\Validator\Constraints\OwnerValidator as BaseVa
 
 class OwnerValidator extends BaseValidator
 {
-
     /**
      * {@inheritdoc}
      */
