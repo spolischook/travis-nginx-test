@@ -154,5 +154,11 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
                 [new Reference('router')]
             );
         }
+
+        $serviceId = 'oro_organization.validator.owner';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Validator\Constraints\OwnerValidator');
+        }
     }
 }
