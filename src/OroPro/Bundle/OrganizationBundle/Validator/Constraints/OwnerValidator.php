@@ -13,7 +13,6 @@ class OwnerValidator extends BaseValidator
     {
         // in case of System access mode, we should take organization from the entity
         $organization = $this->securityFacade->getOrganization();
-
         if ($organization->getIsGlobal()) {
             $organization = $this->entityOwnerAccessor->getOrganization($this->object);
         }
