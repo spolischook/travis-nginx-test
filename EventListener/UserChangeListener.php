@@ -8,7 +8,7 @@ use Doctrine\ORM\UnitOfWork;
 
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Bundle\IntegrationBundle\Manager\SyncScheduler;
+use Oro\Bundle\IntegrationBundle\Manager\ReverseSyncScheduler;
 use Oro\Bundle\UserBundle\Entity\User;
 
 use OroCRMPro\Bundle\LDAPBundle\ImportExport\Utils\LdapUtils;
@@ -112,7 +112,7 @@ class UserChangeListener
             return;
         }
 
-        /** @var SyncScheduler $syncScheduler */
+        /** @var ReverseSyncScheduler $syncScheduler */
         $syncScheduler = $this->syncShedulerLink->getService();
         $channels = $this->getEnabledChannels();
 
