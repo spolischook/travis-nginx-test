@@ -43,7 +43,7 @@ class LoadNavigationHistoryItemData extends AbstractFixture implements OrderedFi
 
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -101,7 +101,7 @@ class LoadNavigationHistoryItemData extends AbstractFixture implements OrderedFi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

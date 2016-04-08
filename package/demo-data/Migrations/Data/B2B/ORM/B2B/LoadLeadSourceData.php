@@ -41,7 +41,7 @@ class LoadLeadSourceData extends AbstractFixture implements OrderedFixtureInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

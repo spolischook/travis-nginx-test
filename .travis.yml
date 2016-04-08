@@ -2,6 +2,10 @@ sudo: false
 
 language: php
 
+branches:
+  only: 
+    - master
+
 php:
   - 5.4
   - 5.5
@@ -44,7 +48,6 @@ env:
      - APPLICATION="application/platform" TESTSUITE="unit" 
      - APPLICATION="application/crm" TESTSUITE="unit"
      - APPLICATION="application/crm-enterprise" TESTSUITE="unit"
-     - APPLICATION="application/commerce" TESTSUITE="unit"
 
 before_install: . ./.travis.sh before_install
 
