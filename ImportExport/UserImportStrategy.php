@@ -3,7 +3,9 @@
 namespace OroCRMPro\Bundle\LDAPBundle\ImportExport;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
+use Oro\Bundle\EntityBundle\Provider\ChainEntityClassNameProvider;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Field\DatabaseHelper;
 use Oro\Bundle\ImportExportBundle\Field\FieldHelper;
@@ -28,6 +30,8 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
      * @param ImportStrategyHelper     $strategyHelper
      * @param FieldHelper              $fieldHelper
      * @param DatabaseHelper           $databaseHelper
+     * @param ChainEntityClassNameProvider $chainEntityClassNameProvider,
+     * @param TranslatorInterface      $translator,
      * @param DefaultOwnerHelper       $defaultOwnerHelper
      * @param ConnectorContextMediator $contextMediator
      * @param LdapHelper               $ldapHelper
@@ -37,11 +41,20 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
         ImportStrategyHelper $strategyHelper,
         FieldHelper $fieldHelper,
         DatabaseHelper $databaseHelper,
+        ChainEntityClassNameProvider $chainEntityClassNameProvider,
+        TranslatorInterface $translator,
         DefaultOwnerHelper $defaultOwnerHelper,
         ConnectorContextMediator $contextMediator,
         LdapHelper $ldapHelper
     ) {
-        parent::__construct($eventDispatcher, $strategyHelper, $fieldHelper, $databaseHelper);
+        parent::__construct(
+            $eventDispatcher,
+            $strategyHelper,
+            $fieldHelper,
+            $databaseHelper,
+            $chainEntityClassNameProvider,
+            $translator
+        );
         $this->defaultOwnerHelper = $defaultOwnerHelper;
         $this->contextMediator = $contextMediator;
         $this->ldapHelper = $ldapHelper;
