@@ -174,12 +174,24 @@ class OrganizationColumnExtension extends AbstractExtension
                 $sorters
             )
         );
-        $config->offsetSetByPath(
-            '[sorters][default]',
-            [
-                'name' => 'ASC'
-            ]
-        );
+
+        /*
+         * Three cases:
+         * 1. set sort by organization if default sorting doesn't exist
+         * 2. merge sort by organization with default sorting if multiple_sorting=true
+         * 3. set default sorting if multiple_sorting=false
+         */
+        $multiSort = $config->offsetGetByPath('[sorters][multiple_sorting]');
+        $sortByOrganization = [self::COLUMN_NAME => 'ASC'];
+        $defaultSorters = $config->offsetGetByPath('[sorters][default]', $sortByOrganization);
+        if ($multiSort) {
+            $config->offsetSetByPath(
+                '[sorters][default]',
+                array_merge($sortByOrganization, $defaultSorters)
+            );
+        } else {
+            $config->offsetSetByPath('[sorters][default]', $defaultSorters);
+        }
 
         /**
          * configure column filter

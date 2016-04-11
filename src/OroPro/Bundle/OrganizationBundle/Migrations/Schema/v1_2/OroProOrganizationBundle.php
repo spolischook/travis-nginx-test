@@ -4,6 +4,7 @@ namespace OroPro\Bundle\OrganizationBundle\Migrations\Schema\v1_2;
 
 use Doctrine\DBAL\Schema\Schema;
 
+use Oro\Bundle\EntityBundle\EntityConfig\DatagridScope;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigModel;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\ExtendOptionsManager;
@@ -27,7 +28,7 @@ class OroProOrganizationBundle implements Migration
                 OroOptions::KEY => [
                     'extend' => ['is_extend' => true, 'owner' => ExtendScope::OWNER_CUSTOM],
                     'form' => ['form_type' => 'oropro_organization_is_global'],
-                    'datagrid' => ['is_visible' => true],
+                    'datagrid' => ['is_visible' => DatagridScope::IS_VISIBLE_TRUE],
                     ExtendOptionsManager::MODE_OPTION => ConfigModel::MODE_READONLY
                 ]
             ]
