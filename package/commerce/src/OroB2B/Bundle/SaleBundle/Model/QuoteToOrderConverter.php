@@ -119,7 +119,7 @@ class QuoteToOrderConverter
             ->setShippingAddress($orderShippingAddress)
             ->setSourceEntityClass(ClassUtils::getClass($quote))
             ->setSourceEntityId($quote->getId())
-            ->setSourceEntityIdentifier($quote->getIdentifier());
+            ->setSourceEntityIdentifier($quote->getPoNumber());
 
         return $order;
     }
@@ -152,6 +152,7 @@ class QuoteToOrderConverter
             $orderAddress->setNameSuffix($quoteAddress->getNameSuffix());
             $orderAddress->setRegion($quoteAddress->getRegion());
             $orderAddress->setCountry($quoteAddress->getCountry());
+            $orderAddress->setPhone($quoteAddress->getPhone());
             $orderAddress->setFromExternalSource(true);
         }
 

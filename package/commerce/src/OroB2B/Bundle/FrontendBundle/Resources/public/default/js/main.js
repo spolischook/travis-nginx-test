@@ -1,11 +1,11 @@
-require(['jquery', 'lodash', 'slick', 'bootstrapDatepicker', 'raty', 'perfectScrollbar', 'fastclick'], function(
+require(['jquery', 'lodash', 'slick', 'raty', 'perfectScrollbar', 'fastclick', 'elevatezoom'], function(
     jQuery,
     _,
     slick,
-    datepicker,
     raty,
     perfectScrollbar,
-    FastClick
+    FastClick,
+    elevateZoom
 ) {
 
     (function($) {
@@ -36,11 +36,7 @@ require(['jquery', 'lodash', 'slick', 'bootstrapDatepicker', 'raty', 'perfectScr
                 productsSliderInit(); //Initing of products slider (slick slider)
                 moreInfoExpandBinding(); //More info button binding
                 pinClickBinding(); //Pin click binding
-                customCheckboxBinding(); //Custom checkbox click binding
-                customRadioBinding(); //Custom radio click binding
                 filterWidgetToggleBinding(); //Filter Widget toggle binding
-                datepickerInit(); //Initing of the datepicker
-                datepickerSetDateBindingInit();
                 topbarButtonsBinding(); //Topbar buttons clicks binding
                 salesPanelToggleInit(); //Sales panel toggle binding
                 flexSelectResizeInit(); //resizing the selects
@@ -49,6 +45,7 @@ require(['jquery', 'lodash', 'slick', 'bootstrapDatepicker', 'raty', 'perfectScr
                 avoidDropdwonMenuHideInit();
                 dropdownMenuHideByCloseBtnBinding();
                 customScrollbarInit();
+                elevateZoomInit();
 
                 countInit().init({
                     plus: '[data-count-plus]',
@@ -320,7 +317,7 @@ require(['jquery', 'lodash', 'slick', 'bootstrapDatepicker', 'raty', 'perfectScr
             }
 
             function heroSliderInit() {
-                var $hero = $('[data-hero-slider');
+                var $hero = $('[data-hero-slider]');
 
                 if ($hero.length) {
                     $hero.slick({
@@ -467,8 +464,6 @@ require(['jquery', 'lodash', 'slick', 'bootstrapDatepicker', 'raty', 'perfectScr
                             class: view
                         }
                     }));
-
-                    event.preventDefault();
                 });
             }
 
@@ -488,49 +483,6 @@ require(['jquery', 'lodash', 'slick', 'bootstrapDatepicker', 'raty', 'perfectScr
                 });
             }
 
-            function customCheckboxBinding() {
-                var label = '[data-checkbox]',
-                    $checkbox = $(label).find('input');
-
-                $checkbox.on('change', function(event) {
-                    if ($(this).attr('checked') !== 'checked' || typeof $(this).attr('checked') === 'undefined') {
-                        $(this).attr('checked', true);
-                        $(this).parent().addClass('checked');
-
-                        toggleOrderPinContent(false);
-                    } else {
-                        $(this).attr('checked', false);
-                        $(this).parent().removeClass('checked');
-
-                        toggleOrderPinContent(true);
-                    }
-
-                    event.stopPropagation();
-                });
-            }
-
-            function customRadioBinding() {
-                var label = '[data-radio]',
-                    $radio = $(label).find('input[type="radio"]');
-
-                $radio.on('change', function(event) {
-                    var inputName = $(this).attr('name');
-
-                    if ($(this).attr('checked') !== 'checked' || typeof $(this).attr('checked') === 'undefined') {
-                        $(label).find('input[type="radio"][name="' + inputName + '"]').attr('checked', false);
-                        $('input[type="radio"][name="' + inputName + '"]').closest('label').removeClass('checked');
-
-                        $(this).attr('checked', true);
-                        $(this).parent().addClass('checked');
-                    }
-                });
-            }
-
-            function toggleOrderPinContent(value) {
-                var $content = $('[data-checkbox-triggered-content]');
-                value ? $content.hide() : $content.show();
-            }
-
             function filterWidgetToggleBinding() {
                 var trigger = '[data-open-filter-trigger]',
                     filter = '[data-filter]';
@@ -545,24 +497,6 @@ require(['jquery', 'lodash', 'slick', 'bootstrapDatepicker', 'raty', 'perfectScr
                     }
 
                     event.preventDefault();
-                });
-            }
-
-            function datepickerInit() {
-                var $datepicker = $('[data-datepicker]');
-
-                if ($datepicker.length) {
-                    $datepicker.datepicker({
-                        orientation: "bottom left"
-                    });
-                }
-            }
-
-            function datepickerSetDateBindingInit() {
-                var $datepicker = $('[data-datepicker]');
-
-                $datepicker.on('changeDate', function(event) {
-                    $(this).prev().addClass('date-applied');
                 });
             }
 
@@ -732,6 +666,19 @@ require(['jquery', 'lodash', 'slick', 'bootstrapDatepicker', 'raty', 'perfectScr
                     $('.columnsSettings').each(function() {
                         $(this).perfectScrollbar('update');
                     });
+                });
+            }
+
+            function elevateZoomInit() {
+                $('[data-zoom-image]').elevateZoom({
+                    scrollZoom: true,
+                    zoomWindowWidth: 630,
+                    zoomWindowHeight: 376,
+                    borderSize: 1,
+                    borderColour: '#ebebeb',
+                    lensBorderColour: '#7d7d7d',
+                    lensColour: '#000',
+                    lensOpacity: 0.22
                 });
             }
 

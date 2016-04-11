@@ -292,7 +292,7 @@ class LoadTicketEntityData extends AbstractFixture implements OrderedFixtureInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

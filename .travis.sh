@@ -5,6 +5,9 @@ case $step in
      before_install)
            set +e; 
            echo "Before installing...";
+           if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+                return 0
+           fi
            diff=$(git diff --name-only $TRAVIS_COMMIT_RANGE);
            filteredDiff=$(git diff --name-only --diff-filter=ACMR $TRAVIS_COMMIT_RANGE);
            case $APPLICATION in
@@ -32,7 +35,7 @@ case $step in
                            elif [[ $crm ]] && [[ $APPLICATION == */crm* ]]; then echo "CRM is detected. Run CRM and Enterprise";
                            elif [[ crm_enterprise ]] && [[ $APPLICATION == */crm-enterprise ]]; then echo "Enterprise is detected. Run Enterprise";
                            elif [[ commerce ]] && [[ $APPLICATION == */commerce ]]; then echo "Commerce is detected. Run Commerce";
-                           # TODO: add other cases for example Extensions tests 
+                           # TODO: add other cases for example Extensions tests
                            else
                                echo "Tests build not required!";
                                export TRAVIS_SKIP="true";
@@ -102,11 +105,12 @@ case $step in
                 php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures; 
              fi;
              phpunit --stderr --testsuite ${TESTSUITE};
-           fi
-           if [ ! -z "$CS" ]; then
-              cd ..; 
-              TEST_FILES=${TRAVIS_CS_FILES-.};
-              $HOME/.composer/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
-           fi
+          fi
+          if [ ! -z "$CS" ]; then
+             APPLICATION_PWD=$PWD
+             cd ..;
+             TEST_FILES=$(if [ ! -z "$TRAVIS_CS_FILES" ]; then echo $TRAVIS_CS_FILES; else echo "$APPLICATION_PWD/."; fi);
+             $HOME/.composer/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
+          fi
     ;;
 esac

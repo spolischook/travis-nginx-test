@@ -16,7 +16,6 @@ use OroB2B\Bundle\AccountBundle\Doctrine\SoftDeleteableTrait;
 use OroB2B\Bundle\AccountBundle\Entity\Account;
 use OroB2B\Bundle\AccountBundle\Entity\AccountUser;
 use OroB2B\Bundle\AccountBundle\Entity\AccountOwnerAwareInterface;
-use OroB2B\Bundle\OrderBundle\Provider\IdentifierAwareInterface;
 use OroB2B\Bundle\RFPBundle\Model\ExtendRequest;
 
 /**
@@ -54,8 +53,7 @@ use OroB2B\Bundle\RFPBundle\Model\ExtendRequest;
  */
 class Request extends ExtendRequest implements
     AccountOwnerAwareInterface,
-    SoftDeleteableInterface,
-    IdentifierAwareInterface
+    SoftDeleteableInterface
 {
     use SoftDeleteableTrait;
 
@@ -113,7 +111,7 @@ class Request extends ExtendRequest implements
     /**
      * @var string
      *
-     * @ORM\Column(name="phone", type="string", length=255)
+     * @ORM\Column(name="phone", type="string", length=255, nullable=true)
      * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -155,7 +153,7 @@ class Request extends ExtendRequest implements
     /**
      * @var string
      *
-     * @ORM\Column(name="note", type="text")
+     * @ORM\Column(name="note", type="text", nullable=true)
      * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={

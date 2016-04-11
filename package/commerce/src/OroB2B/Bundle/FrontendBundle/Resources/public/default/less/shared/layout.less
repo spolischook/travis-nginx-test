@@ -225,11 +225,8 @@
   height: 3.5rem;
   margin: 1.2rem 0 0;
   text-indent: -999rem;
-  background: url("@{images}/logo.png") no-repeat;
 
   @media (max-width: 991px) {
-    width: 24rem;
-    height: 3.2rem;
     background-size: 24rem 3.2rem;
     margin: 0 auto;
   }
@@ -251,11 +248,11 @@
 }
 
 .cart__promo__link {
-  color: @base-font-color;
+  color: @base-font-color !important;
 
   &:hover {
     color: @base-font-color;
-    text-decoration: none;
+    text-decoration: none !important;
 
     span {
       text-decoration: underline;
@@ -463,7 +460,7 @@
 
 .top-nav__sublist-container {
   display: none;
-  width: 100%;
+  width: 1197px;
   padding: 0 1.5rem;
   position: absolute;
   top: 4.8rem;
@@ -501,11 +498,15 @@
     padding: 0 0 0 2.5rem;
   }
 
-  &.top-nav__sublist__item_has-adv-block {
+  &.top-nav__sublist__item_has-sales-block {
     flex-grow: 0;
 
     @media (max-width: 991px) {
       order: 1;
+    }
+
+    .sales-block {
+      margin: 2rem 0 0;
     }
   }
 
@@ -574,10 +575,6 @@
       }
     }
   }
-}
-
-.adv-block {
-  margin: 2rem 0 0;
 }
 /* END TOP NAVIGATION*/
 
@@ -1211,8 +1208,9 @@
   position: absolute;
   top: 0;
   left: 0;
+  z-index:1;
   
-  .material-icons {
+  [class^="cf-"] {
     font-size: 1.8rem;
   }
 
@@ -1390,18 +1388,18 @@
       cursor: default;
       height: 5.2rem;
 
-      > .icon-play {
+      > .cf-play {
         transform: rotate(90deg);
       }
 
       .oro-grid__tab__header__text {
-        > .icon-play {
+        > .cf-play {
           transform: rotate(90deg);
         }
       }
 
       .oro-grid__tab__header__text_mobile {
-        .icon-play {
+        .cf-play {
           transform: rotate(90deg);
         }
       }
@@ -2478,14 +2476,14 @@
   align-content: stretch;
   align-items: center;
   font-size: 0;
-  padding: 1rem 0;
+  padding: 1rem 0 !important;
   border-bottom: .1rem solid @base-border-color;
   border-top: .1rem solid @base-border-color;
 }
 
 .catalog__filter-controls__item {
   flex-grow: 1;
-  margin-right: 1.5rem;
+  margin-right: .5rem;
 
   &.catalog__filter-controls__item_filter {
     flex-grow: 0;
@@ -2509,14 +2507,13 @@
 
   &:nth-child(2) {
     @media (max-width: 991px) {
-      order: 3;
+      order: 1;
     }
   }
 
   &:nth-child(3) {
     @media (max-width: 991px) {
-      order: 4;
-      margin-right: 0;
+      order: 2;
     }
   }
 
@@ -2524,13 +2521,13 @@
     text-align: right;
     margin: 0;
     flex-grow: 0;
-    flex-basis: 16rem;
+    flex-basis: 17rem;
     flex-shrink: 0;
+    order: 4;
 
     @media (max-width: 991px) {
       order: 2;
-      flex-basis: 45%;
-      margin: 0 0 1rem;
+      flex-basis: auto;
     }
   }
 }
@@ -2715,6 +2712,7 @@
 
 .cart__order__controls-list,
 .oro-order__controls-list,
+.oro-account-user-role__controls-list,
 .oro-grid-table__item__controls-list {
   .list-normalize;
   margin: 0 0 .5rem;
@@ -2750,12 +2748,16 @@
       font-size: 1.6rem; 
       margin-right: .3rem;
 
-      &.material-icons {
+      &[class^="cf-"] {
         position: relative;
         bottom: .1rem;
       } 
     }
   }
+}
+
+.oro-account-user-role__back-link {
+  padding-left: 0;
 }
 
 //Cart list on mobile devices
@@ -2847,18 +2849,17 @@
 
 /*START CREATE ACCOUNT FORM*/
 .create-account {
-   
-   &.create-account_full {
-      width: 86rem;
-      margin: 0 auto;
+  &.create-account_full {
+    width: 86rem;
+    margin: 0 auto;
 
-      @media (max-width: 991px) {
-        width: 100%;
-        margin-bottom: 8rem;
-      }
-   }
+    @media (max-width: 991px) {
+      width: 100%;
+      margin-bottom: 8rem;
+    }
+  }
 
-   &.create-account_half-cols {
+  &.create-account_half-cols {
     margin: 0 -1.5rem;
 
     &:before, &:after {
@@ -2867,7 +2868,25 @@
       height: 0;
       clear: both;
     }
-   }
+  }
+
+  &.create-account_pos-absolute_vert-centered {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+
+    @media (max-width: 991px) {
+      margin: 0;
+    }
+
+    .create-account__form-container {
+      &.form-container-x6 {
+        max-width: 700px;
+      }
+    }
+  }
 }
 
 .create-account__title {
@@ -2890,7 +2909,7 @@
 
   &.form-container-x6 {
     width: 50%;
-    float: left;
+    margin: 0 auto;
     padding: 0 1.5rem;
 
     @media (max-width: 991px) {
@@ -2951,6 +2970,10 @@
 
   @media (max-width: 991px) {
     padding: 1rem;
+  }
+
+  .removeLineItem.btn {
+    min-width: 3rem;
   }
 
   .btn {
@@ -3107,6 +3130,457 @@
 }
 /*END CREATE ACCOUNT FORM*/
 
+/*START FORGOT PASSWORD FORM*/
+.forgot-password {
+
+  &.forgot-password_full {
+    width: 43rem;
+    margin: 0 auto;
+
+    @media (max-width: 991px) {
+      width: 100%;
+      margin-bottom: 8rem;
+    }
+  }
+
+  &.forgot-password_pos-absolute_vert-centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    @media (max-width: 991px) {
+      left: 0;
+      transform: translate(0, -50%);
+      padding: 0 1.5rem;
+    }
+  }
+}
+
+.forgot-password__title {
+  font-size: 2.2rem;
+  line-height: 2.6rem;
+  font-weight: 400;
+  padding: 0 1rem;
+  margin: 0 0 1.5rem;
+}
+
+.forgot-password-container {
+
+  p {
+    margin: 0 0 1.5rem;
+  }
+
+  .forgot-password__title {
+    padding: 0;
+  }
+
+  &.form-container-x6 {
+    width: 50%;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+
+    @media (max-width: 991px) {
+      width: 100%;
+      float: none;
+
+      + .form-container-x6 {
+        margin: 3rem 0;
+      }
+    }
+  }
+
+  &.form-container-x6_mfull {
+    width: 50%;
+    float: left;
+    padding: 0 1.5rem;
+
+    @media (max-width: 991px) {
+      width: 100%;
+      float: none;
+      padding: 0;
+
+      + .form-container-x6_mfull {
+        margin: 3rem 0;
+      }
+    }
+  }
+}
+
+.forgot-password__form {
+  background: @base-sidebar-background-color-light;
+  border-radius: .3rem;
+  padding: 4rem 4.5rem;
+
+  &.forgot-password__form_forget {
+    padding: 4rem 25% 4rem 15%;
+
+    @media (max-width: 991px) {
+      padding: 1rem;
+    }
+  }
+
+  @media (max-width: 991px) {
+    padding: 1rem;
+  }
+
+  .removeLineItem.btn {
+    min-width: 3rem;
+  }
+
+  .btn {
+    min-width: 20rem;
+  }
+}
+
+.forgot-password__form__row {
+  margin: 0 -.5rem;
+  position: relative;
+
+  &:before, &:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+  }
+}
+
+.forgot-password__form__col {
+  float: left;
+  padding: 0 .5rem;
+  margin: 0 0 1.5rem;
+
+  &.form__col_x12 {
+    width: 100%;
+    float: none;
+  }
+}
+
+.forgot-password__form__label {
+  display: block;
+  font-weight: 400;
+  margin: 0 0 .5rem;
+}
+
+.forgot-password__form__input {
+
+  .input();
+
+  &::-webkit-input-placeholder {
+    color: @base-font-color-lightest;
+  }
+
+  &::-moz-placeholder {
+    color: @base-font-color-lightest;
+  }
+
+  &:-moz-placeholder {
+    color: @base-font-color-lightest;
+  }
+
+  &:-ms-input-placeholder {
+    color: @base-font-color-lightest;
+  }
+
+  &:focus {
+    border-color: #4597ca;
+    outline: 0;
+    box-shadow: inset 0 0.1rem 0.1rem rgba(0, 0, 0, 0.075), 0 0 0.8rem rgba(102, 175, 233, 0.6);
+  }
+}
+
+.forgot-password__form__req-text {
+  position: absolute;
+  left: 23rem;
+  top: 1.8rem;
+  color: @theme-red-color;
+
+  @media (max-width: 991px) {
+    position: static;
+    margin: 0 0 2rem .5rem;
+  }
+}
+
+.forgot-password__form__submit {
+
+  @media (max-width: 991px) {
+    width: 100%;
+  }
+}
+/*END FORGOT PASSWORD FORM*/
+
+/*START RESET PASSWORD FORM*/
+.reset-password {
+
+  &.reset-password_full {
+    width: 43rem;
+    margin: 0 auto;
+
+    @media (max-width: 991px) {
+      width: 100%;
+      margin-bottom: 8rem;
+    }
+  }
+
+  &.reset-password_pos-absolute_vert-centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    @media (max-width: 991px) {
+      left: 0;
+      transform: translate(0, -50%);
+      padding: 0 1.5rem;
+    }
+  }
+}
+
+.reset-password__title {
+  font-size: 2.2rem;
+  line-height: 2.6rem;
+  font-weight: 400;
+  padding: 0 1rem;
+  margin: 0 0 1.5rem;
+}
+
+.reset-password-container {
+  p {
+    margin: 0 0 1.5rem;
+  }
+
+  .reset-password__title {
+    padding: 0;
+  }
+
+  &.form-container-x6 {
+    width: 50%;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+
+    @media (max-width: 991px) {
+      width: 100%;
+      float: none;
+
+      + .form-container-x6 {
+        margin: 3rem 0;
+      }
+    }
+  }
+
+  &.form-container-x6_mfull {
+    width: 50%;
+    float: left;
+    padding: 0 1.5rem;
+
+    @media (max-width: 991px) {
+      width: 100%;
+      float: none;
+      padding: 0;
+
+      + .form-container-x6_mfull {
+        margin: 3rem 0;
+      }
+    }
+  }
+}
+
+.reset-password__form {
+  background: @base-sidebar-background-color-light;
+  border-radius: .3rem;
+  padding: 4rem 4.5rem;
+
+  &.reset-password__form_forget {
+    padding: 4rem 25% 4rem 15%;
+
+    @media (max-width: 991px) {
+      padding: 1rem;
+    }
+  }
+
+  @media (max-width: 991px) {
+    padding: 1rem;
+  }
+
+  .removeLineItem.btn {
+    min-width: 3rem;
+  }
+
+  .btn {
+    min-width: 20rem;
+  }
+}
+
+.reset-password__form__row {
+  margin: 0 -.5rem;
+  position: relative;
+
+  &:before, &:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+  }
+}
+
+.reset-password__form__col {
+  float: left;
+  padding: 0 .5rem;
+  margin: 0 0 1.5rem;
+
+  &.form__col_x6 {
+    width: 50%;
+
+    @media (max-width: 991px) {
+      width: 100%;
+    }
+  }
+
+  &.form__col_x12 {
+    width: 100%;
+    float: none;
+  }
+}
+
+.reset-password__form__label {
+  display: block;
+  font-weight: 400;
+  margin: 0 0 .5rem;
+}
+
+.reset-password__form__input {
+
+  .input();
+
+  &::-webkit-input-placeholder {
+    color: @base-font-color-lightest;
+  }
+
+  &::-moz-placeholder {
+    color: @base-font-color-lightest;
+  }
+
+  &:-moz-placeholder {
+    color: @base-font-color-lightest;
+  }
+
+  &:-ms-input-placeholder {
+    color: @base-font-color-lightest;
+  }
+
+  &:focus {
+    border-color: #4597ca;
+    outline: 0;
+    box-shadow: inset 0 0.1rem 0.1rem rgba(0, 0, 0, 0.075), 0 0 0.8rem rgba(102, 175, 233, 0.6);
+  }
+}
+
+.reset-password__form__req-text {
+  position: absolute;
+  left: 23rem;
+  top: 1.8rem;
+  color: @theme-red-color;
+
+  @media (max-width: 991px) {
+    position: static;
+    margin: 0 0 2rem .5rem;
+  }
+}
+
+.reset-password__form__submit {
+
+  @media (max-width: 991px) {
+    width: 100%;
+  }
+}
+/*END RESET PASSWORD FORM*/
+
+/*START CHECK EMAIL*/
+.check-email {
+  &.check-email_full {
+    width: 43rem;
+    margin: 0 auto;
+
+    @media (max-width: 991px) {
+      width: 100%;
+      margin-bottom: 8rem;
+    }
+  }
+
+  &.check-email_pos-absolute_vert-centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    @media (max-width: 991px) {
+      left: 0;
+      transform: translate(0, -50%);
+      padding: 0 1.5rem;
+    }
+  }
+}
+
+.check-email__title {
+  font-size: 2.2rem;
+  line-height: 2.6rem;
+  font-weight: 400;
+  padding: 0 1rem;
+  margin: 0 0 1.5rem;
+}
+
+.check-email-container {
+  p {
+    margin: 0 0 1.5rem;
+  }
+
+  .check-email__title {
+    padding: 0;
+  }
+
+  &.container-x6 {
+    width: 50%;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+
+    @media (max-width: 991px) {
+      width: 100%;
+      float: none;
+
+      + .container-x6 {
+        margin: 3rem 0;
+      }
+    }
+  }
+
+  &.container-x6_mfull {
+    width: 50%;
+    float: left;
+    padding: 0 1.5rem;
+
+    @media (max-width: 991px) {
+      width: 100%;
+      float: none;
+      padding: 0;
+
+      + .container-x6_mfull {
+        margin: 3rem 0;
+      }
+    }
+  }
+}
+
+.check-email__block {
+  background: @base-sidebar-background-color-light;
+  border-radius: .3rem;
+  padding: 4rem 15% 4rem 15%;
+
+  @media (max-width: 991px) {
+    padding: 1rem;
+  }
+}
+/*END CHECK EMAIL*/
+
 /*START ACCOUNT PAGE*/
 .account-sidebar {
   width: 22.5rem;
@@ -3232,7 +3706,7 @@
 
 //Accout my order page, quotes page
 .account-oq-container {
-  margin: 2rem -1.5rem 0;
+  margin: 2.3rem -1.5rem 0;
 
   &:before, &:after {
     content: "";
@@ -3263,7 +3737,7 @@
    @media (max-width: 767px) {
     width: 100%;
     float: none;
-    margin: 0 0 3rem;
+    margin: 0;
    }
 }
 
@@ -3293,43 +3767,75 @@
 
 .account-oq__item__title {
   float: left;
+
   font-size: 1.6rem;
   font-weight: 400;
   text-transform: uppercase;
-}
 
-.account-oq__order-info {
-  margin: .5rem 0 0;
-  max-width: 35rem;
+  @media (max-width: 991px) {
+    &.styled {
+      float: none;
 
-  .table {
-    tbody {
-      tr {
-        td {
-          &.account-oq__order-info__title {
-            font-size: 1.6rem;
-            padding-left: 0;
-          }
+      padding-bottom: 10px;
+      margin-bottom: 16px;
 
-          &:last-child {
-            font-style: italic;
-          }
-        }
-      }
+      border-bottom: 1px solid @base-border-color;
     }
   }
 }
 
+.account-oq__order-info {
+   max-width: 35rem;
+
+   &__title {
+     font-size: 1.6rem;
+   }
+
+   .table {
+     // TODO: override hard selector
+     > tbody > tr > td {
+       padding-left: 0;
+
+       line-height: 1.4;
+
+       vertical-align: top;
+     }
+
+     td {
+       line-height: 1;
+       vertical-align: bottom;
+
+       &:last-child {
+         font-style: italic;
+         line-height: 1.75;
+       }
+     }
+   }
+}
+
 .account-oq__order-item-more {
-  max-width: 32rem;
+  width: 52%;
+
   color: @base-font-color-lighter;
 
   @media (max-width: 767px) {
-    max-width: 20rem;
+    width: 95%;
+
+    margin-top: 1.2rem;
+    margin-bottom: -1.2rem;
   }
+
 
   div {
     .ellipsis;
+
+    &.oro-long-text-expanded {
+      overflow: visible;
+
+      line-height: 1.2;
+
+      white-space: normal;
+    }
   }
 }
 
@@ -3393,14 +3899,14 @@
 }
 
 .oro-long-text-expanded {
-  .icon-play {
+  .cf-play {
     transform: rotate(90deg);
   }
 }
 
 /*Account page filter controls*/
 .oro-oq__filter-controls {
-  margin: 1rem 0 0;
+  margin: 1rem 0 1rem !important;
 
   &.oro-oq__filter-controls_by-sides {
     display: flex;
@@ -3523,22 +4029,20 @@
     }
 
     .oro-oq__filter__item {
-      flex-grow: 1;
+      flex-grow: 0;
 
       &:first-child {
         flex-basis: 32rem;
-        flex-grow: 0;
+        flex-grow: 1;
         position: relative;
 
         @media (max-width: 1280px) {
-          flex-basis: 100%;
-          margin: 0 0 1rem;
+          flex-basis: 30rem;
         }
       }
 
       &:last-child {
         flex-grow: 0;
-        flex-basis: 15rem;
 
         @media (max-width: 767px) {
           flex-basis: auto;
@@ -3551,8 +4055,6 @@
       }
 
       &.oro-oq__filter__item_group-btn {
-        flex-basis: 9rem;
-
         @media (max-width: 992px) {
           flex-basis: auto !important;
         }
@@ -3837,7 +4339,7 @@
     padding: 0 1rem;
   }
 
-  i, .material-icons {
+  i, [class^="cf-"] {
     font-size: 1.5rem;
     line-height: 1.4rem;
     margin-left: .5rem;
@@ -3846,7 +4348,7 @@
 }
 
 .oq-group-btn {
-  line-height: 1.5rem;
+  line-height: 1.3;
   padding: .8rem 1.5rem !important;
 
   i, span {
@@ -3982,7 +4484,7 @@
     opacity: 1;
     line-height: 1.8rem;
 
-    .material-icons {
+    [class^="cf-"] {
       font-size: 2rem;
     }
   }
@@ -4243,26 +4745,19 @@
 
 .action-select  {
   .input();
-  padding: .5rem .9rem .6rem !important;
-  background: rgb(255,255,255);
-  background: -moz-linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(230,230,230,1) 100%);
-  background: -webkit-gradient(linear, to bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(230,230,230,1))); 
-  background: -webkit-linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(230,230,230,1) 100%);
-  background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(230,230,230,1) 100%); 
-  background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(230,230,230,1) 100%);
-  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(230,230,230,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e6e6e6',GradientType=0 );
-  
+  position: relative;
+
+  padding: .6rem .9rem .6rem !important;
+
+  border: .1rem solid @base-border-color;
+  background: @base-white-color;
+
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
 
   &[disabled] {
-    background: rgb(255,255,255);
-    background: -moz-linear-gradient(to bottom, rgba(255,255,255,1) 0%, #e6e6e6 100%);
-    background: -webkit-gradient(linear, to bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,#e6e6e6)); 
-    background: -webkit-linear-gradient(to bottom, rgba(255,255,255,1) 0%,#e6e6e6 100%);
-    background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,#e6e6e6 100%); 
-    background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,#e6e6e6 100%);
     background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,#e6e6e6 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e6e6e6',GradientType=0 );
   }
 }
 
@@ -4517,7 +5012,7 @@
     opacity: 1;
     line-height: 2rem;
 
-    .material-icons {
+    [class^="cf-"] {
       font-size: 2rem;
     }
   }
@@ -4575,7 +5070,7 @@
       font-size: 1.6rem; 
       margin-right: .3rem;
 
-      &.material-icons {
+      &[class^="cf-"] {
         position: relative;
         bottom: .1rem;
       } 
@@ -4604,7 +5099,7 @@
     opacity: 1;
     line-height: 1.8rem;
 
-    .material-icons {
+    [class^="cf-"] {
       font-size: 2rem;
     }
   }
@@ -4660,7 +5155,7 @@
     &.account-widget__list-expanded,
     &.oro-mp-widget__list-expanded {
 
-      .icon-play {
+      .cf-play {
         transform: rotate(90deg);
       }
 
@@ -4692,7 +5187,7 @@
       width: 100%;
       padding: 1.7rem 0;
 
-      .icon-play {
+      .cf-play {
         font-size: 1.4rem;
       }
     }
@@ -5226,12 +5721,17 @@
   }
 
   &.col-zip {
-    width: 10rem;
+    width: 12rem;
     clear: left;
+    margin-bottom: .1rem;
 
     @media (max-width: 991px) {
       clear: none;
     }
+  }
+
+  &.col-zip-error {
+    clear: both;
   }
 
   .chosen-container{
@@ -5357,7 +5857,7 @@
     }
   }
 
-  &.checkout__form__select_exp-day {
+  &.checkout__form__select_exp-year {
     display: inline-block;
     width: 9rem;
   }
@@ -5460,7 +5960,6 @@
 }
 
 .checkout__form__payment-methods__form {
-  display: none;
   margin: 2rem 0 0;
 }
 
@@ -5481,7 +5980,7 @@
       display: block;
     }
 
-    .icon-play {
+    .cf-play {
       transform: rotate(90deg);
     }
   }
@@ -5499,7 +5998,7 @@
   left: 3.5rem;
   top: 1.9rem;
 
-  .icon-play {
+  .cf-play {
     color: @base-font-color-lighter;
     transition: transform .2s linear;
   }
@@ -5542,16 +6041,31 @@
           padding-left: 0;
         }
 
+        &:last-child {
+          padding-right: 0;
+        }
+
         padding: 1rem 1.2rem;
         border-top: .1rem solid @table-alt-border-color;
+      }
+    }
+
+    .table {
+      td:first-child {
+        text-align: left;
+      }
+
+      td:last-child {
+        text-align: right;
       }
     }
   }
 }
 
 .checkout-order-summary__price-table {
-  max-width: 25rem;
-  display: inline-block;
+  max-width: 22.5rem;
+
+  margin-left: auto;
 
   .table {
     margin: 0;
@@ -6115,7 +6629,7 @@
     .filter-sidebar__title {
       margin-left: -.5rem;
 
-      .icon-play {
+      .cf-play {
         transform: rotate(0);
 
         &.expanded {
@@ -6167,3 +6681,9 @@
   }
 }
 /*/Compare Products*/
+
+.pinned-dropdown {
+  .icons-holder:not(:first-child) {
+    display: none !important;
+  }
+}

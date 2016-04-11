@@ -11,6 +11,15 @@
     .quick-order__copy-paste-description {
         margin-bottom: 1.5rem;
     }
+
+    .notification.notification_error {
+        margin-top: -15px !important;
+        margin-bottom: 10px;
+
+        .mml5-md {
+            margin-left: 0 !important;
+        }
+    }
 }
 
 .quick-order__tabs {
@@ -143,6 +152,16 @@
             display: none;
         }
     }
+
+    [class^="cf"] {
+        font-size: 0;
+
+        &:before {
+            color: @base-link-color;
+
+            font-size: @base-font-size;
+        }
+    }
 }
 
 .quick-order__container {
@@ -189,6 +208,11 @@
             width: 100%;
             float: none;
         }
+
+        .fields-row-error,
+        .fields-row-error-autocomplite {
+            margin: 0 .7rem;
+        }
     }
 
     .form-field-copyPaste {
@@ -209,20 +233,6 @@
         display: block;
         height: 0;
         clear: both;
-    }
-
-    .fields-row-error {
-        margin: 0 .7rem;
-        .validation-failed {
-            font-size: 1.2rem;
-            color: @theme-red2-color;
-            padding: 0;
-            background: none;
-        }
-        .product-autocomplete-name {
-            font-size: 1.2rem;
-            color: @theme-green2-color;
-        }
     }
 }
 .quick-order__form__row__head {
@@ -339,7 +349,8 @@
 }
 /*END QUICK ORDER*/
 
-.quick-order-buttons, .quick-order-import-validation-buttons {
+.quick-order-buttons,
+.quick-order-import-validation-buttons {
     float: right;
     margin: 0;
 
@@ -390,6 +401,10 @@
                     padding: 0 1.5rem;
                 }
 
+                &.icons-holder .direct-link {
+                    width: 100%;
+                }
+
                 > .dropdown-toggle {
                     display: block;
                     margin: 0;
@@ -424,9 +439,15 @@
         border-radius: 4px;
         padding: 0 2.9rem;
         line-height: 4.7rem;
-        background: #626365;
-        color: #fff;
+        background: @theme-middle-gray-color;
+        color: @base-white-color;
         margin: 0 1rem 0 0;
+    }
+
+    .widget-content {
+        .action-button {
+            background-color: @theme-dark-gray-color;
+        }
     }
 }
 
@@ -466,6 +487,16 @@
     .hidden-form {
         .quick-order-import-validation__form__row {
             display: none;
+        }
+    }
+}
+.ui-dialog {
+    &.ui-dialog-no-scroll {
+        .quick-order-import-validation {
+            margin-bottom: -26rem;
+            padding-bottom: 30rem;
+
+            overflow: hidden;
         }
     }
 }

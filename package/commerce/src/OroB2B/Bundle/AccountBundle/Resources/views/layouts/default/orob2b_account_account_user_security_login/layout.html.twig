@@ -1,7 +1,6 @@
-
 {% block _login_page_widget %}
     {% set attr = attr|merge({
-        class: attr.class|default('') ~ " {{ class_prefix }} {{ class_prefix }}_half-cols"
+        class: attr.class|default('') ~ " {{ class_prefix }} {{ class_prefix }}_half-cols create-account_pos-absolute_vert-centered"
     }) %}
     <div{{ block('block_attributes') }}>
         {{ block_widget(block) }}
@@ -42,7 +41,7 @@
     <div{{ block('block_attributes') }}>
         <div>
             <span class="notification__sign notification__sign_error">
-              <i class="icon-attention fs20"></i>
+              <i class="cf-attention fs20"></i>
             </span>
             <span>{{ block_widget(block) }}</span>
         </div>
@@ -100,8 +99,8 @@
         <div class="{{ class_prefix }}__form__col">
             <label{{ block('block_label_attributes') }}>
                 {{ block_widget(block) }}
-                <i class="material-icons checkbox_checked fs18 mmr5-md">check_box</i>
-                <i class="material-icons checkbox_not-checked fs18 mmr5-md">check_box_outline_blank</i>
+                <i class="cf-check_box checkbox_checked fs18 mmr5-md"></i>
+                <i class="cf-check_box_outline_blank checkbox_not-checked fs18 mmr5-md"></i>
                 <span class="checkbox_custom__text fs13">{{ label|block_text(translation_domain) }}</span>
             </label>
         </div>
@@ -114,4 +113,20 @@
             {{ block_widget(block) }}
         </div>
     </fieldset>
+{% endblock %}
+
+{% block _login_form_forgot_widget %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ block_widget(block) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block _login_form_register_widget %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ block_widget(block) }}
+        </div>
+    </div>
 {% endblock %}

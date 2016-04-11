@@ -26,7 +26,7 @@ class LoadB2bCustomerData extends AbstractFixture implements OrderedFixtureInter
 
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -35,7 +35,7 @@ class LoadB2bCustomerData extends AbstractFixture implements OrderedFixtureInter
         $data = $this->getData();
         foreach ($data['customers'] as $customerData) {
             $customer = $this->createCustomer($customerData);
-            $this->setB2bCustomerReference($customerData['uid'], $customer);
+            $this->setCustomerReference($customerData['uid'], $customer);
             $manager->persist($customer);
         }
         $manager->flush();
@@ -93,7 +93,7 @@ class LoadB2bCustomerData extends AbstractFixture implements OrderedFixtureInter
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

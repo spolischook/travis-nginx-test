@@ -20,7 +20,7 @@ class LoadMagentoIntegrationData extends AbstractFixture implements OrderedFixtu
     protected $factory;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -39,7 +39,7 @@ class LoadMagentoIntegrationData extends AbstractFixture implements OrderedFixtu
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -73,7 +73,7 @@ class LoadMagentoIntegrationData extends AbstractFixture implements OrderedFixtu
             $dataChannel = $builder->getChannel();
             $this->enableRFMMetric($dataChannel);
 
-            $this->setMagentoChannelReference($integrationData['uid'], $dataChannel);
+            $this->setChannelReference($integrationData['uid'], $dataChannel);
             $manager->persist($dataChannel);
         }
         $manager->flush();
@@ -92,7 +92,7 @@ class LoadMagentoIntegrationData extends AbstractFixture implements OrderedFixtu
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

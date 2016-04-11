@@ -30,7 +30,7 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
     protected $navigationFactory;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -40,7 +40,7 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -138,7 +138,7 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

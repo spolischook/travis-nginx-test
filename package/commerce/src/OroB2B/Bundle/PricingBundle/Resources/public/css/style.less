@@ -1,11 +1,45 @@
 @import "oroui/css/less/mixins";
 
 .product-price-collection {
+  .small-row > div > div {
+    float: left;
+  }
+
+  .grouped-fields {
+    width: 100%;
+    padding-top: 7px;
+    display: inline-block;
+  }
+
+  .group-label {
+    width: 75px;
+  }
+
+  .col-widget {
+    width: 100px;
+    margin-right: 22px;
+  }
+
   input[type="text"].quantity,
   input[type="text"].price-value,
   .entity-create-or-select-container {
     margin-left: 4px;
-    width: 280px;
+    width: 100px;
+  }
+
+  .price-currency {
+    margin-left: 5px;
+    width: 100px;
+  }
+
+  .price-currency-div {
+    .selector, span {
+      width: 170px !important;
+    }
+  }
+
+  .unit {
+    width: 156px !important;
   }
 
   .select2-container {
@@ -43,6 +77,19 @@
       text-decoration: none;
     }
   }
+
+  div[data-validation-optional-group=""] {
+    padding-right: 20px;
+    display: inline-block;
+  }
+
+  .oro-multiselect-holder {
+    padding-right: 50px !important;
+  }
+
+  .form-horizontal {
+    max-width: none;
+  }
 }
 
 .product-container {
@@ -79,10 +126,10 @@
   }
 }
 
-.product-price-filter {
-  .choice-filter {
-    display: inline-block;
-    width: auto;
+.product-price-filter-criteria {
+  margin-bottom: 7px;
+  .btn-group {
+    margin-bottom: 0;
   }
 
   .filter-end {
@@ -91,18 +138,22 @@
     }
   }
 
-  .value-field-frame {
-    margin-right: 0 !important;
-  }
-
-  .product-price-unit-filter {
-    display: inline-block;
-    margin-bottom: 0;
+  .product-price-filter {
+    display: inline;
+    .product-price-unit-filter {
+      float: none !important;
+      .dropdown-toggle {
+        border-radius: 3px !important;
+      }
+    }
   }
 
   .filter-update {
+    left: auto !important;
+    position: relative !important;
     float: right;
-    margin-bottom: 4px;
+    margin: 8px 0;
+    border-radius: 3px !important;
   }
 }
 
@@ -144,7 +195,7 @@
   }
 
   .removeRow {
-    &:after{
+    &:after {
       text-indent: 6px;
     }
   }
@@ -164,4 +215,39 @@
 
 .tab-content > .tab-pane.price-list-by-account-grid {
   padding: 0 20px;
+}
+
+@media screen and (min-width: 1470px) {
+  #product_prices {
+    .control-group {
+      max-width: none;
+    }
+  }
+
+  .group-label {
+    label {
+      line-height: 25px;
+      vertical-align: middle;
+    }
+  }
+
+  .product-price-collection {
+
+    .small-row {
+      display: inline-block;
+    }
+
+    .col-widget {
+      width: auto;
+      margin-right: 5px;
+    }
+
+    .group-label {
+      width: auto !important;
+    }
+
+    .grouped-fields {
+      margin-left: 25px;
+    }
+  }
 }

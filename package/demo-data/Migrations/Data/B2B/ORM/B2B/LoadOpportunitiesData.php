@@ -37,7 +37,7 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -56,7 +56,7 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
     protected function createOpportunity(array $opportunityData, User $user)
     {
         $contact  = $this->getContactReference($opportunityData['contact uid']);
-        $customer = $this->getB2bCustomerReference($opportunityData['customer uid']);
+        $customer = $this->getCustomerReference($opportunityData['customer uid']);
         $created  = $this->generateCreatedDate();
         /** @var Organization $organization */
         $organization = $user->getOrganization();
@@ -215,7 +215,7 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

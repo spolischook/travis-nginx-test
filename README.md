@@ -6,6 +6,7 @@ global impact (affect all applications for example) so code organization should 
 Monolithic repository is used by product development team and contains all supported applications code.
 
 [![Build Status](https://travis-ci.com/laboro/dev.svg?token=xpj6qKNzq4qGqYEzx4Vm&branch=master)](https://travis-ci.com/laboro/dev)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/72e37cec-75b7-4b2b-bc8a-72544beaa446/mini.png)](https://insight.sensiolabs.com/projects/72e37cec-75b7-4b2b-bc8a-72544beaa446)
 
 ## Repository Structure
 
@@ -75,7 +76,7 @@ If you would like to add new code from existing upstream repository, you should 
 php tool/console repository:sync REPO_NAME
 ```
 
-### Syncronize subtree and upstream repository changes
+### Synchronize subtree and upstream repository changes
 
 In order to update subtree with code from original repository you will need to run following commands:
 
@@ -90,5 +91,35 @@ php tool/console repository:sync --two-way
 ```
 
 *Note:* please pay attention to command output, if conflict will occur during subtree merge you'll need to resolve it
-and run command again. If you notice **Working tree has modifications.  Cannot add.** in the output, it indicates that
-you either have local changes that should be committed or conflict occurred during merge and it should be resolved.
+and run command again. If you have next notice **There are untracked files in the working tree, to continue please 
+clean the working tree. Use "git status" command to see details.** in the output, it indicates that you have local 
+changes that should be committed before execute the command.
+
+### Synchronize subtree with changes from specific branch in upstream repository  
+
+In order to update subtree with code from specific branch in original repository you will need to run following commands:
+
+```bash
+php tool/console repository:branch-sync some-branch
+```
+
+*Note:* The specified branch will be created in current repository if it doesn't exist
+
+In order to synchronize changes in specific branch between subtree and upstream repository you will need to run following command:
+
+```bash
+php tool/console repository:branch-sync --two-way
+```
+
+*Note:* The specified branch will be created in current repository if it doesn't exist
+
+In order to get a list of repositories where the specified branch exists you will need to run following command:
+
+```bash
+php tool/console repository:branch-sync --dry-run
+```
+
+*Note:* please pay attention to command output, if conflict will occur during subtree merge you'll need to resolve it
+and run command again. If you have next notice **There are untracked files in the working tree, to continue please 
+clean the working tree. Use "git status" command to see details.** in the output, it indicates that you have local 
+changes that should be committed before execute the command.

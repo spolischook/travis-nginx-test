@@ -20,7 +20,7 @@ class LoadCustomerGroupData extends AbstractFixture implements OrderedFixtureInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -37,7 +37,7 @@ class LoadCustomerGroupData extends AbstractFixture implements OrderedFixtureInt
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getOrder()
     {

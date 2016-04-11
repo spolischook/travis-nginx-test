@@ -18,14 +18,15 @@
                     <span class="{{ class_prefix }}__form__item-remove removeRow"><i class="icon-remove"></i></span>
                 {% endif %}
             </div>
-            <div class="fields-row-error">
-                <div class="product-autocomplete-name" style="display: none">
-                    <i class="icon-ok-sign"></i><span></span>
-                </div>
+            <div class="fields-row-error">{# Dinamic content #}</div>
+            <div class="fields-row-error-autocomplite">
+                {{ form_errors(form.productQuantity) }}
                 <div class="product-autocomplete-error" style="display: none;">
                     <span class="validation-failed">SKU not found</span>
                 </div>
-                {{ form_errors(form.productQuantity) }}
+                <div class="product-autocomplete-name validation-passed" style="display: none">
+                    <i class="cf-check_box cf--base-line"></i><span></span>
+                </div>
             </div>
         </fieldset>
     </div>
@@ -69,7 +70,7 @@
                 <div class="{{ class_prefix }}__form__col {{ class_prefix }}__form__col_full">
                     <a href="#" class="add-more-rows-btn add-list-item" data-container=".oro-item-collection"
                        href="javascript: void(0);">
-                        <i class="material-icons fs18 blue">add_circle</i>
+                        <i class="cf-add_circle fs18 blue"></i>
                         <span>{{ form.vars.add_label|default('oro.form.collection.add')|trans }}</span>
                     </a>
                 </div>
