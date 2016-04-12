@@ -58,8 +58,8 @@ services:
         class: %oropro_security.licence.server_agent.class%
         arguments:
             - %enterprise_licence%
-            - @oropro_security.licence.sender
-            - @doctrine
+            - "@oropro_security.licence.sender"
+            - "@doctrine"
 
     oropro_security.licence.sender:
         class: %oropro_security.licence.sender.class%
@@ -68,43 +68,43 @@ services:
     oropro_security.provider.share_grid_provider:
         class: %oropro_security.provider.share_grid_provider.class%
         arguments:
-            - @oro_security.security_facade
-            - @oro_entity.entity_class_name_helper
-            - @oro_entity_config.config_manager
-            - @oropro_security.provider.share_scope_provider
-            - @translator
+            - "@oro_security.security_facade"
+            - "@oro_entity.entity_class_name_helper"
+            - "@oro_entity_config.config_manager"
+            - "@oropro_security.provider.share_scope_provider"
+            - "@translator"
 
     oropro_security.provider.share_provider:
         class: %oropro_security.provider.share_provider.class%
         arguments:
-            - @doctrine
-            - @security.acl.provider
-            - @security.acl.security_identity_retrieval_strategy
+            - "@doctrine"
+            - "@security.acl.provider"
+            - "@security.acl.security_identity_retrieval_strategy"
 
     oropro_security.provider.share_scope_provider:
         class: %oropro_security.provider.share_scope_provider.class%
         arguments:
-            - @oro_entity_config.config_manager
+            - "@oro_entity_config.config_manager"
 
     #forms, handlers, extensions
     oropro_security.form.type.share_scope:
         class: %oropro_security.form.type.share_scope.class%
         arguments:
-            - @oro_entity_config.config_manager
+            - "@oro_entity_config.config_manager"
         tags:
             - { name: form.type, alias: oropro_share_scope }
 
     oropro_security.form.type.share_select:
         class: %oropro_security.form.type.share_select.class%
         arguments:
-            - @doctrine.orm.entity_manager
+            - "@doctrine.orm.entity_manager"
         tags:
             - { name: form.type, alias: oropro_share_select }
 
     oropro_security.form.type.share:
         class: %oropro_security.form.type.share.class%
         arguments:
-            - @oro_entity.entity_class_name_helper
+            - "@oro_entity.entity_class_name_helper"
         tags:
             - { name: form.type, alias: oropro_share }
 
@@ -112,11 +112,11 @@ services:
         class: %oropro_security.form.handler.share.class%
         scope: request
         arguments:
-            - @oropro_security.form.share
-            - @request
-            - @security.acl.provider
-            - @doctrine.orm.entity_manager
-            - @oro_entity_config.provider.security
+            - "@oropro_security.form.share"
+            - "@request"
+            - "@security.acl.provider"
+            - "@doctrine.orm.entity_manager"
+            - "@oro_entity_config.provider.security"
 
     oropro_security.form.model.factory:
         class: %oropro_security.form.model.factory.class%
@@ -143,24 +143,24 @@ services:
     oropro_security.placeholder.filter:
         class: %oropro_security.placeholder.filter.class%
         arguments:
-            - @oro_security.security_facade
-            - @oro_entity_config.provider.security
+            - "@oro_security.security_facade"
+            - "@oro_entity_config.provider.security"
 
     #datagrid
     oropro_security.datasource.share:
         class: %oropro_security.datasource.share.class%
         arguments:
-            - @security.acl.provider
-            - @oro_entity.routing_helper
-            - @doctrine.orm.entity_manager
-            - @oropro_security.formatter.share_formatter
+            - "@security.acl.provider"
+            - "@oro_entity.routing_helper"
+            - "@doctrine.orm.entity_manager"
+            - "@oropro_security.formatter.share_formatter"
         tags:
             - { name: oro_datagrid.datasource, type: share }
 
     oropro_security.event_listener.share_grid_listener:
         class: %oropro_security.event_listener.share_grid_listener.class%
         arguments:
-            - @request_stack
+            - "@request_stack"
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.shared-datagrid, method: onBuildBefore }
 
@@ -168,53 +168,53 @@ services:
     oropro_security.twig.security_share_extension:
         class: %oropro_security.twig.security_share_extension.class%
         arguments:
-            - @doctrine.orm.entity_manager
-            - @security.acl.cache.doctrine
-            - @oro_security.security_facade
-            - @oro_locale.formatter.name
-            - @translator
-            - @oro_entity_config.provider.security
+            - "@doctrine.orm.entity_manager"
+            - "@security.acl.cache.doctrine"
+            - "@oro_security.security_facade"
+            - "@oro_locale.formatter.name"
+            - "@translator"
+            - "@oro_entity_config.provider.security"
         tags:
             - { name: twig.extension }
 
     oropro_security.formatter.share_formatter:
         class: %oropro_security.formatter.share_formatter.class%
         arguments:
-            - @translator
-            - @oro_attachment.manager
+            - "@translator"
+            - "@oro_attachment.manager"
 
     #search
     oropro_security_search.index:
         class: %oropro_security_search.index.class%
         arguments:
-            - @doctrine.orm.entity_manager
-            - @twig
-            - @oro_entity_config.config_manager
-            - @oro_search.index
-            - @oropro_security.formatter.share_formatter
-            - @oropro_security.provider.share_scope_provider
+            - "@doctrine.orm.entity_manager"
+            - "@twig"
+            - "@oro_entity_config.config_manager"
+            - "@oro_search.index"
+            - "@oropro_security.formatter.share_formatter"
+            - "@oropro_security.provider.share_scope_provider"
 
     #orm
     oropro_security.orm.share_condition_data_builder:
         class: %oropro_security.orm.share_condition_data_builder.class%
         arguments:
-            - @security.token_storage
-            - @doctrine
-            - @oro_entity_config.provider.security
-            - @security.acl.security_identity_retrieval_strategy
+            - "@security.token_storage"
+            - "@doctrine"
+            - "@oro_entity_config.provider.security"
+            - "@security.acl.security_identity_retrieval_strategy"
 
     #listeners
     oropro_security.ace.query.manager:
         class: %oropro_security.ace.query.manager.class%
         arguments:
-            - @oro_entity.doctrine_helper
+            - "@oro_entity.doctrine_helper"
 
     oropro_security.listener.entity_config:
         class: %oropro_security.listener.entity_config.class%
         arguments:
-            - @oropro_security.ace.query.manager
-            - @doctrine
-            - @security.acl.cache.doctrine
+            - "@oropro_security.ace.query.manager"
+            - "@doctrine"
+            - "@security.acl.cache.doctrine"
         tags:
             - { name: kernel.event_listener, event: oro.entity_config.post_flush, method: postFlushConfig }
 
