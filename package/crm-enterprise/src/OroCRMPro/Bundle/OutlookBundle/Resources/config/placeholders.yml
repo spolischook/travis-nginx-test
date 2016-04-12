@@ -6,4 +6,4 @@ placeholders:
 items:
     orocrmpro_outlook_addin_download:
         action: OroCRMProOutlookBundle:Outlook:downloadAddin
-        applicable: @oro_ui.placeholder.filter->isTrue($viewProfile$)
+        applicable: "@oro_ui.placeholder.filter->isTrue($viewProfile$)"
