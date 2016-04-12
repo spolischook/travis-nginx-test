@@ -3998,7 +3998,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/commerce/",
-                "reference": "4a639d66ff92742a58c75cae9e45bfe02a243c9b",
+                "reference": "7f4e2cab8445249c55568937c777d27957d26256",
                 "shasum": null
             },
             "require": {
@@ -4010,7 +4010,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.x-dev"
+                    "dev-master": "1.x-dev"
                 }
             },
             "autoload": {
