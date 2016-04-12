@@ -82,13 +82,14 @@ case $step in
              cp app/config/parameters_test.yml.dist app/config/parameters_test.yml;
           fi 
           case $DB in
-               mysql) 
+               mysql)
                       mysql -u root -e 'create database IF NOT EXISTS oro_crm_test';
+                      sed -i "s/database_driver"\:".*/database_driver"\:" pdo_mysql/g; s/database_name"\:".*/database_name"\:" oro_crm_test/g; s/database_user"\:".*/database_user"\:" root/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
                ;;
-               postgresql) 
+               postgresql)
                       psql -U postgres -c "CREATE DATABASE oro_crm_test WITH lc_collate = 'C' template = template0;";
                       psql -U postgres -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' -d oro_crm_test; 
-                      sed -i "s/database_driver"\:".*/database_driver"\:" pdo_pgsql/g; s/database_user"\:".*/database_user"\:" postgres/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
+                      sed -i "s/database_driver"\:".*/database_driver"\:" pdo_pgsql/g; s/database_name"\:".*/database_name"\:" oro_crm_test/g; s/database_user"\:".*/database_user"\:" postgres/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
                ;; 
           esac
     ;;
