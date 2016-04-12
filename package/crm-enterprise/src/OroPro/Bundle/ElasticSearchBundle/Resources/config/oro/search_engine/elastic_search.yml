@@ -33,24 +33,24 @@ services:
     oro_search.search.engine:
         class: %oropro_elasticsearch.engine.class%
         arguments:
-            - @doctrine
-            - @event_dispatcher
-            - @oro_entity.doctrine_helper
-            - @oro_search.mapper
-            - @oropro_elasticsearch.engine.index_agent
+            - "@doctrine"
+            - "@event_dispatcher"
+            - "@oro_entity.doctrine_helper"
+            - "@oro_search.mapper"
+            - "@oropro_elasticsearch.engine.index_agent"
         calls:
             - [setLogQueries, [%oro_search.log_queries%]]
-            - [addRequestBuilder, [@oropro_elasticsearch.request_builder.from]]
-            - [addRequestBuilder, [@oropro_elasticsearch.request_builder.where]]
-            - [addRequestBuilder, [@oropro_elasticsearch.request_builder.order]]
-            - [addRequestBuilder, [@oropro_elasticsearch.request_builder.limit]]
+            - [addRequestBuilder,  ["@oropro_elasticsearch.request_builder.from"]]
+            - [addRequestBuilder,  ["@oropro_elasticsearch.request_builder.where"]]
+            - [addRequestBuilder,  ["@oropro_elasticsearch.request_builder.order"]]
+            - [addRequestBuilder,  ["@oropro_elasticsearch.request_builder.limit"]]
 
     oropro_elasticsearch.engine.index_agent:
         class: %oropro_elasticsearch.engine.index_agent.class%
         arguments:
-            - @oropro_elasticsearch.client.factory
+            - "@oropro_elasticsearch.client.factory"
             - %oro_search.engine_parameters%
-            - @oro_search.provider.search_mapping
+            - "@oro_search.provider.search_mapping"
         calls:
             - [setFieldTypeMapping, [%oropro_elasticsearch.field_type_mapping%]]
 
@@ -63,10 +63,10 @@ services:
     oropro_elasticsearch.request_builder.where:
         class: %oropro_elasticsearch.request_builder.where.class%
         calls:
-            - [addPartBuilder, [@oropro_elasticsearch.request_builder.where.contains]]
-            - [addPartBuilder, [@oropro_elasticsearch.request_builder.where.equals]]
-            - [addPartBuilder, [@oropro_elasticsearch.request_builder.where.range]]
-            - [addPartBuilder, [@oropro_elasticsearch.request_builder.where.in]]
+            - [addPartBuilder,  ["@oropro_elasticsearch.request_builder.where.contains"]]
+            - [addPartBuilder,  ["@oropro_elasticsearch.request_builder.where.equals"]]
+            - [addPartBuilder,  ["@oropro_elasticsearch.request_builder.where.range"]]
+            - [addPartBuilder,  ["@oropro_elasticsearch.request_builder.where.in"]]
 
     oropro_elasticsearch.request_builder.order:
         class: %oropro_elasticsearch.request_builder.order.class%

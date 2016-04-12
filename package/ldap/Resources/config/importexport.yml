@@ -10,27 +10,27 @@ parameters:
 services:
     orocrmpro_ldap.importexport.serializer:
         class: %orocrmpro_ldap.importexport.serializer.class%
-        arguments: [@oro_importexport.serializer]
+        arguments: ["@oro_importexport.serializer"]
         lazy: true
 
     orocrmpro_ldap.importexport.import.strategy:
         class: %orocrmpro_ldap.importexport.import.strategy.class%
         parent: oro_importexport.strategy.configurable_add_or_replace
         arguments:
-            - @oro_integration.helper.default_owner_helper
-            - @oro_integration.provider.connector_context_mediator
-            - @orocrmpro_ldap.importexport.helper
+            - "@oro_integration.helper.default_owner_helper"
+            - "@oro_integration.provider.connector_context_mediator"
+            - "@orocrmpro_ldap.importexport.helper"
 
     orocrmpro_ldap.importexport.data_converter.user:
         class: %orocrmpro_ldap.importexport.data_converter.user.class%
-        arguments: [@oro_integration.provider.connector_context_mediator, @oro_importexport.context_registry]
+        arguments: ["@oro_integration.provider.connector_context_mediator", "@oro_importexport.context_registry"]
 
     orocrmpro_ldap.importexport.processor.user.import:
         parent: oro_importexport.processor.import_abstract
         calls:
-           - [setDataConverter, [@orocrmpro_ldap.importexport.data_converter.user]]
-           - [setSerializer, [@orocrmpro_ldap.importexport.serializer]]
-           - [setStrategy, [@orocrmpro_ldap.importexport.import.strategy]]
+           - [setDataConverter, ["@orocrmpro_ldap.importexport.data_converter.user"]]
+           - [setSerializer, ["@orocrmpro_ldap.importexport.serializer"]]
+           - [setStrategy, ["@orocrmpro_ldap.importexport.import.strategy"]]
         tags:
             - { name: oro_importexport.processor, type: import, entity: %oro_user.entity.class%, alias: orocrmpro_ldap_user_import }
 
@@ -38,20 +38,20 @@ services:
         parent: oro_importexport.processor.export_abstract
         class: %orocrmpro_ldap.importexport.processor.user.export.class%
         arguments:
-            - @oro_importexport.context_registry
+            - "@oro_importexport.context_registry"
         calls:
-            - [setDataConverter, [@orocrmpro_ldap.importexport.data_converter.user]]
-            - [setSerializer, [@orocrmpro_ldap.importexport.serializer]]
+            - [setDataConverter, ["@orocrmpro_ldap.importexport.data_converter.user"]]
+            - [setSerializer, ["@orocrmpro_ldap.importexport.serializer"]]
         tags:
             - { name: oro_importexport.processor, type: export, entity: %oro_user.entity.class%, alias: orocrmpro_ldap_user_export }
 
     orocrmpro_ldap.importexport.writer.user:
         class: %orocrmpro_ldap.importexport.writer.user.class%
         arguments:
-            - @oro_importexport.context_registry
-            - @oro_integration.provider.connector_context_mediator
-            - @orocrmpro_ldap.importexport.helper
+            - "@oro_importexport.context_registry"
+            - "@oro_integration.provider.connector_context_mediator"
+            - "@orocrmpro_ldap.importexport.helper"
 
     orocrmpro_ldap.importexport.helper:
         class: %orocrmpro_ldap.importexport.helper.class%
-        arguments: [@oro_integration.provider.connector_context_mediator, @doctrine]
+        arguments: ["@oro_integration.provider.connector_context_mediator", "@doctrine"]
