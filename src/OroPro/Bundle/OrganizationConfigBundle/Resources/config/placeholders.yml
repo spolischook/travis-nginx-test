@@ -6,4 +6,4 @@ placeholders:
 items:
     organization_config_button:
         template: OroProOrganizationConfigBundle:Configuration:button.html.twig
-        applicable: @oropro_organization_config.placeholder.filter->isOrganizationPage($entity$)
+        applicable: "@oropro_organization_config.placeholder.filter->isOrganizationPage($entity$)"
