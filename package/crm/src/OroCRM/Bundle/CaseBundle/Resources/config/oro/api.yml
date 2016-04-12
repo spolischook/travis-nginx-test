@@ -1,4 +1,0 @@
-oro_api:
-    entities:
-        OroCRM\Bundle\CaseBundle\Entity\CaseComment: ~
-        OroCRM\Bundle\CaseBundle\Entity\CaseEntity: ~

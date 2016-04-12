@@ -1,5 +1,0 @@
-Uid,Organization uid,Integration uid,Campaign Email uid,Origin_id,Web_id,Title,Subject,Content_type,Type,Status,Emails_sent,Tests_sent,Opens,Clicks,Forwards,Hard_bounces,Soft_bounces,Unsubscribes,Abuse_reports
-1,1,1,1,1,1,Contact campaign,Subject,template,regular,send,170,2,96,43,2,0,0,4,0
-2,1,1,2,2,1,Featured product of the month,Featured product of the month,template,regular,send,1400,3,1213,904,30,0,1,8,0
-3,1,1,3,3,1,Featured article,Featured article,template,regular,send,350,2,286,240,4,0,0,8,0
-4,1,1,4,4,1,Best sales,Best sales,template,regular,send,1950,3,1676,1498,62,0,2,9,0

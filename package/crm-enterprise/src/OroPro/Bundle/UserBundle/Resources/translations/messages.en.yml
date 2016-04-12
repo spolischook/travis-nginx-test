@@ -1,9 +1,0 @@
-oro:
-    user:
-        role:
-            organization.label: Organization
-
-oropro:
-    user:
-        role:
-            global_organization.label: System-wide

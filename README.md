@@ -1,125 +1,114 @@
-# Oro Monolithic Development Repository
+OroCommerce Sample Application
+==============================
 
-Oro, Inc. team works on multiple different initiatives, products, projects and applications. Often changes may have
-global impact (affect all applications for example) so code organization should allow to do them in efficient way.
+What is OroCommerce?
+--------------------
 
-Monolithic repository is used by product development team and contains all supported applications code.
+OroCommerce is an open-source Business to Business Commerce application built with flexibility in mind.
+OroCommerce can be customized and extended to fit any B2B commerce needs.
 
-[![Build Status](https://travis-ci.com/laboro/dev.svg?token=xpj6qKNzq4qGqYEzx4Vm&branch=master)](https://travis-ci.com/laboro/dev)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/72e37cec-75b7-4b2b-bc8a-72544beaa446/mini.png)](https://insight.sensiolabs.com/projects/72e37cec-75b7-4b2b-bc8a-72544beaa446)
+## Requirements
 
-## Repository Structure
+OroCommerce is a Symfony 2 based application with the following requirements:
 
-Monolithic repository created based individual package and application repositories and divide code into two groups: 
+* PHP 5.4.9 or above
+* PHP 5.4.9 or above with command line interface
+* PHP Extensions
+    * GD
+    * Mcrypt
+    * JSON
+    * ctype
+    * Tokenizer
+    * SimpleXML
+    * PCRE
+    * ICU
+* MySQL 5.1 or above
+* PostgreSQL 9.1 or above
 
-- application - all application repositories with dependency on packages that are handled with 
-[path](https://getcomposer.org/doc/05-repositories.md#path) repository type from composer
-- documentation - all products documentation
-- package - functional packages that are used to build certain applications
-- tool - CLI and other tools necessary for repository and code maintenance 
+## Installation instructions
 
-## Installation and Initialization
+### Using Composer
 
-* [Install composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) globally 
-* Clone repository to the local environment:
-```bash
-git clone git@github.com:laboro/dev.git
-```
-* Go to the root folder:
-```bash
-cd dev
-```
-* Install tools in `tool` folder:
-```bash
-cd tool && composer install && cd ..
-```
-* Install all dependencies for the application(s) you are going to work on (crm application used as example):
-```bash
-cd application/crm && composer install && cd ../..
-```
-* Install application via web or command line interface
+This OroCommerce application uses both [Composer][1] and [Git Submodules][5] to manage its dependencies, this is the recommended way to install the application.
 
-## Development Experience
-
-* Enable PHPStorm configuration for application you will be working on with:
-```bash
-php tool/console phpstorm:init-application {application_name}
-```
-* Create feature branch
-* Do code changes
-* Push branch to remote repository and create a pull request
-
-*Note:* to see all existing applications run `phpstorm:init-application` without parameters:
-```bash
-php tool/console phpstorm:init-application
-```
-
-### IDE
-
-PHPStorm is the recommended IDE for Oro projects. Following plugins will help to improve developer experience:
-
-* Symfony2 - allows to simplify code navigation within an application
-* Markdown - helps with Markdown (*.md) files
-
-## Maintenance
-
-This repository created based on individual repositories with 
-[git-subtree](https://github.com/git/git/blob/master/contrib/subtree/git-subtree.txt) capabilities. 
-Maintenance cycle includes a few typical tasks:
-
-### Adding new subtree
-
-If you would like to add new code from existing upstream repository, you should add new record to `$repositories` in
-[Oro\Cli\Command\Repository\Sync](./tool/src/Oro/Cli/Command/Repository/Sync.php) class and run following command:
+ - If you don't have Composer yet, download it and follow the instructions on
+http://getcomposer.org/ or just run the following command:
 
 ```bash
-php tool/console repository:sync REPO_NAME
+curl -s https://getcomposer.org/installer | php
 ```
 
-### Synchronize subtree and upstream repository changes
-
-In order to update subtree with code from original repository you will need to run following commands:
+- Clone https://github.com/orocommerce/orocommerce-application.git repository with
 
 ```bash
-php tool/console repository:sync
+git clone --recursive https://github.com/orocommerce/orocommerce-application.git
 ```
 
-In order to synchronize subtree and upstream repository you will need to run following command:
+- Make sure that you have [NodeJS][2] installed
+
+- Install project dependencies with composer. If installation process seems too slow you can use "--prefer-dist" option.
+  Run composer installation:
 
 ```bash
-php tool/console repository:sync --two-way
+php composer.phar install --prefer-dist
 ```
 
-*Note:* please pay attention to command output, if conflict will occur during subtree merge you'll need to resolve it
-and run command again. If you have next notice **There are untracked files in the working tree, to continue please 
-clean the working tree. Use "git status" command to see details.** in the output, it indicates that you have local 
-changes that should be committed before execute the command.
+- Create the database with the name specified on previous step (default name is "b2b_dev").
 
-### Synchronize subtree with changes from specific branch in upstream repository  
-
-In order to update subtree with code from specific branch in original repository you will need to run following commands:
+- Install application and admin user with Installation Wizard by opening install.php in the browser or from CLI:
 
 ```bash
-php tool/console repository:branch-sync some-branch
+php app/console oro:install --env prod
 ```
+**Note:** If the installation process times out, add the `--timeout=0` argument to the command.
 
-*Note:* The specified branch will be created in current repository if it doesn't exist
-
-In order to synchronize changes in specific branch between subtree and upstream repository you will need to run following command:
+- Enable WebSockets messaging
 
 ```bash
-php tool/console repository:branch-sync --two-way
+php app/console clank:server --env prod
 ```
 
-*Note:* The specified branch will be created in current repository if it doesn't exist
-
-In order to get a list of repositories where the specified branch exists you will need to run following command:
+- Configure crontab or scheduled tasks execution to run the command below every minute:
 
 ```bash
-php tool/console repository:branch-sync --dry-run
+php app/console oro:cron --env prod
 ```
 
-*Note:* please pay attention to command output, if conflict will occur during subtree merge you'll need to resolve it
-and run command again. If you have next notice **There are untracked files in the working tree, to continue please 
-clean the working tree. Use "git status" command to see details.** in the output, it indicates that you have local 
-changes that should be committed before execute the command.
+**Note:** ``app/console`` is a path from project root folder. Please make sure you are using full path for crontab configuration or if you running console command from other location.
+
+## Installation notes
+
+Installed PHP Accelerators must be compatible with Symfony and Doctrine (support DOCBLOCKs)
+
+Note that the port used in Websocket must be open in firewall for outgoing/incoming connections
+
+Using MySQL 5.6 on HDD is potentially risky because of performance issues
+
+Recommended configuration for this case:
+
+    innodb_file_per_table = 0
+
+And ensure that timeout has default value
+
+    wait_timeout = 28800
+
+See [Optimizing InnoDB Disk I/O][3] for more
+
+## PostgreSQL installation notes
+
+You need to load `uuid-ossp` extension for proper doctrine's `guid` type handling.
+Log into database and run sql query:
+
+```
+CREATE EXTENSION "uuid-ossp";
+```
+
+## Web Server Configuration
+
+The OroCommerce sample application is based on the Symfony standard application so web server configuration recommendations are the [same][4].
+
+[1]: http://getcomposer.org/
+[2]: https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
+[3]: http://dev.mysql.com/doc/refman/5.6/en/optimizing-innodb-diskio.html
+[4]: http://symfony.com/doc/2.3/cookbook/configuration/web_server_configuration.html
+[5]: https://git-scm.com/book/en/v2/Git-Tools-Submodules

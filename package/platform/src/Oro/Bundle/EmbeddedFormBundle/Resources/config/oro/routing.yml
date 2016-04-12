@@ -1,5 +1,0 @@
-oro_embedded_form:
-    resource: "@OroEmbeddedFormBundle/Controller"
-    type: annotation
-    prefix: /embedded-form
-

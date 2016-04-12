@@ -1,2 +1,0 @@
-oro_email:
-    email_sync_exclusions: ["Oro\Bundle\UserBundle\Entity\User"]

@@ -1,2 +1,0 @@
-bundles:
-    - { name: OroCRM\Bundle\ZendeskBundle\OroCRMZendeskBundle, priority: 101 }

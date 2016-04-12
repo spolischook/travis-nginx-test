@@ -1,4 +1,0 @@
-oro_pro_ews_bundle:
-    resource:     "@OroProEwsBundle/Controller"
-    type:         annotation
-    prefix:       /ews

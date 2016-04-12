@@ -1,9 +1,0 @@
-workflows:
-    b2c_flow_order_follow_up:
-        transition_definitions:
-            __start___definition:
-                pre_conditions:
-                    @not_empty: $order.id
-            record_feedback_definition:
-                pre_conditions:
-                    @not_empty: $order.id

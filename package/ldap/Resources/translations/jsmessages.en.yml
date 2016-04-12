@@ -1,5 +1,0 @@
-orocrmpro.ldap:
-    transport.ldap.fields.check.message:
-        success:  Successfully connected to LDAP server.
-        invalid:  Parameters are not valid.
-        error:    Error occurred during check request, please try later!

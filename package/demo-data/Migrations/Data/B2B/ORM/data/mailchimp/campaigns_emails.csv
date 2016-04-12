@@ -1,4 +1,0 @@
-Uid,User uid,Organization uid,Marketing list uid,Name,Sent,Transport,Schedule,Sender_email,Sender_name
-1,main,1,1,Information on the featured product of the month,1,mailchimp,manual,product.shop@b2b-oro.com,Featured product of the month
-2,main,1,2,Featured article,1,mailchimp,manual,featured.article@b2b-oro.com,Featured article
-3,main,1,2,Signing up for a newsletter,1,mailchimp,manual,newsletter@b2b-oro.com,Signing up for a newsletter

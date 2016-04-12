@@ -1,9 +1,0 @@
-placeholders:
-    view_user_api_block_after:
-        items:
-            orocrmpro_outlook_addin_download: ~
-
-items:
-    orocrmpro_outlook_addin_download:
-        action: OroCRMProOutlookBundle:Outlook:downloadAddin
-        applicable: @oro_ui.placeholder.filter->isTrue($viewProfile$)

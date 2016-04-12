@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="Symfony2PluginSettings">
-    <option name="pathToUrlGenerator" value="application/crm/app/cache/dev/appDevUrlGenerator.php" />
-    <option name="pathToTranslation" value="application/crm/app/cache/dev/translations" />
-    <option name="directoryToWeb" value="application/crm/web" />
-    <option name="directoryToApp" value="application/crm/app" />
-  </component>
-</project>

@@ -1,9 +1,0 @@
-Uid,User uid,Organization uid,Name,Description,Code,Budget,Start date,End date
-1,main,1,MTV Channel Commercials,"TV promotions, sales promotions, information on the featured product of the month.",mtv,1200,,
-2,main,1,Sports Sponsorship,"Advertising, attracting attention.",sports,1600,,
-3,main,1,Radio One Commercials,"Radio promotion, sales promotions,  information on the featured product of the month.",rone,1500,,
-4,main,2,Email Newsletter,"Email promotions, information on the featured product of the month, featured article.",email,800,,
-5,main,2,Google AdWords,"Track conversions, promotion, signing up for a newsletter.",google,900,,
-6,main,2,ABC Channel Commercials,"Information on the featured product of the month,  making a purchase, clicking a banner.",abc,12000,,
-7,main,1,Bestsellers catalog,Bestsellers catalog,bestsellers,1400,First day of December this year - 1 year,Last day of December this year - 1 year
-8,main,2,Bestsellers catalog,Bestsellers catalog,b2b-bestsellers,1400,First day of December this year - 1 year,Last day of December this year - 1 year

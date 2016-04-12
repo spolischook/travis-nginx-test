@@ -1,9 +1,0 @@
-parameters:
-    oro_activity.form.handler.activity_entity.api.class: OroCRMPro\Bundle\OutlookBundle\Form\Handler\ActivityEntityApiHandler
-    oro_activity.handler.delete.activity_entity.class:   OroCRMPro\Bundle\OutlookBundle\Entity\Manager\ActivityEntityDeleteHandler
-
-services:
-    orocrmpro_outlook.data_transformer.layout:
-        class: OroCRMPro\Bundle\OutlookBundle\Config\LayoutDataTransformer
-        arguments:
-            - @translator

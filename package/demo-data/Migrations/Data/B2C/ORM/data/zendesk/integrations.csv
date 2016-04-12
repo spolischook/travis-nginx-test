@@ -1,2 +1,0 @@
-Uid,Organization uid,name,url,email,token,zendeskUserEmail,reference
-1,1,Zendesk integration,https://demo.zendesk.com,demo@mail.com,c8541140-fdfe-11e3-a3ac-0800200c9a66,demo_user@mail.com,orocrm_zendesk:zendesk_demo_transport
