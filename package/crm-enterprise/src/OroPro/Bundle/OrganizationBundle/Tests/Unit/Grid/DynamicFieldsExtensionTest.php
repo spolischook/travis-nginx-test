@@ -5,6 +5,7 @@ namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Grid;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Tests\Unit\Datagrid\DatagridGuesserMock;
 
+use Oro\Bundle\EntityBundle\EntityConfig\DatagridScope;
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
@@ -142,7 +143,7 @@ class DynamicFieldsExtensionTest extends \PHPUnit_Framework_TestCase
         $extendConfig->set('is_deleted', false);
 
         $datagridConfig = new Config(new FieldConfigId('datagrid', $className, $fieldName, $fieldType));
-        $datagridConfig->set('is_visible', true);
+        $datagridConfig->set('is_visible', DatagridScope::IS_VISIBLE_TRUE);
 
         $organizationConfig = new Config(
             new FieldConfigId('organization', self::ENTITY_CLASS, self::FIELD_NAME, $fieldType)

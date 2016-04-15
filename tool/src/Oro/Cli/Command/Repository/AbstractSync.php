@@ -18,7 +18,7 @@ abstract class AbstractSync extends RootCommand
         'application/platform'       => 'git@github.com:laboro/platform-application.git',
         'application/crm'            => 'git@github.com:laboro/crm-application.git',
         'application/crm-enterprise' => 'git@github.com:laboro/crm-enterprise-application.git',
-        // 'application/commerce'       => 'git@github.com:laboro/commerce-dev.git',
+        'application/commerce'       => 'git@github.com:laboro/commerce-application.git',
 
         'package/platform'               => 'git@github.com:laboro/platform.git',
         'package/crm'                    => 'git@github.com:laboro/crm.git',
@@ -127,7 +127,7 @@ abstract class AbstractSync extends RootCommand
     /**
      * @param string $alias
      * @param string $repository
-     * @param bool $fetchAllBranches
+     * @param bool $fetchOnlyMaster
      *
      */
     protected function fetchLatestDataFromRemoteBranch($alias, $repository, $fetchOnlyMaster = true)
