@@ -10,16 +10,16 @@ services:
     orocrmpro_ldap.form.type.user_mapping_type:
         class: %orocrmpro_ldap.form.type.user_mapping_type.class%
         arguments:
-            - @doctrine
-            - @oro_entity_config.provider.importexport
-            - @oro_entity_config.provider.entity
+            - "@doctrine"
+            - "@oro_entity_config.provider.importexport"
+            - "@oro_entity_config.provider.entity"
         tags:
             - { name: form.type, alias: orocrmpro_ldap_user_mapping }
 
     orocrmpro_ldap.form.type.role_mapping_type:
         class: %orocrmpro_ldap.form.type.role_mapping_type.class%
         arguments:
-            - @doctrine
+            - "@doctrine"
         tags:
             - { name: form.type, alias: orocrmpro_ldap_role_mapping }
 
@@ -32,7 +32,7 @@ services:
         class: %orocrmpro_ldap.form.type.ldap_transport_setting.class%
         tags:
             - { name: form.type, alias: orocrmpro_ldap_ldap_transport_setting_form_type }
-        arguments: [@oro_integration.manager.types_registry]
+        arguments: ["@oro_integration.manager.types_registry"]
 
     orocrmpro_ldap.form.type.ldap_transport_check_button:
         class: %orocrmpro_ldap.form.type.ldap_transport_check_button.class%
