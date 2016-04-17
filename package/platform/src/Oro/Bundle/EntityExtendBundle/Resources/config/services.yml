@@ -375,6 +375,7 @@ services:
         class: Oro\Bundle\EntityExtendBundle\EventListener\SearchEntityConfigListener
         arguments:
             - "@doctrine"
+            - "@oro_search.provider.search_mapping"
         tags:
             - { name: kernel.event_listener, event: oro.entity_config.pre_flush, method: preFlush, priority: -255 }
 
@@ -479,3 +480,11 @@ services:
     # Helpers
     oro_entity_extend.tools.class_method_name_checker:
         class: Oro\Bundle\EntityExtendBundle\Tools\ClassMethodNameChecker
+
+    oro_entity_extend.model.action.request_enum_entity:
+        class: Oro\Bundle\EntityExtendBundle\Model\Action\RequestEnumEntity
+        arguments:
+            - '@oro_action.context_accessor'
+            - '@doctrine'
+        tags:
+            - { name: oro_workflow.action, alias: request_enum_entity }

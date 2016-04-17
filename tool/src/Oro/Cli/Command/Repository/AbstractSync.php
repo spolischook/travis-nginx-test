@@ -23,7 +23,7 @@ abstract class AbstractSync extends RootCommand
         'package/platform'               => 'git@github.com:laboro/platform.git',
         'package/crm'                    => 'git@github.com:laboro/crm.git',
         'package/crm-enterprise'         => 'git@github.com:laboro/crm-enterprise.git',
-        // 'package/commerce'               => 'git@github.com:laboro/commerce.git',
+        'package/commerce'               => 'git@github.com:laboro/commerce.git',
         'package/dotmailer'              => 'git@github.com:laboro/OroCRMDotmailerBundle.git',
         'package/ldap'                   => 'git@github.com:laboro/OroCRMProLDAPBundle.git',
         'package/mailchimp'              => 'git@github.com:laboro/OroCRMMailChimpBundle.git',
