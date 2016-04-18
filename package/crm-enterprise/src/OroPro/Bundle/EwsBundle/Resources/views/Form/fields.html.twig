@@ -1,0 +1,20 @@
+{% block oro_pro_ews_check_button_widget %}
+    {% set options = {
+        'pingUrl': path('oro_pro_ews_ping')
+    } %}
+    <div data-page-component-module="oroproews/js/app/components/ews-resource-component"
+         data-page-component-options="{{ options|json_encode }}">
+        <div class="control-group">
+            <div class="controls">
+                <div style="margin-top: 10px;" class="ping-holder">
+                    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ 'oro_pro_ews.form.check_connection'|trans({}, translation_domain) }}</button>
+                    <div class="connection-status alert" style="display: none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block oro_pro_ews_check_button_row %}
+    {{ block('button_row') }}
+{% endblock %}

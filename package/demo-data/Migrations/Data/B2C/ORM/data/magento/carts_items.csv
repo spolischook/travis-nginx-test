@@ -1,0 +1,1105 @@
+Uid,Cart uid,Sku,Name,Qty,Price,DiscountAmount,TaxAmount,ProductType
+1,1,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+2,2,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+3,3,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+4,4,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+5,5,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+6,6,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+7,7,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+8,8,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+9,9,sku-Adelle Fabric Chair,Adelle Fabric Chair,2,319.98,0,0.0838,simple
+10,10,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+11,11,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+12,12,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+13,13,sku-Mouse Razer Orochi,Mouse Razer Orochi,2,69.98,0,0.0838,simple
+14,14,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+15,15,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+16,16,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+17,17,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+18,18,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+19,19,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+20,20,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+21,21,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+22,22,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,2,719.98,0,0.0838,simple
+23,23,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,2,1599.98,0,0.0838,simple
+24,24,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+25,25,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+26,26,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+27,27,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+28,28,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+29,29,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,2,1359.98,0,0.0838,simple
+30,30,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+31,31,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+32,32,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+33,33,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+34,34,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+35,35,sku-Computer Everest Game 9035,Computer Everest Game 9035,2,1591.9,0,0.0838,simple
+36,36,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+37,37,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+38,38,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+39,39,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+40,40,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+41,41,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+42,42,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+43,43,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+44,44,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+45,45,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+46,46,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+47,47,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+48,48,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+49,49,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+50,50,sku-Universal Camera Case,Universal Camera Case,2,99.98,0,0.0838,simple
+51,51,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+52,52,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+53,53,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+54,54,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+55,55,sku-Globex GU6012 Blue,Globex GU6012 Blue,2,249.98,0,0.0838,simple
+56,56,sku-Apple iPhone 6,Apple iPhone 6,2,2199.98,0,0.0838,simple
+57,57,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+58,58,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+59,59,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+60,60,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+61,61,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+62,62,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+63,63,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,2,701.98,0,0.0838,simple
+64,64,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+65,65,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+66,66,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+67,67,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+68,68,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+69,69,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+70,70,sku-Adelle Fabric Couch,Adelle Fabric Couch,2,1998,0,0.0838,simple
+71,71,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+72,72,sku-Magento Red Furniture Set,Magento Red Furniture Set,2,320,0,0.0838,simple
+73,73,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+74,74,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+75,75,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+76,76,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+77,77,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+78,78,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+79,79,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+80,80,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,2,1099.98,0,0.0838,simple
+81,81,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+82,82,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+83,83,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+84,84,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+85,85,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+86,86,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+87,87,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+88,88,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,2,88.98,0,0.0838,simple
+89,89,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+90,90,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,2,1279.98,0,0.0838,simple
+91,91,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+92,92,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+93,93,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+94,94,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+95,95,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+96,96,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+97,97,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+98,98,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+99,99,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+100,100,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+101,101,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+102,102,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+103,103,sku-Magento Red Furniture Set,Magento Red Furniture Set,2,320,0,0.0838,simple
+104,104,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+105,105,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+106,106,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+107,107,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+108,108,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+109,109,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+110,110,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+111,111,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+112,112,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+113,113,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+114,114,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+115,115,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+116,116,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+117,117,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+118,118,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+119,119,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+120,120,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+121,121,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+122,122,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+123,123,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+124,124,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+125,125,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+126,126,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,2,2427,0,0.0838,simple
+127,127,sku-Netbook Asus X200MA,Netbook Asus X200MA,2,931.2,0,0.0838,simple
+128,128,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+129,129,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+130,130,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+131,131,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+132,132,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+133,133,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+134,134,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+135,135,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+136,136,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+137,137,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+138,138,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+139,139,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+140,140,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,2,3779.98,0,0.0838,simple
+141,141,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+142,142,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+143,143,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+144,144,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+145,145,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+146,146,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+147,147,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+148,148,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+149,149,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+150,150,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+151,151,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+152,152,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+153,153,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+154,154,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,2,953.38,0,0.0838,simple
+155,155,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+156,156,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+157,157,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+158,158,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+159,159,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+160,160,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+161,161,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+162,162,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+163,163,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+164,164,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+165,165,sku-Magento Red Furniture Set,Magento Red Furniture Set,2,320,0,0.0838,simple
+166,166,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+167,167,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+168,168,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+169,169,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+170,170,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+171,171,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+172,172,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+173,173,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+174,174,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+175,175,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+176,176,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+177,177,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+178,178,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+179,179,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+180,180,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+181,181,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+182,182,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+183,183,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+184,184,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+185,185,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,2,953.38,0,0.0838,simple
+186,186,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+187,187,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,2,701.98,0,0.0838,simple
+188,188,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+189,189,sku-Netbook Asus X200MA,Netbook Asus X200MA,2,931.2,0,0.0838,simple
+190,190,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+191,191,sku-Universal Camera Case,Universal Camera Case,2,99.98,0,0.0838,simple
+192,192,sku-SLR Camera Tripod,SLR Camera Tripod,2,319.98,0,0.0838,simple
+193,193,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,2,340,0,0.0838,simple
+194,194,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+195,195,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+196,196,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+197,197,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+198,198,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+199,199,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+200,200,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+201,201,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+202,202,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+203,203,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+204,204,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+205,205,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+206,206,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+207,207,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+208,208,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+209,209,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+210,210,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+211,211,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+212,212,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+213,213,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+214,214,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+215,215,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+216,216,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+217,217,sku-LG 40UB800V,LG 40UB800V,2,1359.98,0,0.0838,simple
+218,218,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+219,219,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+220,220,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+221,221,sku-Computer Everest Game 9035,Computer Everest Game 9035,2,1591.9,0,0.0838,simple
+222,222,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+223,223,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+224,224,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+225,225,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+226,226,sku-Adelle Fabric Chair,Adelle Fabric Chair,2,319.98,0,0.0838,simple
+227,227,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+228,228,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+229,229,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+230,230,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+231,231,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+232,232,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+233,233,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+234,234,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+235,235,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+236,236,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+237,237,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+238,238,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+239,239,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+240,240,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+241,241,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+242,242,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+243,243,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+244,244,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+245,245,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+246,246,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+247,247,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+248,248,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+249,249,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+250,250,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+251,251,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+252,252,sku-Computer Everest Game 9035,Computer Everest Game 9035,2,1591.9,0,0.0838,simple
+253,253,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+254,254,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+255,255,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+256,256,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+257,257,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+258,258,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+259,259,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+260,260,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+261,261,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+262,262,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+263,263,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+264,264,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+265,265,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+266,266,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+267,267,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+268,268,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+269,269,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,2,340,0,0.0838,simple
+270,270,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+271,271,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+272,272,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+273,273,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+274,274,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,2,88.98,0,0.0838,simple
+275,275,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+276,276,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+277,1,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+278,2,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+279,3,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+280,4,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+281,5,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+282,6,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+283,7,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+284,8,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+285,9,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+286,10,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+287,11,sku-Adelle Fabric Couch,Adelle Fabric Couch,2,1998,0,0.0838,simple
+288,12,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+289,13,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+290,14,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+291,15,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+292,16,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+293,17,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+294,18,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+295,19,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+296,20,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+297,21,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+298,22,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+299,23,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+300,24,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+301,25,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+302,26,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,2,1599.98,0,0.0838,simple
+303,27,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+304,28,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+305,29,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+306,30,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+307,31,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+308,32,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+309,33,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,2,953.38,0,0.0838,simple
+310,34,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+311,35,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+312,36,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+313,37,sku-Netbook Asus X200MA,Netbook Asus X200MA,2,931.2,0,0.0838,simple
+314,38,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+315,39,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+316,40,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+317,41,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+318,42,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+319,43,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+320,44,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+321,45,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+322,46,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+323,47,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+324,48,sku-Apple iPhone 6,Apple iPhone 6,2,1880,0,0.0838,simple
+325,49,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+326,50,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+327,51,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+328,52,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+329,53,sku-Universal Camera Case,Universal Camera Case,2,99.98,0,0.0838,simple
+330,54,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+331,55,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+332,56,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+333,57,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+334,58,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+335,59,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+336,60,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+337,61,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,2,218,0,0.0838,simple
+338,62,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+339,63,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+340,64,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+341,65,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+342,66,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+343,67,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,2,2427,0,0.0838,simple
+344,68,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+345,69,sku-Computer Everest Game 9035,Computer Everest Game 9035,2,1591.9,0,0.0838,simple
+346,70,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+347,71,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+348,72,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+349,73,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+350,74,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+351,75,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+352,76,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,2,919.98,0,0.0838,simple
+353,77,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+354,78,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+355,79,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+356,80,sku-Notebook Asus N750JK,Notebook Asus N750JK,2,2720,0,0.0838,simple
+357,81,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+358,82,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+359,83,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+360,84,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+361,85,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+362,86,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+363,87,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+364,88,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+365,89,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+366,90,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+367,91,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+368,92,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+369,93,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+370,94,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+371,95,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+372,96,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+373,97,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+374,98,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+375,99,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+376,100,sku-Computer Everest Game 9035,Computer Everest Game 9035,2,1591.9,0,0.0838,simple
+377,101,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+378,102,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+379,103,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+380,104,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+381,105,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+382,106,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+383,107,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+384,108,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,2,311.1,0,0.0838,simple
+385,109,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+386,110,sku-Apple iPhone 6,Apple iPhone 6,2,1880,0,0.0838,simple
+387,111,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+388,112,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+389,113,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+390,114,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,2,1099.98,0,0.0838,simple
+391,115,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+392,116,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+393,117,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+394,118,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+395,119,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+396,120,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+397,121,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+398,122,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+399,123,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+400,124,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+401,125,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+402,126,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+403,127,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+404,128,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+405,129,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+406,130,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+407,131,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+408,132,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+409,133,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+410,134,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+411,135,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+412,136,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+413,137,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+414,138,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+415,139,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+416,140,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+417,141,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+418,142,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+419,143,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+420,144,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,2,2557.98,0,0.0838,simple
+421,145,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+422,146,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+423,147,sku-SLR Camera Tripod,SLR Camera Tripod,2,319.98,0,0.0838,simple
+424,148,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+425,149,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+426,150,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+427,151,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+428,152,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+429,153,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+430,154,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,2,218,0,0.0838,simple
+431,155,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,2,1279.98,0,0.0838,simple
+432,156,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+433,157,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+434,158,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+435,159,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+436,160,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+437,161,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+438,162,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+439,163,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+440,164,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+441,165,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+442,166,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+443,167,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+444,168,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+445,169,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+446,170,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+447,171,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+448,172,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+449,173,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+450,174,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+451,175,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+452,176,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+453,177,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+454,178,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+455,179,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+456,180,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+457,181,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+458,182,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+459,183,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+460,184,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+461,185,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+462,186,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+463,187,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+464,188,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+465,189,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+466,190,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+467,191,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+468,192,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+469,193,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+470,194,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+471,195,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+472,196,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+473,197,sku-Adelle Fabric Couch,Adelle Fabric Couch,2,1998,0,0.0838,simple
+474,198,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+475,199,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+476,200,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+477,201,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+478,202,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+479,203,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+480,204,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+481,205,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+482,206,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+483,207,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,2,1099.98,0,0.0838,simple
+484,208,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+485,209,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+486,210,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+487,211,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+488,212,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+489,213,sku-Globex GU6012 Blue,Globex GU6012 Blue,2,249.98,0,0.0838,simple
+490,214,sku-Apple iPhone 6,Apple iPhone 6,2,2199.98,0,0.0838,simple
+491,215,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+492,216,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+493,217,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+494,218,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+495,219,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+496,220,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+497,221,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,2,701.98,0,0.0838,simple
+498,222,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+499,223,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+500,224,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+501,225,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+502,226,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+503,227,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+504,228,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+505,229,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+506,230,sku-Magento Red Furniture Set,Magento Red Furniture Set,2,320,0,0.0838,simple
+507,231,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+508,232,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+509,233,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+510,234,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+511,235,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+512,236,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+513,237,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+514,238,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+515,239,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+516,240,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+517,241,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+518,242,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+519,243,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+520,244,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+521,245,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+522,246,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+523,247,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+524,248,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+525,249,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+526,250,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,2,953.38,0,0.0838,simple
+527,251,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+528,252,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+529,253,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+530,254,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+531,255,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+532,256,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+533,257,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+534,258,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+535,259,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+536,260,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+537,261,sku-Magento Red Furniture Set,Magento Red Furniture Set,2,320,0,0.0838,simple
+538,262,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+539,263,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+540,264,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+541,265,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+542,266,sku-Notebook Asus N750JK,Notebook Asus N750JK,2,2720,0,0.0838,simple
+543,267,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+544,268,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+545,269,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+546,270,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+547,271,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+548,272,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,2,340,0,0.0838,simple
+549,273,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+550,274,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+551,275,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+552,276,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+553,1,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+554,2,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+555,3,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+556,4,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+557,5,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+558,6,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+559,7,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+560,8,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+561,9,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+562,10,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+563,11,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+564,12,sku-SLR Camera Tripod,SLR Camera Tripod,2,319.98,0,0.0838,simple
+565,13,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+566,14,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+567,15,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+568,16,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+569,17,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,2,919.98,0,0.0838,simple
+570,18,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+571,19,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+572,20,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+573,21,sku-Notebook Asus N750JK,Notebook Asus N750JK,2,2720,0,0.0838,simple
+574,22,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,2,3779.98,0,0.0838,simple
+575,23,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+576,24,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+577,25,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+578,26,sku-SLR Camera Tripod,SLR Camera Tripod,2,319.98,0,0.0838,simple
+579,27,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+580,28,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+581,29,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+582,30,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+583,31,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+584,32,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+585,33,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+586,34,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+587,35,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+588,36,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+589,37,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+590,38,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+591,39,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,2,2427,0,0.0838,simple
+592,40,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+593,41,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+594,42,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+595,43,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+596,44,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+597,45,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+598,46,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+599,47,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+600,48,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+601,49,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+602,50,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+603,51,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+604,52,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+605,53,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+606,54,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+607,55,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+608,56,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+609,57,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+610,58,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+611,59,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+612,60,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+613,61,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+614,62,sku-Apple iPhone 6,Apple iPhone 6,2,2199.98,0,0.0838,simple
+615,63,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+616,64,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+617,65,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+618,66,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+619,67,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+620,68,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+621,69,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+622,70,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+623,71,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+624,72,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+625,73,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+626,74,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+627,75,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,2,340,0,0.0838,simple
+628,76,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+629,77,sku-Adelle Fabric Chair,Adelle Fabric Chair,2,319.98,0,0.0838,simple
+630,78,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+631,79,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+632,80,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+633,81,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+634,82,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+635,83,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+636,84,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+637,85,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+638,86,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+639,87,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+640,88,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+641,89,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+642,90,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+643,91,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+644,92,sku-Globex GU6012 Blue,Globex GU6012 Blue,2,249.98,0,0.0838,simple
+645,93,sku-Apple iPhone 6,Apple iPhone 6,2,2199.98,0,0.0838,simple
+646,94,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+647,95,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+648,96,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+649,97,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+650,98,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+651,99,sku-LG 40UB800V,LG 40UB800V,2,1359.98,0,0.0838,simple
+652,100,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+653,101,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+654,102,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+655,103,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+656,104,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+657,105,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+658,106,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+659,107,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+660,108,sku-Adelle Fabric Chair,Adelle Fabric Chair,2,319.98,0,0.0838,simple
+661,109,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+662,110,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+663,111,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,2,311.1,0,0.0838,simple
+664,112,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+665,113,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+666,114,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+667,115,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+668,116,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+669,117,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+670,118,sku-Universal Camera Case,Universal Camera Case,2,99.98,0,0.0838,simple
+671,119,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+672,120,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+673,121,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+674,122,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+675,123,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+676,124,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+677,125,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+678,126,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,2,218,0,0.0838,simple
+679,127,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+680,128,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+681,129,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+682,130,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+683,131,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+684,132,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+685,133,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+686,134,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+687,135,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+688,136,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+689,137,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+690,138,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+691,139,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+692,140,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+693,141,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+694,142,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+695,143,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+696,144,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+697,145,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+698,146,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+699,147,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+700,148,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,2,1099.98,0,0.0838,simple
+701,149,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+702,150,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+703,151,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+704,152,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,2,719.98,0,0.0838,simple
+705,153,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+706,154,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+707,155,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+708,156,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+709,157,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+710,158,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+711,159,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+712,160,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+713,161,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+714,162,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+715,163,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+716,164,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+717,165,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+718,166,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+719,167,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+720,168,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+721,169,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+722,170,sku-Adelle Fabric Chair,Adelle Fabric Chair,2,319.98,0,0.0838,simple
+723,171,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+724,172,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+725,173,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+726,174,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+727,175,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+728,176,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+729,177,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,2,3779.98,0,0.0838,simple
+730,178,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+731,179,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+732,180,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+733,181,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+734,182,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,2,340,0,0.0838,simple
+735,183,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+736,184,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+737,185,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+738,186,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+739,187,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+740,188,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+741,189,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+742,190,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+743,191,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+744,192,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+745,193,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+746,194,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+747,195,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+748,196,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+749,197,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+750,198,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+751,199,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+752,200,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+753,201,sku-Adelle Fabric Chair,Adelle Fabric Chair,2,319.98,0,0.0838,simple
+754,202,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+755,203,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+756,204,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+757,205,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+758,206,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+759,207,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+760,208,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+761,209,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+762,210,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+763,211,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+764,212,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+765,213,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+766,214,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+767,215,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+768,216,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+769,217,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+770,218,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+771,219,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+772,220,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+773,221,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+774,222,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+775,223,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+776,224,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+777,225,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+778,226,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+779,227,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+780,228,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+781,229,sku-SLR Camera Tripod,SLR Camera Tripod,2,319.98,0,0.0838,simple
+782,230,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+783,231,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+784,232,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+785,233,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+786,234,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+787,235,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+788,236,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+789,237,sku-Apple iPhone 6,Apple iPhone 6,2,1880,0,0.0838,simple
+790,238,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+791,239,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,2,3779.98,0,0.0838,simple
+792,240,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+793,241,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+794,242,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+795,243,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+796,244,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+797,245,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,2,719.98,0,0.0838,simple
+798,246,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+799,247,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+800,248,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+801,249,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,2,88.98,0,0.0838,simple
+802,250,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+803,251,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+804,252,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,2,1359.98,0,0.0838,simple
+805,253,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+806,254,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+807,255,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+808,256,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+809,257,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+810,258,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+811,259,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+812,260,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+813,261,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+814,262,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+815,263,sku-Adelle Fabric Chair,Adelle Fabric Chair,2,319.98,0,0.0838,simple
+816,264,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+817,265,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+818,266,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+819,267,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+820,268,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+821,269,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+822,270,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+823,271,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+824,272,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+825,273,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+826,274,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+827,275,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+828,276,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+829,1,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+830,2,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+831,3,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+832,4,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+833,5,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+834,6,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+835,7,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+836,8,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+837,9,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+838,10,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+839,11,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+840,12,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+841,13,sku-Computer Everest Game 9035,Computer Everest Game 9035,2,1591.9,0,0.0838,simple
+842,14,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+843,15,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+844,16,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+845,17,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+846,18,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+847,19,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+848,20,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+849,21,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+850,22,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+851,23,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+852,24,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+853,25,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+854,26,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+855,27,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+856,28,sku-Universal Camera Case,Universal Camera Case,2,99.98,0,0.0838,simple
+857,29,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+858,30,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+859,31,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,2,719.98,0,0.0838,simple
+860,32,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+861,33,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+862,34,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+863,35,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+864,36,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+865,37,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+866,38,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+867,39,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+868,40,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+869,41,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+870,42,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+871,43,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+872,44,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+873,45,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+874,46,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+875,47,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+876,48,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+877,49,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+878,50,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+879,51,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+880,52,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+881,53,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+882,54,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+883,55,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+884,56,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+885,57,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,2,2557.98,0,0.0838,simple
+886,58,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+887,59,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+888,60,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+889,61,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+890,62,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+891,63,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+892,64,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+893,65,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+894,66,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+895,67,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+896,68,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+897,69,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+898,70,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+899,71,sku-LG 40UB800V,LG 40UB800V,2,1359.98,0,0.0838,simple
+900,72,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+901,73,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+902,74,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+903,75,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+904,76,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+905,77,sku-SLR Camera Tripod,SLR Camera Tripod,2,319.98,0,0.0838,simple
+906,78,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+907,79,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+908,80,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+909,81,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+910,82,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,2,919.98,0,0.0838,simple
+911,83,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+912,84,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+913,85,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+914,86,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+915,87,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+916,88,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+917,89,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+918,90,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+919,91,sku-SLR Camera Tripod,SLR Camera Tripod,2,319.98,0,0.0838,simple
+920,92,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+921,93,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+922,94,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+923,95,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+924,96,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+925,97,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+926,98,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+927,99,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+928,100,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+929,101,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,2,953.38,0,0.0838,simple
+930,102,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+931,103,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+932,104,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+933,105,sku-Netbook Asus X200MA,Netbook Asus X200MA,2,931.2,0,0.0838,simple
+934,106,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+935,107,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+936,108,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+937,109,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+938,110,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+939,111,sku-Adelle Fabric Chair,Adelle Fabric Chair,2,319.98,0,0.0838,simple
+940,112,sku-Magento Red Furniture Set,Magento Red Furniture Set,2,320,0,0.0838,simple
+941,113,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,2,919.98,0,0.0838,simple
+942,114,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+943,115,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+944,116,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+945,117,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+946,118,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,2,3779.98,0,0.0838,simple
+947,119,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+948,120,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+949,121,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+950,122,sku-SLR Camera Tripod,SLR Camera Tripod,2,319.98,0,0.0838,simple
+951,123,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+952,124,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+953,125,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,2,1599.98,0,0.0838,simple
+954,126,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+955,127,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+956,128,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+957,129,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+958,130,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,2,1279.98,0,0.0838,simple
+959,131,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+960,132,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+961,133,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+962,134,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+963,135,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+964,136,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+965,137,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+966,138,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+967,139,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+968,140,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+969,141,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+970,142,sku-Adelle Fabric Chair,Adelle Fabric Chair,2,319.98,0,0.0838,simple
+971,143,sku-Magento Red Furniture Set,Magento Red Furniture Set,2,320,0,0.0838,simple
+972,144,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+973,145,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+974,146,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+975,147,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+976,148,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+977,149,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+978,150,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+979,151,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+980,152,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+981,153,sku-SLR Camera Tripod,SLR Camera Tripod,2,319.98,0,0.0838,simple
+982,154,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+983,155,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+984,156,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+985,157,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+986,158,sku-Apple iPhone 6,Apple iPhone 6,2,2199.98,0,0.0838,simple
+987,159,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+988,160,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+989,161,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+990,162,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+991,163,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+992,164,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+993,165,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+994,166,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+995,167,sku-Netbook Asus X200MA,Netbook Asus X200MA,2,931.2,0,0.0838,simple
+996,168,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+997,169,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+998,170,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+999,171,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+1000,172,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+1001,173,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+1002,174,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+1003,175,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+1004,176,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+1005,177,sku-Mouse Razer Orochi,Mouse Razer Orochi,2,69.98,0,0.0838,simple
+1006,178,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+1007,179,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+1008,180,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,2,3779.98,0,0.0838,simple
+1009,181,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+1010,182,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+1011,183,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+1012,184,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+1013,185,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+1014,186,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+1015,187,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+1016,188,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+1017,189,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+1018,190,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+1019,191,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+1020,192,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+1021,193,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+1022,194,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+1023,195,sku-LG 40UB800V,LG 40UB800V,2,1359.98,0,0.0838,simple
+1024,196,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,2,701.98,0,0.0838,simple
+1025,197,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+1026,198,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+1027,199,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+1028,200,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+1029,201,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+1030,202,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+1031,203,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+1032,204,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+1033,205,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+1034,206,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+1035,207,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+1036,208,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+1037,209,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+1038,210,sku-Notebook Asus N750JK,Notebook Asus N750JK,2,2720,0,0.0838,simple
+1039,211,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+1040,212,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+1041,213,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+1042,214,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+1043,215,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+1044,216,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+1045,217,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+1046,218,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+1047,219,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+1048,220,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+1049,221,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,1,44.49,0,0.0838,simple
+1050,222,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+1051,223,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+1052,224,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+1053,225,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+1054,226,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+1055,227,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+1056,228,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+1057,229,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+1058,230,sku-Computer Everest Game 9035,Computer Everest Game 9035,1,795.95,0,0.0838,simple
+1059,231,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+1060,232,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+1061,233,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+1062,234,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+1063,235,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+1064,236,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+1065,237,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+1066,238,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+1067,239,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+1068,240,sku-Apple iPhone 6,Apple iPhone 6,1,940,0,0.0838,simple
+1069,241,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+1070,242,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+1071,243,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+1072,244,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+1073,245,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+1074,246,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+1075,247,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+1076,248,sku-Lenovo Vibe Z2 Pro,Lenovo Vibe Z2 Pro,1,359.99,0,0.0838,simple
+1077,249,sku-Samsung Galaxy Note Edge,Samsung Galaxy Note Edge,1,799.99,0,0.0838,simple
+1078,250,sku-Globex GU6012 Blue,Globex GU6012 Blue,1,124.99,0,0.0838,simple
+1079,251,sku-Apple iPhone 6,Apple iPhone 6,1,1099.99,0,0.0838,simple
+1080,252,sku-Transcend SSD370 Premium 64GB,Transcend SSD370 Premium 64GB,2,88.98,0,0.0838,simple
+1081,253,sku-Transcend SSD370 Premium 256GB,Transcend SSD370 Premium 256GB,1,109,0,0.0838,simple
+1082,254,sku-Samsung Galaxy Tab S 10.5,Samsung Galaxy Tab S 10.5,1,639.99,0,0.0838,simple
+1083,255,sku-Samsung Galaxy Note Pro 12.2,Samsung Galaxy Note Pro 12.2,1,679.99,0,0.0838,simple
+1084,256,sku-Sony Xperia Tablet Z2,Sony Xperia Tablet Z2,1,476.69,0,0.0838,simple
+1085,257,sku-LG 40UB800V,LG 40UB800V,1,679.99,0,0.0838,simple
+1086,258,sku-Notebook Acer Aspire ES1,Notebook Acer Aspire ES1,1,350.99,0,0.0838,simple
+1087,259,sku-Gaming Computer Dell Inspiron,Gaming Computer Dell Inspiron,1,1213.5,0,0.0838,simple
+1088,260,sku-Netbook Asus X200MA,Netbook Asus X200MA,1,465.6,0,0.0838,simple
+1089,261,sku-Computer Everest Game 9035,Computer Everest Game 9035,2,1591.9,0,0.0838,simple
+1090,262,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple
+1091,263,sku-SLR Camera Tripod,SLR Camera Tripod,1,159.99,0,0.0838,simple
+1092,264,sku-Two Year Extended Warranty - Parts and Labor,Two Year Extended Warranty - Parts and Labor,1,170,0,0.0838,simple
+1093,265,sku-Adelle Fabric Couch,Adelle Fabric Couch,1,999,0,0.0838,simple
+1094,266,sku-Adelle Fabric Chair,Adelle Fabric Chair,1,159.99,0,0.0838,simple
+1095,267,sku-Magento Red Furniture Set,Magento Red Furniture Set,1,160,0,0.0838,simple
+1096,268,sku-Lenovo Yoga Tablet,Lenovo Yoga Tablet,1,459.99,0,0.0838,simple
+1097,269,sku-E-book Coby Kyros 7,E-book Coby Kyros 7,1,155.55,0,0.0838,simple
+1098,270,sku-Mouse Razer Orochi,Mouse Razer Orochi,1,34.99,0,0.0838,simple
+1099,271,sku-Apple iPhone 6,Apple iPhone 6,2,1880,0,0.0838,simple
+1100,272,sku-Notebook Asus N750JK,Notebook Asus N750JK,1,1360,0,0.0838,simple
+1101,273,sku-Gaming Computer Lenovo IdeaCentre K450,Gaming Computer Lenovo IdeaCentre K450,1,1889.99,0,0.0838,simple
+1102,274,sku-Netbook Dell Inspiron 3,Netbook Dell Inspiron 3,1,1278.99,0,0.0838,simple
+1103,275,sku-Computer Asus BM1AD1,Computer Asus BM1AD1,1,549.99,0,0.0838,simple
+1104,276,sku-Universal Camera Case,Universal Camera Case,1,49.99,0,0.0838,simple

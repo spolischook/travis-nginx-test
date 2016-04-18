@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/tool/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/application/platform/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor/oro/platform" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor/oro/platform-serialised-fields" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor/oro/crm" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor/oro/crm-hangouts-call-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor/oro/crm-abandoned-cart" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor/oro/crm-magento-embedded-contact-us" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor/oro/crm-mail-chimp" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor/oro/crm-dotmailer" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor/oro/crm-zendesk" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

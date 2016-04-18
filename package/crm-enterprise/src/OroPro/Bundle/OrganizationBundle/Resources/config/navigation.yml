@@ -1,0 +1,23 @@
+oro_menu_config:
+    items:
+        oro_organization_list:
+            label: 'oro.organization.entity_plural_label'
+            route: 'oropro_organization_index'
+            extras:
+                routes: ['oropro_organization_*']
+                description: 'oro.organization.menu.list.description'
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        users_management:
+                            children:
+                                oro_organization_list: ~
+
+oro_titles:
+    oropro_organization_selector_form: oropro.organization.select_organization_action.title
+    oropro_organization_index:  ~
+    oropro_organization_update: '%%organization.name%% - Edit'
+    oropro_organization_create: 'Create Organization'
+    oropro_organization_view: '%%organization.name%%'

@@ -1,0 +1,47 @@
+orob2b:
+    product:
+        productunit:
+            delete.confirmation: Are you sure you want to delete this unit precision?
+
+        product_unit.each:
+            label:
+                full: each
+                short: ea
+
+        product_unit.hour:
+            label:
+                full: hour
+                short: hr
+
+        product_unit.item:
+            label:
+                full: item
+                short: item
+
+        product_unit.kg:
+            label:
+                full: kilogram
+                short: kg
+
+        product_unit.piece:
+            label:
+                full: piece
+                short: pc
+
+        product_unit.set:
+            label:
+                full: set
+                short: set
+
+        validation:
+            unit:
+                required: Unit is required
+            quantity:
+                required: Quantity is required
+                greaterThanZero: Quantity should be greater than 0
+        frontend:
+            quick_add:
+                import_from_file:
+                    title: Import From File
+                import_validation:
+                    title: Import Validation

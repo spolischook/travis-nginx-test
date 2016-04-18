@@ -1,0 +1,47 @@
+{
+    "name": "oro/commerce",
+    "description": "OroCommerce - an open-source Business to Business Commerce application. \\nThis package contains bundles and needs to be added as a dependency in an OroCommerce application.",
+    "homepage": "https://github.com/orocommerce/orocommerce",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocommerce.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/orocrm/platform.git"
+        },
+        {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/nicholas-eden/math.git"
+        }
+    ],
+    "require": {
+        "oro/platform": "self.version",
+        "box/spout": "2.3.*",
+        "nicholas-eden/math": "0.6.*",
+        "myclabs/deep-copy": "1.5.*"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-0": {
+            "Oro\\Component": "src/",
+            "Oro\\Bundle": "src/",
+            "OroB2B\\Component": "src/",
+            "OroB2B\\Bundle": "src/"
+        }
+    }
+}

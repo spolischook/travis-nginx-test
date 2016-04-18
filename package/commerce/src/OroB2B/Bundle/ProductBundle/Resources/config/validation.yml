@@ -1,0 +1,77 @@
+OroB2B\Bundle\ProductBundle\Entity\Product:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: sku
+        - OroB2B\Bundle\ProductBundle\Validator\Constraints\ProductVariantField: ~
+        - OroB2B\Bundle\ProductBundle\Validator\Constraints\UniqueProductVariantLinks: ~
+    properties:
+        sku:
+            - NotBlank: ~
+            - Length:
+                min: 3
+                max: 255
+        owner:
+            - NotBlank: ~
+        organization:
+            - NotBlank: ~
+        unitPrecisions:
+            - Valid: ~
+        status:
+            - NotBlank: ~
+            - Choice: { callback: getStatuses }
+        names:
+            - Valid: ~
+        shortDescriptions:
+            - Valid: ~
+        descriptions:
+            - Valid: ~
+        organization:
+            - NotBlank: ~
+        inventory_status:
+            - NotBlank: ~
+        variantLinks:
+            - Valid: ~
+
+OroB2B\Bundle\ProductBundle\Entity\ProductUnit:
+    properties:
+        code:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        defaultPrecision:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 10
+            - OroB2B\Bundle\ValidationBundle\Validator\Constraints\Integer: ~
+
+OroB2B\Bundle\ProductBundle\Entity\ProductVariantLink:
+    properties:
+        visible:
+            - Type:
+                type: boolean
+        parentProduct:
+            - NotBlank: ~
+        product:
+            - NotBlank: ~
+
+OroB2B\Bundle\ProductBundle\Entity\ProductUnitPrecision:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [ product, unit ]
+    properties:
+        unit:
+            - NotBlank: ~
+        precision:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 10
+            - OroB2B\Bundle\ValidationBundle\Validator\Constraints\Integer: ~
+
+OroB2B\Bundle\ProductBundle\Model\ProductRow:
+    properties:
+        productSku:
+            - NotBlank: ~
+        productQuantity:
+            - OroB2B\Bundle\ValidationBundle\Validator\Constraints\GreaterThanZero: ~
+            - OroB2B\Bundle\ValidationBundle\Validator\Constraints\Decimal: ~

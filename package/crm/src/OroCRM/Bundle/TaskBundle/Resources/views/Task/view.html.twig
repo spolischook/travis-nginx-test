@@ -1,0 +1,84 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import "OroActivityBundle::macros.html.twig" as AC %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+{% import 'OroUserBundle::macros.html.twig' as U %}
+
+{% oro_title_set({params : {"%entity.subject%": entity.subject|default('N/A') }}) %}
+
+{% block navButtons %}
+    {% if resource_granted('EDIT', entity) %}
+        {# Button for add context on the activity list item view page #}
+        {{ AC.addContextButton(entity) }}
+        {{ UI.editButton({
+            'path' : path('orocrm_task_update', { id: entity.id }),
+            'entity_label': 'orocrm.task.entity_label'|trans
+        }) }}
+    {% endif %}
+    {% if resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('orocrm_api_delete_task', {'id': entity.id}),
+            'dataRedirect': path('orocrm_task_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-user',
+            'dataId': entity.id,
+            'entity_label': 'orocrm.task.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block stats %}
+    {# Display contexts targets in the activity view page #}
+    <li class="context-data activity-context-activity-block">
+        {{ AC.activity_contexts(entity) }}
+    </li>
+{% endblock %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('orocrm_task_index'),
+        'indexLabel': 'orocrm.task.entity_plural_label'|trans,
+        'entityTitle': entity.subject
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {%- set taskInformation -%}
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ UI.renderProperty('orocrm.task.subject.label'|trans, entity.subject) }}
+                {{ UI.renderHtmlProperty('orocrm.task.description.label'|trans, entity.description|nl2br) }}
+                {{ UI.renderProperty('orocrm.task.due_date.label'|trans, entity.dueDate|oro_format_datetime) }}
+                {{ UI.renderProperty('orocrm.task.task_priority.label'|trans, entity.taskPriority) }}
+
+                {%- set ownerData -%}
+                    {%- if entity.owner -%}
+                        {{ U.render_user_name(entity.owner) }}
+                        {{ U.user_business_unit_name(entity.owner) }}
+                    {%- endif -%}
+                {%- endset -%}
+                {{ UI.renderHtmlProperty('orocrm.task.owner.label'|trans, ownerData) }}
+            </div>
+            <div class="responsive-block">
+                {{ entityConfig.renderDynamicFields(entity) }}
+            </div>
+        </div>
+    {%- endset -%}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General Information'|trans,
+            'class': 'active',
+            'subblocks': [
+                {'data' : [taskInformation]}
+            ]
+        }
+    ] %}
+
+    {% set id = 'taskView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+
+    {{ parent() }}
+{% endblock content_data %}

@@ -1,0 +1,56 @@
+config:
+    shim:
+        'orocrmprofusioncharts/lib/FusionCharts.HC.Charts':
+            deps:
+                - 'orocrmprofusioncharts/lib/FusionCharts'
+                - 'orocrmprofusioncharts/lib/FusionCharts.HC'
+        'orocrmprofusioncharts/lib/FusionCharts.HC':
+            deps:
+                - 'jquery'
+                - 'orocrmprofusioncharts/lib/FusionCharts'
+        'orocrmprofusioncharts/lib/FusionCharts.HC.Widgets':
+            deps:
+                - 'jquery'
+                - 'orocrmprofusioncharts/lib/FusionCharts'
+        'orocrmprofusioncharts/lib/FusionCharts':
+            deps:
+                - 'jquery'
+            exports: 'FusionCharts'
+        'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin':
+            deps:
+                - 'jquery'
+                - 'orocrmprofusioncharts/lib/FusionCharts'
+        'orocrmprofusioncharts/lib/FusionChartsExportComponent':
+            deps:
+                - 'orocrmprofusioncharts/lib/FusionCharts'
+    map:
+        '*':
+            'orocrmprofusioncharts/lib/FusionCharts': 'orocrmprofusioncharts/lib/FusionCharts.extend'
+        'orocrmprofusioncharts/lib/FusionCharts.extend':
+            'orocrmprofusioncharts/lib/FusionCharts': 'orocrmprofusioncharts/lib/FusionCharts'
+        'orocrmprofusioncharts/lib/FusionCharts.HC':
+            'orocrmprofusioncharts/lib/FusionCharts': 'orocrmprofusioncharts/lib/FusionCharts'
+    paths:
+        'orocrmprofusioncharts/lib/FusionCharts.extend': 'bundles/orocrmprofusioncharts/lib/FusionCharts.extend.js'
+        'orocrmprofusioncharts/lib/FusionCharts.HC.Charts': 'bundles/orocrmprofusioncharts/lib/FusionCharts.HC.Charts.js'
+        'orocrmprofusioncharts/lib/FusionCharts.HC.Widgets': 'bundles/orocrmprofusioncharts/lib/FusionCharts.HC.Widgets.js'
+        'orocrmprofusioncharts/lib/FusionCharts.HC': 'bundles/orocrmprofusioncharts/lib/FusionCharts.HC.js'
+        'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin': 'bundles/orocrmprofusioncharts/lib/FusionCharts.jqueryplugin.js'
+        'orocrmprofusioncharts/lib/FusionCharts': 'bundles/orocrmprofusioncharts/lib/FusionCharts.js'
+        'orocrmprofusioncharts/lib/FusionChartsExportComponent': 'bundles/orocrmprofusioncharts/lib/FusionChartsExportComponent.js'
+
+        'orocrmprofusioncharts/js/fusion-data-handler': 'bundles/orocrmprofusioncharts/js/fusion-data-handler.js'
+        'orocrmprofusioncharts/js/multiple-data-handler': 'bundles/orocrmprofusioncharts/js/multiple-data-handler.js'
+
+build:
+    paths:
+        # FusionCharts lib is excluded from the build,
+        # because it conflicts with fullcalendar and breaks scroll on mobile version.
+        # In addition this resources are already minified
+        'orocrmprofusioncharts/lib/FusionCharts.extend': 'empty:'
+        'orocrmprofusioncharts/lib/FusionCharts.HC.Charts': 'empty:'
+        'orocrmprofusioncharts/lib/FusionCharts.HC': 'empty:'
+        'orocrmprofusioncharts/lib/FusionCharts.HC.Widgets': 'empty:'
+        'orocrmprofusioncharts/lib/FusionCharts.jqueryplugin': 'empty:'
+        'orocrmprofusioncharts/lib/FusionCharts': 'empty:'
+        'orocrmprofusioncharts/lib/FusionChartsExportComponent': 'empty:'

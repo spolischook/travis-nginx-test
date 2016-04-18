@@ -1,0 +1,24 @@
+{
+    "name": "oro-professional/security-bundle",
+    "type": "symfony-bundle",
+    "description": "BAPP Security Bundle",
+    "keywords": ["BAPP"],
+    "homepage": "https://github.com/laboro/platform-professional/src/OroPro/Bundle/SecurityBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.7.*",
+        "oro/log": "dev-master",
+        "oro/cron-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "OroPro\\Bundle\\SecurityBundle": "" }
+    },
+    "target-dir": "OroPro/Bundle/SecurityBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

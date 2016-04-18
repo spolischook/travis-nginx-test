@@ -1,0 +1,21 @@
+{% import 'OroUIBundle::macros.html.twig' as ui %}
+{% if resource_granted('orocrmpro_outlook_integration') %}
+{% spaceless %}
+    {% set links = [] %}
+    {% for fileName, route in files %}
+        {% set link %}
+        <a href="{{ route }}" class="no-hash" style="display: block; margin-top: 5px;">
+            {{ fileName }}
+        </a>
+        {% endset %}
+        {% set links = links|merge([link]) %}
+    {% endfor %}
+{% endspaceless %}
+    <div class="control-group">
+        <label class="control-label">
+            {{ ui.tooltip('orocrmpro_outlook.form.tooltip.addin', {}, 'bottom') }}
+            {{ 'orocrmpro_outlook.view.addin_label'|trans }}
+        </label>
+        <div class="controls">{{ links|join|raw }}</div>
+    </div>
+{% endif %}

@@ -1,0 +1,29 @@
+orocrmpro_outlook_config_api:
+    resource: "@OroCRMProOutlookBundle/Controller/Api/Rest/ConfigurationController.php"
+    type:     rest
+    options:
+        priority: 10
+
+orocrmpro_outlook_audit_api:
+    resource: "@OroCRMProOutlookBundle/Controller/Api/Rest/AuditController.php"
+    type:     rest
+    options:
+        priority: 10
+
+orocrmpro_outlook_workflowdefinition_api:
+    resource: "@OroCRMProOutlookBundle/Controller/Api/Rest/WorkflowDefinitionController.php"
+    type:     rest
+    options:
+        priority: 10
+
+orocrmpro_outlook_country_api:
+    resource: "@OroCRMProOutlookBundle/Controller/Api/Rest/CountryController.php"
+    type:     rest
+    options:
+        priority: 10
+
+orocrmpro_outlook_country_regions_api:
+    resource: "@OroCRMProOutlookBundle/Controller/Api/Rest/CountryRegionsController.php"
+    type:     rest
+    options:
+        priority: 10

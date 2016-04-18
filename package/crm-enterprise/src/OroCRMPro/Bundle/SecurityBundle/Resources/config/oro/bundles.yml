@@ -1,0 +1,2 @@
+bundles:
+    - { name: OroCRMPro\Bundle\SecurityBundle\OroCRMProSecurityBundle, priority: 0 }

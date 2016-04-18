@@ -1,0 +1,2 @@
+parameters:
+    wsdl_endpoint:                           '@OroProEwsBundle/Resources/wsdl/services.wsdl'
