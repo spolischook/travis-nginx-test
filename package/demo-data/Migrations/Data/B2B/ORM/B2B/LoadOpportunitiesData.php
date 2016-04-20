@@ -7,6 +7,8 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
 use OroCRM\Bundle\SalesBundle\Entity\Opportunity;
 use OroCRM\Bundle\SalesBundle\Entity\OpportunityStatus;
@@ -19,12 +21,16 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
     const DEFAULT_OPPORTUNITY_STATUS = 'in_progress';
     const WON_OPPORTUNITY_STATUS     = 'won';
     const LOST_OPPORTUNITY_STATUS    = 'lost';
+    const DEFAULT_OPPORTUNITY_STATE = 'solution_development';
 
     /** @var OpportunityCloseReason[] */
     protected $closeReasons;
 
     /** @var OpportunityStatus[] */
     protected $statuses;
+
+    /** @var AbstractEnumValue[] */
+    protected $states;
 
     /**
      * @return array
@@ -61,6 +67,7 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
         /** @var Organization $organization */
         $organization = $user->getOrganization();
         $status       = $this->getStatus($opportunityData['status']);
+        $state        = $this->getState($opportunityData['state']);
 
         $opportunity = new Opportunity();
         $updated     = $this->generateUpdatedDate($created);
@@ -71,6 +78,7 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
             ->setCreatedAt($created)
             ->setUpdatedAt($updated)
             ->setCloseDate($this->generateCloseDate($updated))
+            ->setState($state)
             ->setCustomer($customer);
 
         if (!empty($opportunityData['budget amount'])) {
@@ -110,7 +118,8 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
                 'status',
                 'lead uid',
                 'close reason',
-                'budget amount'
+                'budget amount',
+                'state'
             ]
         );
     }
@@ -220,5 +229,46 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
     public function getOrder()
     {
         return 54;
+    }
+
+    /**
+     * @param $id
+     * @return AbstractEnumValue
+     */
+    protected function getState($id)
+    {
+        $states = $this->getStates();
+
+        return isset($states[$id])
+            ? $states[$id]
+            : $states[self::DEFAULT_OPPORTUNITY_STATE];
+    }
+
+    /**
+     * @return AbstractEnumValue[]
+     */
+    protected function getStates()
+    {
+        if (count($this->states) === 0) {
+            $this->loadStates();
+        }
+
+        return $this->states;
+    }
+
+    protected function loadStates()
+    {
+        $oppStateClassName = ExtendHelper::buildEnumValueClassName(Opportunity::INTERNAL_STATE_CODE);
+        $opportunityStates = $this->em->getRepository($oppStateClassName)->findAll();
+        $this->states      = array_reduce(
+            $opportunityStates,
+            function ($states, $state) {
+                /** @var AbstractEnumValue $state */
+                $states[$state->getId()] = $state;
+
+                return $states;
+            },
+            []
+        );
     }
 }
