@@ -36,7 +36,8 @@ class OrganizationsProSelectType extends OrganizationsSelectType
         $view->vars['show_organizations_selector'] = !$this->organizationProHelper->isGlobalOrganizationExists() ||
             $this->securityFacade->getOrganization()->getIsGlobal();
 
-        $view->vars['organization_tree_ids'] = $this->getFormBusinessUnitsTree();
+        $buTree = $this->getFormBusinessUnitsTree();
+        $view->vars['organization_tree_ids'] = $buTree;
 
         /** @var PersistentCollection $organizationsData */
         $organizationsData = $view->vars['data']->getOrganizations();
