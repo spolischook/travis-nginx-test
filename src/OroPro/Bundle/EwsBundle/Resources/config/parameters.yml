@@ -1,2 +1,2 @@
 parameters:
-    wsdl_endpoint:                           @OroProEwsBundle/Resources/wsdl/services.wsdl
+    wsdl_endpoint:                           '@OroProEwsBundle/Resources/wsdl/services.wsdl'

@@ -70,7 +70,7 @@ class OrganizationColumnExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getOrganization')
             ->will($this->returnValue($this->getOrganizationMock()));
 
-        $this->assertFalse($this->extension->isApplicable($this->getDatagridConfiguration()));
+        $this->assertFalse($this->extension->isApplicable($this->getDatagridConfiguration([])));
     }
 
     public function testIsApplicableInSystemModeWithAdditionalOrg()
@@ -94,12 +94,15 @@ class OrganizationColumnExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getConfig')
             ->willReturn($config);
 
-        $this->assertFalse($this->extension->isApplicable($this->getDatagridConfiguration()));
+        $this->assertFalse($this->extension->isApplicable($this->getDatagridConfiguration([])));
     }
 
-    public function testProcessConfig()
+    /**
+     * @dataProvider parametersProvider
+     */
+    public function testProcessConfig($sorters, $expectedSorters)
     {
-        $config = $this->getDatagridConfiguration();
+        $config = $this->getDatagridConfiguration($sorters);
 
         $this->extension->processConfigs($config);
 
@@ -126,16 +129,7 @@ class OrganizationColumnExtensionTest extends \PHPUnit_Framework_TestCase
                         'renderable'    => true
                     ],
                 ],
-                'sorters' => [
-                    'columns' => [
-                        OrganizationColumnExtension::COLUMN_NAME => [
-                            'data_name' => OrganizationColumnExtension::COLUMN_NAME
-                        ]
-                    ],
-                    'default' => [
-                        'name' => 'ASC'
-                    ]
-                ],
+                'sorters' => $expectedSorters,
                 'filters' => [
                     'columns' => [
                         OrganizationColumnExtension::COLUMN_NAME => [
@@ -176,7 +170,7 @@ class OrganizationColumnExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @return DatagridConfiguration
      */
-    protected function getDatagridConfiguration()
+    protected function getDatagridConfiguration($sorters)
     {
         $params = [
             'extended_entity_name' => 'Acme\Bundle\UserBundle\Entity\User',
@@ -191,10 +185,66 @@ class OrganizationColumnExtensionTest extends \PHPUnit_Framework_TestCase
                 ]
             ],
             'columns' => [],
-            'sorters' => [],
+            'sorters' => $sorters,
             'filters' => []
         ];
 
         return DatagridConfiguration::createNamed('acme_user', $params);
+    }
+
+    /**
+     * Parameters provider
+     *
+     * @return array
+     */
+    public function parametersProvider()
+    {
+        return [
+            //without default sorting
+            [
+                [],
+                [
+                    'columns' => [
+                        OrganizationColumnExtension::COLUMN_NAME => [
+                            'data_name' => OrganizationColumnExtension::COLUMN_NAME
+                        ]
+                    ],
+                    'default' => [
+                        OrganizationColumnExtension::COLUMN_NAME => 'ASC'
+                    ]
+                ]
+            ],
+            //with default sorting
+            [
+                ['default' => ['test' => 'ASC']],
+                [
+                    'columns' => [
+                        OrganizationColumnExtension::COLUMN_NAME => [
+                            'data_name' => OrganizationColumnExtension::COLUMN_NAME
+                        ]
+                    ],
+                    'default' => [
+                        'test' => 'ASC'
+                    ]
+                ]
+            ],
+            //without default sorting and multiple_sorting=true
+            [
+                ['multiple_sorting' => true, 'default' => ['test' => 'ASC']],
+                [
+                    'multiple_sorting' => true,
+                    'default' => [
+                        OrganizationColumnExtension::COLUMN_NAME => 'ASC',
+                        'test' => 'ASC'
+                    ],
+                    'columns' => [
+                        OrganizationColumnExtension::COLUMN_NAME => [
+                            'data_name' => OrganizationColumnExtension::COLUMN_NAME
+                        ]
+                    ],
+                ]
+            ],
+
+        ];
     }
 }

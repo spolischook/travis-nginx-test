@@ -16,22 +16,22 @@ services:
     oropro_organization.form.type.organization_config_type:
         class: %oropro_organization.form.type.organization_config_type.class%
         arguments:
-            - @doctrine
+            - "@doctrine"
         tags:
             - { name: form.type, alias: oro_type_choice_organization_type }
 
     oropro_organization.form.type.organization_choice:
         class: %oropro_organization.form.type.organization_choice.class%
         arguments:
-            - @oro_security.security_facade
-            - @oro_entity_config.config_manager
+            - "@oro_security.security_facade"
+            - "@oro_entity_config.config_manager"
         tags:
             - { name: form.type, alias: oro_organization_choice_select2 }
 
     oropro_organization.form.type.is_global:
         class: %oropro_organization.form.type.is_global.class%
         arguments:
-            - @oropro_organization.helper
+            - "@oropro_organization.helper"
         tags:
             - { name: form.type, alias: oropro_organization_is_global }
 
@@ -43,8 +43,8 @@ services:
     oropro_organization.form.eventlistener.organization_field:
         class: %oropro_organization.form.eventlistener.organization_field.class%
         arguments:
-            - @oro_entity_config.config_manager
-            - @oro_security.security_facade
+            - "@oro_entity_config.config_manager"
+            - "@oro_security.security_facade"
         tags:
             - { name: kernel.event_listener, event: entity_form.render.before, method: addOrganizationField }
 
@@ -52,9 +52,9 @@ services:
         class: %oropro_organization.form.handler.organization.class%
         scope: request
         arguments:
-            - @oro_organization.form.organization
-            - @request
-            - @doctrine.orm.entity_manager
-            - @security.context
-            - @orocrm_channel.provider.state_provider
+            - "@oro_organization.form.organization"
+            - "@request"
+            - "@doctrine.orm.entity_manager"
+            - "@security.context"
+            - "@orocrm_channel.provider.state_provider"
 

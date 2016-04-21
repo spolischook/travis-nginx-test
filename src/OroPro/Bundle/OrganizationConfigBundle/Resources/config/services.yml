@@ -16,9 +16,9 @@ services:
   oropro_organization_config.provider.form_provider:
       class: %oropro_organization_config.provider.organization_configuration.form_provider.class%
       arguments:
-          - @oro_config.config_bag
-          - @form.factory
-          - @oro_security.security_facade
+          - "@oro_config.config_bag"
+          - "@form.factory"
+          - "@oro_security.security_facade"
       tags:
           -  { name: oro_config.configuration_provider }
       lazy: true
@@ -28,7 +28,7 @@ services:
       public: false
       parent: oro_config.scope_manager.abstract
       calls:
-          - [setSecurityContext, [ @security.token_storage ]]
+          - [setSecurityContext, [ '@security.token_storage' ]]
       tags:
           - { name: oro_config.scope, scope: organization, priority: 0 }
 
@@ -37,6 +37,6 @@ services:
       public: false
       parent: oro_config.scope_manager.abstract
       calls:
-          - [setSecurityContext, [ @security.token_storage ]]
+          - [setSecurityContext, [ '@security.token_storage' ]]
       tags:
           - { name: oro_config.scope, scope: user, priority: 256 }

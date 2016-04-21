@@ -18,27 +18,27 @@ services:
     oro_pro_ews.connector:
         class: %oro_pro_ews.connector.class%
         arguments:
-            - @oro_pro_ews.services
+            - "@oro_pro_ews.services"
 
     oro_pro_ews.services:
         public: false
         class: %oro_pro_ews.services.class%
         arguments:
-            - @oro_pro_ews.service_configurator
+            - "@oro_pro_ews.service_configurator"
 
     oro_pro_ews.search_query.builder:
         scope: prototype
         class: %oro_pro_ews.search_query.builder.class%
         arguments:
-            - @oro_pro_ews.search_query.state
+            - "@oro_pro_ews.search_query.state"
 
     oro_pro_ews.search_query.state:
         public: false
         scope: prototype
         class: %oro_pro_ews.search_query.state.class%
         arguments:
-            - @oro_pro_ews.search_query.query_string.builder
-            - @oro_pro_ews.search_query.restriction.builder
+            - "@oro_pro_ews.search_query.query_string.builder"
+            - "@oro_pro_ews.search_query.restriction.builder"
 
     oro_pro_ews.search_query.query_string.builder:
         public: false
@@ -51,8 +51,8 @@ services:
     oro_pro_ews.service_configurator:
         class: %oro_pro_ews.service_configurator.class%
         arguments:
-            - @oro_config.user
-            - @oro_security.encoder.mcrypt
+            - "@oro_config.user"
+            - "@oro_security.encoder.mcrypt"
             - %oro_pro_ews.wsdl_endpoint%
             - false                         # ignoreFailedResponseMessages
 
@@ -60,13 +60,13 @@ services:
         scope: prototype
         class: %oro_pro_ews.email_synchronizer.class%
         arguments:
-            - @doctrine
-            - @oro_email.known_email_address_checker_factory
-            - @oro_pro_ews.email_sync_processor_factory
-            - @oro_email.email.address.manager
-            - @oro_email.email.owner.provider.storage
-            - @oro_pro_ews.connector
-            - @oro_pro_ews.service_configurator
+            - "@doctrine"
+            - "@oro_email.known_email_address_checker_factory"
+            - "@oro_pro_ews.email_sync_processor_factory"
+            - "@oro_email.email.address.manager"
+            - "@oro_email.email.owner.provider.storage"
+            - "@oro_pro_ews.connector"
+            - "@oro_pro_ews.service_configurator"
             - %oro_user.entity.class%
         tags:
             - { name: oro_email.email_synchronizer }
@@ -76,15 +76,15 @@ services:
         public: false
         scope: prototype
         arguments:
-            - @doctrine
-            - @oro_email.email.entity.builder
+            - "@doctrine"
+            - "@oro_email.email.entity.builder"
 
     oro_pro_ews.email_body_loader:
         public: false
         class: %oro_pro_ews.email_body_loader.class%
         arguments:
-            - @oro_pro_ews.connector
-            - @oro_config.global
+            - "@oro_pro_ews.connector"
+            - "@oro_config.global"
         tags:
             - { name: oro_email.email_body_loader }
 
@@ -101,18 +101,18 @@ services:
     oro_pro_ews.transport_check.connector:
         class: %oro_pro_ews.connector.class%
         arguments:
-            - @oro_pro_ews.transport_check.services
+            - "@oro_pro_ews.transport_check.services"
 
     oro_pro_ews.transport_check.services:
         public: false
         class: %oro_pro_ews.services.class%
         arguments:
-            - @oro_pro_ews.transport_check.service_configurator
+            - "@oro_pro_ews.transport_check.service_configurator"
 
     oro_pro_ews.transport_check.service_configurator:
         class: %oro_pro_ews.transport_check.service_configurator.class%
         arguments:
-            - @oro_config.user
-            - @oro_security.encoder.mcrypt
+            - "@oro_config.user"
+            - "@oro_security.encoder.mcrypt"
             - %oro_pro_ews.wsdl_endpoint%
             - false                         # ignoreFailedResponseMessages

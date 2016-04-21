@@ -4,7 +4,6 @@ namespace OroPro\Bundle\OrganizationBundle\Form\Type;
 
 use Doctrine\ORM\PersistentCollection;
 
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
@@ -27,33 +26,6 @@ class OrganizationsProSelectType extends OrganizationsSelectType
     public function setOrganizationProHelper(OrganizationProHelper $organizationProHelper)
     {
         $this->organizationProHelper = $organizationProHelper;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add(
-            'organizations',
-            'entity',
-            [
-                'class'    => 'OroOrganizationBundle:Organization',
-                'property' => 'name',
-                'multiple' => true,
-                'expanded' => true,
-                'choices'  => $this->getOrganizationOptions(),
-            ]
-        );
-        $builder->add(
-            'businessUnits',
-            'oro_business_unit_tree',
-            [
-                'multiple' => true,
-                'expanded' => true,
-                'required' => false,
-            ]
-        );
     }
 
     /**
@@ -88,6 +60,7 @@ class OrganizationsProSelectType extends OrganizationsSelectType
 
         $view->vars['selected_organizations']  = $organizationsData;
         $view->vars['selected_business_units'] = $businessUnitData;
+        $view->vars['accordion_enabled'] = $this->buManager->getTreeNodesCount($buTree) > 1000;
     }
 
     /**

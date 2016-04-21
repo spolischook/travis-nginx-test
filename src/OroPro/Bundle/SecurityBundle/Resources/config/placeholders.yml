@@ -6,4 +6,4 @@ placeholders:
 items:
     oropro_share:
         template: OroProSecurityBundle:Share:shareButton.html.twig
-        applicable: @oropro_security.placeholder.filter->isShareEnabled($entity$)
+        applicable: "@oropro_security.placeholder.filter->isShareEnabled($entity$)"

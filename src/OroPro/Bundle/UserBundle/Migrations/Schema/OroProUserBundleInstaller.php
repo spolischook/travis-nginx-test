@@ -4,6 +4,7 @@ namespace OroPro\Bundle\UserBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 
+use Oro\Bundle\EntityBundle\EntityConfig\DatagridScope;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigModel;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
@@ -57,7 +58,7 @@ class OroProUserBundleInstaller implements Installation, ExtendExtensionAwareInt
                     'form_type'  => 'oropro_user_role_organization_select'
                 ],
                 'datagrid' => [
-                    'is_visible' => false
+                    'is_visible' => DatagridScope::IS_VISIBLE_FALSE
                 ]
             ]
         );
