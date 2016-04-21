@@ -23,9 +23,6 @@
             <directory suffix="Test.php">vendor/oro/*/src/*/Bundle/*Bundle/Tests/Selenium</directory>
         </testsuite>
     </testsuites>
-    <php>
-        <server name="KERNEL_DIR" value="app/" />
-    </php>
     <listeners>
         <listener class="TestListener" file="vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Test/TestListener.php">
             <arguments>
@@ -34,6 +31,7 @@
         </listener>
     </listeners>
     <php>
+        <server name="KERNEL_DIR" value="app/" />
         <const name="PHPUNIT_LOAD_LIMIT" value="1.2"/>
         <const name="PHPUNIT_PAGE_LIMIT" value="0.5"/>
         <const name="PHPUNIT_TESTSUITE_BROWSER_PATH_WINNT" value="C:\Dev\phantomjs-1.9.0-windows\phantomjs.exe"/>
@@ -52,5 +50,4 @@
         <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN" value="admin"/>
         <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS" value="admin"/>
     </php>
-
 </phpunit>
