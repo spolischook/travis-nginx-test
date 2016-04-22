@@ -30,6 +30,7 @@ class AddTaskStatusField implements Migration, ExtendExtensionAwareInterface
     public function up(Schema $schema, QueryBag $queries)
     {
         static::addTaskStatusField($schema, $this->extendExtension);
+        static::addEnumValues($queries);
 
         $queries->addQuery(
             new UpdateEntityConfigEntityValueQuery(
@@ -40,7 +41,6 @@ class AddTaskStatusField implements Migration, ExtendExtensionAwareInterface
             )
         );
 
-        static::addEnumValues($queries);
         $queries->addPostQuery(new UpdateTaskStatusQuery());
     }
 

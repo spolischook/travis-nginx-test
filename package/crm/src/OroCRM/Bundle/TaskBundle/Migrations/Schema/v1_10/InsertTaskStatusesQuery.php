@@ -37,8 +37,8 @@ class InsertTaskStatusesQuery extends ParametrizedMigrationQuery
      */
     public function doExecute(LoggerInterface $logger, $dryRun = false)
     {
-        $sql = 'INSERT INTO oro_enum_task_status (id, name, priority, is_default) 
-            VALUES (:id, :name, :priority, :is_default)';
+        $sql = 'INSERT INTO oro_enum_task_status (id, name, priority, is_default)'
+            . ' VALUES (:id, :name, :priority, :is_default)';
 
         $statuses = [
             [
