@@ -100,7 +100,7 @@ case $step in
              sphinx-build -nW -b html -d _build/doctrees . _build/html; 
           fi
           if [ ! -z "$TESTSUITE" ]; then 
-             composer install --no-interaction;
+             composer install --optimize-autoloader --no-interaction;
              if [ ! -z "$DB" ]; then 
                 php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --timeout 600;
                 php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures; 
