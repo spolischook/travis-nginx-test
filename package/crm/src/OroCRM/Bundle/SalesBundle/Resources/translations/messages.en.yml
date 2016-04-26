@@ -119,7 +119,7 @@ orocrm:
             add_entity:           Add opportunity
             id.label:             Id
             name.label:           Opportunity name
-            close_date.label:     Close date
+            close_date.label:     Expected close date
             probability.label:    Probability
             budget_amount.label:  Budget amount
             close_revenue.label:  Close revenue
@@ -138,6 +138,8 @@ orocrm:
             data_channel.label:   Channel
             assigned.label:       Assigned
             state.label:          Status
+            workflow:
+                close_date.label: Close date
             datagrid:
                 view:     View
                 update:   Update
