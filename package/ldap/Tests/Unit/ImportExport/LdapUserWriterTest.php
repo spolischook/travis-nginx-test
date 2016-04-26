@@ -2,7 +2,7 @@
 
 namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\ImportExport;
 
-use Oro\Bundle\DataGridBundle\Common\ObjectCompatible;
+use Oro\Bundle\DataGridBundle\Common\DataObject;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
@@ -36,7 +36,7 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
         $this->channel->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
-        $mappingSettings = ObjectCompatible::create(
+        $mappingSettings = DataObject::create(
             [
                 'exportUserBaseDn'      => 'ou=group,dc=localhost',
                 'exportUserObjectClass' => 'inetOrgPerson',
@@ -52,7 +52,7 @@ class LdapUserWriterTest extends \PHPUnit_Framework_TestCase
         $this->channel->expects($this->any())
             ->method('getMappingSettings')
             ->will($this->returnValue($mappingSettings));
-        $syncSettings = ObjectCompatible::create(
+        $syncSettings = DataObject::create(
             [
                 'syncPriority'        => 'local',
                 'isTwoWaySyncEnabled' => true,
