@@ -258,7 +258,7 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
 
     protected function loadStates()
     {
-        $oppStateClassName = ExtendHelper::buildEnumValueClassName(Opportunity::INTERNAL_STATE_CODE);
+        $oppStateClassName = ExtendHelper::buildEnumValueClassName(Opportunity::INTERNAL_STATUS_CODE);
         $opportunityStates = $this->em->getRepository($oppStateClassName)->findAll();
         $this->states      = array_reduce(
             $opportunityStates,
