@@ -66,8 +66,8 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
         $created  = $this->generateCreatedDate();
         /** @var Organization $organization */
         $organization = $user->getOrganization();
-        $status       = $this->getStatus($opportunityData['status']);
-        $state        = $this->getState($opportunityData['state']);
+//        $status       = $this->getStatus($opportunityData['status']);
+        $status        = $this->getState($opportunityData['state']);
 
         $opportunity = new Opportunity();
         $updated     = $this->generateUpdatedDate($created);
@@ -78,7 +78,7 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
             ->setCreatedAt($created)
             ->setUpdatedAt($updated)
             ->setCloseDate($this->generateCloseDate($updated))
-            ->setState($state)
+//            ->setState($state)
             ->setCustomer($customer);
 
         if (!empty($opportunityData['budget amount'])) {
@@ -164,45 +164,45 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
         );
     }
 
-    /**
-     * @param $name
-     * @return OpportunityStatus
-     */
-    protected function getStatus($name)
-    {
-        $statuses = $this->getStatuses();
-
-        return isset($statuses[$name])
-            ? $statuses[$name]
-            : $statuses[self::DEFAULT_OPPORTUNITY_STATUS];
-    }
-
-    /**
-     * @return OpportunityStatus[]
-     */
-    protected function getStatuses()
-    {
-        if (count($this->statuses) === 0) {
-            $this->loadStatuses();
-        }
-
-        return $this->statuses;
-    }
-
-    protected function loadStatuses()
-    {
-        $opportunityStatuses = $this->em->getRepository('OroCRMSalesBundle:OpportunityStatus')->findAll();
-        $this->statuses      = array_reduce(
-            $opportunityStatuses,
-            function ($statuses, $status) {
-                /** @var OpportunityStatus $status */
-                $statuses[$status->getName()] = $status;
-
-                return $statuses;
-            },
-            []
-        );
-    }
+//    /**
+//     * @param $name
+//     * @return OpportunityStatus
+//     */
+//    protected function getStatus($name)
+//    {
+//        $statuses = $this->getStatuses();
+//
+//        return isset($statuses[$name])
+//            ? $statuses[$name]
+//            : $statuses[self::DEFAULT_OPPORTUNITY_STATUS];
+//    }
+//
+//    /**
+//     * @return OpportunityStatus[]
+//     */
+//    protected function getStatuses()
+//    {
+//        if (count($this->statuses) === 0) {
+//            $this->loadStatuses();
+//        }
+//
+//        return $this->statuses;
+//    }
+//
+//    protected function loadStatuses()
+//    {
+//        $opportunityStatuses = $this->em->getRepository('OroCRMSalesBundle:OpportunityStatus')->findAll();
+//        $this->statuses      = array_reduce(
+//            $opportunityStatuses,
+//            function ($statuses, $status) {
+//                /** @var OpportunityStatus $status */
+//                $statuses[$status->getName()] = $status;
+//
+//                return $statuses;
+//            },
+//            []
+//        );
+//    }
 
     /**
      * @param Opportunity       $opportunity
@@ -235,9 +235,9 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
      * @param $id
      * @return AbstractEnumValue
      */
-    protected function getState($id)
+    protected function getStatus($id)
     {
-        $states = $this->getStates();
+        $states = $this->getStatuses();
 
         return isset($states[$id])
             ? $states[$id]
@@ -247,16 +247,16 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
     /**
      * @return AbstractEnumValue[]
      */
-    protected function getStates()
+    protected function getStatuses()
     {
         if (count($this->states) === 0) {
-            $this->loadStates();
+            $this->loadStatuses();
         }
 
         return $this->states;
     }
 
-    protected function loadStates()
+    protected function loadStatuses()
     {
         $oppStateClassName = ExtendHelper::buildEnumValueClassName(Opportunity::INTERNAL_STATUS_CODE);
         $opportunityStates = $this->em->getRepository($oppStateClassName)->findAll();
