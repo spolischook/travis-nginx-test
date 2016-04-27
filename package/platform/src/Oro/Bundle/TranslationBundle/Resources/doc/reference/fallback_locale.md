@@ -18,12 +18,12 @@ Methods:
 * **getLocaleFallbacks** - public method, for default strategy has only one locale and no fallbacks;
 
 
-#### TranslationBundle \ Strategy \ TranslationStrategyInterface**
+#### TranslationBundle \ Strategy \ TranslationStrategyInterface
 
 Methods:
 
 * **getName** - method return text identifier of the strategy;
-* **getLocaleFallbacks** - this method return tree of locale fallbacks. Example below;
+* **getLocaleFallbacks** - this method return tree of locale fallbacks;
 
 
 #### TranslationBundle \ Strategy \ TranslationStrategyProvider
