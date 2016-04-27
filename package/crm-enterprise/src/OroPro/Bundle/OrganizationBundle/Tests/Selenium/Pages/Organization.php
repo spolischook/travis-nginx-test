@@ -2,8 +2,6 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Tests\Selenium\Pages;
 
-use PHPUnit_Extensions_Selenium2TestCase_Keys as Keys;
-
 use Oro\Bundle\TestFrameworkBundle\Pages\AbstractPageEntity;
 
 /**
@@ -40,18 +38,12 @@ class Organization extends AbstractPageEntity
     }
 
     /**
-     * @param string $name
+     * @param string $description
      * @return $this
      */
-    public function setDescription($name)
+    public function setDescription($description)
     {
-        $this->test->byXPath(
-            "//iframe[starts-with(@id,'oro_organization_form_description')]"
-        )->click();
-        $this->test->keys(KEYS::CONTROL + 'a');
-        $this->test->keys(KEYS::DELETE);
-        $this->test->keys($name);
-        return $this;
+        return $this->setContentToTinymceElement('oro_organization_form_description', $description);
     }
 
     /**
