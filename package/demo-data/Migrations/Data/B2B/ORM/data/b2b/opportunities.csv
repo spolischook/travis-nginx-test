@@ -1,4 +1,4 @@
-Uid,User uid,Channel uid,Customer uid,Contact uid,Lead uid,Close Reason,Probability,Budget Amount,Close Revenue,State
+Uid,User uid,Channel uid,Customer uid,Contact uid,Lead uid,Close Reason,Probability,Budget Amount,Close Revenue,Status
 1,1,1,B2B:1,1,1,,0.2,2560,0,solution_development
 2,1,1,B2B:2,2,2,,0.5,3200,0,solution_development
 3,1,1,B2B:3,3,3,won,1,1250,1250,won

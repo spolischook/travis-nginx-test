@@ -65,7 +65,7 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
         $created  = $this->generateCreatedDate();
         /** @var Organization $organization */
         $organization = $user->getOrganization();
-        $status        = $this->getStatus($opportunityData['state']);
+        $status       = $this->getStatus($opportunityData['status']);
 
         $opportunity = new Opportunity();
         $updated     = $this->generateUpdatedDate($created);
