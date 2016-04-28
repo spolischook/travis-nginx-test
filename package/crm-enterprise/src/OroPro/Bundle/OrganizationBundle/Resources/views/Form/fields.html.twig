@@ -52,7 +52,7 @@
                 {% for org in form.vars.organization_tree_ids %}
                     <div class="accordion-group">
                         <div class="accordion-heding">
-                            <div class="oro-clearfix">
+                            <div class="oro-clearfix{{ not form.vars.show_organizations_selector ? ' hide' : '' }}">
                                 <a class="accordion-toggle collapsed" data-toggle="collapse" href="#organization_{{ org.id }}"></a>
                                 <label>
                                     <input type="checkbox"
