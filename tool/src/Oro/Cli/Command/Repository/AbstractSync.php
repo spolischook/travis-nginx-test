@@ -135,10 +135,14 @@ abstract class AbstractSync extends RootCommand
         $remotes = $this->getRemoteAliases();
         if (!in_array($alias, $remotes, true)) {
             /* Add remote repository if it was not added yet */
-            $this->execCmd("git remote add -f {$alias} {$repository}");
+            $this->execCmd("git remote add --no-tags {$alias} {$repository}");
         }
 
-        $fetchCommand = $fetchOnlyMaster ? "git fetch {$alias} master" : "git fetch {$alias}";
+        $fetchCommand = "git fetch --prune {$alias}";
+        if ($fetchOnlyMaster) {
+            $fetchCommand .= ' master';
+        }
+
         $this->execCmd($fetchCommand);
     }
 
