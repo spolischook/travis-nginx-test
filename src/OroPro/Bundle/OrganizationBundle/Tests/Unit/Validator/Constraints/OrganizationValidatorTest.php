@@ -87,15 +87,14 @@ class OrganizationValidatorTest extends \PHPUnit_Framework_TestCase
             ->with('Oro\Bundle\OrganizationBundle\Tests\Unit\Fixture\Entity\Entity')
             ->willReturn(true);
 
-        $ownershipMetadata = new OwnershipProMetadata();
-
-        $this->ownershipMetadataProvider->expects($this->once())
-            ->method('getMetadata')
-            ->with('Oro\Bundle\OrganizationBundle\Tests\Unit\Fixture\Entity\Entity')
-            ->willReturn($ownershipMetadata);
-
+        $this->entityOwnerAccessor->expects($this->once())
+            ->method('getOrganization')
+            ->willReturn(null);
         $this->entityOwnerAccessor->expects($this->never())
             ->method('getOwner');
+
+        $this->ownershipMetadataProvider->expects($this->never())
+            ->method('getMetadata');
 
         $this->validator->validate($this->testEntity, $this->constraint);
     }
@@ -242,7 +241,7 @@ class OrganizationValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('getManagerForClass')
             ->with('Oro\Bundle\OrganizationBundle\Tests\Unit\Fixture\Entity\Entity')
             ->willReturn($om);
-        $this->ownershipMetadataProvider->expects($this->once())
+        $this->ownershipMetadataProvider->expects($this->any())
             ->method('getMetadata')
             ->with('Oro\Bundle\OrganizationBundle\Tests\Unit\Fixture\Entity\Entity')
             ->willReturn($ownershipMetadata);

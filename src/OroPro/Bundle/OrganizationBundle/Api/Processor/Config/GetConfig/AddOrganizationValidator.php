@@ -15,7 +15,8 @@ use OroPro\Bundle\OrganizationBundle\Validator\Constraints\Organization;
 use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProProvider;
 
 /**
- * Adds organization validators to entity.
+ * Adds NotBlank validation constraint for "organization" field.
+ * Adds Organization validation constraint for the entity.
  */
 class AddOrganizationValidator implements ProcessorInterface
 {
