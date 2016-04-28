@@ -55,15 +55,11 @@ class AddOrganizationNotNullValidatorTest extends ConfigProcessorTestCase
     public function testProcess()
     {
         $className = 'stdClass';
-
         $fieldConfig = new EntityDefinitionFieldConfig();
 
         $definition = new EntityDefinitionConfig();
         $definition->addField('owner', $fieldConfig);
         $definition->addField('org', $fieldConfig);
-
-        $this->context->setClassName($className);
-        $this->context->setResult($definition);
 
         $ownershipMetadata = new OwnershipMetadata('USER', 'owner', 'owner', 'org', 'org');
 
@@ -77,6 +73,8 @@ class AddOrganizationNotNullValidatorTest extends ConfigProcessorTestCase
             ->with($className)
             ->willReturn($ownershipMetadata);
 
+        $this->context->setClassName($className);
+        $this->context->setResult($definition);
         $this->processor->process($this->context);
 
         $formOptions = $fieldConfig->getFormOptions();
@@ -87,7 +85,6 @@ class AddOrganizationNotNullValidatorTest extends ConfigProcessorTestCase
     public function testProcessWithoutOwnerField()
     {
         $className = 'stdClass';
-
         $fieldConfig = new EntityDefinitionFieldConfig();
 
         $definition = new EntityDefinitionConfig();
