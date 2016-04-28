@@ -11,7 +11,7 @@ use Oro\Bundle\ApiBundle\Util\DoctrineHelper;
 use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProProvider;
 
 /**
- * Adds organization NotNull validator to entity.
+ * Adds NotNull validation constraint for "organization" field.
  */
 class AddOrganizationNotNullValidator implements ProcessorInterface
 {
@@ -48,8 +48,7 @@ class AddOrganizationNotNullValidator implements ProcessorInterface
 
         $definition = $context->getResult();
         $fields = $definition->getFields();
-        $ownershipMetadataPro = $this->ownershipMetadataProProvider->getMetadata($entityClass);
-        $ownerField = $ownershipMetadataPro->getGlobalOwnerFieldName();
+        $ownerField = $this->ownershipMetadataProProvider->getMetadata($entityClass)->getGlobalOwnerFieldName();
         if (array_key_exists($ownerField, $fields)) {
             $field = $fields[$ownerField];
             $fieldOptions = $field->getFormOptions();
