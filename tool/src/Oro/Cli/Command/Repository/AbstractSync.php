@@ -205,10 +205,12 @@ abstract class AbstractSync extends RootCommand
         if ($throwException && $returnCode) {
             throw new \RuntimeException(
                 sprintf(
-                    'The "%s" command failed. Return code: %s.' . "\n"
+                    'The "%s" command failed. Return code: %s. Error message:' . "\n"
+                    . implode("\n", $output) . "\n"
                     . 'Please fix the issue and run the "repository:sync" command again.' . "\n"
-                    . 'The "git reset --hard origin/master" command can be used'
-                    . ' to rollback changes made by "repository:sync" command.',
+                    . 'The "git reset --hard" command can be used to rollback changes '
+                    . 'made by "repository:sync" command or "git reset --hard origin/master" '
+                    . 'to reset repository to the original state (note: local commits will be reverted as well!)',
                     $cmd,
                     $returnCode
                 )
