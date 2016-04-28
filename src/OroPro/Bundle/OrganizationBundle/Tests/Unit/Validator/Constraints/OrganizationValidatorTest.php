@@ -67,7 +67,7 @@ class OrganizationValidatorTest extends \PHPUnit_Framework_TestCase
         $this->testEntity = new Entity();
     }
 
-    public function testValidateOnNonSupportedEntity()
+    public function testValidateForNonSupportedEntity()
     {
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
@@ -80,7 +80,7 @@ class OrganizationValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate($this->testEntity, $this->constraint);
     }
 
-    public function testValidateOnNonACLProtectedEntity()
+    public function testValidateForNonACLProtectedEntity()
     {
         $this->registry->expects($this->once())
             ->method('getManagerForClass')

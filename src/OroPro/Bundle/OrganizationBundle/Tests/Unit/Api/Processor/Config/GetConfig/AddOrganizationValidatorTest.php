@@ -38,7 +38,7 @@ class AddOrganizationValidatorTest extends ConfigProcessorTestCase
         $this->processor = new AddOrganizationValidator($this->doctrineHelper, $this->ownershipMetadataProvider);
     }
 
-    public function testProcessOnNonManageableEntity()
+    public function testProcessForNonManageableEntity()
     {
         $className = 'stdClass';
         $this->doctrineHelper->expects($this->once())
