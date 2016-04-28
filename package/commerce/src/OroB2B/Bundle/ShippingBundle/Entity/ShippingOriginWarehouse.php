@@ -22,10 +22,13 @@ class ShippingOriginWarehouse extends ShippingOrigin
      */
     protected $warehouse;
 
+    /** @var bool */
+    protected $system = false;
+
     /**
      * @param Warehouse $warehouse
      *
-     * @return ShippingOriginWarehouse
+     * @return $this
      */
     public function setWarehouse(Warehouse $warehouse)
     {
@@ -43,18 +46,37 @@ class ShippingOriginWarehouse extends ShippingOrigin
     }
 
     /**
-     * @ORM\PreUpdate
+     * @ORM\PostLoad()
      */
-    public function preUpdate()
+    public function postLoad()
     {
-        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->data = new \ArrayObject(
+            [
+                'country' => $this->country,
+                'region' => $this->region,
+                'region_text' => $this->regionText,
+                'postalCode' => $this->postalCode,
+                'city' => $this->city,
+                'street' => $this->street,
+                'street2' => $this->street2
+            ]
+        );
     }
 
     /**
-     * @return boolean
+     * @param ShippingOrigin $shippingOrigin
+     * @return $this
      */
-    public function isSystem()
+    public function import(ShippingOrigin $shippingOrigin)
     {
-        return false;
+        $this->setCountry($shippingOrigin->getCountry())
+            ->setRegion($shippingOrigin->getRegion())
+            ->setRegionText($shippingOrigin->getRegionText())
+            ->setPostalCode($shippingOrigin->getPostalCode())
+            ->setCity($shippingOrigin->getCity())
+            ->setStreet($shippingOrigin->getStreet())
+            ->setStreet2($shippingOrigin->getStreet2());
+
+        return $this;
     }
 }

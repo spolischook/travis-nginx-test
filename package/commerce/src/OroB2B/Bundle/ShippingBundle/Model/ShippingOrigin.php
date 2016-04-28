@@ -3,6 +3,7 @@
 namespace OroB2B\Bundle\ShippingBundle\Model;
 
 use Doctrine\Common\Util\Inflector;
+use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 
@@ -11,20 +12,8 @@ class ShippingOrigin extends AbstractAddress
     /** @var \ArrayObject */
     protected $data;
 
-    /** @var  boolean */
-    protected $system;
-
-    /**
-     * @param boolean $system
-     *
-     * @return ShippingOrigin
-     */
-    public function setSystem($system)
-    {
-        $this->system = $system;
-
-        return $this;
-    }
+    /** @var bool */
+    protected $system = true;
 
     /**
      * @param array $data
@@ -142,14 +131,14 @@ class ShippingOrigin extends AbstractAddress
 
     /**
      * @param string $offset
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
     protected function getOffset($offset, $default = null)
     {
-        if ($this->data->offsetExists((string) $offset)) {
-            return $this->data->offsetGet((string) $offset);
+        if ($this->data->offsetExists((string)$offset)) {
+            return $this->data->offsetGet((string)$offset);
         }
 
         return $default;
@@ -160,6 +149,18 @@ class ShippingOrigin extends AbstractAddress
      */
     public function isSystem()
     {
-        return (bool) $this->system;
+        return $this->system;
+    }
+
+    /**
+     * @param bool $system
+     *
+     * @return $this
+     */
+    public function setSystem($system)
+    {
+        $this->system = (bool)$system;
+
+        return $this;
     }
 }

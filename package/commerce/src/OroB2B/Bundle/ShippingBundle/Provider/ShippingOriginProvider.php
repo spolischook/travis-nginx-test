@@ -24,9 +24,12 @@ class ShippingOriginProvider
     /** @var ShippingOriginModelFactory */
     protected $shippingOriginModelFactory;
 
+    /** @var EntityRepository */
+    protected $warehouseShippingOriginRepository;
+
     /**
-     * @param DoctrineHelper             $doctrineHelper
-     * @param ConfigManager              $configManager
+     * @param DoctrineHelper $doctrineHelper
+     * @param ConfigManager $configManager
      * @param ShippingOriginModelFactory $shippingOriginModelFactory
      */
     public function __construct(
@@ -46,10 +49,7 @@ class ShippingOriginProvider
      */
     public function getShippingOriginByWarehouse(Warehouse $warehouse)
     {
-        /** @var EntityRepository $repo */
-        $repo = $this->doctrineHelper
-            ->getEntityManagerForClass('OroB2B\Bundle\ShippingBundle\Entity\ShippingOriginWarehouse')
-            ->getRepository('OroB2B\Bundle\ShippingBundle\Entity\ShippingOriginWarehouse');
+        $repo = $this->getWarehouseShippingOriginRepository();
 
         /** @var ShippingOriginWarehouse $shippingOriginWarehouse */
         $shippingOriginWarehouse = $repo->findOneBy(['warehouse' => $warehouse]);
@@ -66,8 +66,20 @@ class ShippingOriginProvider
      */
     public function getSystemShippingOrigin()
     {
-        $configData = $this->configManager->get('orob2b_shipping.shipping_origin', false, false)?:[];
+        $configData = $this->configManager->get('orob2b_shipping.shipping_origin') ?: [];
 
-        return $this->shippingOriginModelFactory->create($configData)->setSystem(true);
+        return $this->shippingOriginModelFactory->create($configData);
+    }
+
+    /**
+     * @return EntityRepository
+     */
+    protected function getWarehouseShippingOriginRepository()
+    {
+        $repo = $this->doctrineHelper
+            ->getEntityManagerForClass('OroB2B\Bundle\ShippingBundle\Entity\ShippingOriginWarehouse')
+            ->getRepository('OroB2B\Bundle\ShippingBundle\Entity\ShippingOriginWarehouse');
+
+        return $repo;
     }
 }

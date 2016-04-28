@@ -66,8 +66,9 @@ class ShippingOriginTest extends \PHPUnit_Framework_TestCase
 
     public function testIsSystem()
     {
-        self::assertFalse($this->shippingOrigin->isSystem());
-        $this->shippingOrigin->setSystem(true);
-        self::assertTrue($this->shippingOrigin->isSystem());
+        $this->assertTrue($this->shippingOrigin->isSystem());
+
+        $this->shippingOrigin->setSystem(false);
+        $this->assertFalse($this->shippingOrigin->isSystem());
     }
 }
