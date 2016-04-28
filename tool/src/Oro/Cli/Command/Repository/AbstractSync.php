@@ -155,8 +155,26 @@ abstract class AbstractSync extends RootCommand
 
         /* Pull all updates from remote master */
         if ($this->execCmd("git subtree pull --prefix={$codePath} {$alias} $branchName") && $twoWay) {
+            $this->assertGitVersion();
+
             /* Push all subtree changes to remote upstream repository */
             $this->execCmd("git subtree push --prefix={$codePath} {$alias} $branchName");
+        }
+    }
+
+
+    protected function assertGitVersion()
+    {
+        $output = [];
+
+        $this->execCmd('git --version', true, $output);
+
+        $output = explode(' ', reset($output));
+
+        $version = end($output);
+
+        if (version_compare($version, '2.0.0')) {
+            throw new \RuntimeException('Please use git 1.9');
         }
     }
 
