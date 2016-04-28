@@ -41,7 +41,6 @@ class AddOrganizationNotNullValidatorTest extends ConfigProcessorTestCase
     public function testProcessForNonManageableEntity()
     {
         $className = 'stdClass';
-        $this->context->setClassName($className);
         $this->doctrineHelper->expects($this->once())
             ->method('isManageableEntityClass')
             ->with($className)
@@ -49,6 +48,7 @@ class AddOrganizationNotNullValidatorTest extends ConfigProcessorTestCase
         $this->ownershipMetadataProvider->expects($this->never())
             ->method('getMetadata');
 
+        $this->context->setClassName($className);
         $this->processor->process($this->context);
     }
 
@@ -56,11 +56,9 @@ class AddOrganizationNotNullValidatorTest extends ConfigProcessorTestCase
     {
         $className = 'stdClass';
         $fieldConfig = new EntityDefinitionFieldConfig();
-
         $definition = new EntityDefinitionConfig();
         $definition->addField('owner', $fieldConfig);
         $definition->addField('org', $fieldConfig);
-
         $ownershipMetadata = new OwnershipMetadata('USER', 'owner', 'owner', 'org', 'org');
 
         $this->doctrineHelper->expects($this->once())
@@ -90,23 +88,20 @@ class AddOrganizationNotNullValidatorTest extends ConfigProcessorTestCase
         $definition = new EntityDefinitionConfig();
         $definition->addField('nonowner', $fieldConfig);
 
-        $this->context->setClassName($className);
-        $this->context->setResult($definition);
-
         $ownershipMetadata = new OwnershipMetadata('USER', 'owner', 'owner', 'org', 'org');
 
         $this->doctrineHelper->expects($this->once())
             ->method('isManageableEntityClass')
             ->with($className)
             ->willReturn(true);
-
         $this->ownershipMetadataProvider->expects($this->once())
             ->method('getMetadata')
             ->with($className)
             ->willReturn($ownershipMetadata);
 
+        $this->context->setClassName($className);
+        $this->context->setResult($definition);
         $this->processor->process($this->context);
-
         $this->assertEmpty($fieldConfig->getFormOptions());
     }
 }

@@ -41,7 +41,6 @@ class AddOrganizationValidatorTest extends ConfigProcessorTestCase
     public function testProcessOnNonManageableEntity()
     {
         $className = 'stdClass';
-        $this->context->setClassName($className);
         $this->doctrineHelper->expects($this->once())
             ->method('isManageableEntityClass')
             ->with($className)
@@ -49,34 +48,30 @@ class AddOrganizationValidatorTest extends ConfigProcessorTestCase
         $this->ownershipMetadataProvider->expects($this->never())
             ->method('getMetadata');
 
+        $this->context->setClassName($className);
         $this->processor->process($this->context);
     }
 
     public function testProcess()
     {
         $className = 'stdClass';
-
         $fieldConfig = new EntityDefinitionFieldConfig();
-
         $definition = new EntityDefinitionConfig();
         $definition->addField('owner', $fieldConfig);
         $definition->addField('org', $fieldConfig);
-
-        $this->context->setClassName($className);
-        $this->context->setResult($definition);
-
         $ownershipMetadata = new OwnershipMetadata('USER', 'owner', 'owner', 'org', 'org');
 
         $this->doctrineHelper->expects($this->once())
             ->method('isManageableEntityClass')
             ->with($className)
             ->willReturn(true);
-
         $this->ownershipMetadataProvider->expects($this->once())
             ->method('getMetadata')
             ->with($className)
             ->willReturn($ownershipMetadata);
 
+        $this->context->setClassName($className);
+        $this->context->setResult($definition);
         $this->processor->process($this->context);
 
         $formOptions = $fieldConfig->getFormOptions();
@@ -93,27 +88,22 @@ class AddOrganizationValidatorTest extends ConfigProcessorTestCase
     public function testProcessWithoutOwnerField()
     {
         $className = 'stdClass';
-
         $fieldConfig = new EntityDefinitionFieldConfig();
-
         $definition = new EntityDefinitionConfig();
         $definition->addField('nonowner', $fieldConfig);
-
-        $this->context->setClassName($className);
-        $this->context->setResult($definition);
-
         $ownershipMetadata = new OwnershipMetadata('USER', 'owner', 'owner', 'org', 'org');
 
         $this->doctrineHelper->expects($this->once())
             ->method('isManageableEntityClass')
             ->with($className)
             ->willReturn(true);
-
         $this->ownershipMetadataProvider->expects($this->once())
             ->method('getMetadata')
             ->with($className)
             ->willReturn($ownershipMetadata);
 
+        $this->context->setClassName($className);
+        $this->context->setResult($definition);
         $this->processor->process($this->context);
 
         $this->assertEmpty($fieldConfig->getFormOptions());
