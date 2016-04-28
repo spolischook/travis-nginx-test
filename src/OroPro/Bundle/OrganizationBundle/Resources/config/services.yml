@@ -204,7 +204,7 @@ services:
             - '@oro_api.doctrine_helper'
             - '@oro_security.owner.ownership_metadata_provider'
         tags:
-            - { name: oro.api.processor, action: get_config, extra: definition, targetAction: create, priority: -80 }
+            - { name: oro.api.processor, action: get_config, extra: definition, targetAction: create, priority: -50 }
 
     oropro_organization.api.get_config.add_organization_validator:
         class: OroPro\Bundle\OrganizationBundle\Api\Processor\Config\GetConfig\AddOrganizationValidator
@@ -212,8 +212,8 @@ services:
             - '@oro_api.doctrine_helper'
             - '@oro_security.owner.ownership_metadata_provider'
         tags:
-            - { name: oro.api.processor, action: get_config, extra: definition, targetAction: create, priority: -90 }
-            - { name: oro.api.processor, action: get_config, extra: definition, targetAction: update, priority: -90 }
+            - { name: oro.api.processor, action: get_config, extra: definition, targetAction: create, priority: -52 }
+            - { name: oro.api.processor, action: get_config, extra: definition, targetAction: update, priority: -52 }
 
     oropro_organization.validator.organization:
         class: OroPro\Bundle\OrganizationBundle\Validator\Constraints\OrganizationValidator
