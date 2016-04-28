@@ -33,9 +33,6 @@ class OrganizationValidator extends ConstraintValidator
     /** @var ManagerRegistry */
     protected $registry;
 
-    /** @var object */
-    protected $object;
-
     /**
      * @param ManagerRegistry              $registry
      * @param OwnershipMetadataProProvider $ownershipMetadataProProvider
@@ -59,11 +56,18 @@ class OrganizationValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $this->object = $value;
+        if (null === $value) {
+            return;
+        }
 
         $entityClass = ClassUtils::getClass($value);
         $manager = $this->registry->getManagerForClass($entityClass);
         if (!$manager) {
+            return;
+        }
+
+        $organization = $this->entityOwnerAccessor->getOrganization($value);
+        if (!$organization) {
             return;
         }
 
@@ -73,14 +77,7 @@ class OrganizationValidator extends ConstraintValidator
         }
         $owner = $this->entityOwnerAccessor->getOwner($value);
 
-        $organization = $this->entityOwnerAccessor->getOrganization($value);
-        if (!$organization) {
-            return;
-        }
-
-        $isValidOrganization = $this->isValidOrganization($ownershipMetadata, $owner, $organization);
-
-        if (!$isValidOrganization) {
+        if (!$this->isValidOrganization($ownershipMetadata, $owner, $organization)) {
             $organizationFieldName = $ownershipMetadata->getGlobalOwnerFieldName();
             /** @var ExecutionContextInterface $context */
             $context = $this->context;
@@ -125,25 +122,20 @@ class OrganizationValidator extends ConstraintValidator
         }
 
         switch (true) {
-            case ($metadata->isBasicLevelOwned()): //owner === User
+            case ($metadata->isBasicLevelOwned()):
                 //assigned owner(user) belongs to given organization
                 /** @var User $owner */
                 $isOwnerValid = $owner->getOrganizations(true)->contains($organization);
                 break;
-            case ($metadata->isLocalLevelOwned()): //owner === BusinessUnit
+            case ($metadata->isLocalLevelOwned()):
                 //is assigned owner(business unit) belongs to given organization
                 /** @var BusinessUnit $owner */
                 $isOwnerValid = $owner->getOrganization()->getId() === $organization->getId();
                 break;
-            case ($metadata->isGlobalLevelOwned()): //owner === Organization
             default:
                 $isOwnerValid = true;
         }
 
-        if (!$isOwnerValid) {
-            return false;
-        }
-
-        return true;
+        return $isOwnerValid;
     }
 }
