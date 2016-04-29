@@ -2,6 +2,7 @@
 
 namespace Oro\Cli\Command\Repository;
 
+use Oro\Git\VersionMatcher;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -173,12 +174,15 @@ abstract class AbstractSync extends RootCommand
 
         $this->execCmd('git --version', true, $output);
 
-        $output = explode(' ', reset($output));
+        $output = reset($output);
 
-        $version = end($output);
+        $version = VersionMatcher::match($output);
 
-        if (version_compare($version, '2.0.0')) {
-            throw new \RuntimeException('Please use git 1.9');
+        if (VersionMatcher::gte($version, '2.0.0')) {
+            throw new \RuntimeException(
+                'Git 2.* pushes full history to packages, use Git 1.9 instead. ' .
+                'See https://magecore.atlassian.net/browse/BAP-10262 for details'
+            );
         }
     }
 
