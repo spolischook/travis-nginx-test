@@ -18,6 +18,7 @@ class LdapIntegrationTest extends Selenium2TestCase
      */
     public function testCreateLdapIntegration()
     {
+
         $ldapIntegration = array(
             'name' => 'testLDAP'.mt_rand(10, 99),
             'hostname' => '88.198.43.162',
