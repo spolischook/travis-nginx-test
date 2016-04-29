@@ -2,11 +2,13 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Api\Processor\Config\GetConfig;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 use Oro\Bundle\ApiBundle\Config\EntityDefinitionConfig;
-use Oro\Bundle\ApiBundle\Config\EntityDefinitionFieldConfig;
 use Oro\Bundle\ApiBundle\Tests\Unit\Processor\Config\ConfigProcessorTestCase;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 use OroPro\Bundle\OrganizationBundle\Api\Processor\Config\GetConfig\AddOrganizationValidator;
+use OroPro\Bundle\OrganizationBundle\Validator\Constraints\Organization;
 
 class AddOrganizationValidatorTest extends ConfigProcessorTestCase
 {
@@ -40,73 +42,73 @@ class AddOrganizationValidatorTest extends ConfigProcessorTestCase
 
     public function testProcessForNonManageableEntity()
     {
-        $className = 'stdClass';
         $this->doctrineHelper->expects($this->once())
             ->method('isManageableEntityClass')
-            ->with($className)
+            ->with(self::TEST_CLASS_NAME)
             ->willReturn(false);
         $this->ownershipMetadataProvider->expects($this->never())
             ->method('getMetadata');
 
-        $this->context->setClassName($className);
         $this->processor->process($this->context);
     }
 
     public function testProcess()
     {
-        $className = 'stdClass';
-        $fieldConfig = new EntityDefinitionFieldConfig();
-        $definition = new EntityDefinitionConfig();
-        $definition->addField('owner', $fieldConfig);
-        $definition->addField('org', $fieldConfig);
+        $config = [
+            'fields' => [
+                'owner' => null,
+                'org'   => null,
+            ]
+        ];
         $ownershipMetadata = new OwnershipMetadata('USER', 'owner', 'owner', 'org', 'org');
 
         $this->doctrineHelper->expects($this->once())
             ->method('isManageableEntityClass')
-            ->with($className)
+            ->with(self::TEST_CLASS_NAME)
             ->willReturn(true);
         $this->ownershipMetadataProvider->expects($this->once())
             ->method('getMetadata')
-            ->with($className)
+            ->with(self::TEST_CLASS_NAME)
             ->willReturn($ownershipMetadata);
 
-        $this->context->setClassName($className);
-        $this->context->setResult($definition);
+        /** @var EntityDefinitionConfig $configObject */
+        $configObject = $this->createConfigObject($config);
+        $this->context->setResult($configObject);
         $this->processor->process($this->context);
 
-        $formOptions = $fieldConfig->getFormOptions();
-        $this->assertEquals(1, count($formOptions));
-        $this->assertInstanceOf('Symfony\Component\Validator\Constraints\NotBlank', $formOptions['constraints'][0]);
-        $entityFormOptions = $definition->getFormOptions();
-        $this->assertEquals(1, count($entityFormOptions));
-        $this->assertInstanceOf(
-            'OroPro\Bundle\OrganizationBundle\Validator\Constraints\Organization',
-            $entityFormOptions['constraints'][0]
+        $this->assertEquals(
+            ['constraints' => [new Organization()]],
+            $configObject->getFormOptions()
+        );
+        $this->assertEquals(
+            ['constraints' => [new NotBlank()]],
+            $configObject->getField('org')->getFormOptions()
         );
     }
 
-    public function testProcessWithoutOwnerField()
+    public function testProcessWithoutOrganizationField()
     {
-        $className = 'stdClass';
-        $fieldConfig = new EntityDefinitionFieldConfig();
-        $definition = new EntityDefinitionConfig();
-        $definition->addField('nonowner', $fieldConfig);
+        $config = [
+            'fields' => [
+                'owner' => null,
+            ]
+        ];
         $ownershipMetadata = new OwnershipMetadata('USER', 'owner', 'owner', 'org', 'org');
 
         $this->doctrineHelper->expects($this->once())
             ->method('isManageableEntityClass')
-            ->with($className)
+            ->with(self::TEST_CLASS_NAME)
             ->willReturn(true);
         $this->ownershipMetadataProvider->expects($this->once())
             ->method('getMetadata')
-            ->with($className)
+            ->with(self::TEST_CLASS_NAME)
             ->willReturn($ownershipMetadata);
 
-        $this->context->setClassName($className);
-        $this->context->setResult($definition);
+        /** @var EntityDefinitionConfig $configObject */
+        $configObject = $this->createConfigObject($config);
+        $this->context->setResult($configObject);
         $this->processor->process($this->context);
 
-        $this->assertEmpty($fieldConfig->getFormOptions());
-        $this->assertEmpty($definition->getFormOptions());
+        $this->assertEmpty($configObject->getFormOptions());
     }
 }
