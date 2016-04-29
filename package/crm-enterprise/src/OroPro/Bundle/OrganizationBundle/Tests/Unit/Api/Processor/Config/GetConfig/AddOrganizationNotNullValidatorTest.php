@@ -1,16 +1,16 @@
 <?php
 
-namespace Oro\Bundle\ApiBundle\Tests\Unit\Processor\Config\GetConfig;
+namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Api\Processor\Config\GetConfig;
 
 use Oro\Bundle\ApiBundle\Config\EntityDefinitionConfig;
 use Oro\Bundle\ApiBundle\Config\EntityDefinitionFieldConfig;
-use Oro\Bundle\ApiBundle\Processor\Config\GetConfig\AddOwnerNotNullValidator;
 use Oro\Bundle\ApiBundle\Tests\Unit\Processor\Config\ConfigProcessorTestCase;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use OroPro\Bundle\OrganizationBundle\Api\Processor\Config\GetConfig\AddOrganizationNotNullValidator;
 
-class AddOwnerNotNullValidatorTest extends ConfigProcessorTestCase
+class AddOrganizationNotNullValidatorTest extends ConfigProcessorTestCase
 {
-    /** @var AddOwnerNotNullValidator */
+    /** @var AddOrganizationNotNullValidator */
     protected $processor;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
@@ -19,6 +19,9 @@ class AddOwnerNotNullValidatorTest extends ConfigProcessorTestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $ownershipMetadataProvider;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -28,17 +31,16 @@ class AddOwnerNotNullValidatorTest extends ConfigProcessorTestCase
             ->getMock();
 
         $this->ownershipMetadataProvider = $this
-            ->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider')
+            ->getMockBuilder('OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProProvider')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->processor = new AddOwnerNotNullValidator($this->doctrineHelper, $this->ownershipMetadataProvider);
+        $this->processor = new AddOrganizationNotNullValidator($this->doctrineHelper, $this->ownershipMetadataProvider);
     }
 
     public function testProcessForNonManageableEntity()
     {
         $className = 'stdClass';
-        $this->context->setClassName($className);
         $this->doctrineHelper->expects($this->once())
             ->method('isManageableEntityClass')
             ->with($className)
@@ -46,6 +48,7 @@ class AddOwnerNotNullValidatorTest extends ConfigProcessorTestCase
         $this->ownershipMetadataProvider->expects($this->never())
             ->method('getMetadata');
 
+        $this->context->setClassName($className);
         $this->processor->process($this->context);
     }
 
@@ -55,12 +58,14 @@ class AddOwnerNotNullValidatorTest extends ConfigProcessorTestCase
         $fieldConfig = new EntityDefinitionFieldConfig();
         $definition = new EntityDefinitionConfig();
         $definition->addField('owner', $fieldConfig);
+        $definition->addField('org', $fieldConfig);
         $ownershipMetadata = new OwnershipMetadata('USER', 'owner', 'owner', 'org', 'org');
 
         $this->doctrineHelper->expects($this->once())
             ->method('isManageableEntityClass')
             ->with($className)
             ->willReturn(true);
+
         $this->ownershipMetadataProvider->expects($this->once())
             ->method('getMetadata')
             ->with($className)
@@ -79,8 +84,10 @@ class AddOwnerNotNullValidatorTest extends ConfigProcessorTestCase
     {
         $className = 'stdClass';
         $fieldConfig = new EntityDefinitionFieldConfig();
+
         $definition = new EntityDefinitionConfig();
         $definition->addField('nonowner', $fieldConfig);
+
         $ownershipMetadata = new OwnershipMetadata('USER', 'owner', 'owner', 'org', 'org');
 
         $this->doctrineHelper->expects($this->once())
@@ -95,7 +102,6 @@ class AddOwnerNotNullValidatorTest extends ConfigProcessorTestCase
         $this->context->setClassName($className);
         $this->context->setResult($definition);
         $this->processor->process($this->context);
-
         $this->assertEmpty($fieldConfig->getFormOptions());
     }
 }

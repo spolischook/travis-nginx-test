@@ -1,22 +1,24 @@
 <?php
 
-namespace Oro\Bundle\ApiBundle\Processor\Config\GetConfig;
+namespace OroPro\Bundle\OrganizationBundle\Api\Processor\Config\GetConfig;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Oro\Component\ChainProcessor\ContextInterface;
 use Oro\Component\ChainProcessor\ProcessorInterface;
 
-use Oro\Bundle\OrganizationBundle\Validator\Constraints\Owner;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\ApiBundle\Processor\Config\ConfigContext;
 use Oro\Bundle\ApiBundle\Util\DoctrineHelper;
 
+use OroPro\Bundle\OrganizationBundle\Validator\Constraints\Organization;
+use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProProvider;
+
 /**
- * Adds NotBlank validation constraint for "owner" field.
- * Adds Owner validation constraint for the entity.
+ * Adds NotBlank validation constraint for "organization" field.
+ * Adds Organization validation constraint for the entity.
  */
-class AddOwnerValidator implements ProcessorInterface
+class AddOrganizationValidator implements ProcessorInterface
 {
     /** @var DoctrineHelper */
     protected $doctrineHelper;
@@ -25,10 +27,10 @@ class AddOwnerValidator implements ProcessorInterface
     protected $ownershipMetadataProvider;
 
     /**
-     * @param DoctrineHelper            $doctrineHelper
-     * @param OwnershipMetadataProvider $ownershipMetadataProvider
+     * @param DoctrineHelper               $doctrineHelper
+     * @param OwnershipMetadataProProvider $ownershipMetadataProvider
      */
-    public function __construct(DoctrineHelper $doctrineHelper, OwnershipMetadataProvider $ownershipMetadataProvider)
+    public function __construct(DoctrineHelper $doctrineHelper, OwnershipMetadataProProvider $ownershipMetadataProvider)
     {
         $this->doctrineHelper = $doctrineHelper;
         $this->ownershipMetadataProvider = $ownershipMetadataProvider;
@@ -50,16 +52,16 @@ class AddOwnerValidator implements ProcessorInterface
         $definition = $context->getResult();
         $fields = $definition->getFields();
         $ownershipMetadata = $this->ownershipMetadataProvider->getMetadata($entityClass);
-        $ownerField = $ownershipMetadata->getOwnerFieldName();
+        $ownerField = $ownershipMetadata->getGlobalOwnerFieldName();
         if (array_key_exists($ownerField, $fields)) {
             $field = $fields[$ownerField];
             $fieldOptions = $field->getFormOptions();
             $fieldOptions['constraints'][] = new NotBlank();
             $field->setFormOptions($fieldOptions);
 
-            // add owner validator
+            // add organization validator
             $formOptions = $definition->getFormOptions();
-            $formOptions['constraints'][] = new Owner();
+            $formOptions['constraints'][] = new Organization();
             $definition->setFormOptions($formOptions);
         }
     }
