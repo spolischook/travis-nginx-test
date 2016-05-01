@@ -39,7 +39,7 @@ class AddOrganizationNotNullValidatorTest extends ConfigProcessorTestCase
         $this->processor = new AddOrganizationNotNullValidator($this->doctrineHelper, $this->ownershipMetadataProvider);
     }
 
-    public function testProcessForNonManageableEntity()
+    public function testProcessForNotManageableEntity()
     {
         $this->doctrineHelper->expects($this->once())
             ->method('isManageableEntityClass')
@@ -55,8 +55,7 @@ class AddOrganizationNotNullValidatorTest extends ConfigProcessorTestCase
     {
         $config = [
             'fields' => [
-                'owner' => null,
-                'org'   => null,
+                'org' => null,
             ]
         ];
         $ownershipMetadata = new OwnershipMetadata('USER', 'owner', 'owner', 'org', 'org');
@@ -78,6 +77,35 @@ class AddOrganizationNotNullValidatorTest extends ConfigProcessorTestCase
         $this->assertEquals(
             ['constraints' => [new NotNull()]],
             $configObject->getField('org')->getFormOptions()
+        );
+    }
+
+    public function testProcessForRenamedOrganizationField()
+    {
+        $config = [
+            'fields' => [
+                'org1' => ['property_path' => 'org'],
+            ]
+        ];
+        $ownershipMetadata = new OwnershipMetadata('USER', 'owner', 'owner', 'org', 'org');
+
+        $this->doctrineHelper->expects($this->once())
+            ->method('isManageableEntityClass')
+            ->with(self::TEST_CLASS_NAME)
+            ->willReturn(true);
+        $this->ownershipMetadataProvider->expects($this->once())
+            ->method('getMetadata')
+            ->with(self::TEST_CLASS_NAME)
+            ->willReturn($ownershipMetadata);
+
+        /** @var EntityDefinitionConfig $configObject */
+        $configObject = $this->createConfigObject($config);
+        $this->context->setResult($configObject);
+        $this->processor->process($this->context);
+
+        $this->assertEquals(
+            ['constraints' => [new NotNull()]],
+            $configObject->getField('org1')->getFormOptions()
         );
     }
 }
