@@ -19,18 +19,18 @@ class AddOrganizationNotNullValidator implements ProcessorInterface
     protected $doctrineHelper;
 
     /** @var OwnershipMetadataProProvider */
-    protected $ownershipMetadataProProvider;
+    protected $ownershipMetadataProvider;
 
     /**
      * @param DoctrineHelper               $doctrineHelper
-     * @param OwnershipMetadataProProvider $ownershipMetadataProProvider
+     * @param OwnershipMetadataProProvider $ownershipMetadataProvider
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,
-        OwnershipMetadataProProvider $ownershipMetadataProProvider
+        OwnershipMetadataProProvider $ownershipMetadataProvider
     ) {
         $this->doctrineHelper = $doctrineHelper;
-        $this->ownershipMetadataProProvider = $ownershipMetadataProProvider;
+        $this->ownershipMetadataProvider = $ownershipMetadataProvider;
     }
 
     /**
@@ -47,10 +47,11 @@ class AddOrganizationNotNullValidator implements ProcessorInterface
         }
 
         $definition = $context->getResult();
-        $fields = $definition->getFields();
-        $ownerField = $this->ownershipMetadataProProvider->getMetadata($entityClass)->getGlobalOwnerFieldName();
-        if (array_key_exists($ownerField, $fields)) {
-            $field = $fields[$ownerField];
+        $field = $definition->findField(
+            $this->ownershipMetadataProvider->getMetadata($entityClass)->getGlobalOwnerFieldName(),
+            true
+        );
+        if (null !== $field) {
             $fieldOptions = $field->getFormOptions();
             $fieldOptions['constraints'][] = new NotNull();
             $field->setFormOptions($fieldOptions);
