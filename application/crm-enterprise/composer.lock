@@ -667,33 +667,33 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.6.0",
+            "version": "v1.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "f8af318d14bdb0eff0336795b428b547bd39ccb6"
+                "reference": "47cdc76ceb95cc591d9c79a36dc3794975b5d136"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/f8af318d14bdb0eff0336795b428b547bd39ccb6",
-                "reference": "f8af318d14bdb0eff0336795b428b547bd39ccb6",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/47cdc76ceb95cc591d9c79a36dc3794975b5d136",
+                "reference": "47cdc76ceb95cc591d9c79a36dc3794975b5d136",
                 "shasum": ""
             },
             "require": {
-                "php": "~5.5|~7.0"
+                "php": ">=5.3.2"
             },
             "conflict": {
                 "doctrine/common": ">2.2,<2.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.8|~5.0",
+                "phpunit/phpunit": ">=3.7",
                 "predis/predis": "~1.0",
                 "satooshi/php-coveralls": "~0.6"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                    "dev-master": "1.5.x-dev"
                 }
             },
             "autoload": {
@@ -733,7 +733,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-12-31 16:37:02"
+            "time": "2015-12-19 05:03:47"
         },
         {
             "name": "doctrine/collections",
@@ -2496,22 +2496,21 @@
         },
         {
             "name": "jms/di-extra-bundle",
-            "version": "1.7.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSDiExtraBundle.git",
-                "reference": "27c3fc7150550ccc0731290b2c1ceb57449f909d"
+                "reference": "85a989bedcf22495c03bf94339ddc5e856bd9b46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSDiExtraBundle/zipball/27c3fc7150550ccc0731290b2c1ceb57449f909d",
-                "reference": "27c3fc7150550ccc0731290b2c1ceb57449f909d",
+                "url": "https://api.github.com/repos/schmittjoh/JMSDiExtraBundle/zipball/85a989bedcf22495c03bf94339ddc5e856bd9b46",
+                "reference": "85a989bedcf22495c03bf94339ddc5e856bd9b46",
                 "shasum": ""
             },
             "require": {
                 "jms/aop-bundle": "~1.1",
                 "jms/metadata": "~1.0",
-                "php": "~5.3|~7.0",
                 "symfony/dependency-injection": "~2.3|~3.0",
                 "symfony/finder": "~2.3|~3.0",
                 "symfony/framework-bundle": "~2.3|~3.0",
@@ -2522,7 +2521,7 @@
             "require-dev": {
                 "doctrine/doctrine-bundle": "~1.5",
                 "doctrine/orm": "~2.3",
-                "jms/security-extra-bundle": "~1.0",
+                "jms/security-extra-bundle": "~1.0@dev",
                 "phpcollection/phpcollection": ">=0.2,<0.3-dev",
                 "sensio/framework-extra-bundle": "~2.0|~3.0",
                 "symfony/browser-kit": "~2.3|~3.0",
@@ -2561,7 +2560,7 @@
                 "annotations",
                 "dependency injection"
             ],
-            "time": "2016-04-18 22:27:09"
+            "time": "2016-02-21 22:14:09"
         },
         {
             "name": "jms/job-queue-bundle",
@@ -3509,16 +3508,16 @@
         },
         {
             "name": "moment/moment",
-            "version": "2.13.0",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moment/moment.git",
-                "reference": "d6651c21c6131fbb5db891b60971357739015688"
+                "reference": "b135bf1a6d58ff94287f0a21455bfa6a1ddc7226"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment/zipball/d6651c21c6131fbb5db891b60971357739015688",
-                "reference": "d6651c21c6131fbb5db891b60971357739015688",
+                "url": "https://api.github.com/repos/moment/moment/zipball/b135bf1a6d58ff94287f0a21455bfa6a1ddc7226",
+                "reference": "b135bf1a6d58ff94287f0a21455bfa6a1ddc7226",
                 "shasum": ""
             },
             "require": {
@@ -3559,7 +3558,7 @@
                 "time",
                 "validate"
             ],
-            "time": "2016-04-18 07:29:18"
+            "time": "2016-03-07 09:14:46"
         },
         {
             "name": "monolog/monolog",
@@ -3912,7 +3911,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm/",
-                "reference": "cbb5d285329360e0b9481fe57eeaf9812e63b285",
+                "reference": "1c2c6b53ab461eb25cc910846b7b41c1e74bd4b3",
                 "shasum": null
             },
             "require": {
@@ -3949,7 +3948,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/magento-abandoned-cart/",
-                "reference": "6585b235e0caf2d463ebbaf42e3fec0cd2077d10",
+                "reference": "16cfafc62c6829e2c34e6fbcb7c0431629e10391",
                 "shasum": null
             },
             "require": {
@@ -3986,7 +3985,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/dotmailer/",
-                "reference": "a6a9fbf443cc1523f00b9305a0b921fb9596ad87",
+                "reference": "4881946282a6df7e51c7a55a2cb64b1de20b942a",
                 "shasum": null
             },
             "require": {
@@ -4023,7 +4022,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm-enterprise/",
-                "reference": "2a8e1887d2d0da0cfad7f8af30c8b6d1aa88185a",
+                "reference": "c43c97dad105bee8a837c302f2e7cee34f862528",
                 "shasum": null
             },
             "require": {
@@ -4057,7 +4056,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/google-hangout/",
-                "reference": "9d8dbb6e1bbd38e24c9bd6716c6cd86182194d73",
+                "reference": "600e56930888b42db71cb28e596cc17efebe0c94",
                 "shasum": null
             },
             "require": {
@@ -4100,7 +4099,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/magento-contact-us/",
-                "reference": "ffd24588cdc72a79db641730084c6f260a366822",
+                "reference": "eaa8d6562387088e89ec2e29b583efe647fd1361",
                 "shasum": null
             },
             "require": {
@@ -4138,7 +4137,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/mailchimp/",
-                "reference": "4ce43d36da57ae24d93454cff65bac04a51d718f",
+                "reference": "9e4e897a7267a0e3ee19b8c5c9a06ec74dafa065",
                 "shasum": null
             },
             "require": {
@@ -4176,7 +4175,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/demo-data/",
-                "reference": "8a5a8b1d70815090176a8c704e8fc715d7f87fec",
+                "reference": "7bc0cb945dfc15627a48ac2b1263ef125f3da3f8",
                 "shasum": null
             },
             "require": {
@@ -4211,7 +4210,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/ldap/",
-                "reference": "a26d8a48203326f8690c52874f5456723746862f",
+                "reference": "01a2a39bd74f5721a2423275890033d0492a3b99",
                 "shasum": null
             },
             "require": {
@@ -4249,7 +4248,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/zendesk/",
-                "reference": "d9a012020372fd222df28e43c0c6f4759d087471",
+                "reference": "d456e8a1f87b5668c189fca993d837f6469b636d",
                 "shasum": null
             },
             "require": {
@@ -4446,8 +4445,8 @@
             "version": "dev-master",
             "dist": {
                 "type": "path",
-                "url": "../../package/platform",
-                "reference": "e6b48368c61e7c5ae2b2e96830c8b4a31e22b717",
+                "url": "../../package/platform/",
+                "reference": "f7785e328551d93235090237d36cddf1ea745504",
                 "shasum": null
             },
             "require": {
@@ -4546,7 +4545,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/serialized-fields/",
-                "reference": "8f8d066f39c50068001e58e96ea07da08fb19a71",
+                "reference": "8bea9537bcf22670db232be17d081ddaddb33ba3",
                 "shasum": null
             },
             "require": {
@@ -5352,16 +5351,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.2",
+            "version": "v5.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "d8db871a54619458a805229a057ea2af33c753e8"
+                "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/d8db871a54619458a805229a057ea2af33c753e8",
-                "reference": "d8db871a54619458a805229a057ea2af33c753e8",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/0697e6aa65c83edf97bb0f23d8763f94e3f11421",
+                "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421",
                 "shasum": ""
             },
             "require": {
@@ -5401,7 +5400,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-05-01 08:45:47"
+            "time": "2015-06-06 14:19:39"
         },
         {
             "name": "sylius/flow-bundle",
@@ -6063,37 +6062,38 @@
         },
         {
             "name": "zendframework/zend-code",
-            "version": "2.6.3",
+            "version": "2.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-code.git",
-                "reference": "95033f061b083e16cdee60530ec260d7d628b887"
+                "reference": "0e76eec4f47858da3fef96a7f828e2340327310b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-code/zipball/95033f061b083e16cdee60530ec260d7d628b887",
-                "reference": "95033f061b083e16cdee60530ec260d7d628b887",
+                "url": "https://api.github.com/repos/zendframework/zend-code/zipball/0e76eec4f47858da3fef96a7f828e2340327310b",
+                "reference": "0e76eec4f47858da3fef96a7f828e2340327310b",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5 || 7.0.0 - 7.0.4 || ^7.0.6",
-                "zendframework/zend-eventmanager": "^2.6 || ^3.0"
+                "php": ">=5.3.3",
+                "zendframework/zend-eventmanager": "self.version"
             },
             "require-dev": {
-                "doctrine/annotations": "~1.0",
+                "doctrine/common": ">=2.1",
                 "fabpot/php-cs-fixer": "1.7.*",
-                "phpunit/phpunit": "^4.8.21",
-                "zendframework/zend-stdlib": "^2.7 || ^3.0"
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "dev-master",
+                "zendframework/zend-stdlib": "self.version"
             },
             "suggest": {
-                "doctrine/annotations": "Doctrine\\Common\\Annotations >=1.0 for annotation features",
+                "doctrine/common": "Doctrine\\Common >=2.1 for annotation features",
                 "zendframework/zend-stdlib": "Zend\\Stdlib component"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev",
-                    "dev-develop": "2.7-dev"
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
                 }
             },
             "autoload": {
@@ -6111,7 +6111,7 @@
                 "code",
                 "zf2"
             ],
-            "time": "2016-04-20 17:26:42"
+            "time": "2013-04-17 15:15:58"
         },
         {
             "name": "zendframework/zend-crypt",
@@ -6166,37 +6166,32 @@
         },
         {
             "name": "zendframework/zend-eventmanager",
-            "version": "3.0.1",
+            "version": "2.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-eventmanager.git",
-                "reference": "5c80bdee0e952be112dcec0968bad770082c3a6e"
+                "reference": "01b3d7daec6a237e48f5db22d7e4efd65407deac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/5c80bdee0e952be112dcec0968bad770082c3a6e",
-                "reference": "5c80bdee0e952be112dcec0968bad770082c3a6e",
+                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/01b3d7daec6a237e48f5db22d7e4efd65407deac",
+                "reference": "01b3d7daec6a237e48f5db22d7e4efd65407deac",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5 || ^7.0"
+                "php": ">=5.3.3",
+                "zendframework/zend-stdlib": "self.version"
             },
             "require-dev": {
-                "athletic/athletic": "^0.1",
-                "container-interop/container-interop": "^1.1.0",
+                "fabpot/php-cs-fixer": "1.7.*",
                 "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "^2.0",
-                "zendframework/zend-stdlib": "^2.7.3 || ^3.0"
-            },
-            "suggest": {
-                "container-interop/container-interop": "^1.1.0, to use the lazy listeners feature",
-                "zendframework/zend-stdlib": "^2.7.3 || ^3.0, to use the FilterChain feature"
+                "satooshi/php-coveralls": "dev-master"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev",
-                    "dev-develop": "3.1-dev"
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
                 }
             },
             "autoload": {
@@ -6208,15 +6203,12 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": "Trigger and listen to events within a PHP application",
-            "homepage": "https://github.com/zendframework/zend-eventmanager",
+            "homepage": "https://github.com/zendframework/zend-event-manager",
             "keywords": [
-                "event",
                 "eventmanager",
-                "events",
                 "zf2"
             ],
-            "time": "2016-02-18 20:53:00"
+            "time": "2013-04-17 13:32:54"
         },
         {
             "name": "zendframework/zend-i18n",
@@ -6285,29 +6277,28 @@
         },
         {
             "name": "zendframework/zend-ldap",
-            "version": "2.7.0",
+            "version": "2.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-ldap.git",
-                "reference": "c9b5a383adff5f200afc81530908d22e46b803c7"
+                "reference": "3df407ad0421ebda313d277364753ce5ac174646"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-ldap/zipball/c9b5a383adff5f200afc81530908d22e46b803c7",
-                "reference": "c9b5a383adff5f200afc81530908d22e46b803c7",
+                "url": "https://api.github.com/repos/zendframework/zend-ldap/zipball/3df407ad0421ebda313d277364753ce5ac174646",
+                "reference": "3df407ad0421ebda313d277364753ce5ac174646",
                 "shasum": ""
             },
             "require": {
                 "ext-ldap": "*",
-                "php": "^5.5 || ^7.0"
+                "php": ">=5.3.3",
+                "zendframework/zend-stdlib": "self.version"
             },
             "require-dev": {
                 "fabpot/php-cs-fixer": "1.7.*",
-                "php-mock/php-mock-phpunit": "~0.3",
-                "phpunit/phpunit": "^4.5",
-                "zendframework/zend-config": "^2.5",
-                "zendframework/zend-eventmanager": "^2.6.3 || ^3.0.1",
-                "zendframework/zend-stdlib": "^2.7 || ^3.0"
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "dev-master",
+                "zendframework/zend-eventmanager": "self.version"
             },
             "suggest": {
                 "zendframework/zend-eventmanager": "Zend\\EventManager component"
@@ -6315,8 +6306,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev",
-                    "dev-develop": "2.6-dev"
+                    "dev-master": "2.1-dev",
+                    "dev-develop": "2.2-dev"
                 }
             },
             "autoload": {
@@ -6334,7 +6325,7 @@
                 "ldap",
                 "zf2"
             ],
-            "time": "2016-04-21 18:59:22"
+            "time": "2013-04-17 13:32:54"
         },
         {
             "name": "zendframework/zend-loader",
