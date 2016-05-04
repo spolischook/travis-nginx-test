@@ -29,6 +29,7 @@ orob2b:
             weight.label: Weight
             dimensions.label: Dimensions
             freight_class.label: Freight Class
+            add_label: Add Options
         weightunit:
             entity_label: Unit Of Weight
             entity_plural_label: Units Of Weight
