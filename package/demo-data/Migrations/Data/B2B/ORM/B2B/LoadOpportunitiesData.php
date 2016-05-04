@@ -18,7 +18,7 @@ use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInterface
 {
-    const DEFAULT_OPPORTUNITY_STATUS = 'solution_development';
+    const DEFAULT_OPPORTUNITY_STATUS = 'in_progress';
     const WON_OPPORTUNITY_STATUS     = 'won';
     const LOST_OPPORTUNITY_STATUS    = 'lost';
 
