@@ -1,0 +1,6 @@
+services:
+    orob2b_testing.generator.test:
+        class: OroB2B\Bundle\TestingBundle\Generator\TestGenerator
+        arguments:
+            - '@twig'
+            - '@kernel'
