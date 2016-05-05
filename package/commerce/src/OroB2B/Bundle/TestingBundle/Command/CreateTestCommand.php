@@ -28,7 +28,7 @@ class CreateTestCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
-        $generator = $container->get('');
+        $generator = $container->get('orob2b_testing.generator.test');
         $input->getArgument('class');
         $generator->generate($input->getArgument('class'), 'unit');
     }

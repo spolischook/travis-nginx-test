@@ -47,7 +47,7 @@ class TestGenerator
         $methodsData = $this->getMethodsData($class);
         $orderedUses = $this->getOrderedUses(array_merge($this->usedClasses, [$className]));
         $content = $this->twig->render(
-            '@OroTesting/Tests/unit_template.php.twig',
+            '@OroB2BTesting/Tests/unit_template.php.twig',
             [
                 'namespace' => $nameSpace,
                 'vendors' => $orderedUses,
