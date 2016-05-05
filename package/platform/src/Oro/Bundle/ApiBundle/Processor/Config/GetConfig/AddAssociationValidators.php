@@ -4,13 +4,15 @@ namespace Oro\Bundle\ApiBundle\Processor\Config\GetConfig;
 
 use Oro\Component\ChainProcessor\ContextInterface;
 use Oro\Component\ChainProcessor\ProcessorInterface;
+use Oro\Bundle\ApiBundle\Config\EntityDefinitionConfig;
+use Oro\Bundle\ApiBundle\Validator\Constraints as Assert;
 use Oro\Bundle\ApiBundle\Processor\Config\ConfigContext;
 use Oro\Bundle\ApiBundle\Util\DoctrineHelper;
 
 /**
- * Excludes "to-many" relations.
+ * Adds AccessGranted validation constraint for all associations.
  */
-class ExcludeCollectionValuedRelations implements ProcessorInterface
+class AddAssociationValidators implements ProcessorInterface
 {
     /** @var DoctrineHelper */
     protected $doctrineHelper;
@@ -36,21 +38,27 @@ class ExcludeCollectionValuedRelations implements ProcessorInterface
             return;
         }
 
+        $this->addAssociationValidators($context->getResult(), $entityClass);
+    }
+
+    /**
+     * @param EntityDefinitionConfig $definition
+     * @param string                 $entityClass
+     */
+    protected function addAssociationValidators(EntityDefinitionConfig $definition, $entityClass)
+    {
         $metadata = $this->doctrineHelper->getEntityMetadataForClass($entityClass);
-        $definition = $context->getResult();
         $fields = $definition->getFields();
         foreach ($fields as $fieldName => $field) {
-            if ($field->isExcluded()) {
-                // already excluded
-                continue;
-            }
-
-            $propertyPath = $field->getPropertyPath() ?: $fieldName;
-            if ($metadata->hasAssociation($propertyPath)
-                // @todo: temporary exclude all associations. see BAP-10008
-                // && $metadata->isCollectionValuedAssociation($propertyPath)
-            ) {
-                $field->setExcluded();
+            $fieldName = $field->getPropertyPath() ?: $fieldName;
+            if ($metadata->hasAssociation($fieldName)) {
+                $fieldOptions = $field->getFormOptions();
+                if ($metadata->isCollectionValuedAssociation($fieldName)) {
+                    $fieldOptions['constraints'][] = new Assert\All(new Assert\AccessGranted());
+                } else {
+                    $fieldOptions['constraints'][] = new Assert\AccessGranted();
+                }
+                $field->setFormOptions($fieldOptions);
             }
         }
     }

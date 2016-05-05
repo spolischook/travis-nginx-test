@@ -6,13 +6,12 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 use Oro\Component\ChainProcessor\ContextInterface;
 use Oro\Component\ChainProcessor\ProcessorInterface;
-
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\ApiBundle\Processor\Config\ConfigContext;
 use Oro\Bundle\ApiBundle\Util\DoctrineHelper;
 
 /**
- * Adds ownership NotNull validator to entity.
+ * Adds NotNull validation constraint for "owner" field.
  */
 class AddOwnerNotNullValidator implements ProcessorInterface
 {
@@ -46,11 +45,11 @@ class AddOwnerNotNullValidator implements ProcessorInterface
         }
 
         $definition = $context->getResult();
-        $fields = $definition->getFields();
-        $ownershipMetadata = $this->ownershipMetadataProvider->getMetadata($entityClass);
-        $ownerField = $ownershipMetadata->getOwnerFieldName();
-        if (array_key_exists($ownerField, $fields)) {
-            $field = $fields[$ownerField];
+        $field = $definition->findField(
+            $this->ownershipMetadataProvider->getMetadata($entityClass)->getOwnerFieldName(),
+            true
+        );
+        if (null !== $field) {
             $fieldOptions = $field->getFormOptions();
             $fieldOptions['constraints'][] = new NotNull();
             $field->setFormOptions($fieldOptions);

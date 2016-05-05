@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\ApiBundle\Processor\Shared\JsonApi;
 
-use Symfony\Component\HttpFoundation\Response;
-
 use Oro\Component\ChainProcessor\ContextInterface;
 use Oro\Component\ChainProcessor\ProcessorInterface;
 use Oro\Component\PhpUtils\ArrayUtil;
@@ -11,6 +9,7 @@ use Oro\Bundle\ApiBundle\Model\Error;
 use Oro\Bundle\ApiBundle\Model\ErrorSource;
 use Oro\Bundle\ApiBundle\Processor\FormContext;
 use Oro\Bundle\ApiBundle\Processor\SingleItemContext;
+use Oro\Bundle\ApiBundle\Request\Constraint;
 use Oro\Bundle\ApiBundle\Request\JsonApi\JsonApiDocumentBuilder as JsonApiDoc;
 use Oro\Bundle\ApiBundle\Request\ValueNormalizer;
 use Oro\Bundle\ApiBundle\Util\ValueNormalizerUtil;
@@ -39,16 +38,19 @@ abstract class ValidateRequestData implements ProcessorInterface
         /** @var FormContext|SingleItemContext $context */
 
         $this->context = $context;
-
-        $pointer = $this->buildPointer('', JsonApiDoc::DATA);
-        $requestData = $context->getRequestData();
-        if ($this->validateRequestData($requestData, $pointer)) {
-            $data = $requestData[JsonApiDoc::DATA];
-            $this->validatePrimaryDataObject($data, $pointer);
-            $this->validateAttributesAndRelationships($data, $pointer);
+        try {
+            $pointer = $this->buildPointer('', JsonApiDoc::DATA);
+            $requestData = $context->getRequestData();
+            if ($this->validateRequestData($requestData, $pointer)) {
+                $data = $requestData[JsonApiDoc::DATA];
+                $this->validatePrimaryDataObject($data, $pointer);
+                $this->validateAttributesAndRelationships($data, $pointer);
+            }
+            $this->context = null;
+        } catch (\Exception $e) {
+            $this->context = null;
+            throw $e;
         }
-
-        $this->context = null;
     }
 
     /**
@@ -270,8 +272,8 @@ abstract class ValidateRequestData implements ProcessorInterface
     }
 
     /**
-     * @param string $property
      * @param string $parentPath
+     * @param string $property
      *
      * @return string
      */
@@ -286,13 +288,8 @@ abstract class ValidateRequestData implements ProcessorInterface
      */
     protected function addError($pointer, $message)
     {
-        $error = new Error();
-        $error->setStatusCode(Response::HTTP_BAD_REQUEST);
-        $error->setTitle('request data constraint');
-        $error->setDetail($message);
-        $errorSource = new ErrorSource();
-        $errorSource->setPointer($pointer);
-        $error->setSource($errorSource);
+        $error = Error::createValidationError(Constraint::REQUEST_DATA, $message)
+            ->setSource(ErrorSource::createByPointer($pointer));
 
         $this->context->addError($error);
     }

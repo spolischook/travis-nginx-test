@@ -4,8 +4,11 @@ namespace Oro\Bundle\ApiBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
 
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\View\View;
+use FOS\RestBundle\View\ViewHandler;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
@@ -97,7 +100,7 @@ class RestApiController extends FOSRestController
      *
      * @return Response
      */
-    public function deleteListAction(Request $request)
+    public function cdeleteAction(Request $request)
     {
         $processor = $this->getProcessor($request);
         /** @var DeleteListContext $context */
@@ -189,19 +192,31 @@ class RestApiController extends FOSRestController
      */
     protected function buildResponse(Context $context)
     {
-        $result = $context->getResult();
+        $view = $this->view($context->getResult());
 
-        $view = $this->view($result);
-        $view->getSerializationContext()->setSerializeNull(true);
-
-        $statusCode = $context->getResponseStatusCode();
-        if (null !== $statusCode) {
-            $view->setStatusCode($statusCode);
-        }
+        $view->setStatusCode($context->getResponseStatusCode() ?: Response::HTTP_OK);
         foreach ($context->getResponseHeaders()->toArray() as $key => $value) {
             $view->setHeader($key, $value);
         }
 
-        return $this->handleView($view);
+        // use custom handler because the response data are already normalized
+        // and we do not need to additional processing of them
+        /** @var ViewHandler $handler */
+        $handler = $this->get('fos_rest.view_handler');
+        $handler->registerHandler(
+            'json',
+            function (ViewHandler $viewHandler, View $view, Request $request, $format) {
+                $response = $view->getResponse();
+                $encoder = new JsonEncode();
+                $response->setContent($encoder->encode($view->getData(), $format));
+                if (!$response->headers->has('Content-Type')) {
+                    $response->headers->set('Content-Type', $request->getMimeType($format));
+                }
+
+                return $response;
+            }
+        );
+
+        return $handler->handle($view);
     }
 }
