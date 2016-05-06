@@ -77,8 +77,10 @@ class TestGenerator
                 foreach ($params as $param) {
                     $temp = [];
                     $class = $param->getClass();
-                    if ($class && !in_array($class->getName(), $this->usedClasses)) {
-                        $this->usedClasses[] = $class->getName();
+                    if ($class) {
+                        if (!in_array($class->getName(), $this->usedClasses)) {
+                            $this->usedClasses[] = $class->getName();
+                        }
                         $constructor = $class->getConstructor();
                         if ($constructor && $constructor->getParameters()) {
                             $temp['has_constructor'] = true;
@@ -199,7 +201,17 @@ class TestGenerator
     protected function getTestPath($nameSpace)
     {
         $root = $this->kernel->getRootDir();
-        $srcPath = str_replace('/app', '/src/', $root);
+        $parts = explode('/', $root);
+        //for non monolithic
+        if (!strpos($root, '/application/')) {
+            array_pop($parts);
+            $srcPath = implode('/', $parts) . '/src/';
+        } else {
+            array_pop($parts);
+            $application = array_pop($parts);
+            array_pop($parts);
+            $srcPath = implode('/', $parts) . '/package/' . $application . '/src/';
+        }
 
         return $srcPath . str_replace('\\', '/', $nameSpace) . '.php';
     }
