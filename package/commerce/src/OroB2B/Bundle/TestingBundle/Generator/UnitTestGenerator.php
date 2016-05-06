@@ -23,7 +23,8 @@ class UnitTestGenerator extends AbstractTestGenerator
         $dependencies = $this->getDependencies($constructor);
         $dependenciesData = $this->getDependenciesData($dependencies);
         $methodsData = $this->getMethodsData($class);
-        $orderedUses = $this->getOrderedUses(array_merge($this->usedClasses, [$className]));
+        $this->addClassToUses($className);
+        $orderedUses = $this->getOrderedUses($this->usedClasses);
         $content = $this->twig->render(
             '@OroB2BTesting/Tests/unit_template.php.twig',
             [
