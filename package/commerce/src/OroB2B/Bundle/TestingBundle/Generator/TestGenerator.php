@@ -75,33 +75,7 @@ class TestGenerator
                 $params = $method->getParameters();
                 $arguments = [];
                 foreach ($params as $param) {
-                    $temp = [];
-                    $class = $param->getClass();
-                    if ($class) {
-                        if (!in_array($class->getName(), $this->usedClasses)) {
-                            $this->usedClasses[] = $class->getName();
-                        }
-                        $constructor = $class->getConstructor();
-                        if ($constructor && $constructor->getParameters()) {
-                            $temp['has_constructor'] = true;
-                        } else {
-                            $temp['has_constructor'] = false;
-                        }
-                    }
-                    $fullClassName = $class ? $class->getName() : 'non_object';
-                    if (strpos($fullClassName, '\\')) {
-                        $parts = explode('\\', $fullClassName);
-                        $temp['class'] = end($parts);
-                        $temp['fullClass'] = $fullClassName;
-                    } elseif ($fullClassName !== 'non_object') {
-                        $temp['class'] = '\\' . $fullClassName;
-                        $temp['fullClass'] = $temp['class'];
-                    } else {
-                        $temp['class'] = '';
-                    }
-
-                    $temp['name'] = $param->getName();
-                    $arguments[] = $temp;
+                    $arguments = $this->fillArguments($class, $param, $arguments);
                 }
                 $data[] = [
                     'name' => $methodName,
@@ -231,10 +205,10 @@ class TestGenerator
     }
 
     /**
-     * @param $constructor
+     * @param \ReflectionMethod $constructor
      * @return array
      */
-    protected function getDependencies($constructor)
+    protected function getDependencies(\ReflectionMethod $constructor)
     {
         $dependencies = [];
         if ($constructor) {
@@ -251,5 +225,44 @@ class TestGenerator
         }
 
         return $dependencies;
+    }
+
+    /**
+     * @param \ReflectionClass $class
+     * @param \ReflectionParameter $param
+     * @param array $arguments
+     * @return array
+     */
+    protected function fillArguments(\ReflectionClass $class, \ReflectionParameter $param, $arguments)
+    {
+        $temp = [];
+        $class = $param->getClass();
+        if ($class) {
+            if (!in_array($class->getName(), $this->usedClasses)) {
+                $this->usedClasses[] = $class->getName();
+            }
+            $constructor = $class->getConstructor();
+            if ($constructor && $constructor->getParameters()) {
+                $temp['has_constructor'] = true;
+            } else {
+                $temp['has_constructor'] = false;
+            }
+        }
+        $fullClassName = $class ? $class->getName() : 'non_object';
+        if (strpos($fullClassName, '\\')) {
+            $parts = explode('\\', $fullClassName);
+            $temp['class'] = end($parts);
+            $temp['fullClass'] = $fullClassName;
+        } elseif ($fullClassName !== 'non_object') {
+            $temp['class'] = '\\' . $fullClassName;
+            $temp['fullClass'] = $temp['class'];
+        } else {
+            $temp['class'] = '';
+        }
+
+        $temp['name'] = $param->getName();
+        $arguments[] = $temp;
+
+        return $arguments;
     }
 }
