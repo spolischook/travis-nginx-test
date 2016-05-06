@@ -1,6 +1,10 @@
 services:
-    orob2b_testing.generator.test:
-        class: OroB2B\Bundle\TestingBundle\Generator\TestGenerator
+    orob2b_testing.generator.test.absctract:
+        abstract: true
         arguments:
             - '@twig'
             - '@kernel'
+    orob2b_testing.generator.test.unit:
+        parent: orob2b_testing.generator.test.absctract
+        class: OroB2B\Bundle\TestingBundle\Generator\UnitTestGenerator
+

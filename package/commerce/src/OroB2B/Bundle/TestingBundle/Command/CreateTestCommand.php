@@ -19,7 +19,9 @@ class CreateTestCommand extends ContainerAwareCommand
         $this
             ->setName(self::NAME)
             ->setDescription('Create Test')
-            ->addArgument('class', InputArgument::REQUIRED);
+            ->addArgument('class', InputArgument::REQUIRED)
+            ->addArgument('type', InputArgument::REQUIRED);
+
     }
 
     /**
@@ -28,8 +30,12 @@ class CreateTestCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
-        $generator = $container->get('orob2b_testing.generator.test');
-        $input->getArgument('class');
-        $generator->generate($input->getArgument('class'), 'unit');
+        $type = $input->getArgument('class');
+        if ($type === 'unit') {
+            $generator = $container->get('orob2b_testing.generator.test.unit');
+        }
+        if (isset($generator)) {
+            $generator->generate($input->getArgument('class'));
+        }
     }
 }
