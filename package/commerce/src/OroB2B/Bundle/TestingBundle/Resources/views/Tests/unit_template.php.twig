@@ -42,7 +42,7 @@ class {{ className }} extends \PHPUnit_Framework_TestCase
     public function {{ methodData.testName }}()
     {
 {% for argument in methodData.arguments %}
-        /** @var {{ argument.class }}|\PHPUnit_Framework_MockObject_MockObject ${{ argument.name }} **/
+        /** @var {{ argument.class }}{% if argument.class|length !=0 %}|\PHPUnit_Framework_MockObject_MockObject{% endif %} ${{ argument.name }} **/
 {% if argument.has_constructor is defined %}
 {% if argument.has_constructor %}
         ${{ argument.name }} = $this->getMockBuilder('{{ argument.fullClass }}')

@@ -2,6 +2,8 @@
 
 namespace OroB2B\Bundle\TestingBundle\Generator;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+
 use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractTestGenerator
@@ -19,8 +21,10 @@ abstract class AbstractTestGenerator
      * @param \Twig_Environment $twig
      * @param KernelInterface $kernelInterface
      */
-    public function __construct(\Twig_Environment $twig, KernelInterface $kernelInterface)
-    {
+    public function __construct(
+        \Twig_Environment $twig,
+        KernelInterface $kernelInterface
+    ) {
         $this->twig = $twig;
         $this->kernel = $kernelInterface;
         $this->usedClasses = [];
@@ -185,9 +189,7 @@ abstract class AbstractTestGenerator
             $params = $constructor->getParameters();
             foreach ($params as $param) {
                 $class = $param->getClass();
-                if ($class && !in_array($class->getName(), $this->usedClasses)) {
-                    $this->usedClasses[] = $class->getName();
-                }
+                $this->addClassToUses($class);
                 $dependencies[] = ['class' => $class ? $class->getName() : 'non_object', 'name' => $param->getName()];
             }
 
@@ -208,9 +210,7 @@ abstract class AbstractTestGenerator
         $temp = [];
         $class = $param->getClass();
         if ($class) {
-            if (!in_array($class->getName(), $this->usedClasses)) {
-                $this->usedClasses[] = $class->getName();
-            }
+            $this->addClassToUses($class);
             $constructor = $class->getConstructor();
             if ($constructor && $constructor->getParameters()) {
                 $temp['has_constructor'] = true;
@@ -234,5 +234,19 @@ abstract class AbstractTestGenerator
         $arguments[] = $temp;
 
         return $arguments;
+    }
+
+    /**
+     * @param \ReflectionClass|string $class
+     */
+    protected function addClassToUses($class)
+    {
+        if ($class instanceof \ReflectionClass) {
+            if (!in_array($class->getName(), $this->usedClasses)) {
+                $this->usedClasses[] = $class->getName();
+            }
+        } elseif ($class && !in_array($class, $this->usedClasses)) {
+            $this->usedClasses[] = $class;
+        }
     }
 }
