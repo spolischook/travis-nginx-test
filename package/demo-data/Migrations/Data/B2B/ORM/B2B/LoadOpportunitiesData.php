@@ -21,7 +21,6 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
     const DEFAULT_OPPORTUNITY_STATUS = 'in_progress';
     const WON_OPPORTUNITY_STATUS     = 'won';
     const LOST_OPPORTUNITY_STATUS    = 'lost';
-    const DEFAULT_OPPORTUNITY_STATE = 'solution_development';
 
     /** @var OpportunityCloseReason[] */
     protected $closeReasons;
@@ -67,7 +66,6 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
         /** @var Organization $organization */
         $organization = $user->getOrganization();
         $status       = $this->getStatus($opportunityData['status']);
-        $state        = $this->getState($opportunityData['state']);
 
         $opportunity = new Opportunity();
         $updated     = $this->generateUpdatedDate($created);
@@ -78,7 +76,6 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
             ->setCreatedAt($created)
             ->setUpdatedAt($updated)
             ->setCloseDate($this->generateCloseDate($updated))
-            ->setState($state)
             ->setCustomer($customer);
 
         if (!empty($opportunityData['budget amount'])) {
@@ -165,53 +162,13 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
     }
 
     /**
-     * @param $name
-     * @return OpportunityStatus
-     */
-    protected function getStatus($name)
-    {
-        $statuses = $this->getStatuses();
-
-        return isset($statuses[$name])
-            ? $statuses[$name]
-            : $statuses[self::DEFAULT_OPPORTUNITY_STATUS];
-    }
-
-    /**
-     * @return OpportunityStatus[]
-     */
-    protected function getStatuses()
-    {
-        if (count($this->statuses) === 0) {
-            $this->loadStatuses();
-        }
-
-        return $this->statuses;
-    }
-
-    protected function loadStatuses()
-    {
-        $opportunityStatuses = $this->em->getRepository('OroCRMSalesBundle:OpportunityStatus')->findAll();
-        $this->statuses      = array_reduce(
-            $opportunityStatuses,
-            function ($statuses, $status) {
-                /** @var OpportunityStatus $status */
-                $statuses[$status->getName()] = $status;
-
-                return $statuses;
-            },
-            []
-        );
-    }
-
-    /**
      * @param Opportunity       $opportunity
-     * @param OpportunityStatus $status
+     * @param AbstractEnumValue $status
      */
-    protected function setOpportunityStatus(Opportunity $opportunity, OpportunityStatus $status)
+    protected function setOpportunityStatus(Opportunity $opportunity, AbstractEnumValue $status)
     {
         $opportunity->setStatus($status);
-        switch ($status->getName()) {
+        switch ($status->getId()) {
             case self::WON_OPPORTUNITY_STATUS:
                 $opportunity->setProbability(1);
                 break;
@@ -235,30 +192,30 @@ class LoadOpportunitiesData extends AbstractFixture implements OrderedFixtureInt
      * @param $id
      * @return AbstractEnumValue
      */
-    protected function getState($id)
+    protected function getStatus($id)
     {
-        $states = $this->getStates();
+        $states = $this->getStatuses();
 
         return isset($states[$id])
             ? $states[$id]
-            : $states[self::DEFAULT_OPPORTUNITY_STATE];
+            : $states[self::DEFAULT_OPPORTUNITY_STATUS];
     }
 
     /**
      * @return AbstractEnumValue[]
      */
-    protected function getStates()
+    protected function getStatuses()
     {
         if (count($this->states) === 0) {
-            $this->loadStates();
+            $this->loadStatuses();
         }
 
         return $this->states;
     }
 
-    protected function loadStates()
+    protected function loadStatuses()
     {
-        $oppStateClassName = ExtendHelper::buildEnumValueClassName(Opportunity::INTERNAL_STATE_CODE);
+        $oppStateClassName = ExtendHelper::buildEnumValueClassName(Opportunity::INTERNAL_STATUS_CODE);
         $opportunityStates = $this->em->getRepository($oppStateClassName)->findAll();
         $this->states      = array_reduce(
             $opportunityStates,
