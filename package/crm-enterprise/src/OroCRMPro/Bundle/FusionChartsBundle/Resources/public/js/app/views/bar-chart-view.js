@@ -15,7 +15,7 @@ define(function(require) {
          */
         initialize: function(options) {
             _.extend(this, _.pick(options, ['chartOptions']));
-            BarChartView.__super__.initialize.apply(this, options);
+            BarChartView.__super__.initialize.apply(this, arguments);
         },
 
         /**
