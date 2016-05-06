@@ -16,7 +16,6 @@ abstract class AbstractTestGenerator
     protected $usedClasses;
 
     /**
-     * TestGenerator constructor.
      * @param \Twig_Environment $twig
      * @param KernelInterface $kernelInterface
      */

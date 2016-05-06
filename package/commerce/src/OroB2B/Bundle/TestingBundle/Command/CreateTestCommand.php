@@ -30,9 +30,13 @@ class CreateTestCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
-        $type = $input->getArgument('class');
+        $type = $input->getArgument('type');
         if ($type === 'unit') {
             $generator = $container->get('orob2b_testing.generator.test.unit');
+        } elseif ($type === 'entity') {
+            $generator = $container->get('orob2b_testing.generator.test.entity');
+        } elseif ($type == 'functional') {
+            $generator = $container->get('orob2b_testing.generator.test.functional');
         }
         if (isset($generator)) {
             $generator->generate($input->getArgument('class'));

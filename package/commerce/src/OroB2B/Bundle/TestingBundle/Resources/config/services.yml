@@ -4,7 +4,15 @@ services:
         arguments:
             - '@twig'
             - '@kernel'
+
     orob2b_testing.generator.test.unit:
         parent: orob2b_testing.generator.test.absctract
         class: OroB2B\Bundle\TestingBundle\Generator\UnitTestGenerator
 
+    orob2b_testing.generator.test.entity:
+        parent: orob2b_testing.generator.test.absctract
+        class: OroB2B\Bundle\TestingBundle\Generator\EntityTestGenerator
+
+    orob2b_testing.generator.test.functional:
+        parent: orob2b_testing.generator.test.absctract
+        class: OroB2B\Bundle\TestingBundle\Generator\FunctionalTestGenerator
