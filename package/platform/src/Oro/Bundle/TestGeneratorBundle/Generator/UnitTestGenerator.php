@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\TestingBundle\Generator;
+namespace Oro\Bundle\TestGeneratorBundle\Generator;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -26,7 +26,7 @@ class UnitTestGenerator extends AbstractTestGenerator
         $this->addClassToUses($className);
         $orderedUses = $this->getOrderedUses($this->usedClasses);
         $content = $this->twig->render(
-            '@OroB2BTesting/Tests/unit_template.php.twig',
+            '@OroTestGenerator/Tests/unit_template.php.twig',
             [
                 'namespace' => $nameSpace,
                 'vendors' => $orderedUses,

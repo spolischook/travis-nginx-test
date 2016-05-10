@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\TestingBundle\Generator;
+namespace Oro\Bundle\TestGeneratorBundle\Generator;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 
@@ -42,7 +42,7 @@ abstract class AbstractTestGenerator
     protected function getMethodsData(\ReflectionClass $class)
     {
         $data = [];
-        $methods = $class->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $methods = $this->getPublicMethods($class);
         foreach ($methods as $method) {
             $methodName = $method->getName();
             if ($methodName !== '__construct') {
@@ -60,6 +60,23 @@ abstract class AbstractTestGenerator
         }
 
         return $data;
+    }
+
+
+    /**
+     * @param \ReflectionClass $class
+     * @return \ReflectionMethod[]
+     */
+    protected function getPublicMethods(\ReflectionClass $class)
+    {
+        $methods = [];
+        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if ($method->getDeclaringClass()->getName() == $class->getName()) {
+                $methods[] = $method['name'];
+            }
+        }
+
+        return $methods;
     }
 
     /**

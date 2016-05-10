@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\TestingBundle\Generator;
+namespace Oro\Bundle\TestGeneratorBundle\Generator;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -23,7 +23,7 @@ class FunctionalTestGenerator extends AbstractTestGenerator
         $methodsData = $this->getMethodsData($class);
         $orderedUses = $this->getOrderedUses($this->usedClasses);
         $content = $this->twig->render(
-            '@OroB2BTesting/Tests/functional_template.php.twig',
+            '@OroTestGenerator/Tests/functional_template.php.twig',
             [
                 'namespace' => $nameSpace,
                 'vendors' => $orderedUses,
@@ -44,7 +44,7 @@ class FunctionalTestGenerator extends AbstractTestGenerator
     protected function getMethodsData(\ReflectionClass $class)
     {
         $data = [];
-        $methods = $class->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $methods = $this->getPublicMethods($class);
         foreach ($methods as $method) {
             $methodName = $method->getName();
             if ($methodName !== '__construct') {

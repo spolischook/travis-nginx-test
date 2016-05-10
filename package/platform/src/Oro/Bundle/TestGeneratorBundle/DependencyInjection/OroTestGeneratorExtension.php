@@ -1,15 +1,15 @@
 <?php
 
-namespace OroB2B\Bundle\TestingBundle\DependencyInjection;
+namespace Oro\Bundle\TestGeneratorBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-class OroB2BTestingExtension extends Extension
+class OroTestGeneratorExtension extends Extension
 {
-    const ALIAS = 'orob2b_testing';
+    const ALIAS = 'oro_test_generator';
 
     /**
      * {@inheritDoc}

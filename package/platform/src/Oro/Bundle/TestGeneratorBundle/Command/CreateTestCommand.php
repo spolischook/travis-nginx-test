@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\TestingBundle\Command;
+namespace Oro\Bundle\TestGeneratorBundle\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 class CreateTestCommand extends ContainerAwareCommand
 {
-    const NAME = 'orob2b:test:create';
+    const NAME = 'oro:test:create';
 
     /**
      * {@inheritdoc}
@@ -32,15 +32,15 @@ class CreateTestCommand extends ContainerAwareCommand
         $container = $this->getContainer();
         $type = $input->getArgument('type');
         if ($type === 'unit') {
-            $generator = $container->get('orob2b_testing.generator.test.unit');
+            $generator = $container->get('oro_test_generator.generator.test.unit');
         } elseif ($type === 'entity') {
-            $generator = $container->get('orob2b_testing.generator.test.entity');
+            $generator = $container->get('oro_test_generator.generator.test.entity');
         } elseif ($type == 'functional') {
-            $generator = $container->get('orob2b_testing.generator.test.functional');
+            $generator = $container->get('oro_test_generator.generator.test.functional');
         }
         if (isset($generator)) {
             $class = $input->getArgument('class');
-            if (strpos('\\', $class) === false) {
+            if (strpos($class, '\\') === false) {
                 $class = str_replace('.php', '', $class);
                 $class = str_replace('/', '\\', substr($class, strripos($class, '/src/') + 5));
             }

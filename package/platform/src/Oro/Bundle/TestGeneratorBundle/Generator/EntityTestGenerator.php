@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\TestingBundle\Generator;
+namespace Oro\Bundle\TestGeneratorBundle\Generator;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -31,7 +31,7 @@ class EntityTestGenerator extends AbstractTestGenerator
         $this->addClassToUses('Oro\Component\Testing\Unit\EntityTestCaseTrait');
         $orderedUses = $this->getOrderedUses($this->usedClasses);
         $content = $this->twig->render(
-            '@OroB2BTesting/Tests/entity_template.php.twig',
+            '@OroTestGenerator/Tests/entity_template.php.twig',
             [
                 'namespace' => $nameSpace,
                 'vendors' => $orderedUses,
