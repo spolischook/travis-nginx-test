@@ -18,8 +18,6 @@ class LdapIntegrationTest extends Selenium2TestCase
      */
     public function testCreateLdapIntegration()
     {
-        $this->markTestSkipped('Some issue with freezing on PHP7');
-
         $ldapIntegration = array(
             'name' => 'testLDAP'.mt_rand(10, 99),
             'hostname' => '88.198.43.162',
