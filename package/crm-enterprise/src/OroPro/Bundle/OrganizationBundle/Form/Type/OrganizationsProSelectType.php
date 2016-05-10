@@ -96,7 +96,7 @@ class OrganizationsProSelectType extends OrganizationsSelectType
     protected function getOrganizationOptions()
     {
         if ($this->securityFacade->getOrganization()->getIsGlobal()) {
-            return $this->em->getRepository('OroOrganizationBundle:Organization')->getEnabled();
+            return $this->em->getRepository('OroOrganizationBundle:Organization')->findAll();
         }
 
         if ($this->organizationProHelper->isGlobalOrganizationExists()) {
