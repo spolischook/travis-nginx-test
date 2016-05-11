@@ -61,7 +61,7 @@
                                            {% if org.id in form.vars.selected_organizations %} checked="checked" {% endif %}
                                            class="org org-id-{{ org.id }}"/>
                                     <b>{{ org.name }}</b>
-                                    {% if org.enabled != true %} ({{ 'oropro.organization.inactive'|trans }}) {% endif %}
+                                    {% if not org.enabled %} ({{ 'oropro.organization.inactive'|trans }}) {% endif %}
                                     {% if globalOrgId and globalOrgId == org.id %}
                                         ({{ 'oropro.organization.is_global_organization'|trans }})
                                     {% endif %}
