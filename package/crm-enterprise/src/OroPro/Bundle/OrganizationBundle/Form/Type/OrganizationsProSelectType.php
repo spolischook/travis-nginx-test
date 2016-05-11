@@ -91,9 +91,9 @@ class OrganizationsProSelectType extends OrganizationsSelectType
     }
 
     /**
-     * @return Organization[]
+     * {@inheritdoc}
      */
-    protected function getOrganizationOptions()
+    protected function getAvailableOrganizations()
     {
         if ($this->securityFacade->getOrganization()->getIsGlobal()) {
             return $this->em->getRepository('OroOrganizationBundle:Organization')->findAll();
@@ -103,6 +103,6 @@ class OrganizationsProSelectType extends OrganizationsSelectType
             return [$this->securityFacade->getOrganization()];
         }
 
-        return parent::getOrganizationOptions();
+        return parent::getAvailableOrganizations();
     }
 }
