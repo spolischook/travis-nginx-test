@@ -28,7 +28,7 @@ class OroProSecurityOrganizationExtension extends OroSecurityOrganizationExtensi
                          *  https://bugs.php.net/bug.php?id=69158
                          */
                         if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
-                            return $secondOrg->getIsGlobal() ? 1 : 0;
+                            return (int)$secondOrg->getIsGlobal();
                         }
                         return (int)!$firstOrg->getIsGlobal();
                     }
