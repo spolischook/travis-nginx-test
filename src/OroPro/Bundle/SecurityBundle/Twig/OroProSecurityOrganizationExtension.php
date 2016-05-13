@@ -2,6 +2,8 @@
 
 namespace OroPro\Bundle\SecurityBundle\Twig;
 
+use Doctrine\Common\Collections\Criteria;
+
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\Twig\OroSecurityOrganizationExtension;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -20,19 +22,26 @@ class OroProSecurityOrganizationExtension extends OroSecurityOrganizationExtensi
         if (is_object($user) && $user instanceof User) {
             $userOrganizations = $user->getOrganizations(true)->toArray();
             if (!empty($userOrganizations)) {
-                $userOrganizations = array_merge(
-                    array_filter($userOrganizations, function (Organization $organization) {
-                        return $organization->getIsGlobal() === true;
-                    }),
-                    array_filter($userOrganizations, function (Organization $organization) {
-                        return $organization->getIsGlobal() !== true;
-                    })
+
+                $globalOrganization = false;
+                $organizationsWithoutGlobal = array_filter(
+                    $userOrganizations,
+                    function (Organization $organization) use (&$globalOrganization) {
+                        if ($organization->getIsGlobal() === true) {
+                            $globalOrganization = $organization;
+                            return false;
+                        }
+                        return true;
+                    }
                 );
-                $hasGlobalOrg = $userOrganizations[0]->getIsGlobal();
+
+                $userOrganizations = $globalOrganization ?
+                    array_merge([$globalOrganization], $organizationsWithoutGlobal) :
+                    $organizationsWithoutGlobal;
 
                 foreach ($userOrganizations as $org) {
                     $orgName = $org->getName();
-                    if ($hasGlobalOrg && !$org->getIsGlobal()) {
+                    if ($globalOrganization && !$org->getIsGlobal()) {
                         $orgName = '&nbsp;&nbsp;&nbsp;' . $orgName;
                     }
                     $result[] = [
