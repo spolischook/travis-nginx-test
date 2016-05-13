@@ -47,14 +47,17 @@ class AddOrganizationNotNullValidator implements ProcessorInterface
         }
 
         $definition = $context->getResult();
-        $field = $definition->findField(
-            $this->ownershipMetadataProvider->getMetadata($entityClass)->getGlobalOwnerFieldName(),
-            true
-        );
-        if (null !== $field) {
-            $fieldOptions = $field->getFormOptions();
-            $fieldOptions['constraints'][] = new NotNull();
-            $field->setFormOptions($fieldOptions);
+        $fieldName = $this->ownershipMetadataProvider->getMetadata($entityClass)->getGlobalOwnerFieldName();
+        if (!$fieldName) {
+            return;
         }
+        $field = $definition->findField($fieldName, true);
+        if (null === $field) {
+            return;
+        }
+
+        $fieldOptions = $field->getFormOptions();
+        $fieldOptions['constraints'][] = new NotNull();
+        $field->setFormOptions($fieldOptions);
     }
 }
