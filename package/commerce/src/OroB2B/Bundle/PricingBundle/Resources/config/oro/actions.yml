@@ -130,8 +130,9 @@ operations:
                 attribute: $.newPriceList
                 settings:
                   - [[setNull], [propertyName, [id]]]
-                  - [[replaceValue, [false]], [propertyName, [active]]]
-                  - [[replaceValue, [false]], [propertyName, [containSchedule]]]
+                  - [[replaceValue, false], [propertyName, [default]]]
+                  - [[replaceValue, false], [propertyName, [active]]]
+                  - [[replaceValue, false], [propertyName, [containSchedule]]]
                   - [[emptyCollection], [propertyName, [prices]]]
                   - [[emptyCollection], [propertyName, [schedules]]]
                   - [[collection], [propertyName, [currencies]]]
