@@ -2,8 +2,6 @@
 
 namespace OroPro\Bundle\SecurityBundle\Twig;
 
-use Doctrine\Common\Collections\Criteria;
-
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\Twig\OroSecurityOrganizationExtension;
 use Oro\Bundle\UserBundle\Entity\User;
