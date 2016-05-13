@@ -210,13 +210,13 @@ class ShareHandler
     protected function getMaskBySid(SecurityIdentityInterface $sid)
     {
         if ($sid instanceof UserSecurityIdentity) {
-            return EntityMaskBuilder::MASK_VIEW_BASIC;
+            return 1 << 0 /* EntityMaskBuilder::MASK_VIEW_BASIC */;
         } elseif ($sid instanceof BusinessUnitSecurityIdentity) {
-            return EntityMaskBuilder::MASK_VIEW_LOCAL;
+            return 1 << 1 /* EntityMaskBuilder::MASK_VIEW_LOCAL */;
         } elseif ($sid instanceof OrganizationSecurityIdentity) {
-            return EntityMaskBuilder::MASK_VIEW_GLOBAL;
+            return 1 << 3 /* EntityMaskBuilder::MASK_VIEW_GLOBAL */;
         } else {
-            return EntityMaskBuilder::IDENTITY;
+            return 0 /* EntityMaskBuilder::IDENTITY */;
         }
     }
 }

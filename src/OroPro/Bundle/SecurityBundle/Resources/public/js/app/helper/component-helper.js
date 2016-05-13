@@ -9,13 +9,21 @@ define(function(require) {
             var inSet = selectionState.inset;
             var models = [];
             if (inSet) {
-                models = selectionState.selectedModels;
+                _.each(datagrid.collection.models, function(model) {
+                    if (Object.keys(selectionState.selectedIds).length > 0) {
+                        _.each(selectionState.selectedIds, function(selectedId) {
+                            if (selectedId === model.id) {
+                                models.push(model);
+                            }
+                        });
+                    }
+                });
             } else {
                 _.each(datagrid.collection.models, function(model) {
-                    if (Object.keys(selectionState.selectedModels).length > 0) {
-                        _.each(selectionState.selectedModels, function(selectedModel) {
+                    if (Object.keys(selectionState.selectedIds).length > 0) {
+                        _.each(selectionState.selectedIds, function(selectedId) {
                             var selectedModelMatched = false;
-                            if (selectedModel.id === model.id) {
+                            if (selectedId === model.id) {
                                 selectedModelMatched = true;
                             }
                             if (!selectedModelMatched) {
