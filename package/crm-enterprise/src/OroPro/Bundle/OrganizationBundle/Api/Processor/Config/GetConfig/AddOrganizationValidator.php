@@ -8,6 +8,7 @@ use Oro\Component\ChainProcessor\ContextInterface;
 use Oro\Component\ChainProcessor\ProcessorInterface;
 use Oro\Bundle\ApiBundle\Processor\Config\ConfigContext;
 use Oro\Bundle\ApiBundle\Util\DoctrineHelper;
+use Oro\Bundle\ApiBundle\Util\ValidationHelper;
 use OroPro\Bundle\OrganizationBundle\Validator\Constraints\Organization;
 use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProProvider;
 
@@ -23,14 +24,22 @@ class AddOrganizationValidator implements ProcessorInterface
     /** @var OwnershipMetadataProProvider */
     protected $ownershipMetadataProvider;
 
+    /** @var ValidationHelper */
+    protected $validationHelper;
+
     /**
      * @param DoctrineHelper               $doctrineHelper
      * @param OwnershipMetadataProProvider $ownershipMetadataProvider
+     * @param ValidationHelper             $validationHelper
      */
-    public function __construct(DoctrineHelper $doctrineHelper, OwnershipMetadataProProvider $ownershipMetadataProvider)
-    {
+    public function __construct(
+        DoctrineHelper $doctrineHelper,
+        OwnershipMetadataProProvider $ownershipMetadataProvider,
+        ValidationHelper $validationHelper
+    ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->ownershipMetadataProvider = $ownershipMetadataProvider;
+        $this->validationHelper = $validationHelper;
     }
 
     /**
@@ -47,19 +56,34 @@ class AddOrganizationValidator implements ProcessorInterface
         }
 
         $definition = $context->getResult();
-        $field = $definition->findField(
-            $this->ownershipMetadataProvider->getMetadata($entityClass)->getGlobalOwnerFieldName(),
-            true
-        );
-        if (null !== $field) {
+        $fieldName = $this->ownershipMetadataProvider->getMetadata($entityClass)->getGlobalOwnerFieldName();
+        if (!$fieldName) {
+            return;
+        }
+        $field = $definition->findField($fieldName, true);
+        if (null === $field) {
+            return;
+        }
+
+        // add NotBlank constraint
+        if (!$this->validationHelper->hasValidationConstraintForProperty(
+            $entityClass,
+            $field->getPropertyPath() ?: $fieldName,
+            'Symfony\Component\Validator\Constraints\NotBlank'
+        )) {
             $fieldOptions = $field->getFormOptions();
             $fieldOptions['constraints'][] = new NotBlank();
             $field->setFormOptions($fieldOptions);
+        }
 
-            // add organization validator
-            $formOptions = $definition->getFormOptions();
-            $formOptions['constraints'][] = new Organization();
-            $definition->setFormOptions($formOptions);
+        // add organization validator
+        if (!$this->validationHelper->hasValidationConstraintForClass(
+            $entityClass,
+            'OroPro\Bundle\OrganizationBundle\Validator\Constraints\Organization'
+        )) {
+            $entityOptions = $definition->getFormOptions();
+            $entityOptions['constraints'][] = new Organization();
+            $definition->setFormOptions($entityOptions);
         }
     }
 }
