@@ -10,41 +10,11 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 class WidgetBusinessUnitSelectConverter extends BaseConverter
 {
     /**
-     * @param array $config
-     * @return array
-     */
-    public function getBusinessUnitList($config)
-    {
-        $aclClass = isset($config['aclClass']) ? $config['aclClass'] : null;
-        $aclPermission = isset($config['aclPermission']) ? $config['aclPermission'] : null;
-        $queryBuilder = $this->businessUnitRepository->createQueryBuilder('businessUnit');
-
-        if ($aclClass && $aclPermission) {
-
-            $businessUnitIds = $this
-                ->businessUnitAclProvider
-                ->getBusinessUnitIds($aclClass, $aclPermission);
-
-            if (!is_array($businessUnitIds) || count($businessUnitIds) === 0) {
-                $businessUnitIds = [0];
-            }
-
-            $this->applyConditions(
-                $queryBuilder,
-                $businessUnitIds,
-                $this->businessUnitAclProvider->getProcessedEntityAccessLevel()
-            );
-        }
-
-        return $queryBuilder->getQuery()->getResult();
-    }
-
-    /**
      * @param QueryBuilder $queryBuilder
      * @param array $businessUnitIds
      * @param string $accessLevel
      */
-    protected function applyConditions(QueryBuilder $queryBuilder, $businessUnitIds, $accessLevel)
+    protected function applyAdditionalConditions(QueryBuilder $queryBuilder, $businessUnitIds, $accessLevel)
     {
         $isGlobal = $this->securityFacade->getOrganization()->getIsGlobal();
         $expr = $queryBuilder->expr();
