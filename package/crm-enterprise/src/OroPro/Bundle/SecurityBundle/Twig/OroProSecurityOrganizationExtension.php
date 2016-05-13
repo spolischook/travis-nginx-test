@@ -20,18 +20,13 @@ class OroProSecurityOrganizationExtension extends OroSecurityOrganizationExtensi
         if (is_object($user) && $user instanceof User) {
             $userOrganizations = $user->getOrganizations(true)->toArray();
             if (!empty($userOrganizations)) {
-                usort(
-                    $userOrganizations,
-                    function (Organization $firstOrg, Organization $secondOrg) {
-                        /**
-                         *  Change return code to fixed issue with changes in usort algorithm in php7
-                         *  https://bugs.php.net/bug.php?id=69158
-                         */
-                        if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
-                            return (int)$secondOrg->getIsGlobal();
-                        }
-                        return (int)!$firstOrg->getIsGlobal();
-                    }
+                $userOrganizations = array_merge(
+                    array_filter($userOrganizations, function (Organization $organization) {
+                        return $organization->getIsGlobal() === true;
+                    }),
+                    array_filter($userOrganizations, function (Organization $organization) {
+                        return $organization->getIsGlobal() !== true;
+                    })
                 );
                 $hasGlobalOrg = $userOrganizations[0]->getIsGlobal();
 
