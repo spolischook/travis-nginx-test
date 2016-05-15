@@ -29,33 +29,30 @@ services:
     orob2b_shipping.form.type.length_unit_select:
         class: OroB2B\Bundle\ShippingBundle\Form\Type\LengthUnitSelectType
         arguments:
-            - '@orob2b_shipping.repository.length_unit'
-            - '@oro_config.manager'
+            - '@orob2b_shipping.provider.measure_units.length'
             - '@orob2b_shipping.formatter.length_unit_label'
         calls:
-            - [setConfigParameterName, ['orob2b_shipping.length_units']]
+            - [setEntityClass, ['%orob2b_shipping.entity.length_unit.class%']]
         tags:
             - { name: form.type, alias: orob2b_shipping_length_unit_select }
 
     orob2b_shipping.form.type.weight_unit_select:
         class: OroB2B\Bundle\ShippingBundle\Form\Type\WeightUnitSelectType
         arguments:
-            - '@orob2b_shipping.repository.weight_unit'
-            - '@oro_config.manager'
+            - '@orob2b_shipping.provider.measure_units.weight'
             - '@orob2b_shipping.formatter.weight_unit_label'
         calls:
-            - [setConfigParameterName, ['orob2b_shipping.weight_units']]
+            - [setEntityClass, ['%orob2b_shipping.entity.weight_unit.class%']]
         tags:
             - { name: form.type, alias: orob2b_shipping_weight_unit_select }
 
     orob2b_shipping.form.type.freight_class_select:
         class: OroB2B\Bundle\ShippingBundle\Form\Type\FreightClassSelectType
         arguments:
-            - '@orob2b_shipping.repository.freight_class'
-            - '@oro_config.manager'
+            - '@orob2b_shipping.provider.measure_units.freight'
             - '@orob2b_shipping.formatter.freight_class_label'
         calls:
-            - [setConfigParameterName, ['orob2b_shipping.freight_classes']]
+            - [setEntityClass, ['%orob2b_shipping.entity.freight_class.class%']]
         tags:
             - { name: form.type, alias: orob2b_shipping_freight_class_select }
 
@@ -73,14 +70,23 @@ services:
         tags:
             - { name: form.type, alias: orob2b_shipping_dimensions }
 
-    orob2b_shipping.form.product_shipping_option.weight:
+    orob2b_shipping.form.product_shipping_option:
         class: OroB2B\Bundle\ShippingBundle\Form\Type\ProductShippingOptionsType
         calls:
             - [setDataClass, ['%orob2b_shipping.entity.product_shipping_options.class%']]
         tags:
             - { name: form.type, alias: orob2b_shipping_product_shipping_options }
 
-    orob2b_shipping.form.product_shipping_option_collection.weight:
+    orob2b_shipping.form.product_shipping_option_collection:
         class: OroB2B\Bundle\ShippingBundle\Form\Type\ProductShippingOptionsCollectionType
+        calls:
+            - [setDataClass, ['%orob2b_shipping.entity.product_shipping_options.class%']]
         tags:
             - { name: form.type, alias: orob2b_shipping_product_shipping_options_collection }
+
+    orob2b_shipping.form.extension.product_type:
+        class: 'OroB2B\Bundle\ShippingBundle\Form\Extension\ProductFormExtension'
+        arguments:
+            - "@doctrine"
+        tags:
+            - { name: form.type_extension, alias: orob2b_product }

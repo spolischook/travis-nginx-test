@@ -12,9 +12,7 @@ class ProductShippingOptionsType extends AbstractType
 {
     const NAME = 'orob2b_shipping_product_shipping_options';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $dataClass;
 
     /**
@@ -31,18 +29,35 @@ class ProductShippingOptionsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('productUnit', ProductUnitSelectionType::NAME, [
-                'label' => 'orob2b.shipping.product_shipping_options.unit.label',
-            ])
-            ->add('weight', WeightType::NAME, [
-                'label' => 'orob2b.shipping.product_shipping_options.weight.label',
-            ])
-            ->add('dimensions', DimensionsType::NAME, [
-                'label' => 'orob2b.shipping.product_shipping_options.dimensions.label',
-            ])
-            ->add('freightClass', FreightClassSelectType::NAME, [
-                'label' => 'orob2b.shipping.product_shipping_options.freight_class.label',
-            ]);
+            ->add(
+                'productUnit',
+                ProductUnitSelectionType::NAME,
+                [
+                    'label' => 'orob2b.shipping.product_shipping_options.product_unit.label',
+                ]
+            )
+            ->add(
+                'weight',
+                WeightType::NAME,
+                [
+                    'label' => 'orob2b.shipping.product_shipping_options.weight.label',
+                ]
+            )
+            ->add(
+                'dimensions',
+                DimensionsType::NAME,
+                [
+                    'label' => 'orob2b.shipping.product_shipping_options.dimensions.label',
+                ]
+            )
+            ->add(
+                'freightClass',
+                FreightClassSelectType::NAME,
+                [
+                    'label' => 'orob2b.shipping.product_shipping_options.freight_class.label',
+                    'placeholder' => 'orob2b.shipping.form.placeholder.freight_class.label'
+                ]
+            );
     }
 
     /**
@@ -50,10 +65,12 @@ class ProductShippingOptionsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => $this->dataClass,
-            'intention' => 'product_shipping_options',
-        ]);
+        $resolver->setDefaults(
+            [
+                'product' => null,
+                'data_class' => $this->dataClass
+            ]
+        );
     }
 
     /**

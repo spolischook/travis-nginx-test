@@ -24,28 +24,21 @@ class DimensionsType extends AbstractType
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('length', 'number', [
-                'attr' => [
-                    'class' => 'length',
-                ],
-            ])
-            ->add('width', 'number', [
-                'attr' => [
-                    'class' => 'width',
-                ],
-            ])
-            ->add('height', 'number', [
-                'attr' => [
-                    'class' => 'height',
-                ],
-            ])
-            ->add('unit', LengthUnitSelectType::NAME, ['compact' => $options['compact']]);
+            ->add('length', 'number', ['attr' => ['class' => 'length']])
+            ->add('width', 'number', ['attr' => ['class' => 'width']])
+            ->add('height', 'number', ['attr' => ['class' => 'height']])
+            ->add(
+                'unit',
+                LengthUnitSelectType::NAME,
+                [
+                    'placeholder' => 'orob2b.shipping.form.placeholder.length_unit.label',
+                ]
+            );
 
         $builder->addViewTransformer(new DimensionsTransformer());
     }
@@ -57,14 +50,13 @@ class DimensionsType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => $this->dataClass,
-                'compact' => false
+                'data_class' => $this->dataClass
             ]
         );
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {

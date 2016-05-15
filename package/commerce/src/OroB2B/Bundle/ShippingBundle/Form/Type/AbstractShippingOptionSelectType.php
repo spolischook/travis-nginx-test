@@ -2,54 +2,83 @@
 
 namespace OroB2B\Bundle\ShippingBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
-
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-
-use OroB2B\Bundle\ProductBundle\Entity\MeasureUnitInterface;
 use OroB2B\Bundle\ProductBundle\Formatter\UnitLabelFormatter;
+use OroB2B\Bundle\ShippingBundle\Provider\MeasureUnitProvider;
 
 abstract class AbstractShippingOptionSelectType extends AbstractType
 {
     const NAME = '';
 
-    /** @var EntityRepository */
-    protected $repository;
-
-    /** @var ConfigManager */
-    protected $configManager;
+    /** @var MeasureUnitProvider */
+    protected $unitProvider;
 
     /** @var UnitLabelFormatter */
     protected $formatter;
 
     /** @var string */
-    protected $configParameterName;
+    protected $entityClass;
 
     /**
-     * @param EntityRepository $repository
-     * @param ConfigManager $configManager
+     * @param MeasureUnitProvider $unitProvider
      * @param UnitLabelFormatter $formatter
      */
-    public function __construct(
-        EntityRepository $repository,
-        ConfigManager $configManager,
-        UnitLabelFormatter $formatter
-    ) {
-        $this->repository = $repository;
-        $this->configManager = $configManager;
+    public function __construct(MeasureUnitProvider $unitProvider, UnitLabelFormatter $formatter)
+    {
+        $this->unitProvider = $unitProvider;
         $this->formatter = $formatter;
     }
 
     /**
-     * @param string $configParameterName
+     * @param string $entityClass
      */
-    public function setConfigParameterName($configParameterName)
+    public function setEntityClass($entityClass)
     {
-        $this->configParameterName = $configParameterName;
+        $this->entityClass = $entityClass;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        /** @var ChoiceView $choice */
+        foreach ($view->vars['choices'] as $choice) {
+            $choice->label = $this->formatter->format($choice->data->getCode(), $options['compact']);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'class' => $this->entityClass,
+                'property' => 'code',
+                'compact' => false,
+                'full_list' => false
+            ]
+        )
+        ->setAllowedTypes('compact', ['bool'])
+        ->setAllowedTypes('full_list', ['bool'])
+        ->setNormalizer(
+            'choices',
+            function (Options $options, $value) {
+                if (!empty($value)) {
+                    return $value;
+                }
+
+                return $this->unitProvider->getUnits(!$options['full_list']);
+            }
+        );
     }
 
     /**
@@ -65,59 +94,6 @@ abstract class AbstractShippingOptionSelectType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(
-            [
-                'choices' => function (Options $options) {
-                    if ($options['full_list']) {
-                        $codes = array_map(
-                            function (MeasureUnitInterface $entity) {
-                                return $entity->getCode();
-                            },
-                            $this->repository->findAll()
-                        );
-                    } else {
-                        $codes = $this->configManager->get($this->configParameterName);
-                    }
-
-                    $codes = array_merge($codes, $options['additional_codes']);
-
-                    return $this->formatChoices($codes, $options['compact']);
-                },
-                'compact' => false,
-                'additional_codes' => [],
-                'full_list' => false
-            ]
-        );
-        $resolver->setAllowedTypes('compact', ['bool'])
-            ->setAllowedTypes('additional_codes', ['array'])
-            ->setAllowedTypes('full_list', ['bool']);
-    }
-
-    /**
-     * @param array $codes
-     * @param boolean $isShort
-     * @return array
-     */
-    protected function formatChoices(array $codes, $isShort)
-    {
-        $codes = array_combine($codes, $codes);
-        $codes = array_map(
-            function ($code) use ($isShort) {
-                return $this->formatter->format($code, $isShort);
-            },
-            $codes
-        );
-
-        ksort($codes);
-
-        return $codes;
+        return 'entity';
     }
 }

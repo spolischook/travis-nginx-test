@@ -24,18 +24,19 @@ class WeightType extends AbstractType
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('value', 'number', [
-                'attr' => [
-                    'class' => 'value',
-                ],
-            ])
-            ->add('unit', WeightUnitSelectType::NAME, ['compact' => $options['compact']]);
+            ->add('value', 'number', ['attr' => ['class' => 'value']])
+            ->add(
+                'unit',
+                WeightUnitSelectType::NAME,
+                [
+                    'placeholder' => 'orob2b.shipping.form.placeholder.weight_unit.label'
+                ]
+            );
 
         $builder->addViewTransformer(new WeightTransformer());
     }
@@ -47,14 +48,13 @@ class WeightType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => $this->dataClass,
-                'compact' => false
+                'data_class' => $this->dataClass
             ]
         );
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {

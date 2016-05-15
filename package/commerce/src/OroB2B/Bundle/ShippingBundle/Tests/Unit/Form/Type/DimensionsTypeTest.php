@@ -3,7 +3,6 @@
 namespace OroB2B\Bundle\ShippingBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Form\PreloadedExtension;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Oro\Component\Testing\Unit\Form\Type\Stub\EntityType;
 use Oro\Component\Testing\Unit\FormIntegrationTestCase;
@@ -17,9 +16,7 @@ class DimensionsTypeTest extends FormIntegrationTestCase
 {
     const DATA_CLASS = 'OroB2B\Bundle\ShippingBundle\Model\Dimensions';
 
-    /**
-     * @var DimensionsType
-     */
+    /** @var DimensionsType */
     protected $formType;
 
     protected function setUp()
@@ -28,20 +25,6 @@ class DimensionsTypeTest extends FormIntegrationTestCase
 
         $this->formType = new DimensionsType();
         $this->formType->setDataClass(self::DATA_CLASS);
-    }
-
-    public function testConfigureOptions()
-    {
-        /* @var $resolver OptionsResolver|\PHPUnit_Framework_MockObject_MockObject */
-        $resolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolver');
-        $resolver->expects($this->once())
-            ->method('setDefaults')
-            ->with([
-                'data_class' => self::DATA_CLASS,
-                'compact' => false,
-            ]);
-
-        $this->formType->configureOptions($resolver);
     }
 
     public function testGetName()
@@ -73,9 +56,14 @@ class DimensionsTypeTest extends FormIntegrationTestCase
     public function submitProvider()
     {
         return [
-            'empty data' => [
-                'submittedData' => [],
-                'expectedData' => null,
+            'empty default data' => [
+                'submittedData' => [
+                    'length' => '42',
+                    'width' => '42',
+                    'height' => '42',
+                    'unit' => 'foot',
+                ],
+                'expectedData' => $this->getDimensions($this->getLengthUnit('foot'), 42, 42, 42)
             ],
             'full data' => [
                 'submittedData' => [
@@ -92,6 +80,7 @@ class DimensionsTypeTest extends FormIntegrationTestCase
 
     /**
      * @param string $code
+     *
      * @return LengthUnit
      */
     protected function getLengthUnit($code)
@@ -107,6 +96,7 @@ class DimensionsTypeTest extends FormIntegrationTestCase
      * @param float $length
      * @param float $width
      * @param float $height
+     *
      * @return Dimensions
      */
     protected function getDimensions(LengthUnit $lengthUnit, $length, $width, $height)
@@ -123,10 +113,13 @@ class DimensionsTypeTest extends FormIntegrationTestCase
             new PreloadedExtension(
                 [
                     LengthUnitSelectType::NAME => new EntityType(
-                        ['m' => $this->getLengthUnit('m')],
-                        LengthUnitSelectType::NAME,
-                        ['compact' => false]
-                    ),
+                        [
+                            'm' => $this->getLengthUnit('m'),
+                            'sm' => $this->getLengthUnit('sm'),
+                            'foot' => $this->getLengthUnit('foot')
+                        ],
+                        LengthUnitSelectType::NAME
+                    )
                 ],
                 []
             ),

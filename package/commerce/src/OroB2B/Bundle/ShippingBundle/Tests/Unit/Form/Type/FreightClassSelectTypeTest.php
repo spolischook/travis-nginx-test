@@ -10,7 +10,7 @@ class FreightClassSelectTypeTest extends AbstractShippingOptionSelectTypeTest
     {
         parent::setUp();
 
-        $this->formType = new FreightClassSelectType($this->repository, $this->configManager, $this->formatter);
+        $this->formType = new FreightClassSelectType($this->provider, $this->formatter);
     }
 
     public function testGetName()

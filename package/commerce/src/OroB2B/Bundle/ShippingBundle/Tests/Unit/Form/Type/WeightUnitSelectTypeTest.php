@@ -10,7 +10,7 @@ class WeightUnitSelectTypeTest extends AbstractShippingOptionSelectTypeTest
     {
         parent::setUp();
 
-        $this->formType = new WeightUnitSelectType($this->repository, $this->configManager, $this->formatter);
+        $this->formType = new WeightUnitSelectType($this->provider, $this->formatter);
     }
 
     public function testGetName()
