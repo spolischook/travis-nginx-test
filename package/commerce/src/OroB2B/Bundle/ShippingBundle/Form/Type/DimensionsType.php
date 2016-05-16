@@ -29,15 +29,31 @@ class DimensionsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('length', 'number', ['attr' => ['class' => 'length freight-class-update-trigger']])
-            ->add('width', 'number', ['attr' => ['class' => 'width freight-class-update-trigger']])
-            ->add('height', 'number', ['attr' => ['class' => 'height freight-class-update-trigger']])
+            ->add('length', 'number', [
+                    'attr' => [
+                        'class' => 'length freight-class-update-trigger'
+                    ],
+                    'required' => false,
+                ])
+            ->add('width', 'number', [
+                    'attr' => [
+                        'class' => 'width freight-class-update-trigger'
+                    ],
+                    'required' => false,
+                ])
+            ->add('height', 'number', [
+                    'attr' => [
+                        'class' => 'height freight-class-update-trigger'
+                    ],
+                    'required' => false,
+                ])
             ->add(
                 'unit',
                 LengthUnitSelectType::NAME,
                 [
                     'placeholder' => 'orob2b.shipping.form.placeholder.length_unit.label',
                     'attr' => ['class' => 'freight-class-update-trigger'],
+                    'required' => false,
                 ]
             );
 
