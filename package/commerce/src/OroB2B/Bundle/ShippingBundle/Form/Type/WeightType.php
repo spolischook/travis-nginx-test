@@ -29,12 +29,13 @@ class WeightType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('value', 'number', ['attr' => ['class' => 'value']])
+            ->add('value', 'number', ['attr' => ['class' => 'value freight-class-update-trigger']])
             ->add(
                 'unit',
                 WeightUnitSelectType::NAME,
                 [
-                    'placeholder' => 'orob2b.shipping.form.placeholder.weight_unit.label'
+                    'placeholder' => 'orob2b.shipping.form.placeholder.weight_unit.label',
+                    'attr' => ['class' => 'freight-class-update-trigger'],
                 ]
             );
 
