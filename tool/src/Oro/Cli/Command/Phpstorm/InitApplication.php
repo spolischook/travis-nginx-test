@@ -66,6 +66,7 @@ class InitApplication extends RootCommand
     protected function updateConfigs(OutputInterface $output, $srcDir, $destDir)
     {
         $this->copyFile($output, $srcDir, $destDir, 'dev.iml', true);
+        $this->copyFile($output, $srcDir, $destDir, 'php.xml', true);
         $this->updateSymfony2PluginConfig($output, $srcDir, $destDir);
     }
 

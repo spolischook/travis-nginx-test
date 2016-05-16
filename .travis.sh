@@ -66,9 +66,7 @@ case $step in
              composer self-update;
              composer config -g github-oauth.github.com ${GITHUB_OAUTH};
           fi
-          if [ ! -z "$CS" ]; then
-             composer global require "squizlabs/php_codesniffer=2.3.3";
-          fi
+          composer install --optimize-autoloader --no-interaction --working-dir=tool;
           if [[ "$APPLICATION" == "documentation" ]]; then
              cd ${APPLICATION};
              pip install -q -r requirements.txt --use-mirrors;
@@ -108,13 +106,13 @@ case $step in
                     php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/commerce/src/Oro/Component/Testing/Fixtures;
                 fi;
              fi;
-             phpunit --stderr --testsuite ${TESTSUITE};
+             $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --verbose --stderr --testsuite ${TESTSUITE};
           fi
           if [ ! -z "$CS" ]; then
              APPLICATION_PWD=$PWD
              cd ..;
              TEST_FILES=$(if [ ! -z "$TRAVIS_CS_FILES" ]; then echo $TRAVIS_CS_FILES; else echo "$APPLICATION_PWD/."; fi);
-             $HOME/.composer/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
+             $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
           fi
     ;;
 esac
