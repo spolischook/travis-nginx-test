@@ -20,7 +20,6 @@ class OroProSecurityOrganizationExtension extends OroSecurityOrganizationExtensi
         if (is_object($user) && $user instanceof User) {
             $userOrganizations = $user->getOrganizations(true)->toArray();
             if (!empty($userOrganizations)) {
-
                 $globalOrganization = false;
                 $organizationsWithoutGlobal = array_filter(
                     $userOrganizations,
