@@ -5,6 +5,7 @@ namespace OroB2B\Bundle\MenuBundle\Migrations\Data\ORM;
 use Knp\Menu\MenuFactory;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -15,7 +16,10 @@ use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 
 use OroB2B\Bundle\MenuBundle\Entity\Manager\MenuItemManager;
 
-class LoadMenuItemData extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
+class LoadMenuItemData extends AbstractFixture implements
+    ContainerAwareInterface,
+    VersionedFixtureInterface,
+    OrderedFixtureInterface
 {
     /**
      * @var MenuFactory
@@ -38,6 +42,14 @@ class LoadMenuItemData extends AbstractFixture implements ContainerAwareInterfac
     public function getVersion()
     {
         return '1.0';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrder()
+    {
+        return 10;
     }
 
     /**
@@ -110,9 +122,9 @@ class LoadMenuItemData extends AbstractFixture implements ContainerAwareInterfac
      */
     protected function createFooterLinks(ObjectManager $manager)
     {
-        $itemInformationRoot = $this->factory->createItem('footer-links-information');
+        $item = $this->factory->createItem('footer-links');
 
-        $itemInformation = $itemInformationRoot->addChild('Information');
+        $itemInformation = $item->addChild('Information');
         $itemInformation->addChild('About Us', ['uri' => '/about']);
         $itemInformation->addChild('Customer Service', ['uri' => '/customer-service']);
         $itemInformation->addChild('Privacy Policy', ['uri' => '/privacy-policy']);
@@ -122,14 +134,12 @@ class LoadMenuItemData extends AbstractFixture implements ContainerAwareInterfac
         $itemInformation->addChild('Orders and Returns', ['uri' => '/orders-and-returns']);
         $itemInformation->addChild('Contact Us', ['uri' => '/contact-us']);
 
-        $itemWhyRoot = $this->factory->createItem('footer-links-item-why');
-        $itemWhy = $itemWhyRoot->addChild('Why Buy From Us');
+        $itemWhy = $item->addChild('Why Buy From Us');
         $itemWhy->addChild('Shipping & Returns', ['uri' => '/shipping-and-returns']);
         $itemWhy->addChild('Secure Shopping', ['uri' => '/secure-shopping']);
         $itemWhy->addChild('International Shipping', ['uri' => '/international-shipping']);
 
-        $itemMyAccountRoot = $this->factory->createItem('footer-links-my-account');
-        $itemMyAccount = $itemMyAccountRoot->addChild('My Account');
+        $itemMyAccount = $item->addChild('My Account');
         $itemMyAccount->addChild(
             'Sign Out',
             ['uri' => $this->router->generate('orob2b_account_account_user_security_logout')]
@@ -142,8 +152,7 @@ class LoadMenuItemData extends AbstractFixture implements ContainerAwareInterfac
         $itemMyAccount->addChild('Track My Order', ['uri' => '/shipping/tracking']);
         $itemMyAccount->addChild('Help', ['uri' => '/help']);
 
-        $manager->persist($this->menuItemManager->createFromItem($itemInformationRoot));
-        $manager->persist($this->menuItemManager->createFromItem($itemWhyRoot));
-        $manager->persist($this->menuItemManager->createFromItem($itemMyAccountRoot));
+        $menuItem = $this->menuItemManager->createFromItem($item);
+        $manager->persist($menuItem);
     }
 }
