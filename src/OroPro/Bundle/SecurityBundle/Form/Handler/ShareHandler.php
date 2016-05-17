@@ -50,7 +50,7 @@ class ShareHandler
     protected $shareScopes;
 
     /** @var array|EntityMaskBuilder[] */
-    protected $maskBuilders;
+    protected $maskBuilders = [];
 
     /**
      * @param FormInterface $form
