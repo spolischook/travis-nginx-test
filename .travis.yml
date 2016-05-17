@@ -54,8 +54,9 @@ env:
 #     - APPLICATION="application/platform" TESTSUITE="unit"
 #     - APPLICATION="application/crm" TESTSUITE="unit"
 #     - APPLICATION="application/crm-enterprise" TESTSUITE="unit"
-     - APPLICATION="application/commerce" TESTSUITE="functional" DB=mysql
+#     - APPLICATION="application/commerce" TESTSUITE="functional" DB=mysql
 #     - APPLICATION="application/commerce" TESTSUITE="unit"
+     - APPLICATION="application/commerce" TESTSUITE="functional" DB=postgresql PARALLEL=true
 
 before_install: . ./.travis.sh before_install
 

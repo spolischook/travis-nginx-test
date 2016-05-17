@@ -108,7 +108,35 @@ case $step in
                     php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/commerce/src/Oro/Component/Testing/Fixtures;
                 fi;
              fi;
-             phpunit --stderr --testsuite ${TESTSUITE};
+             if [ "$PARALLEL" == "true" ]; then
+                 echo "Cloning environment...";
+
+                 cd ../..;
+                 cp ${APPLICATION} ${APPLICATION}_2;
+                 cp ${APPLICATION} ${APPLICATION}_3;
+                 cp ${APPLICATION} ${APPLICATION}_4;
+                 ls -l;
+
+                 case $DB in
+                        mysql)
+                            # mysql -u root -e 'create database IF NOT EXISTS oro_crm_test';
+                            # sed -i "s/database_driver"\:".*/database_driver"\:" pdo_mysql/g; s/database_name"\:".*/database_name"\:" oro_crm_test/g; s/database_user"\:".*/database_user"\:" root/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
+                        ;;
+                        postgresql)
+                            psql -U postgres -c "CREATE DATABASE oro_crm_test_2 WITH TEMPLATE oro_crm_test;";
+                            psql -U postgres -c "CREATE DATABASE oro_crm_test_3 WITH TEMPLATE oro_crm_test;";
+                            psql -U postgres -c "CREATE DATABASE oro_crm_test_4 WITH TEMPLATE oro_crm_test;";
+                        ;;
+                 esac
+                 sed -i "s/database_name"\:".*/database_name"\:" oro_crm_test_2/g" ${APPLICATION}_2/app/config/parameters_test.yml;
+                 sed -i "s/database_name"\:".*/database_name"\:" oro_crm_test_3/g" ${APPLICATION}_3/app/config/parameters_test.yml;
+                 sed -i "s/database_name"\:".*/database_name"\:" oro_crm_test_4/g" ${APPLICATION}_4/app/config/parameters_test.yml;
+                 cat ${APPLICATION}_4/app/config/parameters_test.yml;
+
+                 echo "Tests execution...";
+             else
+                 phpunit --stderr --testsuite ${TESTSUITE};
+             fi
           fi
           if [ ! -z "$CS" ]; then
              APPLICATION_PWD=$PWD
