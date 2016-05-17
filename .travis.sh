@@ -112,9 +112,9 @@ case $step in
                 cd ../..;
 
                 echo "Cloning environment...";
+
                 if [[ "$DB" == "mysql" ]]; then
                     mysqldump -u root oro_crm_test > db.sql
-                    # mysqldump -u root -pmdscpknvsz b2b_test > db.sql
                 fi
                 for i in `seq 2 $PARALLEL_PROCESSES`; do
                     cp -r ${APPLICATION} ${APPLICATION}_$i;
@@ -122,19 +122,58 @@ case $step in
                         mysql)
                             mysql -u root -e "create database IF NOT EXISTS oro_crm_test_$i";
                             mysql -u root -D oro_crm_test_$i < db.sql
-                            # mysql -u root -pmdscpknvsz -e "create database IF NOT EXISTS oro_crm_test_$i";
-                            # mysql -u root -pmdscpknvsz -D oro_crm_test_$i < db.sql
                         ;;
                         postgresql)
                             psql -U postgres -c "CREATE DATABASE oro_crm_test_$i WITH TEMPLATE oro_crm_test;";
-                            # sudo su - postgres -c "psql -c \"CREATE DATABASE oro_crm_test_$i WITH TEMPLATE b2b_mono_test;\"";
                         ;;
                     esac
                     sed -i "s/database_name"\:".*/database_name"\:" oro_crm_test_$i/g" ${APPLICATION}_$i/app/config/parameters_test.yml;
-                    sed -i "s/b2b_mono_test/oro_crm_test_$i/g" ${APPLICATION}_$i/app/cache/test/appTestProjectContainer.php;
+                    sed -i "s/oro_crm_test/oro_crm_test_$i/g" ${APPLICATION}_$i/app/cache/test/appTestProjectContainer.php;
                 done
 
                 echo "Tests execution...";
+
+                # run background processes and save PIDs
+                for i in `seq 1 $PARALLEL_PROCESSES`; do
+                    if [ $i -eq 1 ]; then
+                        DIRECTORY="${APPLICATION}"
+                    else
+                        DIRECTORY="${APPLICATION}_$i"
+                    fi
+                    cd $DIRECTORY
+                    { phpunit -c phpunit.xml.dist --testsuite=$TESTSUITE-$i-of-$PARALLEL_PROCESSES > ../../result.$i 2>&1 ; echo "$?" > "../../code.$i" ; } &
+                    PIDS[$i]=$!
+                    cd ../..
+                done
+
+                # wait until processes finish
+                PROCESSES_WORK=1
+                while [ "$PROCESSES_WORK" -eq 1 ]; do
+                    sleep 1
+                    PROCESSES_WORK=0
+                    for i in `seq 1 $PARALLEL_PROCESSES`; do
+                        if ps -p ${PIDS[$i]} > /dev/null; then
+                           PROCESSES_WORK=1
+                           break
+                        fi
+                    done
+                done
+
+                # print result
+                for i in `seq 1 $PARALLEL_PROCESSES`; do
+                    cat result.$i
+                done
+
+                # return first error code
+                for i in `seq 1 $PARALLEL_PROCESSES`; do
+                    if [ ! -f code.$i ]; then
+                        exit 1
+                    fi
+                    CODE=`cat code.$i`
+                    if [ $CODE -ne 0 ]; then
+                        exit $CODE
+                    fi
+                done
              else
                  phpunit --stderr --testsuite ${TESTSUITE};
              fi
