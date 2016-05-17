@@ -162,7 +162,7 @@ case $step in
 
                 # print result
                 for i in `seq 1 $PARALLEL_PROCESSES`; do
-                    echo "\n>>> Testsuite \"$TESTSUITE-$i-of-$PARALLEL_PROCESSES\":\n"
+                    printf "\n>>> Testsuite \"$TESTSUITE-$i-of-$PARALLEL_PROCESSES\":\n"
                     cat result.$i
                 done
 
