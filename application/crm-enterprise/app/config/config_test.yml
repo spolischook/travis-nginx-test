@@ -23,3 +23,7 @@ swiftmailer:
 
 oro_require_js:
     js_engine: ~
+
+oro_messaging:
+    transport:
+        'null': true
