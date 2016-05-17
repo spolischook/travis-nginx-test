@@ -131,7 +131,7 @@ case $step in
                     sed -i "s/oro_crm_test/oro_crm_test_$i/g" ${APPLICATION}_$i/app/cache/test/appTestProjectContainer.php;
                 done
 
-                echo "Tests execution...";
+                echo -n "Tests execution";
 
                 # run background processes and save PIDs
                 for i in `seq 1 $PARALLEL_PROCESSES`; do
@@ -150,6 +150,7 @@ case $step in
                 PROCESSES_WORK=1
                 while [ "$PROCESSES_WORK" -eq 1 ]; do
                     sleep 1
+                    echo -n "."
                     PROCESSES_WORK=0
                     for i in `seq 1 $PARALLEL_PROCESSES`; do
                         if ps -p ${PIDS[$i]} > /dev/null; then
@@ -161,6 +162,7 @@ case $step in
 
                 # print result
                 for i in `seq 1 $PARALLEL_PROCESSES`; do
+                    echo "\n>>> Testsuite \"$TESTSUITE-$i-of-$PARALLEL_PROCESSES\":\n"
                     cat result.$i
                 done
 

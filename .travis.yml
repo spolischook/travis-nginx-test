@@ -71,4 +71,4 @@ install: if [ -z "$TRAVIS_SKIP" ]; then ./.travis.sh install; fi
 
 before_script: if [ -z "$TRAVIS_SKIP" ]; then ./.travis.sh before_script; fi
 
-script: if [ -z "$TRAVIS_SKIP" ]; then travis_wait 20 ./.travis.sh script; fi
+script: if [ -z "$TRAVIS_SKIP" ]; then ./.travis.sh script; fi
