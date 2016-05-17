@@ -108,32 +108,33 @@ case $step in
                     php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/commerce/src/Oro/Component/Testing/Fixtures;
                 fi;
              fi;
-             if [ "$PARALLEL" == "true" ]; then
-                 echo "Cloning environment...";
+             if [ ! -z "$PARALLEL_PROCESSES" ]; then
+                cd ../..;
 
-                 cd ../..;
-                 cp ${APPLICATION} ${APPLICATION}_2;
-                 cp ${APPLICATION} ${APPLICATION}_3;
-                 cp ${APPLICATION} ${APPLICATION}_4;
-                 ls -l;
-
-                 case $DB in
+                echo "Cloning environment...";
+                if [[ "$DB" == "mysql" ]]; then
+                    mysqldump -u root oro_crm_test > db.sql
+                    # mysqldump -u root -pmdscpknvsz b2b_test > db.sql
+                fi
+                for i in `seq 2 $PARALLEL_PROCESSES`; do
+                    cp -r ${APPLICATION} ${APPLICATION}_$i;
+                    case $DB in
                         mysql)
-                            # mysql -u root -e 'create database IF NOT EXISTS oro_crm_test';
-                            # sed -i "s/database_driver"\:".*/database_driver"\:" pdo_mysql/g; s/database_name"\:".*/database_name"\:" oro_crm_test/g; s/database_user"\:".*/database_user"\:" root/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
+                            mysql -u root -e "create database IF NOT EXISTS oro_crm_test_$i";
+                            mysql -u root -D oro_crm_test_$i < db.sql
+                            # mysql -u root -pmdscpknvsz -e "create database IF NOT EXISTS oro_crm_test_$i";
+                            # mysql -u root -pmdscpknvsz -D oro_crm_test_$i < db.sql
                         ;;
                         postgresql)
-                            psql -U postgres -c "CREATE DATABASE oro_crm_test_2 WITH TEMPLATE oro_crm_test;";
-                            psql -U postgres -c "CREATE DATABASE oro_crm_test_3 WITH TEMPLATE oro_crm_test;";
-                            psql -U postgres -c "CREATE DATABASE oro_crm_test_4 WITH TEMPLATE oro_crm_test;";
+                            psql -U postgres -c "CREATE DATABASE oro_crm_test_$i WITH TEMPLATE oro_crm_test;";
+                            # sudo su - postgres -c "psql -c \"CREATE DATABASE oro_crm_test_$i WITH TEMPLATE b2b_mono_test;\"";
                         ;;
-                 esac
-                 sed -i "s/database_name"\:".*/database_name"\:" oro_crm_test_2/g" ${APPLICATION}_2/app/config/parameters_test.yml;
-                 sed -i "s/database_name"\:".*/database_name"\:" oro_crm_test_3/g" ${APPLICATION}_3/app/config/parameters_test.yml;
-                 sed -i "s/database_name"\:".*/database_name"\:" oro_crm_test_4/g" ${APPLICATION}_4/app/config/parameters_test.yml;
-                 cat ${APPLICATION}_4/app/config/parameters_test.yml;
+                    esac
+                    sed -i "s/database_name"\:".*/database_name"\:" oro_crm_test_$i/g" ${APPLICATION}_$i/app/config/parameters_test.yml;
+                    sed -i "s/b2b_mono_test/oro_crm_test_$i/g" ${APPLICATION}_$i/app/cache/test/appTestProjectContainer.php;
+                done
 
-                 echo "Tests execution...";
+                echo "Tests execution...";
              else
                  phpunit --stderr --testsuite ${TESTSUITE};
              fi
