@@ -326,7 +326,7 @@ services:
         class: 'OroB2B\Bundle\PricingBundle\Validator\Constraints\DatesChainValidator'
         public: true
         arguments:
-            - @property_accessor
+            - '@property_accessor'
         tags:
             - { name: validator.constraint_validator, alias: orob2b_pricing_dates_chain_validator }
 

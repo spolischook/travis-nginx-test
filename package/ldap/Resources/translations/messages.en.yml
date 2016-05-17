@@ -43,11 +43,11 @@ orocrmpro:
                 mapping:
                     userFilter.label:             User Filter
                     userFilter.tooltip:           This filter will be used to search for users in LDAP.
-                    userMapping.label:            User Mapping:
+                    userMapping.label:            'User Mapping:'
                     userMapping.tooltip:          Name of corresponding attribute in LDAP.
                     roleFilter.label:             Role Filter
                     roleFilter.tooltip:           This filter will be used to search for roles in LDAP.
-                    roleMapping.label:            Role Mapping:
+                    roleMapping.label:            'Role Mapping:'
                     roleMapping.tooltip: >
                         Mapping of LDAP Roles to one, or multiple CRM roles. These roles will be set for imported users.
                     userInformation.label:        User Information
