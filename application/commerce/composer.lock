@@ -1592,7 +1592,7 @@
                 },
                 {
                     "name": "Community contributors",
-                    "homepage": "https://github.com/frieser/FrieserWSSEAuthenticationBundle/graphs/contributors"
+                    "homepage": "https://github.com/escapestudios/EscapeWSSEAuthenticationBundle/graphs/contributors"
                 }
             ],
             "description": "Symfony2 bundle to implement WSSE authentication",
@@ -3182,7 +3182,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -3730,16 +3730,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "e3abefcd7f106677fd352cd7c187d6c969aa9ddc"
+                "reference": "a8773992b362b58498eed24bf85005f363c34771"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/e3abefcd7f106677fd352cd7c187d6c969aa9ddc",
-                "reference": "e3abefcd7f106677fd352cd7c187d6c969aa9ddc",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/a8773992b362b58498eed24bf85005f363c34771",
+                "reference": "a8773992b362b58498eed24bf85005f363c34771",
                 "shasum": ""
             },
             "require": {
@@ -3768,7 +3768,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2015-11-07 22:20:37"
+            "time": "2015-11-20 12:04:31"
         },
         {
             "name": "nelmio/api-doc-bundle",
@@ -3998,7 +3998,7 @@
             "version": "dev-master",
             "dist": {
                 "type": "path",
-                "url": "../../package/commerce",
+                "url": "../../package/commerce/",
                 "reference": "7f4e2cab8445249c55568937c777d27957d26256",
                 "shasum": null
             },
@@ -4195,8 +4195,8 @@
             "version": "dev-master",
             "dist": {
                 "type": "path",
-                "url": "../../package/platform",
-                "reference": "a74fd7a404aa77037c67ee0adb201f86159047fd",
+                "url": "../../package/platform/",
+                "reference": "3cfe81136e92dd25acbaf938e1547f08e832d4ec",
                 "shasum": null
             },
             "require": {
@@ -4247,7 +4247,7 @@
                 "oro/moment-timezone": "0.3.*",
                 "php": ">=5.4.9",
                 "piwik/device-detector": "~3.0",
-                "sensio/distribution-bundle": "4.0.3",
+                "sensio/distribution-bundle": "4.0.*",
                 "sensio/framework-extra-bundle": "2.3.4",
                 "stof/doctrine-extensions-bundle": "1.1.0",
                 "sylius/flow-bundle": "0.6.*",
@@ -4752,17 +4752,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v4.0.3",
+            "version": "v4.0.6",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "2d061c01e708c83ede4720e2551d9449bf606c0a"
+                "reference": "181a47c527a04d2d03986a0b3e9c1b86eaacab40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/2d061c01e708c83ede4720e2551d9449bf606c0a",
-                "reference": "2d061c01e708c83ede4720e2551d9449bf606c0a",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/181a47c527a04d2d03986a0b3e9c1b86eaacab40",
+                "reference": "181a47c527a04d2d03986a0b3e9c1b86eaacab40",
                 "shasum": ""
             },
             "require": {
@@ -4808,7 +4808,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-10-27 18:48:08"
+            "time": "2016-04-25 20:49:44"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -4967,16 +4967,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.1",
+            "version": "v5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421"
+                "reference": "d8db871a54619458a805229a057ea2af33c753e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/0697e6aa65c83edf97bb0f23d8763f94e3f11421",
-                "reference": "0697e6aa65c83edf97bb0f23d8763f94e3f11421",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/d8db871a54619458a805229a057ea2af33c753e8",
+                "reference": "d8db871a54619458a805229a057ea2af33c753e8",
                 "shasum": ""
             },
             "require": {
@@ -5016,7 +5016,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2015-06-06 14:19:39"
+            "time": "2016-05-01 08:45:47"
         },
         {
             "name": "sylius/flow-bundle",
@@ -5591,16 +5591,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "c0cd19cd3e0823ca817dd7991549c2fd57db0fad"
+                "reference": "7a976d1bfa545f196a1c8fb904bcdd8d3bb45c71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/c0cd19cd3e0823ca817dd7991549c2fd57db0fad",
-                "reference": "c0cd19cd3e0823ca817dd7991549c2fd57db0fad",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/7a976d1bfa545f196a1c8fb904bcdd8d3bb45c71",
+                "reference": "7a976d1bfa545f196a1c8fb904bcdd8d3bb45c71",
                 "shasum": ""
             },
             "require": {
@@ -5644,7 +5644,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2016-03-19 23:19:56"
+            "time": "2016-05-04 21:21:39"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
