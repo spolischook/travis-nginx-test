@@ -91,7 +91,23 @@ class OrganizationsProSelectType extends OrganizationsSelectType
     }
 
     /**
-     * {@inheritdoc}
+     * @return int[]
+     */
+    protected function getOrganizationOptionsIds()
+    {
+        $ids = [];
+        $organizations = $this->getAvailableOrganizations();
+        foreach ($organizations as $organization) {
+            $ids[] = $organization->getId();
+        }
+
+        return $ids;
+    }
+
+    /**
+     * Return organizations can be edited by current user
+     *
+     * @return Organization[]
      */
     protected function getAvailableOrganizations()
     {
@@ -103,6 +119,6 @@ class OrganizationsProSelectType extends OrganizationsSelectType
             return [$this->securityFacade->getOrganization()];
         }
 
-        return parent::getAvailableOrganizations();
+        return $this->getLoggedInUser()->getOrganizations(false);
     }
 }
