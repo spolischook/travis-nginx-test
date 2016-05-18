@@ -57,6 +57,7 @@
             <directory suffix="Test.php">vendor/oro/*/src/*/Component/*/Tests/Functional</directory>
         </testsuite>
         <testsuite name="functional-test">
+            <directory suffix="Test.php">vendor/oro/platform/src/*/Bundle/E*Bundle/Tests/Functional</directory>
             <file>vendor/oro/platform/src/Oro/Bundle/UserBundle/Tests/Functional/ControllersTest.php</file>
         </testsuite>
         <testsuite name="selenium">
