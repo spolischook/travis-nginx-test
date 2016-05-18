@@ -25,9 +25,9 @@
             <directory suffix="Test.php">vendor/oro/platform/src/*/Bundle/A*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/platform/src/*/Bundle/B*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/platform/src/*/Bundle/C*Bundle/Tests/Functional</directory>
+            <directory suffix="Test.php">vendor/oro/platform/src/*/Bundle/D*Bundle/Tests/Functional</directory>
         </testsuite>
         <testsuite name="functional-3-of-4">
-            <directory suffix="Test.php">vendor/oro/platform/src/*/Bundle/D*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/platform/src/*/Bundle/E*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/platform/src/*/Bundle/F*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/platform/src/*/Bundle/G*Bundle/Tests/Functional</directory>
@@ -57,7 +57,7 @@
             <directory suffix="Test.php">vendor/oro/*/src/*/Component/*/Tests/Functional</directory>
         </testsuite>
         <testsuite name="functional-test">
-            <directory suffix="Test.php">vendor/oro/platform/src/*/Bundle/E*Bundle/Tests/Functional</directory>
+            <directory suffix="Test.php">vendor/oro/platform/src/*/Bundle/D*Bundle/Tests/Functional</directory>
             <file>vendor/oro/platform/src/Oro/Bundle/UserBundle/Tests/Functional/ControllersTest.php</file>
         </testsuite>
         <testsuite name="selenium">
