@@ -141,7 +141,7 @@ case $step in
                         DIRECTORY="${APPLICATION}_$i"
                     fi
                     cd $DIRECTORY
-                    { phpunit -c phpunit.xml.dist --testsuite=$TESTSUITE-$i-of-$PARALLEL_PROCESSES --stderr > ../../result.$i 2>&1 ; echo "$?" > "../../code.$i" ; } &
+                    { phpunit --stderr --testsuite=$TESTSUITE-$i-of-$PARALLEL_PROCESSES > ../../result.$i 2>&1 ; echo "$?" > "../../code.$i" ; } &
                     PIDS[$i]=$!
                     cd ../..
                 done
