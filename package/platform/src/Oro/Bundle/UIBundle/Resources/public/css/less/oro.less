@@ -2413,6 +2413,9 @@ label.validation-error {
       padding-left: 5px;
     }
   }
+  div.error {
+    min-height: 28px;
+  }
   .input-append.error, .input-prepend.error {
     border-width: 0;
   }
@@ -3189,4 +3192,18 @@ label .popover-content {
 [class^='icon-'].hide-text:after,
 [class^='icon-'].hide-text:before {
   color:#666;
+}
+.pinned-dropdown {
+  > .btn-group > .btn {
+    padding: 0 11px;
+    [class^="icon-"], a [class*=" icon-"] {
+      margin-left: 0;
+    }
+  }
+  .dropdown-menu > li > a {
+    padding: 0 11px;
+    [class^="icon-"], a [class*=" icon-"] {
+      margin: 0;
+    }
+  }
 }

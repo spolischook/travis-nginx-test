@@ -7,7 +7,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use OroB2B\Bundle\AccountBundle\Entity\Account;
-use OroB2B\Bundle\PricingBundle\DependencyInjection\OroB2BPricingExtension;
 use OroB2B\Bundle\PricingBundle\Entity\BasePriceList;
 use OroB2B\Bundle\PricingBundle\Entity\Repository\CombinedPriceListRepository;
 use OroB2B\Bundle\PricingBundle\Entity\Repository\PriceListRepository;
@@ -17,22 +16,34 @@ use OroB2B\Bundle\PricingBundle\DependencyInjection\Configuration;
 
 class PriceListTreeHandler
 {
-    /** @var ManagerRegistry */
+    /**
+     * @var ManagerRegistry
+     */
     protected $registry;
 
-    /**  @var WebsiteManager */
+    /**
+     * @var WebsiteManager
+     */
     protected $websiteManager;
 
-    /**  @var string */
+    /**
+     * @var string
+     */
     protected $priceListClass;
 
-    /**  @var PriceListRepository */
+    /**
+     * @var PriceListRepository
+     */
     protected $priceListRepository;
 
-    /** @var ConfigManager */
+    /**
+     * @var ConfigManager
+     */
     protected $configManager;
 
-    /** @var BasePriceList[] */
+    /**
+     * @var BasePriceList[]
+     */
     protected $priceLists = [];
 
     /**
@@ -53,7 +64,7 @@ class PriceListTreeHandler
     /**
      * @param Account|null $account
      * @param Website|null $website
-     * @return BasePriceList
+     * @return BasePriceList|null
      */
     public function getPriceList(Account $account = null, Website $website = null)
     {
@@ -65,14 +76,19 @@ class PriceListTreeHandler
         }
 
         if ($account) {
-            $priceList = $this->getPriceListRepository()->getPriceListByAccount($account, $website);
-            if ($priceList) {
-                $this->priceLists[$key] = $priceList;
-                return $priceList;
+            if ($account->getId()) {
+                $priceList = $this->getPriceListRepository()->getPriceListByAccount($account, $website);
+                if ($priceList) {
+                    $this->priceLists[$key] = $priceList;
+
+                    return $priceList;
+                }
             }
-            if ($account->getGroup()) {
+
+            $accountGroup = $account->getGroup();
+            if ($accountGroup && $accountGroup->getId()) {
                 $priceList = $this->getPriceListRepository()
-                    ->getPriceListByAccountGroup($account->getGroup(), $website);
+                    ->getPriceListByAccountGroup($accountGroup, $website);
                 if ($priceList) {
                     $this->priceLists[$key] = $priceList;
                     return $priceList;
@@ -84,8 +100,8 @@ class PriceListTreeHandler
         if (!$priceList) {
             $priceList = $this->getPriceListFromConfig();
         }
-
         $this->priceLists[$key] = $priceList;
+
         return $priceList;
     }
 
@@ -111,10 +127,7 @@ class PriceListTreeHandler
      */
     protected function getPriceListFromConfig()
     {
-        $key = implode(
-            ConfigManager::SECTION_MODEL_SEPARATOR,
-            [OroB2BPricingExtension::ALIAS, Configuration::COMBINED_PRICE_LIST]
-        );
+        $key = Configuration::getConfigKeyToPriceList();
         $priceListId = $this->configManager->get($key);
 
         if (!$priceListId) {
