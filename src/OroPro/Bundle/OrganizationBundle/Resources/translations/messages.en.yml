@@ -35,6 +35,7 @@ oropro:
                         applicable: Applicable organizations
                         grid.applicable: Organization
         is_global_organization: System access
+        inactive: Inactive
         select_organization_action:
             title: Please select an organization for the new entity
             continue_button.label: Continue
