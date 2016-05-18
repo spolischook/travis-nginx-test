@@ -91,18 +91,34 @@ class OrganizationsProSelectType extends OrganizationsSelectType
     }
 
     /**
+     * @return int[]
+     */
+    protected function getOrganizationOptionsIds()
+    {
+        $ids = [];
+        $organizations = $this->getAvailableOrganizations();
+        foreach ($organizations as $organization) {
+            $ids[] = $organization->getId();
+        }
+
+        return $ids;
+    }
+
+    /**
+     * Return organizations can be edited by current user
+     *
      * @return Organization[]
      */
-    protected function getOrganizationOptions()
+    protected function getAvailableOrganizations()
     {
         if ($this->securityFacade->getOrganization()->getIsGlobal()) {
-            return $this->em->getRepository('OroOrganizationBundle:Organization')->getEnabled();
+            return $this->em->getRepository('OroOrganizationBundle:Organization')->findAll();
         }
 
         if ($this->organizationProHelper->isGlobalOrganizationExists()) {
             return [$this->securityFacade->getOrganization()];
         }
 
-        return parent::getOrganizationOptions();
+        return $this->getLoggedInUser()->getOrganizations(false);
     }
 }
