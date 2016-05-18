@@ -133,6 +133,8 @@ case $step in
 
                 echo -n "Tests execution";
 
+                SECONDS=0
+
                 # run background processes and save PIDs
                 for i in `seq 1 $PARALLEL_PROCESSES`; do
                     if [ $i -eq 1 ]; then
@@ -165,6 +167,8 @@ case $step in
                     printf "\n>>> Testsuite \"$TESTSUITE-$i-of-$PARALLEL_PROCESSES\":\n"
                     cat result.$i
                 done
+
+                printf "\n>>> Execution time - $(($SECONDS / 60)) minutes $(($SECONDS % 60)) seconds.\n"
 
                 # return first error code
                 for i in `seq 1 $PARALLEL_PROCESSES`; do
