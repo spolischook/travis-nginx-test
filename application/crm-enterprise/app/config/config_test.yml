@@ -26,4 +26,5 @@ oro_require_js:
 
 oro_messaging:
     transport:
+        default: 'null'
         'null': true
