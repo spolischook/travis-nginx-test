@@ -22,7 +22,15 @@ class MutableAclProviderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $platform = $this->getMockForAbstractClass('Doctrine\DBAL\Platforms\AbstractPlatform');
+        $platform = $platform = $this->getMockForAbstractClass(
+            'Doctrine\DBAL\Platforms\AbstractPlatform',
+            [],
+            '',
+            true,
+            true,
+            true,
+            ['convertBooleans']
+        );
         $platform->expects($this->any())
             ->method('convertBooleans')
             ->will(
