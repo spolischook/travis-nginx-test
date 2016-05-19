@@ -155,6 +155,15 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             );
         }
 
+        /**
+         * This override widget business unit select with additional EE acl logic
+         */
+        $serviceId = 'oro_dashboard.widget_config_value.widget_business_unit_select.converter';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Provider\WidgetBusinessUnitSelectConverter');
+        }
+
         $this->overrideOrganizationsSelect($container);
     }
 
