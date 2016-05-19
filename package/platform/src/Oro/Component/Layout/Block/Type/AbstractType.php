@@ -2,6 +2,7 @@
 
 namespace Oro\Component\Layout\Block\Type;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Component\Layout\BlockBuilderInterface;
@@ -11,6 +12,11 @@ use Oro\Component\Layout\BlockTypeInterface;
 
 abstract class AbstractType implements BlockTypeInterface
 {
+    /**
+     * @var array
+     */
+    protected $options = [];
+
     /**
      * {@inheritdoc}
      */
@@ -23,6 +29,15 @@ abstract class AbstractType implements BlockTypeInterface
      */
     public function buildView(BlockView $view, BlockInterface $block, array $options)
     {
+        foreach ($this->options as $name => $settings) {
+            if (!array_key_exists($name, $options)) {
+                continue;
+            }
+            $define = is_array($settings) && (!empty($settings['required']) || array_key_exists('default', $settings));
+            if ($define || isset($options[$name])) {
+                $view->vars[$name] = $options[$name];
+            }
+        }
     }
 
     /**
@@ -33,10 +48,28 @@ abstract class AbstractType implements BlockTypeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param OptionsResolver|OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        foreach ($this->options as $name => $settings) {
+            $resolver->setDefined($name);
+            if (!is_array($settings)) {
+                continue;
+            }
+            if (isset($settings['required']) && $settings['required']) {
+                $resolver->setRequired($name);
+            }
+            if (array_key_exists('default', $settings)) {
+                $resolver->setDefault($name, $settings['default']);
+            }
+            if (isset($settings['normalizers'])) {
+                $resolver->setNormalizer($name, $settings['normalizers']);
+            }
+            if (array_key_exists('allowed_values', $settings)) {
+                $resolver->setAllowedValues($name, $settings['allowed_values']);
+            }
+        }
     }
 
     /**
@@ -45,5 +78,18 @@ abstract class AbstractType implements BlockTypeInterface
     public function getParent()
     {
         return BaseType::NAME;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getOptionSettings()
+    {
+        return [
+            'default',
+            'required',
+            'normalizers',
+            'allowed_values',
+        ];
     }
 }
