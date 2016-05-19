@@ -449,7 +449,7 @@
                         <StackPanel.Resources>
                             <BitmapImage x:Key="sys_icon" UriSource="b2b_customer.png" />
                             <BitmapImage x:Key="sys_icon_over" UriSource="b2b_customer-hover.png" />
-                            <clr:String x:Key="sys_icon_tooltip">B2B Customer</clr:String>
+                            <clr:String x:Key="sys_icon_tooltip">Business Customer</clr:String>
                             <clr:String x:Key="createdAt.formattedDateTime">2015-07-01</clr:String>
                             <clr:String x:Key="updatedAt.formattedDateTime">2015-07-01</clr:String>
                         </StackPanel.Resources>
