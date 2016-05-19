@@ -1,3 +1,3 @@
 Uid,Segment uid,Name,Description,User uid,Organization uid,Entity,Type
-1,1,B2B Customer list,Customer list,main,1,OroCRM\Bundle\SalesBundle\Entity\B2bCustomer,dynamic
+1,1,Business Customer list,Customer list,main,1,OroCRM\Bundle\SalesBundle\Entity\B2bCustomer,dynamic
 2,2,Contact list,Contact list,main,1,OroCRM\Bundle\ContactBundle\Entity\Contact,dynamic
