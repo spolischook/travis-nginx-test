@@ -1,19 +1,18 @@
 <?php
 
-namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
+namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Handler;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Configuration\WorkflowDefinitionHandleBuilder;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowAssembler;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowDefinitionService;
+use Oro\Bundle\WorkflowBundle\Handler\WorkflowDefinitionHandler;
 
-class WorkflowDefinitionServiceTest extends \PHPUnit_Framework_TestCase
+class WorkflowDefinitionHandlerTest extends \PHPUnit_Framework_TestCase
 {
-
     /** @var \PHPUnit_Framework_MockObject_MockObject|WorkflowDefinitionHandleBuilder */
     protected $definitionBuilder;
 
@@ -23,8 +22,8 @@ class WorkflowDefinitionServiceTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|EntityManager */
     protected $entityManager;
 
-    /** @var WorkflowDefinitionService */
-    protected $service;
+    /** @var WorkflowDefinitionHandler */
+    protected $handler;
 
     /**
      * {@inheritdoc}
@@ -44,71 +43,39 @@ class WorkflowDefinitionServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
-            ->setMethods(['createQueryBuilder', 'beginTransaction', 'commit', 'persist', 'flush', 'remove'])
             ->getMock();
 
         $this->entityRepository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|DoctrineHelper $doctrineHelper */
-        $doctrineHelper = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $doctrineHelper->expects($this->any())
-            ->method('getEntityManagerForClass')
-            ->willReturn($this->entityManager);
-
-        $doctrineHelper->expects($this->any())
-            ->method('getEntityRepositoryForClass')
+        $this->entityManager->expects($this->any())
+            ->method('getRepository')
             ->willReturn($this->entityRepository);
 
+        /** @var \PHPUnit_Framework_MockObject_MockObject|ManagerRegistry $managerRegistry */
+        $managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
 
-        $this->service = new WorkflowDefinitionService(
+        $managerRegistry->expects($this->any())
+            ->method('getManagerForClass')
+            ->willReturn($this->entityManager);
+
+        $this->handler = new WorkflowDefinitionHandler(
             $this->definitionBuilder,
             $assembler,
-            $doctrineHelper
+            $managerRegistry,
+            'OroWorkflowBundle:WorkflowDefinition'
         );
     }
 
     /**
-     * @dataProvider createWorkflowDefinitionObjectDataProvider
-     *
-     * @param array $configuration
-     * @param $expectedName
-     */
-    public function testCreateWorkflowDefinitionObject(array $configuration, $expectedName)
-    {
-        $definition = $this->service->createWorkflowDefinitionObject($configuration);
-        $this->assertEquals($expectedName, $definition->getName());
-    }
-
-    /**
-     * @return array
-     */
-    public function createWorkflowDefinitionObjectDataProvider()
-    {
-        return [
-            'full name' => [
-                'configuration' => ['name' => 'test name'],
-                'expectedName' => 'test name',
-            ],
-            'no name' => [
-                'configuration' => [],
-                'expectedName' => null,
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider saveWorkflowDefinitionDataProvider
+     * @dataProvider updateWorkflowDefinitionDataProvider
      *
      * @param WorkflowDefinition $definition
      * @param WorkflowDefinition $existingDefinition
      * @param WorkflowDefinition $newDefinition
      */
-    public function testSaveWorkflowDefinition(
+    public function testUpdateWorkflowDefinition(
         WorkflowDefinition $definition,
         WorkflowDefinition $existingDefinition = null,
         WorkflowDefinition $newDefinition = null
@@ -123,7 +90,7 @@ class WorkflowDefinitionServiceTest extends \PHPUnit_Framework_TestCase
                 ->willReturn($existingDefinition);
         }
 
-        $this->service->saveWorkflowDefinition($definition, $newDefinition);
+        $this->handler->updateWorkflowDefinition($definition, $newDefinition);
 
         if ($newDefinition) {
             $this->assertEquals($definition, $newDefinition);
@@ -138,7 +105,7 @@ class WorkflowDefinitionServiceTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function saveWorkflowDefinitionDataProvider()
+    public function updateWorkflowDefinitionDataProvider()
     {
         $definition1 = new WorkflowDefinition();
         $definition1
@@ -154,7 +121,6 @@ class WorkflowDefinitionServiceTest extends \PHPUnit_Framework_TestCase
         $definition3
             ->setName('definition3')
             ->setLabel('label3');
-
 
         return [
             'with new definition' => [
@@ -186,7 +152,7 @@ class WorkflowDefinitionServiceTest extends \PHPUnit_Framework_TestCase
             ->expects($this->exactly((int) $expected))
             ->method('flush');
 
-        $this->assertEquals($expected, $this->service->deleteWorkflowDefinition($definition));
+        $this->assertEquals($expected, $this->handler->deleteWorkflowDefinition($definition));
     }
 
     /**
