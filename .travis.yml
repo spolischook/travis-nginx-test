@@ -51,6 +51,10 @@ matrix:
      - php: 5.6
        env: APPLICATION="application/commerce" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=4
      - php: 7.0
+       env: APPLICATION="application/platform" TESTSUITE="unit"
+     - php: 7.0
+       env: APPLICATION="application/crm" TESTSUITE="unit"
+     - php: 7.0
        env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=6
      - php: 7.0
        env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=6
