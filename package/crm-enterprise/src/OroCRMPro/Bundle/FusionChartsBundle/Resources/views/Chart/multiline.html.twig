@@ -73,7 +73,7 @@
                  data-page-component-options="{{ componentOptions|json_encode }}"></div>
         </div>
     </div>
-{% else %}
+{% elseif (options.settings.show_no_data_block is not defined or options.settings.show_no_data_block != false) %}
     <div class="container-fluid">
         <div class="clearfix no-data">
             <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
