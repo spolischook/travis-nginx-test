@@ -149,7 +149,7 @@ class LdapIntegration extends MappingSettings
      * @param int $mappingId
      * @return $this
      */
-    public function addRoleMappings($ldapRole, $oroRole, $mappingId = 0)
+    public function addRoleMappings($ldapRole, $oroRole, $mappingId = 1)
     {
         $this->test->byXPath(
             "//div[@class='responsive-cell responsive-cell-no-blocks ldap-role-mapping']//a[contains(., 'Add')]"
