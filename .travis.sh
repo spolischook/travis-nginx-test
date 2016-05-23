@@ -85,7 +85,7 @@ case $step in
           fi 
           case $DB in
                mysql)
-                      mysql -u root -e 'create database IF NOT EXISTS ${dbname}';
+                      mysql -u root -e "create database IF NOT EXISTS ${dbname}";
                       sed -i "s/database_driver"\:".*/database_driver"\:" pdo_mysql/g; s/database_name"\:".*/database_name"\:" ${dbname}/g; s/database_user"\:".*/database_user"\:" root/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
                ;;
                postgresql)
