@@ -39,5 +39,19 @@ class OroMessagingExtension extends Extension
             'oro_messaging.transport.connection',
             "oro_messaging.transport.$defaultTransport.connection"
         );
+
+        if (isset($config['zero_config'])) {
+            $loader->load('zero_config.yml');
+
+            $routerProcessorName = 'oro_messaging.zero_config.route_message_processor';
+
+            $configDef = $container->getDefinition('oro_messaging.zero_config.config');
+            $configDef->setArguments([
+                $config['zero_config']['prefix'],
+                $config['zero_config']['router_processor'] ?: $routerProcessorName,
+                $config['zero_config']['router_destination'],
+                $config['zero_config']['default_destination'],
+            ]);
+        }
     }
 }
