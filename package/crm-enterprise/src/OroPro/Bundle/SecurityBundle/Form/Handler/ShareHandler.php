@@ -18,6 +18,7 @@ use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -42,8 +43,14 @@ class ShareHandler
     /** @var ConfigProvider */
     protected $configProvider;
 
+    /** @var AclExtensionSelector */
+    protected $aclExtensionSelector;
+
     /** @var array */
     protected $shareScopes;
+
+    /** @var array|EntityMaskBuilder[] */
+    protected $maskBuilders = [];
 
     /**
      * @param FormInterface $form
@@ -51,19 +58,22 @@ class ShareHandler
      * @param MutableAclProvider $aclProvider
      * @param ObjectManager $manager
      * @param ConfigProvider $configProvider
+     * @param AclExtensionSelector $aclExtensionSelector
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         MutableAclProvider $aclProvider,
         ObjectManager $manager,
-        ConfigProvider $configProvider
+        ConfigProvider $configProvider,
+        AclExtensionSelector $aclExtensionSelector
     ) {
         $this->form = $form;
         $this->request = $request;
         $this->aclProvider = $aclProvider;
         $this->manager = $manager;
         $this->configProvider = $configProvider;
+        $this->aclExtensionSelector = $aclExtensionSelector;
     }
 
     /**
@@ -209,14 +219,31 @@ class ShareHandler
      */
     protected function getMaskBySid(SecurityIdentityInterface $sid)
     {
+        $maskBuilder = $this->getMaskBuilderForPermission('VIEW');
+
         if ($sid instanceof UserSecurityIdentity) {
-            return EntityMaskBuilder::MASK_VIEW_BASIC;
+            return $maskBuilder->getMask('MASK_VIEW_BASIC');
         } elseif ($sid instanceof BusinessUnitSecurityIdentity) {
-            return EntityMaskBuilder::MASK_VIEW_LOCAL;
+            return $maskBuilder->getMask('MASK_VIEW_LOCAL');
         } elseif ($sid instanceof OrganizationSecurityIdentity) {
-            return EntityMaskBuilder::MASK_VIEW_GLOBAL;
+            return $maskBuilder->getMask('MASK_VIEW_GLOBAL');
         } else {
-            return EntityMaskBuilder::IDENTITY;
+            return $maskBuilder->getIdentity();
         }
+    }
+
+    /**
+     * @param string $permission
+     * @return EntityMaskBuilder
+     */
+    protected function getMaskBuilderForPermission($permission)
+    {
+        if (!array_key_exists($permission, $this->maskBuilders)) {
+            $extension = $this->aclExtensionSelector->select('entity:(root)');
+
+            $this->maskBuilders[$permission] = $extension->getMaskBuilder($permission);
+        }
+
+        return $this->maskBuilders[$permission];
     }
 }
