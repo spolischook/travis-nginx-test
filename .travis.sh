@@ -2,6 +2,7 @@
 set -e
 step=$1
 dbname=${DB_NAME:-oro_crm_test}
+
 case $step in
      before_install)
            set +e; 
