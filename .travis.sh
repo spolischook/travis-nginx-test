@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 step=$1
+dbname=${DB_NAME:-oro_crm_test}
 case $step in
      before_install)
            set +e; 
@@ -83,13 +84,13 @@ case $step in
           fi 
           case $DB in
                mysql)
-                      mysql -u root -e 'create database IF NOT EXISTS oro_crm_test';
-                      sed -i "s/database_driver"\:".*/database_driver"\:" pdo_mysql/g; s/database_name"\:".*/database_name"\:" oro_crm_test/g; s/database_user"\:".*/database_user"\:" root/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
+                      mysql -u root -e 'create database IF NOT EXISTS $dbname';
+                      sed -i "s/database_driver"\:".*/database_driver"\:" pdo_mysql/g; s/database_name"\:".*/database_name"\:" $dbname/g; s/database_user"\:".*/database_user"\:" root/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
                ;;
                postgresql)
-                      psql -U postgres -c "CREATE DATABASE oro_crm_test WITH lc_collate = 'C' template = template0;";
-                      psql -U postgres -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' -d oro_crm_test; 
-                      sed -i "s/database_driver"\:".*/database_driver"\:" pdo_pgsql/g; s/database_name"\:".*/database_name"\:" oro_crm_test/g; s/database_user"\:".*/database_user"\:" postgres/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
+                      psql -U postgres -c "CREATE DATABASE $dbname WITH lc_collate = 'C' template = template0;";
+                      psql -U postgres -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' -d $dbname;
+                      sed -i "s/database_driver"\:".*/database_driver"\:" pdo_pgsql/g; s/database_name"\:".*/database_name"\:" $dbname/g; s/database_user"\:".*/database_user"\:" postgres/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
                ;; 
           esac
     ;;
@@ -114,21 +115,21 @@ case $step in
                 echo "Cloning environment...";
 
                 if [[ "$DB" == "mysql" ]]; then
-                    mysqldump -u root oro_crm_test > db.sql
+                    mysqldump -u root $dbname > db.sql
                 fi
                 for i in `seq 2 $PARALLEL_PROCESSES`; do
                     cp -r ${APPLICATION} ${APPLICATION}_$i;
                     case $DB in
                         mysql)
-                            mysql -u root -e "create database IF NOT EXISTS oro_crm_test_$i";
-                            mysql -u root -D oro_crm_test_$i < db.sql
+                            mysql -u root -e "create database IF NOT EXISTS $dbname_$i";
+                            mysql -u root -D $dbname_$i < db.sql
                         ;;
                         postgresql)
-                            psql -U postgres -c "CREATE DATABASE oro_crm_test_$i WITH TEMPLATE oro_crm_test;";
+                            psql -U postgres -c "CREATE DATABASE $dbname_$i WITH TEMPLATE $dbname;";
                         ;;
                     esac
-                    sed -i "s/database_name"\:".*/database_name"\:" oro_crm_test_$i/g" ${APPLICATION}_$i/app/config/parameters_test.yml;
-                    sed -i "s/oro_crm_test/oro_crm_test_$i/g" ${APPLICATION}_$i/app/cache/test/appTestProjectContainer.php;
+                    sed -i "s/database_name"\:".*/database_name"\:" $dbname_$i/g" ${APPLICATION}_$i/app/config/parameters_test.yml;
+                    sed -i "s/$dbname/$dbname_$i/g" ${APPLICATION}_$i/app/cache/test/appTestProjectContainer.php;
                 done
 
                 echo -n "Tests execution";
