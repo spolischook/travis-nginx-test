@@ -16,7 +16,7 @@
     },
     "target-dir": "src/OroCRMPro/Bundle/LDAPBundle",
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=5.5.9",
         "zendframework/zend-ldap": ">=2.0",
         "oro/platform": "self.version"
     },
