@@ -66,7 +66,7 @@ class LoadPinBarData extends AbstractFixture implements OrderedFixtureInterface
         $params = [
             'customer' => [
                 "url" => "/b2bcustomer/view/" . $customer->getId(),
-                "title_rendered" => "{$customerName} - B2B customers - Customers",
+                "title_rendered" => "{$customerName} - Business Customers - Customers",
                 "title_rendered_short" => "{$customerName}",
                 "title" => "{\"template\":\"%b2bcustomer.name% - orocrm.sales.b2bcustomer.entity_plural_label " .
                     "- orocrm.account.menu.customers_tab.label\",\"short_template\":\"%b2bcustomer.name%\"" .
