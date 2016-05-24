@@ -104,8 +104,8 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
                 $salesFunnel->setWorkflowStep($currentStep);
             }
             $this->em->persist($salesFunnel);
-            $this->em->flush();
         }
+        $this->em->flush();
     }
 
     /**
@@ -131,8 +131,8 @@ class LoadSalesFunnelData extends AbstractFixture implements OrderedFixtureInter
                 $salesFunnel->setWorkflowStep($currentStep);
             }
             $this->em->persist($salesFunnel);
-            $this->em->flush();
         }
+        $this->em->flush();
     }
 
     /**
