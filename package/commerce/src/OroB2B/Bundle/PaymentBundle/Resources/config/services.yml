@@ -117,6 +117,7 @@ services:
         public: true
         arguments:
             - '@orob2b_payment.payment_method.view.registry'
+            - '@orob2b_payment.provider.address_extractor'
         tags:
             - { name: layout.data_provider, alias: orob2b_payment_methods_provider }
 
@@ -205,6 +206,7 @@ services:
 
     orob2b_payment.provider.address_extractor:
         class: 'OroB2B\Bundle\PaymentBundle\Provider\AddressExtractor'
+        public: false
         arguments:
             - '@property_accessor'
 
