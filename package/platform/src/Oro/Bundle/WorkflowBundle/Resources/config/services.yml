@@ -177,6 +177,9 @@ services:
             - '@oro_workflow.process.import.triggers'
             - '%oro_workflow.process_definition.entity.class%'
 
+    oro_workflow.generator.process_configuration:
+        class: 'Oro\Bundle\WorkflowBundle\Generator\ProcessConfigurationGenerator'
+
     oro_workflow.transition.schedule_helper:
         class: 'Oro\Bundle\WorkflowBundle\Model\TransitionScheduleHelper'
         arguments:

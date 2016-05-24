@@ -101,6 +101,9 @@ workflows:
                 step_to: enter_shipping_address
                 transition_definition: continue_to_shipping_address_definition
                 display_type: page
+                schedule:
+                    cron: '1 * * * *'
+                    filter: "p.created_at <= DATE_ADD(CURRENT_DATE(),4, 'day')"
                 frontend_options:
                     is_checkout_continue: true
                     is_checkout_show_errors: true
