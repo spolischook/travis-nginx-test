@@ -105,6 +105,7 @@ class LoadCallActivityData extends AbstractFixture implements OrderedFixtureInte
                     $data['direction'] = null;
                 }
                 $data['duration'] = new \DateTime($data['duration'], new \DateTimeZone('UTC'));
+                $data['duration'] = $data['duration']->getTimestamp();
                 $created          = $this->generateCreatedDate();
                 $call->setCreatedAt($created);
                 $call->setUpdatedAt($created);
