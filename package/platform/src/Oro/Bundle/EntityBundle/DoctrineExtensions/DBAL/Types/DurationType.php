@@ -1,23 +1,21 @@
 <?php
 
-namespace OroCRM\Bundle\CallBundle\DoctrineExtensions\DBAL\Types;
+namespace Oro\Bundle\EntityBundle\DoctrineExtensions\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\IntegerType;
 
 class DurationType extends IntegerType
 {
-    /**
-     * {@inheritdoc}
-     */
+    const TYPE = 'duration';
+
+    /** {@inheritdoc} */
     public function getName()
     {
-        return 'duration';
+        return self::TYPE;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** {@inheritdoc} */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
         return true;

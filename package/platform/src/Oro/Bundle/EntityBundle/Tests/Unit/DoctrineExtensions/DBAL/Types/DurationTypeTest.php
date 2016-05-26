@@ -1,9 +1,9 @@
 <?php
 
-namespace OroCRM\Bundle\CallBundle\Tests\Unit\DoctrineExtensions\DBAL\Types;
+namespace Oro\Bundle\EntityBundle\Tests\Unit\DoctrineExtensions\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use OroCRM\Bundle\CallBundle\DoctrineExtensions\DBAL\Types\DurationType;
+use Oro\Bundle\EntityBundle\DoctrineExtensions\DBAL\Types\DurationType;
 
 class DurationTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,7 @@ class DurationTypeTest extends \PHPUnit_Framework_TestCase
         // class has private constructor
         $this->type = $this
             ->getMockBuilder(
-                'OroCRM\Bundle\CallBundle\DoctrineExtensions\DBAL\Types\DurationType'
+                'Oro\Bundle\EntityBundle\DoctrineExtensions\DBAL\Types\DurationType'
             )
             ->setMethods(null)
             ->disableOriginalConstructor()
