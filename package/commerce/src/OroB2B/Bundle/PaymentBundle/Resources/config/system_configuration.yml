@@ -106,7 +106,6 @@ oro_system_configuration:
                     discover: orob2b.payment.system_configuration.fields.allowed_cc_types.discover
                     american_express: orob2b.payment.system_configuration.fields.allowed_cc_types.american_express
 
-
         orob2b_payment.paypal_payments_pro_partner:
             data_type: string
             type: text
@@ -209,6 +208,21 @@ oro_system_configuration:
             priority: 40
             options:
                 label: orob2b.payment.system_configuration.fields.validate_cvv.label
+
+        orob2b_payment.paypal_payments_pro_zero_amount_authorization:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 30
+            options:
+                label: orob2b.payment.system_configuration.fields.zero_amount_authorization.label
+                tooltip: orob2b.payment.system_configuration.fields.zero_amount_authorization.tooltip
+
+        orob2b_payment.paypal_payments_pro_authorization_for_required_amount:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 20
+            options:
+                label: orob2b.payment.system_configuration.fields.authorization_for_required_amount.label
 
         # Payflow Gateway
         orob2b_payment.payflow_gateway_enabled:
@@ -327,7 +341,6 @@ oro_system_configuration:
             options:
                 label: orob2b.payment.system_configuration.fields.test_mode.label
 
-
         orob2b_payment.payflow_gateway_use_proxy:
             data_type: boolean
             type: oro_config_checkbox
@@ -383,6 +396,21 @@ oro_system_configuration:
             options:
                 label: orob2b.payment.system_configuration.fields.validate_cvv.label
 
+        orob2b_payment.payflow_gateway_zero_amount_authorization:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 30
+            options:
+                label: orob2b.payment.system_configuration.fields.zero_amount_authorization.label
+                tooltip: orob2b.payment.system_configuration.fields.zero_amount_authorization.tooltip
+
+        orob2b_payment.payflow_gateway_authorization_for_required_amount:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 30
+            options:
+                label: orob2b.payment.system_configuration.fields.authorization_for_required_amount.label
+
         # Payment Term
         orob2b_payment.payment_term_enabled:
             data_type: boolean
@@ -406,6 +434,34 @@ oro_system_configuration:
                 label: orob2b.payment.system_configuration.fields.sort_order.label
                 constraints:
                     - OroB2B\Bundle\ValidationBundle\Validator\Constraints\Integer: ~
+
+        orob2b_payment.payment_term_allowed_countries:
+            data_type: string
+            type: choice
+            priority: 70
+            options:
+                label: orob2b.payment.system_configuration.fields.allowed_countries.label
+                required: true
+                constraints:
+                    - NotBlank: ~
+                choice_translation_domain: messages
+                choices:
+                    all: orob2b.payment.system_configuration.fields.allowed_countries.all
+                    selected: orob2b.payment.system_configuration.fields.allowed_countries.selected
+                attr:
+                    'data-page-component-module': 'orob2bpayment/js/app/components/config-hide-fields-component'
+                    'data-dependency-id': 'payment_term_allowed_countries'
+
+        orob2b_payment.payment_term_selected_countries:
+            data_type: string
+            type: oro_locale_country
+            priority: 60
+            options:
+                label: orob2b.payment.system_configuration.fields.selected_countries.label
+                multiple: true
+                attr:
+                    'data-depends-on-field': 'payment_term_allowed_countries'
+                    'data-depends-on-field-value': 'selected'
 
     tree:
         system_configuration:
@@ -452,6 +508,8 @@ oro_system_configuration:
                                             - orob2b_payment.paypal_payments_pro_enable_ssl_verification
                                             - orob2b_payment.paypal_payments_pro_require_cvv
                                             - orob2b_payment.paypal_payments_pro_validate_cvv
+                                            - orob2b_payment.paypal_payments_pro_zero_amount_authorization
+                                            - orob2b_payment.paypal_payments_pro_authorization_for_required_amount
                             payflow_gateway:
                                 priority: 90
                                 children:
@@ -483,6 +541,8 @@ oro_system_configuration:
                                             - orob2b_payment.payflow_gateway_enable_ssl_verification
                                             - orob2b_payment.payflow_gateway_require_cvv
                                             - orob2b_payment.payflow_gateway_validate_cvv
+                                            - orob2b_payment.payflow_gateway_zero_amount_authorization
+                                            - orob2b_payment.payflow_gateway_authorization_for_required_amount
                             payment_term:
                                 priority: 80
                                 children:
@@ -492,3 +552,5 @@ oro_system_configuration:
                                             - orob2b_payment.payment_term_enabled
                                             - orob2b_payment.payment_term_label
                                             - orob2b_payment.payment_term_sort_order
+                                            - orob2b_payment.payment_term_allowed_countries
+                                            - orob2b_payment.payment_term_selected_countries

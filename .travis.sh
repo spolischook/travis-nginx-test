@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 step=$1
+dbname=${DB_NAME:-oro_crm_test}
+
 case $step in
      before_install)
            set +e; 
@@ -83,18 +85,19 @@ case $step in
           fi 
           case $DB in
                mysql)
-                      mysql -u root -e 'create database IF NOT EXISTS oro_crm_test';
-                      sed -i "s/database_driver"\:".*/database_driver"\:" pdo_mysql/g; s/database_name"\:".*/database_name"\:" oro_crm_test/g; s/database_user"\:".*/database_user"\:" root/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
+                      mysql -u root -e "create database IF NOT EXISTS ${dbname}";
+                      sed -i "s/database_driver"\:".*/database_driver"\:" pdo_mysql/g; s/database_name"\:".*/database_name"\:" ${dbname}/g; s/database_user"\:".*/database_user"\:" root/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
                ;;
                postgresql)
-                      psql -U postgres -c "CREATE DATABASE oro_crm_test WITH lc_collate = 'C' template = template0;";
-                      psql -U postgres -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' -d oro_crm_test; 
-                      sed -i "s/database_driver"\:".*/database_driver"\:" pdo_pgsql/g; s/database_name"\:".*/database_name"\:" oro_crm_test/g; s/database_user"\:".*/database_user"\:" postgres/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
+                      psql -U postgres -c "CREATE DATABASE ${dbname} WITH lc_collate = 'C' template = template0;";
+                      psql -U postgres -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' -d ${dbname};
+                      sed -i "s/database_driver"\:".*/database_driver"\:" pdo_pgsql/g; s/database_name"\:".*/database_name"\:" ${dbname}/g; s/database_user"\:".*/database_user"\:" postgres/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
                ;; 
           esac
     ;;
     script)
           echo  "Script...";
+          composer install --optimize-autoloader --no-interaction --working-dir=$TRAVIS_BUILD_DIR/tool;
           cd ${APPLICATION};
           if [[ "$APPLICATION" == "documentation" ]]; then
              sphinx-build -nW -b html -d _build/doctrees . _build/html; 
@@ -108,7 +111,81 @@ case $step in
                     php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/commerce/src/Oro/Component/Testing/Fixtures;
                 fi;
              fi;
-             phpunit --stderr --testsuite ${TESTSUITE};
+             if [ ! -z "$PARALLEL_PROCESSES" ]; then
+                cd ../..;
+
+                echo "Cloning environment...";
+
+                if [[ "$DB" == "mysql" ]]; then
+                    mysqldump -u root ${dbname} > db.sql
+                fi
+                for i in `seq 2 $PARALLEL_PROCESSES`; do
+                    cp -r ${APPLICATION} ${APPLICATION}_$i;
+                    case $DB in
+                        mysql)
+                            mysql -u root -e "create database IF NOT EXISTS ${dbname}_$i";
+                            mysql -u root -D ${dbname}_$i < db.sql
+                        ;;
+                        postgresql)
+                            psql -U postgres -c "CREATE DATABASE ${dbname}_$i WITH TEMPLATE ${dbname};";
+                        ;;
+                    esac
+                    sed -i "s/database_name"\:".*/database_name"\:" ${dbname}_$i/g" ${APPLICATION}_$i/app/config/parameters_test.yml;
+                    sed -i "s/${dbname}/${dbname}_$i/g" ${APPLICATION}_$i/app/cache/test/appTestProjectContainer.php;
+                done
+
+                echo -n "Tests execution";
+
+                SECONDS=0
+
+                # run background processes and save PIDs
+                for i in `seq 1 $PARALLEL_PROCESSES`; do
+                    if [ $i -eq 1 ]; then
+                        DIRECTORY="${APPLICATION}"
+                    else
+                        DIRECTORY="${APPLICATION}_$i"
+                    fi
+                    cd $DIRECTORY
+                    { php $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --stderr --testsuite=$TESTSUITE-$i-of-$PARALLEL_PROCESSES > ../../result.$i 2>&1 ; echo "$?" > "../../code.$i" ; } &
+                    PIDS[$i]=$!
+                    cd ../..
+                done
+
+                # wait until processes finish
+                PROCESSES_WORK=1
+                while [ "$PROCESSES_WORK" -eq 1 ]; do
+                    sleep 1
+                    echo -n "."
+                    PROCESSES_WORK=0
+                    for i in `seq 1 $PARALLEL_PROCESSES`; do
+                        if ps -p ${PIDS[$i]} > /dev/null; then
+                           PROCESSES_WORK=1
+                           break
+                        fi
+                    done
+                done
+
+                # print result
+                for i in `seq 1 $PARALLEL_PROCESSES`; do
+                    printf "\n>>> Testsuite \"$TESTSUITE-$i-of-$PARALLEL_PROCESSES\":\n"
+                    cat result.$i
+                done
+
+                printf "\n>>> Execution time - $(($SECONDS / 60)) minutes $(($SECONDS % 60)) seconds.\n"
+
+                # return first error code
+                for i in `seq 1 $PARALLEL_PROCESSES`; do
+                    if [ ! -f code.$i ]; then
+                        exit 1
+                    fi
+                    CODE=`cat code.$i`
+                    if [ $CODE -ne 0 ]; then
+                        exit $CODE
+                    fi
+                done
+             else
+                 php $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --stderr --testsuite ${TESTSUITE};
+             fi
           fi
           if [ ! -z "$CS" ]; then
              APPLICATION_PWD=$PWD

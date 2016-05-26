@@ -7,11 +7,14 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 class SetShareGridConfig extends AbstractFixture implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     protected static $entitiesSecurityConfig = [
         ['OroCRM\Bundle\AccountBundle\Entity\Account', 'share_scopes', ['user']],
         ['OroCRM\Bundle\CallBundle\Entity\Call', 'share_scopes', ['user']],
@@ -26,17 +29,6 @@ class SetShareGridConfig extends AbstractFixture implements ContainerAwareInterf
         ['OroCRM\Bundle\SalesBundle\Entity\SalesFunnel', 'share_scopes', ['user']],
         ['OroCRM\Bundle\TaskBundle\Entity\Task', 'share_scopes', ['user']],
     ];
-
-    /** @var ContainerInterface */
-    protected $container;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
 
     /**
      * {@inheritdoc}
