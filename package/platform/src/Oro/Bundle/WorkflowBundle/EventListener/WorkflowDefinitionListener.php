@@ -5,7 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\EventListener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
-use Oro\Bundle\WorkflowBundle\Generator\ProcessConfigurationGenerator;
+use Oro\Bundle\WorkflowBundle\Model\TransitionSchedule\ProcessConfigurationGenerator;
 use Oro\Bundle\WorkflowBundle\Model\ProcessImport;
 
 use Oro\Component\DependencyInjection\ServiceLink;
