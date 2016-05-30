@@ -1,5 +1,5 @@
 oro.locale:
-    localeset:
+    localization:
         entity_label: 'Localization'
         entity_plural_label: 'Localizations'
         entity_description: 'Holds language code, formatting code and parent localization'
@@ -10,6 +10,19 @@ oro.locale:
         formatting_code.label: 'Formatting'
         child_localizations.label: 'Child localizations'
         parent_localization.label: 'Parent localization'
+
+        widgets:
+            localization_information: Localization Information
+
+        sections:
+            general: General
+
+        navigation:
+            view: 'Localization "%name%"'
+
+    controller:
+        localization:
+            saved.message: 'Localization has been saved'
 
     date_format:
         day: "MMM d"
