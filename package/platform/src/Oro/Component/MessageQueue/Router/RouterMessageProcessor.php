@@ -4,9 +4,12 @@ namespace Oro\Component\MessageQueue\Router;
 use Oro\Component\MessageQueue\Consumption\MessageProcessor;
 use Oro\Component\MessageQueue\Transport\Message;
 use Oro\Component\MessageQueue\Transport\Session as TransportSession;
+use Oro\Component\MessageQueue\ZeroConfig\TopicSubscriber;
 
-class RouterMessageProcessor implements MessageProcessor
+class RouterMessageProcessor implements MessageProcessor, TopicSubscriber
 {
+    const TOPIC = 'message_queue.router';
+
     /**
      * @var Router
      */
@@ -31,5 +34,13 @@ class RouterMessageProcessor implements MessageProcessor
         }
 
         return self::ACK;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedTopics()
+    {
+        return [self::TOPIC];
     }
 }
