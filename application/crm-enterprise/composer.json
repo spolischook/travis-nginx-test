@@ -28,7 +28,7 @@
         "oro/crm-dotmailer": "self.version",
         "oro/crm-zendesk": "self.version",
         "oro/crm-pro-ldap-bundle": "self.version",
-        "oro/crm-pro-demo-data-bundle": "self.version"
+        "oro/crm-pro-demo-data-bundle": "self.version",
         "php-amqplib/php-amqplib": "^2.6"
     },
     "require-dev": {
