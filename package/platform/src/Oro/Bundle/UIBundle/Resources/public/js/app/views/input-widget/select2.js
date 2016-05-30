@@ -29,7 +29,13 @@ define(function(require) {
         initialize: function(options) {
             //fix select2.each2 bug, when empty string is FALSE
             this.$el.attr('class', $.trim(this.$el.attr('class')));
-            return Select2InputWidget.__super__.initialize.apply(this, arguments);
+            Select2InputWidget.__super__.initialize.apply(this, arguments);
+
+            if (this.isInitialized()) {
+                var data = this.$el.data(this.widgetFunctionName);
+                data.container.data('inputWidget', this);
+                data.dropdown.data('inputWidget', this);
+            }
         },
 
         isInitialized: function() {
@@ -46,54 +52,31 @@ define(function(require) {
         },
 
         open: function() {
-            this.widgetFunction('open');
+            return this.applyWidgetFunction('open', arguments);
         },
 
         close: function() {
-            this.widgetFunction('close');
-        },
-
-        onOpening: function(callback) {
-            this._addEvent(this.widgetFunctionName + '-opening', callback);
-        },
-
-        onOpen: function(callback) {
-            this._addEvent(this.widgetFunctionName + '-open', callback);
-        },
-
-        onClose: function(callback) {
-            this._addEvent(this.widgetFunctionName + '-close', callback);
-        },
-
-        onSelect: function(callback) {
-            this._addEvent(this.widgetFunctionName + '-selecting', callback);
-        },
-
-        onUnselect: function(callback) {
-            this._addEvent(this.widgetFunctionName + '-removing', callback);
+            return this.applyWidgetFunction('close', arguments);
         },
 
         val: function() {
-            Array.prototype.unshift.call(arguments, 'val');
-            return this.widgetFunction.apply(this, arguments);
+            return this.applyWidgetFunction('val', arguments);
         },
 
         data: function() {
-            Array.prototype.unshift.call(arguments, 'data');
-            return this.widgetFunction.apply(this, arguments);
+            return this.applyWidgetFunction('data', arguments);
         },
 
         updatePosition: function() {
-            return this.widgetFunction('positionDropdown');
+            return this.applyWidgetFunction('positionDropdown', arguments);
         },
 
         focus: function() {
-            return this.widgetFunction('focus');
+            return this.applyWidgetFunction('focus', arguments);
         },
 
         search: function() {
-            Array.prototype.unshift.call(arguments, 'search');
-            return this.widgetFunction.apply(this, arguments);
+            return this.applyWidgetFunction('search', arguments);
         }
     });
 
