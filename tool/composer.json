@@ -3,7 +3,9 @@
   "description": "CLI tools for dev repository management",
   "require": {
     "php": ">=5.4.9",
-    "symfony/console": "2.8.*"
+    "symfony/console": "2.8.*",
+    "symfony/yaml": "2.7.*",
+    "phpunit/phpunit": "^4"
   },
   "autoload": {
     "psr-0": {
