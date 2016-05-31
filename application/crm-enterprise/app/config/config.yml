@@ -175,4 +175,4 @@ oro_message_queue:
     transport:
         default: amqp
         amqp: { host: 'localhost', port: 5672, user: 'guest', password: 'guest', vhost: '/' }
-    zero_config: ~
+    client: ~
