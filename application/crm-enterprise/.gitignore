@@ -22,6 +22,7 @@ build/
 /app/karma.conf.js
 /app/config/parameters.yml
 /app/config/parameters_test.yml
+behat.yml
 *~
 
 /app/SymfonyRequirements.php
