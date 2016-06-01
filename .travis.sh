@@ -67,7 +67,7 @@ case $step in
              phpenv config-add travis.php.ini;
              composer self-update;
              composer config -g github-oauth.github.com ${GITHUB_OAUTH};
-             composer install --optimize-autoloader --no-interaction --working-dir=tool;
+             composer install --optimize-autoloader --no-interaction --working-dir=$TRAVIS_BUILD_DIR/tool;
           fi
           if [[ "$APPLICATION" == "documentation" ]]; then
              cd ${APPLICATION};
@@ -101,7 +101,6 @@ case $step in
              sphinx-build -nW -b html -d _build/doctrees . _build/html; 
           fi
           if [ ! -z "$TESTSUITE" ]; then
-             composer install --optimize-autoloader --no-interaction --working-dir=$TRAVIS_BUILD_DIR/tool;
              composer install --optimize-autoloader --no-interaction;
              if [ ! -z "$DB" ]; then 
                 php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --skip-assets --timeout 600;
