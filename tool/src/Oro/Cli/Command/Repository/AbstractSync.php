@@ -34,6 +34,7 @@ abstract class AbstractSync extends RootCommand
         'package/demo-data'              => 'git@github.com:laboro/OroCRMProDemoDataBundle.git',
         'package/zendesk'                => 'git@github.com:laboro/OroCRMZendeskBundle.git',
         'package/magento-contact-us'     => 'git@github.com:laboro/OroCRMMagentoContactUsBundle.git',
+        'package/call'                   => 'git@github.com:laboro/OroCRMCallBundle.git',
 
         'documentation' => 'git@github.com:orocrm/documentation.git',
     ];
