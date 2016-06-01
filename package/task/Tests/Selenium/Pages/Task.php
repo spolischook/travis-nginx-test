@@ -9,7 +9,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 /**
  * Class Task
  *
- * @package OroCRM\Bundle\SalesBundle\Tests\Selenium\Pages
+ * @package OroCRM\Bundle\TaskBundle\Tests\Selenium\Pages
  * @method Task assertTitle($title, $message = '')
  */
 class Task extends AbstractPageEntity
@@ -48,10 +48,7 @@ class Task extends AbstractPageEntity
 
     public function setDescription($description)
     {
-        $this->description = $this->test->byXpath("//*[@data-ftid='orocrm_task_description']");
-        $this->description->clear();
-        $this->description->value($description);
-        return $this;
+        return $this->setContentToTinymceElement('orocrm_task_description', $description);
     }
 
     public function getDescription()
