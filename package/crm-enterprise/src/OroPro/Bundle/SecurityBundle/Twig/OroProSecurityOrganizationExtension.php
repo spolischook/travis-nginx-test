@@ -20,17 +20,25 @@ class OroProSecurityOrganizationExtension extends OroSecurityOrganizationExtensi
         if (is_object($user) && $user instanceof User) {
             $userOrganizations = $user->getOrganizations(true)->toArray();
             if (!empty($userOrganizations)) {
-                usort(
+                $globalOrganization = false;
+                $organizationsWithoutGlobal = array_filter(
                     $userOrganizations,
-                    function (Organization $firstOrg, Organization $secondOrg) {
-                        return (int)!$firstOrg->getIsGlobal();
+                    function (Organization $organization) use (&$globalOrganization) {
+                        if ($organization->getIsGlobal() === true) {
+                            $globalOrganization = $organization;
+                            return false;
+                        }
+                        return true;
                     }
                 );
-                $hasGlobalOrg = $userOrganizations[0]->getIsGlobal();
+
+                $userOrganizations = $globalOrganization ?
+                    array_merge([$globalOrganization], $organizationsWithoutGlobal) :
+                    $organizationsWithoutGlobal;
 
                 foreach ($userOrganizations as $org) {
                     $orgName = $org->getName();
-                    if ($hasGlobalOrg && !$org->getIsGlobal()) {
+                    if ($globalOrganization && !$org->getIsGlobal()) {
                         $orgName = '&nbsp;&nbsp;&nbsp;' . $orgName;
                     }
                     $result[] = [
