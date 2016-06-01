@@ -28,23 +28,26 @@ class AccountGroupCombinedPriceListsBuilder extends AbstractCombinedPriceListBui
     /**
      * @param Website $website
      * @param AccountGroup|null $currentAccountGroup
-     * @param boolean|false $force
+     * @param bool|false $force
      */
     public function build(Website $website, AccountGroup $currentAccountGroup = null, $force = false)
     {
-        if ($force || !$this->isBuiltForAccountGroup($website, $currentAccountGroup)) {
+        if (!$this->isBuiltForAccountGroup($website, $currentAccountGroup)) {
             $accountGroups = [$currentAccountGroup];
             if (!$currentAccountGroup) {
+                $fallback = $force ? null : PriceListAccountGroupFallback::WEBSITE;
                 $accountGroups = $this->getPriceListToEntityRepository()
-                    ->getAccountGroupIteratorByDefaultFallback($website, PriceListAccountGroupFallback::WEBSITE);
+                    ->getAccountGroupIteratorByDefaultFallback($website, $fallback);
             }
 
             foreach ($accountGroups as $accountGroup) {
                 $this->updatePriceListsOnCurrentLevel($website, $accountGroup, $force);
-                $this->accountCombinedPriceListsBuilder->buildByAccountGroup($website, $accountGroup, $force);
+                $this->accountCombinedPriceListsBuilder
+                    ->buildByAccountGroup($website, $accountGroup, $force);
             }
 
             if ($currentAccountGroup) {
+                $this->scheduleResolver->updateRelations();
                 $this->garbageCollector->cleanCombinedPriceLists();
             }
             $this->setBuiltForAccountGroup($website, $currentAccountGroup);
@@ -54,7 +57,7 @@ class AccountGroupCombinedPriceListsBuilder extends AbstractCombinedPriceListBui
     /**
      * @param Website $website
      * @param AccountGroup $accountGroup
-     * @param boolean $force
+     * @param bool $force
      */
     protected function updatePriceListsOnCurrentLevel(Website $website, AccountGroup $accountGroup, $force)
     {
@@ -65,13 +68,14 @@ class AccountGroupCombinedPriceListsBuilder extends AbstractCombinedPriceListBui
             $repo = $this->getCombinedPriceListToEntityRepository();
             $repo->delete($accountGroup, $website);
 
-            return;
+            if ($this->hasFallbackOnNextLevel($website, $accountGroup)) {
+                //is this case price list would be fetched from next level, and there is no need to store the own
+                return;
+            }
         }
         $collection = $this->priceListCollectionProvider->getPriceListsByAccountGroup($accountGroup, $website);
-        $combinedPriceList = $this->combinedPriceListProvider->getCombinedPriceList($collection, $force);
-
-        $this->getCombinedPriceListRepository()
-            ->updateCombinedPriceListConnection($combinedPriceList, $website, $accountGroup);
+        $combinedPriceList = $this->combinedPriceListProvider->getCombinedPriceList($collection);
+        $this->updateRelationsAndPrices($combinedPriceList, $website, $accountGroup, $force);
     }
 
     /**
@@ -83,7 +87,7 @@ class AccountGroupCombinedPriceListsBuilder extends AbstractCombinedPriceListBui
     {
         $accountGroupId = 0;
         if ($accountGroup) {
-            $accountGroupId  = $accountGroup->getId();
+            $accountGroupId = $accountGroup->getId();
         }
         return !empty($this->builtList[$website->getId()][$accountGroupId]);
     }
@@ -96,9 +100,27 @@ class AccountGroupCombinedPriceListsBuilder extends AbstractCombinedPriceListBui
     {
         $accountGroupId = 0;
         if ($accountGroup) {
-            $accountGroupId  = $accountGroup->getId();
+            $accountGroupId = $accountGroup->getId();
         }
 
         $this->builtList[$website->getId()][$accountGroupId] = true;
+    }
+
+    /**
+     * @param Website $website
+     * @param AccountGroup $accountGroup
+     * @return bool
+     */
+    public function hasFallbackOnNextLevel(Website $website, AccountGroup $accountGroup)
+    {
+        $fallback = $this->getFallbackRepository()->findOneBy(
+            [
+                'accountGroup' => $accountGroup,
+                'website' => $website,
+                'fallback' => PriceListAccountGroupFallback::CURRENT_ACCOUNT_GROUP_ONLY
+            ]
+        );
+
+        return $fallback === null;
     }
 }

@@ -5,7 +5,7 @@ namespace OroB2B\Bundle\SaleBundle\Tests\Functional\Controller\Frontend;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Translation\TranslatorInterface;
 
-use Oro\Component\Testing\WebTestCase;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 
 use OroB2B\Bundle\SaleBundle\Entity\Quote;
@@ -44,7 +44,7 @@ class QuoteControllerTest extends WebTestCase
         static::assertHtmlResponseStatusCodeEquals($this->client->getResponse(), 200);
         $this->assertContains('frontend-quotes-grid', $crawler->html());
 
-        $response = $this->requestFrontendGrid([
+        $response = $this->client->requestGrid([
             'gridName' => 'frontend-quotes-grid',
             'frontend-quotes-grid[_sort_by][qid]' => 'ASC',
         ]);
@@ -123,6 +123,12 @@ class QuoteControllerTest extends WebTestCase
                         [
                             'qid' => LoadQuoteData::QUOTE5,
                         ],
+                        [
+                            'qid' => LoadQuoteData::QUOTE8,
+                        ],
+                        [
+                            'qid' => LoadQuoteData::QUOTE9,
+                        ],
                     ],
                     'columns' => [
                         'id',
@@ -154,6 +160,12 @@ class QuoteControllerTest extends WebTestCase
                         ],
                         [
                             'qid' => LoadQuoteData::QUOTE5,
+                        ],
+                        [
+                            'qid' => LoadQuoteData::QUOTE8,
+                        ],
+                        [
+                            'qid' => LoadQuoteData::QUOTE9,
                         ],
                     ],
                     'columns' => [
@@ -234,21 +246,23 @@ class QuoteControllerTest extends WebTestCase
                 $property = $property->format('M j, Y');
             } elseif ($property instanceof Price) {
                 $property = round($property->getValue());
-            } else {
-                $property = (string)$property;
             }
 
+            $property = (string)$property;
             $this->assertContains($label, $control->textContent);
             $this->assertContains($property, $control->textContent);
         }
 
         $createOrderButton = (bool)$crawler
             ->filterXPath('//a[contains(., \'Accept and Submit to Order\')]')->count();
-         $this->assertEquals($expectedData['createOrderButton'], $createOrderButton);
+
+        $this->assertEquals($expectedData['createOrderButton'], $createOrderButton);
     }
 
     /**
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function viewProvider()
     {
@@ -322,6 +336,90 @@ class QuoteControllerTest extends WebTestCase
                             'label' => 'orob2b.sale.quote.sections.shipping_address',
                             'property' => 'shippingAddress.street',
                         ]
+                    ],
+                ],
+            ],
+            'account1 user3 (AccountUser:VIEW_LOCAL, Quote date)' => [
+                'input' => [
+                    'qid' => LoadQuoteData::QUOTE5,
+                    'login' => LoadUserData::ACCOUNT1_USER3,
+                    'password' => LoadUserData::ACCOUNT1_USER3,
+                ],
+                'expected' => [
+                    'createOrderButton' => false,
+                    'columns' => [
+                        [
+                            'label' => 'orob2b.frontend.sale.quote.qid.label',
+                            'property' => 'qid',
+                        ],
+                        [
+                            'label' => 'orob2b.frontend.sale.quote.valid_until.label',
+                            'property' => 'valid_until',
+                        ],
+                        [
+                            'label' => 'orob2b.sale.quote.po_number.label',
+                            'property' => 'po_number',
+                        ],
+                        [
+                            'label' => 'orob2b.sale.quote.ship_until.label',
+                            'property' => 'ship_until',
+                        ],
+                    ],
+                ],
+            ],
+            'account1 user3 (AccountUser:VIEW_LOCAL, Quote expired)' => [
+                'input' => [
+                    'qid' => LoadQuoteData::QUOTE8,
+                    'login' => LoadUserData::ACCOUNT1_USER3,
+                    'password' => LoadUserData::ACCOUNT1_USER3,
+                ],
+                'expected' => [
+                    'createOrderButton' => false,
+                    'columns' => [
+                        [
+                            'label' => 'orob2b.frontend.sale.quote.qid.label',
+                            'property' => 'qid',
+                        ],
+                        [
+                            'label' => 'orob2b.frontend.sale.quote.valid_until.label',
+                            'property' => 'valid_until',
+                        ],
+                        [
+                            'label' => 'orob2b.sale.quote.po_number.label',
+                            'property' => 'po_number',
+                        ],
+                        [
+                            'label' => 'orob2b.sale.quote.ship_until.label',
+                            'property' => 'ship_until',
+                        ],
+                    ],
+                ],
+            ],
+            'account1 user3 (AccountUser:VIEW_LOCAL, null Quote date)' => [
+                'input' => [
+                    'qid' => LoadQuoteData::QUOTE9,
+                    'login' => LoadUserData::ACCOUNT1_USER3,
+                    'password' => LoadUserData::ACCOUNT1_USER3,
+                ],
+                'expected' => [
+                    'createOrderButton' => true,
+                    'columns' => [
+                        [
+                            'label' => 'orob2b.frontend.sale.quote.qid.label',
+                            'property' => 'qid',
+                        ],
+                        [
+                            'label' => 'orob2b.frontend.sale.quote.valid_until.label',
+                            'property' => 'valid_until',
+                        ],
+                        [
+                            'label' => 'orob2b.sale.quote.po_number.label',
+                            'property' => 'po_number',
+                        ],
+                        [
+                            'label' => 'orob2b.sale.quote.ship_until.label',
+                            'property' => 'ship_until',
+                        ],
                     ],
                 ],
             ],

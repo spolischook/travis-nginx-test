@@ -2,6 +2,7 @@
 
 namespace Oro\Cli\Command\Repository;
 
+use Oro\Git\VersionMatcher;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -135,10 +136,14 @@ abstract class AbstractSync extends RootCommand
         $remotes = $this->getRemoteAliases();
         if (!in_array($alias, $remotes, true)) {
             /* Add remote repository if it was not added yet */
-            $this->execCmd("git remote add -f {$alias} {$repository}");
+            $this->execCmd("git remote add --no-tags {$alias} {$repository}");
         }
 
-        $fetchCommand = $fetchOnlyMaster ? "git fetch {$alias} master" : "git fetch {$alias}";
+        $fetchCommand = "git fetch --prune {$alias}";
+        if ($fetchOnlyMaster) {
+            $fetchCommand .= ' master';
+        }
+
         $this->execCmd($fetchCommand);
     }
 
@@ -155,8 +160,29 @@ abstract class AbstractSync extends RootCommand
 
         /* Pull all updates from remote master */
         if ($this->execCmd("git subtree pull --prefix={$codePath} {$alias} $branchName") && $twoWay) {
+            $this->assertGitVersion();
+
             /* Push all subtree changes to remote upstream repository */
             $this->execCmd("git subtree push --prefix={$codePath} {$alias} $branchName");
+        }
+    }
+
+
+    protected function assertGitVersion()
+    {
+        $output = [];
+
+        $this->execCmd('git --version', true, $output);
+
+        $output = reset($output);
+
+        $version = VersionMatcher::match($output);
+
+        if (VersionMatcher::gte($version, '2.0.0')) {
+            throw new \RuntimeException(
+                'Git 2.* pushes full history to packages, use Git 1.9 instead. ' .
+                'See https://magecore.atlassian.net/browse/BAP-10262 for details'
+            );
         }
     }
 
@@ -205,10 +231,12 @@ abstract class AbstractSync extends RootCommand
         if ($throwException && $returnCode) {
             throw new \RuntimeException(
                 sprintf(
-                    'The "%s" command failed. Return code: %s.' . "\n"
+                    'The "%s" command failed. Return code: %s. Error message:' . "\n"
+                    . implode("\n", $output) . "\n"
                     . 'Please fix the issue and run the "repository:sync" command again.' . "\n"
-                    . 'The "git reset --hard origin/master" command can be used'
-                    . ' to rollback changes made by "repository:sync" command.',
+                    . 'The "git reset --hard" command can be used to rollback changes '
+                    . 'made by "repository:sync" command or "git reset --hard origin/master" '
+                    . 'to reset repository to the original state (note: local commits will be reverted as well!)',
                     $cmd,
                     $returnCode
                 )
