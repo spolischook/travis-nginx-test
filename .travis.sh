@@ -67,8 +67,8 @@ case $step in
              phpenv config-add travis.php.ini;
              composer self-update;
              composer config -g github-oauth.github.com ${GITHUB_OAUTH};
+             composer install --optimize-autoloader --no-interaction --working-dir=tool;
           fi
-          composer install --optimize-autoloader --no-interaction --working-dir=tool;
           if [[ "$APPLICATION" == "documentation" ]]; then
              cd ${APPLICATION};
              pip install -q -r requirements.txt --use-mirrors;
