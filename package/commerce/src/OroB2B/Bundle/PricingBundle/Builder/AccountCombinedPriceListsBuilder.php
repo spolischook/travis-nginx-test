@@ -16,11 +16,11 @@ class AccountCombinedPriceListsBuilder extends AbstractCombinedPriceListBuilder
     /**
      * @param Website $website
      * @param Account $account
-     * @param boolean|false $force
+     * @param bool|false $force
      */
     public function build(Website $website, Account $account, $force = false)
     {
-        if ($force || !$this->isBuiltForAccount($website, $account)) {
+        if (!$this->isBuiltForAccount($website, $account)) {
             $this->updatePriceListsOnCurrentLevel($website, $account, $force);
             $this->garbageCollector->cleanCombinedPriceLists();
             $this->setBuiltForAccount($website, $account);
@@ -30,13 +30,14 @@ class AccountCombinedPriceListsBuilder extends AbstractCombinedPriceListBuilder
     /**
      * @param Website $website
      * @param AccountGroup $accountGroup
-     * @param boolean|false $force
+     * @param bool|false $force
      */
     public function buildByAccountGroup(Website $website, AccountGroup $accountGroup, $force = false)
     {
-        if ($force || !$this->isBuiltForAccountGroup($website, $accountGroup)) {
+        if (!$this->isBuiltForAccountGroup($website, $accountGroup)) {
+            $fallback = $force ? null : PriceListAccountFallback::ACCOUNT_GROUP;
             $accounts = $this->getPriceListToEntityRepository()
-                ->getAccountIteratorByDefaultFallback($accountGroup, $website, PriceListAccountFallback::ACCOUNT_GROUP);
+                ->getAccountIteratorByDefaultFallback($accountGroup, $website, $fallback);
 
             foreach ($accounts as $account) {
                 $this->updatePriceListsOnCurrentLevel($website, $account, $force);
@@ -48,7 +49,7 @@ class AccountCombinedPriceListsBuilder extends AbstractCombinedPriceListBuilder
     /**
      * @param Website $website
      * @param Account $account
-     * @param boolean $force
+     * @param bool $force
      */
     protected function updatePriceListsOnCurrentLevel(Website $website, Account $account, $force)
     {
@@ -59,13 +60,14 @@ class AccountCombinedPriceListsBuilder extends AbstractCombinedPriceListBuilder
             $repo = $this->getCombinedPriceListToEntityRepository();
             $repo->delete($account, $website);
 
-            return;
+            if ($this->hasFallbackOnNextLevel($website, $account)) {
+                //is this case price list would be fetched from next level, and there is no need to store the own
+                return;
+            }
         }
         $collection = $this->priceListCollectionProvider->getPriceListsByAccount($account, $website);
-        $combinedPriceList = $this->combinedPriceListProvider->getCombinedPriceList($collection, $force);
-
-        $this->getCombinedPriceListRepository()
-            ->updateCombinedPriceListConnection($combinedPriceList, $website, $account);
+        $combinedPriceList = $this->combinedPriceListProvider->getCombinedPriceList($collection);
+        $this->updateRelationsAndPrices($combinedPriceList, $website, $account, $force);
     }
 
     /**
@@ -77,6 +79,7 @@ class AccountCombinedPriceListsBuilder extends AbstractCombinedPriceListBuilder
     {
         return !empty($this->builtList['account'][$website->getId()][$account->getId()]);
     }
+
     /**
      * @param Website $website
      * @param Account $account
@@ -95,6 +98,7 @@ class AccountCombinedPriceListsBuilder extends AbstractCombinedPriceListBuilder
     {
         return !empty($this->builtList['group'][$website->getId()][$accountGroup->getId()]);
     }
+
     /**
      * @param Website $website
      * @param AccountGroup $accountGroup
@@ -102,5 +106,19 @@ class AccountCombinedPriceListsBuilder extends AbstractCombinedPriceListBuilder
     protected function setBuiltForAccountGroup(Website $website, AccountGroup $accountGroup)
     {
         $this->builtList['group'][$website->getId()][$accountGroup->getId()] = true;
+    }
+
+    /**
+     * @param Website $website
+     * @param Account $account
+     * @return bool
+     */
+    public function hasFallbackOnNextLevel(Website $website, Account $account)
+    {
+        $fallback = $this->getFallbackRepository()->findOneBy(
+            ['website' => $website, 'account' => $account, 'fallback' => PriceListAccountFallback::CURRENT_ACCOUNT_ONLY]
+        );
+
+        return $fallback === null;
     }
 }

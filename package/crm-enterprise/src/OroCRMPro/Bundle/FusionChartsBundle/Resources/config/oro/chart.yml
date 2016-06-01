@@ -25,5 +25,6 @@ oro_chart:
             chartColors: '73a4e1,bedb99,ceeaf2,80d4cf,fdbc7c,e6c160,5a8980,b6c05d,d6a970,fee090,7fab90,ed935c'
             groupingOption: name
             trackTotal: true
+            show_no_data_block: false
         template: OroCRMProFusionChartsBundle:Chart:multiline.html.twig
         data_transformer: orocrmpro_chart.data_transformer.campaign_multi_line

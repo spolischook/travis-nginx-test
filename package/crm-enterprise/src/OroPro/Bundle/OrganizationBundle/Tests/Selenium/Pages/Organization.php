@@ -38,15 +38,12 @@ class Organization extends AbstractPageEntity
     }
 
     /**
-     * @param string $name
+     * @param string $description
      * @return $this
      */
-    public function setDescription($name)
+    public function setDescription($description)
     {
-        $description = $this->test->byXpath("//*[@data-ftid='oro_organization_form_description']");
-        $description->clear();
-        $description->value($name);
-        return $this;
+        return $this->setContentToTinymceElement('oro_organization_form_description', $description);
     }
 
     /**
