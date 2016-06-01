@@ -38,12 +38,12 @@ class CheckoutController extends Controller
      *     name="orob2b_checkout_frontend_checkout",
      *     requirements={"id"="\d+", "checkoutType"="\w+"}
      * )
-     * @Layout(vars={"workflowStepName", "workflowName"})
+     * @Layout(vars={"workflowStepName", "workflowName", "checkout"})
      * @Acl(
      *      id="orob2b_checkout_frontend_checkout",
      *      type="entity",
      *      class="OroB2BCheckoutBundle:Checkout",
-     *      permission="CREATE",
+     *      permission="ACCOUNT_EDIT",
      *      group_name="commerce"
      * )
      *
@@ -63,6 +63,7 @@ class CheckoutController extends Controller
 
         $workflowItem = $this->handleTransition($checkout, $request);
         $currentStep = $this->validateStep($workflowItem);
+        $this->validateOrderLineItems($workflowItem, $checkout, $request);
 
         $responseData = [];
         if ($workflowItem->getResult()->has('responseData')) {
@@ -75,13 +76,15 @@ class CheckoutController extends Controller
                 return $this->redirect($workflowItem->getResult()->get('redirectUrl'));
             }
         }
-        if ($responseData) {
+
+        if ($responseData && $request->isXmlHttpRequest()) {
             return new JsonResponse($responseData);
         }
 
         return [
             'workflowStepName' => $currentStep->getName(),
             'workflowName' => $workflowItem->getWorkflowName(),
+            'checkout' => $checkout,
             'data' =>
                 [
                     'checkout' => $checkout,
@@ -118,6 +121,40 @@ class CheckoutController extends Controller
         }
 
         return $currentStep;
+    }
+
+    /**
+     * @param WorkflowItem $workflowItem
+     * @param CheckoutInterface $checkout
+     * @param Request $request
+     */
+    protected function validateOrderLineItems(WorkflowItem $workflowItem, CheckoutInterface $checkout, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            return;
+        }
+        $continueTransition = $this->get('orob2b_checkout.layout.data_provider.continue_transition')
+            ->getContinueTransition($workflowItem);
+        if (!$continueTransition) {
+            return;
+        }
+        $frontendOptions = $continueTransition->getTransition()->getFrontendOptions();
+        if (!array_key_exists('is_checkout_show_errors', $frontendOptions)) {
+            return;
+        }
+        $errors = $continueTransition->getErrors();
+        foreach ($errors as $error) {
+            $this->get('session')->getFlashBag()->add('error', $error['message']);
+        }
+        if (!$errors->isEmpty()) {
+            return;
+        }
+        $manager = $this->get('orob2b_checkout.data_provider.manager.checkout_line_items');
+        $orderLineItemsCount = $manager->getData($checkout, true)->count();
+        if ($orderLineItemsCount && $orderLineItemsCount !== $manager->getData($checkout)->count()) {
+            $this->get('session')->getFlashBag()
+                ->add('warning', 'orob2b.checkout.order.line_items.line_item_has_no_price.message');
+        }
     }
 
     /**

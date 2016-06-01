@@ -7,9 +7,6 @@ layout:
                 main_menu_container:
                     blockType: container
                     siblingId: middle_bar
-                    options:
-                        attr:
-                            id: main-menu
                 main_menu:
                     blockType: menu
                     options:
@@ -25,5 +22,3 @@ layout:
                         main_menu: ~
                         main_menu_widgets:
                             #main_menu_messages_widget: ~
-    conditions:
-        '@neq': [ $context.logged_user, null ]

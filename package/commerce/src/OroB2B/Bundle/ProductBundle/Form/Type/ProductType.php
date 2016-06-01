@@ -13,6 +13,7 @@ use Oro\Bundle\FormBundle\Form\Type\OroRichTextType;
 
 use OroB2B\Bundle\FallbackBundle\Form\Type\LocalizedFallbackValueCollectionType;
 use OroB2B\Bundle\ProductBundle\Entity\Product;
+use OroB2B\Bundle\ProductBundle\Provider\DefaultProductUnitProvider;
 
 class ProductType extends AbstractType
 {
@@ -23,6 +24,19 @@ class ProductType extends AbstractType
      */
     protected $dataClass;
 
+    /**
+     * @var  DefaultProductUnitProvider
+     */
+    private $provider;
+
+    /**
+     * @var DefaultProductUnitProvider
+     */
+    public function __construct(DefaultProductUnitProvider $provider)
+    {
+        $this->provider = $provider;
+    }
+    
     /**
      * @param string $dataClass
      */
@@ -117,9 +131,10 @@ class ProductType extends AbstractType
                 'unitPrecisions',
                 ProductUnitPrecisionCollectionType::NAME,
                 [
-                    'label'    => 'orob2b.product.unit_precisions.label',
-                    'tooltip'  => 'orob2b.product.form.tooltip.unit_precision',
-                    'required' => false
+                    'label'          => 'orob2b.product.unit_precisions.label',
+                    'tooltip'        => 'orob2b.product.form.tooltip.unit_precision',
+                    'error_bubbling' => false,
+                    'required'       => true,
                 ]
             )
             ->add(
@@ -138,6 +153,11 @@ class ProductType extends AbstractType
     {
         $product = $event->getData();
         $form = $event->getForm();
+
+        if ($product->getId() == null) {
+            $unitPrecision = $this->provider->getDefaultProductUnitPrecision();
+            $product->addUnitPrecision($unitPrecision);
+        }
         if ($product instanceof Product && $product->getHasVariants()) {
             $form
                 ->add(

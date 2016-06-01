@@ -90,6 +90,7 @@ class AjaxProductPriceControllerTest extends AbstractAjaxProductPriceControllerT
                 'expected' => [
                     'bottle' => [
                         ['price' => 12.2, 'currency' => 'EUR', 'qty' => 1],
+                        ['price' => 13.1, 'currency' => 'USD', 'qty' => 1],
                         ['price' => 12.2, 'currency' => 'EUR', 'qty' => 11],
                     ],
                     'liter' => [
@@ -104,7 +105,10 @@ class AjaxProductPriceControllerTest extends AbstractAjaxProductPriceControllerT
                     'liter' => [
                         ['price' => 10.0000, 'currency' => 'USD', 'qty' => 1],
                         ['price' => 12.2000, 'currency' => 'USD', 'qty' => 10],
-                    ]
+                    ],
+                    'bottle' => [
+                        ['price' => 13.1, 'currency' => 'USD', 'qty' => 1],
+                    ],
                 ],
                 'currency' => 'USD'
             ]
@@ -215,7 +219,7 @@ class AjaxProductPriceControllerTest extends AbstractAjaxProductPriceControllerT
                     'frontend-products-grid[_filter][minimum_price][type]' => NumberFilterType::TYPE_GREATER_EQUAL,
                     'frontend-products-grid[_filter][minimum_price][unit]' => 'liter'
                 ],
-                'expected' => ['product.2']
+                'expected' => ['product.1', 'product.2']
             ],
             'less 10 USD per liter' => [
                 'filter' => [
@@ -244,7 +248,12 @@ class AjaxProductPriceControllerTest extends AbstractAjaxProductPriceControllerT
     protected function setPriceListToDefaultWebsite(CombinedPriceList $combinedPriceList, Website $website)
     {
         $priceListToWebsite = $this->priceListToWebsiteRepository
-            ->findOneBy(['website' => $website]);
+            ->findOneBy(['website' => $website, 'priceList' => $combinedPriceList]);
+
+        if (!$priceListToWebsite) {
+            $priceListToWebsite = $this->priceListToWebsiteRepository
+                ->findOneBy(['website' => $website]);
+        }
         if (!$priceListToWebsite) {
             $priceListToWebsite = new CombinedPriceListToWebsite();
             $priceListToWebsite->setWebsite($website);

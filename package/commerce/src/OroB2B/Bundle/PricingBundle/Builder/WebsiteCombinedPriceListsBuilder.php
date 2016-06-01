@@ -29,15 +29,16 @@ class WebsiteCombinedPriceListsBuilder extends AbstractCombinedPriceListBuilder
 
     /**
      * @param Website|null $currentWebsite
-     * @param boolean|false $force
+     * @param bool $force
      */
     public function build(Website $currentWebsite = null, $force = false)
     {
-        if ($force || !$this->isBuiltForWebsite($currentWebsite)) {
+        if (!$this->isBuiltForWebsite($currentWebsite)) {
             $websites = [$currentWebsite];
             if (!$currentWebsite) {
+                $fallback = $force ? null : PriceListWebsiteFallback::CONFIG;
                 $websites = $this->getPriceListToEntityRepository()
-                    ->getWebsiteIteratorByDefaultFallback(PriceListWebsiteFallback::CONFIG);
+                    ->getWebsiteIteratorByDefaultFallback($fallback);
             }
 
             foreach ($websites as $website) {
@@ -54,7 +55,7 @@ class WebsiteCombinedPriceListsBuilder extends AbstractCombinedPriceListBuilder
 
     /**
      * @param Website $website
-     * @param boolean $force
+     * @param bool $force
      */
     protected function updatePriceListsOnCurrentLevel(Website $website, $force)
     {
@@ -65,15 +66,15 @@ class WebsiteCombinedPriceListsBuilder extends AbstractCombinedPriceListBuilder
             $repo = $this->getCombinedPriceListToEntityRepository();
             $repo->delete($website);
 
-            return;
+            if ($this->hasFallbackOnNextLevel($website)) {
+                //is this case price list would be fetched from next level, and there is no need to store the own
+                return;
+            }
         }
         $collection = $this->priceListCollectionProvider->getPriceListsByWebsite($website);
-        $actualCombinedPriceList = $this->combinedPriceListProvider->getCombinedPriceList($collection, $force);
-
-        $this->getCombinedPriceListRepository()
-            ->updateCombinedPriceListConnection($actualCombinedPriceList, $website);
+        $combinedPriceList = $this->combinedPriceListProvider->getCombinedPriceList($collection);
+        $this->updateRelationsAndPrices($combinedPriceList, $website, null, $force);
     }
-
 
     /**
      * @param Website|null $website
@@ -95,9 +96,22 @@ class WebsiteCombinedPriceListsBuilder extends AbstractCombinedPriceListBuilder
     {
         $websiteId = 0;
         if ($website) {
-            $websiteId  = $website->getId();
+            $websiteId = $website->getId();
         }
 
         $this->builtList[$websiteId] = true;
+    }
+
+    /**
+     * @param Website $website
+     * @return bool
+     */
+    public function hasFallbackOnNextLevel(Website $website)
+    {
+        $fallback = $this->getFallbackRepository()->findOneBy(
+            ['website' => $website, 'fallback' => PriceListWebsiteFallback::CURRENT_WEBSITE_ONLY]
+        );
+
+        return $fallback === null;
     }
 }

@@ -13,6 +13,8 @@ use OroB2B\Bundle\FallbackBundle\Model\FallbackType;
 use OroB2B\Bundle\WebsiteBundle\Entity\Locale;
 
 /**
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ *
  * @dbIsolation
  */
 class ProductControllerTest extends WebTestCase
@@ -28,9 +30,9 @@ class ProductControllerTest extends WebTestCase
     const INVENTORY_STATUS = 'In Stock';
     const UPDATED_INVENTORY_STATUS = 'Out of Stock';
 
-    const FIRST_UNIT_CODE = 'item';
-    const FIRST_UNIT_FULL_NAME = 'item';
-    const FIRST_UNIT_PRECISION = '5';
+    const FIRST_UNIT_CODE = 'each';
+    const FIRST_UNIT_FULL_NAME = 'each';
+    const FIRST_UNIT_PRECISION = '0';
 
     const SECOND_UNIT_CODE = 'kg';
     const SECOND_UNIT_FULL_NAME = 'kilogram';
@@ -64,17 +66,24 @@ class ProductControllerTest extends WebTestCase
 
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
-        $form['orob2b_product[sku]'] = self::TEST_SKU;
-        $form['orob2b_product[owner]'] = $this->getBusinessUnitId();
 
-        $form['orob2b_product[inventoryStatus]'] = Product::INVENTORY_STATUS_IN_STOCK;
-        $form['orob2b_product[status]'] = Product::STATUS_DISABLED;
-        $form['orob2b_product[names][values][default]'] = self::DEFAULT_NAME;
-        $form['orob2b_product[descriptions][values][default]'] = self::DEFAULT_DESCRIPTION;
-        $form['orob2b_product[shortDescriptions][values][default]'] = self::DEFAULT_SHORT_DESCRIPTION;
+        $this->assertDefaultProductUnit($form);
+
+        $formValues = $form->getPhpValues();
+        $formValues['orob2b_product']['sku'] = self::TEST_SKU;
+        $formValues['orob2b_product']['owner'] = $this->getBusinessUnitId();
+        $formValues['orob2b_product']['inventoryStatus'] = Product::INVENTORY_STATUS_IN_STOCK;
+        $formValues['orob2b_product']['status'] = Product::STATUS_DISABLED;
+        $formValues['orob2b_product']['names']['values']['default'] = self::DEFAULT_NAME;
+        $formValues['orob2b_product']['descriptions']['values']['default'] = self::DEFAULT_DESCRIPTION;
+        $formValues['orob2b_product']['shortDescriptions']['values']['default'] = self::DEFAULT_SHORT_DESCRIPTION;
+        $formValues['orob2b_product']['unitPrecisions'][] = [
+            'unit' => self::FIRST_UNIT_CODE,
+            'precision' => self::FIRST_UNIT_PRECISION,
+        ];
 
         $this->client->followRedirects(true);
-        $crawler = $this->client->submit($form);
+        $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formValues);
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
@@ -84,6 +93,7 @@ class ProductControllerTest extends WebTestCase
         $this->assertContains(self::TEST_SKU, $html);
         $this->assertContains(self::INVENTORY_STATUS, $html);
         $this->assertContains(self::STATUS, $html);
+        $this->assertContains(self::FIRST_UNIT_CODE, $html);
     }
 
     /**
@@ -167,7 +177,7 @@ class ProductControllerTest extends WebTestCase
         $expectedUnitPrecisions = [
             ['unit' => self::FIRST_UNIT_FULL_NAME, 'precision' => self::FIRST_UNIT_PRECISION],
             ['unit' => self::SECOND_UNIT_FULL_NAME, 'precision' => self::SECOND_UNIT_PRECISION],
-            ['unit' => self::THIRD_UNIT_CODE, 'precision' => self::THIRD_UNIT_PRECISION],
+            ['unit' => self::THIRD_UNIT_FULL_NAME, 'precision' => self::THIRD_UNIT_PRECISION],
         ];
 
         $this->assertEquals(
@@ -482,5 +492,28 @@ class ProductControllerTest extends WebTestCase
             ->findOneBy(['product' => $productId, 'unit' => $unit]);
 
         $this->assertEquals($expectedPrecision, $productUnitPrecision->getPrecision());
+    }
+    
+    /**
+     * checking if default product unit field is added and filled
+     *
+     * @param Form $form
+     */
+    protected function assertDefaultProductUnit($form)
+    {
+        $configManager = $this->client->getContainer()->get('oro_config.manager');
+        $expectedDefaultProductUnit = $configManager->get('orob2b_product.default_unit');
+        $expectedDefaultProductUnitPrecision = $configManager->get('orob2b_product.default_unit_precision');
+
+        $formValues = $form->getValues();
+
+        $this->assertEquals(
+            $expectedDefaultProductUnit,
+            $formValues['orob2b_product[unitPrecisions][0][unit]']
+        );
+        $this->assertEquals(
+            $expectedDefaultProductUnitPrecision,
+            $formValues['orob2b_product[unitPrecisions][0][precision]']
+        );
     }
 }
