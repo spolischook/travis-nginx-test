@@ -95,11 +95,13 @@ case $step in
     ;;
     script)
           echo  "Script...";
+
           cd ${APPLICATION};
           if [[ "$APPLICATION" == "documentation" ]]; then
              sphinx-build -nW -b html -d _build/doctrees . _build/html; 
           fi
-          if [ ! -z "$TESTSUITE" ]; then 
+          if [ ! -z "$TESTSUITE" ]; then
+             composer install --optimize-autoloader --no-interaction --working-dir=$TRAVIS_BUILD_DIR/tool;
              composer install --optimize-autoloader --no-interaction;
              if [ ! -z "$DB" ]; then 
                 php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --skip-assets --timeout 600;
@@ -181,7 +183,7 @@ case $step in
                     fi
                 done
              else
-                 phpunit --stderr --testsuite ${TESTSUITE};
+                 php $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --stderr --testsuite ${TESTSUITE};
              fi
           fi
           if [ ! -z "$CS" ]; then
