@@ -95,6 +95,25 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
             ],
+            'longField ~ value'                      => [
+                'where'   => [
+                    [
+                        'keyword'  => Query::KEYWORD_AND,
+                        'name'     => 'longField',
+                        'operator' => Query::OPERATOR_CONTAINS,
+                        'value'    => 'value'
+                    ]
+                ],
+                'request' => [
+                    'body' => [
+                        'query' => [
+                            'match' => [
+                                'longfield.' . IndexAgent::FULLTEXT_ANALYZED_FIELD => 'value'
+                            ]
+                        ]
+                    ]
+                ],
+            ],
             'field !~ value'                     => [
                 'where'   => [
                     [
@@ -153,6 +172,19 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                 ],
                 'request' => [
                     'body' => ['query' => ['match' => ['field' => 'value']]]
+                ],
+            ],
+            'longField = value'                      => [
+                'where'   => [
+                    [
+                        'keyword'  => Query::KEYWORD_AND,
+                        'name'     => 'longField',
+                        'operator' => Query::OPERATOR_EQUALS,
+                        'value'    => 'value'
+                    ]
+                ],
+                'request' => [
+                    'body' => ['query' => ['match' => ['longfield' => 'value']]]
                 ],
             ],
             'field != value'                     => [
@@ -230,6 +262,34 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                     ]
                 ],
             ],
+            'longField > 1 and longField < 10'           => [
+                'where'   => [
+                    [
+                        'keyword'  => Query::KEYWORD_AND,
+                        'name'     => 'longField',
+                        'operator' => Query::OPERATOR_GREATER_THAN,
+                        'value'    => 1
+                    ],
+                    [
+                        'keyword'  => Query::KEYWORD_AND,
+                        'name'     => 'longField',
+                        'operator' => Query::OPERATOR_LESS_THAN,
+                        'value'    => 10
+                    ],
+                ],
+                'request' => [
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    ['range' => ['longfield' => ['gt' => 1]]],
+                                    ['range' => ['longfield' => ['lt' => 10]]],
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+            ],
             'field <= 1 or field => 10'          => [
                 'where'   => [
                     [
@@ -274,6 +334,28 @@ class WhereRequestBuilderTest extends \PHPUnit_Framework_TestCase
                                 'should' => [
                                     ['term' => ['field' => 'first']],
                                     ['term' => ['field' => 'second']],
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            'longField in (first, second)'           => [
+                'where'   => [
+                    [
+                        'keyword'  => Query::KEYWORD_AND,
+                        'name'     => 'longField',
+                        'operator' => Query::OPERATOR_IN,
+                        'value'    => ['first', 'second']
+                    ],
+                ],
+                'request' => [
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'should' => [
+                                    ['term' => ['longfield' => 'first']],
+                                    ['term' => ['longfield' => 'second']],
                                 ]
                             ]
                         ]

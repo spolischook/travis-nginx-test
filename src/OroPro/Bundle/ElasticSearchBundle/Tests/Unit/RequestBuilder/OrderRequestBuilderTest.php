@@ -54,6 +54,13 @@ class OrderRequestBuilderTest extends \PHPUnit_Framework_TestCase
                 'direction' => null,
                 'request' => [],
             ],
+            'longName' => [
+                'field' => 'longName',
+                'direction' => Query::ORDER_ASC,
+                'request' => [
+                    'body' => ['sort' => ['longname' => ['order' => Query::ORDER_ASC]]]
+                ],
+            ],
         ];
     }
 }
