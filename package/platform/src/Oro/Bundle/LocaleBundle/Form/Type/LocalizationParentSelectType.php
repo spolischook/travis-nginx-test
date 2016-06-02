@@ -1,17 +1,17 @@
 <?php
 
-namespace OroB2B\Bundle\AccountBundle\Form\Type;
+namespace Oro\Bundle\LocaleBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use OroB2B\Bundle\AccountBundle\Entity\Account;
+use Oro\Bundle\LocaleBundle\Entity\Localization;
 
-class ParentAccountSelectType extends AbstractType
+class LocalizationParentSelectType extends AbstractType
 {
-    const NAME = 'orob2b_account_parent_select';
+    const NAME = 'oro_localization_parent_select';
 
     /**
      * {@inheritdoc}
@@ -20,10 +20,10 @@ class ParentAccountSelectType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'autocomplete_alias' => 'orob2b_account_parent',
+                'autocomplete_alias' => 'oro_localization_parent',
                 'configs' => [
                     'component' => 'autocomplete-entity-parent',
-                    'placeholder' => 'orob2b.account.form.choose_parent'
+                    'placeholder' => 'oro.locale.localization.form.choose_parent'
                 ]
             ]
         );
@@ -35,11 +35,8 @@ class ParentAccountSelectType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $parentData = $form->getParent()->getData();
-        $accountId = null;
-        if ($parentData instanceof Account) {
-            $accountId = $parentData->getId();
-        }
-        $view->vars['configs']['entityId'] = $accountId;
+
+        $view->vars['configs']['entityId'] = $parentData instanceof Localization ? $parentData->getId() : null;
     }
 
     /**
