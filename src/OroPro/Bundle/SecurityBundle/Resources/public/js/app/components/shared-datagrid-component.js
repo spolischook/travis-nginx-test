@@ -72,18 +72,13 @@ define(function(require) {
                         entityId: model.id,
                         entityClass: data.entityClass
                     });
-                    if (grid.collection.where({id: id}).length === 0) {
+                    if (!grid.collection.findWhere({id: id})) {
                         var newModel = {
                             id: id,
                             entity: model.get('entity')
                         };
-                        if (grid.collection.length === 0) {
-                            grid.collection.reset([newModel]);
-                        } else {
-                            grid.collection.add(newModel);
-                        }
-                        grid.collection.get(newModel).trigger('backgrid:select', newModel, true);
-                        grid.trigger('layout:update');
+                        grid.collection.add(newModel).trigger('backgrid:select', newModel, true);
+                        grid.render().trigger('layout:update');
                     }
                 });
             });
@@ -92,18 +87,13 @@ define(function(require) {
         onSelect2Add: function(data) {
             widgetManager.getWidgetInstanceByAlias('shared-dialog', function(widget) {
                 var grid = widget.pageComponent('shared-datagrid').grid;
-                if (grid.collection.where({id: data.id}).length === 0) {
+                if (!grid.collection.findWhere({id: data.id})) {
                     var model = {
                         id: data.id,
                         entity: data.entity
                     };
-                    if (grid.collection.length === 0) {
-                        grid.collection.reset([model]);
-                    } else {
-                        grid.collection.add(model);
-                    }
-                    grid.collection.get(model).trigger('backgrid:select', model, true);
-                    grid.trigger('layout:update');
+                    grid.collection.add(model).trigger('backgrid:select', model, true);
+                    grid.render().trigger('layout:update');
                 }
             });
         },
