@@ -41,7 +41,9 @@ class LocalizationTypeTest extends FormIntegrationTestCase
                     LanguageSelectType::NAME => new LanguageSelectTypeStub(),
                     FormattingSelectType::NAME => new FormattingSelectTypeStub(),
                     LocalizationParentSelectType::NAME => new EntityType(
-                            ['1' => $this->getEntity('Oro\Bundle\LocaleBundle\Entity\Localization', ['id' => 1])],
+                            [
+                                '1' => $this->getEntity('Oro\Bundle\LocaleBundle\Entity\Localization', ['id' => 1])
+                            ],
                             LocalizationParentSelectType::NAME
                         ),
                 ],
