@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1548f6bcf5b3d68d29a4f8779658a053",
-    "content-hash": "96af671dfdea6a436b933f3bf34b51bf",
+    "hash": "d63ed4595751f5300198d3e43c888977",
+    "content-hash": "198b0b529d221670f251401af87796a3",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1584,7 +1584,7 @@
                 },
                 {
                     "name": "Community contributors",
-                    "homepage": "https://github.com/escapestudios/EscapeWSSEAuthenticationBundle/graphs/contributors"
+                    "homepage": "https://github.com/frieser/FrieserWSSEAuthenticationBundle/graphs/contributors"
                 }
             ],
             "description": "Symfony2 bundle to implement WSSE authentication",
@@ -1725,7 +1725,7 @@
                     "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
                 },
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -3118,7 +3118,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -3913,7 +3913,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm",
-                "reference": "dd4550def5763c5c637f7ec7894b691ce102ce68",
+                "reference": "14ed4c70b05385affa2c050f87b3dcf636522ea8",
                 "shasum": null
             },
             "require": {
@@ -3950,7 +3950,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/magento-abandoned-cart",
-                "reference": "6789803dee831dc309bd37b71cf7de22c1755f4a",
+                "reference": "93f8138ab763d1a2f09c081f418af748fc578707",
                 "shasum": null
             },
             "require": {
@@ -3987,7 +3987,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/dotmailer",
-                "reference": "221625026c7f848039d55bf6441c54b5f5a0f61b",
+                "reference": "6e92fa463524b5ed31d04a2739ab10fc055ffd8c",
                 "shasum": null
             },
             "require": {
@@ -4024,7 +4024,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm-enterprise",
-                "reference": "33632bb3d26bb5ae5e4cdccd609bee4ccdd642df",
+                "reference": "326b05bde9c854f934de72ebdab75d6084825811",
                 "shasum": null
             },
             "require": {
@@ -4058,7 +4058,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/google-hangout",
-                "reference": "0bfcdcfe27214291be2542312fe9a74626d68796",
+                "reference": "e962e4f6c533519987244c04cd103709facbde23",
                 "shasum": null
             },
             "require": {
@@ -4100,7 +4100,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/magento-contact-us",
-                "reference": "db2a1cf6901ce134867ff8f2a706b3eb75a9c045",
+                "reference": "66ee79c775ca3d533ce503c7dc63fa5a020ce316",
                 "shasum": null
             },
             "require": {
@@ -4137,7 +4137,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/mailchimp",
-                "reference": "17a7ac1a7094e91365cc598c5c498440cafcbc49",
+                "reference": "880e52308411a33c4fb4511582f72d0b0f589523",
                 "shasum": null
             },
             "require": {
@@ -4175,7 +4175,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/demo-data",
-                "reference": "d878c48ca0a7df7226906d1347611ff3dbdae972",
+                "reference": "f1188c9082ad9663106d8d933626c3f742bc7b54",
                 "shasum": null
             },
             "require": {
@@ -4210,7 +4210,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/ldap",
-                "reference": "c5794d6b19a8e0ef013fd0c4cb6ace3ee72c5f85",
+                "reference": "4db5836c20326904bfcc5733036e8d0a9964bf62",
                 "shasum": null
             },
             "require": {
@@ -4242,13 +4242,46 @@
             "homepage": "https://github.com/orocrm/OroCRMProLDAPBundle.git"
         },
         {
+            "name": "oro/crm-task-bundle",
+            "version": "dev-master",
+            "target-dir": "src/OroCRM/Bundle/TaskBundle",
+            "dist": {
+                "type": "path",
+                "url": "../../package/task",
+                "reference": "2e8ef5969650ab45a1a51059bbc4c97b096820f4",
+                "shasum": null
+            },
+            "require": {
+                "oro/platform": "self.version",
+                "php": ">=5.5.9"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "OroCRM\\Bundle\\TaskBundle": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "OroCRM Task Bundle",
+            "keywords": [
+                "OroCRM"
+            ]
+        },
+        {
             "name": "oro/crm-zendesk",
             "version": "dev-master",
             "target-dir": "src/OroCRM/Bundle/ZendeskBundle",
             "dist": {
                 "type": "path",
                 "url": "../../package/zendesk",
-                "reference": "ac8d629249c141ee18e3cb28d0b533eec1a56eec",
+                "reference": "b0ad72ff592c0866b59bcfb05f5328e821eb7e08",
                 "shasum": null
             },
             "require": {
@@ -4445,7 +4478,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/platform",
-                "reference": "d3767fc010cd4704d92d2b510d7a4cf7fbc6ba6f",
+                "reference": "77748f3f5c006d1d16534fba0e3747ba2709fe19",
                 "shasum": null
             },
             "require": {
@@ -4550,7 +4583,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/serialized-fields",
-                "reference": "557f7ff89242a1b3915333f378ace924c915239f",
+                "reference": "d2d4bff4c176f4192e24533f6e6d974b7c24bb9e",
                 "shasum": null
             },
             "require": {
@@ -4782,16 +4815,16 @@
         },
         {
             "name": "piwik/device-detector",
-            "version": "3.6.1",
+            "version": "3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/piwik/device-detector.git",
-                "reference": "4f4c2b0ce412fb1b8f679a7c82190783ba697d4c"
+                "reference": "3cb9e117ff2ccc43178965c3582c8817340a02bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/piwik/device-detector/zipball/4f4c2b0ce412fb1b8f679a7c82190783ba697d4c",
-                "reference": "4f4c2b0ce412fb1b8f679a7c82190783ba697d4c",
+                "url": "https://api.github.com/repos/piwik/device-detector/zipball/3cb9e117ff2ccc43178965c3582c8817340a02bd",
+                "reference": "3cb9e117ff2ccc43178965c3582c8817340a02bd",
                 "shasum": ""
             },
             "require": {
@@ -4829,7 +4862,7 @@
                 "parser",
                 "useragent"
             ],
-            "time": "2016-03-31 20:28:09"
+            "time": "2016-06-01 21:26:36"
         },
         {
             "name": "psr/log",
@@ -7947,7 +7980,8 @@
         "oro/crm-dotmailer": 20,
         "oro/crm-zendesk": 20,
         "oro/crm-pro-ldap-bundle": 20,
-        "oro/crm-pro-demo-data-bundle": 20
+        "oro/crm-pro-demo-data-bundle": 20,
+        "oro/crm-task-bundle": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
