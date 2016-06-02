@@ -102,7 +102,7 @@ class PaymentStatusProvider
     /**
      * @param ArrayCollection $paymentTransactions
      * @param Subtotal $total
-     * @return ArrayCollection
+     * @return bool
      */
     protected function hasSuccessfulTransactions(ArrayCollection $paymentTransactions, Subtotal $total)
     {
@@ -114,7 +114,7 @@ class PaymentStatusProvider
     /**
      * @param ArrayCollection $paymentTransactions
      * @param Subtotal $total
-     * @return ArrayCollection
+     * @return bool
      */
     protected function hasPartialTransactions(ArrayCollection $paymentTransactions, Subtotal $total)
     {
@@ -126,13 +126,17 @@ class PaymentStatusProvider
 
     /**
      * @param ArrayCollection $paymentTransactions
-     * @return ArrayCollection
+     * @return bool
      */
     protected function hasAuthorizeTransactions(ArrayCollection $paymentTransactions)
     {
         return false === $paymentTransactions
             ->filter(
                 function (PaymentTransaction $paymentTransaction) {
+                    if ($paymentTransaction->isClone()) {
+                        return false;
+                    }
+
                     return $paymentTransaction->isActive()
                     && $paymentTransaction->isSuccessful()
                     && $paymentTransaction->getAction() === PaymentMethodInterface::AUTHORIZE;
@@ -143,7 +147,7 @@ class PaymentStatusProvider
 
     /**
      * @param ArrayCollection $paymentTransactions
-     * @return ArrayCollection
+     * @return bool
      */
     protected function hasDeclinedTransactions(ArrayCollection $paymentTransactions)
     {

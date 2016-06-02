@@ -71,6 +71,14 @@ class PaymentStatusProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function statusDataProvider()
     {
+        $sourceReference = 'source_reference';
+        $sourceTransaction = (new PaymentTransaction())
+            ->setSuccessful(true)
+            ->setActive(false)
+            ->setReference($sourceReference)
+            ->setAction(PaymentMethodInterface::VALIDATE)
+            ->setAmount(0);
+
         return [
             'full if has successful capture' => [
                 [
@@ -203,6 +211,32 @@ class PaymentStatusProviderTest extends \PHPUnit_Framework_TestCase
                 ],
                 100,
                 PaymentStatusProvider::PENDING,
+            ],
+            'pending if source validation transaction clone' => [
+                [
+                    (new PaymentTransaction())
+                        ->setSuccessful(true)
+                        ->setActive(true)
+                        ->setReference($sourceReference)
+                        ->setSourcePaymentTransaction($sourceTransaction)
+                        ->setAction(PaymentMethodInterface::AUTHORIZE)
+                        ->setAmount(100),
+                ],
+                100,
+                PaymentStatusProvider::PENDING,
+            ],
+            'authorized if source validation transaction but not cloned' => [
+                [
+                    (new PaymentTransaction())
+                        ->setSuccessful(true)
+                        ->setActive(true)
+                        ->setReference('own_reference')
+                        ->setSourcePaymentTransaction($sourceTransaction)
+                        ->setAction(PaymentMethodInterface::AUTHORIZE)
+                        ->setAmount(100),
+                ],
+                100,
+                PaymentStatusProvider::AUTHORIZED,
             ],
             'declined if has unsuccessful and not active authorize' => [
                 [
