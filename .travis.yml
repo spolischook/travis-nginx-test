@@ -56,7 +56,7 @@ matrix:
 #     - php: 7.0
 #       env: APPLICATION="application/commerce" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce PARALLEL_PROCESSES=6
      - php: 5.5
-       env: APPLICATION="application/commerce" TESTSUITE="functional-test" DB=mysql DB_NAME=oro_commerce UPDATE_FROM=commerce_beta1
+       env: APPLICATION="application/commerce" TESTSUITE="functional-test" DB=mysql DB_NAME=oro_commerce UPDATE_FROM=commerce_beta1_test
 #     - php: 7.0
 #       env: APPLICATION="application/commerce" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce UPDATE_FROM=commerce_beta1
 #     - php: 7.0
