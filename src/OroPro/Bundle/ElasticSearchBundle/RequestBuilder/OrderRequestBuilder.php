@@ -15,7 +15,7 @@ class OrderRequestBuilder implements RequestBuilderInterface
         $orders = $query->getCriteria()->getOrderings();
         if (!empty($orders)) {
             foreach ($orders as $field => $direction) {
-                $field = strtolower(Criteria::explodeFieldTypeName($field)[1]);
+                $field = Criteria::explodeFieldTypeName($field)[1];
                 $request['body']['sort'][$field]['order'] = strtolower($direction);
             }
         }
