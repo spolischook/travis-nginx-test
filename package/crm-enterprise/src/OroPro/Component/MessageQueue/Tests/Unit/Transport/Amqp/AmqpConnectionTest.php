@@ -1,8 +1,8 @@
 <?php
-namespace Oro\Component\MessageQueue\Tests\Unit\Transport\Amqp;
+namespace OroPro\Component\MessageQueue\Tests\Unit\Transport\Amqp;
 
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpSession;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpSession;
 use Oro\Component\MessageQueue\Transport\ConnectionInterface;
 use Oro\Component\Testing\ClassExtensionTrait;
 use PhpAmqpLib\Channel\AMQPChannel;

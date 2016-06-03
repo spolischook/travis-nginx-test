@@ -1,14 +1,14 @@
 <?php
-namespace Oro\Component\MessageQueue\Tests\Unit\Client;
+namespace OroPro\Component\MessageQueue\Tests\Unit\Client;
 
 use Oro\Component\MessageQueue\Client\MessagePriority;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpQueue;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpSession;
 use Oro\Component\MessageQueue\Transport\MessageProducerInterface as TransportMessageProducer;
 use Oro\Component\MessageQueue\Client\MessageProducer;
-use Oro\Component\MessageQueue\Client\AmqpDriver;
+use OroPro\Component\MessageQueue\Client\AmqpDriver;
 use Oro\Component\MessageQueue\Client\Config;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpQueue;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpSession;
 
 class AmqpDriverTest extends \PHPUnit_Framework_TestCase
 {

@@ -18,7 +18,7 @@ This is a complete example of message producing using only a transport layer:
 ```php
 <?php
 
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
 
 $connection = AmqpConnection::createFromConfig($config = []);
 
@@ -36,7 +36,7 @@ $connection->close();
 This is a complete example of message consuming using only a transport layer:
 
 ```php
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
 
 $connection = AmqpConnection::createFromConfig($config = []);
 
@@ -78,7 +78,7 @@ class FooMessageProcessor implements MessageProcessor
 <?php
 use Oro\Component\MessageQueue\Consumption\Extensions;
 use Oro\Component\MessageQueue\Consumption\QueueConsumer;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
 
 $connection = AmqpConnection::createFromConfig($config = []);
 

@@ -1,14 +1,14 @@
 <?php
-namespace Oro\Component\MessageQueue\Tests\Unit\Transport\Amqp;
+namespace OroPro\Component\MessageQueue\Tests\Unit\Transport\Amqp;
 
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpMessageConsumer;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpQueue;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpSession;
 use Oro\Component\MessageQueue\Transport\Exception\InvalidMessageException;
-use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\MessageConsumerInterface;
+use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\Testing\ClassExtensionTrait;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessageConsumer;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpQueue;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpSession;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use PhpAmqpLib\Message\AMQPMessage as AMQPLibMessage;
@@ -327,7 +327,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException(
             InvalidMessageException::class,
-            'A message is invalid. Message must be an instance of Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage'
+            'A message is invalid. Message must be an instance of OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessage'
         );
 
         $consumer->acknowledge($invalidMessage);
@@ -362,7 +362,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException(
             InvalidMessageException::class,
-            'A message is invalid. Message must be an instance of Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage'
+            'A message is invalid. Message must be an instance of OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessage'
         );
 
         $consumer->reject($invalidMessage);

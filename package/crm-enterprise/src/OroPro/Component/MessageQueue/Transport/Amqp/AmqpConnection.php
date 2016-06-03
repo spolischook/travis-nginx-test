@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Component\MessageQueue\Transport\Amqp;
+namespace OroPro\Component\MessageQueue\Transport\Amqp;
 
 use Oro\Component\MessageQueue\Transport\ConnectionInterface;
 use PhpAmqpLib\Connection\AbstractConnection;

@@ -1,10 +1,10 @@
 <?php
-namespace Oro\Component\MessageQueue\Tests\Unit\Transport\Amqp;
+namespace OroPro\Component\MessageQueue\Tests\Unit\Transport\Amqp;
 
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpMessageProducer;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpQueue;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpTopic;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessageProducer;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpQueue;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpTopic;
 use Oro\Component\MessageQueue\Transport\DestinationInterface;
 use Oro\Component\MessageQueue\Transport\Exception\InvalidDestinationException;
 use Oro\Component\MessageQueue\Transport\Exception\InvalidMessageException;

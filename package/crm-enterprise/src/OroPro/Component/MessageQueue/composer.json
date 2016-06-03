@@ -1,14 +1,15 @@
 {
-    "name": "oro/message-queue",
+    "name": "oro-professional/message-queue",
     "type": "library",
     "description": "ORO Message Queue Component",
-    "keywords": ["ORO", "Messaging", "Queue"],
+    "keywords": ["ORO", "Messaging", "Queue", "AMQP"],
     "license": "MIT",
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=5.5.9",
+        "php-amqplib/php-amqplib": "^2.6"
     },
     "autoload": {
-        "psr-4": { "Oro\\Component\\MessageQueue\\": "" }
+        "psr-4": { "OroPro\\Component\\MessageQueue\\": "" }
     },
     "minimum-stability": "dev",
     "extra": {

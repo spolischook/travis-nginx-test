@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Component\MessageQueue\Transport\Amqp;
+namespace OroPro\Component\MessageQueue\Transport\Amqp;
 
 use Oro\Component\MessageQueue\Transport\DestinationInterface;
 use Oro\Component\MessageQueue\Transport\Exception\InvalidDestinationException;

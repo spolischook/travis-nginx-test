@@ -1,12 +1,12 @@
 <?php
-namespace Oro\Component\MessageQueue\Consumption\Extension;
+namespace OroPro\Component\MessageQueue\Consumption\Extension;
 
 use Oro\Component\MessageQueue\Consumption\Context;
 use Oro\Component\MessageQueue\Consumption\ExtensionInterface;
 use Oro\Component\MessageQueue\Consumption\ExtensionTrait;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpSession;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpSession;
 
 class DelayRedeliveredMessageAmqpExtension implements ExtensionInterface
 {

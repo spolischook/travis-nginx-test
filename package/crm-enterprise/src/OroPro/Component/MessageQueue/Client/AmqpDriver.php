@@ -1,8 +1,12 @@
 <?php
-namespace Oro\Component\MessageQueue\Client;
+namespace OroPro\Component\MessageQueue\Client;
 
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpSession;
+use Oro\Component\MessageQueue\Client\Config;
+use Oro\Component\MessageQueue\Client\DriverInterface;
+use Oro\Component\MessageQueue\Client\MessagePriority;
+use Oro\Component\MessageQueue\Client\MessageProducer;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpSession;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\QueueInterface;
 

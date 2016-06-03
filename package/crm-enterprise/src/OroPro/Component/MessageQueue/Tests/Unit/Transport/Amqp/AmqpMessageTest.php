@@ -1,7 +1,7 @@
 <?php
-namespace Oro\Component\MessageQueue\Tests\Unit\Transport\Amqp;
+namespace OroPro\Component\MessageQueue\Tests\Unit\Transport\Amqp;
 
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\Testing\ClassExtensionTrait;
 use PhpAmqpLib\Message\AMQPMessage as AMQPLibMessage;

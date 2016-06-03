@@ -1,14 +1,14 @@
 <?php
-namespace Oro\Component\MessageQueue\Tests\Unit\Consumption\Extension;
+namespace OroPro\Component\MessageQueue\Tests\Unit\Consumption\Extension;
 
 use Oro\Component\MessageQueue\Consumption\Context;
 use Oro\Component\MessageQueue\Consumption\ExtensionInterface;
-use Oro\Component\MessageQueue\Consumption\Extension\DelayRedeliveredMessageAmqpExtension;
+use OroPro\Component\MessageQueue\Consumption\Extension\DelayRedeliveredMessageAmqpExtension;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpMessageProducer;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpQueue;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpSession;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessage;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpMessageProducer;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpQueue;
+use OroPro\Component\MessageQueue\Transport\Amqp\AmqpSession;
 use Oro\Component\MessageQueue\Transport\MessageConsumerInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\Testing\ClassExtensionTrait;
