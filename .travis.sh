@@ -93,7 +93,6 @@ case $step in
                ;; 
           esac
           if [ ! -z "$UPDATE_FROM" ]; then
-              SECONDS=0
               git clone https://${GITHUB_OAUTH}@github.com/laboro/Builds.git builds
               echo  "Restore DB ${UPDATE_FROM}...";
               case $DB in
@@ -105,7 +104,6 @@ case $step in
                  ;;
               esac
               rm -rf builds
-              echo $SECONDS
           fi
     ;;
     script)
