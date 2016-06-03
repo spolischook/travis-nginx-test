@@ -30,7 +30,7 @@ class ElasticExpressionVisitor extends ExpressionVisitor
     public function walkComparison(Comparison $comparison)
     {
         $value = $comparison->getValue()->getValue();
-        list($type, $field) = Criteria::explodeFieldTypeName($comparison->getField());
+        list($type, $field) = $this->getTypeAndFieldName($comparison);
         $operator = Criteria::getSearchOperatorByComparisonOperator($comparison->getOperator());
 
         foreach ($this->partBuilders as $partBuilder) {
@@ -67,5 +67,17 @@ class ElasticExpressionVisitor extends ExpressionVisitor
             default:
                 throw new \RuntimeException("Unknown composite " . $expr->getType());
         }
+    }
+
+    /**
+     * Returns correct type and field name for given comparison
+     *
+     * @param Comparison $comparison
+     * @return array firts part is type and second is field name
+     */
+    private function getTypeAndFieldName(Comparison $comparison)
+    {
+        list($type, $field) = Criteria::explodeFieldTypeName($comparison->getField());
+        return [$type, strtolower($field)];
     }
 }
