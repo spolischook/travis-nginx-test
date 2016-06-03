@@ -92,6 +92,11 @@ case $step in
                       sed -i "s/database_driver"\:".*/database_driver"\:" pdo_pgsql/g; s/database_name"\:".*/database_name"\:" ${dbname}/g; s/database_user"\:".*/database_user"\:" postgres/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
                ;; 
           esac
+          if [ ! -z "$UPDATE_FROM" ]; then
+               git clone git@github.com:laboro/Builds.git
+               ls -l
+               exit 0
+          fi
     ;;
     script)
           echo  "Script...";

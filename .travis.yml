@@ -7,9 +7,9 @@ branches:
     - master
 
 php:
-  - 5.5
-  - 5.6
-  - 7.0
+#  - 5.5
+#  - 5.6
+#  - 7.0
 
 addons:
   postgresql: "9.3"
@@ -33,30 +33,30 @@ matrix:
      - php: 7.0
        env: APPLICATION="application/commerce" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
      include:
-     - php: 5.6
-       env: APPLICATION="package" CS="YES"
-     - language: python
-       python: 2.6
-       env: APPLICATION="documentation"
-     - language: python
-       python: 2.7
-       env: APPLICATION="documentation"
-     - php: 5.6
-       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=3
-     - php: 5.6
-       env: APPLICATION="application/commerce" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
-     - php: 7.0
-       env: APPLICATION="application/platform" TESTSUITE="unit"
-     - php: 7.0
-       env: APPLICATION="application/crm" TESTSUITE="unit"
-     - php: 7.0
-       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=6
-     - php: 7.0
-       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=6
-     - php: 7.0
-       env: APPLICATION="application/commerce" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=6
-     - php: 7.0
-       env: APPLICATION="application/commerce" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce PARALLEL_PROCESSES=6
+#     - php: 5.6
+#       env: APPLICATION="package" CS="YES"
+#     - language: python
+#       python: 2.6
+#       env: APPLICATION="documentation"
+#     - language: python
+#       python: 2.7
+#       env: APPLICATION="documentation"
+     - php: 5.5
+       env: APPLICATION="application/commerce" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce UPDATE_FROM=commerce_beta1 PARALLEL_PROCESSES=4
+#     - php: 5.6
+#       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=3
+#     - php: 7.0
+#       env: APPLICATION="application/platform" TESTSUITE="unit"
+#     - php: 7.0
+#       env: APPLICATION="application/crm" TESTSUITE="unit"
+#     - php: 7.0
+#       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=6
+#     - php: 7.0
+#       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=6
+#     - php: 7.0
+#       env: APPLICATION="application/commerce" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=6
+#     - php: 7.0
+#       env: APPLICATION="application/commerce" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce PARALLEL_PROCESSES=6
 
 env:
   global:
