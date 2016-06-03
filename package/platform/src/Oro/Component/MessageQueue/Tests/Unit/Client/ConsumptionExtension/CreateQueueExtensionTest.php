@@ -3,11 +3,11 @@ namespace Oro\Component\MessageQueue\Tests\Unit\Client\ConsumptionExtension;
 
 use Oro\Component\MessageQueue\Consumption\Context;
 use Oro\Component\MessageQueue\Consumption\ExtensionInterface;
-use Oro\Component\MessageQueue\Transport\MessageConsumerInterface;
-use Oro\Component\MessageQueue\Transport\Null\NullQueue;
 use Oro\Component\MessageQueue\Client\ConsumptionExtension\CreateQueueExtension;
 use Oro\Component\MessageQueue\Client\DriverInterface;
+use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\Testing\ClassExtensionTrait;
+use Psr\Log\LoggerInterface;
 
 class CreateQueueExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,55 +20,49 @@ class CreateQueueExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testCouldBeConstructedWithRequiredArguments()
     {
-        new CreateQueueExtension($this->createSessionMock());
+        new CreateQueueExtension($this->createDriverMock());
     }
 
     public function testShouldCreateQueueUsingQueueNameFromContext()
     {
-        $queue = new NullQueue('theQueueName');
+        $loggerMock = $this->getMock(LoggerInterface::class);
+        $loggerMock
+            ->expects($this->once())
+            ->method('debug')
+            ->with('[CreateQueueExtension] Make sure the queue theQueueName exists on a broker side.')
+        ;
 
-        $context = $this->createContextStub($queue);
+        $context = new Context($this->createSessionMock());
+        $context->setQueueName('theQueueName');
+        $context->setLogger($loggerMock);
 
-        $sessionMock = $this->createSessionMock();
-        $sessionMock
+        $driverMock = $this->createDriverMock();
+        $driverMock
             ->expects($this->once())
             ->method('createQueue')
             ->with('theQueueName')
         ;
 
-        $extension = new CreateQueueExtension($sessionMock);
+        $extension = new CreateQueueExtension($driverMock);
 
-        $extension->onStart($context);
+        $extension->onBeforeReceive($context);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|SessionInterface
+     */
+    protected function createSessionMock()
+    {
+        return $this->getMock(SessionInterface::class);
     }
 
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|DriverInterface
      */
-    protected function createSessionMock()
+    protected function createDriverMock()
     {
         return $this->getMock(DriverInterface::class);
     }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|Context
-     */
-    protected function createContextStub($queue = null)
-    {
-        $messageConsumerStub = $this->getMock(MessageConsumerInterface::class);
-        $messageConsumerStub
-            ->expects($this->any())
-            ->method('getQueue')
-            ->willReturn($queue)
-        ;
-
-        $contextMock = $this->getMock(Context::class, [], [], '', false);
-        $contextMock
-            ->expects($this->any())
-            ->method('getMessageConsumer')
-            ->willReturn($messageConsumerStub)
-        ;
-
-        return $contextMock;
-    }
 }
+
 

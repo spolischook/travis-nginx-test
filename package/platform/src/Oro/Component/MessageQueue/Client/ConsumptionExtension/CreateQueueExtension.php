@@ -13,23 +13,26 @@ class CreateQueueExtension implements ExtensionInterface
     /**
      * @var DriverInterface
      */
-    private $session;
+    private $driver;
 
     /**
-     * @param DriverInterface $session
+     * @param DriverInterface $driver
      */
-    public function __construct(DriverInterface $session)
+    public function __construct(DriverInterface $driver)
     {
-        $this->session = $session;
+        $this->driver = $driver;
     }
 
     /**
      * @param Context $context
      */
-    public function onStart(Context $context)
+    public function onBeforeReceive(Context $context)
     {
-        $queueName = $context->getMessageConsumer()->getQueue()->getQueueName();
-        
-        $this->session->createQueue($queueName);
+        $this->driver->createQueue($context->getQueueName());
+
+        $context->getLogger()->debug(sprintf(
+            '[CreateQueueExtension] Make sure the queue %s exists on a broker side.',
+            $context->getQueueName()
+        ));
     }
 }
