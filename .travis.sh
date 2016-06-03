@@ -93,10 +93,10 @@ case $step in
                ;; 
           esac
           if [ ! -z "$UPDATE_FROM" ]; then
+              SECONDS=0
               git clone https://${GITHUB_OAUTH}@github.com/laboro/Builds.git builds
               echo  "Restore DB ${UPDATE_FROM}...";
               case $DB in
-
                  mysql)
                         mysql -u root -D ${dbname} < builds/DBDumps/${UPDATE_FROM}.mysql.sql;
                  ;;
@@ -105,6 +105,7 @@ case $step in
                  ;;
               esac
               rm -rf builds
+              echo $SECONDS
           fi
     ;;
     script)
