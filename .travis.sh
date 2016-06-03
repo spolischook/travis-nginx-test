@@ -101,7 +101,7 @@ case $step in
                         mysql -u root -D ${dbname} < builds/DBDumps/${UPDATE_FROM}.mysql.sql;
                  ;;
                  postgresql)
-                        psql -U postgres ${dbname} < builds/DBDumps/${UPDATE_FROM}.pgsql.sql
+                        psql -U postgres ${dbname} < builds/DBDumps/${UPDATE_FROM}.pgsql.sql > /dev/null
                  ;;
               esac
               rm -rf builds
