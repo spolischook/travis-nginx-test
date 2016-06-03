@@ -1,3 +1,3 @@
 Uid,Organization uid,Business unit uid,Type,Name,Definition,Entity
-1,1,1000,dynamic,B2B Customer List Segment,B2B Customer List Segment,OroCRM\Bundle\SalesBundle\Entity\B2bCustomer
+1,1,1000,dynamic,Business Customer List Segment,Business Customer List Segment,OroCRM\Bundle\SalesBundle\Entity\B2bCustomer
 2,1,1000,dynamic,Contact List Segment,Contact List Segment,OroCRM\Bundle\ContactBundle\Entity\Contact

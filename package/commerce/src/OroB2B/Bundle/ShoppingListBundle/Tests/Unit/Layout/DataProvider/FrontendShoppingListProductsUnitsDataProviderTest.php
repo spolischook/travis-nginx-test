@@ -7,7 +7,6 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Oro\Component\Layout\LayoutContext;
 use Oro\Component\Testing\Unit\EntityTrait;
 
-use OroB2B\Bundle\PricingBundle\Entity\PriceList;
 use OroB2B\Bundle\PricingBundle\Model\PriceListRequestHandler;
 use OroB2B\Bundle\PricingBundle\Provider\UserCurrencyProvider;
 use OroB2B\Bundle\ProductBundle\Entity\Product;
@@ -64,14 +63,6 @@ class FrontendShoppingListProductsUnitsDataProviderTest extends \PHPUnit_Framewo
     }
 
     /**
-     * @expectedException \BadMethodCallException
-     */
-    public function testGetIdentifier()
-    {
-        $this->provider->getIdentifier();
-    }
-
-    /**
      * @expectedException \RuntimeException
      * @expectedExceptionMessage Undefined data item index: entity.
      */
@@ -92,33 +83,23 @@ class FrontendShoppingListProductsUnitsDataProviderTest extends \PHPUnit_Framewo
         $context->data()->set('entity', null, $shoppingList);
 
         if ($shoppingList) {
-            /** @var PriceList $priceList */
-            $priceList = $this->getEntity('OroB2B\Bundle\PricingBundle\Entity\PriceList', ['id'=> 42]);
-            $this->requestHandler->expects($this->once())
-                ->method('getPriceListByAccount')
-                ->willReturn($priceList);
-
-            $repository = $this->getMockBuilder('OroB2B\Bundle\PricingBundle\Entity\Repository\ProductPriceRepository')
+            $repository = $this->getMockBuilder('OroB2B\Bundle\ProductBundle\Entity\Repository\ProductUnitRepository')
                 ->disableOriginalConstructor()
                 ->getMock();
             $repository->expects($this->once())
-                ->method('getProductsUnitsByPriceList')
+                ->method('getProductsUnits')
                 ->willReturn($expected);
 
             $em = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
             $em->expects($this->once())
                 ->method('getRepository')
-                ->with('OroB2BPricingBundle:CombinedProductPrice')
+                ->with('OroB2BProductBundle:ProductUnit')
                 ->willReturn($repository);
 
             $this->registry->expects($this->once())
                 ->method('getManagerForClass')
-                ->with('OroB2BPricingBundle:CombinedProductPrice')
+                ->with('OroB2BProductBundle:ProductUnit')
                 ->willReturn($em);
-
-            $this->userCurrencyProvider->expects($this->once())
-                ->method('getUserCurrency')
-                ->willReturn(self::TEST_CURRENCY);
         }
 
         $actual = $this->provider->getData($context);

@@ -29,6 +29,7 @@ parameters:
 services:
     orob2b_account.security.account_user_provider:
         class: 'OroB2B\Bundle\AccountBundle\Security\AccountUserProvider'
+        public: false
         arguments:
             - "@oro_security.security_facade"
             - "@oro_security.acl.manager"
@@ -37,6 +38,7 @@ services:
 
     orob2b_account.acl.voter.account:
         class: 'OroB2B\Bundle\AccountBundle\Acl\Voter\AccountVoter'
+        public: false
         arguments:
             - "@oro_entity.doctrine_helper"
         calls:
@@ -44,13 +46,26 @@ services:
         tags:
             - { name: security.voter }
 
+    orob2b_account.acl.voter.account_group:
+        class: 'OroB2B\Bundle\AccountBundle\Acl\Voter\AccountGroupVoter'
+        public: false
+        arguments:
+            - "@oro_entity.doctrine_helper"
+        calls:
+            - [setClassName, ["%orob2b_account.entity.account_group.class%"]]
+            - [setConfigManager, ["@oro_config.global"]]
+        tags:
+            - { name: security.voter }
+
     orob2b_product_viisbility.acl.voter.account:
         class: 'OroB2B\Bundle\AccountBundle\Acl\Voter\ProductVisibilityVoter'
+        public: false
         arguments:
             - "@oro_entity.doctrine_helper"
         calls:
             - [setClassName, ['%orob2b_product.entity.product.class%']]
             - [setModifier, ["@orob2b_account.model.product_visibility_query_builder_modifier"]]
+            - [setFrontendHelper, ["@orob2b_frontend.request.frontend_helper"]]
         tags:
             - { name: security.voter }
 
@@ -83,6 +98,7 @@ services:
             - "@doctrine.orm.entity_manager"
 
     orob2b_account.form.autocomplete.account_group.search_handler:
+        public: false
         parent: oro_form.autocomplete.search_handler
         arguments:
             - '%orob2b_account.entity.account_group.class%'
@@ -91,6 +107,7 @@ services:
             - { name: oro_form.autocomplete.search_handler, alias: orob2b_account_group, acl_resource: orob2b_account_group_view }
 
     orob2b_account.form.autocomplete.account.search_handler:
+        public: false
         parent: oro_form.autocomplete.search_handler
         arguments:
             - '%orob2b_account.entity.account.class%'
@@ -99,6 +116,7 @@ services:
             - { name: oro_form.autocomplete.search_handler, alias: orob2b_account, acl_resource: orob2b_account_view }
 
     orob2b_account.form.autocomplete.account_parent.search_handler:
+        public: false
         parent: oro_form.autocomplete.search_handler
         class: 'OroB2B\Bundle\AccountBundle\Autocomplete\ParentAccountSearchHandler'
         arguments:
@@ -108,6 +126,7 @@ services:
             - { name: oro_form.autocomplete.search_handler, alias: orob2b_account_parent, acl_resource: orob2b_account_view }
 
     orob2b_account.form.autocomplete.account_user_account.search_handler:
+        public: false
         parent: oro_form.autocomplete.search_handler
         class: 'OroB2B\Bundle\AccountBundle\Autocomplete\AccountAccountUserSearchHandler'
         arguments:
@@ -117,6 +136,7 @@ services:
             - { name: oro_form.autocomplete.search_handler, alias: orob2b_account_account_user, acl_resource: orob2b_account_account_user_view }
 
     orob2b_account.frontend_form.autocomplete.account_user_account.search_handler:
+        public: false
         parent: oro_form.autocomplete.search_handler
         class: 'OroB2B\Bundle\AccountBundle\Autocomplete\AccountAccountUserSearchHandler'
         arguments:
@@ -146,12 +166,14 @@ services:
 
     orob2b_account.datagrid.account_action_permission_provider:
         class: 'OroB2B\Bundle\AccountBundle\Datagrid\AccountActionPermissionProvider'
+        public: false
         arguments:
             - "@oro_security.security_facade"
             - "@doctrine"
 
     orob2b_account.datagrid.extension.accoun_user:
         class: 'OroB2B\Bundle\AccountBundle\Datagrid\Extension\AccountUserExtension'
+        public: false
         calls:
             - [setContainer, ["@service_container"]]
         tags:
@@ -159,6 +181,7 @@ services:
 
     orob2b_account.datagrid.extension.accoun_user_by_account:
         class: 'OroB2B\Bundle\AccountBundle\Datagrid\Extension\AccountUserByAccountExtension'
+        public: false
         calls:
             - [setRequestStack, ["@request_stack"]]
         tags:
@@ -196,6 +219,7 @@ services:
 
     orob2b_account.account_user_menu:
         class: 'OroB2B\Bundle\AccountBundle\Menu\AccountUserMenuBuilder'
+        public: false
         tags:
             - { name: oro_menu.builder, alias: account_usermenu }
 
@@ -235,6 +259,7 @@ services:
 
     orob2b_account.acl.voter.account_user_role:
         class: 'OroB2B\Bundle\AccountBundle\Acl\Voter\AccountUserRoleVoter'
+        public: false
         arguments:
             - "@oro_entity.doctrine_helper"
         calls:
@@ -257,6 +282,7 @@ services:
 
     orob2b_account.acl.group_provider:
         class: 'OroB2B\Bundle\AccountBundle\Acl\Group\AclGroupProvider'
+        public: false
         calls:
             - [setContainer, ["@service_container"]]
         tags:
@@ -289,6 +315,7 @@ services:
 
     orob2b_account.twig.security_extension:
         class: 'OroB2B\Bundle\AccountBundle\Twig\AccountExtension'
+        public: false
         arguments:
             - "@orob2b_account.security.account_user_provider"
         tags:
@@ -313,6 +340,7 @@ services:
 
     orob2b_account.item.builder.pinbar:
         class: 'Oro\Bundle\NavigationBundle\Entity\Builder\PinbarTabBuilder'
+        public: false
         arguments:
             - "@doctrine.orm.entity_manager"
         calls:
@@ -323,6 +351,7 @@ services:
 
     orob2b_account.item.builder.favorite:
         class: 'Oro\Bundle\NavigationBundle\Entity\Builder\NavigationItemBuilder'
+        public: false
         arguments:
             - "@doctrine.orm.entity_manager"
         calls:
@@ -332,6 +361,7 @@ services:
 
     orob2b_account.pinbar_menu.builder:
         class: 'Oro\Bundle\NavigationBundle\Menu\NavigationItemBuilder'
+        public: false
         arguments:
             - "@security.context"
             - "@doctrine.orm.entity_manager"
@@ -341,6 +371,7 @@ services:
 
     orob2b_account.favorites_menu.builder:
         class: 'Oro\Bundle\NavigationBundle\Menu\NavigationItemBuilder'
+        public: false
         arguments:
             - "@security.context"
             - "@doctrine.orm.entity_manager"
@@ -350,6 +381,7 @@ services:
 
     orob2b_account.history_menu.builder:
         class: 'Oro\Bundle\NavigationBundle\Menu\NavigationHistoryBuilder'
+        public: false
         arguments:
             - "@security.context"
             - "@doctrine.orm.entity_manager"
@@ -362,6 +394,7 @@ services:
 
     orob2b_account.mostviewed_menu.builder:
         class: 'Oro\Bundle\NavigationBundle\Menu\NavigationMostviewedBuilder'
+        public: false
         arguments:
             - "@security.context"
             - "@doctrine.orm.entity_manager"
@@ -373,6 +406,7 @@ services:
 
     orob2b_account.item.pinbar.post_persist_listener:
         class: 'Oro\Bundle\NavigationBundle\Entity\Listener\PinbarPostPersist'
+        public: false
         calls:
             - [ setClassName, ['%orob2b_account.entity.pinbar_tab.class%']]
         tags:
@@ -394,6 +428,7 @@ services:
 
     orob2b_account.item.builder.history:
         class: 'Oro\Bundle\NavigationBundle\Entity\Builder\HistoryItemBuilder'
+        public: false
         arguments:
             - "@doctrine.orm.entity_manager"
         calls:
@@ -403,6 +438,7 @@ services:
 
     orob2b_account.item.builder.mostviewed:
         class: 'Oro\Bundle\NavigationBundle\Entity\Builder\HistoryItemBuilder'
+        public: false
         arguments:
             - "@doctrine.orm.entity_manager"
         calls:
@@ -412,6 +448,7 @@ services:
 
     orob2b_account.content_provider.menu.history_menu:
         class: 'Oro\Bundle\NavigationBundle\ContentProvider\MenuContentProvider'
+        public: false
         arguments:
             - "@oro_menu.twig.extension"
             - "frontend_history"
@@ -421,6 +458,7 @@ services:
 
     orob2b_account.content_provider.menu.mostviewed_menu:
         class: 'Oro\Bundle\NavigationBundle\ContentProvider\MenuContentProvider'
+        public: false
         arguments:
             - "@oro_menu.twig.extension"
             - "frontend_mostviewed"
@@ -462,6 +500,7 @@ services:
 
     orob2b_account.event_listener.default_visibility:
         class: 'OroB2B\Bundle\AccountBundle\EventListener\DefaultVisibilityListener'
+        public: false
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 
@@ -489,12 +528,14 @@ services:
 
     orob2b_account.provider.visibility_choices:
         class: 'OroB2B\Bundle\AccountBundle\Provider\VisibilityChoicesProvider'
+        public: false
         arguments:
             - "@translator"
             - "@doctrine"
 
     orob2b_account.audit.discriminator_map_listener:
         class: 'OroB2B\Bundle\AccountBundle\Audit\DiscriminatorMapListener'
+        public: false
         calls:
             - [ addClass, ['orob2b_audit', '%orob2b_account.entity.audit.class%'] ]
         tags:
@@ -520,6 +561,7 @@ services:
         class: 'OroB2B\Bundle\AccountBundle\EventListener\CategoryTreeHandlerListener'
         arguments:
             - "@orob2b_account.visibility.resolver.category_visibility_resolver"
+            - "@orob2b_account.provider.account_user_relations_provider"
         tags:
             - {name: kernel.event_listener, event: orob2b_catalog.category.tree.create_after, method: onCreateAfter }
 
@@ -532,16 +574,19 @@ services:
 
     orob2b_account.model.product_visibility_query_builder_modifier:
         class: 'OroB2B\Bundle\AccountBundle\Model\ProductVisibilityQueryBuilderModifier'
+        public: false
         arguments:
             - "@oro_config.global"
             - "@security.token_storage"
             - "@orob2b_website.manager"
+            - "@orob2b_account.provider.account_user_relations_provider"
         calls:
             - [setProductVisibilitySystemConfigurationPath, ['oro_b2b_account.product_visibility']]
             - [setCategoryVisibilitySystemConfigurationPath, ['oro_b2b_account.category_visibility']]
 
     orob2b_account.visibility.cache.product.cache_builder.abstract:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\AbstractResolvedCacheBuilder'
+        public: false
         abstract: true
         arguments:
             - "@doctrine"
@@ -549,18 +594,21 @@ services:
 
     orob2b_account.visibility.cache.product.account_group_product_resolved_cache_builder:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\AccountGroupProductResolvedCacheBuilder'
+        public: false
         parent: orob2b_account.visibility.cache.product.cache_builder.abstract
         calls:
             - [setCacheClass, ['%orob2b_account.entity.account_group_product_visibility_resolved.class%']]
 
     orob2b_account.visibility.cache.product.account_product_resolved_cache_builder:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\AccountProductResolvedCacheBuilder'
+        public: false
         parent: orob2b_account.visibility.cache.product.cache_builder.abstract
         calls:
             - [setCacheClass, ['%orob2b_account.entity.account_product_visibility_resolved.class%']]
 
     orob2b_account.visibility.cache.product.product_resolved_cache_builder:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\ProductResolvedCacheBuilder'
+        public: false
         parent: orob2b_account.visibility.cache.product.cache_builder.abstract
         calls:
             - [setCacheClass, ['%orob2b_account.entity.product_visibility_resolved.class%']]
@@ -574,6 +622,7 @@ services:
 
     orob2b_account.visibility.cache.product.category.account_group_category_resolved_cache_builder:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\Category\AccountGroupCategoryResolvedCacheBuilder'
+        public: false
         parent: orob2b_account.visibility.cache.product.cache_builder.abstract
         calls:
             - [setCacheClass, ['%orob2b_account.entity.account_group_category_visibility_resolved.class%']]
@@ -581,6 +630,7 @@ services:
 
     orob2b_account.visibility.cache.product.category.account_category_resolved_cache_builder:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\Category\AccountCategoryResolvedCacheBuilder'
+        public: false
         parent: orob2b_account.visibility.cache.product.cache_builder.abstract
         calls:
             - [setCacheClass, ['%orob2b_account.entity.account_category_visibility_resolved.class%']]
@@ -588,6 +638,7 @@ services:
 
     orob2b_account.visibility.cache.product.category.category_resolved_cache_builder:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\Category\CategoryResolvedCacheBuilder'
+        public: false
         parent: orob2b_account.visibility.cache.product.cache_builder.abstract
         calls:
             - [setCacheClass, ['%orob2b_account.entity.category_visibility_resolved.class%']]
@@ -609,6 +660,7 @@ services:
 
     orob2b_account.visibility.cache.product.category.subtree.category_subtree_cache_builder:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\Category\Subtree\AbstractSubtreeCacheBuilder'
+        public: false
         abstract: true
         arguments:
             - "@doctrine"
@@ -617,18 +669,22 @@ services:
 
     orob2b_account.visibility.cache.product.category.subtree.visibility_change_category_subtree_cache_builder:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\Category\Subtree\VisibilityChangeCategorySubtreeCacheBuilder'
+        public: false
         parent: orob2b_account.visibility.cache.product.category.subtree.category_subtree_cache_builder
 
     orob2b_account.visibility.cache.product.category.subtree.position_change_category_subtree_cache_builder:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\Category\Subtree\PositionChangeCategorySubtreeCacheBuilder'
+        public: false
         parent: orob2b_account.visibility.cache.product.category.subtree.category_subtree_cache_builder
 
     orob2b_account.visibility.cache.product.category.subtree.visibility_change_account_subtree_cache_builder:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\Category\Subtree\VisibilityChangeAccountSubtreeCacheBuilder'
+        public: false
         parent: orob2b_account.visibility.cache.product.category.subtree.category_subtree_cache_builder
 
     orob2b_account.visibility.cache.product.category.subtree.visibility_change_group_subtree_cache_builder:
         class: 'OroB2B\Bundle\AccountBundle\Visibility\Cache\Product\Category\Subtree\VisibilityChangeGroupSubtreeCacheBuilder'
+        public: false
         parent: orob2b_account.visibility.cache.product.category.subtree.category_subtree_cache_builder
 
     orob2b_account.event_listener.product_select_db_query:
@@ -699,6 +755,7 @@ services:
             - { name: oro_workflow.action, alias: build_website_cache }
 
     orob2b_account.event_listener.category_listener:
+        public: false
         arguments:
             - "@doctrine"
             - "@oro_entity.orm.insert_from_select_query_executor"
@@ -770,6 +827,7 @@ services:
             - '@orob2b_account.form.handler.update_account_user_role_frontend='
         tags:
             - { name: layout.data_provider, alias: orob2b_account_frontend_account_user_role_form }
+
     orob2b_account.provider.fronted_account_user_address_form:
         class: OroB2B\Bundle\AccountBundle\Layout\DataProvider\FrontendAccountUserAddressFormDataProvider
         arguments:
@@ -798,3 +856,9 @@ services:
               - '@form.factory'
         tags:
             - { name: layout.data_provider, alias: orob2b_account_frontend_account_user_form }
+
+    orob2b_account.provider.account_user_relations_provider:
+        class: 'OroB2B\Bundle\AccountBundle\Provider\AccountUserRelationsProvider'
+        arguments:
+            - '@oro_config.global'
+            - '@oro_entity.doctrine_helper'

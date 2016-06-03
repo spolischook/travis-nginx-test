@@ -5,7 +5,7 @@ services:
             - '@oro_security.security_facade'
             - '@orob2b_order.order.provider.order_address_security'
             - '@orob2b_payment.provider.payment_term'
-            - '@orob2b_order.model.order_currency_handler'
+            - '@orob2b_order.handler.order_currency_handler'
             - '@orob2b_order.form.type.event_listener.subtotals_subscriber'
         tags:
             - { name: form.type, alias: orob2b_order_type }
@@ -20,8 +20,9 @@ services:
             - '@oro_security.security_facade'
             - '@orob2b_payment.provider.payment_term'
             - '@orob2b_pricing.provider.combined_product_price'
-            - '@orob2b_order.model.order_currency_handler'
+            - '@orob2b_order.handler.order_currency_handler'
             - '@orob2b_order.form.type.event_listener.subtotals_subscriber'
+            - '@orob2b_pricing.model.price_list_request_handler'
         tags:
             - { name: form.type, alias: orob2b_order_frontend_type }
         calls:
@@ -41,6 +42,7 @@ services:
 
     orob2b_order.form.section.provider:
         class: 'OroB2B\Bundle\OrderBundle\Form\Section\SectionProvider'
+        public: false
 
     orob2b_order.form.type.order_line_item:
         class: 'OroB2B\Bundle\OrderBundle\Form\Type\OrderLineItemType'
@@ -103,6 +105,7 @@ services:
 
     orob2b_order.form.type.event_listener.subtotals_subscriber:
         class: 'OroB2B\Bundle\OrderBundle\Form\Type\EventListener\SubtotalSubscriber'
+        public: false
         arguments:
             - '@orob2b_order.order.total.total_helper'
             - '@orob2b_order.pricing.price_matcher'

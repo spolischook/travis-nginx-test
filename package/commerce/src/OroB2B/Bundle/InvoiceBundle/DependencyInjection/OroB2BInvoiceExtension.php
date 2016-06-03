@@ -20,7 +20,6 @@ class OroB2BInvoiceExtension extends Extension
         $loader->load('services.yml');
     }
 
-
     /**
      * {@inheritDoc}
      */

@@ -6,13 +6,6 @@ parameters:
     orob2b_sale.entity.quote_product_request.class: OroB2B\Bundle\SaleBundle\Entity\QuoteProductRequest
 
 services:
-    orob2b_sale.quote.manager.api:
-        class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - '%orob2b_sale.entity.quote.class%'
-            - "@doctrine.orm.entity_manager"
-
     orob2b_sale.provider.quote_product_price:
         class: 'OroB2B\Bundle\SaleBundle\Provider\QuoteProductPriceProvider'
         arguments:
@@ -26,6 +19,7 @@ services:
 
     orob2b_sale.twig.quote:
         class: 'OroB2B\Bundle\SaleBundle\Twig\QuoteExtension'
+        public: false
         arguments:
             - "@orob2b_sale.formatter.quote_product"
         tags:
@@ -33,6 +27,7 @@ services:
 
     orob2b_sale.formatter.quote_product:
         class: 'OroB2B\Bundle\SaleBundle\Formatter\QuoteProductFormatter'
+        public: false
         arguments:
             - "@translator"
             - "@oro_locale.formatter.number"
@@ -41,16 +36,18 @@ services:
 
     orob2b_sale.formatter.quote_product_offer:
         class: 'OroB2B\Bundle\SaleBundle\Formatter\QuoteProductOfferFormatter'
+        public: false
         arguments:
             - "@translator"
 
     orob2b_sale.service.quote_to_order_converter:
         class: 'OroB2B\Bundle\SaleBundle\Model\QuoteToOrderConverter'
+        public: false
         arguments:
-            - "@orob2b_order.model.order_currency_handler"
-            - "@orob2b_pricing.subtotal_processor.provider.subtotal_line_item"
-            - "@orob2b_pricing.subtotal_processor.total_processor_provider"
-            - "@doctrine"
+            - '@orob2b_order.handler.order_currency_handler'
+            - '@orob2b_pricing.subtotal_processor.provider.subtotal_line_item'
+            - '@orob2b_pricing.subtotal_processor.total_processor_provider'
+            - '@doctrine'
 
     orob2b_sale.service.quote_product_offer_matcher:
         class: 'OroB2B\Bundle\SaleBundle\Model\QuoteProductOfferMatcher'
@@ -85,6 +82,7 @@ services:
 
     orob2b_sale.manager.quote_address:
         class: 'OroB2B\Bundle\SaleBundle\Model\QuoteAddressManager'
+        public: false
         arguments:
             - "@orob2b_sale.provider.quote_address"
             - "@doctrine"
@@ -95,6 +93,7 @@ services:
 
     orob2b_sale.provider.quote_address:
         class: 'OroB2B\Bundle\SaleBundle\Provider\QuoteAddressProvider'
+        public: false
         arguments:
             - "@oro_security.security_facade"
             - "@doctrine"
@@ -122,3 +121,21 @@ services:
         class: 'OroB2B\Bundle\SaleBundle\Provider\QuoteCheckoutLineItemDataProvider'
         tags:
              - { name: checkout.data_provider.line_item }
+
+    orob2b_sale.manager.quote_demand_manager:
+        class: 'OroB2B\Bundle\SaleBundle\Manager\QuoteDemandManager'
+        public: false
+        arguments:
+            - "@orob2b_pricing.subtotal_processor.total_processor_provider"
+            - "@orob2b_pricing.subtotal_processor.provider.subtotal_line_item"
+
+    orob2b_sale.event_listener.account_view:
+        class: 'OroB2B\Bundle\SaleBundle\EventListener\AccountViewListener'
+        public: true
+        arguments:
+            - '@translator'
+            - '@oro_entity.doctrine_helper'
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.account-view, method: onAccountView }
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.account-user-view, method: onAccountUserView }

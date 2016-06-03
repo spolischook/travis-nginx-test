@@ -66,4 +66,5 @@ services:
 
     orob2b_payment.paypal.payflow.client.http:
         class: 'Guzzle\Http\Client'
+        public: false
         lazy: true

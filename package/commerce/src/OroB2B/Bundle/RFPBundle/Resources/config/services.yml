@@ -12,12 +12,19 @@ services:
 
     orob2b_rfp.mailer.processor:
         class: 'OroB2B\Bundle\RFPBundle\Mailer\Processor'
+        public: false
         arguments:
             - "@doctrine"
             - "@oro_config.manager"
             - "@oro_email.email_renderer"
             - "@oro_email.email_holder_helper"
             - "@oro_email.direct_mailer"
+
+    orob2b_rfp.mailer.request_representatives_notifier:
+        class: 'OroB2B\Bundle\RFPBundle\Mailer\RequestRepresentativesNotifier'
+        arguments:
+            - "@orob2b_rfp.mailer.processor"
+            - "@oro_config.manager"
 
     orob2b_rfp.processor.quick_add:
         parent: orob2b_product.component_processor.data_storage_aware.processor
@@ -44,12 +51,20 @@ services:
         arguments:
             - "@orob2b_product.storage.product_data_storage"
 
+    orob2b_rfp.service.request_update_handler:
+        class: 'OroB2B\Bundle\RFPBundle\Form\Handler\RequestUpdateHandler'
+        parent: oro_form.model.update_handler
+        scope: request
+        calls:
+            - [setRepresentativesNotifier, ['@orob2b_rfp.mailer.request_representatives_notifier']]
+
     orob2b_rfp.storage.offers_data_storage:
         class: 'OroB2B\Bundle\RFPBundle\Storage\OffersDataStorage'
         parent: orob2b_product.storage.session_data_storage
 
     orob2b_rfp.storage.offers_form_storage:
         class: 'OroB2B\Bundle\RFPBundle\Storage\OffersFormStorage'
+        public: false
 
     orob2b_rfp.factory.duplicator_factory:
         class: 'OroB2B\Bundle\RFPBundle\Factory\DuplicatorFactory'
@@ -141,3 +156,20 @@ services:
             - '@form.factory'
         tags:
             - { name: layout.data_provider, alias: orob2b_rfp_request_form }
+
+    orob2b_rfp.request.manager:
+        class: 'OroB2B\Bundle\RFPBundle\Model\RequestManager'
+        arguments:
+            - '@oro_security.security_facade'
+            - '@oro_entity.doctrine_helper'
+
+    orob2b_rfp.event_listener.account_view:
+        class: 'OroB2B\Bundle\RFPBundle\EventListener\AccountViewListener'
+        public: true
+        arguments:
+            - '@translator'
+            - '@oro_entity.doctrine_helper'
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.account-view, method: onAccountView }
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.account-user-view, method: onAccountUserView }

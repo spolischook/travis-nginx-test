@@ -1,4 +1,5 @@
 parameters:
+    orob2b_checkout.entity.base_checkout.class: OroB2B\Bundle\CheckoutBundle\Entity\BaseCheckout
     orob2b_checkout.entity.checkout.class: OroB2B\Bundle\CheckoutBundle\Entity\Checkout
     orob2b_checkout.entity.checkout_source.class: OroB2B\Bundle\CheckoutBundle\Entity\CheckoutSource
 
@@ -11,11 +12,13 @@ services:
 
     orob2b_checkout.data_provider.converter.checkout_line_items:
         class: 'OroB2B\Bundle\CheckoutBundle\DataProvider\Converter\CheckoutLineItemsConverter'
+        public: false
         arguments:
             - '@property_accessor'
 
     orob2b_checkout.data_provider.manager.checkout_line_items:
         class: 'OroB2B\Bundle\CheckoutBundle\DataProvider\Manager\CheckoutLineItemsManager'
+        public: false
         arguments:
             - '@orob2b_checkout.data_provider.converter.checkout_line_items'
 
@@ -63,28 +66,6 @@ services:
         tags:
             - { name: layout.data_provider, alias: orob2b_checkout_back_transition }
 
-    # Layout Block types
-    orob2b_checkout.layout.block.type.transition_button.back:
-        class: 'OroB2B\Bundle\CheckoutBundle\Layout\Block\Type\TransitionButtonType'
-        calls:
-            - [setName, ['checkout_transition_back']]
-        tags:
-            - { name: layout.block_type, alias: checkout_transition_back }
-
-    orob2b_checkout.layout.block.type.transition_button.continue:
-        class: 'OroB2B\Bundle\CheckoutBundle\Layout\Block\Type\TransitionButtonType'
-        calls:
-            - [setName, ['checkout_transition_continue']]
-        tags:
-            - { name: layout.block_type, alias: checkout_transition_continue }
-
-    orob2b_checkout.layout.block.type.transition_button.edit:
-        class: 'OroB2B\Bundle\CheckoutBundle\Layout\Block\Type\TransitionButtonType'
-        calls:
-            - [setName, ['checkout_transition_step_edit']]
-        tags:
-            - { name: layout.block_type, alias: checkout_transition_step_edit }
-
     orob2b_checkout.model.action.get_order_line_items:
         class: 'OroB2B\Bundle\CheckoutBundle\Model\Action\GetOrderLineItems'
         arguments:
@@ -117,13 +98,50 @@ services:
         tags:
             - { name: oro_workflow.condition, alias: check_request }
 
-    orob2b_checkout.event_listener.checkout_entity:
+    orob2b_checkout.twig.line_items:
+        class: 'OroB2B\Bundle\CheckoutBundle\Twig\LineItemsExtension'
+        public: false
+        arguments:
+            - '@orob2b_pricing.subtotal_processor.total_processor_provider'
+            - '@orob2b_pricing.subtotal_processor.provider.subtotal_line_item'
+        tags:
+            - { name: twig.extension }
+
+    # Listener in checkout bundle should be handled first to allow custom listeners overwrite result
+    orob2b_checkout.event_listener.checkout_entity.abstract:
         class: OroB2B\Bundle\CheckoutBundle\EventListener\CheckoutEntityListener
         lazy: true
         arguments:
             - '@oro_workflow.manager'
             - '@doctrine'
+
+    orob2b_checkout.event_listener.checkout_entity:
+        parent: 'orob2b_checkout.event_listener.checkout_entity.abstract'
         calls:
             - [setCheckoutClassName, ['%orob2b_checkout.entity.checkout.class%']]
         tags:
             - {name: kernel.event_listener, event: orob2b_checkout.get_checkout_entity, method: onGetCheckoutEntity}
+            - {name: kernel.event_listener, event: orob2b_checkout.create_checkout_entity, method: onCreateCheckoutEntity}
+
+    orob2b_checkout.grid_totals_metadata.cache:
+        public: false
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'orob2b_checkout_grid_totals_metadata' ] ]
+
+    orob2b_checkout.datagrid.checkout_grid_listener:
+        class: OroB2B\Bundle\CheckoutBundle\Datagrid\CheckoutGridListener
+        arguments:
+            - '@oro_entity_config.provider.entity'
+            - '@oro_query_designer.entity_field_provider'
+        calls:
+            - [setCache, ['@orob2b_checkout.grid_totals_metadata.cache']]
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.frontend-checkouts-grid, method: onBuildBefore }
+
+    orob2b_checkout.workflow.condition.order_line_item_has_count:
+        class: 'OroB2B\Bundle\CheckoutBundle\Model\Condition\OrderLineItemsHasCount'
+        arguments:
+            - '@orob2b_checkout.data_provider.manager.checkout_line_items'
+        tags:
+            - { name: oro_workflow.condition, alias: order_line_item_has_count }

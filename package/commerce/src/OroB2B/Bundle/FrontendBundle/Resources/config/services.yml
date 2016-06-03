@@ -23,6 +23,7 @@ services:
 
     orob2b_frontend.menu.breadcrumb_manager:
         class: 'OroB2B\Bundle\FrontendBundle\Menu\BreadcrumbManager'
+        public: false
         parent: oro_navigation.breadcrumb_manager
         tags:
             - {name: oro_breadcrumbs.provider}
@@ -40,12 +41,14 @@ services:
 
     orob2b_frontend.assetic.configuration:
         class: '%oro_assetic.configuration.class%'
+        public: false
         arguments:
             - '@event_dispatcher'
             - '%oro_assetic.raw_configuration%'
 
     orob2b_frontend.twig_extension.demo_frontend_theme:
         class: 'OroB2B\Bundle\FrontendBundle\Twig\DemoThemeExtension'
+        public: false
         arguments:
             - '@assetic.asset_factory'
             - '@orob2b_frontend.assetic.configuration'
@@ -81,11 +84,13 @@ services:
 
     orob2b_frontend.form.type.install_configuration.web:
         class: 'OroB2B\Bundle\FrontendBundle\Form\Type\Configuration\WebType'
+        public: false
         tags:
             - { name: form.type, alias: orob2b_frontend_install_configuration_web }
 
     orob2b_frontend.form.type.extension.configuration.web:
         class: 'OroB2B\Bundle\FrontendBundle\Form\Extension\ConfigurationTypeExtension'
+        public: false
         tags:
             - { name: form.type_extension, alias: oro_installer_configuration }
 

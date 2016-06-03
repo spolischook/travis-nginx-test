@@ -25,6 +25,7 @@ use OroB2B\Bundle\AccountBundle\Model\ExtendAccount;
  * @Config(
  *      routeName="orob2b_account_index",
  *      routeView="orob2b_account_view",
+ *      routeUpdate="orob2b_account_update",
  *      defaultValues={
  *          "entity"={
  *              "icon"="icon-user"
@@ -555,6 +556,14 @@ class Account extends ExtendAccount
         }
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSalesRepresentatives()
+    {
+        return $this->salesRepresentatives->count() > 0;
     }
 
     /**

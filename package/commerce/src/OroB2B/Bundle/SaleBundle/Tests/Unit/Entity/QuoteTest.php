@@ -40,7 +40,7 @@ class QuoteTest extends AbstractTest
             ['locked', true],
             ['request', new Request()],
             ['website', new Website()],
-            ['shippingEstimate', new Price()]
+            ['shippingEstimate', new Price()],
         ];
 
         static::assertPropertyAccessors(new Quote(), $properties);
@@ -178,6 +178,37 @@ class QuoteTest extends AbstractTest
             [$this->createQuote(2, 1), false],
             [$this->createQuote(1, 2), true],
             [$this->createQuote(1, 1, true), true],
+        ];
+    }
+
+    /**
+     * @dataProvider isAcceptableDataProvider
+     *
+     * @param bool $expired
+     * @param \DateTime|null $validUntil
+     * @param bool $expected
+     */
+    public function testIsAcceptable($expired, $validUntil, $expected)
+    {
+        $quote = new Quote();
+        $quote
+            ->setExpired($expired)
+            ->setValidUntil($validUntil);
+        $this->assertEquals($expected, $quote->isAcceptable());
+    }
+
+    /**
+     * @return array
+     */
+    public function isAcceptableDataProvider()
+    {
+        return [
+            [false, null, true],
+            [false, new \DateTime('+1 day'), true],
+            [false, new \DateTime('-1 day'), false],
+            [true, null, false],
+            [true, new \DateTime('+1 day'), false],
+            [true, new \DateTime('-1 day'), false],
         ];
     }
 

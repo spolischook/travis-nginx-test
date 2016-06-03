@@ -32,7 +32,7 @@ class OroProEwsExtension extends Extension
         // For example: 'wsdl_endpoint' config parameter is added to DI container as 'oro_pro_ews.wsdl_endpoint'
         $bundles          = $container->getParameter('kernel.bundles');
         $parametersFile   = $fileLocator->locate('parameters.yml');
-        $ewsConfigContent = Yaml::parse($parametersFile);
+        $ewsConfigContent = Yaml::parse(file_get_contents($parametersFile));
         $container->addResource(new FileResource($parametersFile));
         foreach ($ewsConfigContent['parameters'] as $key => $val) {
             $prmVal = array_key_exists($key, $config) ? $config[$key] : $val;

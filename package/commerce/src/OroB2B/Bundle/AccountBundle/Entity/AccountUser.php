@@ -43,6 +43,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  * @Config(
  *      routeName="orob2b_account_account_user_index",
  *      routeView="orob2b_account_account_user_view",
+ *      routeUpdate="orob2b_account_account_user_update",
  *      defaultValues={
  *          "entity"={
  *              "icon"="icon-briefcase"
@@ -718,6 +719,14 @@ class AccountUser extends AbstractUser implements FullNameInterface, EmailHolder
         }
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSalesRepresentatives()
+    {
+        return $this->salesRepresentatives->count() > 0;
     }
 
     /**
