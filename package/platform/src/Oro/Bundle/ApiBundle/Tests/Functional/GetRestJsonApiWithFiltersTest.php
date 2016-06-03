@@ -5,6 +5,7 @@ namespace Oro\Bundle\ApiBundle\Tests\Functional;
 use Oro\Bundle\ApiBundle\Request\DataType;
 use Oro\Bundle\ApiBundle\Request\RequestType;
 use Oro\Bundle\TestFrameworkBundle\Entity\TestEmployee;
+use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @dbIsolation
@@ -144,12 +145,31 @@ class GetRestJsonApiWithFiltersTest extends ApiTestCase
                     'fields' => [
                         'users' => 'username'
                     ],
-                    'sort'   => '-owner.email',
+                    'sort'   => 'owner.email',
                     'page'   => [
-                        'size' => 3
+                        'size' => 6
                     ]
                 ],
                 'expects'      => $this->loadExpectation('output_filters_4.yml'),
+                'replacements' => 'replaceUserIdsInExpectation',
+                'identifier'   => 'username'
+            ],
+            'filter by field of 3rd level related entity (user.owner.organization) with 2nd level reverse sorting' => [
+                'className'    => 'Oro\Bundle\UserBundle\Entity\User',
+                'statusCode'   => 200,
+                'params'       => [
+                    'filter' => [
+                        'owner.owner.email' => 'TestBusinessUnit1@local.com'
+                    ],
+                    'fields' => [
+                        'users' => 'username'
+                    ],
+                    'sort'   => '-owner.email',
+                    'page'   => [
+                        'size' => 6
+                    ]
+                ],
+                'expects'      => $this->loadExpectation('output_filters_5.yml'),
                 'replacements' => 'replaceUserIdsInExpectation',
                 'identifier'   => 'username'
             ],
@@ -256,7 +276,7 @@ class GetRestJsonApiWithFiltersTest extends ApiTestCase
         foreach ($expectation['data'] as $index => $data) {
             $referenceName = $data['attributes'][$identifier];
 
-            /** @var TestEmployee $testEmployee */
+            /** @var User $referenceObject */
             $referenceObject = $this->getReference($referenceName);
             $expectation['data'][$index]['id'] = (string) $referenceObject->getId();
         }
