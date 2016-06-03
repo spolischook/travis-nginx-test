@@ -52,7 +52,7 @@ case $step in
                         files=$(echo -e "$filteredDiff" | grep -e "^package/.*\.php$");
                         if [ ! -e "$CS" ] && [[ $files ]]; then
                            echo -e "Source code changes were detected:\n$files";
-                           echo -e "Pass files to PHPCS";
+                           echo -e "Pass files to PHPCS and PHPMD";
                            export TRAVIS_CS_FILES=$files;
                         else
                            echo "Code Style build not required!";
@@ -190,6 +190,10 @@ case $step in
              cd ..;
              TEST_FILES=$(if [ ! -z "$TRAVIS_CS_FILES" ]; then echo $TRAVIS_CS_FILES; else echo "$APPLICATION_PWD/."; fi);
              $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
+             if [ ! -z "$TRAVIS_CS_FILES" ]; then
+                TEST_FILES=${$TRAVIS_CS_FILES//$'\n'/,};
+                $TRAVIS_BUILD_DIR/tool/vendor/bin/phpmd $TEST_FILES text $TRAVIS_BUILD_DIR/tool/codestandards/rulesetMD.xml --suffixes php;
+             fi
           fi
     ;;
 esac
