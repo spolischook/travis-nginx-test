@@ -104,6 +104,8 @@ case $step in
                  ;;
               esac
               rm -rf builds
+              INSTALLED_DATE=`date --rfc-3339=seconds`
+              sed -i "s/installed"\:".*/installed"\:" '${INSTALLED_DATE}'/g" app/config/parameters_test.yml;
           fi
     ;;
     script)
