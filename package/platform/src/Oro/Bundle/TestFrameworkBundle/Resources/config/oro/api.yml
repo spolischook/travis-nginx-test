@@ -1,7 +1,31 @@
 oro_api:
     entities:
+        Oro\Bundle\OrganizationBundle\Entity\BusinessUnit:
+            filters:
+                fields:
+                    name:
+                        exclude: false
+                    email:
+                        exclude: false
+            sorters:
+                fields:
+                    email:
+                        exclude: false
         Oro\Bundle\TestFrameworkBundle\Entity\TestDepartment:
             fields:
                 title:
+                    exclude: false
                     property_path: name
-        Oro\Bundle\TestFrameworkBundle\Entity\TestEmployee: ~
+            filters:
+                fields:
+                    name:
+                        exclude: false
+        Oro\Bundle\TestFrameworkBundle\Entity\TestEmployee:
+            filters:
+                fields:
+                    name:
+                        exclude: false
+            sorters:
+                fields:
+                    position:
+                        exclude: false
