@@ -7,7 +7,6 @@ case $step in
      before_install)
            set +e; 
            echo "Before installing...";
-           echo ${GITHUB_OAUTH}
            if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
                 return 0
            fi
@@ -94,10 +93,10 @@ case $step in
                ;; 
           esac
           if [ ! -z "$UPDATE_FROM" ]; then
-               git clone git@github.com:laboro/Builds.git builds
+               git clone https://${GITHUB_OAUTH}@github.com/laboro/Builds.git builds
                ls -l
-               exit 0
                rm -r builds
+               exit 0
           fi
     ;;
     script)
