@@ -7,6 +7,7 @@ case $step in
      before_install)
            set +e; 
            echo "Before installing...";
+           echo ${GITHUB_OAUTH}
            if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
                 return 0
            fi
@@ -93,9 +94,24 @@ case $step in
                ;; 
           esac
           if [ ! -z "$UPDATE_FROM" ]; then
-               git clone git@github.com:laboro/Builds.git
+               git clone git@github.com:laboro/Builds.git builds
                ls -l
                exit 0
+
+               case $DB in
+                  echo  "Restore DB ${UPDATE_FROM}...";
+                  mysql)
+                         mysql -u root -D ${dbname} < Builds/DBDumps/${UPDATE_FROM}.mysql.sql;
+                         sed -i "s/database_driver"\:".*/database_driver"\:" pdo_mysql/g; s/database_name"\:".*/database_name"\:" ${dbname}/g; s/database_user"\:".*/database_user"\:" root/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
+                  ;;
+                  postgresql)
+                         psql -U postgres -c "CREATE DATABASE ${dbname} WITH lc_collate = 'C' template = template0;";
+                         psql -U postgres -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' -d ${dbname};
+                         sed -i "s/database_driver"\:".*/database_driver"\:" pdo_pgsql/g; s/database_name"\:".*/database_name"\:" ${dbname}/g; s/database_user"\:".*/database_user"\:" postgres/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
+                  ;;
+               esac
+
+               rm -r builds
           fi
     ;;
     script)
