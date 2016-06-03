@@ -52,7 +52,7 @@ assetic:
         scssphp:
             file: %kernel.root_dir%/../vendor/leafo/scssphp/scss.inc.php
             apply_to: "\.scss$"
-            paths: ["%kernel.root_dir%/../web/bundles"]
+            import_paths: ["%kernel.root_dir%/../web/bundles"]
         cssmin:
             file: %kernel.root_dir%/Resources/php/cssmin-v3.0.1.php
 
