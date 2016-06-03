@@ -13,8 +13,7 @@
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Component/*/Tests/Unit</directory>
         </testsuite>
         <testsuite name="functional">
-            <file>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional/ConfigTranslationTest.php</file>
-            <file>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional/SchemaTest.php</file>
+            <directory suffix="Test.php">vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Component/*/Tests/Functional</directory>
         </testsuite>
@@ -98,7 +97,12 @@
         </testsuite>
     </testsuites>
 
+    <listeners>
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener"/>
+        <listener class="MyBuilder\PhpunitAccelerator\TestListener"/>
+    </listeners>
+
     <php>
-        <server name="KERNEL_DIR" value="app/" />
+        <server name="KERNEL_DIR" value="app/"/>
     </php>
 </phpunit>
