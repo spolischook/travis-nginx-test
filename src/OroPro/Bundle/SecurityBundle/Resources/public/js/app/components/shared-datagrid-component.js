@@ -37,36 +37,21 @@ define(function(require) {
         },
 
         onFrontMassAction: function(action) {
-            _.each(helper.extractModelsFromGridCollection(action.datagrid), function(model) {
-                action.datagrid.collection.get(model).trigger('backgrid:select', model, false);
-                action.datagrid.removeRow(model, {silent: true});
-                _.each(action.datagrid.body.rows, function(row) {
-                    if (row.model.id === model.id) {
-                        row.$el.remove();
-                    }
-                });
-            });
-            if (action.datagrid.collection.length === 0) {
-                action.datagrid.collection.reset([]);
-            }
+            var collection = action.datagrid.collection;
+            collection.remove(helper.extractModelsFromGridCollection(action.datagrid), {silent: true});
+            collection.trigger('reset', collection);
         },
 
         onFrontAction: function(action) {
-            action.datagrid.collection.get(action.model).trigger('backgrid:select', action.model, false);
-            action.datagrid.removeRow(action.model, {silent: true});
-            _.each(action.datagrid.body.rows, function(row) {
-                if (row.model.id === action.model.id) {
-                    row.$el.remove();
-                }
-            });
-            if (action.datagrid.collection.length === 0) {
-                action.datagrid.collection.reset([]);
-            }
+            var collection = action.datagrid.collection;
+            collection.remove(action.model, {silent: true});
+            collection.trigger('reset', collection);
         },
 
         onSharedWithDatagridAdd: function(data) {
             widgetManager.getWidgetInstanceByAlias('shared-dialog', function(widget) {
                 var grid = widget.pageComponent('shared-datagrid').grid;
+                var changed = false;
                 _.each(data.models, function(model) {
                     var id = JSON.stringify({
                         entityId: model.id,
@@ -75,12 +60,20 @@ define(function(require) {
                     if (!grid.collection.findWhere({id: id})) {
                         var newModel = {
                             id: id,
-                            entity: model.get('entity')
+                            entity: model.get('entity'),
+                            action_configuration: {
+                                delete: false,
+                                update: false
+                            }
                         };
                         grid.collection.add(newModel).trigger('backgrid:select', newModel, true);
-                        grid.render().trigger('layout:update');
+                        changed = true;
                     }
                 });
+                if (changed) {
+                    grid.collection.trigger('reset', grid.collection);
+                    grid.trigger('layout:update');
+                }
             });
         },
 
@@ -90,10 +83,15 @@ define(function(require) {
                 if (!grid.collection.findWhere({id: data.id})) {
                     var model = {
                         id: data.id,
-                        entity: data.entity
+                        entity: data.entity,
+                        action_configuration: {
+                            delete: false,
+                            update: false
+                        }
                     };
                     grid.collection.add(model).trigger('backgrid:select', model, true);
-                    grid.render().trigger('layout:update');
+                    grid.collection.trigger('reset', grid.collection);
+                    grid.trigger('layout:update');
                 }
             });
         },
