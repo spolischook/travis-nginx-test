@@ -67,9 +67,7 @@ case $step in
              phpenv config-add travis.php.ini;
              composer self-update;
              composer config -g github-oauth.github.com ${GITHUB_OAUTH};
-          fi
-          if [ ! -z "$CS" ]; then
-             composer global require "squizlabs/php_codesniffer=2.3.3";
+             composer install --optimize-autoloader --no-interaction --working-dir=$TRAVIS_BUILD_DIR/tool;
           fi
           if [[ "$APPLICATION" == "documentation" ]]; then
              cd ${APPLICATION};
@@ -103,7 +101,6 @@ case $step in
              sphinx-build -nW -b html -d _build/doctrees . _build/html; 
           fi
           if [ ! -z "$TESTSUITE" ]; then
-             composer install --optimize-autoloader --no-interaction --working-dir=$TRAVIS_BUILD_DIR/tool;
              composer install --optimize-autoloader --no-interaction;
              if [ ! -z "$DB" ]; then 
                 php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --skip-assets --timeout 600;
@@ -147,7 +144,7 @@ case $step in
                         DIRECTORY="${APPLICATION}_$i"
                     fi
                     cd $DIRECTORY
-                    { php $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --stderr --testsuite=$TESTSUITE-$i-of-$PARALLEL_PROCESSES > ../../result.$i 2>&1 ; echo "$?" > "../../code.$i" ; } &
+                    { $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --verbose --stderr --testsuite=$TESTSUITE-$i-of-$PARALLEL_PROCESSES > ../../result.$i 2>&1 ; echo "$?" > "../../code.$i" ; } &
                     PIDS[$i]=$!
                     cd ../..
                 done
@@ -192,7 +189,7 @@ case $step in
              APPLICATION_PWD=$PWD
              cd ..;
              TEST_FILES=$(if [ ! -z "$TRAVIS_CS_FILES" ]; then echo $TRAVIS_CS_FILES; else echo "$APPLICATION_PWD/."; fi);
-             $HOME/.composer/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
+             $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
           fi
     ;;
 esac
