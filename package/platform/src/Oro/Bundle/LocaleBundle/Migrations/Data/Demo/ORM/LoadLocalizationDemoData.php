@@ -71,7 +71,7 @@ class LoadLocalizationDemoData extends AbstractFixture implements ContainerAware
 
             $manager->persist($localization);
 
-            $this->addReference('localization_' . $code, $localization);
+            $this->addReference($code, $localization);
         }
 
         $manager->flush();

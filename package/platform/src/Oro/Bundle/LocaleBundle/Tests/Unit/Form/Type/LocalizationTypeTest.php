@@ -83,7 +83,7 @@ class LocalizationTypeTest extends FormIntegrationTestCase
     public function submitDataProvider()
     {
         $localizationItem = $this->createLocalization('name', 'title', 'en', 'en');
-        $parentLocalization = $this->getEntity('Oro\Bundle\LocaleBundle\Entity\Localization', ['id' => 1]);
+        $parent = $this->getEntity('Oro\Bundle\LocaleBundle\Entity\Localization', ['id' => 1]);
 
         return [
             'without entity' =>
@@ -114,7 +114,7 @@ class LocalizationTypeTest extends FormIntegrationTestCase
                         'new_localization_item_title',
                         'en_US',
                         'en_US',
-                        $parentLocalization
+                        $parent
                     )
                 ],
         ];

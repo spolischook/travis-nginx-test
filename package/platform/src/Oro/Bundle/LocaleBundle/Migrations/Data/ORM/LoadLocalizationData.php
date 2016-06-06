@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LocaleBundle\Migrations\Schema\Data\ORM;
+namespace Oro\Bundle\LocaleBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -10,10 +10,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Intl\Intl;
 
 use Oro\Bundle\LocaleBundle\Entity\Localization;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class LoadLocalizationData extends AbstractFixture implements ContainerAwareInterface
 {
-    /** @var ContainerInterface */
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
 
     /**
@@ -29,6 +32,7 @@ class LoadLocalizationData extends AbstractFixture implements ContainerAwareInte
      */
     public function load(ObjectManager $manager)
     {
+        /* @var $localeSettings LocaleSettings */
         $localeSettings = $this->container->get('oro_locale.settings');
         $localeCode = $localeSettings->getLocale();
         $title = Intl::getLanguageBundle()->getLanguageName($localeSettings->getLanguage(), $localeCode);

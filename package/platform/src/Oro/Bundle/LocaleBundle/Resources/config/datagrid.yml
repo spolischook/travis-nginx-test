@@ -24,7 +24,7 @@ datagrid:
                         - { join: l.parentLocalization, alias: pl }
                 where:
                     and:
-                        - t.locale IS NULL
+                        - t.localization IS NULL
         columns:
             name:
                 label: oro.locale.localization.name.label

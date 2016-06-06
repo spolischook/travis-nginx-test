@@ -49,6 +49,36 @@ services:
             - [addLocaleData, [%oro_locale.locale_data%]]
             - [addCurrencyData, [%oro_locale.currency_data%]]
 
+    oro_locale.helper.localization:
+        class: 'Oro\Bundle\LocaleBundle\Helper\LocalizationHelper'
+        arguments:
+            - "@doctrine"
+        calls:
+            - [setEntityClass, ['%oro_locale.entity.localization.class%']]
+
+    oro_locale.listener.orm.localization_listener:
+        class: 'Oro\Bundle\LocaleBundle\EventListener\ORM\LocalizationListener'
+        arguments:
+            - '@oro_locale.translation.strategy.localization_fallback_strategy'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: '%oro_locale.entity.localization.class%', event: postPersist }
+            - { name: doctrine.orm.entity_listener, entity: '%oro_locale.entity.localization.class%', event: postUpdate }
+
+    oro_locale.translation.strategy.localization_fallback_strategy:
+        class: 'Oro\Bundle\LocaleBundle\Translation\Strategy\LocalizationFallbackStrategy'
+        public: false
+        arguments:
+            - '@doctrine'
+            - '@oro_locale.cache.provider.tree_fallback_strategy'
+        calls:
+            - [setEntityClass, ['%oro_locale.entity.localization.class%']]
+
+    oro_locale.cache.provider.tree_fallback_strategy:
+        parent: oro.cache.abstract
+        public: false
+        calls:
+            - [ setNamespace, [ 'oro_locale_tree_fallback_strategy' ] ]
+
     # Calendar
     oro_locale.calendar:
         scope: prototype
