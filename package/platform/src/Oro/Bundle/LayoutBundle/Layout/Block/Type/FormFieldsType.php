@@ -22,9 +22,9 @@ use Oro\Bundle\LayoutBundle\Layout\Form\FormLayoutBuilderInterface;
  *  group id = $options['form_group_prefix'] + group name
  *      for example: form:group_myGroup where 'form:group_' is the prefix
  */
-class FormType extends AbstractFormType
+class FormFieldsType extends AbstractFormType
 {
-    const NAME = 'form';
+    const NAME = 'form_fields';
 
     /** @var FormLayoutBuilderInterface */
     protected $formLayoutBuilder;
