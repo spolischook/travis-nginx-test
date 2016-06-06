@@ -5,7 +5,6 @@ namespace OroB2B\Bundle\PricingBundle\Layout\Block\Type;
 use Oro\Component\Layout\BlockInterface;
 use Oro\Component\Layout\BlockView;
 use Oro\Component\Layout\Block\OptionsResolver\OptionsResolver;
-
 use Oro\Component\Layout\Block\Type\AbstractType;
 
 class CurrencySwitcherType extends AbstractType
