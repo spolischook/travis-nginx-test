@@ -1,13 +1,12 @@
 <?php
 
-namespace Oro\Bundle\LocaleBundle\Tests\Functional\ImportExport\DataConverter;
+namespace OroB2B\Bundle\ProductBundle\Tests\Functional\ImportExport\DataConverter;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Oro\Bundle\LocaleBundle\ImportExport\DataConverter\LocalizedFallbackValueAwareDataConverter;
 
 /**
- * @covers \Oro\Bundle\LocaleBundle\ImportExport\DataConverter\LocalizedFallbackValueAwareDataConverter
  * @dbIsolation
  */
 class LocalizedFallbackValueAwareDataConverterTest extends WebTestCase

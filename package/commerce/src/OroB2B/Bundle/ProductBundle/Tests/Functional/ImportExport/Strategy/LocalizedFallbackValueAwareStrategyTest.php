@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LocaleBundle\Tests\Functional\ImportExport\Strategy;
+namespace OroB2B\Bundle\ProductBundle\Tests\Functional\ImportExport\Strategy;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -15,7 +15,6 @@ use Oro\Bundle\LocaleBundle\ImportExport\Normalizer\LocalizationCodeFormatter;
 use Oro\Bundle\LocaleBundle\ImportExport\Strategy\LocalizedFallbackValueAwareStrategy;
 
 /**
- * @covers \Oro\Bundle\LocaleBundle\ImportExport\Strategy\LocalizedFallbackValueAwareStrategy
  * @dbIsolation
  */
 class LocalizedFallbackValueAwareStrategyTest extends WebTestCase

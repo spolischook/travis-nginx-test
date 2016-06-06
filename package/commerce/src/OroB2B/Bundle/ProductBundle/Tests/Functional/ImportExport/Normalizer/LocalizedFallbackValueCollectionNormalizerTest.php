@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LocaleBundle\Tests\Functional\ImportExport\Normalizer;
+namespace OroB2B\Bundle\ProductBundle\Tests\Functional\ImportExport\Normalizer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -11,7 +11,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Component\Testing\Unit\EntityTrait;
 
 /**
- * @covers \Oro\Bundle\LocaleBundle\ImportExport\Normalizer\LocalizedFallbackValueCollectionNormalizer
  * @dbIsolation
  */
 class LocalizedFallbackValueCollectionNormalizerTest extends WebTestCase
