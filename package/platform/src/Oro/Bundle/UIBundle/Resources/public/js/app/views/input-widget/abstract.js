@@ -40,6 +40,8 @@ define(function(require) {
 
         refreshOnChange: false,
 
+        overrideJqueryMethods: ['val', 'hide', 'show', 'focus', 'width'],
+
         /**
          * @inheritDoc
          */
@@ -48,9 +50,10 @@ define(function(require) {
             this.initializeWidget();
 
             if (this.isInitialized()) {
-                this.findContainer();
-                this.getContainer().addClass(this.containerClass);
+                this.container().addClass(this.containerClass);
             }
+
+            this.$el.trigger('input-widget:init');
         },
 
         initializeWidget: function() {
@@ -120,15 +123,22 @@ define(function(require) {
         /**
          * Find widget root element
          */
-        findContainer: function() {},
+        findContainer: function() {
+            throw Error('"findContainer" method have to be defined in the child view');
+        },
 
         /**
          * Get widget root element
          *
          * @returns {jQuery}
          */
-        getContainer: function() {
-            return this.$container;
+        container: function() {
+            return this.$container || (this.$container = this.findContainer());
+        },
+
+        applyWidgetFunction: function(command, args) {
+            Array.prototype.unshift.call(args, command);
+            return this.widgetFunction.apply(this, args);
         },
 
         /**
@@ -136,10 +146,8 @@ define(function(require) {
          *
          * @param {mixed} width
          */
-        setWidth: function(width) {
-            if (this.getContainer()) {
-                this.getContainer().width(width);
-            }
+        width: function(width) {
+            this.container().width(width);
         },
 
         /**
@@ -152,6 +160,14 @@ define(function(require) {
                 this.disposeWidget();
                 this.initializeWidget();
             }
+        },
+
+        hide: function() {
+            this.container().hide();
+        },
+
+        show: function() {
+            this.container().show();
         },
 
         _addEvent: function(eventName, callback) {
