@@ -66,7 +66,54 @@ class InitApplication extends RootCommand
     protected function updateConfigs(OutputInterface $output, $srcDir, $destDir)
     {
         $this->copyFile($output, $srcDir, $destDir, 'dev.iml', true);
+        $this->mergeFile($output, $srcDir, $destDir, 'php.xml', false);
         $this->updateSymfony2PluginConfig($output, $srcDir, $destDir);
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param string          $srcDir
+     * @param string          $destDir
+     * @param string          $fileName
+     * @param bool            $override
+     *
+     * @return bool TRUE if the file copied;
+     *              FALSE if the destination file already exists and override was not requested
+     */
+    protected function mergeFile(OutputInterface $output, $srcDir, $destDir, $fileName, $override = false)
+    {
+        $destFile = $destDir . DIRECTORY_SEPARATOR . $fileName;
+        if ($override || !is_file($destFile)) {
+            return $this->copyFile($output, $srcDir, $destDir, $fileName, $override);
+        }
+
+        $srcFile = $srcDir . DIRECTORY_SEPARATOR . $fileName;
+        if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $output->writeln("Merge {$srcFile} with {$srcFile}");
+        }
+
+        $destXmlDoc = $this->loadXmlDocument($destFile);
+        $sourceXmlDoc = $this->loadXmlDocument($srcFile);
+
+        foreach ($this->findByXPath($sourceXmlDoc, "/project/component") as $srcElement) {
+            $project = $destXmlDoc->getElementsByTagName('project')->item(0);
+            $destElement = $this->findByXPath(
+                $destXmlDoc,
+                sprintf("/project/component[@name='%s']", $srcElement->attributes->getNamedItem('name')->nodeValue)
+            );
+
+            $srcElement = $destXmlDoc->importNode($srcElement, true);
+
+            if ($destElement->length) {
+                $project->replaceChild($srcElement, $destElement->item(0));
+            } else {
+                $project->appendChild($srcElement);
+            }
+        }
+
+        $destXmlDoc->save($destFile);
+
+        return true;
     }
 
     /**
@@ -162,7 +209,7 @@ class InitApplication extends RootCommand
      * @param \DOMDocument $xmlDoc
      * @param string       $expression
      *
-     * @return \DOMNodeList
+     * @return \DOMNodeList|\DOMNode[]
      */
     protected function findByXPath(\DOMDocument $xmlDoc, $expression)
     {
