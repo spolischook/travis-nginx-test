@@ -7,22 +7,23 @@
 {% set formAction = entityId ? path('oropro_organization_update', { 'id': entityId}) : path('oropro_organization_create') %}
 
 {% block navButtons %}
+    {{ UI.cancelButton(path('oropro_organization_index')) }}
     {% set html = UI.saveAndCloseButton({
-        'action': {
-            'route': 'oropro_organization_view',
-            'params': {'id': '$.id', '_enableContentProviders': 'organization_switch,mainMenu'}
-        }
+        'route': 'oropro_organization_view',
+        'params': {'id': '$id', '_enableContentProviders': 'organization_switch,mainMenu'}
     }) %}
+    {% if resource_granted('oro_organization_create') %}
+        {% set html = html ~ UI.saveAndNewButton({
+            'route': 'oropro_organization_create'
+        }) %}
+    {% endif %}
     {% if resource_granted('oro_organization_update') %}
         {% set html = html ~ UI.saveAndStayButton({
-            'action': {
-                'route': 'oropro_organization_update',
-                'params': {'id': '$.id', '_enableContentProviders': 'organization_switch,mainMenu'}
-            }
+            'route': 'oropro_organization_update',
+            'params': {'id': '$id', '_enableContentProviders': 'organization_switch,mainMenu'}
         }) %}
     {% endif %}
     {{ UI.dropdownSaveButton({'html': html}) }}
-    {{ UI.cancelButton(path('oropro_organization_index')) }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
