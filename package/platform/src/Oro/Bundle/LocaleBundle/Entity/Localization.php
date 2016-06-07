@@ -73,14 +73,21 @@ class Localization implements DatesAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="language_code", type="string", length=64, nullable=false)
+     * @ORM\Column(name="language_code", type="string", length=16, nullable=false)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      */
     protected $languageCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="formatting_code", type="string", length=64, nullable=false)
+     * @ORM\Column(name="formatting_code", type="string", length=16, nullable=false)
      */
     protected $formattingCode;
 

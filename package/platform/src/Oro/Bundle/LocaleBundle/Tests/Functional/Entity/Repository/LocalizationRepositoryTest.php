@@ -36,7 +36,7 @@ class LocalizationRepositoryTest extends WebTestCase
 
     public function testFindRootsWithChildren()
     {
-        $localizations = [$this->getCurrentLocalization(), $this->getReference('en_US')];
+        $localizations = [$this->getCurrentLocalization(), $this->getReference('en_US'), $this->getReference('es')];
         $queryAnalyzer = new QueryAnalyzer($this->em->getConnection()->getDatabasePlatform());
 
         $prevLogger = $this->em->getConnection()->getConfiguration()->getSQLLogger();
@@ -45,7 +45,7 @@ class LocalizationRepositoryTest extends WebTestCase
         /** @var Localization[] $result */
         $result = $this->repository->findRootsWithChildren();
 
-        $this->assertEquals($localizations, $result);
+        $this->assertEquals(array_values($localizations), array_values($result));
 
         foreach ($result as $root) {
             $this->visitChildren($root);
@@ -83,6 +83,6 @@ class LocalizationRepositoryTest extends WebTestCase
         $result = $this->repository->getLocalizationsCount();
 
         $this->assertInternalType('int', $result);
-        $this->assertEquals(3, $result);
+        $this->assertEquals(4, $result);
     }
 }
