@@ -47,6 +47,13 @@ class Localization implements DatesAwareInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true, nullable=false)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
 
@@ -74,13 +81,6 @@ class Localization implements DatesAwareInterface
      * @var string
      *
      * @ORM\Column(name="language_code", type="string", length=16, nullable=false)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "identity"=true
-     *          }
-     *      }
-     * )
      */
     protected $languageCode;
 
@@ -110,6 +110,14 @@ class Localization implements DatesAwareInterface
     {
         $this->childLocalizations = new ArrayCollection();
         $this->titles = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     /**
@@ -303,13 +311,5 @@ class Localization implements DatesAwareInterface
         $this->addTitle($newTitle);
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getName();
     }
 }

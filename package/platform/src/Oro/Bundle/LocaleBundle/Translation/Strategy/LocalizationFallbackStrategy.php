@@ -83,7 +83,7 @@ class LocalizationFallbackStrategy implements TranslationStrategyInterface
     {
         /** @var LocalizationRepository $repository */
         $repository = $this->registry->getManagerForClass($this->entityClass)->getRepository($this->entityClass);
-        
+
         return $repository->findRootsWithChildren();
     }
 

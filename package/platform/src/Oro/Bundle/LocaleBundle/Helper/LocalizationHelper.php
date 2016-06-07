@@ -41,7 +41,7 @@ class LocalizationHelper
      */
     public function getCurrentLocalization()
     {
-        return $this->getRepository()->findOneByLanguageCode('en');
+        return $this->getRepository()->findOneByName('English');
     }
 
     /**
