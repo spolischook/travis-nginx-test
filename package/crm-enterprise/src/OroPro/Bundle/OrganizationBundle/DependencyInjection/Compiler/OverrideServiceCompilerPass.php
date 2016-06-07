@@ -155,6 +155,25 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             );
         }
 
+        /**
+         * Override Oro\Bundle\OrganizationBundle\Validator\Constraints\OwnerValidator
+         * In case of System access mode, we should take organization from the entity
+         */
+        $serviceId = 'oro_organization.validator.owner';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Validator\Constraints\OwnerValidator');
+        }
+
+        /**
+         * This override widget business unit select with additional EE acl logic
+         */
+        $serviceId = 'oro_dashboard.widget_config_value.widget_business_unit_select.converter';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Provider\WidgetBusinessUnitSelectConverter');
+        }
+
         $this->overrideOrganizationsSelect($container);
     }
 

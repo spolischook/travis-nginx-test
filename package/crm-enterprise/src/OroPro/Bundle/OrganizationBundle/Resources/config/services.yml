@@ -198,3 +198,30 @@ services:
         tags:
             - { name: form.type_extension, alias: oro_imap_configuration_gmail }
 
+    oropro_organization.api.get_config.add_organization_not_null_validator:
+        class: OroPro\Bundle\OrganizationBundle\Api\Processor\Config\GetConfig\AddOrganizationNotNullValidator
+        arguments:
+            - '@oro_api.doctrine_helper'
+            - '@oro_security.owner.ownership_metadata_provider'
+        tags:
+            - { name: oro.api.processor, action: get_config, extra: definition, targetAction: create, priority: -50 }
+
+    oropro_organization.api.get_config.add_organization_validator:
+        class: OroPro\Bundle\OrganizationBundle\Api\Processor\Config\GetConfig\AddOrganizationValidator
+        arguments:
+            - '@oro_api.doctrine_helper'
+            - '@oro_security.owner.ownership_metadata_provider'
+            - '@oro_api.validation_helper'
+        tags:
+            - { name: oro.api.processor, action: get_config, extra: definition, targetAction: create, priority: -52 }
+            - { name: oro.api.processor, action: get_config, extra: definition, targetAction: update, priority: -52 }
+
+    oropro_organization.validator.organization:
+        class: OroPro\Bundle\OrganizationBundle\Validator\Constraints\OrganizationValidator
+        arguments:
+           - '@doctrine'
+           - '@oro_security.owner.ownership_metadata_provider'
+           - '@oro_security.owner.entity_owner_accessor'
+           - '@oro_security.security_facade'
+        tags:
+          - { name: validator.constraint_validator, alias: organization_validator }

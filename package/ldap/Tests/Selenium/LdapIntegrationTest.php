@@ -52,7 +52,7 @@ class LdapIntegrationTest extends Selenium2TestCase
             ->setAllRequiredFields($ldapIntegration)
             ->checkConnection()
             ->addRoleMappings('admin', 'Administrator')
-            ->addRoleMappings('manager', 'Marketing Manager', 1)
+            ->addRoleMappings('manager', 'Marketing Manager', 2)
             ->save()
             ->assertMessage('Integration saved');
         /** @var Integrations $login */
