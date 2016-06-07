@@ -3,21 +3,25 @@
 namespace Oro\Bundle\LocaleBundle\Tests\Unit\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
+use Oro\Bundle\LocaleBundle\Entity\Localization;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\LocaleBundle\Form\DataTransformer\LocalizedFallbackValueCollectionTransformer;
 use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
 use Oro\Bundle\LocaleBundle\Model\FallbackType;
 
-use OroB2B\Bundle\WebsiteBundle\Entity\Locale;
+use Oro\Component\Testing\Unit\EntityTrait;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework_TestCase
 {
+    use EntityTrait;
+
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|ManagerRegistry
      */
     protected $registry;
 
@@ -51,7 +55,7 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
         $emptyTextValue = $this->createLocalizedFallbackValue(5, null, null, null, 'empty');
         $firstTextValue = $this->createLocalizedFallbackValue(6, 1, null, null, 'first');
         $secondTextValue = $this->createLocalizedFallbackValue(7, 2, null, null, 'second');
-        $thirdTextValue = $this->createLocalizedFallbackValue(8, 3, FallbackType::PARENT_LOCALE);
+        $thirdTextValue = $this->createLocalizedFallbackValue(8, 3, FallbackType::PARENT_LOCALIZATION);
 
         return [
             'null' => [
@@ -87,7 +91,7 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
                         null => 'empty',
                         1 => 'first',
                         2 => 'second',
-                        3 => new FallbackType(FallbackType::PARENT_LOCALE),
+                        3 => new FallbackType(FallbackType::PARENT_LOCALIZATION),
                     ],
                     LocalizedFallbackValueCollectionType::FIELD_IDS => [
                         0 => 5,
@@ -102,16 +106,16 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
 
     /**
      * @param array $values
-     * @param array $locales
+     * @param array $localizations
      * @param string $field
      * @param mixed $source
      * @param mixed $expected
      * @dataProvider reverseTransformDataProvider
      */
-    public function testReverseTransform(array $values, array $locales, $field, $source, $expected)
+    public function testReverseTransform(array $values, array $localizations, $field, $source, $expected)
     {
         $transformer = new LocalizedFallbackValueCollectionTransformer($this->registry, $field);
-        $this->addRegistryExpectations($values, $locales);
+        $this->addRegistryExpectations($values, $localizations);
         $this->assertEquals($expected, $transformer->reverseTransform($source));
     }
 
@@ -123,7 +127,7 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
         return [
             'null' => [
                 'values' => [],
-                'locales' => [],
+                'localizations' => [],
                 'field' => 'string',
                 'source' => null,
                 'expected' => null,
@@ -134,16 +138,16 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
                     2 => $this->createLocalizedFallbackValue(2, 1, null, 'first'),
                     3 => $this->createLocalizedFallbackValue(3, 2, FallbackType::SYSTEM),
                 ],
-                'locales' => [
-                    1 => $this->createLocale(1),
-                    2 => $this->createLocale(2),
-                    3 => $this->createLocale(3),
+                'localizations' => [
+                    1 => $this->createLocalization(1),
+                    2 => $this->createLocalization(2),
+                    3 => $this->createLocalization(3),
                 ],
                 'field' => 'string',
                 'source' => [
                     LocalizedFallbackValueCollectionType::FIELD_VALUES => [
                         null => 'default_updated',
-                        1 => new FallbackType(FallbackType::PARENT_LOCALE),
+                        1 => new FallbackType(FallbackType::PARENT_LOCALIZATION),
                         2 => 'second_updated',
                         3 => 'new_value',
                     ],
@@ -155,7 +159,7 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
                 ],
                 'expected' => new ArrayCollection([
                     $this->createLocalizedFallbackValue(1, null, null, 'default_updated'),
-                    $this->createLocalizedFallbackValue(2, 1, FallbackType::PARENT_LOCALE),
+                    $this->createLocalizedFallbackValue(2, 1, FallbackType::PARENT_LOCALIZATION),
                     $this->createLocalizedFallbackValue(3, 2, null, 'second_updated'),
                     $this->createLocalizedFallbackValue(null, 3, null, 'new_value'),
                 ]),
@@ -185,9 +189,9 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
 
     /**
      * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     * @expectedExceptionMessage Undefined locale with ID=1
+     * @expectedExceptionMessage Undefined localization with ID=1
      */
-    public function testReverseTransformNoLocale()
+    public function testReverseTransformNoLocalization()
     {
         $transformer = new LocalizedFallbackValueCollectionTransformer($this->registry, 'text');
         $this->addRegistryExpectations([], []);
@@ -198,26 +202,26 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
 
     /**
      * @param array $values
-     * @param array $locales
+     * @param array $localizations
      */
-    protected function addRegistryExpectations(array $values, array $locales)
+    protected function addRegistryExpectations(array $values, array $localizations)
     {
         $valueRepository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
         $valueRepository->expects($this->any())
             ->method('find')
             ->will($this->returnValueMap($this->convertArrayToMap($values)));
 
-        $localeRepository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
-        $localeRepository->expects($this->any())
+        $localizationRepository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $localizationRepository->expects($this->any())
             ->method('find')
-            ->will($this->returnValueMap($this->convertArrayToMap($locales)));
+            ->will($this->returnValueMap($this->convertArrayToMap($localizations)));
 
         $this->registry->expects($this->any())
             ->method('getRepository')
             ->will(
                 $this->returnValueMap([
                     ['OroLocaleBundle:LocalizedFallbackValue', null, $valueRepository],
-                    ['OroB2BWebsiteBundle:Locale', null, $localeRepository],
+                    ['OroLocaleBundle:Localization', null, $localizationRepository],
                 ])
             );
     }
@@ -237,7 +241,7 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
 
     /**
      * @param int $id
-     * @param int|null $localeId
+     * @param int|null $localizationId
      * @param string|null $fallback
      * @param string|null $string
      * @param string|null $text
@@ -245,7 +249,7 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
      */
     protected function createLocalizedFallbackValue(
         $id,
-        $localeId = null,
+        $localizationId = null,
         $fallback = null,
         $string = null,
         $text = null
@@ -262,8 +266,8 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
             ->setString($string)
             ->setText($text);
 
-        if ($localeId) {
-            $value->setLocale($this->createLocale($localeId));
+        if ($localizationId) {
+            $value->setLocalization($this->createLocalization($localizationId));
         }
 
         return $value;
@@ -271,16 +275,10 @@ class LocalizedFallbackValueCollectionTransformerTest extends \PHPUnit_Framework
 
     /**
      * @param int $id
-     * @return Locale
+     * @return Localization
      */
-    protected function createLocale($id)
+    protected function createLocalization($id)
     {
-        $locale = new Locale();
-
-        $reflection = new \ReflectionProperty(get_class($locale), 'id');
-        $reflection->setAccessible(true);
-        $reflection->setValue($locale, $id);
-
-        return $locale;
+        return $this->getEntity('Oro\Bundle\LocaleBundle\Entity\Localization', ['id' => $id]);
     }
 }

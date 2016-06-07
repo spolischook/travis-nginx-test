@@ -12,6 +12,7 @@ oro.locale:
 
         id.label: 'Id'
         name.label: 'Name'
+        title.label: 'Title'
         titles.label: 'Titles'
         language_code.label: 'Language'
         formatting_code.label: 'Formatting'
@@ -28,27 +29,30 @@ oro.locale:
             view: 'Localization "%name%"'
 
         localizedfallbackvalue:
-            entity_label:           'Localized fallback value'
-            entity_plural_label:    'Localized fallback values'
-            id.label:               'ID'
-            fallback.label:         'Fallback'
-            locale.label:           'Locale'
-            string.label:           'String value'
-            text.label:             'Text value'
+            entity_label: 'Localized fallback value'
+            entity_plural_label: 'Localized fallback values'
+            id.label: 'ID'
+            fallback.label: 'Fallback'
+            localization.label: 'Localization'
+            string.label: 'String value'
+            text.label: 'Text value'
 
         form:
-            choose_parent: 'Choose parent localization...'
+            placeholder:
+                select_parent_localization: 'Please select parent localization...'
+                select_language: 'Please select language...'
+                select_formatting: 'Please select formatting...'
 
     fallback:
         type:
-            parent_locale: 'Parent Locale'
-            default:       'Default Value'
+            parent_localization: 'Parent Localization'
+            default: 'Default Value'
 
         value:
-            default:       'Default Value'
+            default: 'Default Value'
 
         use_fallback:
-            label:         'Use'
+            label: 'Use'
 
     controller:
         localization:

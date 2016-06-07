@@ -11,12 +11,9 @@ use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
-use OroB2B\Bundle\WebsiteBundle\Entity\Locale;
-
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\LocaleBundle\Entity\Repository\LocalizationRepository")
  * @ORM\Table(name="oro_localization")
- * @ORM\HasLifecycleCallbacks()
  * @Config(
  *      routeName="oro_locale_localization_index",
  *      routeView="oro_locale_localization_view",
@@ -28,8 +25,8 @@ use OroB2B\Bundle\WebsiteBundle\Entity\Locale;
  *          "security"={
  *              "type"="ACL",
  *              "group_name"=""
- *          },
- *      },
+ *          }
+ *      }
  * )
  */
 class Localization implements DatesAwareInterface
@@ -49,7 +46,14 @@ class Localization implements DatesAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=64, unique=true, nullable=false)
+     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
 
@@ -76,14 +80,14 @@ class Localization implements DatesAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="language_code", type="string", length=64, nullable=false)
+     * @ORM\Column(name="language_code", type="string", length=16, nullable=false)
      */
     protected $languageCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="formatting_code", type="string", length=64, nullable=false)
+     * @ORM\Column(name="formatting_code", type="string", length=16, nullable=false)
      */
     protected $formattingCode;
 
@@ -106,6 +110,14 @@ class Localization implements DatesAwareInterface
     {
         $this->childLocalizations = new ArrayCollection();
         $this->titles = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     /**
@@ -205,27 +217,27 @@ class Localization implements DatesAwareInterface
     }
 
     /**
-     * @param Localization $localization
+     * @param Localization $childLocalization
      * @return $this
      */
-    public function addChildLocalization(Localization $localization)
+    public function addChildLocalization(Localization $childLocalization)
     {
-        if (!$this->childLocalizations->contains($localization)) {
-            $this->childLocalizations->add($localization);
+        if (!$this->childLocalizations->contains($childLocalization)) {
+            $this->childLocalizations->add($childLocalization);
         }
 
         return $this;
     }
 
     /**
-     * @param Localization $localization
+     * @param Localization $childLocalization
      * @return $this
      */
-    public function removeChildLocalization(Localization $localization)
+    public function removeChildLocalization(Localization $childLocalization)
     {
-        if ($this->childLocalizations->contains($localization)) {
-            $this->childLocalizations->removeElement($localization);
-            $localization->setParentLocalization(null);
+        if ($this->childLocalizations->contains($childLocalization)) {
+            $this->childLocalizations->removeElement($childLocalization);
+            $childLocalization->setParentLocalization(null);
         }
 
         return $this;
@@ -268,12 +280,12 @@ class Localization implements DatesAwareInterface
     }
 
     /**
-     * @param Locale|null $locale
+     * @param Localization|null $localization
      * @return LocalizedFallbackValue
      */
-    public function getTitle(Locale $locale = null)
+    public function getTitle(Localization $localization = null)
     {
-        return $this->getLocalizedFallbackValue($this->titles, $locale);
+        return $this->getLocalizedFallbackValue($this->titles, $localization);
     }
 
     /**
@@ -299,13 +311,5 @@ class Localization implements DatesAwareInterface
         $this->addTitle($newTitle);
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->name;
     }
 }

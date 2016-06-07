@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\localeBundle\Tests\Unit\Autocomplete;
+namespace Oro\Bundle\LocaleBundle\Tests\Unit\Autocomplete;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
