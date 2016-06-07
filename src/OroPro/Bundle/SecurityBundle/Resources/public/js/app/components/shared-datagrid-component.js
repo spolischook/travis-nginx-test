@@ -66,7 +66,7 @@ define(function(require) {
                                 update: false
                             }
                         };
-                        grid.collection.add(newModel).trigger('backgrid:select', newModel, true);
+                        grid.collection.add(newModel);
                         changed = true;
                     }
                 });
@@ -89,7 +89,7 @@ define(function(require) {
                             update: false
                         }
                     };
-                    grid.collection.add(model).trigger('backgrid:select', model, true);
+                    grid.collection.add(model);
                     grid.collection.trigger('reset', grid.collection);
                     grid.trigger('layout:update');
                 }
