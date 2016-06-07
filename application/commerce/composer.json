@@ -15,7 +15,8 @@
   },
   "require": {
     "php": ">=5.4.9",
-    "oro/commerce": "self.version"
+    "oro/commerce": "self.version",
+    "nelmio/alice": "^2.1"
   },
   "require-dev": {
     "sensio/generator-bundle": "2.5.3",
