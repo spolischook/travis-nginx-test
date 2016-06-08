@@ -5,7 +5,7 @@ namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\EventListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
-use Oro\Bundle\DataGridBundle\Common\DataObject as ConfigObject;
+use Oro\Component\Config\Common\ConfigObject;
 
 use OroCRMPro\Bundle\LDAPBundle\EventListener\UserChangeListener;
 use OroCRMPro\Bundle\LDAPBundle\Tests\Unit\Stub\TestingUser;
