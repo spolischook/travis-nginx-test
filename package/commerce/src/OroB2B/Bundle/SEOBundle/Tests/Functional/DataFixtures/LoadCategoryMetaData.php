@@ -25,8 +25,26 @@ class LoadCategoryMetaData extends AbstractFixture implements DependentFixtureIn
             self::META_TITLES => LoadCategoryData::FIRST_LEVEL,
             self::META_DESCRIPTIONS => self::META_DESCRIPTIONS,
             self::META_KEYWORDS => self::META_KEYWORDS,
+        ],
+        LoadCategoryData::SECOND_LEVEL1 => [
+            self::META_TITLES => 'defaultMetaTitle',
+            self::META_DESCRIPTIONS => 'defaultMetaDescription',
+            self::META_KEYWORDS => 'defaultMetaKeywords',
         ]
     ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function load(ObjectManager $manager)
+    {
+        foreach (self::$metadata as $entityReference => $metadataFields) {
+            $entity = $this->getReference($entityReference);
+            $this->loadLocalizedFallbackValues($manager, $entity, $metadataFields);
+        }
+
+        $manager->flush();
+    }
 
     /**
      * {@inheritdoc}

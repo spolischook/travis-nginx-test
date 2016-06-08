@@ -17,4 +17,12 @@ class PageFormExtension extends BaseMetaFormExtension
     {
         return PageType::NAME;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetaFieldLabelPrefix()
+    {
+        return 'orob2b.cms.page';
+    }
 }

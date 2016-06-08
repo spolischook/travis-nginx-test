@@ -9,10 +9,7 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\UIBundle\Event\BeforeListRenderEvent;
 use Oro\Bundle\UIBundle\View\ScrollData;
 
-/**
- * @SuppressWarnings(PHPMD.TooManyMethods)
- */
-class FormViewListener
+abstract class BaseFormViewListener
 {
     /**
      * @var TranslatorInterface
@@ -45,48 +42,6 @@ class FormViewListener
     }
 
     /**
-     * Insert SEO information
-     *
-     * @param BeforeListRenderEvent $event
-     */
-    public function onProductView(BeforeListRenderEvent $event)
-    {
-        $this->addViewPageBlock($event, 'OroB2BProductBundle:Product');
-    }
-
-    /**
-     * @param BeforeListRenderEvent $event
-     */
-    public function onProductEdit(BeforeListRenderEvent $event)
-    {
-        $this->addEditPageBlock($event);
-    }
-
-    /**
-     * @param BeforeListRenderEvent $event
-     */
-    public function onLandingPageView(BeforeListRenderEvent $event)
-    {
-        $this->addViewPageBlock($event, 'OroB2BCMSBundle:Page');
-    }
-
-    /**
-     * @param BeforeListRenderEvent $event
-     */
-    public function onLandingPageEdit(BeforeListRenderEvent $event)
-    {
-        $this->addEditPageBlock($event);
-    }
-
-    /**
-     * @param BeforeListRenderEvent $event
-     */
-    public function onCategoryEdit(BeforeListRenderEvent $event)
-    {
-        $this->addEditPageBlock($event);
-    }
-
-    /**
      * @param BeforeListRenderEvent $event
      */
     protected function addViewPageBlock(BeforeListRenderEvent $event, $entitiyClass)
@@ -106,7 +61,10 @@ class FormViewListener
             return;
         }
 
-        $template = $event->getEnvironment()->render('OroB2BSEOBundle:SEO:view.html.twig', ['entity' => $object]);
+        $template = $event->getEnvironment()->render('OroB2BSEOBundle:SEO:view.html.twig', [
+            'entity' => $object,
+            'labelPrefix' => $this->getMetaFieldLabelPrefix()
+        ]);
 
         $this->addSEOBlock($event->getScrollData(), $template);
     }
@@ -135,4 +93,9 @@ class FormViewListener
         $subBlockId = $scrollData->addSubBlock($blockId);
         $scrollData->addSubBlockData($blockId, $subBlockId, $html);
     }
+
+    /**
+     * @return string
+     */
+    abstract public function getMetaFieldLabelPrefix();
 }

@@ -30,6 +30,12 @@ abstract class BaseMetaFormExtension extends AbstractTypeExtension
     }
 
     /**
+     * Return the name of the extend entity which will be used for determining field labels
+     * @return string
+     */
+    abstract public function getMetaFieldLabelPrefix();
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -39,16 +45,16 @@ abstract class BaseMetaFormExtension extends AbstractTypeExtension
                 'metaTitles',
                 LocalizedFallbackValueCollectionType::NAME,
                 [
-                    'label' => 'orob2b.seo.meta-title.label',
+                    'label' => $this->getMetaFieldLabelPrefix() . '.meta-title.label',
                     'required' => false,
-                    'type' => 'textarea',
+                    'type' => 'text',
                 ]
             )
             ->add(
                 'metaDescriptions',
                 LocalizedFallbackValueCollectionType::NAME,
                 [
-                    'label' => 'orob2b.seo.meta-description.label',
+                    'label' => $this->getMetaFieldLabelPrefix() . '.meta-description.label',
                     'required' => false,
                     'type' => 'textarea',
                 ]
@@ -57,7 +63,7 @@ abstract class BaseMetaFormExtension extends AbstractTypeExtension
                 'metaKeywords',
                 LocalizedFallbackValueCollectionType::NAME,
                 [
-                    'label' => 'orob2b.seo.meta-keywords.label',
+                    'label' => $this->getMetaFieldLabelPrefix() . '.meta-keywords.label',
                     'required' => false,
                     'type' => 'textarea',
                 ]
@@ -71,6 +77,12 @@ abstract class BaseMetaFormExtension extends AbstractTypeExtension
      */
     public function onPostSubmit(FormEvent $event)
     {
+        $form = $event->getForm();
+
+        if (!$form->isValid()) {
+            return;
+        }
+
         $entity = $event->getData();
         $entityManager = $this->registry->getManagerForClass('OroB2BFallbackBundle:LocalizedFallbackValue');
 
