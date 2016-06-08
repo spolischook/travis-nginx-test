@@ -5,6 +5,7 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
+use Oro\Bundle\EmailBundle\Tools\EmailOriginHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
@@ -15,7 +16,6 @@ use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\EmailUser;
-use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Model\FolderType;
 
 use OroCRM\Bundle\AccountBundle\Entity\Account;
@@ -32,9 +32,9 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
     protected $emailEntityBuilder;
 
     /**
-     * @var Processor
+     * @var EmailOriginHelper
      */
-    protected $mailerProcessor;
+    protected $emailOriginHelper;
 
     /** @var EntityNameResolver */
     protected $entityNameResolver;
@@ -47,7 +47,7 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
         parent::setContainer($container);
 
         $this->emailEntityBuilder = $container->get('oro_email.email.entity.builder');
-        $this->mailerProcessor    = $container->get('oro_email.mailer.processor');
+        $this->emailOriginHelper  = $container->get('oro_email.tools.email_origin_helper');
         $this->entityNameResolver = $container->get('oro_entity.entity_name_resolver');
     }
 
@@ -103,7 +103,7 @@ class LoadEmailActivityData extends AbstractFixture implements OrderedFixtureInt
     {
         if ($entity->getEmail() !== null) {
             $user   = $entity->getOwner();
-            $origin = $this->mailerProcessor->getEmailOrigin($user->getEmail());
+            $origin = $this->emailOriginHelper->getEmailOrigin($user->getEmail());
 
             $emailUser = $this->createEmailUser($entity, $data['subject'], $type);
             $emailUser->setOrganization($entity->getOrganization());
