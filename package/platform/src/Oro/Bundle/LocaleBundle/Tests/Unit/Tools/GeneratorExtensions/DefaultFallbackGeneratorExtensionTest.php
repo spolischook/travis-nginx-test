@@ -1,10 +1,10 @@
 <?php
 
-namespace OroB2B\Bundle\FallbackBundle\Tests\Unit\Tools\GeneratorExtensions;
+namespace Oro\Bundle\LocaleBundle\Tests\Unit\Tools\GeneratorExtensions;
 
 use CG\Generator\PhpClass;
 use CG\Generator\PhpMethod;
-use OroB2B\Bundle\FallbackBundle\Tools\GeneratorExtensions\DefaultFallbackGeneratorExtension;
+use Oro\Bundle\LocaleBundle\Tools\GeneratorExtensions\DefaultFallbackGeneratorExtension;
 
 class DefaultFallbackGeneratorExtensionTest extends \PHPUnit_Framework_TestCase
 {

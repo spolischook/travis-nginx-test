@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\FallbackBundle\Tools\GeneratorExtensions;
+namespace Oro\Bundle\LocaleBundle\Tools\GeneratorExtensions;
 
 use CG\Generator\PhpClass;
 

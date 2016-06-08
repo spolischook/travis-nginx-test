@@ -1,13 +1,13 @@
 <?php
 
-namespace OroB2B\Bundle\FallbackBundle\DependencyInjection\Compiler;
+namespace Oro\Bundle\LocaleBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class DefaultFallbackExtensionPass implements CompilerPassInterface
 {
-    const GENERATOR_EXTENSION_NAME = 'orob2b_fallback.entity_generator.extension';
+    const GENERATOR_EXTENSION_NAME = 'oro_locale.entity_generator.extension';
 
     /**
      * @var array Array of classes and fields
