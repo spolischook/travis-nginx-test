@@ -15,12 +15,12 @@ class ProcessTriggerRepository extends EntityRepository
     public function findEqualTrigger(ProcessTrigger $trigger)
     {
         return $this->findOneBy(
-            array(
+            [
                 'event' => $trigger->getEvent(),
                 'field' => $trigger->getField(),
                 'definition' => $trigger->getDefinition(),
                 'cron' => $trigger->getCron()
-            )
+            ]
         );
     }
 
@@ -78,5 +78,21 @@ class ProcessTriggerRepository extends EntityRepository
         }
 
         return $queryBuilder->getQuery()->execute();
+    }
+
+    /**
+     * @param string $definitionName
+     * @return mixed
+     * @todo cover by function test in BAP-10408
+     */
+    public function findByDefinitionName($definitionName)
+    {
+        return $this->createQueryBuilder('trigger')
+            ->select('trigger, definition')
+            ->innerJoin('trigger.definition', 'definition')
+            ->andWhere('definition.name = :definition_name')
+            ->setParameter('definition_name', $definitionName)
+            ->getQuery()
+            ->execute();
     }
 }
