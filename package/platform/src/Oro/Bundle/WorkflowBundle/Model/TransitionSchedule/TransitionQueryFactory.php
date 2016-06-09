@@ -25,7 +25,6 @@ class TransitionQueryFactory
      * @param string $entityClass
      * @param string $dqlFilter optional dql WHERE clause
      * @return Query
-     * @throws \InvalidArgumentException
      */
     public function create(array $workflowSteps, $entityClass, $dqlFilter = null)
     {
