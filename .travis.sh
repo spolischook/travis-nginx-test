@@ -67,9 +67,7 @@ case $step in
              phpenv config-add travis.php.ini;
              composer self-update;
              composer config -g github-oauth.github.com ${GITHUB_OAUTH};
-          fi
-          if [ ! -z "$CS" ]; then
-             composer global require "squizlabs/php_codesniffer=2.3.3";
+             composer install --optimize-autoloader --no-interaction --working-dir=$TRAVIS_BUILD_DIR/tool;
           fi
           if [[ "$APPLICATION" == "documentation" ]]; then
              cd ${APPLICATION};
@@ -94,19 +92,38 @@ case $step in
                       sed -i "s/database_driver"\:".*/database_driver"\:" pdo_pgsql/g; s/database_name"\:".*/database_name"\:" ${dbname}/g; s/database_user"\:".*/database_user"\:" postgres/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
                ;; 
           esac
+          if [ ! -z "$UPDATE_FROM" ]; then
+              git clone https://${GITHUB_OAUTH}@github.com/laboro/Builds.git builds
+              echo  "Restore DB ${UPDATE_FROM}...";
+              case $DB in
+                 mysql)
+                        mysql -u root -D ${dbname} < builds/DBDumps/${UPDATE_FROM}.mysql.sql;
+                 ;;
+                 postgresql)
+                        psql -U postgres ${dbname} < builds/DBDumps/${UPDATE_FROM}.pgsql.sql > /dev/null
+                 ;;
+              esac
+              rm -rf builds
+              INSTALLED_DATE=`date --rfc-3339=seconds`
+              sed -i "s/installed"\:".*/installed"\:" '${INSTALLED_DATE}'/g" app/config/parameters_test.yml;
+          fi
     ;;
     script)
           echo  "Script...";
-          composer install --optimize-autoloader --no-interaction --working-dir=$TRAVIS_BUILD_DIR/tool;
+
           cd ${APPLICATION};
           if [[ "$APPLICATION" == "documentation" ]]; then
              sphinx-build -nW -b html -d _build/doctrees . _build/html; 
           fi
-          if [ ! -z "$TESTSUITE" ]; then 
+          if [ ! -z "$TESTSUITE" ]; then
              composer install --optimize-autoloader --no-interaction;
-             if [ ! -z "$DB" ]; then 
-                php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --skip-assets --timeout 600;
-                php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures; 
+             if [ ! -z "$DB" ]; then
+                if [ ! -z "$UPDATE_FROM" ]; then
+                    php app/console oro:platform:update --env test --force --no-interaction --skip-assets --timeout 600;
+                else
+                    php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --skip-assets --timeout 600;
+                fi
+                php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures;
                 if [[ "$APPLICATION" == "application/commerce" ]]; then
                     php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/commerce/src/Oro/Component/Testing/Fixtures;
                 fi;
@@ -146,7 +163,7 @@ case $step in
                         DIRECTORY="${APPLICATION}_$i"
                     fi
                     cd $DIRECTORY
-                    { php $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --stderr --testsuite=$TESTSUITE-$i-of-$PARALLEL_PROCESSES > ../../result.$i 2>&1 ; echo "$?" > "../../code.$i" ; } &
+                    { $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --verbose --stderr --testsuite=$TESTSUITE-$i-of-$PARALLEL_PROCESSES > ../../result.$i 2>&1 ; echo "$?" > "../../code.$i" ; } &
                     PIDS[$i]=$!
                     cd ../..
                 done
@@ -191,7 +208,7 @@ case $step in
              APPLICATION_PWD=$PWD
              cd ..;
              TEST_FILES=$(if [ ! -z "$TRAVIS_CS_FILES" ]; then echo $TRAVIS_CS_FILES; else echo "$APPLICATION_PWD/."; fi);
-             $HOME/.composer/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
+             $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
           fi
     ;;
 esac
