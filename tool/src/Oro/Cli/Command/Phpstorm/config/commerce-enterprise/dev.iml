@@ -2,11 +2,11 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/application/commerce/app" />
-      <excludeFolder url="file://$MODULE_DIR$/application/commerce/web" />
-      <excludeFolder url="file://$MODULE_DIR$/application/commerce/vendor/oro/commerce" />
-      <excludeFolder url="file://$MODULE_DIR$/application/commerce/vendor/oro/platform" />
-      <excludeFolder url="file://$MODULE_DIR$/application/commerce-enterprise" />
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce-enterprise/app" />
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce-enterprise/web" />
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce-enterprise/vendor/oro/commerce" />
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce-enterprise/vendor/oro/platform" />
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise" />
       <excludeFolder url="file://$MODULE_DIR$/application/platform" />
