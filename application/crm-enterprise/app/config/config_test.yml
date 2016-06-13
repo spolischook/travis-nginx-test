@@ -28,6 +28,7 @@ services:
             - { name: twig.extension }
 
 oro_message_queue:
+    client: ~
     transport:
         default: 'null'
         'null': true
