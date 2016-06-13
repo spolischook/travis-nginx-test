@@ -54,6 +54,10 @@ case $step in
                            echo -e "Source code changes were detected:\n$files";
                            echo -e "Pass files to PHPCS";
                            export TRAVIS_CS_FILES=$files;
+                        elif [ ! -e "$JS" ]; then
+                           echo -e "Source code changes were detected:\n$files";
+                           echo -e "Pass files to JavaScript";
+                           export TRAVIS_JS_FILES=$files;
                         else
                            echo "Code Style build not required!";
                            export TRAVIS_SKIP="true";
@@ -74,6 +78,11 @@ case $step in
              pip install -q -r requirements.txt --use-mirrors;
              pip install git+https://github.com/fabpot/sphinx-php.git;
           fi
+          if [ ! -z "$JS" ]; then
+             cd $TRAVIS_BUILD_DIR/tool;
+             npm install;
+          fi
+   
      ;;
      before_script)
           echo  "Before script...";
@@ -209,6 +218,12 @@ case $step in
              cd ..;
              TEST_FILES=$(if [ ! -z "$TRAVIS_CS_FILES" ]; then echo $TRAVIS_CS_FILES; else echo "$APPLICATION_PWD/."; fi);
              $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
+          fi
+          if [ ! -z "$JS" ]; then
+             cd $TRAVIS_BUILD_DIR;
+             set +e; 
+             tool/node_modules/.bin/jscs package/*/src/*/Bundle/*Bundle/Resources/public/js/** package/*/src/*/Bundle/*Bundle/Tests/JS/** package/*/Resources/public/js/** --config=tool/.jscsrc; 
+             tool/node_modules/.bin/jshint package/*/src/*/Bundle/*Bundle/Resources/public/js/** package/*/src/*/Bundle/*Bundle/Tests/JS/** package/*/Resources/public/js/** --config=tool/.jshintrc --exclude-path=tool/.jshintignore;
           fi
     ;;
 esac
