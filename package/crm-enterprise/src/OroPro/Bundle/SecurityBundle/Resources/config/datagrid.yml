@@ -24,6 +24,7 @@ datagrid:
                 icon: trash
                 selector: share-items-remove
         options:
+            routerEnabled: false
             toolbarOptions:
                 hide: true
                 pagination:
