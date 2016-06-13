@@ -10,9 +10,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use OroB2B\Bundle\ProductBundle\Entity\ProductUnitPrecision;
 
-class ProductUnitPrecisionType extends AbstractType
+class ProductPrimaryUnitPrecisionType extends AbstractType
 {
-    const NAME = 'orob2b_product_unit_precision';
+    const NAME = 'orob2b_product_primary_unit_precision';
 
     /**
      * @var string
@@ -35,8 +35,8 @@ class ProductUnitPrecisionType extends AbstractType
     {
         $builder
             ->add('precision', 'integer', ['type' => 'text', 'required' => false])
-            ->add('conversionRate', 'number', ['required' => false])
-            ->add('sell', 'checkbox', ['required' => false])
+            ->add('conversionRate', 'hidden', ['data' => 1])
+            ->add('sell', 'hidden', ['data' => true])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
@@ -44,22 +44,7 @@ class ProductUnitPrecisionType extends AbstractType
             $form = $event->getForm();
 
             if ($unitPrecision instanceof ProductUnitPrecision && $unitPrecision->getUnit()) {
-                if ($unitPrecision->getId()) {
-                    $disabled = true;
-                } else {
-                    $disabled = false;
-                }
-                $form->add(
-                    'unit_disabled',
-                    ProductUnitSelectionType::NAME,
-                    [
-                       'compact' => $options['compact'],
-                       'disabled' => $disabled,
-                       'mapped' => false,
-                       'data' => $unitPrecision->getUnit()
-                    ]
-                );
-                $form->add('unit', ProductUnitSelectionType::NAME, ['attr' => ['class' => 'hidden-unit']]);
+                $form->add('unit', ProductUnitSelectionType::NAME, ['attr' => ['class' => 'unit']]);
             } else {
                 $form->add('unit', ProductUnitSelectionType::NAME, ['compact' => $options['compact']]);
             }
