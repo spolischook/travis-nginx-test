@@ -261,9 +261,7 @@ class ProcessorBag implements ProcessorBagInterface
      */
     protected function initializeProcessorApplicableChecker()
     {
-        $this->processorApplicableChecker = new ChainApplicableChecker();
-        $this->registerApplicableChecker(new GroupRangeApplicableChecker());
-        $this->registerApplicableChecker(new SkipGroupApplicableChecker());
+        $this->processorApplicableChecker = $this->createProcessorApplicableChecker();
         $matchApplicableChecker = new MatchApplicableChecker();
         // add the "priority" attribute to the ignore list,
         // as it is added by LoadProcessorsCompilerPass to processors' attributes only in debug mode
@@ -271,12 +269,22 @@ class ProcessorBag implements ProcessorBagInterface
             $matchApplicableChecker->addIgnoredAttribute('priority');
         }
         $this->registerApplicableChecker($matchApplicableChecker);
+        $this->registerApplicableChecker(new SkipGroupApplicableChecker());
+        $this->registerApplicableChecker(new GroupRangeApplicableChecker());
         if (!empty($this->initialData['checkers'])) {
             $checkers = $this->sortByPriorityAndFlatten($this->initialData['checkers']);
             foreach ($checkers as $checker) {
                 $this->registerApplicableChecker($checker);
             }
         }
+    }
+
+    /**
+     * @return ChainApplicableChecker
+     */
+    protected function createProcessorApplicableChecker()
+    {
+        return new ChainApplicableChecker();
     }
 
     /**

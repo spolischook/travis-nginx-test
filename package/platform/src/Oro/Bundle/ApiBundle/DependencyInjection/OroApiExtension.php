@@ -6,6 +6,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 use Oro\Component\Config\Loader\CumulativeConfigLoader;
@@ -30,6 +31,7 @@ class OroApiExtension extends Extension implements PrependExtensionInterface
         $loader->load('form.yml');
         $loader->load('processors.normalize_value.yml');
         $loader->load('processors.collect_resources.yml');
+        $loader->load('processors.collect_subresources.yml');
         $loader->load('processors.get_config.yml');
         $loader->load('processors.get_metadata.yml');
         $loader->load('processors.get_list.yml');
@@ -38,9 +40,17 @@ class OroApiExtension extends Extension implements PrependExtensionInterface
         $loader->load('processors.delete_list.yml');
         $loader->load('processors.create.yml');
         $loader->load('processors.update.yml');
+        $loader->load('processors.get_subresource.yml');
+        $loader->load('processors.get_relationship.yml');
+        $loader->load('processors.delete_relationship.yml');
+        $loader->load('processors.add_relationship.yml');
+        $loader->load('processors.update_relationship.yml');
 
         if ($container->getParameter('kernel.debug')) {
             $loader->load('debug.yml');
+            $container->getDefinition('oro_api.processor_bag')
+                ->setClass('Oro\Component\ChainProcessor\Debug\TraceableProcessorBag')
+                ->addMethodCall('setTraceLogger', [new Reference('oro_api.profiler.logger')]);
             DependencyInjectionUtil::registerDebugService(
                 $container,
                 'oro_api.action_processor_bag',
@@ -52,6 +62,7 @@ class OroApiExtension extends Extension implements PrependExtensionInterface
                 'Oro\Component\ChainProcessor\Debug\TraceableProcessorFactory'
             );
             DependencyInjectionUtil::registerDebugService($container, 'oro_api.collect_resources.processor');
+            DependencyInjectionUtil::registerDebugService($container, 'oro_api.collect_subresources.processor');
             DependencyInjectionUtil::registerDebugService($container, 'oro_api.customize_loaded_data.processor');
             DependencyInjectionUtil::registerDebugService($container, 'oro_api.get_config.processor');
             DependencyInjectionUtil::registerDebugService($container, 'oro_api.get_relation_config.processor');
