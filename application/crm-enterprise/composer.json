@@ -29,7 +29,7 @@
         "oro/crm-zendesk": "self.version",
         "oro/crm-pro-ldap-bundle": "self.version",
         "oro/crm-pro-demo-data-bundle": "self.version",
-        "php-amqplib/php-amqplib": "^2.6"
+        "oro/crm-task-bundle": "self.version"
     },
     "require-dev": {
         "sensio/generator-bundle": "2.5.3",
