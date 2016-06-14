@@ -35,8 +35,8 @@ case $step in
                            commerce=$(echo -e "$files" | grep -e "^commerce$");
                            if [[ $platform ]]; then echo "Platform is detected. Run all";
                            elif [[ $crm ]] && [[ $APPLICATION == */crm* ]]; then echo "CRM is detected. Run CRM and Enterprise";
-                           elif [[ crm_enterprise ]] && [[ $APPLICATION == */crm-enterprise ]]; then echo "Enterprise is detected. Run Enterprise";
-                           elif [[ commerce ]] && [[ $APPLICATION == */commerce ]]; then echo "Commerce is detected. Run Commerce";
+                           elif [[ $crm_enterprise ]] && [[ $APPLICATION == */crm-enterprise ]]; then echo "Enterprise is detected. Run Enterprise";
+                           elif [[ $commerce ]] && [[ $APPLICATION == */commerce ]]; then echo "Commerce is detected. Run Commerce";
                            # TODO: add other cases for example Extensions tests
                            else
                                echo "Tests build not required!";
@@ -52,8 +52,10 @@ case $step in
                         files=$(echo -e "$filteredDiff" | grep -e "^package/.*\.php$");
                         if [ ! -e "$CS" ] && [[ $files ]]; then
                            echo -e "Source code changes were detected:\n$files";
-                           echo -e "Pass files to PHPCS";
+                           echo -e "Pass files to PHPCS and PHPMD";
                            export TRAVIS_CS_FILES=$files;
+                           commerce=$(echo -e "$files" | grep -e "^commerce$");
+                           if [[ $commerce ]]; then export TRAVIS_CS_COMMERCE='YES'; fi
                         else
                            echo "Code Style build not required!";
                            export TRAVIS_SKIP="true";
@@ -209,6 +211,35 @@ case $step in
              cd ..;
              TEST_FILES=$(if [ ! -z "$TRAVIS_CS_FILES" ]; then echo $TRAVIS_CS_FILES; else echo "$APPLICATION_PWD/."; fi);
              $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
+             if [ ! -z "$TRAVIS_CS_FILES" ]; then
+                TEST_FILES=${$TRAVIS_CS_FILES//$'\n'/,};
+                $TRAVIS_BUILD_DIR/tool/vendor/bin/phpmd $TEST_FILES text $TRAVIS_BUILD_DIR/tool/codestandards/rulesetMD.xml --suffixes php;
+             fi
+             if [ ! -z "$TRAVIS_CS_FILES" ] && [ ! -z "$TRAVIS_CS_COMMERCE" ]; then
+                $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcpd --min-lines 25 \ 
+                                --exclude=AccountBundle/Migrations/Schema \
+                                --exclude=PaymentBundle/Migrations/Schema \
+                                --exclude=PricingBundle/Migrations/Schema \
+                                --exclude=ProductBundle/Migrations/Schema \ 
+                                --exclude=RFPBundle/Migrations/Schema \
+                                --exclude=SaleBundle/Migrations/Schema \
+                                --exclude=OrderBundle/Migrations/Schema \
+                                --exclude=InvoiceBundle/Migrations/Schema \
+                                --exclude=ShoppingListBundle/Migrations/Schema \
+                                --exclude=WebsiteBundle/Migrations/Schema \
+                                --exclude=CatalogBundle/Migrations/Schema \
+                                --exclude=CMSBundle/Migrations/Schema \
+                                --exclude=WarehouseBundle/Migrations/Schema \ 
+                                --exclude=TaxBundle/Migrations/Schema \
+                                --exclude=MenuBundle/Migrations/Schema \
+                                --exclude=CheckoutBundle/Migrations/Schema \
+                                --exclude=AlternativeCheckoutBundle/Migrations/Schema \
+                                --exclude=ShippingBundle/Migrations/Schema \
+                                --exclude=SaleBundle/Entity \
+                                --exclude=RFPBundle/Entity \
+                                --exclude=AlternativeCheckoutBundle/Entity \
+                                --verbose $APPLICATION_PWD"/commerce";
+             fi
           fi
     ;;
 esac
