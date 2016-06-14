@@ -18,7 +18,7 @@ class OroWorkflowBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_13';
+        return 'v1_14';
     }
 
     /**
@@ -62,6 +62,7 @@ class OroWorkflowBundleInstaller implements Installation
         $table->addColumn('current_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('workflow_name', 'string', ['length' => 255]);
         $table->addColumn('entity_id', 'integer', ['notnull' => false]);
+        $table->addColumn('entity_class', 'string', ['notnull' => false]);
         $table->addColumn('created', 'datetime', []);
         $table->addColumn('updated', 'datetime', ['notnull' => false]);
         $table->addColumn('data', 'text', ['notnull' => false]);
