@@ -212,7 +212,7 @@ case $step in
              TEST_FILES=$(if [ ! -z "$TRAVIS_CS_FILES" ]; then echo $TRAVIS_CS_FILES; else echo "$APPLICATION_PWD/."; fi);
              $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
              if [ ! -z "$TRAVIS_CS_FILES" ]; then
-                TEST_FILES=${$TRAVIS_CS_FILES//$'\n'/,};
+                TEST_FILES=${TRAVIS_CS_FILES//$'\n'/,};
                 $TRAVIS_BUILD_DIR/tool/vendor/bin/phpmd $TEST_FILES text $TRAVIS_BUILD_DIR/tool/codestandards/rulesetMD.xml --suffixes php;
              fi
              if [ ! -z "$TRAVIS_CS_FILES" ] && [ ! -z "$TRAVIS_CS_COMMERCE" ]; then
