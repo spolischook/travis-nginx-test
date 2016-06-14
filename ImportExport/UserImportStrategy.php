@@ -31,8 +31,8 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
      * @param ImportStrategyHelper         $strategyHelper
      * @param FieldHelper                  $fieldHelper
      * @param DatabaseHelper               $databaseHelper
-     * @param ChainEntityClassNameProvider $chainEntityClassNameProvider ,
-     * @param TranslatorInterface          $translator                   ,
+     * @param ChainEntityClassNameProvider $chainEntityClassNameProvider
+     * @param TranslatorInterface          $translator
      * @param NewEntitiesHelper            $newEntitiesHelper
      * @param DefaultOwnerHelper           $defaultOwnerHelper
      * @param ConnectorContextMediator     $contextMediator
