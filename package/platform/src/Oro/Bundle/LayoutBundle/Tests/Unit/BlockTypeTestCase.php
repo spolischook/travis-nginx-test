@@ -27,6 +27,7 @@ abstract class BlockTypeTestCase extends BaseBlockTypeTestCase
         $this->formLayoutBuilder->addSimpleFormTypes(['choice', 'datetime', 'date', 'time']);
 
         $layoutFactoryBuilder
+            ->addType(new Type\FormType())
             ->addType(new Type\FormFieldsType($this->formLayoutBuilder))
             ->addType(new Type\FormStartType())
             ->addType(new Type\FormEndType())
