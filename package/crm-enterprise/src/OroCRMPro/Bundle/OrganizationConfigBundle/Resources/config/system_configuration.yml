@@ -1,0 +1,12 @@
+oro_system_configuration:
+    tree:
+        organization_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            probability_configuration:
+                                children:
+                                    opportunity_status_probabilities:
+                                        children:
+                                            - oro_crm_sales.default_opportunity_probabilities
