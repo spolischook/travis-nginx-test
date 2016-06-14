@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "60827a80e21ea1b4fba612d8e97ba20f",
-    "content-hash": "05cf7f68f78d1ca86f47439a5d4b8609",
+    "hash": "a811a5cc019d0096cfebc9b7718ae1b2",
+    "content-hash": "4cf95a29405863acd728a19779492d01",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3913,7 +3913,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm",
-                "reference": "dd4550def5763c5c637f7ec7894b691ce102ce68",
+                "reference": "6f5a2e4885cbf854003170d318d6a9ce1f605365",
                 "shasum": null
             },
             "require": {
@@ -3928,7 +3928,8 @@
             },
             "autoload": {
                 "psr-0": {
-                    "OroCRM\\Bundle": "src/"
+                    "OroCRM\\Bundle": "src/",
+                    "Oro\\CRMTaskBundle": "src/"
                 }
             },
             "license": [
@@ -4240,6 +4241,39 @@
             ],
             "description": "OroCRM Pro LDAP Bundle",
             "homepage": "https://github.com/orocrm/OroCRMProLDAPBundle.git"
+        },
+        {
+            "name": "oro/crm-task-bundle",
+            "version": "dev-master",
+            "target-dir": "src/OroCRM/Bundle/TaskBundle",
+            "dist": {
+                "type": "path",
+                "url": "../../package/task",
+                "reference": "edea0130da60ee78cdc4382a28198b7dd3f984d8",
+                "shasum": null
+            },
+            "require": {
+                "oro/platform": "self.version",
+                "php": ">=5.5.9"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "OroCRM\\Bundle\\TaskBundle": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "OroCRM Task Bundle",
+            "keywords": [
+                "OroCRM"
+            ]
         },
         {
             "name": "oro/crm-zendesk",
@@ -8053,7 +8087,8 @@
         "oro/crm-dotmailer": 20,
         "oro/crm-zendesk": 20,
         "oro/crm-pro-ldap-bundle": 20,
-        "oro/crm-pro-demo-data-bundle": 20
+        "oro/crm-pro-demo-data-bundle": 20,
+        "oro/crm-task-bundle": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
