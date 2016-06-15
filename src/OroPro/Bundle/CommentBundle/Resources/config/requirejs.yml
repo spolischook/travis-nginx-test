@@ -1,8 +1,0 @@
-config:
-    map:
-        '*':
-            'orocomment/js/app/models/comment-model': 'oroprocomment/js/app/models/comment-model'
-        'oroprocomment/js/app/models/comment-model':
-            'orocomment/js/app/models/comment-model': 'orocomment/js/app/models/comment-model'
-    paths:
-        'oroprocomment/js/app/models/comment-model': 'bundles/oroprocomment/js/app/models/comment-model.js'

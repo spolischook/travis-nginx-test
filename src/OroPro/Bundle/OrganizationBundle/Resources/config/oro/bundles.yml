@@ -1,2 +1,0 @@
-bundles:
-    - { name: OroPro\Bundle\OrganizationBundle\OroProOrganizationBundle, priority: 100 }
