@@ -7,7 +7,7 @@ use OroPro\Bundle\SecurityBundle\Entity\AclClass;
 class AclClassTest extends \PHPUnit_Framework_TestCase
 {
     const ENTITY_ID = 2;
-    const CLASS_TYPE = 'OroCRM\Bundle\ContactBundle\Entity\Contact';
+    const CLASS_TYPE = 'OroPro\Bundle\OrganizationBundle\Entity\UserOrganization';
 
     /**
      * @var AclClass

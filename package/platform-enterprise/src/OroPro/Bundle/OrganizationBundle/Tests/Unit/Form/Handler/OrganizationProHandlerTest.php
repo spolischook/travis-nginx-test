@@ -2,6 +2,7 @@
 
 namespace OroPro\Bundle\OrganizationBundle\Tests\Unit\Form\Handler;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken as Token;
@@ -10,7 +11,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 use OroPro\Bundle\OrganizationBundle\Form\Handler\OrganizationProHandler;
+use OroPro\Bundle\OrganizationBundle\Event\OrganizationUpdateEvent;
 
 class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,8 +32,8 @@ class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager */
     protected $securityContext;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager */
-    protected $stateProvider;
+    /** @var \PHPUnit_Framework_MockObject_MockObject|EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /** @var Organization */
     protected $entity;
@@ -44,9 +47,7 @@ class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
         $this->form            = $this->getMock('Symfony\Component\Form\Test\FormInterface');
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
 
-        $this->stateProvider = $this->getMockBuilder('OroCRM\Bundle\ChannelBundle\Provider\StateProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         $this->entity  = new Organization();
         $this->handler = new OrganizationProHandler(
@@ -54,7 +55,7 @@ class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
             $this->request,
             $this->manager,
             $this->securityContext,
-            $this->stateProvider
+            $this->eventDispatcher
         );
     }
 
@@ -67,7 +68,7 @@ class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
             $this->form,
             $this->request,
             $this->manager,
-            $this->stateProvider
+            $this->eventDispatcher
         );
     }
 
@@ -104,9 +105,10 @@ class OrganizationProHandlerTest extends \PHPUnit_Framework_TestCase
         $this->form->expects($this->at(5))->method('get')->with('removeUsers')->willReturn($removeForm);
 
         $this->manager->expects($this->once())->method('flush');
-        $this->stateProvider->expects($this->once())
-            ->method('clearOrganizationCache')
-            ->with($this->entity->getId());
+
+        $this->eventDispatcher->expects($this->once())
+            ->method('dispatch')
+            ->with(OrganizationUpdateEvent::NAME, new OrganizationUpdateEvent($this->entity));
 
         $this->assertTrue($this->handler->process($this->entity));
 
