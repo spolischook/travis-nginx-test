@@ -4,6 +4,7 @@ namespace OroPro\Bundle\OrganizationBundle\Form\Handler;
 
 use Doctrine\ORM\EntityManager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-use OroCRM\Bundle\ChannelBundle\Provider\StateProvider;
+use OroPro\Bundle\OrganizationBundle\Event\OrganizationUpdateEvent;
 
 class OrganizationProHandler
 {
@@ -28,28 +29,28 @@ class OrganizationProHandler
     /** @var SecurityContextInterface */
     protected $securityContext;
 
-    /** @var StateProvider */
-    protected $stateProvider;
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /**
      * @param FormInterface            $form
      * @param Request                  $request
      * @param EntityManager            $manager
      * @param SecurityContextInterface $securityContext
-     * @param StateProvider            $stateProvider
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         EntityManager $manager,
         SecurityContextInterface $securityContext,
-        StateProvider $stateProvider
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->form            = $form;
         $this->request         = $request;
         $this->manager         = $manager;
         $this->securityContext = $securityContext;
-        $this->stateProvider   = $stateProvider;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -95,7 +96,8 @@ class OrganizationProHandler
         $this->manager->flush();
 
         //clear channels entities state cache
-        $this->stateProvider->clearOrganizationCache($entity->getId());
+        $event = new OrganizationUpdateEvent($entity);
+        $this->eventDispatcher->dispatch(OrganizationUpdateEvent::NAME, $event);
     }
 
     /**
