@@ -1,0 +1,20 @@
+placeholders:
+    search_item_entity_info:
+        items:
+            organization_info: ~
+    additional_owner_info:
+        items:
+            view_entity_owner_info: ~
+    organization_selector:
+        items:
+            organization_notice: ~
+
+items:
+    organization_info:
+        template: OroProOrganizationBundle::searchResultOrganizationInfo.html.twig
+
+    view_entity_owner_info:
+        template: OroProOrganizationBundle::viewOwnerInfo.html.twig
+
+    organization_notice:
+        template: OroProOrganizationBundle:Placeholder:organizationNotice.html.twig

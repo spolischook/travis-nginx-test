@@ -1,0 +1,27 @@
+{% spaceless %}
+    {% set currOrganization = get_current_organization() %}
+    {% set multiorgLoginFirstAttr = constant('OroPro\\Bundle\\OrganizationBundle\\EventListener\\AuthenticationListener::MULTIORG_LOGIN_FIRST') %}
+    {% set multiorgLoginUnpreferredAttr = constant('OroPro\\Bundle\\OrganizationBundle\\EventListener\\AuthenticationListener::MULTIORG_LOGIN_UNPREFERRED') %}
+
+    {% if (app.session.has(multiorgLoginFirstAttr) or app.session.has(multiorgLoginUnpreferredAttr)) %}
+        {% set message = 'oropro.organization.controller.message.multiorg.login.' ~
+                                                (app.session.has(multiorgLoginFirstAttr) ? 'first' : 'unpreferred') %}
+        {% set translationParams = { '%organization_name%': currOrganization.name } %}
+        <div class="oropro-organization-notice-holder">
+            <div class="popover bottom open">
+                <div class="arrow"></div>
+                <h3 class="popover-title">
+                    <strong>
+                        {{ 'oropro.organization.controller.message.multiorg.notice_title'|trans(translationParams) }}
+                    </strong>
+                </h3>
+                <div class="popover-content">{{ message|trans(translationParams)|trim|striptags|raw }}</div>
+                <a href="#" class="icon-remove popover-close" data-toggle="dropdown"></a>
+            </div>
+        </div>
+
+        {# unset session attributes #}
+        {% do app.session.remove(multiorgLoginFirstAttr) %}
+        {% do app.session.remove(multiorgLoginUnpreferredAttr) %}
+    {% endif %}
+{% endspaceless %}

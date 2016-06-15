@@ -1,0 +1,4 @@
+oropro_organization_bundle:
+    resource:     "@OroProOrganizationConfigBundle/Controller"
+    type:         annotation
+    prefix:       /config

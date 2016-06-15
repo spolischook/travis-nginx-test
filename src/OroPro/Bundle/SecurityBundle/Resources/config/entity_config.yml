@@ -1,0 +1,29 @@
+oro_entity_config:
+    ownership:
+        entity:
+            items:
+                # This attribute is allow to show entities from organization with system access for other organization
+                global_view: # boolean
+                    options:
+                        auditable: false
+    security:
+        entity:
+            items:
+                # This attribute determines within which group an object can be shared. For example,
+                # if share_scope=[organization] than user can share the object only to organizations.
+                # Role permission "Share" says who can share, "Share Scope" says how object can be shared.
+                share_scopes:
+                    options:
+                        priority: 250
+                        indexed: true
+                    form:
+                        type: oropro_share_scope
+                        options:
+                            block: associations
+                            required: false
+                            label: 'oro.security.share_scopes.label'
+                    grid:
+                        type: html
+                        label: oro.security.share_scopes.label
+                        required: true
+                        template: OroProSecurityBundle:Share:propertyLabel.html.twig

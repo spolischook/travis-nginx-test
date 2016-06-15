@@ -1,0 +1,52 @@
+{% block oro_email_mailbox_grid_label %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% set redirectData = {
+        'route': app.request.attributes.get('_route'),
+        'parameters': app.request.attributes.get('_route_params'),
+    } %}
+    {% if app.request.attributes.get('_route') == 'oropro_organization_config' %}
+        {% set parameters = {
+            'organization_id': app.request.attributes.get('_route_params')['id'],
+            'redirectData': redirectData,
+            'form': {'_sa_org_id': app.request.attributes.get('_route_params')['id']},
+        } %}
+    {% else %}
+        {% set parameters = {
+            'redirectData': redirectData
+        } %}
+    {% endif %}
+    {% if resource_granted('oro_organization_update') %}
+        <div class="row" style="margin-top: -42px;">
+            <div class="pull-right">
+                <div class="btn-group">
+                    {{ UI.addButton({
+                        'path': path('oro_email_mailbox_create', parameters),
+                        'label': 'oro.email.system_configuration.mailbox_configuration.add_mailbox.label'|trans
+                    }) }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block oro_email_mailbox_grid_widget %}
+    {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+    {% set redirectData = {
+        'route': app.request.attributes.get('_route'),
+        'parameters': app.request.attributes.get('_route_params'),
+    } %}
+    {% if app.request.attributes.get('_route') == 'oropro_organization_config' %}
+        {% set parameters = {
+            'organization_ids': [app.request.attributes.get('_route_params')['id']],
+            'redirectData': redirectData
+        } %}
+    {% else %}
+        {% set parameters = {
+            'organization_ids': [get_current_organization().getId()],
+            'redirectData': redirectData
+        } %}
+    {% endif %}
+    <div class="row" style="margin-right: -20px;">
+        {{ dataGrid.renderGrid('base-mailboxes-grid', parameters) }}
+    </div>
+{% endblock %}

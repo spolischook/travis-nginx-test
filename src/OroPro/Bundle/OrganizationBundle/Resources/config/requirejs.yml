@@ -1,0 +1,25 @@
+config:
+    map:
+        '*':
+            'orodatagrid/js/datagrid/grid-views/view': 'oroproorganization/js/datagrid/grid-views/view'
+            'oroimap/js/app/views/check-connection-view': 'oroproorganization/js/app/views/check-connection-view'
+            'oroimap/js/app/components/account-type-component': 'oroproorganization/js/app/components/account-type-component'
+            'oroimap/js/app/components/imap-gmail-component': 'oroproorganization/js/app/components/imap-gmail-component'
+        'oroproorganization/js/datagrid/grid-views/view':
+            'orodatagrid/js/datagrid/grid-views/view': 'orodatagrid/js/datagrid/grid-views/view'
+        'oroproorganization/js/app/views/check-connection-view':
+            'oroimap/js/app/views/check-connection-view': 'oroimap/js/app/views/check-connection-view'
+        'oroproorganization/js/app/components/account-type-component':
+            'oroimap/js/app/components/account-type-component': 'oroimap/js/app/components/account-type-component'
+        'oroproorganization/js/app/components/imap-gmail-component':
+            'oroimap/js/app/components/imap-gmail-component': 'oroimap/js/app/components/imap-gmail-component'
+    paths:
+        'oroproorganization/js/app/modules/organization-module': 'bundles/oroproorganization/js/app/modules/organization-module.js'
+        'oroproorganization/js/datagrid/grid-views/view': 'bundles/oroproorganization/js/datagrid/grid-views/view.js'
+        'oroproorganization/js/app/views/organization-switch-view': 'bundles/oroproorganization/js/app/views/organization-switch-view.js'
+        'oroproorganization/js/app/views/check-connection-view': 'bundles/oroproorganization/js/app/views/check-connection-view.js'
+        'oroproorganization/js/app/tools/system-access-mode-organization-provider': 'bundles/oroproorganization/js/app/tools/system-access-mode-organization-provider.js'
+        'oroproorganization/js/app/components/account-type-component': 'bundles/oroproorganization/js/app/components/account-type-component.js'
+        'oroproorganization/js/app/components/imap-gmail-component': 'bundles/oroproorganization/js/app/components/imap-gmail-component.js'
+    appmodules:
+        - oroproorganization/js/app/modules/organization-module

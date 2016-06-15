@@ -1,0 +1,63 @@
+{% macro filterRoles(form) %}
+    <script type="text/javascript">
+        require(['jquery'], function ($) {
+            "use strict";
+            var roles = $('#{{ form.roles.vars.id }}').find('input[type="checkbox"]');
+            var organizations = $('#{{ form.organizations.vars.id }}').find('input.org:checkbox');
+
+            var permissionsMap = $.parseJSON('{{ form.vars.permissions_map | raw }}');
+
+            roles.each(function(key, elm) {
+                var roleId = elm.value;
+                var granted = permissionsMap[roleId]['org_id'] == null || isOrganizationForRoleChecked(roleId);
+
+                var label = $('label[for="' + elm.id + '"]');
+                label.html(permissionsMap[roleId]['label']);
+
+                if (!granted) {
+                    hideCheckboxElement(elm);
+                }
+            });
+
+            $(function() {
+                $(document).on('change', 'input.bu:checkbox', function (e) {
+                    var org_id = $(this).data('organization');
+                    $('input.org-id-' + org_id + ':checkbox').prop('checked', true).trigger('change');
+                });
+
+                $(document).on('change', 'input.org:checkbox', function (e) {
+                    roles.each(function (key, elm) {
+                        var roleId = elm.value;
+                        var granted = (permissionsMap[roleId]['org_id'] == null || isOrganizationForRoleChecked(roleId));
+                        if (!granted) {
+                            $(elm).prop('checked', false);
+                            hideCheckboxElement(elm);
+                        } else {
+                            showCheckboxElement(elm)
+                        }
+                    });
+                });
+            });
+
+            function hideCheckboxElement(elm) {
+                $('label[for="' + elm.id + '"]').hide();
+                $(elm).hide();
+            }
+
+            function showCheckboxElement(elm) {
+                var roleId = elm.value;
+                var label = $('label[for="' + elm.id + '"]');
+                label.html(permissionsMap[roleId]['label']);
+                label.show();
+                $(elm).show();
+            }
+
+            function isOrganizationForRoleChecked(roleId) {
+                var checkedOrganization = organizations.filter(function(key, elm) {
+                    return (parseInt(elm.value) == permissionsMap[roleId]['org_id'] && elm.checked);
+                });
+                return checkedOrganization.length > 0;
+            }
+        });
+    </script>
+{% endmacro %}
