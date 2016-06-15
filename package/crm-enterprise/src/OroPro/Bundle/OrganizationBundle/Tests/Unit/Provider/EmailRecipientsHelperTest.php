@@ -61,6 +61,10 @@ class EmailRecipientsHelperTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->indexer = $this->getMockBuilder('Oro\Bundle\SearchBundle\Engine\Indexer')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->emailRecipientsHelper = new EmailRecipientsHelper(
             $this->aclHelper,
             $this->dqlNameFormatter,
@@ -69,7 +73,8 @@ class EmailRecipientsHelperTest extends \PHPUnit_Framework_TestCase
             $this->translator,
             $this->emailOwnerProvider,
             $this->registry,
-            $this->addressHelper
+            $this->addressHelper,
+            $this->indexer
         );
         $this->emailRecipientsHelper->setSecurityFacade($this->securityFacade);
     }
