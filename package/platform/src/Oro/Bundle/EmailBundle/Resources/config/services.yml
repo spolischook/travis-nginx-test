@@ -737,6 +737,7 @@ services:
             - '@oro_email.email.owner.provider'
             - '@doctrine'
             - '@oro_email.email.address.helper'
+            - '@oro_search.index'
 
     oro_email.link.formatter.name:
         tags:
@@ -1043,3 +1044,11 @@ services:
         class: %oro_email.model.email_activity_updates.class%
         arguments:
             - '@oro_email.provider.emailowners.provider'
+
+    oro_email.command.association_manager:
+        class: Oro\Bundle\EmailBundle\Command\Manager\AssociationManager
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_email.email.activity.manager'
+            - '@oro_email.provider.emailowners.provider'
+            - '@oro_email.email.manager'
