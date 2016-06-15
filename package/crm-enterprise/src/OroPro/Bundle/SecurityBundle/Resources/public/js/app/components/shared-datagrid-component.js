@@ -37,72 +37,60 @@ define(function(require) {
         },
 
         onFrontMassAction: function(action) {
-            _.each(helper.extractModelsFromGridCollection(action.datagrid), function(model) {
-                action.datagrid.collection.get(model).trigger('backgrid:select', model, false);
-                action.datagrid.removeRow(model, {silent: true});
-                _.each(action.datagrid.body.rows, function(row) {
-                    if (row.model.id === model.id) {
-                        row.$el.remove();
-                    }
-                });
-            });
-            if (action.datagrid.collection.length === 0) {
-                action.datagrid.collection.reset([]);
-            }
+            var collection = action.datagrid.collection;
+            collection.remove(helper.extractModelsFromGridCollection(action.datagrid), {silent: true});
+            collection.trigger('reset', collection);
         },
 
         onFrontAction: function(action) {
-            action.datagrid.collection.get(action.model).trigger('backgrid:select', action.model, false);
-            action.datagrid.removeRow(action.model, {silent: true});
-            _.each(action.datagrid.body.rows, function(row) {
-                if (row.model.id === action.model.id) {
-                    row.$el.remove();
-                }
-            });
-            if (action.datagrid.collection.length === 0) {
-                action.datagrid.collection.reset([]);
-            }
+            var collection = action.datagrid.collection;
+            collection.remove(action.model, {silent: true});
+            collection.trigger('reset', collection);
         },
 
         onSharedWithDatagridAdd: function(data) {
             widgetManager.getWidgetInstanceByAlias('shared-dialog', function(widget) {
                 var grid = widget.pageComponent('shared-datagrid').grid;
+                var changed = false;
                 _.each(data.models, function(model) {
                     var id = JSON.stringify({
                         entityId: model.id,
                         entityClass: data.entityClass
                     });
-                    if (grid.collection.where({id: id}).length === 0) {
+                    if (!grid.collection.findWhere({id: id})) {
                         var newModel = {
                             id: id,
-                            entity: model.get('entity')
+                            entity: model.get('entity'),
+                            action_configuration: {
+                                delete: false,
+                                update: false
+                            }
                         };
-                        if (grid.collection.length === 0) {
-                            grid.collection.reset([newModel]);
-                        } else {
-                            grid.collection.add(newModel);
-                        }
-                        grid.collection.get(newModel).trigger('backgrid:select', newModel, true);
-                        grid.trigger('layout:update');
+                        grid.collection.add(newModel);
+                        changed = true;
                     }
                 });
+                if (changed) {
+                    grid.collection.trigger('reset', grid.collection);
+                    grid.trigger('layout:update');
+                }
             });
         },
 
         onSelect2Add: function(data) {
             widgetManager.getWidgetInstanceByAlias('shared-dialog', function(widget) {
                 var grid = widget.pageComponent('shared-datagrid').grid;
-                if (grid.collection.where({id: data.id}).length === 0) {
+                if (!grid.collection.findWhere({id: data.id})) {
                     var model = {
                         id: data.id,
-                        entity: data.entity
+                        entity: data.entity,
+                        action_configuration: {
+                            delete: false,
+                            update: false
+                        }
                     };
-                    if (grid.collection.length === 0) {
-                        grid.collection.reset([model]);
-                    } else {
-                        grid.collection.add(model);
-                    }
-                    grid.collection.get(model).trigger('backgrid:select', model, true);
+                    grid.collection.add(model);
+                    grid.collection.trigger('reset', grid.collection);
                     grid.trigger('layout:update');
                 }
             });
