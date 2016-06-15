@@ -28,7 +28,8 @@ services:
             - { name: twig.extension }
 
 oro_message_queue:
-    client: ~
+    client:
+        traceable_producer: true
     transport:
         default: 'null'
         'null': true
