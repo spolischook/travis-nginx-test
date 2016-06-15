@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "OroCRMPro\\Bundle": "src/",
+            "OroCRMPro\\Bundle": "src/"
         }
     },
     "repositories": {
