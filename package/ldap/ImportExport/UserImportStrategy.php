@@ -37,6 +37,8 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
      * @param DefaultOwnerHelper           $defaultOwnerHelper
      * @param ConnectorContextMediator     $contextMediator
      * @param LdapHelper                   $ldapHelper
+     * 
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
