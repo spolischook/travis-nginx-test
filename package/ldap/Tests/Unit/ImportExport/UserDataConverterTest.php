@@ -2,7 +2,7 @@
 
 namespace OroCRMPro\Bundle\LDAPBundle\Tests\Unit\ImportExport;
 
-use Oro\Bundle\DataGridBundle\Common\DataObject;
+use Oro\Component\Config\Common\ConfigObject;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
@@ -24,7 +24,7 @@ class UserDataConverterTest extends \PHPUnit_Framework_TestCase
     {
         $this->channel = new Channel();
         $this->channel->setMappingSettings(
-            DataObject::create(
+            ConfigObject::create(
                 [
                     'userMapping' => [
                         'username'   => 'cn',
