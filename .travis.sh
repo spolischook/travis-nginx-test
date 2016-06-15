@@ -56,6 +56,9 @@ case $step in
                            export TRAVIS_CS_FILES=$files;
                            commerce=$(echo -e "$files" | grep -e "^commerce$");
                            if [[ $commerce ]]; then export TRAVIS_CS_COMMERCE='YES'; fi
+                         elif [ ! -e "$JS" ]; then
+                           echo -e "Source code changes were detected:\n$files";
+                           echo -e "Pass files to JavaScript";
                         else
                            echo "Code Style build not required!";
                            export TRAVIS_SKIP="true";
