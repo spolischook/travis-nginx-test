@@ -2,12 +2,13 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Datagrid;
 
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\WorkflowBundle\Datagrid\ActionPermissionProvider;
 
 class ActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|ConfigProvider
      */
     protected $configProvider;
 
@@ -34,6 +35,9 @@ class ActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->provider->getWorkflowDefinitionPermissions($input));
     }
 
+    /**
+     * @return array
+     */
     public function getWorkflowDefinitionPermissionsDataProvider()
     {
         $systemDefinition = $this->getMock('Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface');
@@ -76,14 +80,14 @@ class ActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
      * @param array $expected
      * @param object $input
      * @param bool $hasConfig
-     * @param string $activeWorkflowName
+     * @param array $activeWorkflowNames
      * @dataProvider getWorkflowDefinitionActivationDataProvider
      */
     public function testGetWorkflowDefinitionPermissionsActivationRelated(
         array $expected,
         $input,
         $hasConfig,
-        $activeWorkflowName
+        array $activeWorkflowNames
     ) {
         $relatedEntity = $input->getValue('entityClass');
         $this->configProvider->expects($this->once())
@@ -95,8 +99,8 @@ class ActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
             $config->expects($this->once())
                 ->method('get')
-                ->with('active_workflow')
-                ->will($this->returnValue($activeWorkflowName));
+                ->with('active_workflows')
+                ->will($this->returnValue($activeWorkflowNames));
 
             $this->configProvider->expects($this->once())
                 ->method('getConfig')
@@ -110,6 +114,9 @@ class ActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->provider->getWorkflowDefinitionPermissions($input));
     }
 
+    /**
+     * @return array
+     */
     public function getWorkflowDefinitionActivationDataProvider()
     {
 
@@ -125,7 +132,7 @@ class ActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'input' => $this->getDefinitionMock(),
                 false,
-                null
+                []
             ),
             'active definition' => array(
                 'expected' => array(
@@ -138,7 +145,7 @@ class ActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'input' => $this->getDefinitionMock(),
                 true,
-                'workflow_name'
+                ['workflow_name']
             ),
             'inactive definition' => array(
                 'expected' => array(
@@ -151,7 +158,7 @@ class ActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'input' => $this->getDefinitionMock(),
                 true,
-                'other_workflow_name'
+                ['other_workflow_name']
             )
         );
     }

@@ -30,12 +30,12 @@ class WorkflowRegistry
     /**
      * @var Workflow[]
      */
-    protected $workflowByName = array();
+    protected $workflowByName = [];
 
     /**
-     * @param ManagerRegistry   $managerRegistry
+     * @param ManagerRegistry $managerRegistry
      * @param WorkflowAssembler $workflowAssembler
-     * @param ConfigProvider    $configProvider
+     * @param ConfigProvider $configProvider
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
@@ -95,20 +95,35 @@ class WorkflowRegistry
      * Get Active Workflow that is applicable to entity class
      *
      * @param string $entityClass
-     * @return Workflow|null
+     * @return Workflow[]
+     * @deprecated
      */
     public function getActiveWorkflowByEntityClass($entityClass)
     {
+        throw new \RuntimeException('TODO Refactor an remove usage of method. Entity has many workflows now.');
+    }
+
+    /**
+     * Get Active Workflow that is applicable to entity class
+     *
+     * @param string $entityClass
+     * @return Workflow|null
+     */
+    public function getActiveWorkflowsByEntityClass($entityClass)
+    {
         if ($this->configProvider->hasConfig($entityClass)) {
             $entityConfig = $this->configProvider->getConfig($entityClass);
-            $activeWorkflowName = $entityConfig->get('active_workflow');
+            $activeWorkflows = $entityConfig->get('active_workflows', false, []);
 
-            if ($activeWorkflowName) {
-                return $this->getWorkflow($activeWorkflowName, false);
-            }
+            return array_map(
+                function ($activeWorkflowName) {
+                    return $this->getWorkflow($activeWorkflowName, false);
+                },
+                $activeWorkflows
+            );
         }
 
-        return null;
+        return [];
     }
 
     /**
@@ -120,6 +135,17 @@ class WorkflowRegistry
     public function hasActiveWorkflowByEntityClass($entityClass)
     {
         return $this->getActiveWorkflowByEntityClass($entityClass) !== null;
+    }
+
+    /**
+     * Check is there an active workflow for entity class
+     *
+     * @param string $entityClass
+     * @return bool
+     */
+    public function hasActiveWorkflowsByEntityClass($entityClass)
+    {
+        return count($this->getActiveWorkflowsByEntityClass($entityClass)) > 0;
     }
 
     /**

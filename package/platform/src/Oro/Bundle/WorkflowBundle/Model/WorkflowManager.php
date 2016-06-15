@@ -140,13 +140,19 @@ class WorkflowManager
         $em->beginTransaction();
 
         try {
+            $currentWorkflowName = $workflowItem->getWorkflowName();
             $this->getWorkflow($workflowItem)->resetWorkflowData($entity);
             $em->remove($workflowItem);
             $em->flush();
-
-            $activeWorkflow = $this->getApplicableWorkflow($entity);
-            if ($activeWorkflow->getStepManager()->hasStartStep()) {
-                $activeWorkflowItem = $this->startWorkflow($activeWorkflow->getName(), $entity);
+            //todo fix in BAP-10808 or BAP-10809
+            $activeWorkflows = $this->getApplicableWorkflows($entity);
+            foreach ($activeWorkflows as $activeWorkflow) {
+                if ($activeWorkflow->getName() === $currentWorkflowName) {
+                    if ($activeWorkflow->getStepManager()->hasStartStep()) {
+                        $activeWorkflowItem = $this->startWorkflow($activeWorkflow->getName(), $entity);
+                    }
+                    break;
+                }
             }
 
             $em->commit();
@@ -312,21 +318,55 @@ class WorkflowManager
     }
 
     /**
+     * @param object $entity
+     * @return Workflow[]
+     */
+    public function getApplicableWorkflows($entity)
+    {
+        return $this->getApplicableWorkflowsByEntityClass(
+            $this->doctrineHelper->getEntityClass($entity)
+        );
+    }
+
+    /**
      * @param string $entityClass
      * @return null|Workflow
+     * @deprecated use getApplicableWorkflowsByEntityClass
      */
     public function getApplicableWorkflowByEntityClass($entityClass)
     {
-        return $this->workflowRegistry->getActiveWorkflowByEntityClass($entityClass);
+        throw new \RuntimeException(
+            'No single workflow supported for an entity. ' .
+            'See \Oro\Bundle\WorkflowBundle\Model\WorkflowManager::getApplicableWorkflowsByEntityClass'
+        );
+    }
+
+    /**
+     * @param string $entityClass
+     * @return null|Workflow
+     */
+    public function getApplicableWorkflowsByEntityClass($entityClass)
+    {
+        return $this->workflowRegistry->getActiveWorkflowsByEntityClass($entityClass);
+    }
+
+    /**
+     * @param string $entityClass
+     * @return bool
+     * @deprecated
+     */
+    public function hasApplicableWorkflowByEntityClass($entityClass)
+    {
+        return $this->workflowRegistry->hasActiveWorkflowByEntityClass($entityClass);
     }
 
     /**
      * @param string $entityClass
      * @return bool
      */
-    public function hasApplicableWorkflowByEntityClass($entityClass)
+    public function hasApplicableWorkflowsByEntityClass($entityClass)
     {
-        return $this->workflowRegistry->hasActiveWorkflowByEntityClass($entityClass);
+        return $this->workflowRegistry->hasActiveWorkflowsByEntityClass($entityClass);
     }
 
     /**
@@ -343,6 +383,22 @@ class WorkflowManager
         $entityClass = $this->doctrineHelper->getEntityClass($entity);
 
         return $this->getWorkflowItemRepository()->findByEntityMetadata($entityClass, $entityIdentifier);
+    }
+
+    /**
+     * @param object $entity
+     * @return Workflow[]
+     */
+    public function getWorkflowItemsByEntity($entity)
+    {
+        $entityIdentifier = $this->doctrineHelper->getSingleEntityIdentifier($entity);
+        if (false === filter_var($entityIdentifier, FILTER_VALIDATE_INT)) {
+            return null;
+        }
+
+        $entityClass = $this->doctrineHelper->getEntityClass($entity);
+
+        return $this->getWorkflowItemRepository()->findAllByEntityMetadata($entityClass, $entityIdentifier);
     }
 
     /**
@@ -391,17 +447,25 @@ class WorkflowManager
     }
 
     /**
-     * @param string $entityClass
+     * @param string|WorkflowDefinition $workflowIdentifier
      */
-    public function deactivateWorkflow($entityClass)
+    public function deactivateWorkflow($workflowIdentifier)
     {
-        $workflow = $this->getApplicableWorkflowByEntityClass($entityClass);
-        $this->setActiveWorkflow($entityClass, null);
+        $definition = $workflowIdentifier instanceof WorkflowDefinition
+            ? $workflowIdentifier
+            : $this->getWorkflow($workflowIdentifier)->getDefinition();
 
-        if ($workflow) {
+        $entityConfig = $this->getEntityConfig($definition->getRelatedEntity());
+        $entityConfig->set(
+            'active_workflows',
+            array_diff($entityConfig->get('active_workflows', false, []), [$definition->getName()])
+        );
+        $this->persistEntityConfig($entityConfig);
+
+        if ($definition) {
             $this->eventDispatcher->dispatch(
                 WorkflowEvents::WORKFLOW_DEACTIVATED,
-                new WorkflowChangesEvent($workflow->getDefinition())
+                new WorkflowChangesEvent($definition)
             );
         }
     }
@@ -436,7 +500,12 @@ class WorkflowManager
     protected function setActiveWorkflow($entityClass, $workflowName)
     {
         $entityConfig = $this->getEntityConfig($entityClass);
-        $entityConfig->set('active_workflow', $workflowName);
+
+        $entityConfig->set(
+            'active_workflows',
+            array_merge($entityConfig->get('active_workflows', false, []), [$workflowName])
+        );
+
         $this->persistEntityConfig($entityConfig);
     }
 
@@ -459,15 +528,26 @@ class WorkflowManager
      * Check that entity workflow item is equal to the active workflow item.
      *
      * @param object $entity
+     * @param WorkflowItem $currentWorkflowItem
      * @return bool
      */
-    public function isResetAllowed($entity)
+    public function isResetAllowed($entity, WorkflowItem $currentWorkflowItem)
     {
-        $currentWorkflowItem = $this->getWorkflowItemByEntity($entity);
-        $activeWorkflow = $this->getApplicableWorkflow($entity);
+        $activeWorkflows = $this->getApplicableWorkflows($entity);
 
-        return $activeWorkflow && $currentWorkflowItem &&
-            $currentWorkflowItem->getWorkflowName() !== $activeWorkflow->getName();
+        if (!count($activeWorkflows)) {
+            return false;
+        }
+
+        if ($currentWorkflowItem) {
+            foreach ($activeWorkflows as $activeWorkflow) {
+                if ($activeWorkflow->getName() === $currentWorkflowItem->getWorkflowName()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**

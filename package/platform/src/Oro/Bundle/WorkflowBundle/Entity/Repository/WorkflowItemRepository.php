@@ -113,7 +113,7 @@ class WorkflowItemRepository extends EntityRepository
     public function resetWorkflowData(WorkflowDefinition $workflowDefinition, $batchSize = null)
     {
         $entityManager = $this->getEntityManager();
-        $batchSize = $batchSize ?: self::DELETE_BATCH_SIZE;
+        $batchSize = (int) ($batchSize ?: self::DELETE_BATCH_SIZE);
 
         // select entities for reset
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
@@ -126,7 +126,7 @@ class WorkflowItemRepository extends EntityRepository
         $iterator = new DeletionQueryResultIterator($queryBuilder);
         $iterator->setBufferSize($batchSize);
 
-        if ($iterator->count() == 0) {
+        if ($iterator->count() === 0) {
             return;
         }
 
