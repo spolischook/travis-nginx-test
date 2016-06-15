@@ -1,7 +1,7 @@
 {
-    "name": "oro/crm-enterprise",
-    "description": "OroCRM Enterprise",
-    "homepage": "https://github.com/orocrm/crm-enterprise.git",
+    "name": "oro/platform-enterprise",
+    "description": "OroPlatform Enterprise",
+    "homepage": "https://github.com/orocrm/platform-enterprise.git",
     "license": "Commercial",
     "authors": [
         {
@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "OroCRMPro\\Bundle": "src/",
+            "OroPro\\Bundle": "src/"
         }
     },
     "repositories": {
@@ -21,13 +21,12 @@
         },
         "enterprise": {
             "type": "vcs",
-            "url": "https://github.com/orocrm/crm-enterprise.git"
+            "url": "https://github.com/orocrm/platform-enterprise.git"
         }
     },
     "require": {
         "php": ">=5.5.9",
-        "oro/platform-enterprise": "self.version",
-        "oro/crm": "self.version",
+        "oro/platform": "self.version",
         "elasticsearch/elasticsearch": "1.2.2"
     },
     "minimum-stability": "dev",
