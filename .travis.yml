@@ -30,16 +30,20 @@ matrix:
        env: APPLICATION="application/platform" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=4
      - php: 5.6
        env: APPLICATION="application/crm" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=3
+     - php: 5.6
+       env: APPLICATION="application/commerce" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
+     - php: 5.6
+       env: APPLICATION="application/commerce-enterprise" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
      - php: 7.0
        env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=3
      - php: 7.0
        env: APPLICATION="application/platform" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=4
      - php: 7.0
        env: APPLICATION="application/crm" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=3
-     - php: 5.6
-       env: APPLICATION="application/commerce" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
      - php: 7.0
        env: APPLICATION="application/commerce" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
+     - php: 7.0
+       env: APPLICATION="application/commerce-enterprise" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
      include:
      - php: 5.6
        env: APPLICATION="package" CS="YES"
@@ -51,6 +55,8 @@ matrix:
        env: APPLICATION="documentation"
      - php: 5.5
        env: APPLICATION="application/commerce" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce UPDATE_FROM=commerce_beta1 PARALLEL_PROCESSES=4
+     - php: 5.5
+       env: APPLICATION="application/commerce-enterprise" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
      - php: 5.6
        env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=3
      - php: 7.0
@@ -61,6 +67,8 @@ matrix:
        env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=6
      - php: 7.0
        env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=6
+     - php: 7.0
+       env: APPLICATION="application/commerce-enterprise" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce PARALLEL_PROCESSES=6
      - php: 7.0
        env: APPLICATION="application/commerce" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce PARALLEL_PROCESSES=6
      - php: 7.0
@@ -78,6 +86,8 @@ env:
      - APPLICATION="application/crm-enterprise" TESTSUITE="unit"
      - APPLICATION="application/commerce" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
      - APPLICATION="application/commerce" TESTSUITE="unit"
+     - APPLICATION="application/commerce-enterprise" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
+     - APPLICATION="application/commerce-enterprise" TESTSUITE="unit"
 
 before_install: . ./.travis.sh before_install
 

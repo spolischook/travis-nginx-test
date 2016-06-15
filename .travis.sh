@@ -33,10 +33,12 @@ case $step in
                            crm=$(echo -e "$files" | grep -e "^crm$");
                            crm_enterprise=$(echo -e "$files" | grep -e "^crm-enterprise$");
                            commerce=$(echo -e "$files" | grep -e "^commerce$");
+                           commerce_enterprise=$(echo -e "$files" | grep -e "^commerce-enterprise$");
                            if [[ $platform ]]; then echo "Platform is detected. Run all";
-                           elif [[ $crm ]] && [[ $APPLICATION == */crm* ]]; then echo "CRM is detected. Run CRM and Enterprise";
-                           elif [[ crm_enterprise ]] && [[ $APPLICATION == */crm-enterprise ]]; then echo "Enterprise is detected. Run Enterprise";
-                           elif [[ commerce ]] && [[ $APPLICATION == */commerce ]]; then echo "Commerce is detected. Run Commerce";
+                           elif [[ $crm ]] && [[ $APPLICATION == */crm* ]]; then echo "CRM is detected. Run CRM and CRM Enterprise";
+                           elif [[ crm_enterprise ]] && [[ $APPLICATION == */crm-enterprise ]]; then echo "CRM Enterprise is detected. Run CRM Enterprise";
+                           elif [[ commerce ]] && [[ $APPLICATION == */commerce ]]; then echo "Commerce is detected. Run Commerce and Commerce Enterprise";
+                           elif [[ commerce_enterprise ]] && [[ $APPLICATION == */commerce-enterprise ]]; then echo "Commerce Enterprise is detected. Run Commerce Enterprise";
                            # TODO: add other cases for example Extensions tests
                            else
                                echo "Tests build not required!";
