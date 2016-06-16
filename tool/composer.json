@@ -2,7 +2,7 @@
   "name": "oro/dev-repository-tools",
   "description": "CLI tools for dev repository management",
   "require": {
-    "php": ">=5.4.9",
+    "php": ">=5.5.9",
     "symfony/console": "2.7.*",
     "phpunit/phpunit": "4.8.*",
     "johnkary/phpunit-speedtrap": "1.0.*",
