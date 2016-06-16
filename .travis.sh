@@ -33,10 +33,12 @@ case $step in
                            crm=$(echo -e "$files" | grep -e "^crm$");
                            crm_enterprise=$(echo -e "$files" | grep -e "^crm-enterprise$");
                            commerce=$(echo -e "$files" | grep -e "^commerce$");
+                           commerce_enterprise=$(echo -e "$files" | grep -e "^commerce-enterprise$");
                            if [[ $platform ]]; then echo "Platform is detected. Run all";
-                           elif [[ $crm ]] && [[ $APPLICATION == */crm* ]]; then echo "CRM is detected. Run CRM and Enterprise";
-                           elif [[ $crm_enterprise ]] && [[ $APPLICATION == */crm-enterprise ]]; then echo "Enterprise is detected. Run Enterprise";
-                           elif [[ $commerce ]] && [[ $APPLICATION == */commerce ]]; then echo "Commerce is detected. Run Commerce";
+                           elif [[ $crm ]] && [[ $APPLICATION == */crm* ]]; then echo "CRM is detected. Run CRM and CRM Enterprise";
+                           elif [[ crm_enterprise ]] && [[ $APPLICATION == */crm-enterprise ]]; then echo "CRM Enterprise is detected. Run CRM Enterprise";
+                           elif [[ commerce ]] && [[ $APPLICATION == */commerce* ]]; then echo "Commerce is detected. Run Commerce and Commerce Enterprise";
+                           elif [[ commerce_enterprise ]] && [[ $APPLICATION == */commerce-enterprise ]]; then echo "Commerce Enterprise is detected. Run Commerce Enterprise";
                            # TODO: add other cases for example Extensions tests
                            else
                                echo "Tests build not required!";
@@ -224,11 +226,11 @@ case $step in
                 $TRAVIS_BUILD_DIR/tool/vendor/bin/phpmd $TEST_FILES text $TRAVIS_BUILD_DIR/tool/codestandards/rulesetMD.xml --suffixes php;
              fi
              if [ ! -z "$TRAVIS_CS_FILES" ] && [ ! -z "$TRAVIS_CS_COMMERCE" ]; then
-                $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcpd --min-lines 25 \ 
+                $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcpd --min-lines 25 \
                                 --exclude=AccountBundle/Migrations/Schema \
                                 --exclude=PaymentBundle/Migrations/Schema \
                                 --exclude=PricingBundle/Migrations/Schema \
-                                --exclude=ProductBundle/Migrations/Schema \ 
+                                --exclude=ProductBundle/Migrations/Schema \
                                 --exclude=RFPBundle/Migrations/Schema \
                                 --exclude=SaleBundle/Migrations/Schema \
                                 --exclude=OrderBundle/Migrations/Schema \
@@ -237,7 +239,7 @@ case $step in
                                 --exclude=WebsiteBundle/Migrations/Schema \
                                 --exclude=CatalogBundle/Migrations/Schema \
                                 --exclude=CMSBundle/Migrations/Schema \
-                                --exclude=WarehouseBundle/Migrations/Schema \ 
+                                --exclude=WarehouseBundle/Migrations/Schema \
                                 --exclude=TaxBundle/Migrations/Schema \
                                 --exclude=MenuBundle/Migrations/Schema \
                                 --exclude=CheckoutBundle/Migrations/Schema \
