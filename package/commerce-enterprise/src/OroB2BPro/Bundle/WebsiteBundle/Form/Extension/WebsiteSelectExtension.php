@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\WebsiteBundle\Form\Extension;
+namespace OroB2BPro\Bundle\WebsiteBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -10,7 +10,12 @@ class WebsiteSelectExtension extends AbstractTypeExtension
     /**
      * @var string
      */
-    protected $extendedType = 'orob2b_order_type';
+    protected $extendedType;
+
+    /**
+     * @var string
+     */
+    protected $label;
 
     /**
      * {@inheritdoc}
@@ -22,15 +27,13 @@ class WebsiteSelectExtension extends AbstractTypeExtension
             'entity',
             [
                 'class' => 'OroB2B\Bundle\WebsiteBundle\Entity\Website',
-                'label' => 'orob2b.order.website.label'
+                'label' => $this->label,
             ]
         );
     }
 
     /**
-     * Returns the name of the type being extended.
-     *
-     * @return string The name of the type being extended
+     * {@inheritdoc}
      */
     public function getExtendedType()
     {
@@ -38,13 +41,21 @@ class WebsiteSelectExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param string $extendedType
-     * @return WebsiteSelectExtension
+     * @param $extendedType
+     * @return $this
      */
     public function setExtendedType($extendedType)
     {
         $this->extendedType = $extendedType;
 
         return $this;
+    }
+
+    /**
+     * @param string $label
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
     }
 }
