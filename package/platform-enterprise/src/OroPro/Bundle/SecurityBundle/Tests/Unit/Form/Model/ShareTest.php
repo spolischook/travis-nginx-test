@@ -6,7 +6,7 @@ use OroPro\Bundle\SecurityBundle\Form\Model\Share;
 
 class ShareTest extends \PHPUnit_Framework_TestCase
 {
-    const ENTITY_CLASS = 'OroCRM\Bundle\AccountBundle\Entity\Account';
+    const ENTITY_CLASS = 'OroPro\Bundle\OrganizationBundle\Entity\UserOrganization';
     const ENTITY_ID = 2;
 
     /** @var Share */

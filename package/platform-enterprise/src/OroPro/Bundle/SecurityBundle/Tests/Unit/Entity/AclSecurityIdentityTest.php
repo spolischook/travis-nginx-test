@@ -7,7 +7,7 @@ use OroPro\Bundle\SecurityBundle\Entity\AclSecurityIdentity;
 class AclSecurityIdentityTest extends \PHPUnit_Framework_TestCase
 {
     const ENTITY_ID = 2;
-    const IDENTIFIER = 'OroCRM\Bundle\ContactBundle\Entity\Contact';
+    const IDENTIFIER = 'OroPro\Bundle\OrganizationBundle\Entity\UserOrganization';
     const USERNAME = true;
 
     /**
