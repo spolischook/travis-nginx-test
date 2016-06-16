@@ -58,6 +58,9 @@ case $step in
                            export TRAVIS_CS_FILES=$files;
                            commerce=$(echo -e "$files" | grep -e "^commerce$");
                            if [[ $commerce ]]; then export TRAVIS_CS_COMMERCE='YES'; fi
+                         elif [ ! -e "$JS" ]; then
+                           echo -e "Source code changes were detected:\n$files";
+                           echo -e "Pass files to JavaScript";
                         else
                            echo "Code Style build not required!";
                            export TRAVIS_SKIP="true";
@@ -78,6 +81,11 @@ case $step in
              pip install -q -r requirements.txt --use-mirrors;
              pip install git+https://github.com/fabpot/sphinx-php.git;
           fi
+          if [ ! -z "$JS" ]; then
+             cd $TRAVIS_BUILD_DIR/tool;
+             npm install;
+          fi
+   
      ;;
      before_script)
           echo  "Before script...";
@@ -242,6 +250,12 @@ case $step in
                                 --exclude=AlternativeCheckoutBundle/Entity \
                                 --verbose $APPLICATION_PWD"/commerce";
              fi
+          fi
+          if [ ! -z "$JS" ]; then
+             cd $TRAVIS_BUILD_DIR;
+             set +e; 
+             tool/node_modules/.bin/jscs package/*/src/*/Bundle/*Bundle/Resources/public/js/** package/*/src/*/Bundle/*Bundle/Tests/JS/** package/*/Resources/public/js/** --config=tool/.jscsrc; 
+             tool/node_modules/.bin/jshint package/*/src/*/Bundle/*Bundle/Resources/public/js/** package/*/src/*/Bundle/*Bundle/Tests/JS/** package/*/Resources/public/js/** --config=tool/.jshintrc --exclude-path=tool/.jshintignore;
           fi
     ;;
 esac
