@@ -25,7 +25,7 @@ class PriceAttributesProductFormExtension extends AbstractTypeExtension
     /**
      * @var ObjectManager
      */
-    protected $om;
+    protected $objectManager;
 
     /**
      * @var RegistryInterface
@@ -57,7 +57,7 @@ class PriceAttributesProductFormExtension extends AbstractTypeExtension
             'mapped' => false,
             'type' => ProductAttributePriceCollectionType::NAME,
             'label' => false,
-            'required' => false
+            'required' => false,
         ]);
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'onPreSetData']);
@@ -101,7 +101,33 @@ class PriceAttributesProductFormExtension extends AbstractTypeExtension
      */
     public function onPostSubmit(FormEvent $event)
     {
-        // TODO: BB-3337 Implement price attribute prices persistence
+        /** @var Product $product */
+        $product = $event->getData();
+        $units = $product->getAvailableUnitCodes();
+        $data = $event->getForm()->get(self::PRODUCT_PRICE_ATTRIBUTES_PRICES)->getData();
+
+        foreach ($data as $attributePrices) {
+            /** @var PriceAttributeProductPrice $price */
+            foreach ($attributePrices as $price) {
+                //don't process prices for deleted units
+                if (!in_array($price->getUnit()->getCode(), $units, true)) {
+                    continue;
+                }
+
+                //remove nullable prices
+                if (!$price->getPrice()->getValue()) {
+                    if (null !== $price->getId()) {
+                        $this->getManager()->remove($price);
+                    }
+                    continue;
+                }
+
+                // persist new prices
+                if (null === $price->getId()) {
+                    $this->getManager()->persist($price);
+                }
+            }
+        }
     }
 
     /**
@@ -122,12 +148,12 @@ class PriceAttributesProductFormExtension extends AbstractTypeExtension
     /**
      * @return ObjectManager|null
      */
-    protected function getOM()
+    protected function getManager()
     {
-        if (!$this->om) {
-            $this->om = $this->registry->getManagerForClass(Product::class);
+        if (!$this->objectManager) {
+            $this->objectManager = $this->registry->getManagerForClass(Product::class);
         }
-        return $this->om;
+        return $this->objectManager;
     }
 
     /**
@@ -138,7 +164,7 @@ class PriceAttributesProductFormExtension extends AbstractTypeExtension
     {
         $neededPrices = [];
         $unites = $product->getAvailableUnits();
-        $priceAttributes = $this->getOM()
+        $priceAttributes = $this->getManager()
             ->getRepository('OroB2BPricingBundle:PriceAttributePriceList')
             ->findAll();
 
@@ -159,7 +185,7 @@ class PriceAttributesProductFormExtension extends AbstractTypeExtension
      */
     protected function getProductExistingPrices($product)
     {
-        return $this->getOM()->getRepository('OroB2BPricingBundle:PriceAttributeProductPrice')
+        return $this->getManager()->getRepository('OroB2BPricingBundle:PriceAttributeProductPrice')
             ->findBy(['product' => $product]);
     }
 }
