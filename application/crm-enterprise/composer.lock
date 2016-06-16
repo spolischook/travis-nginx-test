@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a811a5cc019d0096cfebc9b7718ae1b2",
+    "hash": "a60ee7b9d59327d435293e74fb493120",
     "content-hash": "4cf95a29405863acd728a19779492d01",
     "packages": [
         {
@@ -3921,7 +3921,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm",
-                "reference": "6f5a2e4885cbf854003170d318d6a9ce1f605365",
+                "reference": "99db110b90f347caa374db0d3d891850eaf368fd",
                 "shasum": null
             },
             "require": {
@@ -4033,19 +4033,19 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm-enterprise",
-                "reference": "33632bb3d26bb5ae5e4cdccd609bee4ccdd642df",
+                "reference": "f755dbb9399a4bcac2043087434296025c4d14c9",
                 "shasum": null
             },
             "require": {
                 "elasticsearch/elasticsearch": "1.2.2",
                 "oro/crm": "self.version",
+                "oro/platform-enterprise": "self.version",
                 "php": ">=5.5.9"
             },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "OroCRMPro\\Bundle": "src/",
-                    "OroPro\\Bundle": "src/"
+                    "OroCRMPro\\Bundle": "src/"
                 }
             },
             "license": [
@@ -4257,7 +4257,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/task",
-                "reference": "edea0130da60ee78cdc4382a28198b7dd3f984d8",
+                "reference": "4326c7d3ba88cd3e789e6c1c701741d7e3d9b26a",
                 "shasum": null
             },
             "require": {
@@ -4276,11 +4276,18 @@
                 }
             },
             "license": [
-                "MIT"
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocrm.com"
+                }
             ],
             "description": "OroCRM Task Bundle",
             "keywords": [
-                "OroCRM"
+                "OroCRM",
+                "Task"
             ]
         },
         {
@@ -4585,6 +4592,38 @@
             ],
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/orocrm/platform.git"
+        },
+        {
+            "name": "oro/platform-enterprise",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../package/platform-enterprise",
+                "reference": "9f44354fc9054b865a0bfe583171b1648af1d7b2",
+                "shasum": null
+            },
+            "require": {
+                "elasticsearch/elasticsearch": "1.2.2",
+                "oro/platform": "self.version",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "OroPro\\Bundle": "src/"
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocrm.com"
+                }
+            ],
+            "description": "OroPlatform Enterprise",
+            "homepage": "https://github.com/orocrm/platform-enterprise.git"
         },
         {
             "name": "oro/platform-serialised-fields",
