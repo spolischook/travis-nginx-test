@@ -2,21 +2,25 @@
 
 namespace Oro\Bundle\OrganizationBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class WidgetBusinessUnitSelectType extends AbstractType
+use Oro\Bundle\UserBundle\Dashboard\OwnerHelper;
+use Oro\Bundle\DashboardBundle\Form\Type\WidgetEntityJquerySelect2HiddenType;
+
+class WidgetBusinessUnitSelectType extends WidgetEntityJquerySelect2HiddenType
 {
     const NAME = 'oro_type_widget_business_unit_select';
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        parent::setDefaultOptions($resolver);
+
         $resolver->setDefaults(
             [
-                'autocomplete_alias' => 'business_units',
+                'autocomplete_alias' => 'widget_owner_business_units',
                 'configs'            => [
                     'multiple'    => true,
                     'width'       => '400px',
@@ -28,11 +32,32 @@ class WidgetBusinessUnitSelectType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $entityClass
+     * @param array  $ids
+     *
+     * @return array
      */
-    public function getParent()
+    protected function getEntitiesByIdentifiers($entityClass, array $ids)
     {
-        return 'oro_widget_entity_jqueryselect2_hidden';
+        $ids = array_filter($ids);
+        if (empty($ids)) {
+            return [];
+        }
+        $key = array_search(OwnerHelper::CURRENT_BUSINESS_UNIT, $ids);
+        if ($key !== false) {
+            unset($ids[$key]);
+        }
+        $result        = [];
+        $identityField = $this->doctrineHelper->getSingleEntityIdentifierFieldName($entityClass);
+        if ($ids) {
+            $result = $this->entityManager->getRepository($entityClass)->findBy([$identityField => $ids]);
+        }
+        if ($key !== false) {
+            $result[] = [
+                $identityField => OwnerHelper::CURRENT_BUSINESS_UNIT
+            ];
+        }
+        return $result;
     }
 
     /**
