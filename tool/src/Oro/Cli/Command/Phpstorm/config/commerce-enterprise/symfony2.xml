@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Symfony2PluginSettings">
+    <option name="pathToUrlGenerator" value="application/commerce/app/cache/dev/appDevUrlGenerator.php" />
+    <option name="pathToTranslation" value="application/commerce/app/cache/dev/translations" />
+    <option name="directoryToWeb" value="application/commerce-enterprise/web" />
+    <option name="directoryToApp" value="application/commerce-enterprise/app" />
+  </component>
+</project>
