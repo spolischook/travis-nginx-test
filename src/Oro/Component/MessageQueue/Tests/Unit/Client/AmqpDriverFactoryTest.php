@@ -7,7 +7,7 @@ use Oro\Component\MessageQueue\Client\AmqpDriver;
 use Oro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
 use Oro\Component\MessageQueue\Transport\Amqp\AmqpSession;
 
-class DriverFactoryTest extends \PHPUnit_Framework_TestCase
+class AmqpDriverFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testShouldCreateAmpqSessionInstance()
     {
