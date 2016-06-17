@@ -28,4 +28,16 @@
       color: #aaa;
     }
   }
+  & &__group-common-title {
+    display: none;
+    .role-capabilities_single-group & {
+      display: inline;
+    }
+  }
+  & &__group-own-title {
+    display: inline;
+    .role-capabilities_single-group & {
+      display: none;
+    }
+  }
 }
