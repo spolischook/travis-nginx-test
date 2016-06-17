@@ -217,12 +217,23 @@ abstract class AbstractSync extends RootCommand
      * @param string $codePath
      * @param string $branchName
      */
-    protected function processSubtree($repository, $codePath, $branchName)
+    protected function updateSubtree($repository, $codePath, $branchName)
     {
-        $this->assertGitVersion();
+        $this->logger->info("Working on \"{$codePath}\" subtree from \"{$repository}\" repository.");
 
         $remoteBranch = $this->resolveRemoteBranch($branchName, $codePath);
         $remoteAlias = $this->getRemoteAlias($codePath);
+
+        $remoteBranchExists = $this->fetchLatestDataFromRemoteBranch($repository, $remoteAlias, $remoteBranch);
+
+        if (!$remoteBranchExists) {
+            $this->logger->alert("Branch {$remoteBranch} not found in $remoteAlias({$repository})");
+
+            return;
+        }
+
+        $this->assertGitVersion();
+
         $subtreeBranch = $this->getSubtreeBranch($codePath);
 
         $this->execCmd("git branch -D {$subtreeBranch}", false);
@@ -236,28 +247,6 @@ abstract class AbstractSync extends RootCommand
             $this->execCmd("git checkout -f {$branchName}");
             $this->execCmd("git subtree merge --prefix={$codePath} {$subtreeBranch}");
         }
-    }
-
-    /**
-     * @param string $repository
-     * @param string $codePath
-     * @param string $branchName
-     */
-    protected function updateSubtree($repository, $codePath, $branchName)
-    {
-        $this->logger->info("Working on \"{$codePath}\" subtree from \"{$repository}\" repository.");
-
-        $alias = $this->getRemoteAlias($codePath);
-
-        $remoteBranchExists = $this->fetchLatestDataFromRemoteBranch($repository, $alias, $branchName);
-
-        if (!$remoteBranchExists) {
-            $this->logger->alert("Branch {$branchName} not found in $alias({$repository})");
-
-            return;
-        }
-
-        $this->processSubtree($repository, $codePath, $branchName);
     }
 
     protected function assertGitVersion()
