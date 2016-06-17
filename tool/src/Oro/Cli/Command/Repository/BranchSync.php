@@ -38,9 +38,11 @@ class BranchSync extends Sync
 
         if ($addSubtree) {
             foreach ($this->getApplicableRepositories() as $codePath => $repository) {
+                $remoteBranch = $this->resolveRemoteBranch($this->getBranch(), $codePath);
                 $remoteAlias = $this->getRemoteAlias($codePath);
+
                 $this->execCmd(
-                    "git subtree add --prefix={$codePath} {$remoteAlias} {$this->getBranch()}",
+                    "git subtree add --prefix={$codePath} {$remoteAlias} {$remoteBranch}",
                     false
                 );
             }
