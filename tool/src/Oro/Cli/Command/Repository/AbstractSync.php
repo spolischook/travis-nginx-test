@@ -205,11 +205,9 @@ abstract class AbstractSync extends RootCommand
      */
     protected function fetchLatestDataFromRemoteBranch($repository, $alias, $branch)
     {
-        if ($this->execCmd("git remote add --no-tags {$alias} {$repository}", false) === false) {
-            return false;
-        }
+        $this->execCmd("git remote add --no-tags {$alias} {$repository}", false);
 
-        return $this->execCmd("git fetch --prune {$alias} {$branch}");
+        return $this->execCmd("git fetch --prune {$alias} {$branch}", false);
     }
 
     /**
