@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Component\Routing\ApiDoc;
+namespace Oro\Bundle\ApiBundle\ApiDoc;
 
 use Symfony\Component\Routing\Route;
 
@@ -14,12 +14,27 @@ trait ApiDocExtractorTrait
     /** @var RouteOptionsResolverInterface|null */
     protected $routeOptionsResolver;
 
+    /** @var RestDocViewDetector|null */
+    protected $docViewDetector;
+
     /**
-     * {@inheritdoc}
+     * Sets the RouteOptionsResolver.
+     *
+     * @param RouteOptionsResolverInterface $routeOptionsResolver
      */
     public function setRouteOptionsResolver(RouteOptionsResolverInterface $routeOptionsResolver)
     {
         $this->routeOptionsResolver = $routeOptionsResolver;
+    }
+
+    /**
+     * Sets the RestDocViewDetector.
+     *
+     * @param RestDocViewDetector $docViewDetector
+     */
+    public function setRestDocViewDetector(RestDocViewDetector $docViewDetector)
+    {
+        $this->docViewDetector = $docViewDetector;
     }
 
     /**

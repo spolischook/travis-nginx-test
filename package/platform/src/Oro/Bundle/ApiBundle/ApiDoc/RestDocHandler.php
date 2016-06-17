@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\ApiBundle\Routing;
+namespace Oro\Bundle\ApiBundle\ApiDoc;
 
 use Symfony\Component\Routing\Route;
 
@@ -19,7 +19,6 @@ use Oro\Bundle\ApiBundle\Metadata\EntityMetadata;
 use Oro\Bundle\ApiBundle\Processor\ActionProcessorBagInterface;
 use Oro\Bundle\ApiBundle\Processor\Context;
 use Oro\Bundle\ApiBundle\Processor\Subresource\SubresourceContext;
-use Oro\Bundle\ApiBundle\Provider\ResourceDocProviderInterface;
 use Oro\Bundle\ApiBundle\Request\DataType;
 use Oro\Bundle\ApiBundle\Request\RequestType;
 use Oro\Bundle\ApiBundle\Request\ValueNormalizer;
@@ -29,10 +28,8 @@ use Oro\Bundle\ApiBundle\Util\ValueNormalizerUtil;
 
 class RestDocHandler implements HandlerInterface
 {
-    const JSON_API_VIEW = 'rest_json_api';
-
-    /** @var RestDocViewDetector */
-    protected $docViewDetector;
+    /** @var RequestTypeProviderInterface */
+    protected $requestTypeProvider;
 
     /** @var ActionProcessorBagInterface */
     protected $processorBag;
@@ -50,20 +47,20 @@ class RestDocHandler implements HandlerInterface
     protected $requestType;
 
     /**
-     * @param RestDocViewDetector          $docViewDetector
+     * @param RequestTypeProviderInterface $requestTypeProvider
      * @param ActionProcessorBagInterface  $processorBag
      * @param ResourceDocProviderInterface $resourceDocProvider
      * @param DoctrineHelper               $doctrineHelper
      * @param ValueNormalizer              $valueNormalizer
      */
     public function __construct(
-        RestDocViewDetector $docViewDetector,
+        RequestTypeProviderInterface $requestTypeProvider,
         ActionProcessorBagInterface $processorBag,
         ResourceDocProviderInterface $resourceDocProvider,
         DoctrineHelper $doctrineHelper,
         ValueNormalizer $valueNormalizer
     ) {
-        $this->docViewDetector = $docViewDetector;
+        $this->requestTypeProvider = $requestTypeProvider;
         $this->processorBag = $processorBag;
         $this->doctrineHelper = $doctrineHelper;
         $this->valueNormalizer = $valueNormalizer;
@@ -76,6 +73,9 @@ class RestDocHandler implements HandlerInterface
     public function handle(ApiDoc $annotation, array $annotations, Route $route, \ReflectionMethod $method)
     {
         if ($route->getOption('group') !== RestRouteOptionsResolver::ROUTE_GROUP) {
+            return;
+        }
+        if ($this->getRequestType()->isEmpty()) {
             return;
         }
         $action = $route->getDefault('_action');
@@ -166,7 +166,7 @@ class RestDocHandler implements HandlerInterface
         $context->removeConfigExtra(SortersConfigExtra::NAME);
         $context->addConfigExtra(new DescriptionsConfigExtra($action));
         $context->addConfigExtra(new StatusCodesConfigExtra($action));
-        $this->buildRequestType($context->getRequestType());
+        $context->getRequestType()->set($this->getRequestType()->toArray());
         $context->setLastGroup('initialize');
         if ($associationName) {
             /** @var SubresourceContext $context */
@@ -342,21 +342,9 @@ class RestDocHandler implements HandlerInterface
     protected function getRequestType()
     {
         if (null === $this->requestType) {
-            $this->requestType = new RequestType([]);
-            $this->buildRequestType($this->requestType);
+            $this->requestType = $this->requestTypeProvider->getRequestType() ?: new RequestType([]);
         }
 
         return $this->requestType;
-    }
-
-    /**
-     * @param RequestType $requestType
-     */
-    protected function buildRequestType(RequestType $requestType)
-    {
-        $requestType->add(RequestType::REST);
-        if (self::JSON_API_VIEW === $this->docViewDetector->getView()) {
-            $requestType->add(RequestType::JSON_API);
-        }
     }
 }
