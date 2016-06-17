@@ -2,43 +2,42 @@
 
 namespace Oro\Cli\Command\Repository;
 
+use Oro\Cli\Command\RootCommand;
 use Oro\Git\VersionMatcher;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Oro\Cli\Command\RootCommand;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Yaml\Yaml;
 
 abstract class AbstractSync extends RootCommand
 {
+    use LoggerAwareTrait;
+
     /**
-     * @var array list of supported upstream repositories mapped to local subtrees
+     * @var string[]|bool false if not initialized, use getter
      */
-    protected $repositories = [
-        'application/platform'       => 'git@github.com:laboro/platform-application.git',
-        'application/crm'            => 'git@github.com:laboro/crm-application.git',
-        'application/crm-enterprise' => 'git@github.com:laboro/crm-enterprise-application.git',
-        'application/commerce'       => 'git@github.com:laboro/commerce-application.git',
+    private $repositories = false;
 
-        'package/platform'               => 'git@github.com:laboro/platform.git',
-        'package/platform-enterprise'    => 'git@github.com:laboro/platform-enterprise.git',
-        'package/crm'                    => 'git@github.com:laboro/crm.git',
-        'package/crm-enterprise'         => 'git@github.com:laboro/crm-enterprise.git',
-        'package/commerce'               => 'git@github.com:laboro/commerce.git',
-        'package/dotmailer'              => 'git@github.com:laboro/OroCRMDotmailerBundle.git',
-        'package/ldap'                   => 'git@github.com:laboro/OroCRMProLDAPBundle.git',
-        'package/mailchimp'              => 'git@github.com:laboro/OroCRMMailChimpBundle.git',
-        'package/magento-abandoned-cart' => 'git@github.com:laboro/OroCRMAbandonedCartBundle.git',
-        'package/google-hangout'         => 'git@github.com:laboro/OroCRMHangoutsCallBundle.git',
-        'package/serialized-fields'      => 'git@github.com:laboro/OroEntitySerializedFieldsBundle.git',
-        'package/demo-data'              => 'git@github.com:laboro/OroCRMProDemoDataBundle.git',
-        'package/zendesk'                => 'git@github.com:laboro/OroCRMZendeskBundle.git',
-        'package/magento-contact-us'     => 'git@github.com:laboro/OroCRMMagentoContactUsBundle.git',
-        'package/task'                   => 'git@github.com:laboro/OroCRMTaskBundle.git',
+    /**
+     * @var array[]|bool false if not initialized, use getter
+     */
+    private $branches = false;
 
-        'documentation' => 'git@github.com:orocrm/documentation.git',
-    ];
+    /** @var bool */
+    private $force = false;
+
+    /** @var string */
+    private $branch;
+
+    /** @var string */
+    private $path;
+
+    /** @var bool */
+    private $twoWay = false;
 
     /**
      * {@inheritdoc}
@@ -49,10 +48,75 @@ abstract class AbstractSync extends RootCommand
             ->addArgument('path', InputArgument::OPTIONAL, 'Path to subtree folder')
             ->addOption(
                 'two-way',
-                null,
+                't',
                 InputOption::VALUE_NONE,
                 'Whether the synchronization of upstream repositories is needed'
-            );
+            )
+            ->addOption(
+                'branch',
+                'b',
+                InputOption::VALUE_OPTIONAL,
+                'Synchronize the specific branch of the monolithic repository subtrees with upstream repositories.',
+                'master'
+            )
+            ->addOption(
+                'force',
+                'f',
+                InputOption::VALUE_NONE,
+                'Do pushes to repository and upstreams (if two-way enables)'
+            )
+            ->addUsage('application/crm')
+            ->addUsage('package/platform')
+            ->addUsage('package/platform --two-way')
+            ->addUsage('package/platform --branch=1.9')
+            ->addUsage('package/platform --branch=1.9 --two-way --force');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->setLogger(new ConsoleLogger($output));
+
+        $this->assertWorkingTreeEmpty();
+
+        $this->branch = (string)$input->getOption('branch');
+        $this->path = (string)$input->getArgument('path');
+        $this->force = (bool)$input->getOption('force');
+        $this->twoWay = (bool)$input->getOption('two-way');
+
+        if (!$this->isForce()) {
+            $this->logger->critical('Actions not performed without --force option');
+        }
+
+        $this->checkoutBranch($this->getBranch());
+
+        $this->processSync($input, $output);
+    }
+
+    /** @return boolean */
+    public function isForce()
+    {
+        return $this->force;
+    }
+
+    /** @return string */
+    public function getBranch()
+    {
+        return $this->branch;
+    }
+
+    /** @return string */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /** @return boolean */
+    public function isTwoWay()
+    {
+        return $this->twoWay;
     }
 
     /**
@@ -71,37 +135,55 @@ abstract class AbstractSync extends RootCommand
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return string[]
-     *
-     * @throws \InvalidArgumentException if invalid path is specified
      */
-    protected function getRepositories(InputInterface $input)
+    protected function getRepositories()
     {
-        $path = $input->getArgument('path');
-        if ($path) {
-            if (!isset($this->repositories[$path])) {
-                throw new \InvalidArgumentException(
-                    "There are no repository registered for the \"{$path}\" path."
-                );
+        if ($this->repositories === false) {
+            $config = Yaml::parse(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'configuration.yml'));
+
+            $this->repositories = $config['repositories'];
+        }
+
+        return $this->repositories;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getApplicableRepositories()
+    {
+        $repositories = $this->getRepositories();
+
+        $baseBranch = $this->getBranch();
+        $branches = $this->getBranches();
+        if (!empty($branches[$baseBranch])) {
+            $repositories = array_intersect_key($repositories, $branches[$baseBranch]);
+        }
+
+        if ($this->getPath()) {
+            $repositories = array_intersect_key($repositories, array_flip([$this->getPath()]));
+
+            foreach ($repositories as $prefix => $repository) {
+                $this->logger->notice("{$prefix}: {$repository}");
             }
-            $repositories = [$path => $this->repositories[$path]];
-        } else {
-            $repositories = $this->getAllRepositories($input);
         }
 
         return $repositories;
     }
 
     /**
-     * @param InputInterface $input
-     *
      * @return string[]
      */
-    protected function getAllRepositories(InputInterface $input)
+    protected function getBranches()
     {
-        return $this->repositories;
+        if ($this->branches === false) {
+            $config = Yaml::parse(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'configuration.yml'));
+
+            $this->branches = $config['branches'];
+        }
+
+        return $this->branches;
     }
 
     /**
@@ -109,66 +191,74 @@ abstract class AbstractSync extends RootCommand
      *
      * @return string
      */
-    protected function getAlias($codePath)
+    protected function getRemoteAlias($codePath)
     {
         return $codePath . '_upstream';
     }
 
     /**
-     * Gets aliases of remote repositories
-     *
-     * @return string[]
-     */
-    protected function getRemoteAliases()
-    {
-        $remotes = [];
-        $this->execCmd('git remote', true, $remotes);
-
-        return $remotes;
-    }
-
-    /**
      * @param string $alias
      * @param string $repository
-     * @param bool $fetchOnlyMaster
+     * @param string $branch
      *
+     * @return bool
      */
-    protected function fetchLatestDataFromRemoteBranch($alias, $repository, $fetchOnlyMaster = true)
+    protected function fetchLatestDataFromRemoteBranch($repository, $alias, $branch)
     {
-        $remotes = $this->getRemoteAliases();
-        if (!in_array($alias, $remotes, true)) {
-            /* Add remote repository if it was not added yet */
-            $this->execCmd("git remote add --no-tags {$alias} {$repository}");
+        if ($this->execCmd("git remote add --no-tags {$alias} {$repository}", false) === false) {
+            return false;
         }
 
-        $fetchCommand = "git fetch --prune {$alias}";
-        if ($fetchOnlyMaster) {
-            $fetchCommand .= ' master';
-        }
-
-        $this->execCmd($fetchCommand);
+        return $this->execCmd("git fetch --prune {$alias} {$branch}");
     }
 
     /**
+     * @param string $repository
      * @param string $codePath
-     * @param bool   $twoWay
      * @param string $branchName
      */
-    protected function updateSubtree($codePath, $twoWay, $branchName = 'master')
+    protected function processSubtree($repository, $codePath, $branchName)
     {
-        $alias = $this->getAlias($codePath);
-        /* Add subtree prefix for remote master */
-        $this->execCmd("git subtree add --prefix={$codePath} {$alias} $branchName", false);
+        $this->assertGitVersion();
 
-        /* Pull all updates from remote master */
-        if ($this->execCmd("git subtree pull --prefix={$codePath} {$alias} $branchName") && $twoWay) {
-            $this->assertGitVersion();
+        $remoteBranch = $this->resolveRemoteBranch($branchName, $codePath);
+        $remoteAlias = $this->getRemoteAlias($codePath);
+        $subtreeBranch = $this->getSubtreeBranch($codePath);
 
-            /* Push all subtree changes to remote upstream repository */
-            $this->execCmd("git subtree push --prefix={$codePath} {$alias} $branchName");
+        $this->execCmd("git branch -D {$subtreeBranch}", false);
+        $this->execCmd("git subtree split --prefix={$codePath} --branch={$subtreeBranch}");
+
+        if ($this->execCmd("git fetch --prune {$remoteAlias} {$remoteBranch}", false)) {
+            $this->execCmd("git checkout -f {$subtreeBranch}");
+
+            $this->updateFromRemote($remoteBranch, $remoteAlias);
+
+            $this->execCmd("git checkout -f {$branchName}");
+            $this->execCmd("git subtree merge --prefix={$codePath} {$subtreeBranch}");
         }
     }
 
+    /**
+     * @param string $repository
+     * @param string $codePath
+     * @param string $branchName
+     */
+    protected function updateSubtree($repository, $codePath, $branchName)
+    {
+        $this->logger->info("Working on \"{$codePath}\" subtree from \"{$repository}\" repository.");
+
+        $alias = $this->getRemoteAlias($codePath);
+
+        $remoteBranchExists = $this->fetchLatestDataFromRemoteBranch($repository, $alias, $branchName);
+
+        if (!$remoteBranchExists) {
+            $this->logger->alert("Branch {$branchName} not found in $alias({$repository})");
+
+            return;
+        }
+
+        $this->processSubtree($repository, $codePath, $branchName);
+    }
 
     protected function assertGitVersion()
     {
@@ -189,52 +279,63 @@ abstract class AbstractSync extends RootCommand
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @param array           $repositories
      */
-    public function processSync(InputInterface $input, OutputInterface $output, $repositories)
+    public function processSync(InputInterface $input, OutputInterface $output)
     {
         /* Changing directory as subtree commands must be executed from the repository root */
         $currentDir = getcwd();
         chdir($this->getRootDir());
         try {
-            $this->doSync($input, $output, $repositories);
+            $this->doSync($input, $output);
         } catch (\Exception $e) {
-            $output->writeln($e->getMessage());
+            $this->logger->error($e->getMessage(), $e->getTrace());
         }
         /* Restore original directory */
         chdir($currentDir);
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @param string[]        $repositories
      *
      */
-    abstract protected function doSync(InputInterface $input, OutputInterface $output, array $repositories);
+    abstract protected function doSync(InputInterface $input, OutputInterface $output);
 
     /**
      * Executes an external program.
      *
-     * @param string $cmd            The command line
-     * @param bool   $throwException Whether to throw exception in case command failed
-     * @param array  $output         The command output
+     * @param string $cmd The command line
+     * @param bool $throwException Whether to throw exception in case command failed
+     * @param array $output The command output
      *
      * @return bool The execution status. TRUE if no errors; otherwise, FALSE.
      */
     protected function execCmd($cmd, $throwException = true, array &$output = [])
     {
-        $returnCode = 0;
+        $this->logger->info($cmd);
+        if (!$this->force) {
+            return true;
+        }
 
-        exec($cmd, $output, $returnCode);
+        $process = new Process($cmd);
+        $process
+            ->setTimeout(0);
+
+        $returnCode = $process->run(
+            function ($level, $message) {
+                $this->logger->debug($message);
+            }
+        );
+
+        $output = $process->getOutput();
 
         if ($throwException && $returnCode) {
             throw new \RuntimeException(
                 sprintf(
                     'The "%s" command failed. Return code: %s. Error message:' . "\n"
-                    . implode("\n", $output) . "\n"
+                    . $process->getErrorOutput() . "\n"
                     . 'Please fix the issue and run the "repository:sync" command again.' . "\n"
                     . 'The "git reset --hard" command can be used to rollback changes '
                     . 'made by "repository:sync" command or "git reset --hard origin/master" '
@@ -246,5 +347,62 @@ abstract class AbstractSync extends RootCommand
         }
 
         return 0 == $returnCode;
+    }
+
+    /**
+     * @param string $branchName
+     */
+    protected function checkoutBranch($branchName)
+    {
+        $this->execCmd("git fetch --prune origin {$branchName}", false);
+        if ($this->execCmd("git checkout -f {$branchName}", false) === false) {
+            $this->execCmd("git checkout -fb {$branchName}");
+        }
+    }
+
+    /**
+     * @param string $prefix
+     * @return string
+     */
+    protected function getSubtreeBranch($prefix)
+    {
+        return $prefix . '_subtree';
+    }
+
+    /**
+     * @param string $baseBranch
+     * @param string $prefix
+     * @return string
+     */
+    protected function resolveRemoteBranch($baseBranch, $prefix)
+    {
+        $remoteBranch = $baseBranch;
+        $branches = $this->getBranches();
+        if (!empty($branches[$baseBranch][$prefix])) {
+            $remoteBranch = $branches[$baseBranch][$prefix];
+        }
+
+        $this->logger->notice("origin:{$baseBranch} => {$prefix}:{$remoteBranch}");
+
+        return $remoteBranch;
+    }
+
+    /**
+     * @param string $fromBranch
+     * @param string $toBranch
+     * @param string $remoteAlias
+     */
+    protected function updateRemote($fromBranch, $toBranch, $remoteAlias = 'origin')
+    {
+        $this->execCmd("git push {$remoteAlias} {$fromBranch}:{$toBranch}");
+    }
+
+    /**
+     * @param string $branch
+     * @param string $remoteAlias
+     */
+    protected function updateFromRemote($branch, $remoteAlias = 'origin')
+    {
+        $this->execCmd("git pull {$remoteAlias} {$branch}");
     }
 }
