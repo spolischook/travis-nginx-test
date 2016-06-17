@@ -1,15 +1,15 @@
 <?php
 
-namespace OroB2BPro\Bundle\SaleBundle\DependencyInjection;
+namespace OroB2BPro\Bundle\OrderBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-class OroB2BProSaleExtension extends Extension
+class OroB2BProOrderExtension extends Extension
 {
-    const ALIAS = 'orob2bpro_sale';
+    const ALIAS = 'orob2bpro_order';
 
     /**
      * {@inheritDoc}
