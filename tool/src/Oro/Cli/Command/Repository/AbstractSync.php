@@ -22,6 +22,7 @@ abstract class AbstractSync extends RootCommand
         'application/commerce'       => 'git@github.com:laboro/commerce-application.git',
 
         'package/platform'               => 'git@github.com:laboro/platform.git',
+        'package/platform-enterprise'    => 'git@github.com:laboro/platform-enterprise.git',
         'package/crm'                    => 'git@github.com:laboro/crm.git',
         'package/crm-enterprise'         => 'git@github.com:laboro/crm-enterprise.git',
         'package/commerce'               => 'git@github.com:laboro/commerce.git',
@@ -34,6 +35,7 @@ abstract class AbstractSync extends RootCommand
         'package/demo-data'              => 'git@github.com:laboro/OroCRMProDemoDataBundle.git',
         'package/zendesk'                => 'git@github.com:laboro/OroCRMZendeskBundle.git',
         'package/magento-contact-us'     => 'git@github.com:laboro/OroCRMMagentoContactUsBundle.git',
+        'package/task'                   => 'git@github.com:laboro/OroCRMTaskBundle.git',
         'package/call'                   => 'git@github.com:laboro/OroCRMCallBundle.git',
 
         'documentation' => 'git@github.com:orocrm/documentation.git',
