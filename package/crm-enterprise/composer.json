@@ -11,9 +11,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "OroCRMPro\\Bundle": "src/",
-            "OroPro\\Bundle": "src/",
-            "OroPro\\Component": "src/"
+            "OroCRMPro\\Bundle": "src/"
         }
     },
     "repositories": {
@@ -30,8 +28,7 @@
         "php": ">=5.5.9",
         "oro/platform-enterprise": "self.version",
         "oro/crm": "self.version",
-        "elasticsearch/elasticsearch": "1.2.2",
-        "php-amqplib/php-amqplib": "^2.6"
+        "elasticsearch/elasticsearch": "1.2.2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

@@ -11,7 +11,8 @@
     ],
     "autoload": {
         "psr-0": {
-            "OroPro\\Bundle": "src/"
+            "OroPro\\Bundle": "src/",
+            "Oro\\Component": "src/"
         }
     },
     "repositories": {
@@ -27,7 +28,8 @@
     "require": {
         "php": ">=5.5.9",
         "oro/platform": "self.version",
-        "elasticsearch/elasticsearch": "1.2.2"
+        "elasticsearch/elasticsearch": "1.2.2",
+        "php-amqplib/php-amqplib": "^2.6"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

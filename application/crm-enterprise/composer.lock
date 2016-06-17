@@ -4033,22 +4033,19 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm-enterprise",
-                "reference": "d71f38d00df7de549f056f9dc52784c3d5a3617c",
+                "reference": "f755dbb9399a4bcac2043087434296025c4d14c9",
                 "shasum": null
             },
             "require": {
                 "elasticsearch/elasticsearch": "1.2.2",
                 "oro/crm": "self.version",
-                "php": ">=5.5.9",
-                "php-amqplib/php-amqplib": "^2.6",
-                "oro/platform-enterprise": "self.version"
+                "oro/platform-enterprise": "self.version",
+                "php": ">=5.5.9"
             },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "OroCRMPro\\Bundle": "src/",
-                    "OroPro\\Bundle": "src/",
-                    "OroPro\\Component": "src/"
+                    "OroCRMPro\\Bundle": "src/"
                 }
             },
             "license": [
@@ -4602,18 +4599,20 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/platform-enterprise",
-                "reference": "9f44354fc9054b865a0bfe583171b1648af1d7b2",
+                "reference": "ce7664d2fb1418bad4998c8f7401085a3ddcd8b0",
                 "shasum": null
             },
             "require": {
                 "elasticsearch/elasticsearch": "1.2.2",
                 "oro/platform": "self.version",
-                "php": ">=5.5.9"
+                "php": ">=5.5.9",
+                "php-amqplib/php-amqplib": "^2.6"
             },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "OroPro\\Bundle": "src/"
+                    "OroPro\\Bundle": "src/",
+                    "Oro\\Component": "src/"
                 }
             },
             "license": [
