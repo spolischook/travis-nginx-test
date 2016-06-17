@@ -253,8 +253,6 @@ abstract class AbstractSync extends RootCommand
 
         $this->execCmd('git --version', true, $output);
 
-        $output = reset($output);
-
         $version = VersionMatcher::match($output);
 
         if (VersionMatcher::gte($version, '2.0.0')) {
