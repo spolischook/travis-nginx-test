@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\WebsiteBundle\Migrations\Data\Demo\ORM;
+namespace OroB2BPro\Bundle\WebsiteBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
