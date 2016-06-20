@@ -33,10 +33,12 @@ case $step in
                            crm=$(echo -e "$files" | grep -e "^crm$");
                            crm_enterprise=$(echo -e "$files" | grep -e "^crm-enterprise$");
                            commerce=$(echo -e "$files" | grep -e "^commerce$");
+                           commerce_enterprise=$(echo -e "$files" | grep -e "^commerce-enterprise$");
                            if [[ $platform ]]; then echo "Platform is detected. Run all";
-                           elif [[ $crm ]] && [[ $APPLICATION == */crm* ]]; then echo "CRM is detected. Run CRM and Enterprise";
-                           elif [[ crm_enterprise ]] && [[ $APPLICATION == */crm-enterprise ]]; then echo "Enterprise is detected. Run Enterprise";
-                           elif [[ commerce ]] && [[ $APPLICATION == */commerce ]]; then echo "Commerce is detected. Run Commerce";
+                           elif [[ $crm ]] && [[ $APPLICATION == */crm* ]]; then echo "CRM is detected. Run CRM and CRM Enterprise";
+                           elif [[ crm_enterprise ]] && [[ $APPLICATION == */crm-enterprise ]]; then echo "CRM Enterprise is detected. Run CRM Enterprise";
+                           elif [[ commerce ]] && [[ $APPLICATION == */commerce* ]]; then echo "Commerce is detected. Run Commerce and Commerce Enterprise";
+                           elif [[ commerce_enterprise ]] && [[ $APPLICATION == */commerce-enterprise ]]; then echo "Commerce Enterprise is detected. Run Commerce Enterprise";
                            # TODO: add other cases for example Extensions tests
                            else
                                echo "Tests build not required!";
@@ -52,8 +54,13 @@ case $step in
                         files=$(echo -e "$filteredDiff" | grep -e "^package/.*\.php$");
                         if [ ! -e "$CS" ] && [[ $files ]]; then
                            echo -e "Source code changes were detected:\n$files";
-                           echo -e "Pass files to PHPCS";
+                           echo -e "Pass files to PHPCS and PHPMD";
                            export TRAVIS_CS_FILES=$files;
+                           commerce=$(echo -e "$files" | grep -e "^commerce$");
+                           if [[ $commerce ]]; then export TRAVIS_CS_COMMERCE='YES'; fi
+                         elif [ ! -e "$JS" ]; then
+                           echo -e "Source code changes were detected:\n$files";
+                           echo -e "Pass files to JavaScript";
                         else
                            echo "Code Style build not required!";
                            export TRAVIS_SKIP="true";
@@ -74,6 +81,11 @@ case $step in
              pip install -q -r requirements.txt --use-mirrors;
              pip install git+https://github.com/fabpot/sphinx-php.git;
           fi
+          if [ ! -z "$JS" ]; then
+             cd $TRAVIS_BUILD_DIR/tool;
+             npm install;
+          fi
+   
      ;;
      before_script)
           echo  "Before script...";
@@ -92,6 +104,21 @@ case $step in
                       sed -i "s/database_driver"\:".*/database_driver"\:" pdo_pgsql/g; s/database_name"\:".*/database_name"\:" ${dbname}/g; s/database_user"\:".*/database_user"\:" postgres/g; s/database_password"\:".*/database_password"\:" ~/g" app/config/parameters_test.yml;
                ;; 
           esac
+          if [ ! -z "$UPDATE_FROM" ]; then
+              git clone https://${GITHUB_OAUTH}@github.com/laboro/Builds.git builds
+              echo  "Restore DB ${UPDATE_FROM}...";
+              case $DB in
+                 mysql)
+                        mysql -u root -D ${dbname} < builds/DBDumps/${UPDATE_FROM}.mysql.sql;
+                 ;;
+                 postgresql)
+                        psql -U postgres ${dbname} < builds/DBDumps/${UPDATE_FROM}.pgsql.sql > /dev/null
+                 ;;
+              esac
+              rm -rf builds
+              INSTALLED_DATE=`date --rfc-3339=seconds`
+              sed -i "s/installed"\:".*/installed"\:" '${INSTALLED_DATE}'/g" app/config/parameters_test.yml;
+          fi
     ;;
     script)
           echo  "Script...";
@@ -102,9 +129,13 @@ case $step in
           fi
           if [ ! -z "$TESTSUITE" ]; then
              composer install --optimize-autoloader --no-interaction;
-             if [ ! -z "$DB" ]; then 
-                php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --skip-assets --timeout 600;
-                php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures; 
+             if [ ! -z "$DB" ]; then
+                if [ ! -z "$UPDATE_FROM" ]; then
+                    php app/console oro:platform:update --env test --force --no-interaction --skip-assets --timeout 600;
+                else
+                    php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --skip-assets --timeout 600;
+                fi
+                php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures;
                 if [[ "$APPLICATION" == "application/commerce" ]]; then
                     php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/commerce/src/Oro/Component/Testing/Fixtures;
                 fi;
@@ -190,6 +221,41 @@ case $step in
              cd ..;
              TEST_FILES=$(if [ ! -z "$TRAVIS_CS_FILES" ]; then echo $TRAVIS_CS_FILES; else echo "$APPLICATION_PWD/."; fi);
              $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcs $TEST_FILES -p --encoding=utf-8 --extensions=php --standard=psr2;
+             if [ ! -z "$TRAVIS_CS_FILES" ]; then
+                TEST_FILES=${TRAVIS_CS_FILES//$'\n'/,};
+                $TRAVIS_BUILD_DIR/tool/vendor/bin/phpmd $TEST_FILES text $TRAVIS_BUILD_DIR/tool/codestandards/rulesetMD.xml --suffixes php;
+             fi
+             if [ ! -z "$TRAVIS_CS_FILES" ] && [ ! -z "$TRAVIS_CS_COMMERCE" ]; then
+                $TRAVIS_BUILD_DIR/tool/vendor/bin/phpcpd --min-lines 25 \
+                                --exclude=AccountBundle/Migrations/Schema \
+                                --exclude=PaymentBundle/Migrations/Schema \
+                                --exclude=PricingBundle/Migrations/Schema \
+                                --exclude=ProductBundle/Migrations/Schema \
+                                --exclude=RFPBundle/Migrations/Schema \
+                                --exclude=SaleBundle/Migrations/Schema \
+                                --exclude=OrderBundle/Migrations/Schema \
+                                --exclude=InvoiceBundle/Migrations/Schema \
+                                --exclude=ShoppingListBundle/Migrations/Schema \
+                                --exclude=WebsiteBundle/Migrations/Schema \
+                                --exclude=CatalogBundle/Migrations/Schema \
+                                --exclude=CMSBundle/Migrations/Schema \
+                                --exclude=WarehouseBundle/Migrations/Schema \
+                                --exclude=TaxBundle/Migrations/Schema \
+                                --exclude=MenuBundle/Migrations/Schema \
+                                --exclude=CheckoutBundle/Migrations/Schema \
+                                --exclude=AlternativeCheckoutBundle/Migrations/Schema \
+                                --exclude=ShippingBundle/Migrations/Schema \
+                                --exclude=SaleBundle/Entity \
+                                --exclude=RFPBundle/Entity \
+                                --exclude=AlternativeCheckoutBundle/Entity \
+                                --verbose $APPLICATION_PWD"/commerce";
+             fi
+          fi
+          if [ ! -z "$JS" ]; then
+             cd $TRAVIS_BUILD_DIR;
+             set +e; 
+             tool/node_modules/.bin/jscs package/*/src/*/Bundle/*Bundle/Resources/public/js/** package/*/src/*/Bundle/*Bundle/Tests/JS/** package/*/Resources/public/js/** --config=tool/.jscsrc; 
+             tool/node_modules/.bin/jshint package/*/src/*/Bundle/*Bundle/Resources/public/js/** package/*/src/*/Bundle/*Bundle/Tests/JS/** package/*/Resources/public/js/** --config=tool/.jshintrc --exclude-path=tool/.jshintignore;
           fi
     ;;
 esac
