@@ -28,10 +28,10 @@ branches:
         application/crm: 1.9
         application/platform: 1.9
 
-        platform: 1.9               # branch 1.9 from package/platform (git@github.com:laboro/platform.git) used
-        platform-enterprise: 1.11   # branch 1.11 from package/platform (git@github.com:orocrm/platform-er.git) used
-        crm: 1.9                    # branch 1.9 from package/platform (git@github.com:laboro/crm.git) used
-        crm-enterprise: 1.11        # branch 1.11 from package/platform (git@github.com:laboro/crm.git) used
+        package/platform: 1.9               # branch 1.9 from package/platform (git@github.com:laboro/platform.git) used
+        package/platform-enterprise: 1.11   # branch 1.11 from package/platform (git@github.com:orocrm/platform-er.git) used
+        package/crm: 1.9                    # branch 1.9 from package/platform (git@github.com:laboro/crm.git) used
+        package/crm-enterprise: 1.11        # branch 1.11 from package/platform (git@github.com:laboro/crm.git) used
         package/dotmailer: 1.9
         package/ldap: 1.11
         package/mailchimp: 1.9
