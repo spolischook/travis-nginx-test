@@ -1,0 +1,286 @@
+datagrid:
+    # todo datagrid doesn't consider acl
+    shared-datagrid:
+        source:
+            type: share
+        properties:
+            id: ~
+        columns:
+            entity:
+                label: Name
+                type: twig
+                frontend_type: html
+                template: OroProSecurityBundle:Share:Property/entity.html.twig
+        actions:
+            remove:
+                type: frontend
+                label: oro.security.datagrid.actions.remove.label
+                icon: trash
+                selector: share-item-remove
+        mass_actions:
+            remove:
+                type: frontend
+                label: oro.security.datagrid.mass_actions.remove.label
+                icon: trash
+                selector: share-items-remove
+        options:
+            routerEnabled: false
+            toolbarOptions:
+                hide: true
+                pagination:
+                    hide: true
+
+    share-with-users-datagrid:
+        extended_entity_name: %oro_user.entity.class%
+        options:
+            entityHint: user
+            entity_pagination: true
+            toolbarOptions:
+                pageSize:
+                    default_per_page: 10
+            routerEnabled: false
+        acl_resource: oro_user_user_view
+        source:
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.firstName
+                    - u.lastName
+                    - u.email
+                    - u.username
+                    - u.enabled
+                    - bu.name as businessUnit
+                    - organizationOwner.name as organization
+                from:
+                    - { table: %oro_user.entity.class%, alias: u }
+                join:
+                    left:
+                        - { join: u.owner, alias: bu }
+                        - { join: u.organization, alias: organizationOwner }
+
+                where:
+                    and:
+                        - u.id != @oro_security.security_facade->getLoggedUserId
+        columns:
+            firstName:
+                label:         oro.user.first_name.label
+            lastName:
+                label:         oro.user.last_name.label
+            email:
+                label:         oro.user.email.label
+            username:
+                label:         oro.user.username.label
+            enabled:
+                label:         oro.user.enabled.label
+                frontend_type: select
+                choices:
+                   - Inactive
+                   - Active
+            businessUnit:
+                label:         oro.user.business_unit.label
+            organization:
+                label:         oro.user.organization.label
+        properties:
+            id: ~
+            entity:
+                type: twig
+                frontend_type: html
+                template: OroProSecurityBundle:Share:Property/entity.user.html.twig
+                data_name: u
+        sorters:
+            columns:
+                firstName:
+                    data_name: u.firstName
+                lastName:
+                    data_name: u.lastName
+                email:
+                    data_name: u.email
+                username:
+                    data_name: u.username
+                enabled:
+                    data_name: u.enabled
+                businessUnit:
+                    data_name: bu.name
+                organization:
+                    data_name: organizationOwner.name
+            default:
+                enabled: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                email:
+                    type: string
+                    data_name: u.email
+                username:
+                    type: string
+                    data_name: u.username
+                enabled:
+                    type: boolean
+                    data_name: u.enabled
+                    options:
+                        field_options:
+                            choices:
+                                2: Inactive
+                                1: Active
+
+    share-with-business-units-datagrid:
+        extended_entity_name: %oro_organization.business_unit.entity.class%
+        options:
+            entityHint: business unit
+            entity_pagination: true
+        source:
+            type: orm
+            skip_acl_apply: true
+            query:
+                select:
+                    - u.id
+                    - u.name
+                    - u.email
+                    - u.phone
+                    - u.createdAt
+                    - owner.name as ownerName
+                    - o.name as fromName
+                from:
+                    - { table: OroOrganizationBundle:BusinessUnit, alias: u }
+                join:
+                    left:
+                        owner:
+                            join: u.owner
+                            alias: owner
+                    inner:
+                        - { join: u.organization, alias: o }
+
+        columns:
+            name:
+                label: oro.organization.businessunit.name.label
+            email:
+                label: oro.organization.businessunit.email.label
+            phone:
+                label: oro.organization.businessunit.phone.label
+            ownerName:
+                label: oro.organization.businessunit.owner.label
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+
+        properties:
+            id: ~
+            entity:
+                type: twig
+                frontend_type: html
+                template: OroProSecurityBundle:Share:Property/entity.business.unit.html.twig
+                data_name: u
+        sorters:
+            columns:
+                name:
+                    data_name: u.name
+                email:
+                    data_name: u.email
+                phone:
+                    data_name: u.phone
+                ownerName:
+                    data_name: owner.name
+                createdAt:
+                    data_name: u.createdAt
+
+            default:
+                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: u.name
+                email:
+                    type: string
+                    data_name: u.email
+                phone:
+                    type: string
+                    data_name: u.phone
+                ownerName:
+                    type: choice
+                    data_name: ownerName
+                    options:
+                        field_options:
+                            choices: "@oro_organization.provider.business_units_grid->getOwnerChoices"
+                            translatable_options: false
+                createdAt:
+                    type: datetime
+                    data_name: u.createdAt
+
+    share-with-organizations-datagrid:
+        extended_entity_name: %oro_organization.organization.entity.class%
+        options:
+            entityHint: organization
+        acl_resource: oro_organization_view
+        source:
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.name
+                    - u.enabled
+                    - u.createdAt
+                    - u.updatedAt
+                from:
+                    - { table: OroOrganizationBundle:Organization, alias: u }
+        columns:
+            name:
+                label: oro.organization.name.label
+            enabled:
+                label:         oro.user.enabled.label
+                frontend_type: select
+                choices:
+                   - Inactive
+                   - Active
+            createdAt:
+                label: oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label: oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            id: ~
+            entity:
+                type: twig
+                frontend_type: html
+                template: OroProSecurityBundle:Share:Property/entity.organization.html.twig
+                data_name: u
+        sorters:
+            columns:
+                name:
+                    data_name: u.name
+                enabled:
+                    data_name: u.enabled
+                createdAt:
+                    data_name: u.createdAt
+                updatedAt:
+                    data_name: u.updatedAt
+            default:
+                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: u.name
+                enabled:
+                    type: boolean
+                    data_name: u.enabled
+                    options:
+                        field_options:
+                            choices:
+                                2: Inactive
+                                1: Active
+                createdAt:
+                    type: datetime
+                    data_name: u.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: u.updatedAt
