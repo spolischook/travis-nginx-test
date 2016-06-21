@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce-enterprise/app" />
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce-enterprise/web" />
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce-enterprise/vendor/oro/commerce" />
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce-enterprise/vendor/oro/platform" />
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise" />
+      <excludeFolder url="file://$MODULE_DIR$/application/platform" />
+      <excludeFolder url="file://$MODULE_DIR$/documentation" />
+      <excludeFolder url="file://$MODULE_DIR$/package/crm" />
+      <excludeFolder url="file://$MODULE_DIR$/package/crm-enterprise" />
+      <excludeFolder url="file://$MODULE_DIR$/package/demo-data" />
+      <excludeFolder url="file://$MODULE_DIR$/package/dotmailer" />
+      <excludeFolder url="file://$MODULE_DIR$/package/google-hangout" />
+      <excludeFolder url="file://$MODULE_DIR$/package/ldap" />
+      <excludeFolder url="file://$MODULE_DIR$/package/magento-abandoned-cart" />
+      <excludeFolder url="file://$MODULE_DIR$/package/magento-contact-us" />
+      <excludeFolder url="file://$MODULE_DIR$/package/mailchimp" />
+      <excludeFolder url="file://$MODULE_DIR$/package/serialized-fields" />
+      <excludeFolder url="file://$MODULE_DIR$/package/zendesk" />
+      <excludeFolder url="file://$MODULE_DIR$/tool/vendor" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
