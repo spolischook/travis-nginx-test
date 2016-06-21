@@ -30,7 +30,7 @@
         "oro/crm-pro-ldap-bundle": "self.version",
         "oro/crm-pro-demo-data-bundle": "self.version",
         "oro/crm-task-bundle": "self.version",
-        "oro/call-bundle": "self.version"
+        "oro/crm-call-bundle": "self.version"
     },
     "require-dev": {
         "sensio/generator-bundle": "2.5.3",
