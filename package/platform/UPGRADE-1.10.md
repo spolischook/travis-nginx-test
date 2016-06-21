@@ -151,7 +151,7 @@ was responsible to pass redirect data in arguments, for example:
     );
 ```
 These routes were used to make redirect when user clicked on one of 2 buttons on UI rendered using 2 Twig macroses: saveAndCloseButton and saveAndStayButton.
-Now controller's action is not responsible to configure redirect data at all. 
+Now controller's action is not responsible to configure redirect data at all.
 ```
     return $this->get('oro_ui.router')->redirect($entity);
 ```
@@ -243,6 +243,8 @@ Corresponding block type classes was removed.
 - Renamed `setDefaultOptions` to `configureOptions` method at `Oro\Component\Layout\BlockTypeInterface\BlockTypeInterface` and `Oro\Component\Layout\BlockTypeInterface\BlockTypeExtensionInterface`.
 - Defined image types configuration section for theme config
 - Added `oro_layout.provider.image_type` service to get image types available across all themes
+- The class Oro\Bundle\LayoutBundle\Layout\Block\Type\FormType was renamed to FormFieldsType
+- New `Oro\Bundle\LayoutBundle\Layout\Block\Type\FormType` block type was added. This block type creates three child blocks in buildBlock method: `FormStartType`, `FormType`, `FormEndType`.
 
 ####EmbeddedFormBundle:
 - Layout block types was replaced with DI only configuration for `embed_form_success` and `embed_form_legacy_form` block types.
