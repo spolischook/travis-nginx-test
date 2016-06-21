@@ -25,21 +25,8 @@
                     'paletteColors': options.settings.chartColors
                 },
                 'data': data,
-                'type': 'Column3D',
-                'trendlines': [{
-                    'line': [
-                        {
-                            'startvalue': '0',
-                            'color': '666666',
-                            'alpha': '10'
-                        },
-                        {
-                            'startvalue': max,
-                            'color': '666666',
-                            'alpha': '10'
-                        }
-                    ]
-                }]
+                'type': 'Bar3D',
+                'trendlines': []
             },
             schema: options.data_schema,
             isCurrencyPrepend: oro_currency_symbol_prepend()
