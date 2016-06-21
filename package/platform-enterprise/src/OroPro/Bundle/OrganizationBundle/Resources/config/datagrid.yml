@@ -74,13 +74,13 @@ datagrid:
                     type: string
                     data_name: u.name
                 enabled:
-                    type: choice
+                    type: boolean
                     data_name: u.enabled
                     options:
                         field_options:
                             choices:
-                                'false': Inactive
-                                'true':  Active
+                                2: Inactive
+                                1: Active
                 createdAt:
                     type: datetime
                     data_name: u.createdAt
@@ -143,13 +143,13 @@ datagrid:
                     type: string
                     data_name: u.username
                 enabled:
-                    type: choice
+                    type: boolean
                     data_name: u.enabled
                     options:
                         field_options:
                             choices:
-                                'false': Inactive
-                                'true':  Active
+                                2: Inactive
+                                1: Active
         sorters:
             multiple_sorting: true
             columns:
@@ -210,10 +210,10 @@ datagrid:
                     type: string
                     data_name: u.username
                 enabled:
-                    type: choice
+                    type: boolean
                     data_name: u.enabled
                     options:
                         field_options:
                             choices:
-                                'false': Inactive
-                                'true':  Active
+                                2: Inactive
+                                1: Active
