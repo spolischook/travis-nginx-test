@@ -3,10 +3,10 @@
 namespace Oro\Bundle\LayoutBundle\Layout\Block\Type;
 
 use Oro\Component\Layout\Block\OptionsResolver\OptionsResolver;
-use Oro\Component\Layout\Block\Type\AbstractContainerType;
+use Oro\Component\Layout\Block\Type\AbstractType;
 use Oro\Component\Layout\BlockBuilderInterface;
 
-class FormType extends AbstractContainerType
+class FormType extends AbstractType
 {
     const NAME = 'form';
     const FIELD_SEPARATOR = '_';
@@ -17,26 +17,23 @@ class FormType extends AbstractContainerType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('form_name', 'form');
-        $resolver->setDefined(
-            [
-                'form'                  => null,
-                'form_action'           => null,
-                'form_route_name'       => null,
-                'form_route_parameters' => null,
-                'form_method'           => null,
-                'form_enctype'          => null,
-                'form_data'             => null,
-                'form_prefix'           => null,
-                'form_field_prefix'     => null,
-                'form_group_prefix'     => null,
-                'render_rest'           => null,
-                'preferred_fields'      => null,
-                'groups'                => null,
-                'split_to_fields'       => null,
-            ]
-        );
+        $resolver->setDefined([
+            'form',
+            'form_action',
+            'form_route_name',
+            'form_route_parameters',
+            'form_method',
+            'form_enctype',
+            'form_data',
+            'form_prefix',
+            'form_field_prefix',
+            'form_group_prefix',
+            'render_rest',
+            'preferred_fields',
+            'groups',
+            'split_to_fields',
+        ]);
     }
-
 
     /**
      * {@inheritdoc}

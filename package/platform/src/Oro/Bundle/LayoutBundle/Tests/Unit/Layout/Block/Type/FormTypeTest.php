@@ -2,18 +2,19 @@
 
 namespace Oro\Bundle\LayoutBundle\Tests\Unit\Layout\Block\Type;
 
-use Oro\Component\Layout\Block\Type\ContainerType;
+use Oro\Component\Layout\Block\Type\BaseType;
+use Oro\Component\Layout\BlockBuilderInterface;
 
 use Oro\Bundle\LayoutBundle\Layout\Block\Type\FormType;
 use Oro\Bundle\LayoutBundle\Tests\Unit\BlockTypeTestCase;
 
 class FormTypeTest extends BlockTypeTestCase
 {
-
     public function testBuildBlock()
     {
         $formName = 'test_form';
 
+        /** @var BlockBuilderInterface|\PHPUnit_Framework_MockObject_MockObject $builder */
         $builder = $this->getMock('Oro\Component\Layout\BlockBuilderInterface');
         $builder->expects($this->any())
             ->method('getId')
@@ -65,7 +66,6 @@ class FormTypeTest extends BlockTypeTestCase
                         'render_rest' => true,
                     ],
                 ]
-
             );
         $type = new FormType();
         $options = $this->resolveOptions(
@@ -101,6 +101,6 @@ class FormTypeTest extends BlockTypeTestCase
     {
         $type = $this->getBlockType(FormType::NAME);
 
-        $this->assertSame(ContainerType::NAME, $type->getParent());
+        $this->assertSame(BaseType::NAME, $type->getParent());
     }
 }
