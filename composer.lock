@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1afc8913c9831a9624369b2ca162ad83",
-    "content-hash": "edae1e1bb0cf6b55024604c0dfe58fba",
+    "hash": "05374c718edcccccb7a1e4df2dac87c9",
+    "content-hash": "3515de33147909f1f4adbf3bb4cd8a14",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3916,38 +3916,6 @@
             "time": "2014-09-28 14:18:11"
         },
         {
-            "name": "oro/call-bundle",
-            "version": "dev-master",
-            "target-dir": "src/OroCRM/Bundle/CallBundle",
-            "dist": {
-                "type": "path",
-                "url": "../../package/call",
-                "reference": "8a6f1755ced21f485669a301b2578096ca48d18c",
-                "shasum": null
-            },
-            "require": {
-                "oro/platform": "1.x-dev",
-                "php": ">=5.5.9"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "OroCRM\\Bundle\\CallBundle": "src/"
-                }
-            },
-            "description": "Oro CRM Calls",
-            "homepage": "https://github.com/orocrm/CallBundle",
-            "keywords": [
-                "Call",
-                "OroCRM"
-            ]
-        },
-        {
             "name": "oro/crm",
             "version": "dev-master",
             "dist": {
@@ -4021,6 +3989,47 @@
                 }
             ],
             "description": "OroCRM Abandoned Cart"
+        },
+        {
+            "name": "oro/crm-call-bundle",
+            "version": "dev-master",
+            "target-dir": "src/OroCRM/Bundle/CallBundle",
+            "dist": {
+                "type": "path",
+                "url": "../../package/call",
+                "reference": "d9f9017043e7fe1a42d480454cd64241cbf00d66",
+                "shasum": null
+            },
+            "require": {
+                "oro/platform": "1.x-dev",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "OroCRM\\Bundle\\CallBundle": "src/"
+                }
+            },
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocrm.com"
+                }
+            ],
+            "description": "Oro CRM Calls",
+            "homepage": "https://github.com/orocrm/CallBundle",
+            "keywords": [
+                "Call",
+                "OroCRM"
+            ]
         },
         {
             "name": "oro/crm-dotmailer",
@@ -4098,15 +4107,15 @@
             "version": "dev-master",
             "target-dir": "src/OroCRM/Bundle/HangoutsCallBundle",
             "dist": {
-                "type": "path",
-                "url": "../../package/google-hangout",
-                "reference": "4276a27b8aa3852d7ba4f8f6df80a1e1bcd0d4a8",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/orocrm/OroCRMHangoutsCallBundle/zipball/c705de8d5a42558ed6c64e5cf60a5a8fce1ce751",
+                "reference": "c705de8d5a42558ed6c64e5cf60a5a8fce1ce751",
+                "shasum": ""
             },
             "require": {
-                "oro/call-bundle": "self.version",
-                "oro/platform": "self.version",
-                "php": ">=5.5.9"
+                "oro/crm": "1.x-dev",
+                "oro/platform": "1.x-dev",
+                "php": ">=5.4.9"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -4119,6 +4128,7 @@
                     "OroCRM\\Bundle\\HangoutsCallBundle": "src/"
                 }
             },
+            "notification-url": "https://packagist.orocrm.com/downloads/",
             "license": [
                 "OSL-3.0"
             ],
@@ -4134,7 +4144,8 @@
                 "Google Hangouts",
                 "OroCRM",
                 "integration"
-            ]
+            ],
+            "time": "2016-03-09 16:01:24"
         },
         {
             "name": "oro/crm-magento-embedded-contact-us",
@@ -4633,7 +4644,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/platform-enterprise",
-                "reference": "9f44354fc9054b865a0bfe583171b1648af1d7b2",
+                "reference": "7fb9f3d49c74037c840ef697558673a0b15634b7",
                 "shasum": null
             },
             "require": {
@@ -4642,6 +4653,11 @@
                 "php": ">=5.5.9"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "OroPro\\Bundle": "src/"
@@ -8318,7 +8334,7 @@
         "oro/crm-pro-ldap-bundle": 20,
         "oro/crm-pro-demo-data-bundle": 20,
         "oro/crm-task-bundle": 20,
-        "oro/call-bundle": 20
+        "oro/crm-call-bundle": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
