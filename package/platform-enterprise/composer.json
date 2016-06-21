@@ -1,0 +1,35 @@
+{
+    "name": "oro/platform-enterprise",
+    "description": "OroPlatform Enterprise",
+    "homepage": "https://github.com/orocrm/platform-enterprise.git",
+    "license": "Commercial",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocrm.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "OroPro\\Bundle": "src/"
+        }
+    },
+    "repositories": {
+        "composer": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
+    "require": {
+        "php": ">=5.5.9",
+        "oro/platform": "self.version",
+        "elasticsearch/elasticsearch": "1.2.2"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
