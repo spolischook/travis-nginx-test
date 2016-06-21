@@ -11,6 +11,7 @@ use Oro\Bundle\ImportExportBundle\Field\DatabaseHelper;
 use Oro\Bundle\ImportExportBundle\Field\FieldHelper;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ImportStrategyHelper;
+use Oro\Bundle\ImportExportBundle\Strategy\Import\NewEntitiesHelper;
 use Oro\Bundle\IntegrationBundle\ImportExport\Helper\DefaultOwnerHelper;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
 
@@ -26,15 +27,18 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
     private $ldapHelper;
 
     /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ImportStrategyHelper     $strategyHelper
-     * @param FieldHelper              $fieldHelper
-     * @param DatabaseHelper           $databaseHelper
-     * @param ChainEntityClassNameProvider $chainEntityClassNameProvider,
-     * @param TranslatorInterface      $translator,
-     * @param DefaultOwnerHelper       $defaultOwnerHelper
-     * @param ConnectorContextMediator $contextMediator
-     * @param LdapHelper               $ldapHelper
+     * @param EventDispatcherInterface     $eventDispatcher
+     * @param ImportStrategyHelper         $strategyHelper
+     * @param FieldHelper                  $fieldHelper
+     * @param DatabaseHelper               $databaseHelper
+     * @param ChainEntityClassNameProvider $chainEntityClassNameProvider
+     * @param TranslatorInterface          $translator
+     * @param NewEntitiesHelper            $newEntitiesHelper
+     * @param DefaultOwnerHelper           $defaultOwnerHelper
+     * @param ConnectorContextMediator     $contextMediator
+     * @param LdapHelper                   $ldapHelper
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -43,6 +47,7 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
         DatabaseHelper $databaseHelper,
         ChainEntityClassNameProvider $chainEntityClassNameProvider,
         TranslatorInterface $translator,
+        NewEntitiesHelper $newEntitiesHelper,
         DefaultOwnerHelper $defaultOwnerHelper,
         ConnectorContextMediator $contextMediator,
         LdapHelper $ldapHelper
@@ -53,7 +58,8 @@ class UserImportStrategy extends ConfigurableAddOrReplaceStrategy
             $fieldHelper,
             $databaseHelper,
             $chainEntityClassNameProvider,
-            $translator
+            $translator,
+            $newEntitiesHelper
         );
         $this->defaultOwnerHelper = $defaultOwnerHelper;
         $this->contextMediator = $contextMediator;
