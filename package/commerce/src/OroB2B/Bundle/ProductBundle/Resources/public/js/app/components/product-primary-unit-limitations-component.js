@@ -65,7 +65,7 @@ define(function (require) {
             }
             this.saveData(storedData);
             changes['added'] = storedData;
-            
+
             if(changes['added'] != changes['removed']){
                 this.triggerChangeEvent(changes);
             }
@@ -105,7 +105,7 @@ define(function (require) {
             });
             _.each(precisions, function(text,val){
                 select.append($('<option></option>').val(val).text(text));
-            }); 
+            });
             $(select).find(selected.val()).selected(true).trigger('change');
         },
 
