@@ -29,7 +29,7 @@ branches:
         application/platform: 1.9
 
         package/platform: 1.9               # branch 1.9 from package/platform (git@github.com:laboro/platform.git) used
-        package/platform-enterprise: 1.11   # branch 1.11 from package/platform (git@github.com:orocrm/platform-er.git) used
+#        package/platform-enterprise: 1.11   # branch 1.11 from package/platform (git@github.com:orocrm/platform-er.git) used
         package/crm: 1.9                    # branch 1.9 from package/platform (git@github.com:laboro/crm.git) used
         package/crm-enterprise: 1.11        # branch 1.11 from package/platform (git@github.com:laboro/crm.git) used
         package/dotmailer: 1.9
@@ -41,3 +41,36 @@ branches:
         package/demo-data: 1.11
         package/zendesk: 1.9
         package/magento-contact-us: 1.9
+
+    maintenace/crm-enterprise-1.10:
+        application/crm-enterprise: 1.10
+        application/crm: 1.8
+        application/platform: 1.8
+
+        package/platform: 1.8
+        package/crm: 1.8
+        package/crm-enterprise: 1.10
+        package/dotmailer: 1.8
+        package/ldap: 1.10
+        package/mailchimp: 1.8
+        package/magento-abandoned-cart: 1.8
+        package/serialized-fields: 1.8
+        package/demo-data: 1.10
+        package/zendesk: 1.8
+        package/magento-contact-us: 1.8
+
+    maintenace/crm-enterprise-1.9:
+        application/crm-enterprise: 1.9
+        application/crm: 1.7
+        application/platform: 1.7
+
+        package/platform: 1.7
+        package/crm: 1.7
+        package/crm-enterprise: 1.9
+        package/dotmailer: 1.7
+        package/mailchimp: 1.7
+        package/magento-abandoned-cart: 1.7
+        package/serialized-fields: 1.7
+        package/demo-data: 1.9
+        package/zendesk: 1.7
+        package/magento-contact-us: 1.7
