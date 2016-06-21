@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\WebsiteBundle\Form\Type;
+namespace OroB2BPro\Bundle\WebsiteBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class WebsiteType extends AbstractType
 {
-    const NAME = 'orob2b_website_type';
+    const NAME = 'orob2bpro_website_type';
 
     /** @var  string */
     protected $dataClass;

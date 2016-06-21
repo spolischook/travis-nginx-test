@@ -2,17 +2,17 @@ oro_menu_config:
     items:
         websites_list:
             label:           'orob2b.website.entity_plural_label'
-            route:           'orob2b_website_index'
+            route:           'orob2bpro_website_index'
             extras:
                 position:    1000
-                routes:      ['/^orob2b_website/']
-                description: 'orob2b.website.menu.websites_list.description'
+                routes:      ['/^orob2bpro_website/']
+                description: 'orob2bpro.website.menu.websites_list.description'
 
         shortcut_websites_list:
             label:           'orob2b.website.entity_plural_label'
-            route:           'orob2b_website_index'
+            route:           'orob2bpro_website_index'
             extras:
-                description: 'orob2b.website.menu.shortcut_websites_list.description'
+                description: 'orob2bpro.website.menu.shortcut_websites_list.description'
 
     tree:
         application_menu:
@@ -25,7 +25,7 @@ oro_menu_config:
                 shortcut_websites_list: ~
 
 oro_titles:
-    orob2b_website_index: ~
-    orob2b_website_view:   '%%name%%'
-    orob2b_website_update: '%%name%% - Edit'
-    orob2b_website_create: 'Create Website'
+    orob2bpro_website_index: ~
+    orob2bpro_website_view:   '%%name%%'
+    orob2bpro_website_update: '%%name%% - Edit'
+    orob2bpro_website_create: 'Create Website'

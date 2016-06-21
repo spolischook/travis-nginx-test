@@ -3,14 +3,14 @@
 
 {% oro_title_set({params : {"%name%": entity.name|default('N/A'|trans)}}) %}
 
-{% set formAction = entity.id ? path('orob2b_website_update', { 'id': entity.id }) : path('orob2b_website_create')  %}
+{% set formAction = entity.id ? path('orob2bpro_website_update', { 'id': entity.id }) : path('orob2bpro_website_create')  %}
 
 {% block navButtons %}
     {{ parent() }}
 
-    {{ UI.cancelButton(path('orob2b_website_index')) }}
+    {{ UI.cancelButton(path('orob2bpro_website_index')) }}
     {% set html = UI.saveAndCloseButton() %}
-    {% if entity.id or resource_granted('orob2b_website_update') %}
+    {% if entity.id or resource_granted('orob2bpro_website_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
     {{ UI.dropdownSaveButton({'html': html}) }}
@@ -20,7 +20,7 @@
     {% if entity.id %}
         {% set breadcrumbs = {
             'entity':      entity,
-            'indexPath':   path('orob2b_website_index'),
+            'indexPath':   path('orob2bpro_website_index'),
             'indexLabel': 'orob2b.website.entity_plural_label'|trans,
             'entityTitle': entity.name|default('N/A'|trans)
         } %}
@@ -37,7 +37,7 @@
 
     {% set dataBlocks = [
         {
-            'title': 'orob2b.website.sections.general'|trans,
+            'title': 'orob2bpro.website.sections.general'|trans,
             'class': 'active',
             'subblocks': [{
                 'data': [
@@ -55,7 +55,7 @@
 
     {% if additionalData is not empty %}
         {% set dataBlocks = dataBlocks|merge([{
-            'title': 'orob2b.website.sections.additional'|trans,
+            'title': 'orob2bpro.website.sections.additional'|trans,
             'subblocks': [{
                     'title': '',
                     'useSpan': false,

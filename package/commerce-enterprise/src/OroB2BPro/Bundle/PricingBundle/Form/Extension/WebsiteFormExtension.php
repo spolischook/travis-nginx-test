@@ -1,15 +1,15 @@
 <?php
 
-namespace OroB2B\Bundle\PricingBundle\Form\Extension;
+namespace OroB2BPro\Bundle\PricingBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 
 use OroB2B\Bundle\PricingBundle\Entity\PriceListWebsiteFallback;
-use OroB2B\Bundle\WebsiteBundle\Form\Type\WebsiteType;
 use OroB2B\Bundle\PricingBundle\Form\Type\PriceListCollectionType;
 use OroB2B\Bundle\PricingBundle\EventListener\WebsiteListener;
+use OroB2BPro\Bundle\WebsiteBundle\Form\Type\WebsiteType;
 
 class WebsiteFormExtension extends AbstractTypeExtension
 {

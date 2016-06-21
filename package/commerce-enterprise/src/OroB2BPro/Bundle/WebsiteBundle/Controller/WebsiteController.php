@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\WebsiteBundle\Controller;
+namespace OroB2BPro\Bundle\WebsiteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,15 +12,15 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 use OroB2B\Bundle\WebsiteBundle\Entity\Website;
-use OroB2B\Bundle\WebsiteBundle\Form\Type\WebsiteType;
+use OroB2BPro\Bundle\WebsiteBundle\Form\Type\WebsiteType;
 
 class WebsiteController extends Controller
 {
     /**
-     * @Route("/view/{id}", name="orob2b_website_view", requirements={"id"="\d+"})
+     * @Route("/view/{id}", name="orob2bpro_website_view", requirements={"id"="\d+"})
      * @Template
      * @Acl(
-     *      id="orob2b_website_view",
+     *      id="orob2bpro_website_view",
      *      type="entity",
      *      class="OroB2BWebsiteBundle:Website",
      *      permission="VIEW"
@@ -37,9 +37,9 @@ class WebsiteController extends Controller
     }
 
     /**
-     * @Route("/info/{id}", name="orob2b_website_info", requirements={"id"="\d+"})
+     * @Route("/info/{id}", name="orob2bpro_website_info", requirements={"id"="\d+"})
      * @Template
-     * @AclAncestor("orob2b_website_view")
+     * @AclAncestor("orob2bpro_website_view")
      *
      * @param Website $website
      *
@@ -53,9 +53,9 @@ class WebsiteController extends Controller
     }
 
     /**
-     * @Route("/", name="orob2b_website_index")
+     * @Route("/", name="orob2bpro_website_index")
      * @Template
-     * @AclAncestor("orob2b_website_view")
+     * @AclAncestor("orob2bpro_website_view")
      *
      * @return array
      */
@@ -69,10 +69,10 @@ class WebsiteController extends Controller
     /**
      * Create website
      *
-     * @Route("/create", name="orob2b_website_create")
+     * @Route("/create", name="orob2bpro_website_create")
      * @Template("OroB2BWebsiteBundle:Website:update.html.twig")
      * @Acl(
-     *      id="orob2b_website_create",
+     *      id="orob2bpro_website_create",
      *      type="entity",
      *      class="OroB2BWebsiteBundle:Website",
      *      permission="CREATE"
@@ -87,10 +87,10 @@ class WebsiteController extends Controller
     /**
      * Edit website form
      *
-     * @Route("/update/{id}", name="orob2b_website_update", requirements={"id"="\d+"})
+     * @Route("/update/{id}", name="orob2bpro_website_update", requirements={"id"="\d+"})
      * @Template
      * @Acl(
-     *      id="orob2b_website_update",
+     *      id="orob2bpro_website_update",
      *      type="entity",
      *      class="OroB2BWebsiteBundle:Website",
      *      permission="EDIT"
@@ -116,17 +116,17 @@ class WebsiteController extends Controller
             $this->createForm(WebsiteType::NAME, $website),
             function (Website $website) {
                 return [
-                    'route' => 'orob2b_website_update',
+                    'route' => 'orob2bpro_website_update',
                     'parameters' => ['id' => $website->getId()]
                 ];
             },
             function (Website $website) {
                 return [
-                    'route' => 'orob2b_website_view',
+                    'route' => 'orob2bpro_website_view',
                     'parameters' => ['id' => $website->getId()]
                 ];
             },
-            $this->get('translator')->trans('orob2b.website.controller.website.saved.message')
+            $this->get('translator')->trans('orob2bpro.website.controller.website.saved.message')
         );
     }
 }

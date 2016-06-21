@@ -5,7 +5,7 @@
 {% block pageHeader %}
     {% set breadcrumbs = {
         'entity': entity,
-        'indexPath': path('orob2b_website_index'),
+        'indexPath': path('orob2bpro_website_index'),
         'indexLabel': 'orob2b.website.entity_plural_label'|trans,
         'entityTitle': entity.name |default('N/A'|trans)
         }
@@ -17,8 +17,8 @@
     {% set websiteInformationWidget %}
         {{ oro_widget_render({
             'widgetType': 'block',
-            'title': 'orob2b.website.widgets.website_information'|trans,
-            'url': path('orob2b_website_info', {id: entity.id})
+            'title': 'orob2bpro.website.widgets.website_information'|trans,
+            'url': path('orob2bpro_website_info', {id: entity.id})
         }) }}
     {% endset %}
 
@@ -26,7 +26,7 @@
 
     {% set dataBlocks = [
         {
-            'title': 'orob2b.website.sections.general'|trans,
+            'title': 'orob2bpro.website.sections.general'|trans,
             'class': 'active',
             'subblocks': generalSectionBlocks
         }

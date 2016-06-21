@@ -2,11 +2,9 @@
 
 namespace OroB2B\Bundle\WebsiteBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\Validator\Validation;
-use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
-use OroB2B\Bundle\WebsiteBundle\Form\Type\WebsiteType;
+use OroB2BPro\Bundle\WebsiteBundle\Form\Type\WebsiteType;
 
 class WebsiteTypeTest extends FormIntegrationTestCase
 {
