@@ -4,6 +4,7 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/tool/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/application/commerce/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/application/commerce-enterprise/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/application/platform/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm/vendor/oro/platform" />
