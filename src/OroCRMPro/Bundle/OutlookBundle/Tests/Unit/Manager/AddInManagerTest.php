@@ -37,6 +37,19 @@ class AddInManagerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testNotExistingAddInDir()
+    {
+        $addInManager = $this->createAddInManager('unknown');
+        $this->cache->expects($this->any())->method('fetch')->willReturn(false);
+
+        $this->assertNull($addInManager->getMinSupportedVersion());
+        $this->assertNull($addInManager->getLatestVersion());
+        $this->assertEquals([], $addInManager->getVersions());
+        $this->assertEquals([], $addInManager->getFiles());
+        $this->assertNull($addInManager->getFile('1.2'));
+        $this->assertEquals([], $addInManager->getBinaries());
+    }
+
     public function testEmptyAddInDir()
     {
         $addInManager = $this->createAddInManager('files1');
