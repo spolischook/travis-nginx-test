@@ -70,7 +70,7 @@ class WebsiteController extends Controller
      * Create website
      *
      * @Route("/create", name="orob2bpro_website_create")
-     * @Template("OroB2BWebsiteBundle:Website:update.html.twig")
+     * @Template("OroB2BProWebsiteBundle:Website:update.html.twig")
      * @Acl(
      *      id="orob2bpro_website_create",
      *      type="entity",

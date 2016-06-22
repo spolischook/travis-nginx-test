@@ -1,7 +1,11 @@
 <?php
 
-namespace OroB2B\Bundle\PricingBundle\Tests\Unit\Form\Extension;
+namespace OroB2BPro\Bundle\PricingBundle\Tests\Unit\Form\Extension;
 
+use OroB2BPro\Bundle\PricingBundle\EventListener\WebsiteListener;
+use OroB2BPro\Bundle\PricingBundle\Form\Extension\WebsiteFormExtension;
+use OroB2BPro\Bundle\PricingBundle\Tests\Unit\Form\Extension\Stub\WebsiteTypeStub;
+use OroB2BPro\Bundle\WebsiteBundle\Form\Type\WebsiteType;
 use Symfony\Component\Form\PreloadedExtension;
 
 use Oro\Component\Testing\Unit\FormIntegrationTestCase;
@@ -11,11 +15,7 @@ use OroB2B\Bundle\PricingBundle\Tests\Unit\Form\Type\PriceListCollectionTypeExte
 use OroB2B\Bundle\PricingBundle\Form\Type\PriceListSelectWithPriorityType;
 use OroB2B\Bundle\PricingBundle\Tests\Unit\Form\Type\Stub\PriceListSelectTypeStub;
 use OroB2B\Bundle\PricingBundle\Entity\PriceList;
-use OroB2B\Bundle\PricingBundle\EventListener\WebsiteListener;
 use OroB2B\Bundle\PricingBundle\Entity\PriceListToWebsite;
-use OroB2B\Bundle\PricingBundle\Form\Extension\WebsiteFormExtension;
-use OroB2B\Bundle\PricingBundle\Tests\Unit\Form\Extension\Stub\WebsiteTypeStub;
-use OroB2B\Bundle\WebsiteBundle\Form\Type\WebsiteType;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)

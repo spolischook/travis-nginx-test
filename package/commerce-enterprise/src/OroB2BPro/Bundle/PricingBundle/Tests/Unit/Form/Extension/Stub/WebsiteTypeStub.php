@@ -1,11 +1,11 @@
 <?php
 
-namespace OroB2B\Bundle\PricingBundle\Tests\Unit\Form\Extension\Stub;
+namespace OroB2BPro\Bundle\PricingBundle\Tests\Unit\Form\Extension\Stub;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use OroB2B\Bundle\WebsiteBundle\Form\Type\WebsiteType;
+use OroB2BPro\Bundle\WebsiteBundle\Form\Type\WebsiteType;
 
 class WebsiteTypeStub extends AbstractType
 {

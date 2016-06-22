@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\PricingBundle\EventListener;
+namespace OroB2BPro\Bundle\PricingBundle\EventListener;
 
 use Doctrine\Common\Collections\Criteria;
 
@@ -58,7 +58,7 @@ class WebsiteFormViewListener
     public function onWebsiteEdit(BeforeListRenderEvent $event)
     {
         $template = $event->getEnvironment()->render(
-            'OroB2BPricingBundle:Website:price_list_update.html.twig',
+            'OroB2BProPricingBundle:Website:price_list_update.html.twig',
             ['form' => $event->getFormView()]
         );
         $this->addPriceListsBlock($event->getScrollData(), $template);

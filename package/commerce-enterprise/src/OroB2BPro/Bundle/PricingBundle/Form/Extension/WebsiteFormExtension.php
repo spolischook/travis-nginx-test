@@ -8,8 +8,8 @@ use Symfony\Component\Form\FormEvents;
 
 use OroB2B\Bundle\PricingBundle\Entity\PriceListWebsiteFallback;
 use OroB2B\Bundle\PricingBundle\Form\Type\PriceListCollectionType;
-use OroB2B\Bundle\PricingBundle\EventListener\WebsiteListener;
 use OroB2BPro\Bundle\WebsiteBundle\Form\Type\WebsiteType;
+use OroB2BPro\Bundle\PricingBundle\EventListener\WebsiteListener;
 
 class WebsiteFormExtension extends AbstractTypeExtension
 {

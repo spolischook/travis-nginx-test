@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\PricingBundle\EventListener;
+namespace OroB2BPro\Bundle\PricingBundle\EventListener;
 
 use Symfony\Component\Form\FormEvent;
 
@@ -9,11 +9,12 @@ use Oro\Bundle\FormBundle\Event\FormHandler\AfterFormProcessEvent;
 
 use OroB2B\Bundle\PricingBundle\Entity\PriceListToWebsite;
 use OroB2B\Bundle\PricingBundle\Entity\PriceListWebsiteFallback;
-use OroB2B\Bundle\PricingBundle\Form\Extension\WebsiteFormExtension;
 use OroB2B\Bundle\PricingBundle\Form\PriceListWithPriorityCollectionHandler;
 use OroB2B\Bundle\PricingBundle\Form\Type\PriceListCollectionType;
 use OroB2B\Bundle\PricingBundle\Model\PriceListChangeTriggerHandler;
 use OroB2B\Bundle\WebsiteBundle\Entity\Website;
+
+use OroB2BPro\Bundle\PricingBundle\Form\Extension\WebsiteFormExtension;
 
 class WebsiteListener
 {
