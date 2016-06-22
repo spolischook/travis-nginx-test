@@ -23,7 +23,7 @@ repositories:
     documentation: git@github.com:orocrm/documentation.git'
 
 branches:
-    maintenace/crm-enterprise-1.11: # maintenace branch in dev repository
+    maintenance/crm-enterprise-1.11: # maintenance branch in dev repository
         application/crm-enterprise: '1.11'
         application/crm: '1.9'
         application/platform: '1.9'
@@ -42,7 +42,7 @@ branches:
         package/zendesk: '1.9'
         package/magento-contact-us: '1.9'
 
-    maintenace/crm-enterprise-1.10:
+    maintenance/crm-enterprise-1.10:
         application/crm-enterprise: '1.10'
         application/crm: '1.8'
         application/platform: '1.8'
@@ -59,7 +59,7 @@ branches:
         package/zendesk: '1.8'
         package/magento-contact-us: '1.8'
 
-    maintenace/crm-enterprise-1.9:
+    maintenance/crm-enterprise-1.9:
         application/crm-enterprise: '1.9'
         application/crm: '1.7'
         application/platform: '1.7'
