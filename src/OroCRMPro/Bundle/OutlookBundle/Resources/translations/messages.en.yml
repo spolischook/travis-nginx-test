@@ -1,6 +1,7 @@
 orocrmpro_outlook:
     view:
         addin_label:                      MS Outlook Add-in
+        release_notes:                    release notes
     form:
         outlook_settings:                 MS Outlook settings
         outlook_addin:                    MS Outlook Add-in
