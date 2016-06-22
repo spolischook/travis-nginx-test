@@ -242,14 +242,16 @@ class AddInManager
     protected function loadFiles()
     {
         $result = [];
-        $finder = new Finder();
-        $files = $finder->name(self::FILE_PATTERN)->in($this->addInDir);
-        /** @var \SplFileInfo[] $files */
-        foreach ($files as $file) {
-            $fileType = $this->getFileType($file->getExtension());
-            if ($fileType) {
-                $fileVersion = $this->getFileVersion($file->getFilename(), $file->getExtension());
-                $result[$fileVersion][$fileType] = $file->getFilename();
+        if (is_dir($this->addInDir)) {
+            $finder = new Finder();
+            $files = $finder->name(self::FILE_PATTERN)->in($this->addInDir);
+            /** @var \SplFileInfo[] $files */
+            foreach ($files as $file) {
+                $fileType = $this->getFileType($file->getExtension());
+                if ($fileType) {
+                    $fileVersion = $this->getFileVersion($file->getFilename(), $file->getExtension());
+                    $result[$fileVersion][$fileType] = $file->getFilename();
+                }
             }
         }
 
