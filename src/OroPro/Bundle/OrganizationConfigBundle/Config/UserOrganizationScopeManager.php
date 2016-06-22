@@ -20,24 +20,42 @@ class UserOrganizationScopeManager extends UserScopeManager
     /**
      * {@inheritdoc}
      */
+    public function setScopeIdFromEntity($entity)
+    {
+        if ($entity instanceof User && $entity->getId()) {
+            $this->scopeId = $this->findScopeId($entity);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function ensureScopeIdInitialized()
     {
         if (null === $this->scopeId) {
-            $scopeId = 0;
+            $this->scopeId = $this->findScopeId();
+        }
+    }
 
-            $token = $this->securityContext->getToken();
-            if ($token instanceof OrganizationContextTokenInterface) {
-                $user = $token->getUser();
-                if ($user instanceof User && $user->getId()) {
-                    $organization = $token->getOrganizationContext();
-                    if ($organization instanceof Organization && $organization->getId()) {
-                        $scopeId = $this->getUserOrganizationId($user, $organization);
-                    }
+    /**
+     * @param User|null $user
+     * @return int
+     */
+    protected function findScopeId($user = null)
+    {
+        $scopeId = 0;
+        $token = $this->securityContext->getToken();
+        if ($token instanceof OrganizationContextTokenInterface) {
+            $user = $user ?: $token->getUser();
+            if ($user instanceof User && $user->getId()) {
+                $organization = $token->getOrganizationContext();
+                if ($organization instanceof Organization && $organization->getId()) {
+                    $scopeId = $this->getUserOrganizationId($user, $organization);
                 }
             }
-
-            $this->scopeId = $scopeId;
         }
+
+        return $scopeId;
     }
 
     /**
