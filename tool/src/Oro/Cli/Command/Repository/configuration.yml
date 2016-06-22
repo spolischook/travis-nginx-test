@@ -71,6 +71,5 @@ branches:
         package/mailchimp: '1.7'
         package/magento-abandoned-cart: '1.7'
         package/serialized-fields: '1.7'
-        package/demo-data: '1.9'
         package/zendesk: '1.7'
         package/magento-contact-us: '1.7'
