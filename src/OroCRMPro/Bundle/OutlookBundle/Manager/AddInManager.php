@@ -56,7 +56,7 @@ class AddInManager
     }
 
     /**
-     * @return array The files is sorted by a version, the latest version is at the top
+     * @return array The files are sorted by a version, the latest version is at the top
      *               [file name => file relative url, ...]
      */
     public function getBinaries()
@@ -150,7 +150,7 @@ class AddInManager
     }
 
     /**
-     * @return array The files is sorted by a version, the latest version is at the top
+     * @return array The files are sorted by a version, the latest version is at the top
      *  [
      *      'min_supported_version' => version, // Optional
      *      'files' => [
@@ -180,7 +180,7 @@ class AddInManager
     }
 
     /**
-     * @return array The files is sorted by a version, the latest version is at the top
+     * @return array The files are sorted by a version, the latest version is at the top
      *  [
      *      'min_supported_version' => version, // Optional
      *      'files' => [
