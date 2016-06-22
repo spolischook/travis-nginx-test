@@ -10,10 +10,19 @@ define(function(require) {
         className: 'decimals-number-editor',
 
         initialize: function(options) {
-            if (!_.isNumber(this.decimals)) {
-                options.decimals = parseInt(options.model.attributes[options.decimals]);
+            if (typeof options.decimalsField != 'undefined') {
+                options.decimals = parseInt(options.model.attributes[options.decimalsField]);
             }
-            DecimalsNumberEditorView .__super__.initialize.apply(this, arguments);
+
+            var decimalsNumberValidator = options.validationRules['DecimalsNumber'];
+            if (typeof decimalsNumberValidator != 'undefined') {
+                if (typeof decimalsNumberValidator.decimalsField != 'undefined') {
+                    var numberOfDecimals = parseInt(options.model.attributes[decimalsNumberValidator.decimalsField]);
+                    decimalsNumberValidator.decimals = numberOfDecimals;
+                }
+            }
+
+            DecimalsNumberEditorView.__super__.initialize.apply(this, arguments);
         }
     });
 
