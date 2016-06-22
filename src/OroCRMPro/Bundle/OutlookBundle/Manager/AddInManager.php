@@ -277,7 +277,6 @@ class AddInManager
         switch (strtolower($fileExtension)) {
             case 'exe':
                 return self::FILE_TYPE_BINARY;
-            case 'html':
             case 'md':
                 return self::FILE_TYPE_DOC;
         }
