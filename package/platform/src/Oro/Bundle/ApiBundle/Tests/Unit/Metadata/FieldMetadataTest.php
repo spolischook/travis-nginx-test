@@ -6,17 +6,54 @@ use Oro\Bundle\ApiBundle\Metadata\FieldMetadata;
 
 class FieldMetadataTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGettersSetters()
+    public function testClone()
+    {
+        $fieldMetadata = new FieldMetadata();
+        $fieldMetadata->setName('fieldName');
+        $fieldMetadata->set('test_scalar', 'value');
+        $objValue = new \stdClass();
+        $objValue->someProp = 123;
+        $fieldMetadata->set('test_object', $objValue);
+
+        $fieldMetadataClone = clone $fieldMetadata;
+
+        $this->assertEquals($fieldMetadata, $fieldMetadataClone);
+        $this->assertNotSame($objValue, $fieldMetadataClone->get('test_object'));
+    }
+
+    public function testGetName()
     {
         $fieldMetadata = new FieldMetadata();
 
         $this->assertNull($fieldMetadata->getName());
-        $this->assertNull($fieldMetadata->getDataType());
-
         $fieldMetadata->setName('fieldName');
-        $fieldMetadata->setDataType('fieldType');
+        $this->assertEquals('fieldName', $fieldMetadata->getName());
+    }
 
-        $this->assertSame('fieldName', $fieldMetadata->getName());
-        $this->assertSame('fieldType', $fieldMetadata->getDataType());
+    public function testGetDataType()
+    {
+        $fieldMetadata = new FieldMetadata();
+
+        $this->assertNull($fieldMetadata->getDataType());
+        $fieldMetadata->setDataType('fieldType');
+        $this->assertEquals('fieldType', $fieldMetadata->getDataType());
+    }
+
+    public function testIsNullable()
+    {
+        $fieldMetadata = new FieldMetadata();
+
+        $this->assertFalse($fieldMetadata->isNullable());
+        $fieldMetadata->setIsNullable(true);
+        $this->assertTrue($fieldMetadata->isNullable());
+    }
+
+    public function testGetMaxLength()
+    {
+        $fieldMetadata = new FieldMetadata();
+
+        $this->assertNull($fieldMetadata->getMaxLength());
+        $fieldMetadata->setMaxLength(123);
+        $this->assertEquals(123, $fieldMetadata->getMaxLength());
     }
 }

@@ -12,6 +12,22 @@ abstract class PropertyMetadata extends ParameterBag
     /** the data-type of a property */
     const DATA_TYPE = 'dataType';
 
+    /** a flag indicates whether a property can be NULL */
+    const NULLABLE = 'nullable';
+
+    /**
+     * Make a deep copy of object.
+     */
+    public function __clone()
+    {
+        $this->items = array_map(
+            function ($value) {
+                return is_object($value) ? clone $value : $value;
+            },
+            $this->items
+        );
+    }
+
     /**
      * Gets the name of a property.
      *
@@ -50,5 +66,25 @@ abstract class PropertyMetadata extends ParameterBag
     public function setDataType($dataType)
     {
         $this->set(self::DATA_TYPE, $dataType);
+    }
+
+    /**
+     * Whether a property can be NULL.
+     *
+     * @return bool
+     */
+    public function isNullable()
+    {
+        return (bool)$this->get(self::NULLABLE);
+    }
+
+    /**
+     * Sets a flag indicates whether a property can be NULL.
+     *
+     * @param bool $value
+     */
+    public function setIsNullable($value)
+    {
+        $this->set(self::NULLABLE, $value);
     }
 }

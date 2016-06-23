@@ -1,4 +1,0 @@
-oro_api:
-    entities:
-        OroPro\Bundle\OrganizationBundle\Entity\UserOrganization: ~
-        OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization: ~

@@ -1,0 +1,7 @@
+oro_api:
+    entities:
+        OroPro\Bundle\OrganizationBundle\Entity\UserOrganization: ~
+        OroPro\Bundle\OrganizationBundle\Entity\UserPreferredOrganization: ~
+        Oro\Bundle\OrganizationBundle\Entity\Organization:
+            actions:
+                create: true # turn on create action. It was disabled in community edition.

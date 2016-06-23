@@ -8,6 +8,7 @@ use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+
 use OroCRM\Bundle\CampaignBundle\Entity\EmailCampaign;
 use OroCRM\Bundle\CampaignBundle\Form\Type\InternalTransportSettingsType;
 
@@ -76,10 +77,9 @@ class EmailTransport implements TransportInterface
             ->setEntityId($entityId)
             ->setTo($to)
             ->setSubject($subjectRendered)
-            ->setBody($templateRendered)
-            ->setCampaignOwner($campaign->getOwner());
-
-        $this->processor->process($emailModel);
+            ->setBody($templateRendered);
+        
+        $this->processor->process($emailModel, null, false);
     }
 
     /**

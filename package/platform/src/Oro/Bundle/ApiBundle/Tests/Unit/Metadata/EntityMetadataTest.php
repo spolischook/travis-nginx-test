@@ -24,6 +24,28 @@ class EntityMetadataTest extends OrmRelatedTestCase
         $this->classMetadata = $this->em->getClassMetadata('Oro\Bundle\ApiBundle\Tests\Unit\Fixtures\Entity\User');
     }
 
+    public function testClone()
+    {
+        $entityMetadata = new EntityMetadata();
+        $entityMetadata->setClassName('TestClass');
+        $entityMetadata->setIdentifierFieldNames(['field1']);
+        $entityMetadata->set('test_scalar', 'value');
+        $objValue = new \stdClass();
+        $objValue->someProp = 123;
+        $entityMetadata->set('test_object', $objValue);
+        $field1 = $this->getMetadata('Field', 'field1');
+        $entityMetadata->addField($field1);
+        $association1 = $this->getMetadata('Association', 'association1');
+        $entityMetadata->addAssociation($association1);
+
+        $entityMetadataClone = clone $entityMetadata;
+
+        $this->assertEquals($entityMetadata, $entityMetadataClone);
+        $this->assertNotSame($objValue, $entityMetadataClone->get('test_object'));
+        $this->assertNotSame($field1, $entityMetadataClone->getField('field1'));
+        $this->assertNotSame($association1, $entityMetadataClone->getAssociation('association1'));
+    }
+
     public function testGetSetClassName()
     {
         $entityMetadata = new EntityMetadata();
@@ -138,7 +160,7 @@ class EntityMetadataTest extends OrmRelatedTestCase
         $this->assertEmpty($entityMetadata->getAssociations());
 
         /**
-         * AssociationNames: category, groups, product
+         * AssociationNames: category, groups, product, owner
          */
         foreach ($this->classMetadata->getAssociationNames() as $index => $associationName) {
             $this->assertCount($index, $entityMetadata->getAssociations());
@@ -154,14 +176,15 @@ class EntityMetadataTest extends OrmRelatedTestCase
 
         $entityMetadata->removeAssociation('category');
 
-        $this->assertCount(2, $entityMetadata->getAssociations());
+        $this->assertCount(3, $entityMetadata->getAssociations());
         $this->assertFalse($entityMetadata->hasAssociation('category'));
         $this->assertSame(
             [
-                'identifiers' => [],
-                'associations'      => [
-                    'groups' => [],
+                'identifiers'  => [],
+                'associations' => [
+                    'groups'   => [],
                     'products' => [],
+                    'owner'    => [],
                 ]
             ],
             $entityMetadata->toArray()
@@ -172,7 +195,7 @@ class EntityMetadataTest extends OrmRelatedTestCase
         $this->assertFalse($entityMetadata->hasProperty('products'));
         $this->assertFalse($entityMetadata->hasAssociation('products'));
 
-        $this->assertCount(1, $entityMetadata->getAssociations());
+        $this->assertCount(2, $entityMetadata->getAssociations());
         $this->assertEmpty($entityMetadata->getFields());
     }
 
