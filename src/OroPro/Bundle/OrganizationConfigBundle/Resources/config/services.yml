@@ -40,3 +40,12 @@ services:
           - [setSecurityContext, [ '@security.token_storage' ]]
       tags:
           - { name: oro_config.scope, scope: user, priority: 256 }
+
+  oropro_organization_config.twig.date_time_organization:
+        class: OroPro\Bundle\OrganizationConfigBundle\Twig\DateTimeOrganizationExtension
+        arguments:
+            - '@oro_locale.formatter.date_time'
+        calls:
+            - [setContainer, ['@service_container']]
+        tags:
+            - { name: twig.extension }
