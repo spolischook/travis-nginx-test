@@ -27,42 +27,44 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testCouldBeConstructedWithSessionAndQueueAsArguments()
     {
-        new AmqpMessageConsumer($this->createAmqpSessionStub(), new AmqpQueue('aName'));
+        new AmqpMessageConsumer($this->createAmqpSessionStub(), $this->createAmqpChannel(), new AmqpQueue('aName'));
     }
 
-    public function testShouldSubscribeRegisterConsumerBeforeReceiveAndCancelAfter()
+    public function testShouldThrowExceptionIfChannelHadCallbackBeforeInitialization()
+    {
+        $this->setExpectedException(\LogicException::class, 'The channel has a callback set. We cannot use this channel because of unexpected behavior in such case');
+
+        $channelMock = $this->createAmqpChannel();
+        $channelMock->callbacks = ['has-registered-callback'];
+
+        $sessionStub = $this->createAmqpSessionStub();
+
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock,  new AmqpQueue('theQueueName'));
+
+        $consumer->receive();
+    }
+
+    public function testShouldSubscribeRegisterConsumerBeforeReceive()
     {
         $channelMock = $this->createAmqpChannel();
         $channelMock
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
+            ->method('basic_qos')
+            ->with(null, 1, false)
+        ;
+        $channelMock
+            ->expects($this->exactly(1))
             ->method('basic_consume')
             ->with('theQueueName')
         ;
         $channelMock
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('wait')
         ;
-        $channelMock
-            ->expects($this->at(2))
-            ->method('basic_cancel')
-        ;
-        $channelMock
-            ->expects($this->at(3))
-            ->method('basic_consume')
-            ->with('theQueueName')
-        ;
-        $channelMock
-            ->expects($this->at(4))
-            ->method('wait')
-        ;
-        $channelMock
-            ->expects($this->at(5))
-            ->method('basic_cancel')
-        ;
 
-        $sessionStub = $this->createAmqpSessionStub($channelMock);
+        $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('theQueueName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock,  new AmqpQueue('theQueueName'));
 
         $consumer->receive();
         $consumer->receive();
@@ -80,9 +82,9 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->method('basic_get')
         ;
 
-        $sessionStub = $this->createAmqpSessionStub($channelMock);
+        $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('theQueueName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock, new AmqpQueue('theQueueName'));
 
         $consumer->receiveNoWait();
         $consumer->receiveNoWait();
@@ -99,7 +101,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
         $channelStub = new AMQPChannelStub();
         $channelStub->receivedInternalMessage = $expectedInternalMessage;
 
-        $sessionStub = $this->createAmqpSessionStub($channelStub);
+        $sessionStub = $this->createAmqpSessionStub();
         $sessionStub
             ->expects($this->once())
             ->method('createMessage')
@@ -107,7 +109,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($expectedMessage)
         ;
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelStub, new AmqpQueue('aName'));
 
         $actualMessage = $consumer->receiveNoWait();
         $this->assertSame($expectedMessage, $actualMessage);
@@ -132,18 +134,18 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->with($this->anything(), 'theConsumerTag', 'theLocalBool', 'theAskBool', 'theExclusiveBool', 'theNoWaitBool')
         ;
 
-        $sessionStub = $this->createAmqpSessionStub($channelMock);
+        $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, $queue);
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock, $queue);
 
         $consumer->receive();
     }
 
-    public function testShouldRegisterCreateMessageCallbackOnEveryReceiveCall()
+    public function testShouldRegisterCreateMessageCallbackOnlyOnFirstReceive()
     {
         $channelMock = $this->createAmqpChannel();
         $channelMock
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(1))
             ->method('basic_consume')
             ->willReturnCallback(function () {
                 $this->assertInstanceOf('Closure', func_get_arg(6));
@@ -154,9 +156,9 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->method('wait')
         ;
 
-        $sessionStub = $this->createAmqpSessionStub($channelMock);
+        $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock, new AmqpQueue('aName'));
 
         $consumer->receive();
         $consumer->receive();
@@ -173,9 +175,9 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->with($this->anything(), $this->anything(), $expectedTimeout)
         ;
 
-        $sessionStub = $this->createAmqpSessionStub($channelMock);
+        $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock, new AmqpQueue('aName'));
 
         $consumer->receive($expectedTimeout);
     }
@@ -191,7 +193,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
         $channelStub = new AMQPChannelStub();
         $channelStub->receivedInternalMessage = $expectedInternalMessage;
 
-        $sessionStub = $this->createAmqpSessionStub($channelStub);
+        $sessionStub = $this->createAmqpSessionStub();
         $sessionStub
             ->expects($this->once())
             ->method('createMessage')
@@ -199,7 +201,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($expectedMessage)
         ;
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelStub, new AmqpQueue('aName'));
 
         $actualMessage = $consumer->receive();
         $this->assertSame($expectedMessage, $actualMessage);
@@ -218,7 +220,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
         $channelStub = new AMQPChannelStub();
         $channelStub->receivedInternalMessage = $internalMessage;
 
-        $sessionStub = $this->createAmqpSessionStub($channelStub);
+        $sessionStub = $this->createAmqpSessionStub();
         $sessionStub
             ->expects($this->once())
             ->method('createMessage')
@@ -226,7 +228,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(new AmqpMessage())
         ;
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelStub, new AmqpQueue('aName'));
 
         // guard
         $this->assertNotNull($consumer->receive());
@@ -243,7 +245,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
         $channelStub = new AMQPChannelStub();
         $channelStub->receivedInternalMessage = $internalMessage;
 
-        $sessionStub = $this->createAmqpSessionStub($channelStub);
+        $sessionStub = $this->createAmqpSessionStub();
         $sessionStub
             ->expects($this->once())
             ->method('createMessage')
@@ -251,7 +253,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(new AmqpMessage())
         ;
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelStub, new AmqpQueue('aName'));
 
         // guard
         $this->assertNotNull($consumer->receive());
@@ -267,7 +269,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
         $channelStub = new AMQPChannelStub();
         $channelStub->receivedInternalMessage = $internalMessage;
 
-        $sessionStub = $this->createAmqpSessionStub($channelStub);
+        $sessionStub = $this->createAmqpSessionStub();
         $sessionStub
             ->expects($this->once())
             ->method('createMessage')
@@ -275,7 +277,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(new AmqpMessage())
         ;
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelStub, new AmqpQueue('aName'));
 
         // guard
         $this->assertNotNull($consumer->receive());
@@ -293,9 +295,9 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->willReturn(null)
         ;
 
-        $sessionStub = $this->createAmqpSessionStub($channelMock);
+        $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock, new AmqpQueue('aName'));
 
         $this->assertNull($consumer->receive($timeout));
     }
@@ -312,16 +314,16 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->willThrowException(new AMQPTimeoutException())
         ;
 
-        $sessionStub = $this->createAmqpSessionStub($channelMock);
+        $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock, new AmqpQueue('aName'));
 
         $this->assertNull($consumer->receive($timeout));
     }
 
     public function testThrowIfGivenDestinationInvalidOnAcknowledge()
     {
-        $consumer = new AmqpMessageConsumer($this->createAmqpSessionStub(), new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($this->createAmqpSessionStub(), $this->createAmqpChannel(), new AmqpQueue('aName'));
 
         $invalidMessage = $this->createMessage();
 
@@ -344,9 +346,9 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->with($expectedDeliveryTag)
         ;
 
-        $sessionStub = $this->createAmqpSessionStub($channelMock);
+        $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock, new AmqpQueue('aName'));
 
         $message = new AmqpMessage();
         $message->setDeliveryTag($expectedDeliveryTag);
@@ -356,7 +358,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testThrowIfGivenDestinationInvalidOnReject()
     {
-        $consumer = new AmqpMessageConsumer($this->createAmqpSessionStub(), new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($this->createAmqpSessionStub(), $this->createAmqpChannel(), new AmqpQueue('aName'));
 
         $invalidMessage = $this->createMessage();
 
@@ -379,9 +381,9 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->with($expectedDeliveryTag, $requeue = false)
         ;
 
-        $sessionStub = $this->createAmqpSessionStub($channelMock);
+        $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock, new AmqpQueue('aName'));
 
         $message = new AmqpMessage();
         $message->setDeliveryTag($expectedDeliveryTag);
@@ -400,9 +402,9 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
             ->with($expectedDeliveryTag, $requeue = true)
         ;
 
-        $sessionStub = $this->createAmqpSessionStub($channelMock);
+        $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock, new AmqpQueue('aName'));
 
         $message = new AmqpMessage();
         $message->setDeliveryTag($expectedDeliveryTag);
@@ -427,20 +429,11 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param AMQPChannel $ampqChannel
-     *
      * @return AmqpSession|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function createAmqpSessionStub(AMQPChannel $ampqChannel = null)
+    protected function createAmqpSessionStub()
     {
-        $sessionMock = $this->getMock(AmqpSession::class, [], [], '', false);
-        $sessionMock
-            ->expects($this->any())
-            ->method('getChannel')
-            ->willReturn($ampqChannel)
-        ;
-
-        return $sessionMock;
+        return $this->getMock(AmqpSession::class, [], [], '', false);
     }
 }
 
@@ -454,6 +447,10 @@ class AMQPChannelStub extends AMQPChannel
     protected $callback;
 
     public function __construct()
+    {
+    }
+
+    public function basic_qos($prefetch_size, $prefetch_count, $a_global)
     {
     }
 

@@ -5,6 +5,7 @@ use Oro\Component\MessageQueue\Transport\Exception\InvalidMessageException;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\QueueInterface;
 use Oro\Component\MessageQueue\Transport\MessageConsumerInterface;
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use PhpAmqpLib\Message\AMQPMessage as AMQPLibMessage;
 use PhpAmqpLib\Wire\AMQPTable;
@@ -15,6 +16,11 @@ class AmqpMessageConsumer implements MessageConsumerInterface
      * @var AmqpSession
      */
     private $session;
+
+    /**
+     * @var AMQPChannel
+     */
+    private $channel;
 
     /**
      * @var QueueInterface
@@ -33,14 +39,16 @@ class AmqpMessageConsumer implements MessageConsumerInterface
 
     /**
      * @param AmqpSession $session
-     * @param AmqpQueue $queue
+     * @param AMQPChannel $channel
+     * @param AmqpQueue   $queue
      */
-    public function __construct(AmqpSession $session, AmqpQueue $queue)
+    public function __construct(AmqpSession $session, AMQPChannel $channel, AmqpQueue $queue)
     {
         $this->isInit = false;
 
-        $this->queue = clone $queue;
         $this->session = $session;
+        $this->queue = clone $queue;
+        $this->channel = $channel;
     }
 
     /**
@@ -64,13 +72,11 @@ class AmqpMessageConsumer implements MessageConsumerInterface
 
         try {
             $this->receivedMessage = null;
-            $this->session->getChannel()->wait($allowedMethods = [], $nonBlocking = false, $timeout);
+            $this->channel->wait($allowedMethods = [], $nonBlocking = false, $timeout);
 
             return $this->receivedMessage;
         } catch (AMQPTimeoutException $e) {
             return null;
-        } finally {
-            $this->session->getChannel()->basic_cancel($this->queue->getConsumerTag());
         }
     }
 
@@ -81,7 +87,7 @@ class AmqpMessageConsumer implements MessageConsumerInterface
      */
     public function receiveNoWait()
     {
-        if ($internalMessage = $this->session->getChannel()->basic_get($this->queue->getQueueName(), $noAck = false)) {
+        if ($internalMessage = $this->channel->basic_get($this->queue->getQueueName(), $noAck = false)) {
             return $this->convertMessage($internalMessage);
         }
 
@@ -103,7 +109,7 @@ class AmqpMessageConsumer implements MessageConsumerInterface
             ));
         }
 
-        $this->session->getChannel()->basic_ack($message->getDeliveryTag());
+        $this->channel->basic_ack($message->getDeliveryTag());
     }
 
     /**
@@ -121,16 +127,29 @@ class AmqpMessageConsumer implements MessageConsumerInterface
             ));
         }
 
-        $this->session->getChannel()->basic_reject($message->getDeliveryTag(), $requeue);
+        $this->channel->basic_reject($message->getDeliveryTag(), $requeue);
     }
 
     protected function initialize()
     {
+        if ($this->isInit) {
+            return;
+        }
+
+        if (0 != count($this->channel->callbacks)) {
+            throw new \LogicException(
+                'The channel has a callback set. '.
+                'We cannot use this channel because of unexpected behavior in such case.'
+            );
+        }
+
+        $this->channel->basic_qos(null, 1, false);
+
         $callback = function (AMQPLibMessage $internalMessage) {
             $this->receivedMessage = $this->convertMessage($internalMessage);
         };
 
-        $this->queue->setConsumerTag($this->session->getChannel()->basic_consume(
+        $this->queue->setConsumerTag($this->channel->basic_consume(
             $this->queue->getQueueName(),
             $this->queue->getConsumerTag(),
             $this->queue->isNoLocal(),
@@ -139,6 +158,8 @@ class AmqpMessageConsumer implements MessageConsumerInterface
             $this->queue->isNoWait(),
             $callback
         ));
+
+        $this->isInit = true;
     }
 
     /**

@@ -34,7 +34,7 @@ class AmqpConnection implements ConnectionInterface
      */
     public function createSession()
     {
-        return new AmqpSession($this->connection->channel());
+        return new AmqpSession($this->connection);
     }
 
     /**

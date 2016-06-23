@@ -25,11 +25,6 @@ class AmqpConnectionTest extends \PHPUnit_Framework_TestCase
     public function testShouldAllowCreateSession()
     {
         $libConnection = $this->createAMQPLibConnection();
-        $libConnection
-            ->expects($this->once())
-            ->method('channel')
-            ->willReturn($this->createAMQPLibChannel())
-        ;
 
         $connection = new AmqpConnection($libConnection);
 

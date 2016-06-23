@@ -5,31 +5,35 @@ use Oro\Component\MessageQueue\Transport\DestinationInterface;
 use Oro\Component\MessageQueue\Transport\Exception\InvalidDestinationException;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Wire\AMQPTable;
 
 class AmqpSession implements SessionInterface
 {
     /**
+     * @var AbstractConnection
+     */
+    private $connection;
+
+    /**
      * @var AMQPChannel
      */
-    private $channel;
+    private $producerChannel;
 
     /**
-     * @param AMQPChannel $channel
-     */
-    public function __construct(AMQPChannel $channel)
-    {
-        $this->channel = $channel;
-    }
-
-    /**
-     * @internal
+     * Because of limitation of the AMQP library we are not able to reuse one channel with several message consumers.
+     * So we have to internally create a new channel each time a new consumer is requested.
      *
-     * @return AMQPChannel
+     * @var AMQPChannel[]
      */
-    public function getChannel()
+    private $consumersChannels = [];
+
+    /**
+     * @param AbstractConnection $connection
+     */
+    public function __construct(AbstractConnection $connection)
     {
-        return $this->channel;
+        $this->connection = $connection;
     }
 
     /**
@@ -77,10 +81,12 @@ class AmqpSession implements SessionInterface
     public function createConsumer(DestinationInterface $destination)
     {
         InvalidDestinationException::assertDestinationInstanceOf($destination, AmqpQueue::class);
-        
-        return new AmqpMessageConsumer($this, $destination);
+
+        $this->consumersChannels[] = $consumerChannel = $this->connection->channel();
+
+        return new AmqpMessageConsumer($this, $consumerChannel, $destination);
     }
-    
+
     /**
      * {@inheritdoc}
      *
@@ -88,7 +94,7 @@ class AmqpSession implements SessionInterface
      */
     public function createProducer()
     {
-        return new AmqpMessageProducer($this->channel);
+        return new AmqpMessageProducer($this->getProducerChannel());
     }
 
     /**
@@ -100,7 +106,7 @@ class AmqpSession implements SessionInterface
     {
         InvalidDestinationException::assertDestinationInstanceOf($destination, AmqpTopic::class);
 
-        $this->channel->exchange_declare(
+        $this->getProducerChannel()->exchange_declare(
             $destination->getTopicName(),
             $destination->getType(),
             $destination->isPassive(),
@@ -121,7 +127,7 @@ class AmqpSession implements SessionInterface
     {
         InvalidDestinationException::assertDestinationInstanceOf($destination, AmqpQueue::class);
 
-        $this->channel->queue_declare(
+        $this->getProducerChannel()->queue_declare(
             $destination->getQueueName(),
             $destination->isPassive(),
             $destination->isDurable(),
@@ -142,8 +148,12 @@ class AmqpSession implements SessionInterface
     {
         InvalidDestinationException::assertDestinationInstanceOf($source, AmqpTopic::class);
         InvalidDestinationException::assertDestinationInstanceOf($target, AmqpQueue::class);
-        
-        $this->channel->queue_bind($target->getQueueName(), $source->getTopicName(), $source->getRoutingKey());
+
+        $this->getProducerChannel()->queue_bind(
+            $target->getQueueName(),
+            $source->getTopicName(),
+            $source->getRoutingKey()
+        );
     }
 
     /**
@@ -151,6 +161,24 @@ class AmqpSession implements SessionInterface
      */
     public function close()
     {
-        $this->channel->close();
+        if ($this->producerChannel) {
+            $this->producerChannel->close();
+        }
+
+        foreach ($this->consumersChannels as $consumersChannel) {
+            $consumersChannel->close();
+        }
+    }
+
+    /**
+     * @return AMQPChannel
+     */
+    protected function getProducerChannel()
+    {
+        if (false == $this->producerChannel) {
+            $this->producerChannel = $this->connection->channel();
+        }
+
+        return $this->producerChannel;
     }
 }
