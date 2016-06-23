@@ -28,7 +28,7 @@ abstract class AbstractSync extends RootCommand
     private $branches = false;
 
     /** @var bool */
-    private $force = false;
+    private $dryRun = false;
 
     /** @var string */
     private $branch;
@@ -60,16 +60,16 @@ abstract class AbstractSync extends RootCommand
                 'master'
             )
             ->addOption(
-                'force',
-                'f',
+                'dry-run',
+                'd',
                 InputOption::VALUE_NONE,
-                'Do pushes to repository and upstreams (if two-way enables)'
+                'Do not push to repository and upstreams'
             )
             ->addUsage('application/crm')
             ->addUsage('package/platform')
             ->addUsage('package/platform --two-way')
             ->addUsage('package/platform --branch=1.9')
-            ->addUsage('package/platform --branch=1.9 --two-way --force');
+            ->addUsage('package/platform --branch=1.9 --two-way --dry-run');
     }
 
     /**
@@ -83,11 +83,11 @@ abstract class AbstractSync extends RootCommand
 
         $this->branch = (string)$input->getOption('branch');
         $this->path = (string)$input->getArgument('path');
-        $this->force = (bool)$input->getOption('force');
+        $this->dryRun = (bool)$input->getOption('dry-run');
         $this->twoWay = (bool)$input->getOption('two-way');
 
-        if (!$this->isForce()) {
-            $this->logger->critical('Actions not performed without --force option');
+        if ($this->isDryRun()) {
+            $this->logger->critical('Actions not performed with --dry-run option');
         }
 
         $this->checkoutBranch($this->getBranch());
@@ -96,9 +96,9 @@ abstract class AbstractSync extends RootCommand
     }
 
     /** @return boolean */
-    public function isForce()
+    public function isDryRun()
     {
-        return $this->force;
+        return $this->dryRun;
     }
 
     /** @return string */
@@ -300,7 +300,7 @@ abstract class AbstractSync extends RootCommand
     protected function execCmd($cmd, $throwException = true, array &$output = [])
     {
         $this->logger->info($cmd);
-        if (!$this->force) {
+        if ($this->isDryRun()) {
             return true;
         }
 
