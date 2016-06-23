@@ -24,6 +24,11 @@
             "url": "https://github.com/orocrm/platform-enterprise.git"
         }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
     "require": {
         "php": ">=5.5.9",
         "oro/platform": "self.version",
