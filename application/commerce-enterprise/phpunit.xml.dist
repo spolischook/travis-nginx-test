@@ -55,12 +55,8 @@
         </testsuite>
     </testsuites>
 
-    <!--
     <php>
-        <server name="KERNEL_DIR" value="/path/to/your/app/" />
-    </php>
-    -->
-    <php>
+        <server name="KERNEL_DIR" value="app/"/>
         <const name="PHPUNIT_LOAD_LIMIT" value="1.2"/>
         <const name="PHPUNIT_PAGE_LIMIT" value="0.5"/>
         <const name="PHPUNIT_TESTSUITE_BROWSER_PATH_WINNT" value="C:\Dev\phantomjs-1.9.0-windows\phantomjs.exe"/>
