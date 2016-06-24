@@ -26,6 +26,12 @@ class TwigSandboxConfigurationPass implements CompilerPassInterface
             $filters = $securityPolicyDef->getArgument(1);
             $filters = array_merge($filters, ['oro_format_datetime_organization']);
             $securityPolicyDef->replaceArgument(1, $filters);
+
+            // register 'calendar_date_range_organization' function
+            $functions = $securityPolicyDef->getArgument(4);
+            $functions = array_merge($functions, ['calendar_date_range_organization']);
+            $securityPolicyDef->replaceArgument(4, $functions);
+
             // register an twig extension implements filter
             $rendererDef = $container->getDefinition(self::EMAIL_TEMPLATE_RENDERER_SERVICE_KEY);
             $rendererDef->addMethodCall(

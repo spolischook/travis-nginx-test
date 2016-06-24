@@ -6,8 +6,6 @@ use Doctrine\DBAL\ConnectionException;
 
 use Psr\Log\LoggerInterface;
 
-use Exception;
-
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
 
 class FixReminderEmailTemplates extends ParametrizedMigrationQuery
@@ -45,7 +43,7 @@ EOF;
      * @param string $templateName
      * @param string $pattern
      * @param string $replacement
-     * @throws Exception
+     * @throws \Exception
      * @throws ConnectionException
      */
     protected function updateReminderTemplates(LoggerInterface $logger, $templateName, $pattern, $replacement)
@@ -69,7 +67,7 @@ EOF;
                 );
             }
             $this->connection->commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->connection->rollBack();
             throw $e;
         }
