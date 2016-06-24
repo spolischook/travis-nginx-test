@@ -1,1 +1,5 @@
 services:
+    orob2bpro_invoice.event_listener.form_view:
+            class: 'OroB2BPro\Bundle\WebsiteBundle\EventListener\FormViewListener'
+            tags:
+                - { name: kernel.event_listener, event: oro_ui.scroll_data.before.invoice-edit, method: onEntityEdit }

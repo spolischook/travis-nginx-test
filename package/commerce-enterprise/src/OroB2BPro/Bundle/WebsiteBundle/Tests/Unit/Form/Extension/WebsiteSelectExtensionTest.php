@@ -8,23 +8,16 @@ use OroB2BPro\Bundle\WebsiteBundle\Form\Extension\WebsiteSelectExtension;
 
 class WebsiteSelectExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    const WEBSITE_LABEL = 'website.label';
-    const EXTENDED_TYPE = 'extended.type';
-
     /**
      * @var WebsiteSelectExtension
      */
     protected $websiteSelectExtension;
 
-    protected function setUp()
-    {
-        $this->websiteSelectExtension = new WebsiteSelectExtension();
-        $this->websiteSelectExtension->setLabel(self::WEBSITE_LABEL);
-        $this->websiteSelectExtension->setExtendedType(self::EXTENDED_TYPE);
-    }
-
     public function testBuildForm()
     {
+        $this->websiteSelectExtension = new WebsiteSelectExtension();
+        $label='website.label';
+        $this->websiteSelectExtension->setLabel($label);
         /** @var FormBuilderInterface|\PHPUnit_Framework_MockObject_MockObject $builder * */
         $builder = $this->getMock(FormBuilderInterface::class);
 
@@ -33,7 +26,7 @@ class WebsiteSelectExtensionTest extends \PHPUnit_Framework_TestCase
             'entity',
             [
                 'class' => 'OroB2B\Bundle\WebsiteBundle\Entity\Website',
-                'label' => self::WEBSITE_LABEL,
+                'label' => $label,
             ]
         );
         $this->websiteSelectExtension->buildForm($builder, []);
@@ -41,6 +34,9 @@ class WebsiteSelectExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetExtendedType()
     {
-        $this->assertEquals(self::EXTENDED_TYPE, $this->websiteSelectExtension->getExtendedType());
+        $this->websiteSelectExtension = new WebsiteSelectExtension();
+        $type='extended.type';
+        $this->websiteSelectExtension->setExtendedType($type);
+        $this->assertEquals($type, $this->websiteSelectExtension->getExtendedType());
     }
 }
