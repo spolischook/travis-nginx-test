@@ -2,12 +2,15 @@
 
 namespace OroB2BPro\Bundle\WebsiteBundle\EventListener;
 
-use Oro\Bundle\UIBundle\Event\BeforeListRenderEvent;
 use Symfony\Component\Translation\TranslatorInterface;
+
+use Oro\Bundle\UIBundle\Event\BeforeListRenderEvent;
 
 class OrganizationViewListener
 {
-    /** @var TranslatorInterface */
+    /**
+     * @var TranslatorInterface
+     */
     protected $translator;
 
     /**
@@ -27,6 +30,7 @@ class OrganizationViewListener
         $blockLabel = $this->translator->trans('orob2b.website.entity_plural_label');
         $blockId = $event->getScrollData()->addBlock($blockLabel);
         $subBlockId = $event->getScrollData()->addSubBlock($blockId);
+        
         $event->getScrollData()->addSubBlockData($blockId, $subBlockId, $template);
     }
 }
