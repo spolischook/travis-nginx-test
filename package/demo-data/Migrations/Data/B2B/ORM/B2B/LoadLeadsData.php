@@ -9,6 +9,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
 use OroCRM\Bundle\SalesBundle\Entity\Lead;
+use OroCRM\Bundle\SalesBundle\Entity\LeadPhone;
 use OroCRM\Bundle\SalesBundle\Entity\LeadStatus;
 use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
 
@@ -25,6 +26,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
     {
         return [
             'leads' => $this->loadData('b2b/leads.csv'),
+            'phones' => $this->loadData('b2b/lead_phones.csv')
         ];
     }
 
@@ -60,6 +62,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
             $this->setSecurityContext($user);
 
             $lead = $this->createLead($leadData, $statuses, $user);
+            $this->loadPhones($lead, $leadData['uid']);
             $this->setLeadReference($leadData['uid'], $lead);
             $manager->persist($lead);
         }
@@ -109,6 +112,32 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
         $lead->setName($lead->getCompanyName());
 
         return $lead;
+    }
+
+    /**
+     * Load Contact phones
+     *
+     * @param Lead $lead
+     * @param         $uid
+     */
+    public function loadPhones(Lead $lead, $uid)
+    {
+        $data = $this->getData();
+
+        $phones = array_filter(
+            $data['phones'],
+            function ($phoneData) use ($uid) {
+                return $phoneData['lead uid'] == $uid;
+            }
+        );
+
+        foreach ($phones as $phoneData) {
+            $phone = new LeadPhone($phoneData['phone']);
+            if (!$lead->getPhones()->count()) {
+                $phone->setPrimary(true);
+            }
+            $lead->addPhone($phone);
+        }
     }
 
     protected function addAddress(Lead $lead, B2bCustomer $customer)
