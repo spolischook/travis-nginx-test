@@ -8,12 +8,12 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Oro\Bundle\ImportExportBundle\Form\Model\ExportData;
+use Oro\Bundle\ImportExportBundle\Form\Model\ExportTemplateData;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 
-class ExportType extends AbstractType
+class ExportTemplateType extends AbstractType
 {
-    const NAME = 'oro_importexport_export';
+    const NAME = 'oro_importexport_export_template';
     const CHILD_PROCESSOR_ALIAS = 'processorAlias';
 
     /**
@@ -62,7 +62,7 @@ class ExportType extends AbstractType
     protected function getExportProcessorsChoices($entityName)
     {
         $aliases = $this->processorRegistry->getProcessorAliasesByEntity(
-            ProcessorRegistry::TYPE_EXPORT,
+            ProcessorRegistry::TYPE_EXPORT_TEMPLATE,
             $entityName
         );
         $result = array();
@@ -79,7 +79,7 @@ class ExportType extends AbstractType
      */
     protected function generateProcessorLabel($alias)
     {
-        return sprintf('oro.importexport.export.%s', $alias);
+        return sprintf('oro.importexport.export_template.%s', $alias);
     }
 
     /**
@@ -89,7 +89,7 @@ class ExportType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => ExportData::class,
+                'data_class' => ExportTemplateData::class,
             )
         );
         $resolver->setRequired(array('entityName'));

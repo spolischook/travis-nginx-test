@@ -8,16 +8,16 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-use Oro\Bundle\ImportExportBundle\Form\Type\ExportType;
+use Oro\Bundle\ImportExportBundle\Form\Type\ExportTemplateType;
 
-class InventoryLevelExportType extends AbstractTypeExtension
+class InventoryLevelExportTemplateTypeExtension extends AbstractTypeExtension
 {
-    const NAME = 'orob2b_inventory_status_export_type';
+    const NAME = 'orob2b_inventory_level_export_template_type_extension';
 
     /** @var string[] */
-    protected static $processorAliases = [
-        'orob2b_warehouse.export_inventory_status_only',
-        'orob2b_warehouse.detailed_inventory_levels'
+    public static $processorAliases = [
+        'orob2b_product.inventory_status_only_export_template',
+        'orob2b_warehouse.inventory_level_export_template'
     ];
 
     /**
@@ -33,7 +33,7 @@ class InventoryLevelExportType extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return ExportType::NAME;
+        return ExportTemplateType::NAME;
     }
 
     /**
@@ -43,7 +43,7 @@ class InventoryLevelExportType extends AbstractTypeExtension
     {
         $processorAliases = self::$processorAliases;
         $defaultChoice = reset($processorAliases);
-        $builder->remove('processorAlias');
+        $builder->remove(ExportTemplateType::CHILD_PROCESSOR_ALIAS);
 
         $builder->add(
             'detailLevel',
