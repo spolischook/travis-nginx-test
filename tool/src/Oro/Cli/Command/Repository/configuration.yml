@@ -8,7 +8,7 @@ repositories:
     package/platform-enterprise: git@github.com:laboro/platform-enterprise.git
     package/crm: git@github.com:laboro/crm.git
     package/crm-enterprise: git@github.com:laboro/crm-enterprise.git
-    package/commerce: git@github.com:sergeyz/commerce.git
+    package/commerce: git@github.com:laboro/commerce.git
     package/dotmailer: git@github.com:laboro/OroCRMDotmailerBundle.git
     package/ldap: git@github.com:laboro/OroCRMProLDAPBundle.git
     package/mailchimp: git@github.com:laboro/OroCRMMailChimpBundle.git
@@ -23,15 +23,14 @@ repositories:
     documentation: git@github.com:orocrm/documentation.git'
 
 branches:
-    maintenance/crm-enterprise-1.11: # maintenance branch in dev repository
+    maintenance/crm-enterprise-1.11:
         application/crm-enterprise: '1.11'
         application/crm: '1.9'
         application/platform: '1.9'
 
         package/platform: '1.9'               # branch '1.9' from package/platform (git@github.com:laboro/platform.git) used
-#        package/platform-enterprise: '1.11'   # branch '1.11' from package/platform (git@github.com:orocrm/platform-er.git) used
-        package/crm: '1.9'                    # branch '1.9' from package/platform (git@github.com:laboro/crm.git) used
-        package/crm-enterprise: '1.11'        # branch '1.11' from package/platform (git@github.com:laboro/crm.git) used
+        package/crm: '1.9'                    # branch '1.9' from package/crm (git@github.com:laboro/crm.git) used
+        package/crm-enterprise: '1.11'        # branch '1.11' from package/crm-enterprise (git@github.com:laboro/crm-enterprise.git) used
         package/dotmailer: '1.9'
         package/ldap: '1.11'
         package/mailchimp: '1.9'
