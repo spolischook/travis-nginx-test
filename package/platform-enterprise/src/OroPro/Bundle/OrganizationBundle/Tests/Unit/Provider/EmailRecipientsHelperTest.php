@@ -96,7 +96,7 @@ class EmailRecipientsHelperTest extends \PHPUnit_Framework_TestCase
     {
         $recipient = new Recipient(
             'recipient@example.com',
-            'Recipient <recipient@example.com>',
+            '"Recipient" <recipient@example.com>',
             new RecipientEntity(
                 'class',
                 'id',
@@ -113,10 +113,10 @@ class EmailRecipientsHelperTest extends \PHPUnit_Framework_TestCase
                 $recipient,
                 new Organization(),
                 [
-                    'id' => 'Recipient <recipient@example.com>',
-                    'text' => 'Recipient <recipient@example.com>',
+                    'id' => base64_encode('"Recipient" <recipient@example.com>'),
+                    'text' => '"Recipient" <recipient@example.com>',
                     'data' => json_encode([
-                        'key' => 'Recipient <recipient@example.com>',
+                        'key' => '"Recipient" <recipient@example.com>',
                         'contextText' => 'label',
                         'contextValue' => [
                             'entityClass' => 'class',
@@ -130,10 +130,10 @@ class EmailRecipientsHelperTest extends \PHPUnit_Framework_TestCase
                 $recipient,
                 $globalOrganization,
                 [
-                    'id' => 'Recipient <recipient@example.com>',
-                    'text' => 'Recipient <recipient@example.com> (org)',
+                    'id' => base64_encode('"Recipient" <recipient@example.com>'),
+                    'text' => '"Recipient" <recipient@example.com> (org)',
                     'data' => json_encode([
-                        'key' => 'Recipient <recipient@example.com>',
+                        'key' => '"Recipient" <recipient@example.com>',
                         'contextText' => 'label',
                         'contextValue' => [
                             'entityClass' => 'class',
