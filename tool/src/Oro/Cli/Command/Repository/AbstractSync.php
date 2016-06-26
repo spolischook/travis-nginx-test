@@ -230,13 +230,7 @@ abstract class AbstractSync extends RootCommand
             return;
         }
 
-        if ($this->execCmd("git checkout -f {$remoteAlias}", false) === false) {
-            $this->execCmd("git checkout -fb {$remoteAlias} {$remoteAlias}/{$remoteBranch}");
-        }
-
-        $this->checkoutBranch($this->getBranch());
-
-        $this->execCmd("git subtree merge --prefix={$codePath} {$remoteAlias}");
+        $this->execCmd("git subtree pull --prefix={$codePath} {$remoteAlias} {$remoteBranch}");
     }
 
     /**
@@ -255,9 +249,29 @@ abstract class AbstractSync extends RootCommand
 
         $subtreeBranch = $this->getSubtreeBranch($codePath);
 
-        $this->execCmd("git subtree split --prefix={$codePath} --branch={$subtreeBranch}");
+        if (!$this->hasLock($this->execCmd("git rev-parse {$subtreeBranch}"))) {
+            $subtreeHash = $this->execCmd("git subtree split --prefix={$codePath} --branch={$subtreeBranch}");
+            $this->putLock($subtreeHash);
+        }
 
         $this->updateRemote($subtreeBranch, $remoteBranch, $remoteAlias);
+    }
+
+    /**
+     * @param $commitHash
+     * @return bool
+     */
+    protected function hasLock($commitHash)
+    {
+        return file_exists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $commitHash . DIRECTORY_SEPARATOR . '.lock');
+    }
+
+    /**
+     * @param $commitHash
+     */
+    protected function putLock($commitHash)
+    {
+        file_put_contents(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $commitHash . DIRECTORY_SEPARATOR . '.lock', '');
     }
 
     protected function assertGitVersion()
