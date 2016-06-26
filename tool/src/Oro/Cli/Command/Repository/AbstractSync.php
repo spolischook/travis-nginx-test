@@ -215,7 +215,7 @@ abstract class AbstractSync extends RootCommand
      * @param string $codePath
      * @param string $branchName
      */
-    protected function updateSubtree($repository, $codePath, $branchName)
+    protected function pullSubtree($repository, $codePath, $branchName)
     {
         $this->logger->info("Working on \"{$codePath}\" subtree from \"{$repository}\" repository.");
 
@@ -230,21 +230,34 @@ abstract class AbstractSync extends RootCommand
             return;
         }
 
+        if ($this->execCmd("git checkout -f {$remoteAlias}", false) === false) {
+            $this->execCmd("git checkout -fb {$remoteAlias} {$remoteAlias}/{$remoteBranch}");
+        }
+
+        $this->checkoutBranch($this->getBranch());
+
+        $this->execCmd("git subtree merge --prefix={$codePath} {$remoteAlias}");
+    }
+
+    /**
+     * @param string $repository
+     * @param string $codePath
+     * @param string $branchName
+     */
+    protected function pushSubtree($repository, $codePath, $branchName)
+    {
+        $this->logger->info("Working on \"{$codePath}\" subtree from \"{$repository}\" repository.");
+
         $this->assertGitVersion();
+
+        $remoteBranch = $this->resolveRemoteBranch($branchName, $codePath);
+        $remoteAlias = $this->getRemoteAlias($codePath);
 
         $subtreeBranch = $this->getSubtreeBranch($codePath);
 
-        $this->execCmd("git branch -D {$subtreeBranch}", false);
         $this->execCmd("git subtree split --prefix={$codePath} --branch={$subtreeBranch}");
 
-        if ($this->execCmd("git fetch --prune {$remoteAlias} {$remoteBranch}", false)) {
-            $this->execCmd("git checkout -f {$subtreeBranch}");
-
-            $this->updateFromRemote($remoteBranch, $remoteAlias);
-
-            $this->execCmd("git checkout -f {$branchName}");
-            $this->execCmd("git subtree merge --prefix={$codePath} {$subtreeBranch}");
-        }
+        $this->updateRemote($subtreeBranch, $remoteBranch, $remoteAlias);
     }
 
     protected function assertGitVersion()
