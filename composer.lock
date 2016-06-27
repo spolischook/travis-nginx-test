@@ -4033,19 +4033,19 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm-enterprise",
-                "reference": "33632bb3d26bb5ae5e4cdccd609bee4ccdd642df",
+                "reference": "f755dbb9399a4bcac2043087434296025c4d14c9",
                 "shasum": null
             },
             "require": {
                 "elasticsearch/elasticsearch": "1.2.2",
                 "oro/crm": "self.version",
+                "oro/platform-enterprise": "self.version",
                 "php": ">=5.5.9"
             },
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "OroCRMPro\\Bundle": "src/",
-                    "OroPro\\Bundle": "src/"
+                    "OroCRMPro\\Bundle": "src/"
                 }
             },
             "license": [
@@ -4592,6 +4592,38 @@
             ],
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/orocrm/platform.git"
+        },
+        {
+            "name": "oro/platform-enterprise",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../package/platform-enterprise",
+                "reference": "9f44354fc9054b865a0bfe583171b1648af1d7b2",
+                "shasum": null
+            },
+            "require": {
+                "elasticsearch/elasticsearch": "1.2.2",
+                "oro/platform": "self.version",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "OroPro\\Bundle": "src/"
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocrm.com"
+                }
+            ],
+            "description": "OroPlatform Enterprise",
+            "homepage": "https://github.com/orocrm/platform-enterprise.git"
         },
         {
             "name": "oro/platform-serialised-fields",
