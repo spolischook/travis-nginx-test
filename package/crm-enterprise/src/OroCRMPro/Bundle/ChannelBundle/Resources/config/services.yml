@@ -1,0 +1,7 @@
+services:
+    oropro_organization.event_listener.organization:
+        class: 'OroCRMPro\Bundle\ChannelBundle\EventListener\OrganizationListener'
+        arguments:
+            - "@orocrm_channel.provider.state_provider"
+        tags:
+            - { name: kernel.event_listener, event: oropro_organization.organization.update, method: onUpdateOrganization }
