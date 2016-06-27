@@ -116,9 +116,13 @@ class UserType extends AbstractType
             && $this->securityFacade->isGranted('oro_business_unit_view')
         ) {
             $builder->add(
-                'organizations',
-                'oro_organizations_select',
-                ['required' => false, 'label' => 'oro.user.form.access_settings.label']
+                'businessUnits',
+                'oro_type_business_unit_select_autocomplete',
+                [
+                    'required' => false,
+                    'label' => 'oro.user.form.access_settings.label',
+                    'autocomplete_alias' => 'business_units_search_handler'
+                ]
             );
         }
         $builder

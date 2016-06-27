@@ -1,10 +1,8 @@
 {% macro filterRoles(form) %}
     <script type="text/javascript">
-        require(['jquery'], function ($) {
+        require(['jquery', 'underscore'], function ($, _) {
             "use strict";
             var roles = $('#{{ form.roles.vars.id }}').find('input[type="checkbox"]');
-            var organizations = $('#{{ form.organizations.vars.id }}').find('input.org:checkbox');
-
             var permissionsMap = $.parseJSON('{{ form.vars.permissions_map | raw }}');
 
             roles.each(function(key, elm) {
@@ -20,23 +18,20 @@
             });
 
             $(function() {
-                $(document).on('change', 'input.bu:checkbox', function (e) {
-                    var org_id = $(this).data('organization');
-                    $('input.org-id-' + org_id + ':checkbox').prop('checked', true).trigger('change');
-                });
+                $('input[name="oro_user_user_form[businessUnits]"]').change(
+                    function () {
+                        roles.each(function (key, elm) {
+                            var roleId = elm.value;
+                            var granted = (permissionsMap[roleId]['org_id'] == null || isOrganizationForRoleChecked(roleId));
+                            if (!granted) {
+                                hideCheckboxElement(elm);
+                            } else {
+                                showCheckboxElement(elm)
+                            }
+                        });
+                    }
+                );
 
-                $(document).on('change', 'input.org:checkbox', function (e) {
-                    roles.each(function (key, elm) {
-                        var roleId = elm.value;
-                        var granted = (permissionsMap[roleId]['org_id'] == null || isOrganizationForRoleChecked(roleId));
-                        if (!granted) {
-                            $(elm).prop('checked', false);
-                            hideCheckboxElement(elm);
-                        } else {
-                            showCheckboxElement(elm)
-                        }
-                    });
-                });
             });
 
             function hideCheckboxElement(elm) {
@@ -53,10 +48,25 @@
             }
 
             function isOrganizationForRoleChecked(roleId) {
-                var checkedOrganization = organizations.filter(function(key, elm) {
-                    return (parseInt(elm.value) == permissionsMap[roleId]['org_id'] && elm.checked);
+                var values = $('input[name="oro_user_user_form[businessUnits]"]').val();
+                values = values.split(',');
+
+                var checkedOrganization = values.filter(function (value) {
+                    var selectedValue = getValueFromSelectedData(parseInt(value));
+                    if (selectedValue) {
+                        return parseInt(selectedValue.organization_id) == permissionsMap[roleId]['org_id'];
+                    }
                 });
+
                 return checkedOrganization.length > 0;
+            }
+
+            function getValueFromSelectedData(val) {
+                var selectedData = $('input[name="oro_user_user_form[businessUnits]"]').data().selectedData;
+
+                return selectedData.filter(function(item) {
+                    return item.id == val;
+                }).pop();
             }
         });
     </script>
