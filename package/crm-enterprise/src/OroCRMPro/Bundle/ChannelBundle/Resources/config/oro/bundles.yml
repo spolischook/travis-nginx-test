@@ -1,0 +1,2 @@
+bundles:
+    - { name: OroCRMPro\Bundle\ChannelBundle\OroCRMProChannelBundle, priority: 0 }

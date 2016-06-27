@@ -19,3 +19,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_ui.scroll_data.before.website-edit, method: onWebsiteEdit }
             - { name: kernel.event_listener, event: oro_ui.scroll_data.before.website-view, method: onWebsiteView }
+
+    orob2bpro_pricing.event_listener.price_list_form_view:
+        class: 'OroB2BPro\Bundle\PricingBundle\EventListener\PriceListFormViewListener'
+        arguments:
+            - '@request_stack'
+            - '@translator'
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.price-list-view, method: onPriceListView }
