@@ -32,11 +32,11 @@ cd dev
 ```
 * Install tools in `tool` folder:
 ```bash
-cd tool && composer install && cd ..
+composer install --working-dir=tool
 ```
 * Install all dependencies for the application you are going to work on, for example:
 ```bash
-cd application/crm && composer install && cd ../..
+composer install --working-dir=application/crm
 ```
 * Install application via web or command line interface
 * Repeat the previous two steps (install application dependencies and run application installer) for as many applications as necessary.
@@ -72,8 +72,8 @@ The maintenance cycle includes a few typical tasks:
 
 ### Add a new subtree
 
-If you would like to add new downstream repository, you should add a new record to the `$repositories` in
-[Oro\Cli\Command\Repository\Sync](./tool/src/Oro/Cli/Command/Repository/Sync.php) class and run the following command:
+If you would like to add new downstream repository, you should add a new record to the configuration file in
+[configuration.yml](./tool/src/Oro/Cli/Command/Repository/configuration.yml) and run the following command:
 
 ```bash
 php tool/console repository:sync REPO_NAME
@@ -109,7 +109,7 @@ In order to update a subtree in the monolithic repository with the new code from
 of an invidual downstream repository, run the following command:
 
 ```bash
-php tool/console repository:branch-sync some-branch
+php tool/console repository:sync --branch=some-branch
 ```
 
 *Note:* The specified branch will be created in an individual downstream repository if it doesn't exist there yet
@@ -120,7 +120,7 @@ In order to send the new code from the monolithic repository into a specific bra
 repository, run the following command:
 
 ```bash
-php tool/console repository:branch-sync --two-way
+php tool/console repository:sync --branch=some-branch --two-way
 ```
 
 *Note:* The specified branch will be created in an individual downstream repository if it doesn't exist there yet
@@ -130,7 +130,7 @@ php tool/console repository:branch-sync --two-way
 In order to get a list of the repositories where the specified branch exists, run the following command:
 
 ```bash
-php tool/console repository:branch-sync --dry-run
+php tool/console repository:sync --branch=some-branch --dry-run
 ```
 
 *Note:* please pay attention to the output, produced by the repository:sync command output:
