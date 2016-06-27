@@ -18,6 +18,10 @@
         "composer": {
             "type": "composer",
             "url": "https://packagist.orocrm.com"
+        },
+        "enterprise": {
+            "type": "vcs",
+            "url": "https://github.com/orocrm/platform-enterprise.git"
         }
     },
     "extra": {
