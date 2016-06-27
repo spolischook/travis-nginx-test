@@ -232,3 +232,15 @@ services:
             - '@oro_security.security_facade'
             - '@?security.acl.voter.basic_permissions'
             - '@oro_security.ownership_tree_provider'
+
+    # Autocomplete business unit search handler
+    oro_organization.autocomplete.business_unit_search_handler:
+        class: Oro\Bundle\OrganizationBundle\Autocomplete\BusinessUnitSearchHandler
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - %oro_organization.business_unit.entity.class%
+            - ["name"]
+            - '@doctrine'
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: business_units_search_handler }
+        lazy: true
