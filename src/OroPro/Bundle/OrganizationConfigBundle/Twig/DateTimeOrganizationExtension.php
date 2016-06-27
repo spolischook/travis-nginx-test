@@ -9,6 +9,14 @@ use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
 use Oro\Bundle\LocaleBundle\Twig\DateTimeExtension;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
+/**
+ * DateTimeOrganizationExtension allows get formatted date and calendar date range by organization localization settings
+ * @package OroPro\Bundle\OrganizationConfigBundle\Twig
+ *
+ * @deprecated Since 1.11, will be removed after 1.13.
+ *
+ * @todo: it's a temporary workaround to fix dates in reminder emails CRM-5745 until improvement CRM-5758 is implemented
+ */
 class DateTimeOrganizationExtension extends DateTimeExtension
 {
     /**

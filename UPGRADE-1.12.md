@@ -4,4 +4,4 @@ UPGRADE FROM 1.11 to 1.12
 ####OroProOrganizationBundle
 - Removed parameter `OroCRM\Bundle\ChannelBundle\Provider\StateProvider $stateProvider` from constructor of `OroPro\Bundle\OrganizationBundle\Form\Handler\OrganizationProHandler` class
 - Added parameter `EventDispatcherInterface $eventDispatcher` to constructor of `OroPro\Bundle\OrganizationBundle\Form\Handler\OrganizationProHandler` class
-- Added `oro_format_datetime_organization` twig extension - allows get formatted date by organization localization settings.
+- Added `oro_format_datetime_organization` twig extension - allows get formatted date and calendar date range by organization localization settings. Deprecated since 1.11. Will be removed after 1.13.
