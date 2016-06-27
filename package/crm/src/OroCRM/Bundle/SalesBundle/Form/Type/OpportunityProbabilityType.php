@@ -18,6 +18,11 @@ class OpportunityProbabilityType extends AbstractType
 {
     const NAME = 'orocrm_sales_opportunity_probability';
 
+    /**
+     * @var array Default probability for these statuses cannot be edited
+     */
+    public static $immutableStatuses = ['won', 'lost'];
+
     /** @var EnumTypeHelper */
     protected $typeHelper;
 
@@ -41,12 +46,17 @@ class OpportunityProbabilityType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setNormalizers(
+        $resolver->setDefaults(
             [
-                'validation_groups' => function (Options $options, $value) {
-                    return $options['disabled'] ? false : $value;
-                },
+                'validation_groups' => null,
+                'disabled' => false,
             ]
+        );
+        $resolver->setNormalizer(
+            'validation_groups',
+            function (Options $options, $value) {
+                    return $options['disabled'] ? false : $value;
+            }
         );
     }
 
@@ -55,19 +65,21 @@ class OpportunityProbabilityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $constraint = new Range(['min' => 0, 'max' => 100]);
         // Generate a probability field for each status
         foreach ($this->enumStatuses as $status) {
-            $disabled = in_array($status->getId(), ['won', 'lost']);
+            $disabled = in_array($status->getId(), self::$immutableStatuses);
 
             $builder
                 ->add(
                     $status->getId(),
-                    'percent',
+                    'oro_percent',
                     [
                         'required' => false,
                         'disabled' => $disabled,
                         'label' => $status->getName(),
-                        'constraints' => new Range(['min' => 0, 'max' => 100]),
+                        'attr' => ['readonly' => $disabled],
+                        'constraints' => $constraint,
                     ]
                 );
         }
