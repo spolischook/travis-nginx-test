@@ -14,6 +14,11 @@ use OroB2BPro\Bundle\WebsiteBundle\Migrations\Data\Demo\ORM\LoadWebsiteDemoData;
 class LoadPriceListToAccountGroupDemoData extends LoadBasePriceListRelationDemoData
 {
     /**
+     * @var AccountGroup[]
+     */
+    protected $accountGroups;
+
+    /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
@@ -58,13 +63,27 @@ class LoadPriceListToAccountGroupDemoData extends LoadBasePriceListRelationDemoD
      */
     protected function getAccountGroupByName(EntityManager $manager, $name)
     {
-        $website = $manager->getRepository('OroB2BAccountBundle:AccountGroup')->findOneBy(['name' => $name]);
 
-        if (!$website) {
-            throw new \LogicException(sprintf('There is no account group with name "%s" .', $name));
+        foreach ($this->getAccountGroups($manager) as $accountGroup) {
+            if ($accountGroup->getName() === $name) {
+                return $accountGroup;
+            }
         }
 
-        return $website;
+        throw new \LogicException(sprintf('There is no account group with name "%s" .', $name));
+    }
+
+    /**
+     * @param EntityManager $manager
+     * @return array|AccountGroup[]
+     */
+    protected function getAccountGroups(EntityManager $manager)
+    {
+        if ($this->accountGroups) {
+            $this->accountGroups = $manager->getRepository('OroB2BAccountBundle:AccountGroup')->findAll();
+        }
+
+        return $this->accountGroups;
     }
 
     /**
