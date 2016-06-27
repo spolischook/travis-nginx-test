@@ -2,10 +2,6 @@
 
 namespace OroB2BPro\Bundle\PricingBundle\Tests\Unit\Form\Extension;
 
-use OroB2BPro\Bundle\PricingBundle\EventListener\WebsiteListener;
-use OroB2BPro\Bundle\PricingBundle\Form\Extension\WebsiteFormExtension;
-use OroB2BPro\Bundle\PricingBundle\Tests\Unit\Form\Extension\Stub\WebsiteTypeStub;
-use OroB2BPro\Bundle\WebsiteBundle\Form\Type\WebsiteType;
 use Symfony\Component\Form\PreloadedExtension;
 
 use Oro\Component\Testing\Unit\FormIntegrationTestCase;
@@ -17,9 +13,11 @@ use OroB2B\Bundle\PricingBundle\Tests\Unit\Form\Type\Stub\PriceListSelectTypeStu
 use OroB2B\Bundle\PricingBundle\Entity\PriceList;
 use OroB2B\Bundle\PricingBundle\Entity\PriceListToWebsite;
 
-/**
- * @SuppressWarnings(PHPMD.TooManyMethods)
- */
+use OroB2BPro\Bundle\PricingBundle\EventListener\WebsiteListener;
+use OroB2BPro\Bundle\PricingBundle\Form\Extension\WebsiteFormExtension;
+use OroB2BPro\Bundle\PricingBundle\Tests\Unit\Form\Extension\Stub\WebsiteTypeStub;
+use OroB2BPro\Bundle\WebsiteBundle\Form\Type\WebsiteType;
+
 class WebsiteFormExtensionTest extends FormIntegrationTestCase
 {
     use EntityTrait;
@@ -30,7 +28,7 @@ class WebsiteFormExtensionTest extends FormIntegrationTestCase
     protected function getExtensions()
     {
         /** @var WebsiteListener $listener */
-        $listener = $this->getMockBuilder('OroB2B\Bundle\PricingBundle\EventListener\WebsiteListener')
+        $listener = $this->getMockBuilder('OroB2BPro\Bundle\PricingBundle\EventListener\WebsiteListener')
             ->disableOriginalConstructor()
             ->getMock();
 
