@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\PricingBundle\Tests\Functional\Controller;
+namespace OroB2BPro\Bundle\PricingBundle\Tests\Functional\Controller;
 
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -8,10 +8,11 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use OroB2B\Bundle\PricingBundle\Entity\PriceList;
-use OroB2B\Bundle\PricingBundle\Form\Extension\WebsiteFormExtension;
 use OroB2B\Bundle\WebsiteBundle\Entity\Website;
-use OroB2B\Bundle\WebsiteBundle\Form\Type\WebsiteType;
 use OroB2B\Bundle\WebsiteBundle\Tests\Functional\DataFixtures\LoadWebsiteData;
+
+use OroB2BPro\Bundle\PricingBundle\Form\Extension\WebsiteFormExtension;
+use OroB2BPro\Bundle\WebsiteBundle\Form\Type\WebsiteType;
 
 /**
  * @dbIsolation
@@ -70,7 +71,7 @@ class WebsiteControllerTest extends WebTestCase
         $params = $this->explodeArrayPaths($formValues);
         $this->client->request(
             'POST',
-            $this->getUrl('orob2b_website_update', ['id' => $this->website->getId()]),
+            $this->getUrl('orob2bpro_website_update', ['id' => $this->website->getId()]),
             $params
         );
         $form = $this->getUpdateForm();
@@ -94,7 +95,7 @@ class WebsiteControllerTest extends WebTestCase
     {
         $crawler = $this->client->request(
             'GET',
-            $this->getUrl('orob2b_website_view', ['id' => $this->website->getId()])
+            $this->getUrl('orob2bpro_website_view', ['id' => $this->website->getId()])
         );
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
@@ -135,7 +136,7 @@ class WebsiteControllerTest extends WebTestCase
         $params = $this->explodeArrayPaths($formValues);
         $crawler = $this->client->request(
             'POST',
-            $this->getUrl('orob2b_website_update', ['id' => $this->website->getId()]),
+            $this->getUrl('orob2bpro_website_update', ['id' => $this->website->getId()]),
             $params
         );
         $result = $this->client->getResponse();
@@ -150,7 +151,7 @@ class WebsiteControllerTest extends WebTestCase
     {
         $crawler = $this->client->request(
             'GET',
-            $this->getUrl('orob2b_website_update', ['id' => $this->website->getId()])
+            $this->getUrl('orob2bpro_website_update', ['id' => $this->website->getId()])
         );
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);

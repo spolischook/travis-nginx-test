@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\WebsiteBundle\Tests\Functional\Operation;
+namespace OroB2BPro\Bundle\WebsiteBundle\Tests\Functional\Operation;
 
 use Oro\Bundle\ActionBundle\Tests\Functional\ActionTestCase;
 
@@ -29,10 +29,10 @@ class WebsiteDeleteOperationTest extends ActionTestCase
         $website = $this->getReference(LoadWebsiteData::WEBSITE1);
         $websiteId = $website->getId();
 
-        $this->assertDeleteOperation($websiteId, 'orob2b_website.entity.website.class', 'orob2b_website_index');
+        $this->assertDeleteOperation($websiteId, 'orob2b_website.entity.website.class', 'orob2bpro_website_index');
 
         $this->client->followRedirects();
-        $this->client->request('GET', $this->getUrl('orob2b_website_view', ['id' => $websiteId]));
+        $this->client->request('GET', $this->getUrl('orob2bpro_website_view', ['id' => $websiteId]));
         $result = $this->client->getResponse();
 
         $this->assertHtmlResponseStatusCodeEquals($result, 404);

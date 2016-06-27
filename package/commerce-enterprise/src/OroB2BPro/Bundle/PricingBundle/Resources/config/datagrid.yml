@@ -30,4 +30,4 @@ datagrid:
                     data_name:  relatedEntity.url
         actions:
             view:
-                acl_resource: orob2b_website_view
+                acl_resource: orob2bpro_website_view
