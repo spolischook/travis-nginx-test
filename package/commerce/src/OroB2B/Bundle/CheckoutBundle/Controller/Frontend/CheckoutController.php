@@ -15,12 +15,9 @@ use Oro\Bundle\LayoutBundle\Annotation\Layout;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowAwareInterface;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 use OroB2B\Bundle\CheckoutBundle\Model\TransitionData;
-use OroB2B\Bundle\CheckoutBundle\Event\CheckoutEntityEvent;
-use OroB2B\Bundle\CheckoutBundle\Event\CheckoutEvents;
 use OroB2B\Bundle\CheckoutBundle\Entity\CheckoutInterface;
 
 class CheckoutController extends Controller
@@ -34,7 +31,7 @@ class CheckoutController extends Controller
      * Create checkout form
      *
      * @Route(
-     *     "/{id}/{checkoutType}",
+     *     "/{id}",
      *     name="orob2b_checkout_frontend_checkout",
      *     requirements={"id"="\d+", "checkoutType"="\w+"}
      * )
@@ -48,20 +45,19 @@ class CheckoutController extends Controller
      * )
      *
      * @param Request $request
-     * @param int $id
-     * @param null|string $checkoutType
+     * @param WorkflowItem $workflowItem
      * @return array|Response
      * @throws \Exception
      */
-    public function checkoutAction(Request $request, $id, $checkoutType = null)
+    public function checkoutAction(Request $request, WorkflowItem $workflowItem)
     {
-        $checkout = $this->getCheckout($id, $checkoutType);
+        $checkout = $this->getCheckout($workflowItem);
 
         if (!$checkout) {
             throw new NotFoundHttpException(sprintf('Checkout not found'));
         }
 
-        $workflowItem = $this->handleTransition($checkout, $request);
+        $workflowItem = $this->handleTransition($workflowItem, $request);
         $currentStep = $this->validateStep($workflowItem);
         $this->validateOrderLineItems($workflowItem, $checkout, $request);
 
@@ -88,6 +84,7 @@ class CheckoutController extends Controller
             'data' =>
                 [
                     'checkout' => $checkout,
+                    'workflowItem' => $workflowItem,
                     'workflowStep' => $currentStep
                 ]
         ];
@@ -158,16 +155,15 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @param WorkflowAwareInterface $checkout
+     * @param WorkflowItem $workflowItem
      * @param Request $request
      * @return WorkflowItem
-     * @throws \Exception
      * @throws \Oro\Bundle\WorkflowBundle\Exception\InvalidTransitionException
      * @throws \Oro\Bundle\WorkflowBundle\Exception\WorkflowException
+     * @internal param CheckoutInterface $checkout
      */
-    protected function handleTransition(WorkflowAwareInterface $checkout, Request $request)
+    protected function handleTransition(WorkflowItem $workflowItem, Request $request)
     {
-        $workflowItem = $checkout->getWorkflowItem();
         if ($request->isMethod(Request::METHOD_POST)) {
             $continueTransition = $this->get('orob2b_checkout.layout.data_provider.continue_transition')
                 ->getContinueTransition($workflowItem);
@@ -218,18 +214,17 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @param int $id
-     * @param string|null $type
+     * @param WorkflowItem $workflowItem
      * @return CheckoutInterface|null
      */
-    protected function getCheckout($id, $type)
+    protected function getCheckout(WorkflowItem $workflowItem)
     {
-        $type = (string)$type;
-        $event = new CheckoutEntityEvent();
-        $event->setCheckoutId($id)
-            ->setType($type);
-        $this->get('event_dispatcher')->dispatch(CheckoutEvents::GET_CHECKOUT_ENTITY, $event);
+        $entityClass = $workflowItem->getEntityClass();
 
-        return $event->getCheckoutEntity();
+        $entity = $this->getDoctrine()
+            ->getManagerForClass($entityClass)
+            ->find($entityClass, $workflowItem->getEntityId());
+
+        return $entity instanceof CheckoutInterface ? $entity : null;
     }
 }
