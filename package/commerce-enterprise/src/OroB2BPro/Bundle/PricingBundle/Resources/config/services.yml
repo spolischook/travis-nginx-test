@@ -6,7 +6,7 @@ services:
             - '@oro_api.doctrine_helper'
             - '@orob2b_pricing.price_list_change_trigger_handler'
         tags:
-            - { name: kernel.event_listener, event: oro.form.update_handler.before_entity_flush.orob2b_website_type, method: beforeFlush }
+            - { name: kernel.event_listener, event: oro.form.update_handler.before_entity_flush.orob2bpro_website_type, method: beforeFlush }
 
     orob2bpro_pricing.event_listener.web_site_form_view:
         class: 'OroB2BPro\Bundle\PricingBundle\EventListener\WebsiteFormViewListener'
