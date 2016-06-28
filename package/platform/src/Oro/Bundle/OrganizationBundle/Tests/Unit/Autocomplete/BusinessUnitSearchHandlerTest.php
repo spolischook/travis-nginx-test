@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\ClassMetadataFactory;
 
 use Oro\Bundle\OrganizationBundle\Autocomplete\BusinessUnitSearchHandler;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class BusinessUnitSearchHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,7 +49,7 @@ class BusinessUnitSearchHandlerTest extends \PHPUnit_Framework_TestCase
         $this->classMetadata = self::getMockBuilder('\Doctrine\ORM\Mapping\ClassMetadata')
             ->disableOriginalConstructor()->getMock();
 
-        $this->businessUnitSearchHandler = new BusinessUnitSearchHandler('', [], $this->doctrine);
+        $this->businessUnitSearchHandler = new BusinessUnitSearchHandler('entityName', [], $this->doctrine);
     }
 
     public function testCheckCorrectWork()
@@ -71,6 +72,16 @@ class BusinessUnitSearchHandlerTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($this->getExpectedData(), $response);
     }
 
+    public function testInitSearchIndexer()
+    {
+        $indexer = $this->getMockBuilder('Oro\Bundle\SearchBundle\Engine\Indexer')
+            ->disableOriginalConstructor()->getMock();
+        $indexer->expects(self::once())->method('setIsAllowedApplyAcl')->with(false);
+        $indexer->expects(self::once())->method('setSearchHandlerState')->with('business_units_search_handler');
+
+        $this->businessUnitSearchHandler->initSearchIndexer($indexer, ['entityName'=> ['alias'=>'alias']]);
+    }
+
     /**
      * @return array
      */
@@ -80,12 +91,14 @@ class BusinessUnitSearchHandlerTest extends \PHPUnit_Framework_TestCase
             'id'=>null,
             'treePath' => [
                 [
+                    'name' => 'Org 1'
+                ],[
                     'name' => 'BU_1'
-                ],
-                [
+                ],[
                     'name' => 'BU_1_1'
                 ]
-            ]
+            ],
+            'organization_id' => null
         ];
     }
 
@@ -94,11 +107,17 @@ class BusinessUnitSearchHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getBusinessUnit()
     {
+        $organization = new Organization();
+        $organization->setName('Org 1');
+
         $businessUnit = new BusinessUnit();
         $businessUnit->setName('BU_1');
+        $businessUnit->setOrganization($organization);
+
         $businessUnit1 = new BusinessUnit();
         $businessUnit1->setName('BU_1_1');
         $businessUnit1->setOwner($businessUnit);
+        $businessUnit1->setOrganization($organization);
 
         return $businessUnit1;
     }
