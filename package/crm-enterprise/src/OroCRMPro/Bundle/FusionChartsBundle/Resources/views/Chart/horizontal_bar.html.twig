@@ -1,0 +1,48 @@
+{% set max = 0 %}
+{% set containerId = "chart-container-" ~ random() %}
+{% if data|length > 0 %}
+    {% set componentOptions = {
+        view: 'orocrmprofusioncharts/js/app/views/bar-chart-view',
+        autoRender: true,
+        chartOptions: {
+            containerId: containerId,
+            dataSource: {
+                'chart': {
+                    'showValues': isMobileVersion() ? '0' : '1',
+                    'maxColWidth': '50',
+                    'showCanvasBg': '0',
+                    'showCanvasBase': '0',
+                    'animation': '0',
+                    'valuePadding': '10',
+                    'rotateXAxisName': '0',
+                    'formatNumberScale': '0',
+                    'labelPadding': 10,
+                    'yAxisValuesPadding': 10,
+                    'xAxisNamePadding': 10,
+                    'yAxisNamePadding': 10,
+                    'drawAnchors': 0,
+                    'divLineColor': 'eaeaea',
+                    'paletteColors': options.settings.chartColors
+                },
+                'data': data,
+                'type': 'Bar3D',
+                'trendlines': []
+            },
+            schema: options.data_schema,
+            isCurrencyPrepend: oro_currency_symbol_prepend()
+        }
+    } %}
+    <div class="chart-container">
+        <div class="clearfix">
+            <div id="{{ containerId }}-chart" class="column-chart chart"
+                 data-page-component-module="oroui/js/app/components/view-component"
+                 data-page-component-options="{{ componentOptions|json_encode }}"></div>
+        </div>
+    </div>
+{% else %}
+    <div class="container-fluid">
+        <div class="clearfix no-data">
+            <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
+        </div>
+    </div>
+{% endif %}
