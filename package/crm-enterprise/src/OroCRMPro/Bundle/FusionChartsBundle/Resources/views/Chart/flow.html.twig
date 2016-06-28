@@ -1,5 +1,5 @@
 {% set containerId = "chart-container-" ~ random() %}
-{% set hasData = data|length>0 and data.items is not defined %}
+{% set hasData = data|length > 0 %}
 {% set chartData = [] %}
 {% set isMobileVersion = isMobileVersion() %}
 {% set emptyData = true %}
