@@ -27,18 +27,14 @@ class Sync extends AbstractSync
         $branchName = $this->getBranch();
 
         foreach ($this->getApplicableRepositories() as $codePath => $repository) {
-            $this->updateSubtree($repository, $codePath, $this->getBranch());
+            $this->pullSubtree($repository, $codePath, $branchName);
         }
 
         $this->updateRemote($branchName, $branchName);
 
         if ($this->isTwoWay()) {
-            foreach ($this->getApplicableRepositories() as $prefix => $repository) {
-                $remoteBranch = $this->resolveRemoteBranch($branchName, $prefix);
-                $remoteAlias = $this->getRemoteAlias($prefix);
-                $subtreeBranch = $this->getSubtreeBranch($prefix);
-
-                $this->updateRemote($subtreeBranch, $remoteBranch, $remoteAlias);
+            foreach ($this->getApplicableRepositories() as $codePath => $repository) {
+                $this->pushSubtree($repository, $codePath, $branchName);
             }
         }
     }
