@@ -5,11 +5,11 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2B\ORM\B2B;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
 use OroCRM\Bundle\SalesBundle\Entity\Lead;
-use OroCRM\Bundle\SalesBundle\Entity\LeadStatus;
 use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
 
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
@@ -124,13 +124,13 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
      */
     protected function loadLeadStatuses(ObjectManager $manager)
     {
-        $leadStatuses = $manager->getRepository('OroCRMSalesBundle:LeadStatus')->findAll();
+        $leadStatusClassName = ExtendHelper::buildEnumValueClassName(Lead::INTERNAL_STATUS_CODE);
+        $leadStatuses = $manager->getRepository($leadStatusClassName)->findAll();
 
         return array_reduce(
             $leadStatuses,
             function ($statuses, $status) {
-                /** @var LeadStatus $status */
-                $statuses[$status->getName()] = $status;
+                $statuses[$status->getId()] = $status;
 
                 return $statuses;
             },
