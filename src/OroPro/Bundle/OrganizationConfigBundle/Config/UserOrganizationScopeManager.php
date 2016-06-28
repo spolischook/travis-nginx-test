@@ -28,6 +28,19 @@ class UserOrganizationScopeManager extends UserScopeManager
     }
 
     /**
+     * @return array
+     */
+    public function getScopeInfo()
+    {
+        $info = [
+            'info' => 'oropro.user_configuration.scope_info',
+            'tooltip' => 'oropro.user_configuration.scope_tooltip'
+        ];
+        
+        return $info;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function ensureScopeIdInitialized()
