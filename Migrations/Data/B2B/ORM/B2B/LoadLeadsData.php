@@ -25,8 +25,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
     public function getData()
     {
         return [
-            'leads' => $this->loadData('b2b/leads.csv'),
-            'phones' => $this->loadData('b2b/lead_phones.csv')
+            'leads' => $this->loadData('b2b/leads.csv')
         ];
     }
 
@@ -62,7 +61,6 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
             $this->setSecurityContext($user);
 
             $lead = $this->createLead($leadData, $statuses, $user);
-            $this->loadPhones($lead, $leadData['uid']);
             $this->setLeadReference($leadData['uid'], $lead);
             $manager->persist($lead);
         }
@@ -103,41 +101,22 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
         if (!empty($leadData['campaign uid'])) {
             $lead->setCampaign($this->getCampaignReference($leadData['campaign uid']));
         }
+        if (!empty($leadData['phoneNumber'])) {
+            $leadPhone = new LeadPhone($leadData['phoneNumber']);
+            $leadPhone->setPrimary(true);
+            $lead->addPhone($leadPhone);
+        }
+
         $lead->setStatus($status)
             ->setOwner($user)
             ->setOrganization($organization)
             ->setCreatedAt($created)
             ->setUpdatedAt($this->generateUpdatedDate($created));
+
         $this->setObjectValues($lead, $leadData);
         $lead->setName($lead->getCompanyName());
 
         return $lead;
-    }
-
-    /**
-     * Load Lead phones
-     *
-     * @param Lead $lead
-     * @param $uid
-     */
-    public function loadPhones(Lead $lead, $uid)
-    {
-        $data = $this->getData();
-
-        $phones = array_filter(
-            $data['phones'],
-            function ($phoneData) use ($uid) {
-                return $phoneData['lead uid'] == $uid;
-            }
-        );
-
-        foreach ($phones as $phoneData) {
-            $phone = new LeadPhone($phoneData['phone']);
-            if (!$lead->getPhones()->count()) {
-                $phone->setPrimary(true);
-            }
-            $lead->addPhone($phone);
-        }
     }
 
     protected function addAddress(Lead $lead, B2bCustomer $customer)
