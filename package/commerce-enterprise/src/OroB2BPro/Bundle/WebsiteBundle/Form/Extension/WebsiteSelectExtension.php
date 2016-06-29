@@ -28,10 +28,6 @@ class WebsiteSelectExtension extends AbstractTypeExtension
             [
                 'class' => 'OroB2B\Bundle\WebsiteBundle\Entity\Website',
                 'label' => $this->label,
-                'attr' => [
-                    'data-totals-update-trigger' => true,
-                    'data-form-view-field' => 'website'
-                ]
             ]
         );
     }
