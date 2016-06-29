@@ -73,3 +73,14 @@ datagrid:
                 icon:          eye-open
                 rowAction:     true
                 acl_resource:  orob2bpro_website_view
+
+    business-unit-websites-grid:
+        acl_resource: ~
+        extends: websites-grid
+        source:
+            query:
+                where:
+                    and:
+                        - website.owner = :bussinessUnit
+            bind_parameters:
+                - bussinessUnit
