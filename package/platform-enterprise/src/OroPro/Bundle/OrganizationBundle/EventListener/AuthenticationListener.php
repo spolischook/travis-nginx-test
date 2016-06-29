@@ -65,6 +65,10 @@ class AuthenticationListener
             return true;
         }
 
+        if (!$token->getUser() instanceof User) {
+            return;
+        }
+
         /** @var User $user */
         $user = $token->getUser();
         /** @var Organization $organization */
