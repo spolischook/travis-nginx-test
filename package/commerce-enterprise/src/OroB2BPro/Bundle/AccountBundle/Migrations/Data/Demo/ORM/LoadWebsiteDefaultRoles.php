@@ -1,14 +1,13 @@
 <?php
 
-namespace OroB2B\Bundle\AccountBundle\Migrations\Data\Demo\ORM;
+namespace OroB2BPro\Bundle\AccountBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use OroB2B\Bundle\AccountBundle\Entity\AccountUserRole;
-use OroB2B\Bundle\WebsiteBundle\Entity\Website;
 use OroB2B\Bundle\WebsiteBundle\Migrations\Data\ORM\LoadWebsiteData;
+use OroB2BPro\Bundle\WebsiteBundle\Migrations\Data\Demo\ORM\LoadWebsiteDemoData;
 
 class LoadWebsiteDefaultRoles extends AbstractFixture implements DependentFixtureInterface
 {
@@ -17,10 +16,7 @@ class LoadWebsiteDefaultRoles extends AbstractFixture implements DependentFixtur
      */
     public function getDependencies()
     {
-        return [
-            'OroB2B\Bundle\WebsiteBundle\Migrations\Data\ORM\LoadWebsiteData',
-            'OroB2B\Bundle\WebsiteBundle\Migrations\Data\Demo\ORM\LoadWebsiteDemoData'
-        ];
+        return [LoadWebsiteDemoData::class];
     }
 
     /**

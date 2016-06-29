@@ -1,1 +1,9 @@
 services:
+    orob2bpro_website.event_listener.busines_unit_view:
+        class: 'OroB2BPro\Bundle\WebsiteBundle\EventListener\BusinessUnitViewListener'
+        arguments:
+            - '@translator'
+            - "@oro_entity.doctrine_helper"
+            - "@request_stack"
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.businessUnitView, method: onBusinessUnitView }

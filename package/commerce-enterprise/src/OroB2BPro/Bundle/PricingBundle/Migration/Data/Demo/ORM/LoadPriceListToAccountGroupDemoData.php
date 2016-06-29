@@ -1,13 +1,15 @@
 <?php
 
-namespace OroB2B\Bundle\PricingBundle\Migrations\Data\Demo\ORM;
+namespace OroB2BPro\Bundle\PricingBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 
 use OroB2B\Bundle\AccountBundle\Entity\AccountGroup;
 use OroB2B\Bundle\PricingBundle\Entity\PriceListToAccountGroup;
-use OroB2B\Bundle\WebsiteBundle\Migrations\Data\ORM\LoadWebsiteData;
+use OroB2B\Bundle\PricingBundle\Migrations\Data\Demo\ORM\LoadBasePriceListRelationDemoData;
+
+use OroB2BPro\Bundle\WebsiteBundle\Migrations\Data\Demo\ORM\LoadWebsiteDemoData;
 
 class LoadPriceListToAccountGroupDemoData extends LoadBasePriceListRelationDemoData
 {
@@ -18,7 +20,7 @@ class LoadPriceListToAccountGroupDemoData extends LoadBasePriceListRelationDemoD
     {
         $locator = $this->container->get('file_locator');
         $filePath = $locator
-            ->locate('@OroB2BPricingBundle/Migrations/Data/Demo/ORM/data/price_lists_to_account_group.csv');
+            ->locate('@OroB2BProPricingBundle/Migrations/Data/Demo/ORM/data/price_lists_to_account_group.csv');
 
         if (is_array($filePath)) {
             $filePath = current($filePath);
@@ -26,12 +28,13 @@ class LoadPriceListToAccountGroupDemoData extends LoadBasePriceListRelationDemoD
 
         $handler = fopen($filePath, 'r');
         $headers = fgetcsv($handler, 1000, ',');
-        /** @var EntityManager $manager */
-        $website = $this->getWebsiteByName($manager, LoadWebsiteData::DEFAULT_WEBSITE_NAME);
+
         while (($data = fgetcsv($handler, 1000, ',')) !== false) {
             $row = array_combine($headers, array_values($data));
+            /** @var EntityManager $manager */
             $account = $this->getAccountGroupByName($manager, $row['accountGroup']);
             $priceList = $this->getPriceListByName($manager, $row['priceList']);
+            $website = $this->getWebsiteByName($manager, $row['website']);
 
             $priceListToAccountGroup = new PriceListToAccountGroup();
             $priceListToAccountGroup->setAccountGroup($account)
@@ -69,6 +72,6 @@ class LoadPriceListToAccountGroupDemoData extends LoadBasePriceListRelationDemoD
      */
     public function getDependencies()
     {
-        return array_merge(parent::getDependencies(), [LoadWebsiteData::class]);
+        return array_merge(parent::getDependencies(), [LoadWebsiteDemoData::class]);
     }
 }
