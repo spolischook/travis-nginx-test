@@ -312,12 +312,25 @@ class Workflow
     {
         $entityAttributeName = $this->attributeManager->getEntityAttribute()->getName();
 
-        $workflowItem = new WorkflowItem();
-        $workflowItem
-            ->setWorkflowName($this->getName())
-            ->setEntityClass($this->doctrineHelper->getEntityClass($entity))
-            ->setEntityId($this->doctrineHelper->getSingleEntityIdentifier($entity))
-            ->setEntity($entity);
+        $repo = $this->doctrineHelper->getEntityRepositoryForClass('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem');
+
+        $entityClass = $this->doctrineHelper->getEntityClass($entity);
+        $entityId = $this->doctrineHelper->getSingleEntityIdentifier($entity);
+        
+        $workflowItem = $repo->findOneBy([
+            'workflowName' => $this->getName(),
+            'entityId' => $entityId,
+            'entityClass' => $entityClass
+        ]);
+
+        if (!$workflowItem) {
+            $workflowItem = new WorkflowItem();
+            $workflowItem
+                ->setWorkflowName($this->getName())
+                ->setEntityClass($entityClass)
+                ->setEntityId($entityId)
+                ->setEntity($entity);
+        }
 
         if (array_key_exists($entityAttributeName, $data)) {
             unset($data[$entityAttributeName]);
