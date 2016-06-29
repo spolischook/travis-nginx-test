@@ -13,6 +13,11 @@ use OroB2BPro\Bundle\WebsiteBundle\Migrations\Data\Demo\ORM\LoadWebsiteDemoData;
 class LoadPriceListToAccountDemoData extends LoadBasePriceListRelationDemoData
 {
     /**
+     * @var Account[]
+     */
+    protected $accounts;
+
+    /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
@@ -27,10 +32,9 @@ class LoadPriceListToAccountDemoData extends LoadBasePriceListRelationDemoData
 
         $handler = fopen($filePath, 'r');
         $headers = fgetcsv($handler, 1000, ',');
-
+        /** @var EntityManager $manager */
         while (($data = fgetcsv($handler, 1000, ',')) !== false) {
             $row = array_combine($headers, array_values($data));
-            /** @var EntityManager $manager */
             $account = $this->getAccountByName($manager, $row['account']);
             $priceList = $this->getPriceListByName($manager, $row['priceList']);
             $website = $this->getWebsiteByName($manager, $row['website']);
@@ -57,13 +61,26 @@ class LoadPriceListToAccountDemoData extends LoadBasePriceListRelationDemoData
      */
     protected function getAccountByName(EntityManager $manager, $name)
     {
-        $website = $manager->getRepository('OroB2BAccountBundle:Account')->findOneBy(['name' => $name]);
-
-        if (!$website) {
-            throw new \LogicException(sprintf('There is no account with name "%s" .', $name));
+        foreach ($this->getAccounts($manager) as $account) {
+            if ($account->getName() === $name) {
+                return $account;
+            }
         }
 
-        return $website;
+        throw new \LogicException(sprintf('There is no account with name "%s" .', $name));
+    }
+
+    /**
+     * @param EntityManager $manager
+     * @return array|Account[]
+     */
+    protected function getAccounts(EntityManager $manager)
+    {
+        if (!$this->accounts) {
+            $this->accounts = $manager->getRepository('OroB2BAccountBundle:Account')->findAll();
+        }
+
+        return $this->accounts;
     }
 
     /**
