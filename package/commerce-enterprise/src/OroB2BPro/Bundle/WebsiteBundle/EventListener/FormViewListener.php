@@ -61,10 +61,12 @@ class FormViewListener
         if (!$request) {
             return;
         }
+        
         $entityId = $request->get('id');
         $entity = $this->registry->getManagerForClass($this->dataClass)
             ->getRepository($this->dataClass)
             ->find($entityId);
+
         $template = $event->getEnvironment()->render(
             'OroB2BProWebsiteBundle::website_field.html.twig',
             ['label' => $this->websiteLabel, 'entity' => $entity]

@@ -34,10 +34,12 @@ class FormViewListenerTest extends \PHPUnit_Framework_TestCase
      * @var FormViewListener
      */
     protected $formViewListener;
+
     /**
      * @var BeforeListRenderEvent
      */
     protected $event;
+
     /**
      * @var \Twig_Environment|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -51,11 +53,33 @@ class FormViewListenerTest extends \PHPUnit_Framework_TestCase
         $this->registry = $this->getMockBuilder(ManagerRegistry::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->formViewListener = new FormViewListener($requestStack, $this->registry);
         $this->formViewListener->setDataClass(self::DATA_CLASS);
         $this->formViewListener->setWebsiteLabel(self::WEBSITE_LABEL);
     }
 
+    protected function tearDown()
+    {
+        unset($this->request, $this->registry, $this->formViewListener);
+    }
+
+    public function testOnViewNoRequest()
+    {
+        $this->setEvent();
+
+        /** @var RequestStack|\PHPUnit_Framework_MockObject_MockObject $requestStack */
+        $requestStack = $this->getMock('Symfony\Component\HttpFoundation\RequestStack');
+
+        $formViewListener = new FormViewListener($requestStack, $this->registry);
+
+        $this->environment
+            ->expects($this->never())
+            ->method('render')
+            ->with('OroB2BProWebsiteBundle::website_select.html.twig', ['form' => $this->event->getFormView()]);
+        $formViewListener->onEntityView($this->event);
+    }
+    
     public function testOnEntityEdit()
     {
         $this->setEvent();
@@ -77,18 +101,23 @@ class FormViewListenerTest extends \PHPUnit_Framework_TestCase
         $entity = new \stdClass();
         $template = 'template';
         $this->request->query->add(['id' => $entityId]);
+
         /** @var EntityManager|\PHPUnit_Framework_MockObject_MockObject $em */
         $em = $this->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         /** @var EntityRepository|\PHPUnit_Framework_MockObject_MockObject $repo */
         $repo = $this->getMockBuilder(EntityRepository::class)->disableOriginalConstructor()->getMock();
         $repo->expects($this->once())->method('find')->with($entityId)->willReturn($entity);
+
         $em->expects($this->once())->method('getRepository')->with(self::DATA_CLASS)->willReturn($repo);
+
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
             ->with(self::DATA_CLASS)
             ->willReturn($em);
+
         $this->environment
             ->expects($this->once())
             ->method('render')
@@ -97,6 +126,7 @@ class FormViewListenerTest extends \PHPUnit_Framework_TestCase
                 ['label' => self::WEBSITE_LABEL, 'entity' => $entity]
             )
             ->willReturn($template);
+
         $this->formViewListener->onEntityView($this->event);
         $data = $this->event->getScrollData()->getData();
         $this->assertEquals($data['dataBlocks'][0]['subblocks'][0]['data'][1], $template);
@@ -108,6 +138,7 @@ class FormViewListenerTest extends \PHPUnit_Framework_TestCase
         $blockId = $scrollData->addBlock('some_label');
         $subBlockId = $scrollData->addSubBlock($blockId);
         $scrollData->addSubBlockData($blockId, $subBlockId, 'some_data');
+
         $this->environment = $this->getMock(\Twig_Environment::class);
         $this->event = new BeforeListRenderEvent($this->environment, $scrollData, new FormView());
     }
