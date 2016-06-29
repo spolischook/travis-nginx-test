@@ -1,0 +1,8 @@
+services:
+    orob2bpro_pricing.form.extension.website_type:
+        class: 'OroB2BPro\Bundle\PricingBundle\Form\Extension\WebsiteFormExtension'
+        arguments:
+            - '%orob2b_pricing.entity.price_list_to_website.class%'
+            - "@orob2bpro_pricing.entity_listener.website"
+        tags:
+            - { name: form.type_extension, alias: orob2bpro_website_type }

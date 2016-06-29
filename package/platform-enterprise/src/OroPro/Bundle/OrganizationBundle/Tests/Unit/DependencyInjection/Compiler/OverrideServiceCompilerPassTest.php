@@ -10,7 +10,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
     {
         $containerMock = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
             ->getMock();
-        $containerMock->expects($this->exactly(14))
+        $containerMock->expects($this->exactly(13))
             ->method('hasDefinition')
             ->with(
                 $this->logicalOr(
@@ -26,7 +26,6 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                     $this->equalTo('oro_organization.form.type.business_unit'),
                     $this->equalTo('oro_windows.twig.extension'),
                     $this->equalTo('oro_organization.validator.owner'),
-                    $this->equalTo('oro_dashboard.widget_config_value.widget_business_unit_select.converter'),
                     $this->equalTo('oro_organization.form.type.organizations_select')
                 )
             )
@@ -46,7 +45,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->setMethods([])
             ->getMock();
         $definition
-            ->expects($this->exactly(11))
+            ->expects($this->exactly(10))
             ->method('setClass')
             ->with(
                 $this->logicalOr(
@@ -59,8 +58,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Form\Extension\OwnerProFormExtension'),
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Form\Type\BusinessUnitProType'),
                     $this->equalTo('OroPro\Bundle\OrganizationBundle\Twig\WindowsExtension'),
-                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Validator\Constraints\OwnerValidator'),
-                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Provider\WidgetBusinessUnitSelectConverter')
+                    $this->equalTo('OroPro\Bundle\OrganizationBundle\Validator\Constraints\OwnerValidator')
                 )
             )
             ->will($this->returnSelf());
@@ -71,7 +69,7 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
         $containerMock = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
             ->getMock();
 
-        $containerMock->expects($this->exactly(14))
+        $containerMock->expects($this->exactly(13))
             ->method('hasDefinition')
             ->with(
                 $this->logicalOr(
@@ -87,13 +85,12 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                     $this->equalTo('oro_organization.form.type.business_unit'),
                     $this->equalTo('oro_windows.twig.extension'),
                     $this->equalTo('oro_organization.validator.owner'),
-                    $this->equalTo('oro_dashboard.widget_config_value.widget_business_unit_select.converter'),
                     $this->equalTo('oro_organization.form.type.organizations_select')
                 )
             )
             ->will($this->returnValue(true));
 
-        $containerMock->expects($this->exactly(18))
+        $containerMock->expects($this->exactly(17))
             ->method('getDefinition')
             ->with(
                 $this->logicalOr(
@@ -111,7 +108,6 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
                     $this->equalTo('oro_windows.twig.extension'),
                     $this->equalTo('security.context'),
                     $this->equalTo('oro_organization.validator.owner'),
-                    $this->equalTo('oro_dashboard.widget_config_value.widget_business_unit_select.converter'),
                     $this->equalTo('oro_organization.form.type.organizations_select')
                 )
             )
