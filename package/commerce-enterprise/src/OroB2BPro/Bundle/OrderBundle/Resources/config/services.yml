@@ -1,5 +1,9 @@
 services:
     orob2bpro_order.event_listener.form_view:
-            class: 'OroB2BPro\Bundle\WebsiteBundle\EventListener\FormViewListener'
+            parent: orob2bpro_website.event_listener.form_view.abstract
+            calls:
+                 - [setWebsiteLabel, ['orob2b.order.website.label']]
+                 - [setDataClass, [%orob2b_order.entity.order.class%]]
             tags:
                 - { name: kernel.event_listener, event: oro_ui.scroll_data.before.order-edit, method: onEntityEdit }
+                - { name: kernel.event_listener, event: oro_ui.scroll_data.before.order-view, method: onEntityView }

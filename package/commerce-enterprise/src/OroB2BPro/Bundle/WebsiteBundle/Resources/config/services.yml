@@ -1,1 +1,7 @@
 services:
+    orob2bpro_website.event_listener.form_view.abstract:
+        abstract: true
+        class: 'OroB2BPro\Bundle\WebsiteBundle\EventListener\FormViewListener'
+        arguments:
+            - "@request_stack"
+            - "@doctrine"
