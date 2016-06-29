@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 use OroB2BPro\Bundle\WebsiteBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
+use OroB2BPro\Bundle\WebsiteBundle\DependencyInjection\OroB2BProWebsiteExtension;
 
 class OroB2BProWebsiteBundle extends Bundle
 {
@@ -17,5 +18,13 @@ class OroB2BProWebsiteBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new OverrideServiceCompilerPass());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getContainerExtension()
+    {
+        return new OroB2BProWebsiteExtension();
     }
 }
