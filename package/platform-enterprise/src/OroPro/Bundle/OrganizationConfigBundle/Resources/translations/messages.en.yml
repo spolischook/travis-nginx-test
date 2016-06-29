@@ -6,5 +6,4 @@ oropro:
         menu:
             organization_configuration.label: Organization Configuration
     user_configuration.use_default: Use Organization
-    user_configuration.scope_info:  %organization% Organization Scope
-    user_configuration.scope_tooltip: Configuration will be applied for currently selected organization
+    user_configuration.scope_tooltip: Configuration will only be applied to the current organization.
