@@ -41,7 +41,7 @@ class WebsiteSelectExtension extends AbstractTypeExtension
     }
 
     /**
-     * @param $extendedType
+     * @param string $extendedType
      * @return $this
      */
     public function setExtendedType($extendedType)
