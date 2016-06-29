@@ -31,7 +31,7 @@ class EntityAclProExtension extends EntityAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getAccessLevelNames($object)
+    public function getAccessLevelNames($object, $permissionName = null)
     {
         $minLevel = AccessLevel::BASIC_LEVEL;
 
