@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Loader;
 class OroB2BProPricingExtension extends Extension
 {
     const ALIAS = 'orob2bpro_pricing';
-    
+
     /**
      * {@inheritDoc}
      */
@@ -18,6 +18,7 @@ class OroB2BProPricingExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('form_types.yml');
     }
 
     /**

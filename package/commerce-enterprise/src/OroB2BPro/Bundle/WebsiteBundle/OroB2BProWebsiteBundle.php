@@ -7,6 +7,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 use OroB2BPro\Bundle\WebsiteBundle\DependencyInjection\OroB2BProWebsiteExtension;
 use OroB2BPro\Bundle\WebsiteBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
+use OroB2BPro\Bundle\WebsiteBundle\DependencyInjection\OroB2BProWebsiteExtension;
 
 class OroB2BProWebsiteBundle extends Bundle
 {
