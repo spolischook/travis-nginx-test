@@ -34,5 +34,13 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             
             $definition->addArgument(new Reference('orob2b_website.website.provider'));
         }
+
+        $serviceId = 'orob2b_pricing.importexport.reader.price_list_product_prices';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroB2BPro\Bundle\PricingBundle\ImportExport\Reader\ProPriceListProductPricesReader');
+            
+            $definition->addMethodCall('setSecurityFacade', [new Reference('oro_security.security_facade')]);
+        }
     }
 }
