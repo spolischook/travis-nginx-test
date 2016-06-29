@@ -1,4 +1,9 @@
 oro_system_configuration:
+    groups:
+        organization_probabilities:
+            title: orocrmpro.organization_config.system_configuration.groups.opportunity_configuration.title
+            tooltip: orocrmpro.organization_config.system_configuration.groups.opportunity_configuration.tooltip
+
     tree:
         organization_configuration:
             platform:
@@ -7,6 +12,6 @@ oro_system_configuration:
                         children:
                             opportunity_configuration:
                                 children:
-                                    opportunity_status_probabilities:
+                                    organization_probabilities:
                                         children:
                                             - oro_crm_sales.default_opportunity_probabilities

@@ -1,0 +1,6 @@
+orocrmpro:
+    organization_config:
+        system_configuration:
+            groups:
+                opportunity_configuration.title:       Probability configuration
+                opportunity_configuration.tooltip:     Configure Organization-wide values for default Probability (%) of each status
