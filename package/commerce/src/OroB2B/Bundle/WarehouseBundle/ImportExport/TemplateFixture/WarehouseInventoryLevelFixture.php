@@ -60,19 +60,19 @@ class WarehouseInventoryLevelFixture extends AbstractTemplateRepository implemen
             ->setString('US Product Name')
             ->setFallback('system');
 
-        $product->setSku('sku_001')
-        ->setInventoryStatus($inventoryStatus)
-        ->addName($name)
-        ->addName($localizedName);
+        $product->setSku('product.1')
+            ->setInventoryStatus($inventoryStatus)
+            ->addName($name)
+            ->addName($localizedName);
 
         $warehouse = new Warehouse();
-        $warehouse->setName('Main Warehouse');
+        $warehouse->setName('First Warehouse');
         $entity->setWarehouse($warehouse);
         $entity->setQuantity(50);
 
         $unitPrecision = new ProductUnitPrecision();
         $unit = new ProductUnit();
-        $unit->setCode('item');
+        $unit->setCode('liter');
         $unitPrecision->setUnit($unit);
         $unitPrecision->setProduct($product);
         $entity->setProductUnitPrecision($unitPrecision);
