@@ -115,10 +115,10 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
-     * Load Contact phones
+     * Load Lead phones
      *
      * @param Lead $lead
-     * @param         $uid
+     * @param $uid
      */
     public function loadPhones(Lead $lead, $uid)
     {
