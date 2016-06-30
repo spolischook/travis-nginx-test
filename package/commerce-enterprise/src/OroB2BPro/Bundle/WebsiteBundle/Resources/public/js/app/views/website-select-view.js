@@ -1,10 +1,11 @@
-define(function (require) {
+define(function(require) {
     'use strict';
 
     var WebsiteSelectView;
     var BaseView = require('oroui/js/app/views/base/view');
     var mediator = require('oroui/js/mediator');
     var _ = require('underscore');
+    var $ = require('jquery');
 
     WebsiteSelectView = BaseView.extend({
         $select: {},
@@ -15,7 +16,7 @@ define(function (require) {
             }
         },
 
-        initialize: function (options) {
+        initialize: function(options) {
             this.options = _.defaults(options || {}, this.options);
             this.$select = $(this.options.el).find(this.options.selectors.website);
 
@@ -24,17 +25,17 @@ define(function (require) {
             mediator.on('pricing:refresh:line-items-matched-prices:before', this._updateContext, this);
         },
 
-        _updateContext: function(context){
-            context.requestAttributes['websiteId'] = this.$select.val();
+        _updateContext: function(context) {
+            context.requestAttributes.websiteId = this.$select.val();
         },
 
-        _triggerUpdateTotals: function () {
+        _triggerUpdateTotals: function() {
             mediator.trigger('update:totals');
             mediator.trigger('pricing:load:prices');
             mediator.trigger('entry-point:order:trigger');
         },
 
-        dispose: function () {
+        dispose: function() {
             if (this.disposed) {
                 return;
             }
