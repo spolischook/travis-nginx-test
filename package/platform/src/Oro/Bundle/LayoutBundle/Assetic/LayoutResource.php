@@ -87,9 +87,29 @@ class LayoutResource implements ResourceInterface
         $parentTheme = $theme->getParentTheme();
         if ($parentTheme) {
             $parentTheme = $this->themeManager->getTheme($parentTheme);
-            $assets = array_merge_recursive($this->collectThemeAssets($parentTheme), $assets);
+            $assets = $this->mergeAssets($this->collectThemeAssets($parentTheme), $assets);
         }
 
         return $assets;
+    }
+    
+    /**
+     * @param array $parentAssets
+     * @param array $assets
+     * @return array
+     */
+    protected function mergeAssets($parentAssets, $assets)
+    {
+        foreach ($assets as $key => $value) {
+            if (is_array($value) && array_key_exists($key, $parentAssets)) {
+                $value = $this->mergeAssets($parentAssets[$key], $value);
+            }
+            if (is_int($key)) {
+                $parentAssets[] = $value;
+            } else {
+                $parentAssets[$key] = $value;
+            }
+        }
+        return $parentAssets;
     }
 }
