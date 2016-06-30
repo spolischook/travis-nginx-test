@@ -5,6 +5,7 @@ namespace Oro\Bundle\TestFrameworkBundle\Behat\Element;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\ExpectationException;
 
 class Form extends Element
 {
@@ -16,40 +17,14 @@ class Form extends Element
     {
         foreach ($table->getRows() as $row) {
             $locator = isset($this->options['mapping'][$row[0]]) ? $this->options['mapping'][$row[0]] : $row[0];
-            $this->fillField($locator, $row[1]);
+            $value = $this->normalizeValue($row[1]);
+            $this->fillField($locator, $value);
         }
     }
 
     public function saveAndClose()
     {
         $this->pressButton('Save and Close');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function selectFieldOption($locator, $value, $multiple = false)
-    {
-        $field = $this->findField($locator);
-
-        if (null !== $field) {
-            $field->selectOption($value, $multiple);
-            return;
-        }
-
-        $label = $this->findLabel($locator);
-
-        if (null === $label) {
-            throw new ElementNotFoundException($this->getDriver(), 'label', 'text', $locator);
-        }
-
-        $field = $this->findElementInParents($label, 'select');
-
-        if (null === $field) {
-            throw new ElementNotFoundException($this->getDriver(), 'select field', 'label', $locator);
-        }
-
-        $field->selectOption($value);
     }
 
     /**
@@ -67,13 +42,67 @@ class Form extends Element
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function findField($locator)
+    {
+        if ($field = parent::findField($locator)) {
+            return $field;
+        }
+
+        if ($label = $this->findLabel($locator)) {
+            $sndParent = $label->getParent()->getParent();
+            if ($sndParent->hasClass('control-group-collection')) {
+                return $this->elementFactory->wrapElement('CollectionField', $sndParent);
+            } elseif ($sndParent->hasClass('control-group-oro_file')) {
+                return $this->elementFactory->wrapElement('FileField', $sndParent);
+            } elseif ($select = $sndParent->find('css', 'select')) {
+                return $select;
+            } else {
+                throw new ExpectationException(
+                    sprintf('Find label "%s", but can\'t detemine field type', $locator),
+                    $this->getDriver()
+                );
+            }
+        }
+
+        if ($fieldSetLabel = $this->findFieldSetLabel($locator)) {
+            return $this->elementFactory->wrapElement('FieldSet', $fieldSetLabel->getParent());
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $value
+     * @return array|string
+     */
+    protected function normalizeValue($value)
+    {
+        $value = trim($value);
+
+        if (0 === strpos($value, '[')) {
+            return explode(',', trim($value, '[]'));
+        }
+
+        return $value;
+    }
+
+    protected function findFieldSetLabel($locator)
+    {
+        $labelSelector = sprintf("h5.user-fieldset:contains('%s')", $locator);
+
+        return $this->find('css', $labelSelector);
+    }
+
+    /**
      * Finds label with specified locator.
      *
      * @param string $locator label text
      *
      * @return NodeElement|null
      */
-    public function findLabel($locator)
+    protected function findLabel($locator)
     {
         $labelSelector = sprintf("label:contains('%s')", $locator);
 
