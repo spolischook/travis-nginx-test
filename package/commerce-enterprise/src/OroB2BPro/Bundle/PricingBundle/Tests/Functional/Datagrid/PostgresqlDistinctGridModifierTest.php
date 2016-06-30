@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\PricingBundle\Tests\Functional\Datagrid;
+namespace OroB2BPro\Bundle\PricingBundle\Tests\Functional\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Tests\Functional\Extension\PostgresqlGridModifierTest;
 
