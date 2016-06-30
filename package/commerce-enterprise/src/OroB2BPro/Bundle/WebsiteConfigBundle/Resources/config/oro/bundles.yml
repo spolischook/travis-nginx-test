@@ -1,0 +1,2 @@
+bundles:
+    - { name: OroB2BPro\Bundle\WebsiteConfigBundle\OroB2BProWebsiteConfigBundle, priority: 100 }
