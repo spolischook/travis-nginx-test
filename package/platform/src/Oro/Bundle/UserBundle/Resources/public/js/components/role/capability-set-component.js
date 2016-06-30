@@ -12,6 +12,7 @@ define(function(require) {
     CapabilitySetComponent = BaseComponent.extend({
         GENERAL_CAPABILITIES_CATEGORY: 'system_capabilities',
         COMMON_CATEGORY: 'all',
+        ACCESS_LEVEL_NONE: 0,
 
         /**
          * @type {Array<string>}
@@ -26,12 +27,24 @@ define(function(require) {
          */
         initialize: function(options) {
             _.extend(this, _.pick(options, ['tabIds']));
+            var ACCESS_LEVEL_NONE = this.ACCESS_LEVEL_NONE;
             var groups = _.map(options.data, function(group) {
+                group.items = _.map(group.items, function(item) {
+                    item.editable = !options.readonly;
+                    return item;
+                });
+                if (options.readonly) {
+                    group.items = _.filter(group.items, function(item) {
+                        item.editable = !options.readonly;
+                        return item.access_level !== ACCESS_LEVEL_NONE;
+                    });
+                }
                 var itemsCollection = new BaseCollection(group.items, {
                     model: PermissionModel
                 });
                 this.listenTo(itemsCollection, 'change', _.bind(this.onAccessLevelChange, this, group.group));
                 return _.extend({}, group, {
+                    editable: !options.readonly,
                     items: itemsCollection
                 });
             }, this);
