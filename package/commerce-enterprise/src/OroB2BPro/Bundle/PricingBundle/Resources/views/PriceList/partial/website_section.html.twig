@@ -1,0 +1,3 @@
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{{ dataGrid.renderGrid('price-list-websites-grid', {price_list_id: entity.id}, { cssClass: 'inner-grid' }) }}

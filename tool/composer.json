@@ -2,13 +2,15 @@
   "name": "oro/dev-repository-tools",
   "description": "CLI tools for dev repository management",
   "require": {
-    "php": ">=5.4.9",
+    "php": ">=5.5.9",
     "symfony/console": "2.7.*",
     "phpunit/phpunit": "4.8.*",
     "johnkary/phpunit-speedtrap": "1.0.*",
     "mybuilder/phpunit-accelerator": "1.1.*",
     "squizlabs/php_codesniffer": "2.3.*",
     "phpmd/phpmd": "2.4.*",
+    "psr/log": "*",
+    "symfony/process": "2.7.*",
     "sebastian/phpcpd": "2.0.*"
   },
   "autoload": {
