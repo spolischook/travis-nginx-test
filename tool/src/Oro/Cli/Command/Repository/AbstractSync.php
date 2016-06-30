@@ -215,7 +215,7 @@ abstract class AbstractSync extends RootCommand
      * @param string $codePath
      * @param string $branchName
      */
-    protected function updateSubtree($repository, $codePath, $branchName)
+    protected function pullSubtree($repository, $codePath, $branchName)
     {
         $this->logger->info("Working on \"{$codePath}\" subtree from \"{$repository}\" repository.");
 
@@ -230,21 +230,51 @@ abstract class AbstractSync extends RootCommand
             return;
         }
 
+        $this->execCmd("git subtree pull --prefix={$codePath} {$remoteAlias} {$remoteBranch}");
+    }
+
+    /**
+     * @param string $repository
+     * @param string $codePath
+     * @param string $branchName
+     */
+    protected function pushSubtree($repository, $codePath, $branchName)
+    {
+        $this->logger->info("Working on \"{$codePath}\" subtree from \"{$repository}\" repository.");
+
         $this->assertGitVersion();
+
+        $remoteBranch = $this->resolveRemoteBranch($branchName, $codePath);
+        $remoteAlias = $this->getRemoteAlias($codePath);
 
         $subtreeBranch = $this->getSubtreeBranch($codePath);
 
-        $this->execCmd("git branch -D {$subtreeBranch}", false);
-        $this->execCmd("git subtree split --prefix={$codePath} --branch={$subtreeBranch}");
-
-        if ($this->execCmd("git fetch --prune {$remoteAlias} {$remoteBranch}", false)) {
-            $this->execCmd("git checkout -f {$subtreeBranch}");
-
-            $this->updateFromRemote($remoteBranch, $remoteAlias);
-
-            $this->execCmd("git checkout -f {$branchName}");
-            $this->execCmd("git subtree merge --prefix={$codePath} {$subtreeBranch}");
+        $lock = str_replace(DIRECTORY_SEPARATOR, '_', $remoteAlias . '_' . $remoteBranch);
+        if (!$this->hasLock($lock)) {
+            $this->execCmd("git subtree split --prefix={$codePath} --branch={$subtreeBranch}");
+            $this->putLock($lock);
         }
+
+        $this->updateRemote($subtreeBranch, $remoteBranch, $remoteAlias);
+    }
+
+    /**
+     * @param string $lock
+     * @return bool
+     */
+    protected function hasLock($lock)
+    {
+        return file_exists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $lock . '.lock');
+    }
+
+    /**
+     * @param string $lock
+     */
+    protected function putLock($lock)
+    {
+        $this->logger->info("Lock $lock");
+
+        touch(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $lock . '.lock');
     }
 
     protected function assertGitVersion()
