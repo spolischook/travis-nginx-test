@@ -281,7 +281,7 @@ class EmailOriginHelperTest extends \PHPUnit_Framework_TestCase
                 'isUserOriginsNotEmpty'    => false,
                 'origin'                   => $this->getEmailOwnerMailBoxMock(),
                 'emailOriginsTimes'        => self::once(),
-                'exactly'                  => 0
+                'exactly'                  => 1
             ],
             '8. EmailOwner as Mailbox origin is not empty and enableUseUserEmailOrigin is empty'     => [
                 'expected'                 => null,
@@ -291,7 +291,7 @@ class EmailOriginHelperTest extends \PHPUnit_Framework_TestCase
                 'isUserOriginsNotEmpty'    => false,
                 'origin'                   => $this->getEmailOwnerMailBoxMock(),
                 'emailOriginsTimes'        => self::once(),
-                'exactly'                  => 0
+                'exactly'                  => 1
             ],
         ];
     }

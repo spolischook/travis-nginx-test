@@ -3921,7 +3921,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm",
-                "reference": "b3c43276492113865c6e2d1e9571a3d3227d8050",
+                "reference": "f644b7ae08d9d64be8c094482734f26267967d0f",
                 "shasum": null
             },
             "require": {
@@ -3937,7 +3937,6 @@
             "autoload": {
                 "psr-0": {
                     "OroCRM\\Bundle": "src/",
-                    "Oro\\CRMTaskBundle": "src/",
                     "Oro": "src/"
                 }
             },
