@@ -2,13 +2,16 @@
 
 namespace OroPro\Bundle\OrganizationConfigBundle\Tests\Unit\Twig;
 
-use OroPro\Bundle\OrganizationConfigBundle\Twig\DateTimeOrganizationExtension;
 use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 
-class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
+use OroPro\Bundle\OrganizationConfigBundle\Twig\DateTimeUserExtension;
+use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
+
+class DateTimeUserExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var DateTimeOrganizationExtension
+     * @var DateTimeUserExtension
      */
     protected $extension;
 
@@ -53,7 +56,7 @@ class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->formatter = new DateTimeFormatter($this->localeSettings, $translator);
 
-        $this->extension = new DateTimeOrganizationExtension($this->formatter);
+        $this->extension = new DateTimeUserExtension($this->formatter);
         $this->extension->setContainer($this->container);
     }
 
@@ -64,7 +67,7 @@ class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(5, $filters);
 
         $this->assertInstanceOf('Twig_SimpleFilter', $filters[4]);
-        $this->assertEquals('oro_format_datetime_organization', $filters[4]->getName());
+        $this->assertEquals('oro_format_datetime_user', $filters[4]->getName());
     }
 
     /**
@@ -74,9 +77,9 @@ class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
      * @param string|null $locale
      * @param string|null $timeZone
      *
-     * @dataProvider formatDateTimeOrganizationDataProvider
+     * @dataProvider formatDateTimeUserDataProvider
      */
-    public function testFormatDateTimeOrganization($value, $expected, array $options, $locale = null, $timeZone = null)
+    public function testFormatDateTimeUser($value, $expected, array $options, $locale = null, $timeZone = null)
     {
         $this->container->expects($this->any())
             ->method('get')
@@ -94,16 +97,19 @@ class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->assertEquals($expected, $this->extension->formatDateTimeOrganization($value, $options));
+        $this->assertEquals($expected, $this->extension->formatDateTimeUser($value, $options));
     }
 
     /**
      * @return array
      */
-    public function formatDateTimeOrganizationDataProvider()
+    public function formatDateTimeUserDataProvider()
     {
+        $organization = new Organization(1);
+        $user = new User(1, null, $organization);
+
         return [
-            'options without organization negative shift' => [
+            'options without User negative shift' => [
                 'value' => new \DateTime('2016-05-31 00:00:00', new \DateTimeZone('UTC')),
                 'expected' => 'May 30, 2016, 5:00 PM',
                 'options' => [
@@ -111,7 +117,7 @@ class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
                     'timeZone' => 'America/Los_Angeles',
                 ],
             ],
-            'options without organization positive shift' => [
+            'options without User positive shift' => [
                 'value' => new \DateTime('2016-05-31 00:00:00', new \DateTimeZone('UTC')),
                 'expected' => 'May 31, 2016, 3:00 AM',
                 'options' => [
@@ -125,7 +131,7 @@ class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
                 'value' => new \DateTime('2016-05-31 00:00:00', new \DateTimeZone('UTC')),
                 'expected' => 'May 31, 2016, 3:00 AM',
                 'options' => [
-                    'organization' => 1
+                    'user' => $user
                 ],
                 'locale' => 'en_US',
                 'timeZone' => 'Europe/Athens',
@@ -134,7 +140,7 @@ class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
                 'value' => new \DateTime('2016-05-31 00:00:00', new \DateTimeZone('UTC')),
                 'expected' => 'May 30, 2016, 6:00 PM',
                 'options' => [
-                    'organization' => 2
+                    'user' => $user
                 ],
                 'locale' => 'en_US',
                 'timeZone' => 'Pacific/Easter',
@@ -144,6 +150,6 @@ class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oropro_organization_config_datetime_organization', $this->extension->getName());
+        $this->assertEquals('oropro_organization_config_datetime_user', $this->extension->getName());
     }
 }

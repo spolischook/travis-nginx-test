@@ -1,4 +1,4 @@
 OroProOrganizationConfigBundle Documentation
 =============================
 
-- [DateTime Organization Formatting](./reference/datetime-organization-formatting.md)
+- [DateTime User Formatting](./reference/datetime-user-formatting.md)
