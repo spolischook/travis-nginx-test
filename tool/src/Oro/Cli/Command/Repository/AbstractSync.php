@@ -249,29 +249,32 @@ abstract class AbstractSync extends RootCommand
 
         $subtreeBranch = $this->getSubtreeBranch($codePath);
 
-        if (!$this->hasLock($this->execCmd("git rev-parse {$subtreeBranch}"))) {
-            $subtreeHash = $this->execCmd("git subtree split --prefix={$codePath} --branch={$subtreeBranch}");
-            $this->putLock($subtreeHash);
+        $lock = str_replace(DIRECTORY_SEPARATOR, '_', $remoteAlias . '_' . $remoteBranch);
+        if (!$this->hasLock($lock)) {
+            $this->execCmd("git subtree split --prefix={$codePath} --branch={$subtreeBranch}");
+            $this->putLock($lock);
         }
 
         $this->updateRemote($subtreeBranch, $remoteBranch, $remoteAlias);
     }
 
     /**
-     * @param $commitHash
+     * @param string $lock
      * @return bool
      */
-    protected function hasLock($commitHash)
+    protected function hasLock($lock)
     {
-        return file_exists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $commitHash . DIRECTORY_SEPARATOR . '.lock');
+        return file_exists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $lock . '.lock');
     }
 
     /**
-     * @param $commitHash
+     * @param string $lock
      */
-    protected function putLock($commitHash)
+    protected function putLock($lock)
     {
-        file_put_contents(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $commitHash . DIRECTORY_SEPARATOR . '.lock', '');
+        $this->logger->info("Lock $lock");
+
+        touch(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $lock . '.lock');
     }
 
     protected function assertGitVersion()
