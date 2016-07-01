@@ -8,11 +8,18 @@ use Doctrine\ORM\Events;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
+
+use Oro\Bundle\WorkflowBundle\Model\WorkflowAwareManager;
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
+use OroCRM\Bundle\MagentoBundle\Manager\AbandonedShoppingCartFlow;
+
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 class CartSubscriber implements EventSubscriber
 {
+    /** @var WorkflowAwareManager */
+    private $flow;
+
     /** @var EntityManager */
     protected $em;
 
@@ -30,6 +37,11 @@ class CartSubscriber implements EventSubscriber
         'purchased'                => 'converted',
         'converted_to_opportunity' => 'converted',
     ];
+
+    public function __construct(WorkflowAwareManager $cardFlowManager)
+    {
+        $this->flow = $cardFlowManager;
+    }
 
     /**
      * {@inheritdoc}
@@ -51,7 +63,7 @@ class CartSubscriber implements EventSubscriber
 
         /** @var Cart $entity */
         if ($entity instanceof Cart) {
-            $workflowItem = $entity->getWorkflowItem();
+            $workflowItem = $this->flow->getWorkflowItem($entity);
             if ($workflowItem) {
                 $step = $this->getWorkflowStep($entity->getStatus()->getName());
                 $entity->setWorkflowStep($step);
@@ -74,7 +86,7 @@ class CartSubscriber implements EventSubscriber
 
         if (!$this->workflowSteps || !$this->definition) {
             $this->definition    = $this->getCartWorkflowDefinition();
-            $this->workflowSteps = $this->em->getRepository('OroWorkflowBundle:WorkflowStep')->findAll();
+            $this->workflowSteps = $this->em->getRepository('OroWorkflowBundle:WorkflowStep')->findAll(); //OMG!
         }
 
         $steps = array_filter(
