@@ -165,6 +165,16 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             $definition->setClass('OroPro\Bundle\OrganizationBundle\Validator\Constraints\OwnerValidator');
         }
 
+        $serviceId = 'oro_organization.autocomplete.business_unit_owner_search_handler';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\Autocomplete\BusinessUnitOwnerSearchHandler');
+            $definition->addMethodCall(
+                'setSecurityFacade',
+                [$container->getDefinition('oro_security.security_facade')]
+            );
+        }
+
         $this->overrideOrganizationsSelect($container);
     }
 
