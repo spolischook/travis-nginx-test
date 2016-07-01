@@ -5,9 +5,9 @@ namespace OroPro\Bundle\OrganizationConfigBundle\Twig;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
-use Oro\Bundle\LocaleBundle\Twig\DateTimeExtension;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\LocaleBundle\Twig\DateTimeUserExtension as BaseDateTimeUserExtension;
+
+use OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper;
 
 /**
  * DateTimeUserExtension allows get formatted date and calendar date range by user organization localization settings
@@ -17,38 +17,19 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
  *
  * @todo: it's a temporary workaround to fix dates in reminder emails CRM-5745 until improvement CRM-5758 is implemented
  */
-class DateTimeUserExtension extends DateTimeExtension
+class DateTimeUserExtension extends BaseDateTimeUserExtension
 {
     /**
-     * @var DateTimeFormatter
+     * @var OrganizationConfigHelper
      */
-    protected $formatter;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected $helper;
 
     /**
      * {@inheritdoc}
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setHelper(OrganizationConfigHelper $helper)
     {
-        $this->container = $container;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
-    {
-        $filters = parent::getFilters();
-        $filters[] = new \Twig_SimpleFilter(
-            'oro_format_datetime_user',
-            [$this, 'formatDateTimeUser'],
-            ['is_safe' => ['html']]
-        );
-        return $filters;
+        $this->helper = $helper;
     }
 
     /**
@@ -77,7 +58,7 @@ class DateTimeUserExtension extends DateTimeExtension
         /** Get locale and datetime settings from organization configuration if exist */
         if ($user && $user->getOrganization()->getId()) {
             $organizationId = $user->getOrganization()->getId();
-            $data = $this->getOrganizationLocalizationData($organizationId);
+            $data = $this->helper->getOrganizationLocalizationData($organizationId);
             $locale = $data['locale'];
             $timeZone = $data['timeZone'];
         } else {
@@ -88,29 +69,6 @@ class DateTimeUserExtension extends DateTimeExtension
         $result = $this->formatter->format($date, $dateType, $timeType, $locale, $timeZone);
 
         return $result;
-    }
-
-    /**
-     * Get locale and datetime settings from organization configuration if exist
-     *
-     * @param int $organizationId
-     * @return array
-     */
-    protected function getOrganizationLocalizationData($organizationId)
-    {
-        $data = ['locale' => null, 'timeZone' => null];
-        /** @var ConfigManager $configManager */
-        $configManager = $this->container->get('oro_config.organization');
-        $prevScopeId = $configManager->getScopeId();
-        try {
-            $configManager->setScopeId($organizationId);
-            $data['locale'] = $configManager->get('oro_locale.locale');
-            $data['timeZone'] = $configManager->get('oro_locale.timezone');
-        } finally {
-            $configManager->setScopeId($prevScopeId);
-        }
-
-        return $data;
     }
 
     /**

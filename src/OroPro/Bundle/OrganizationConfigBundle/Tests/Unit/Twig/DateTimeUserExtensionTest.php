@@ -6,6 +6,7 @@ use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 
 use OroPro\Bundle\OrganizationConfigBundle\Twig\DateTimeUserExtension;
+use OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
 
 class DateTimeUserExtensionTest extends \PHPUnit_Framework_TestCase
@@ -35,6 +36,11 @@ class DateTimeUserExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $formatter;
 
+    /**
+     * @var OrganizationConfigHelper
+     */
+    protected $helper;
+
     protected function setUp()
     {
         $this->configManager = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\ConfigManager')
@@ -56,8 +62,10 @@ class DateTimeUserExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->formatter = new DateTimeFormatter($this->localeSettings, $translator);
 
+        $this->helper = new OrganizationConfigHelper($this->container);
+
         $this->extension = new DateTimeUserExtension($this->formatter);
-        $this->extension->setContainer($this->container);
+        $this->extension->setHelper($this->helper);
     }
 
     public function testGetFilters()

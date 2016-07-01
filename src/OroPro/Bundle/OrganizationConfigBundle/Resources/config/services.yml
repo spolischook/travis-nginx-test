@@ -43,18 +43,21 @@ services:
 
   oropro_organization_config.twig.date_time_user:
       class: OroPro\Bundle\OrganizationConfigBundle\Twig\DateTimeUserExtension
-      arguments:
-          - '@oro_locale.formatter.date_time'
+      parent: oro_locale.twig.date_time_user
       calls:
-          - [setContainer, ['@service_container']]
+          - [setHelper, ['@oropro_organization_config.helper']]
       tags:
           - { name: twig.extension }
 
   oropro_organization_config.twig.daterange_format_user:
       class: OroPro\Bundle\OrganizationConfigBundle\Twig\DateRangeFormatUserExtension
-      arguments:
-          - '@oro_locale.formatter.date_time'
+      parent: oro_calendar.twig.dateformat
       calls:
-          - [setContainer, ['@service_container']]
+          - [setHelper, ['@oropro_organization_config.helper']]
       tags:
           - { name: twig.extension }
+
+  oropro_organization_config.helper:
+      class: OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper
+      arguments:
+          - '@service_container'

@@ -6,6 +6,7 @@ use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 
 use OroPro\Bundle\OrganizationConfigBundle\Twig\DateRangeFormatUserExtension;
+use OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
 
 class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
@@ -35,6 +36,11 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $formatter;
 
+    /**
+     * @var OrganizationConfigHelper
+     */
+    protected $helper;
+
     protected function setUp()
     {
         $this->configManager = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\ConfigManager')
@@ -56,15 +62,17 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->formatter = new DateTimeFormatter($this->localeSettings, $translator);
 
+        $this->helper = new OrganizationConfigHelper($this->container);
+
         $this->extension = new DateRangeFormatUserExtension($this->formatter);
-        $this->extension->setContainer($this->container);
+        $this->extension->setHelper($this->helper);
     }
 
     public function testGetFilters()
     {
         $functions = $this->extension->getFunctions();
 
-        $this->assertCount(1, $functions);
+        $this->assertCount(2, $functions);
 
         $this->assertInstanceOf('Twig_Function_Method', $functions['calendar_date_range_user']);
         $this->assertAttributeEquals('formatCalendarDateRangeUser', 'method', $functions['calendar_date_range_user']);

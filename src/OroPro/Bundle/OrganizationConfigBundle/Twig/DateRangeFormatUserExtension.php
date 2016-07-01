@@ -5,9 +5,9 @@ namespace OroPro\Bundle\OrganizationConfigBundle\Twig;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
 use Oro\Bundle\CalendarBundle\Twig\DateFormatExtension;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
+use OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper;
 
 /**
  * DateTimeUserExtension allows get formatted date range by user organization localization settings
@@ -20,34 +20,16 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 class DateRangeFormatUserExtension extends DateFormatExtension
 {
     /**
-     * @var DateTimeFormatter
+     * @var OrganizationConfigHelper
      */
-    protected $formatter;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected $helper;
 
     /**
      * {@inheritdoc}
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setHelper(OrganizationConfigHelper $helper)
     {
-        $this->container = $container;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
-    {
-        return array(
-            'calendar_date_range_user' => new \Twig_Function_Method(
-                $this,
-                'formatCalendarDateRangeUser'
-            )
-        );
+        $this->helper = $helper;
     }
 
     /**
@@ -90,7 +72,7 @@ class DateRangeFormatUserExtension extends DateFormatExtension
         // Get localization settings from user organization scope
         if ($user) {
             $organizationId = $user->getOrganization()->getId();
-            $date = $this->getOrganizationLocalizationData($organizationId);
+            $date = $this->helper->getOrganizationLocalizationData($organizationId);
             $locale = $date['locale'];
             $timeZone = $date['timeZone'];
         }
@@ -104,29 +86,6 @@ class DateRangeFormatUserExtension extends DateFormatExtension
             $locale,
             $timeZone
         );
-    }
-
-    /**
-     * Get locale and datetime settings from organization configuration if exist
-     *
-     * @param int $organizationId
-     * @return array
-     */
-    protected function getOrganizationLocalizationData($organizationId)
-    {
-        $data = ['locale' => null, 'timeZone' => null];
-        /** @var ConfigManager $configManager */
-        $configManager = $this->container->get('oro_config.organization');
-        $prevScopeId = $configManager->getScopeId();
-        try {
-            $configManager->setScopeId($organizationId);
-            $data['locale'] = $configManager->get('oro_locale.locale');
-            $data['timeZone'] = $configManager->get('oro_locale.timezone');
-        } finally {
-            $configManager->setScopeId($prevScopeId);
-        }
-
-        return $data;
     }
 
     /**
