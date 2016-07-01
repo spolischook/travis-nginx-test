@@ -5,14 +5,10 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
-
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
-
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowAwareManager;
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
-use OroCRM\Bundle\MagentoBundle\Manager\AbandonedShoppingCartFlow;
-
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 class CartSubscriber implements EventSubscriber
@@ -26,15 +22,15 @@ class CartSubscriber implements EventSubscriber
     /** @var  WorkflowStep[] */
     protected $workflowSteps;
 
-    /** @var  WorkflowDefinition */
-    protected $definition;
+    /** @var  Workflow */
+    protected $workflow;
 
     /** @var array */
     protected $statuses = [
-        'open'                     => 'open',
-        'expired'                  => 'abandoned',
-        'lost'                     => 'abandoned',
-        'purchased'                => 'converted',
+        'open' => 'open',
+        'expired' => 'abandoned',
+        'lost' => 'abandoned',
+        'purchased' => 'converted',
         'converted_to_opportunity' => 'converted',
     ];
 
@@ -59,18 +55,16 @@ class CartSubscriber implements EventSubscriber
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $this->em = $args->getEntityManager();
-        $entity   = $args->getEntity();
+        $entity = $args->getEntity();
 
         /** @var Cart $entity */
         if ($entity instanceof Cart) {
             $workflowItem = $this->flow->getWorkflowItem($entity);
             if ($workflowItem) {
                 $step = $this->getWorkflowStep($entity->getStatus()->getName());
-                $entity->setWorkflowStep($step);
                 $workflowItem->setCurrentStep($step);
                 $this->em->persist($workflowItem);
             }
-
         }
     }
 
@@ -82,30 +76,22 @@ class CartSubscriber implements EventSubscriber
      */
     protected function getWorkflowStep($name)
     {
-        $workflowName = $this->getWorkflowStepName($name);
+        $workflowStepName = $this->getWorkflowStepName($name);
 
-        if (!$this->workflowSteps || !$this->definition) {
-            $this->definition    = $this->getCartWorkflowDefinition();
-            $this->workflowSteps = $this->em->getRepository('OroWorkflowBundle:WorkflowStep')->findAll(); //OMG!
-        }
+        $this->workflow = $this->flow->getWorkflow();
 
-        $steps = array_filter(
-            $this->workflowSteps,
-            function (WorkflowStep $workflowStep) use ($workflowName) {
-                return (
-                    $workflowStep->getName() == $workflowName
-                    && $workflowStep->getDefinition() == $this->definition
-                );
+        $step = $this->flow->getWorkflow()->getDefinition()->getSteps()->filter(
+            function (WorkflowStep $step) use ($workflowStepName) {
+                return $step->getName() === $workflowStepName;
             }
-        );
+        )->first();
 
-        $steps = array_values($steps);
-        if (empty($steps)) {
+        if (!$step) {
             throw new EntityNotFoundException('WorkflowStep by cart status ' . $name . ' not found');
         }
 
         /** @var WorkflowStep $step */
-        return reset($steps);
+        return $step;
     }
 
     /**
@@ -122,15 +108,5 @@ class CartSubscriber implements EventSubscriber
         $workflowName = $this->statuses[$name];
 
         return $workflowName;
-    }
-
-    /**
-     * @return WorkflowDefinition
-     */
-    protected function getCartWorkflowDefinition()
-    {
-        return $this->em->getRepository('OroWorkflowBundle:WorkflowDefinition')->findOneBy(
-            ['name' => 'b2c_flow_abandoned_shopping_cart']
-        );
     }
 }
