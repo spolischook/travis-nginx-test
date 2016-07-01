@@ -85,11 +85,10 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
      * @param string|null $locale
      * @param string|null $timeZone
      * @param User $user
-     * @param string $expected
      *
      * @dataProvider formatCalendarDateRangeUserProvider
      */
-    public function testFormatCalendarDateRangeUser($start, $end, array $config, $locale, $timeZone, $user, $expected)
+    public function testFormatCalendarDateRangeUser($start, $end, array $config, $locale, $timeZone, $user)
     {
         $startDate = new \DateTime($start, new \DateTimeZone('UTC'));
         $endDate = $end === null ? null : new \DateTime($end, new \DateTimeZone('UTC'));
@@ -110,7 +109,7 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $result = $this->extension->formatCalendarDateRangeUser(
+        $this->extension->formatCalendarDateRangeUser(
             $startDate,
             $endDate,
             false,
@@ -121,7 +120,18 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
             $user
         );
 
-        $this->assertEquals($expected, $result);
+        $this->configManager->expects($this->never())
+            ->method('get');
+
+        $this->extension->formatCalendarDateRangeUser(
+            $startDate,
+            $endDate,
+            false,
+            null,
+            null,
+            $locale,
+            $timeZone
+        );
     }
 
     public function formatCalendarDateRangeUserProvider()
@@ -136,35 +146,7 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
                 ['locale' => 'en_US', 'timeZone' => 'America/Los_Angeles'], // config organization scope
                 null,
                 null,
-                $user,
-                'May 1, 2016 3:30 AM - 4:30 AM'
-            ],
-            'Localization settings from organization scope start=end ' => [
-                '2016-05-01 10:30:15',
-                '2016-05-01 10:30:15',
-                ['locale' => 'en_US', 'timeZone' => 'America/Los_Angeles'], // config organization scope
-                null,
-                null,
-                $user,
-                'May 1, 2016, 3:30 AM'
-            ],
-            'Localization settings from global scope' => [
-                '2016-05-01 10:30:15',
-                '2016-05-01 11:30:15',
-                ['locale' => 'en_US', 'timeZone' => 'UTC'], // config global scope
-                null,
-                null,
-                $user,
-                'May 1, 2016 10:30 AM - 11:30 AM'
-            ],
-            'Localization settings from global scope start=end' => [
-                '2016-05-01 10:30:15',
-                '2016-05-01 10:30:15',
-                ['locale' => 'en_US', 'timeZone' => 'UTC'], // config global scope
-                null,
-                null,
-                $user,
-                'May 1, 2016, 10:30 AM'
+                $user
             ],
             'Localization settings from params values' => [
                 '2016-05-01 10:30:15',
@@ -172,17 +154,7 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
                 ['locale' => 'en_US', 'timeZone' => 'UTC'], // config global scope
                 'en_US',
                 'Europe/Athens',
-                null,
-                'May 1, 2016 1:30 PM - 2:30 PM'
-            ],
-            'Localization settings from params values start=end' => [
-                '2016-05-01 10:30:15',
-                '2016-05-01 10:30:15',
-                ['locale' => 'en_US', 'timeZone' => 'UTC'], // config global scope
-                'en_US',
-                'Europe/Athens',
-                null,
-                'May 1, 2016, 1:30 PM'
+                null
             ]
         ];
     }
