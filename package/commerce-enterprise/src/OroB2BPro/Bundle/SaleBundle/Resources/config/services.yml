@@ -1,0 +1,9 @@
+services:
+    orob2bpro_sale.event_listener.form_view:
+        parent: orob2bpro_website.event_listener.form_view.abstract
+        calls:
+             - [setWebsiteLabel, ['orob2b.sale.quote.website.label']]
+             - [setDataClass, [%orob2b_sale.entity.quote.class%]]
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.quote-edit, method: onEntityEdit }
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.quote-view, method: onEntityView }
