@@ -12,6 +12,7 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipConditionDataBuilder;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
+use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipProMetadata;
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
 
 class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
@@ -104,7 +105,7 @@ class OwnershipProConditionDataBuilder extends OwnershipConditionDataBuilder
      */
     protected function hasGlobalAccess(OwnershipMetadataInterface $metadata = null)
     {
-        if (null !== $metadata) {
+        if (null !== $metadata && $metadata instanceof OwnershipProMetadata) {
             return $metadata->isGlobalView();
         }
 
