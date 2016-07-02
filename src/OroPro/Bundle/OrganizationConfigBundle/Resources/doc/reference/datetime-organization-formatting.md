@@ -1,13 +1,13 @@
-Datetime User Formatting
+Datetime Organization Formatting
 ============================
 
 Table of Contents
 -----------------
   - [Twig Extensions](#twig-extensions)
     - [Formatter filters](#formatter-filters)
-    - [oro_format_datetime_user](#oro_format_datetime_user)
+    - [oro_format_datetime_organization](#oro_format_datetime_organization)
     - [Format Converter functions](#format-converter-functions)
-    - [calendar_date_range_user](#calendar_date_range_user)
+    - [calendar_date_range_organization](#calendar_date_range_organization)
 
 Twig Extensions
 ---------------
@@ -18,7 +18,7 @@ OroProOrganizationConfigBundle has twig extension that provides formatter filter
 
 Twig extension DateTimeUserExtension extend DateTimeExtension and has following functions.
 
-#### oro_format_datetime_user
+#### oro_format_datetime_organization
 
 Proxy for [format](#format) function of DateTimeFormatter, receives datetime value as a first argument
 and array of options as a second argument. Allowed options:
@@ -26,9 +26,9 @@ and array of options as a second argument. Allowed options:
   * timeType,
   * locale,
   * timezone,
-  * user
+  * organization
 
-Localization settings are taken from user organization configuration. If user not passed used localization settings from options.
+Localization settings are taken from organization configuration. If organization not passed used localization settings from options.
 
 Organization settings:
 locale is 'en_US'
@@ -36,7 +36,7 @@ time zone is 'America/Los_Angeles'
 UTC date is '2016-05-31 00:00:00'
 
 ```
-{{ entity.startDate|oro_format_datetime_user({'user': user}) }}
+{{ entity.startDate|oro_format_datetime_organization({'organization': organization}) }}
 {# May 30, 2016, 5:00 PM #}
 
 {{ entity.startDate|oro_format_datetime({'locale': 'en_US', 'timeZone': 'Europe/Athens'}) }}
@@ -46,9 +46,9 @@ UTC date is '2016-05-31 00:00:00'
 
 Twig extension DateTimeUserExtension has following functions.
 
-#### calendar_date_range_user
+#### calendar_date_range_organization
 
-Returns a string represents a range between $startDate and $endDate, formatted according the given user organization settings
+Returns a string represents a range between $startDate and $endDate, formatted according the given organization settings
 Allowed options:
   * startDate,
   * endDate,
@@ -57,11 +57,11 @@ Allowed options:
   * timeType,
   * locale,
   * timezone,
-  * user
+  * organization
 
 UTC date range is '28.06.2016 00:00:00' - '28.06.2016 00:30:00'
 
 ```
-{{ calendar_date_range_user(entity.start, entity.end, entity.allDay, 1, null, null, null, user) }}
+{{ calendar_date_range_organization(entity.start, entity.end, entity.allDay, 1, null, null, null, organization) }}
 {# May 30, 2016 5:00 PM - 5:30 PM #}
 ```

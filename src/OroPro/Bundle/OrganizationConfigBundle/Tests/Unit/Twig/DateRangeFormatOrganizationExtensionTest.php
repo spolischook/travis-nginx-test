@@ -2,12 +2,12 @@
 
 namespace OroPro\Bundle\OrganizationConfigBundle\Tests\Unit\Twig;
 
-use OroPro\Bundle\OrganizationConfigBundle\Twig\DateRangeFormatUserExtension;
+use OroPro\Bundle\OrganizationConfigBundle\Twig\DateRangeFormatOrganizationExtension;
 
-class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
+class DateRangeFormatOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var DateRangeFormatUserExtension
+     * @var DateRangeFormatOrganizationExtension
      */
     protected $extension;
 
@@ -40,7 +40,7 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->extension = new DateRangeFormatUserExtension($this->formatter, $this->configManager);
+        $this->extension = new DateRangeFormatOrganizationExtension($this->formatter, $this->configManager);
         $this->extension->setHelper($this->helper);
     }
 
@@ -50,11 +50,12 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(2, $functions);
 
-        $this->assertInstanceOf('Twig_Function_Method', $functions['calendar_date_range_user']);
-        $this->assertAttributeEquals('formatCalendarDateRangeUser', 'method', $functions['calendar_date_range_user']);
+        $this->assertArrayHasKey('calendar_date_range_organization', $functions);
+        $this->assertInstanceOf('Twig_Function_Method', $functions['calendar_date_range_organization']);
+        $this->assertAttributeEquals('formatCalendarDateRangeOrganization', 'method', $functions['calendar_date_range_organization']);
     }
 
-    public function testFormatCalendarDateRangeUserShouldGetLocaleFromConfigurationIfUserProvided()
+    public function testFormatCalendarDateRangeOrganizationShouldGetLocaleFromConfigurationIfOrganizationProvided()
     {
         $startDate = new \DateTime('2016-05-31 00:00:00');
         $endDate = new \DateTime('2016-06-01 00:00:00');
@@ -62,15 +63,11 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
         $locale = 'en_US';
         $timeZone = 'America/Los_Angeles';
 
-        $user = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
         $organization = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface');
         $organizationId = 42;
         $organization->expects($this->any())
             ->method('getId')
             ->willReturn($organizationId);
-        $user->expects($this->any())
-            ->method('getOrganization')
-            ->willReturn($organization);
 
         $this->helper->expects($this->exactly(2))
             ->method('getOrganizationScopeConfig')
@@ -92,7 +89,7 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
                 [$endDate, null, null, $locale, $timeZone, null, $formattedEndDate],
             ]);
 
-        $actual = $this->extension->formatCalendarDateRangeUser(
+        $actual = $this->extension->formatCalendarDateRangeOrganization(
             $startDate,
             $endDate,
             false,
@@ -100,53 +97,14 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
             null,
             'fr_FR',
             'Europe/Athens',
-            $user
+            $organization
         );
 
         $expected = "$formattedStartDate - $formattedEndDate";
         $this->assertEquals($expected, $actual);
     }
 
-    public function testFormatCalendarDateRangeUserShouldUseTimezonePassedInOptionsIfUserHasNoOrganization()
-    {
-        $startDate = new \DateTime('2016-05-31 00:00:00');
-        $endDate = new \DateTime('2016-06-01 00:00:00');
-
-        $locale = 'en_US';
-        $timeZone = 'America/Los_Angeles';
-
-        $user = $this->getMock('Oro\Bundle\UserBundle\Entity\UserInterface');
-
-        $this->helper->expects($this->never())
-            ->method('getOrganizationScopeConfig');
-
-        $formattedStartDate = 'May 30, 2016, 4:00 PM';
-        $formattedEndDate = 'May 31, 2016, 4:00 PM';
-
-        $this->formatter
-            ->expects($this->exactly(2))
-            ->method('format')
-            ->willReturnMap([
-                [$startDate, null, null, $locale, $timeZone, null, $formattedStartDate],
-                [$endDate, null, null, $locale, $timeZone, null, $formattedEndDate],
-            ]);
-
-        $actual = $this->extension->formatCalendarDateRangeUser(
-            $startDate,
-            $endDate,
-            false,
-            null,
-            null,
-            $locale,
-            $timeZone,
-            $user
-        );
-
-        $expected = "$formattedStartDate - $formattedEndDate";
-        $this->assertEquals($expected, $actual);
-    }
-
-    public function testFormatCalendarDateRangeUserShouldUseTimezonePassedInOptionsIfUserNotProvided()
+    public function testFormatCalendarDateRangeOrganizationShouldUseTimezonePassedInOptionsIfOrganizationNotProvided()
     {
         $startDate = new \DateTime('2016-05-31 00:00:00');
         $endDate = new \DateTime('2016-06-01 00:00:00');
@@ -168,7 +126,7 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
                 [$endDate, null, null, $locale, $timeZone, null, $formattedEndDate],
             ]);
 
-        $actual = $this->extension->formatCalendarDateRangeUser(
+        $actual = $this->extension->formatCalendarDateRangeOrganization(
             $startDate,
             $endDate,
             false,
@@ -185,6 +143,6 @@ class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oropro_organization_config_daterange_format_user', $this->extension->getName());
+        $this->assertEquals('oropro_organization_config_daterange_format_organization', $this->extension->getName());
     }
 }
