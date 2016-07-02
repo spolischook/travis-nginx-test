@@ -60,4 +60,4 @@ services:
   oropro_organization_config.helper:
       class: OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper
       arguments:
-          - 'oro_config.organization'
+          - '@oro_config.organization'
