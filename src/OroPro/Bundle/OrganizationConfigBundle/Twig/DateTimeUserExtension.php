@@ -2,11 +2,9 @@
 
 namespace OroPro\Bundle\OrganizationConfigBundle\Twig;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Oro\Bundle\LocaleBundle\Twig\DateTimeUserExtension as BaseDateTimeUserExtension;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper;
 
 /**
@@ -56,11 +54,11 @@ class DateTimeUserExtension extends BaseDateTimeUserExtension
         $user = $this->getOption($options, 'user');
 
         /** Get locale and datetime settings from organization configuration if exist */
-        if ($user && $user->getOrganization()->getId()) {
+        if ($user instanceof User) {
             $organizationId = $user->getOrganization()->getId();
-            $data = $this->helper->getOrganizationLocalizationData($organizationId);
-            $locale = $data['locale'];
-            $timeZone = $data['timeZone'];
+
+            $locale = $this->helper->getOrganizationScopeConfig($organizationId, 'oro_locale.locale');
+            $timeZone = $this->helper->getOrganizationScopeConfig($organizationId, 'oro_locale.timezone');
         } else {
             $locale = $this->getOption($options, 'locale');
             $timeZone = $this->getOption($options, 'timeZone');

@@ -2,46 +2,42 @@
 
 namespace OroPro\Bundle\OrganizationConfigBundle\Helper;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class OrganizationConfigHelper
 {
     /**
-     * @var ContainerInterface
+     * @var ConfigManager
      */
-    protected $container;
+    protected $configManager;
 
     /**
-     * @param ContainerInterface $container
+     * @param ConfigManager $configManager
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ConfigManager $configManager)
     {
-        $this->container = $container;
+        $this->configManager = $configManager;
     }
 
     /**
      * Get locale and datetime settings from organization configuration if exist
      *
-     * @param int $organizationId
+     * @param int    $organizationId
+     * @param string $configName
+     *
      * @return array
      */
-    public function getOrganizationLocalizationData($organizationId)
+    public function getOrganizationScopeConfig($organizationId, $configName)
     {
-        $data = ['locale' => null, 'timeZone' => null];
-        /** @var ConfigManager $configManager */
-        $configManager = $this->container->get('oro_config.organization');
-        $prevScopeId = $configManager->getScopeId();
+        $prevScopeId = $this->configManager->getScopeId();
         try {
-            $configManager->setScopeId($organizationId);
-            $data['locale'] = $configManager->get('oro_locale.locale');
-            $data['timeZone'] = $configManager->get('oro_locale.timezone');
+            $this->configManager->setScopeId($organizationId);
+
+            $config = $this->configManager->get($configName);
         } finally {
-            $configManager->setScopeId($prevScopeId);
+            $this->configManager->setScopeId($prevScopeId);
         }
 
-        return $data;
+        return $config;
     }
 }

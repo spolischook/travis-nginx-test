@@ -2,10 +2,9 @@
 
 namespace OroPro\Bundle\OrganizationConfigBundle\Twig;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Oro\Bundle\CalendarBundle\Twig\DateFormatExtension;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\UserInterface;
 
 use OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper;
 
@@ -33,31 +32,7 @@ class DateRangeFormatUserExtension extends DateFormatExtension
     }
 
     /**
-     * Returns a string represents a range between $startDate and $endDate, formatted according the given parameters
-     * Examples:
-     *      $endDate is not specified
-     *          Thu Oct 17, 2013 - when $skipTime = true
-     *          Thu Oct 17, 2013 5:30pm - when $skipTime = false
-     *      $startDate equals to $endDate
-     *          Thu Oct 17, 2013 - when $skipTime = true
-     *          Thu Oct 17, 2013 5:30pm - when $skipTime = false
-     *      $startDate and $endDate are the same day
-     *          Thu Oct 17, 2013 - when $skipTime = true
-     *          Thu Oct 17, 2013 5:00pm – 5:30pm - when $skipTime = false
-     *      $startDate and $endDate are different days
-     *          Thu Oct 17, 2013 5:00pm – Thu Oct 18, 2013 5:00pm - when $skipTime = false
-     *          Thu Oct 17, 2013 – Thu Oct 18, 2013 - when $skipTime = true
-     *
-     * @param \DateTime|null    $startDate
-     * @param \DateTime|null    $endDate
-     * @param bool              $skipTime
-     * @param string|int|null   $dateType \IntlDateFormatter constant or it's string name
-     * @param string|int|null   $timeType \IntlDateFormatter constant or it's string name
-     * @param string|null       $locale
-     * @param string|null       $timeZone
-     * @param User|null          $user
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function formatCalendarDateRangeUser(
         \DateTime $startDate = null,
@@ -67,14 +42,14 @@ class DateRangeFormatUserExtension extends DateFormatExtension
         $timeType = null,
         $locale = null,
         $timeZone = null,
-        $user = null
+        UserInterface $user = null
     ) {
         // Get localization settings from user organization scope
-        if ($user) {
+        if ($user instanceof User) {
             $organizationId = $user->getOrganization()->getId();
-            $date = $this->helper->getOrganizationLocalizationData($organizationId);
-            $locale = $date['locale'];
-            $timeZone = $date['timeZone'];
+
+            $locale = $this->helper->getOrganizationScopeConfig($organizationId, 'oro_locale.locale');
+            $timeZone = $this->helper->getOrganizationScopeConfig($organizationId, 'oro_locale.timezone');
         }
 
         return $this->formatCalendarDateRange(

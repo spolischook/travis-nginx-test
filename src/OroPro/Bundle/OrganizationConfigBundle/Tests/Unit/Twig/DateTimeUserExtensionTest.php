@@ -2,12 +2,7 @@
 
 namespace OroPro\Bundle\OrganizationConfigBundle\Tests\Unit\Twig;
 
-use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
-
 use OroPro\Bundle\OrganizationConfigBundle\Twig\DateTimeUserExtension;
-use OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper;
-use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
 
 class DateTimeUserExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,50 +14,22 @@ class DateTimeUserExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $container;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $localeSettings;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $configManager;
-
-    /**
-     * @var DateTimeFormatter
-     */
     protected $formatter;
 
     /**
-     * @var OrganizationConfigHelper
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $helper;
 
     protected function setUp()
     {
-        $this->configManager = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\ConfigManager')
+        $this->formatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->configManager->expects($this->any())->method('getScopeId');
-        $this->configManager->expects($this->any())->method('setScopeId');
-
-        $this->container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+        $this->helper = $this->getMockBuilder('OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Translation\Translator')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->formatter = new DateTimeFormatter($this->localeSettings, $translator);
-
-        $this->helper = new OrganizationConfigHelper($this->container);
 
         $this->extension = new DateTimeUserExtension($this->formatter);
         $this->extension->setHelper($this->helper);
@@ -78,82 +45,94 @@ class DateTimeUserExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('oro_format_datetime_user', $filters[4]->getName());
     }
 
-    /**
-     * @param string $value
-     * @param string $expected
-     * @param array $options
-     * @param string|null $locale
-     * @param string|null $timeZone
-     *
-     * @dataProvider formatDateTimeUserDataProvider
-     */
-    public function testFormatDateTimeUser($value, $expected, array $options, $locale = null, $timeZone = null)
+    public function testFormatDateTimeUserShouldUseConfigurationTimezoneIfUserAndOrganizationProvided()
     {
-        $this->container->expects($this->any())
-            ->method('get')
-            ->with('oro_config.organization')
-            ->willReturn($this->configManager);
+        $date = new \DateTime('2016-05-31 00:00:00');
+        $expected = 'May 30, 2016, 4:00 PM';
 
-        $this->configManager->expects($this->any())
-            ->method('get')
-            ->will(
-                $this->returnValueMap(
-                    [
-                        ['oro_locale.locale', false, false, $locale],
-                        ['oro_locale.timezone', false, false, $timeZone],
-                    ]
-                )
+        $user = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+        $organization = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface');
+        $organizationId = 42;
+        $organization->expects($this->any())
+            ->method('getId')
+            ->willReturn($organizationId);
+        $user->expects($this->any())
+            ->method('getOrganization')
+            ->willReturn($organization);
+
+        $userLocale = 'en_US';
+        $userTimezone = 'America/Los_Angeles';
+        $this->helper->expects($this->any())
+            ->method('getOrganizationScopeConfig')
+            ->willReturnMap(
+                [
+                    [$organizationId, 'oro_locale.locale', $userLocale],
+                    [$organizationId, 'oro_locale.timezone', $userTimezone],
+                ]
             );
+        $this->formatter->expects($this->once())
+            ->method('format')
+            ->with($date, null, null, $userLocale, $userTimezone)
+            ->willReturn($expected);
 
-        $this->assertEquals($expected, $this->extension->formatDateTimeUser($value, $options));
+        $options = [
+            'locale'   => 'fr_FR',
+            'timeZone' => 'Europe/Athens',
+            'user'     => $user
+        ];
+        $actual = $this->extension->formatDateTimeUser($date, $options);
+
+        $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @return array
-     */
-    public function formatDateTimeUserDataProvider()
+    public function testFormatDateTimeUserShouldUseTimezonePassedInOptionsIfUserHasNoOrganization()
     {
-        $organization = new Organization(1);
-        $user = new User(1, null, $organization);
+        $date = new \DateTime('2016-05-31 00:00:00');
+        $expected = 'May 30, 2016, 4:00 PM';
 
-        return [
-            'options without User negative shift' => [
-                'value' => new \DateTime('2016-05-31 00:00:00', new \DateTimeZone('UTC')),
-                'expected' => 'May 30, 2016, 5:00 PM',
-                'options' => [
-                    'locale' => 'en_US',
-                    'timeZone' => 'America/Los_Angeles',
-                ],
-            ],
-            'options without User positive shift' => [
-                'value' => new \DateTime('2016-05-31 00:00:00', new \DateTimeZone('UTC')),
-                'expected' => 'May 31, 2016, 3:00 AM',
-                'options' => [
-                    'locale' => 'en_US',
-                    'timeZone' => 'Europe/Athens',
-                ],
-                'locale' => 'en_US',
-                'timeZone' => 'Europe/Athens',
-            ],
-            'organization timeZone positive shift' => [
-                'value' => new \DateTime('2016-05-31 00:00:00', new \DateTimeZone('UTC')),
-                'expected' => 'May 31, 2016, 3:00 AM',
-                'options' => [
-                    'user' => $user
-                ],
-                'locale' => 'en_US',
-                'timeZone' => 'Europe/Athens',
-            ],
-            'organization timeZone negative shift' => [
-                'value' => new \DateTime('2016-05-31 00:00:00', new \DateTimeZone('UTC')),
-                'expected' => 'May 30, 2016, 6:00 PM',
-                'options' => [
-                    'user' => $user
-                ],
-                'locale' => 'en_US',
-                'timeZone' => 'Pacific/Easter',
-            ],
+        $this->helper->expects($this->never())
+            ->method('getOrganizationScopeConfig');
+
+        $locale = 'en_US';
+        $timezone = 'America/Los_Angeles';
+        $this->formatter->expects($this->once())
+            ->method('format')
+            ->with($date, null, null, $locale, $timezone)
+            ->willReturn($expected);
+
+        $user = $this->getMock('Oro\Bundle\UserBundle\Entity\UserInterface');
+        $options = [
+            'locale'   => $locale,
+            'timeZone' => $timezone,
+            $user
         ];
+        $actual = $this->extension->formatDateTimeUser($date, $options);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testFormatDateTimeUserShouldUseTimezonePassedInOptionsIfUserNotProvided()
+    {
+        $date = new \DateTime('2016-05-31 00:00:00');
+        $expected = 'May 30, 2016, 4:00 PM';
+
+        $this->helper->expects($this->never())
+            ->method('getOrganizationScopeConfig');
+
+        $locale = 'en_US';
+        $timezone = 'America/Los_Angeles';
+        $this->formatter->expects($this->once())
+            ->method('format')
+            ->with($date, null, null, $locale, $timezone)
+            ->willReturn($expected);
+
+        $options = [
+            'locale'   => $locale,
+            'timeZone' => $timezone
+        ];
+        $actual = $this->extension->formatDateTimeUser($date, $options);
+
+        $this->assertEquals($expected, $actual);
     }
 
     public function testGetName()
