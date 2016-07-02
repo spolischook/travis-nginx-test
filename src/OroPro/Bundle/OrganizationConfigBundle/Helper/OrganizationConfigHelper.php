@@ -26,6 +26,7 @@ class OrganizationConfigHelper
      * @param string $configName
      *
      * @return array
+     * @throws \Exception
      */
     public function getOrganizationScopeConfig($organizationId, $configName)
     {
@@ -34,8 +35,12 @@ class OrganizationConfigHelper
             $this->configManager->setScopeId($organizationId);
 
             $config = $this->configManager->get($configName);
-        } finally {
+
             $this->configManager->setScopeId($prevScopeId);
+        } catch (\Exception $e) {
+            $this->configManager->setScopeId($prevScopeId);
+
+            throw $e;
         }
 
         return $config;
