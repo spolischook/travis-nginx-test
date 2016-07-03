@@ -36,7 +36,7 @@ time zone is 'America/Los_Angeles'
 UTC date is '2016-05-31 00:00:00'
 
 ```
-{{ entity.startDate|oro_format_datetime_organization({'organization': organization}) }}
+{{ entity.startDate|oro_format_datetime_organization({'organization': entity.organization}) }}
 {# May 30, 2016, 5:00 PM #}
 
 {{ entity.startDate|oro_format_datetime({'locale': 'en_US', 'timeZone': 'Europe/Athens'}) }}
@@ -62,6 +62,6 @@ Allowed options:
 UTC date range is '28.06.2016 00:00:00' - '28.06.2016 00:30:00'
 
 ```
-{{ calendar_date_range_organization(entity.start, entity.end, entity.allDay, 1, null, null, null, organization) }}
+{{ calendar_date_range_organization(entity.start, entity.end, entity.allDay, 1, null, null, null, entity.organization) }}
 {# May 30, 2016 5:00 PM - 5:30 PM #}
 ```
