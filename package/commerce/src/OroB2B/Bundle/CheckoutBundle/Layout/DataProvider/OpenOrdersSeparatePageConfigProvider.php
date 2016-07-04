@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2B\Bundle\OrderBundle\Layout\DataProvider;
+namespace OroB2B\Bundle\CheckoutBundle\Layout\DataProvider;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Component\Layout\AbstractServerRenderDataProvider;
@@ -15,7 +15,7 @@ class OpenOrdersSeparatePageConfigProvider extends AbstractServerRenderDataProvi
     /**
      * @var ConfigManager
      */
-    private $configManager;
+    protected $configManager;
 
     /**
      * OpenOrdersSeparatePageConfigProvider constructor.
@@ -33,6 +33,6 @@ class OpenOrdersSeparatePageConfigProvider extends AbstractServerRenderDataProvi
     {
         return $this
             ->configManager
-            ->get('oro_b2b_order.frontend_open_orders_separate_page');
+            ->get('oro_b2b_checkout.frontend_open_orders_separate_page');
     }
 }

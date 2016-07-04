@@ -1,7 +1,12 @@
 layout:
     actions:
+        - '@add':
+            id: account_sidebar
+            parentId: sidebar_left
+            blockType: container
+
         - '@setBlockTheme':
-            themes: 'OroB2BCheckoutBundle:layouts:default/orob2b_order_frontend_open_orders/layout.html.twig'
+            themes: 'OroB2BCheckoutBundle:layouts:default/orob2b_checkout_frontend_open_orders/layout.html.twig'
 
         - '@add':
             id: checkouts_title
@@ -19,3 +24,10 @@ layout:
             blockType: datagrid
             options:
                 grid_name: frontend-checkouts-grid
+
+        - '@appendOption':
+            id: title
+            optionName: value
+            optionValue:
+                - 'orob2b.account.menu.account_user.label'
+                - 'orob2b.checkout.open_orders.label'

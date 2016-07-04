@@ -5,6 +5,9 @@ namespace OroB2B\Bundle\CheckoutBundle\Datagrid;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Cache\Cache;
 
+use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -16,10 +19,12 @@ use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 
-use OroB2B\Bundle\CheckoutBundle\Datagrid\ColumnBuilder\ColumnBuilderInterface;
 use OroB2B\Bundle\PricingBundle\Manager\UserCurrencyManager;
 use OroB2B\Bundle\CheckoutBundle\Entity\CheckoutSource;
-use OroB2B\Bundle\CheckoutBundle\Entity\BaseCheckout;
+use OroB2B\Bundle\CheckoutBundle\Entity\Repository\BaseCheckoutRepository;
+use OroB2B\Bundle\PricingBundle\SubtotalProcessor\TotalProcessorProvider;
+use OroB2B\Bundle\SaleBundle\Entity\QuoteDemand;
+use OroB2B\Bundle\ShoppingListBundle\Entity\ShoppingList;
 
 /**
  * Add total and subtotal fields to grid where root entity is checkout
@@ -55,26 +60,58 @@ class CheckoutGridListener
     protected $currencyManager;
 
     /**
-     * @var ColumnBuilderInterface[]
+     * @var BaseCheckoutRepository
      */
-    protected $columnBuilders = [];
+    protected $baseCheckoutRepository;
+
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * @var SecurityFacade
+     */
+    protected $securityFacade;
+
+    /**
+     * @var TotalProcessorProvider
+     */
+    protected $totalProcessor;
+
+    /**
+     * @var EntityNameResolver
+     */
+    private $entityNameResolver;
 
     /**
      * @param ConfigProvider $configProvider
      * @param EntityFieldProvider $fieldProvider
      * @param RegistryInterface $doctrine
      * @param UserCurrencyManager $currencyManager
+     * @param BaseCheckoutRepository $baseCheckoutRepository
+     * @param SecurityFacade $securityFacade
+     * @param TotalProcessorProvider $totalProcessor
+     * @param EntityNameResolver $entityNameResolver
      */
     public function __construct(
         ConfigProvider $configProvider,
         EntityFieldProvider $fieldProvider,
         RegistryInterface $doctrine,
-        UserCurrencyManager $currencyManager
+        UserCurrencyManager $currencyManager,
+        BaseCheckoutRepository $baseCheckoutRepository,
+        SecurityFacade $securityFacade,
+        TotalProcessorProvider $totalProcessor,
+        EntityNameResolver $entityNameResolver
     ) {
         $this->configProvider = $configProvider;
         $this->fieldProvider = $fieldProvider;
         $this->doctrine = $doctrine;
         $this->currencyManager = $currencyManager;
+        $this->baseCheckoutRepository = $baseCheckoutRepository;
+        $this->securityFacade = $securityFacade;
+        $this->totalProcessor = $totalProcessor;
+        $this->entityNameResolver = $entityNameResolver;
     }
 
     /**
@@ -126,9 +163,41 @@ class CheckoutGridListener
         /** @var ResultRecord[] $records */
         $records = $event->getRecords();
 
-        foreach ($this->columnBuilders as $columnBuilder) {
-            $columnBuilder->buildColumn($records);
+        $this->buildItemsCountColumn($records);
+        $this->buildStartedFromColumn($records);
+        $this->buildTotalColumn($records);
+    }
+
+    /**
+     * @param array $metadata
+     * @param string $entityName
+     * @return array
+     */
+    public function resolveMetadata(array $metadata, $entityName)
+    {
+        $metadata = $this->getMetadataOptionsResolver()->resolve($metadata);
+        $em = $this->doctrine->getManagerForClass($entityName);
+        $entityMetadata = $em->getClassMetadata($entityName);
+        $fieldsResolver = $this->getFieldsOptionsResolver();
+
+        if ($metadata['type'] === self::TYPE_ENTITY_FIELDS) {
+            $metadata['fields'] = $fieldsResolver->resolve($metadata['fields']);
+            $this->checkFieldsExists($metadata['fields'], $entityMetadata, $entityName);
         }
+
+        if ($metadata['type'] === self::TYPE_JOIN_COLLECTION) {
+            if (!$entityMetadata->hasAssociation($metadata['join_field'])) {
+                throw new IncorrectEntityException(
+                    sprintf("Entity '%s' doesn't have association '%s'", $entityName, $metadata['join_field'])
+                );
+            }
+
+            $metadata['relation_fields'] = $fieldsResolver->resolve($metadata['relation_fields']);
+            $relationName = $entityMetadata->getAssociationTargetClass($metadata['join_field']);
+            $this->checkFieldsExists($metadata['relation_fields'], $em->getClassMetadata($relationName), $relationName);
+        }
+
+        return $metadata;
     }
 
     /**
@@ -165,6 +234,7 @@ class CheckoutGridListener
                     'type' => 'twig',
                     'frontend_type' => 'html',
                     'template' => 'OroB2BPricingBundle:Datagrid:Column/subtotal.html.twig',
+                    'order' => 25
                 ];
                 $updates['filters']['subtotal'] = [
                     'type' => 'number',
@@ -180,6 +250,8 @@ class CheckoutGridListener
                     'type' => 'twig',
                     'frontend_type' => 'html',
                     'template' => 'OroB2BPricingBundle:Datagrid:Column/total.html.twig',
+                    'order' => 85,
+                    'renderable' => false
                 ];
             }
             if ($currencyFields) {
@@ -284,46 +356,6 @@ class CheckoutGridListener
     }
 
     /**
-     * @param array $metadata
-     * @param string $entityName
-     * @return array
-     */
-    public function resolveMetadata(array $metadata, $entityName)
-    {
-        $metadata = $this->getMetadataOptionsResolver()->resolve($metadata);
-        $em = $this->doctrine->getManagerForClass($entityName);
-        $entityMetadata = $em->getClassMetadata($entityName);
-        $fieldsResolver = $this->getFieldsOptionsResolver();
-
-        if ($metadata['type'] === self::TYPE_ENTITY_FIELDS) {
-            $metadata['fields'] = $fieldsResolver->resolve($metadata['fields']);
-            $this->checkFieldsExists($metadata['fields'], $entityMetadata, $entityName);
-        }
-
-        if ($metadata['type'] === self::TYPE_JOIN_COLLECTION) {
-            if (!$entityMetadata->hasAssociation($metadata['join_field'])) {
-                throw new IncorrectEntityException(
-                    sprintf("Entity '%s' doesn't have association '%s'", $entityName, $metadata['join_field'])
-                );
-            }
-
-            $metadata['relation_fields'] = $fieldsResolver->resolve($metadata['relation_fields']);
-            $relationName = $entityMetadata->getAssociationTargetClass($metadata['join_field']);
-            $this->checkFieldsExists($metadata['relation_fields'], $em->getClassMetadata($relationName), $relationName);
-        }
-
-        return $metadata;
-    }
-
-    /**
-     * @param ColumnBuilderInterface $columnBuilder
-     */
-    public function addColumnBuilder(ColumnBuilderInterface $columnBuilder)
-    {
-        $this->columnBuilders[] = $columnBuilder;
-    }
-
-    /**
      * @return OptionsResolver
      */
     protected function getMetadataOptionsResolver()
@@ -372,5 +404,100 @@ class CheckoutGridListener
                 );
             }
         }
+    }
+
+    /**
+     * @param ResultRecord[] $records
+     */
+    protected function buildItemsCountColumn($records)
+    {
+        $ids = [];
+
+        foreach ($records as $record) {
+            $ids[] = $record->getValue('id');
+        }
+
+        $counts = $this->baseCheckoutRepository->countItemsPerCheckout($ids);
+
+        foreach ($records as $record) {
+            if (isset($counts[$record->getValue('id')])) {
+                $record->addData([ 'itemsCount' => $counts[$record->getValue('id')] ]);
+            }
+        }
+    }
+
+    /**
+     * @param ResultRecord[] $records
+     */
+    protected function buildStartedFromColumn($records)
+    {
+        $ids = [];
+
+        foreach ($records as $record) {
+            $ids[] = $record->getValue('id');
+        }
+
+        $sources = $this->baseCheckoutRepository->getSourcePerCheckout($ids);
+
+        foreach ($records as $record) {
+            $id = $record->getValue('id');
+            if (!isset($sources[$id])) {
+                continue;
+            }
+
+            $source = $sources[$id];
+
+            if ($source instanceof QuoteDemand) {
+                $source = $source->getQuote();
+            }
+
+            // simplify type checking in twig
+            $type = $source instanceof ShoppingList ? 'shopping_list' : 'quote';
+            $name = $this->entityNameResolver->getName($source);
+            $data = [
+                'linkable' => $this->hasCurrentUserRightToView($source),
+                'type'     => $type,
+                'label'    => $name,
+                'id'       => $source->getId()
+            ];
+
+            $record->addData(['startedFrom' => $data]);
+        }
+    }
+
+    /**
+     * @param ResultRecord[] $records
+     */
+    protected function buildTotalColumn($records)
+    {
+        $em = $this->baseCheckoutRepository;
+
+        // todo: Reduce db queries count
+        foreach ($records as $record) {
+            if (!$record->getValue('total')) {
+                $id = $record->getValue('id');
+                $ch = $em->find($id);
+
+                $sourceEntity = $ch->getSourceEntity();
+                $record->addData(
+                    [
+                        'total' => $this->totalProcessor
+                            ->getTotal($sourceEntity)
+                            ->getAmount()
+                    ]
+                );
+            }
+        }
+    }
+
+    /**
+     * @param $sourceEntity
+     * @return bool
+     */
+    protected function hasCurrentUserRightToView($sourceEntity)
+    {
+        $isGranted = $this->securityFacade->isGranted('ACCOUNT_VIEW', $sourceEntity);
+
+        return $isGranted === true || $isGranted === "true"; // isGranted may return "true" as string
     }
 }
