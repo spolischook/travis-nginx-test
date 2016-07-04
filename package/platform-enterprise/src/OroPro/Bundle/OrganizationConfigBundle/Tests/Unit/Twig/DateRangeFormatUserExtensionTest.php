@@ -1,24 +1,25 @@
 <?php
 
-namespace Oro\Bundle\CalendarBundle\Tests\Unit\Twig;
+namespace OroPro\Bundle\OrganizationConfigBundle\Tests\Unit\Twig;
 
-use Oro\Bundle\CalendarBundle\Twig\DateFormatExtension;
-use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
-use Oro\Bundle\OrganizationBundle\Tests\Unit\Fixture\Entity\Organization;
 use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 
-class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
+use OroPro\Bundle\OrganizationConfigBundle\Twig\DateRangeFormatUserExtension;
+use OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper;
+use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
+
+class DateRangeFormatUserExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var DateTimeFormatter|\PHPUnit_Framework_MockObject_MockObject */
-    protected $formatter;
-
-    /** @var DateFormatExtension */
+    /**
+     * @var DateRangeFormatUserExtension
+     */
     protected $extension;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $configManager;
+    protected $container;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -28,7 +29,17 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $translator;
+    protected $configManager;
+
+    /**
+     * @var DateTimeFormatter
+     */
+    protected $formatter;
+
+    /**
+     * @var OrganizationConfigHelper
+     */
+    protected $helper;
 
     protected function setUp()
     {
@@ -37,58 +48,36 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
         $this->configManager = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->configManager->expects($this->any())->method('getScopeId');
+        $this->configManager->expects($this->any())->method('setScopeId');
+
+        $this->container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->translator = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Translation\Translator')
+        $translator = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Translation\Translator')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->formatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->formatter = new DateTimeFormatter($this->localeSettings, $translator);
+
+        $this->helper = new OrganizationConfigHelper($this->container);
+
+        $this->extension = new DateRangeFormatUserExtension($this->formatter);
+        $this->extension->setHelper($this->helper);
     }
 
-    /**
-     * @param string $start
-     * @param string|bool $end
-     * @param string|bool $skipTime
-     * @param string $expected
-     *
-     * @dataProvider formatCalendarDateRangeProvider
-     */
-    public function testFormatCalendarDateRange($start, $end, $skipTime, $expected)
+    public function testGetFilters()
     {
-        $this->formatter->expects($this->any())
-            ->method('format')
-            ->will($this->returnValue('DateTime'));
-        $this->formatter->expects($this->any())
-            ->method('formatDate')
-            ->will($this->returnValue('Date'));
-        $this->formatter->expects($this->any())
-            ->method('formatTime')
-            ->will($this->returnValue('Time'));
-        $this->extension = new DateFormatExtension($this->formatter);
+        $functions = $this->extension->getFunctions();
 
-        $startDate = new \DateTime($start);
-        $endDate = $end === null ? null : new \DateTime($end);
+        $this->assertCount(2, $functions);
 
-        $result = $this->extension->formatCalendarDateRange($startDate, $endDate, $skipTime);
-
-        $this->assertEquals($expected, $result);
-    }
-
-    public function formatCalendarDateRangeProvider()
-    {
-        return array(
-            array('2010-05-01T10:30:15+00:00', null, false, 'DateTime'),
-            array('2010-05-01T10:30:15+00:00', null, true, 'Date'),
-            array('2010-05-01T10:30:15+00:00', '2010-05-01T10:30:15+00:00', false, 'DateTime'),
-            array('2010-05-01T10:30:15+00:00', '2010-05-01T10:30:15+00:00', true, 'Date'),
-            array('2010-05-01T10:30:15+00:00', '2010-05-01T11:30:15+00:00', false, 'Date Time - Time'),
-            array('2010-05-01T10:30:15+00:00', '2010-05-01T11:30:15+00:00', true, 'Date'),
-            array('2010-05-01T10:30:15+00:00', '2010-05-02T10:30:15+00:00', false, 'DateTime - DateTime'),
-            array('2010-05-01T10:30:15+00:00', '2010-05-02T10:30:15+00:00', true, 'Date - Date'),
-        );
+        $this->assertInstanceOf('Twig_Function_Method', $functions['calendar_date_range_user']);
+        $this->assertAttributeEquals('formatCalendarDateRangeUser', 'method', $functions['calendar_date_range_user']);
     }
 
     /**
@@ -104,12 +93,13 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormatCalendarDateRangeUser($start, $end, array $config, $locale, $timeZone, $user, $expected)
     {
-        $this->formatter = new DateTimeFormatter($this->localeSettings, $this->translator);
-        $this->extension = new DateFormatExtension($this->formatter);
-        $this->extension->setConfigManager($this->configManager);
-
         $startDate = new \DateTime($start, new \DateTimeZone('UTC'));
         $endDate = $end === null ? null : new \DateTime($end, new \DateTimeZone('UTC'));
+
+        $this->container->expects($this->any())
+            ->method('get')
+            ->with('oro_config.organization')
+            ->willReturn($this->configManager);
 
         $this->configManager->expects($this->any())
             ->method('get')
@@ -142,6 +132,24 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
         $user = new User(1, null, $organization);
 
         return [
+            'Localization settings from organization scope' => [
+                '2016-05-01 10:30:15',
+                '2016-05-01 11:30:15',
+                ['locale' => 'en_US', 'timeZone' => 'America/Los_Angeles'], // config organization scope
+                null,
+                null,
+                $user,
+                'May 1, 2016 3:30 AM - 4:30 AM'
+            ],
+            'Localization settings from organization scope start=end ' => [
+                '2016-05-01 10:30:15',
+                '2016-05-01 10:30:15',
+                ['locale' => 'en_US', 'timeZone' => 'America/Los_Angeles'], // config organization scope
+                null,
+                null,
+                $user,
+                'May 1, 2016, 3:30 AM'
+            ],
             'Localization settings from global scope' => [
                 '2016-05-01 10:30:15',
                 '2016-05-01 11:30:15',
@@ -179,5 +187,10 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
                 'May 1, 2016, 1:30 PM'
             ]
         ];
+    }
+
+    public function testGetName()
+    {
+        $this->assertEquals('oropro_organization_config_daterange_format_user', $this->extension->getName());
     }
 }
