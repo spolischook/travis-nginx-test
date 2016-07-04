@@ -1,0 +1,64 @@
+.address-list .map-address-list {
+    float: left;
+    width: 54%;
+    padding-left: 0;
+    margin-right: 5px;
+}
+
+.address-list {
+    &__item {
+        display: flex;
+        justify-content: space-between;
+        padding: 13px 10px 13px 15px;
+
+        border-bottom: 1px solid $theme-gray-color;
+
+        &:first-of-type {
+            border-top: 1px solid $theme-gray-color;
+        }
+
+        &--active {
+            background-color: $base-footer-background-color;
+        }
+    }
+
+    &__button {
+        width: 50%;
+        height: 2rem;
+
+        line-height: 20px;
+        text-align: center;
+
+        // reset default styles
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        color: $theme-gray-color-regular;
+
+        &:hover {
+            text-decoration: inherit;
+            color: $base-link-color;
+        }
+    }
+
+    &__address {
+        width: 65%;
+    }
+
+    &__label {
+        width: 22%;
+        text-align: center;
+        text-transform: capitalize;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+        width: 13%;
+
+        // This adds a | delimiter to buttons.
+        :not(:first-child) {
+            border-left: 1px solid $theme-gray-color-regular;
+        }
+    }
+}
