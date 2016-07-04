@@ -3,22 +3,10 @@
 namespace OroPro\Bundle\OrganizationBundle\Autocomplete;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Autocomplete\BusinessUnitOwnerSearchHandler as BaseBusinessUnitOwnerSearchHandler;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Oro\Bundle\OrganizationBundle\Autocomplete\BusinessUnitTreeSearchHandler as BaseBusinessUnitTreeSearchHandler;
 
-class BusinessUnitOwnerSearchHandler extends BaseBusinessUnitOwnerSearchHandler
+class BusinessUnitTreeSearchHandler extends BaseBusinessUnitTreeSearchHandler
 {
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /**
-     * @param SecurityFacade $securityFacade
-     */
-    public function setSecurityFacade(SecurityFacade $securityFacade)
-    {
-        $this->securityFacade = $securityFacade;
-    }
-
     /**
      * @param BusinessUnit $businessUnit
      * @param $path
