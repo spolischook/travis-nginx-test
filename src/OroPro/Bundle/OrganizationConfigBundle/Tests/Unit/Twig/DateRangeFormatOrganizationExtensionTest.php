@@ -52,7 +52,11 @@ class DateRangeFormatOrganizationExtensionTest extends \PHPUnit_Framework_TestCa
 
         $this->assertArrayHasKey('calendar_date_range_organization', $functions);
         $this->assertInstanceOf('Twig_Function_Method', $functions['calendar_date_range_organization']);
-        $this->assertAttributeEquals('formatCalendarDateRangeOrganization', 'method', $functions['calendar_date_range_organization']);
+        $this->assertAttributeEquals(
+            'formatCalendarDateRangeOrganization',
+            'method',
+            $functions['calendar_date_range_organization']
+        );
     }
 
     public function testFormatCalendarDateRangeOrganizationShouldGetLocaleFromConfigurationIfOrganizationProvided()
