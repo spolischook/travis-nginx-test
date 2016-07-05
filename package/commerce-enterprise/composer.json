@@ -15,7 +15,8 @@
         }
     },
     "require": {
-        "oro/commerce": "self.version"
+        "oro/commerce": "self.version",
+        "oro/platform-enterprise": "dev-master"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
