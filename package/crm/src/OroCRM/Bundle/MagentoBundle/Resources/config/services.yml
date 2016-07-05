@@ -933,10 +933,6 @@ services:
     orocrm_magento.even_listener.channel_delete_listener:
         class: '%orocrm_magento.even_listener.channel_delete_listener.class%'
         arguments:
-#            - "@orocrm_channel.provider.settings_provider"
-#            - "@orocrm_channel.state_cache"
             - "@doctrine"
-#            - "@oro_security.security_facade.link"
-#            - "@oro_security.acl_helper"
         tags:
             - { name: kernel.event_listener, event: 'orocrm_channel.channel.delete_succeed', method: onDelete}
