@@ -23,10 +23,17 @@
 
   &.checked {
     + .form-input_datepicker,
-    + .checkout__form__optional-ref-number,
-    + .checkout__form__order-note,
     + .form-input_textarea {
       display: block;
+    }
+  }
+}
+
+div.checkout__form__select--exp-month {
+
+  .select2-container {
+    &.input_block {
+      width: 100%;
     }
   }
 }
