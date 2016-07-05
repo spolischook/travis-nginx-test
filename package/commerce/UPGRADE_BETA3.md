@@ -39,6 +39,7 @@ MenuBundle:
 ProductBundle:
 --------------
 - Entity `OroB2B\Bundle\ProductBundle\Entity\Product` now uses an entity `Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue` for `names`, `desciptions` and `shorDescriptions`.
+- Replaced single product image with typed product image collection
 
 WebsiteBundle:
 --------------
@@ -67,3 +68,7 @@ PaymentBundle:
 --------------
 - Added short label for Payment Methods in order to show it on frontend tables.
 - Added transactions demo data for orders demo data.
+
+ShoppingListBundle:
+-------------------
+- `ShoppingListTotalManager` - removed fourth constructor argument $configManager

@@ -32,7 +32,12 @@ class PayPalPaymentsProViewTest extends AbstractPayflowGatewayViewTest
     }
 
     /** {@inheritdoc} */
+    protected function getRequireCvvEntryKey()
+    {
+        return Configuration::PAYPAL_PAYMENTS_PRO_REQUIRE_CVV_KEY;
+    }
 
+    /** {@inheritdoc} */
     protected function getAuthForRequiredAmountKey()
     {
         return Configuration::PAYPAL_PAYMENTS_PRO_AUTHORIZATION_FOR_REQUIRED_AMOUNT_KEY;

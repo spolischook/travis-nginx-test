@@ -1,0 +1,23 @@
+{
+    "name": "oro/commerce-enterprise",
+    "description": "OroCommerce Enterprise.",
+    "homepage": "https://github.com/orocommerce/orocommerce",
+    "license": "Commercial",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocommerce.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "OroB2BPro\\Bundle": "src/"
+        }
+    },
+    "require": {
+        "oro/commerce": "self.version",
+        "oro/platform-enterprise": "dev-master"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

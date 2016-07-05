@@ -45,7 +45,10 @@ class PayflowGatewayView implements PaymentMethodViewInterface
     {
         $isZeroAmountAuthorizationEnabled = $this->isZeroAmountAuthorizationEnabled();
 
-        $formOptions = ['zeroAmountAuthorizationEnabled' => $isZeroAmountAuthorizationEnabled];
+        $formOptions = [
+            'zeroAmountAuthorizationEnabled' => $isZeroAmountAuthorizationEnabled,
+            'requireCvvEntryEnabled'         => $this->isRequireCvvEntryEnabled(),
+        ];
 
         $formView = $this->formFactory->create(CreditCardType::NAME, null, $formOptions)->createView();
 
@@ -72,10 +75,10 @@ class PayflowGatewayView implements PaymentMethodViewInterface
         $viewOptions['creditCardComponent'] =
             'orob2bpayment/js/app/components/authorized-credit-card-component';
 
-        $viewOptions['creditCardComponentOptions']['acct'] = $this->getLast4($validateTransaction);
-        $viewOptions['creditCardComponentOptions']['saveForLaterUse'] = !empty($transactionOptions['saveForLaterUse']);
-        $viewOptions['creditCardComponentOptions']['authorizationForRequiredAmount'] =
-            $this->isAuthorizationForRequiredAmountEnabled();
+        $viewOptions['creditCardComponentOptions'] = array_merge($viewOptions['creditCardComponentOptions'], [
+            'acct' => $this->getLast4($validateTransaction),
+            'saveForLaterUse' => !empty($transactionOptions['saveForLaterUse']),
+        ]);
 
         return $viewOptions;
     }
@@ -142,8 +145,8 @@ class PayflowGatewayView implements PaymentMethodViewInterface
     /**
      * @return bool
      */
-    protected function isAuthorizationForRequiredAmountEnabled()
+    protected function isRequireCvvEntryEnabled()
     {
-        return (bool)$this->getConfigValue(Configuration::PAYFLOW_GATEWAY_AUTHORIZATION_FOR_REQUIRED_AMOUNT_KEY);
+        return (bool)$this->getConfigValue(Configuration::PAYFLOW_GATEWAY_REQUIRE_CVV_KEY);
     }
 }

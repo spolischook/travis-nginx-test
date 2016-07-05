@@ -1,0 +1,227 @@
+parameters:
+    oropro_organization.entity.class: Oro\Bundle\OrganizationBundle\Entity\Organization
+
+    oropro_organization.twig.extension.organization.class: OroPro\Bundle\OrganizationBundle\Twig\OrganizationExtension
+    oropro_organization.exclusion_provider.config.class:   OroPro\Bundle\OrganizationBundle\Provider\OrganizationExclusionProvider
+    oropro_organization.system_mode_org_provider.class:    OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider
+    oropro_organization.request.param_converter.class:     OroPro\Bundle\OrganizationBundle\Request\ParamConverter\RequestReportParamConverter
+    oropro_organization.helper.class:                      OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper
+    oropro_organization.listener.kernel_request_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\KernelRequestListener
+    oropro_organization.listener.system_org_grid_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\SystemModeOrganizationGridListener
+    oropro_organization.event_listener.workflow_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\WorkflowListener
+
+    oropro_organization.exception.organization_aware_listener.class: OroPro\Bundle\OrganizationBundle\Exception\OrganizationAwareExceptionListener
+    oropro_organization.grid.extension.organization_column.class: OroPro\Bundle\OrganizationBundle\Grid\OrganizationColumnExtension
+
+    oropro_organization.event_listener.authefication.class:                 OroPro\Bundle\OrganizationBundle\EventListener\AuthenticationListener
+    oropro_organization.content_provider.organization_switch.class:         OroPro\Bundle\OrganizationBundle\ContentProvider\OrganizationSwitchContentProvider
+
+    # Overrides
+    oro_entity.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\EntityNavigationListener
+    oro_report.listener.navigation_listener.class: OroPro\Bundle\OrganizationBundle\EventListener\ReportNavigationListener
+    oro_organization.form.extension.organization.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationProFormExtension
+    oro_organization.provider.filter.busines_unit_choice_tree.class: OroPro\Bundle\OrganizationBundle\Provider\Filter\ChoiceTreeBusinessUnitProvider
+    oro_email.datagrid_query_factory.class: OroPro\Bundle\OrganizationBundle\Datagrid\EmailQueryFactory
+
+    oropro_organization.form.extension.organization_list.class: OroPro\Bundle\OrganizationBundle\Form\Extension\OrganizationListExtension
+    oropro_organization.form.extension.imap_check_button.class: OroPro\Bundle\OrganizationBundle\Form\Extension\ImapCheckButtonExtension
+    oropro_organization.form.extension.choice_account_type.class: OroPro\Bundle\OrganizationBundle\Form\Extension\ChoiceAccountTypeExtension
+    oropro_organization.form.extension.configuration_gmail_type.class: OroPro\Bundle\OrganizationBundle\Form\Extension\ConfigurationGmailTypeExtension
+
+    oropro_organization.acl.voter.organization.class: OroPro\Bundle\OrganizationBundle\Acl\Voter\OrganizationAnnotationVoter
+
+    oropro_organization.autocomplete.business_unit.search_handler.class:  OroPro\Bundle\OrganizationBundle\Autocomplete\BusinessUnitSearchHandler
+
+services:
+    oropro_organization.twig.extension.organization:
+        class: %oropro_organization.twig.extension.organization.class%
+        arguments:
+            - "@oro_entity_config.provider.organization"
+            - "@doctrine"
+            - "@translator"
+            - "@oropro_organization.helper"
+        tags:
+            - { name: twig.extension }
+
+    oropro_organization.twig.extension.global_organization:
+        class: OroPro\Bundle\OrganizationBundle\Twig\GlobalOrganizationExtension
+        arguments:
+            - "@oro_security.security_facade"
+            - "@oro_entity_config.provider.ownership"
+            - "@oro_entity.doctrine_helper"
+        tags:
+            - { name: twig.extension }
+
+    oropro_organization.exclusion_provider:
+        class: %oropro_organization.exclusion_provider.config.class%
+        arguments:
+            - "@oro_security.security_facade.link"
+            - "@oro_entity_config.provider.organization"
+            - "@oropro_organization.system_mode_org_provider"
+        tags:
+            - { name: oro_entity.exclusion_provider.default }
+
+    oropro_organization.system_mode_org_provider:
+        class: %oropro_organization.system_mode_org_provider.class%
+
+    oropro_organization.request.param_converter:
+        class: %oropro_organization.request.param_converter.class%
+        arguments:
+            - "@oro_entity_config.provider.organization"
+            - "@oro_security.security_facade"
+            - "@doctrine"
+        tags:
+            - { name: request.param_converter, priority: 2, converter: applicable_organization_converter }
+
+    oropro_organization.grid.extension.organization_column:
+        class: %oropro_organization.grid.extension.organization_column.class%
+        arguments:
+            - "@oro_security.security_facade"
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity.orm.entity_class_resolver"
+            - "@oropro_organization.system_mode_org_provider"
+        tags:
+            - { name: oro_datagrid.extension }
+            
+    oropro_organization.helper:
+        class: %oropro_organization.helper.class%
+        arguments:
+            - "@doctrine"
+            - "@security.token_storage"
+
+    oropro_organization.listener.kernel_request_listener:
+        class: %oropro_organization.listener.kernel_request_listener.class%
+        arguments:
+            - "@oropro_organization.system_mode_org_provider"
+            - "@doctrine"
+            - "@oro_security.security_facade"
+            - "@router"
+            - "@oro_workflow.manager"
+            - "@oro_security.owner.ownership_metadata_provider"
+            - "@oro_entity.routing_helper"
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest}
+
+    oropro_organization.event_listener.system_org_grid_listener:
+        class: %oropro_organization.listener.system_org_grid_listener.class%
+        arguments:
+            - "@oropro_organization.system_mode_org_provider"
+            - "@doctrine"
+            - "@oro_security.security_facade"
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before, method: onBuildBefore, priority: 1 }
+
+    oropro_organization.event_listener.workflow_listener:
+        class: %oropro_organization.event_listener.workflow_listener.class%
+        arguments:
+            - "@oropro_organization.system_mode_org_provider"
+            - "@oro_security.security_facade"
+            - "@oro_entity.doctrine_helper"
+            - "@oro_security.owner.ownership_metadata_provider"
+        tags:
+            - { name: kernel.event_listener, event: oro_workflow.action.handle_before, method: onBeforeAction }
+            - { name: kernel.event_listener, event: oro_workflow.start_transition.handle_before_render, method: onStartTransition }
+
+    oropro_organization.exception.organization_aware_listener:
+        class: %oropro_organization.exception.organization_aware_listener.class%
+        arguments:
+           - "@router"
+           - "@oropro_organization.system_mode_org_provider"
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    oropro_organization.event_listener.authefication:
+        class: %oropro_organization.event_listener.authefication.class%
+        arguments:
+            - "@doctrine"
+            - "@session"
+        tags:
+            - { name: kernel.event_listener, event: security.authentication.success, method: onAuthenticationSuccess }
+            - { name: kernel.event_listener, event: oro_security.event.organization_switch.after, method: onOrganizationSwitchAfter }
+            - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
+
+    oropro_organization.content_provider.organization_switch:
+        class: %oropro_organization.content_provider.organization_switch.class%
+        arguments:
+            - "@twig"
+        tags:
+            - { name: oro_ui.content_provider, enabled: false }
+
+    oropro_organization.form.extension.organization_list:
+        class: %oropro_organization.form.extension.organization_list.class%
+        arguments:
+            - "@router"
+            - "@oro_security.security_facade"
+            - "@security.context"
+        calls:
+            - [setRequest, ["@?request="]]
+        scope: request
+        tags:
+            - { name: form.type_extension, alias: oro_organization_choice_select2 }
+
+    oropro_organization.form.extension.imap_check_button:
+        class: %oropro_organization.form.extension.imap_check_button.class%
+        arguments:
+            - "@oro_security.security_facade"
+        tags:
+            - { name: form.type_extension, alias: oro_imap_configuration_check }
+
+    oropro_organization.acl.voter.organization:
+        class: %oropro_organization.acl.voter.organization.class%
+        arguments:
+            - "@oro_security.acl.annotation_provider"
+            - %oro_organization.organization.entity.class%
+        tags:
+            - { name: security.voter, priority: -255 }
+
+    oropro_organization.autocomplete.business_unit.search_handler:
+            class: %oropro_organization.autocomplete.business_unit.search_handler.class%
+            parent: oro_form.autocomplete.search_handler
+            arguments:
+                - %oro_organization.business_unit.entity.class%
+                - ["name"]
+                - "@oro_security.security_facade"
+            tags:
+                - { name: oro_form.autocomplete.search_handler, alias: business_units, acl_resource: oro_business_unit_view }
+
+    oropro_organization.form.extension.choice_account_type:
+        class: %oropro_organization.form.extension.choice_account_type.class%
+        arguments:
+            - "@oro_security.security_facade"
+        tags:
+            - { name: form.type_extension, alias: oro_imap_choice_account_type }
+
+    oropro_organization.form.extension.configuration_gmail_type:
+        class: %oropro_organization.form.extension.configuration_gmail_type.class%
+        arguments:
+            - "@oro_security.security_facade"
+        tags:
+            - { name: form.type_extension, alias: oro_imap_configuration_gmail }
+
+    oropro_organization.api.get_config.add_organization_not_null_validator:
+        class: OroPro\Bundle\OrganizationBundle\Api\Processor\Config\GetConfig\AddOrganizationNotNullValidator
+        arguments:
+            - '@oro_api.doctrine_helper'
+            - '@oro_security.owner.ownership_metadata_provider'
+        tags:
+            - { name: oro.api.processor, action: get_config, extra: !identifier_fields_only&definition, targetAction: create, priority: -50 }
+
+    oropro_organization.api.get_config.add_organization_validator:
+        class: OroPro\Bundle\OrganizationBundle\Api\Processor\Config\GetConfig\AddOrganizationValidator
+        arguments:
+            - '@oro_api.doctrine_helper'
+            - '@oro_security.owner.ownership_metadata_provider'
+            - '@oro_api.validation_helper'
+        tags:
+            - { name: oro.api.processor, action: get_config, extra: !identifier_fields_only&definition, targetAction: create, priority: -52 }
+            - { name: oro.api.processor, action: get_config, extra: !identifier_fields_only&definition, targetAction: update, priority: -52 }
+
+    oropro_organization.validator.organization:
+        class: OroPro\Bundle\OrganizationBundle\Validator\Constraints\OrganizationValidator
+        arguments:
+           - '@doctrine'
+           - '@oro_security.owner.ownership_metadata_provider'
+           - '@oro_security.owner.entity_owner_accessor'
+           - '@oro_security.security_facade'
+        tags:
+          - { name: validator.constraint_validator, alias: organization_validator }

@@ -32,7 +32,12 @@ class PayflowGatewayViewTest extends AbstractPayflowGatewayViewTest
     }
 
     /** {@inheritdoc} */
+    protected function getRequireCvvEntryKey()
+    {
+        return Configuration::PAYFLOW_GATEWAY_REQUIRE_CVV_KEY;
+    }
 
+    /** {@inheritdoc} */
     protected function getAuthForRequiredAmountKey()
     {
         return Configuration::PAYFLOW_GATEWAY_AUTHORIZATION_FOR_REQUIRED_AMOUNT_KEY;
