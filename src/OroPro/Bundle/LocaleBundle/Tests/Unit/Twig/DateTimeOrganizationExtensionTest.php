@@ -1,8 +1,8 @@
 <?php
 
-namespace OroPro\Bundle\OrganizationConfigBundle\Tests\Unit\Twig;
+namespace OroPro\Bundle\LocaleBundle\Tests\Unit\Twig;
 
-use OroPro\Bundle\OrganizationConfigBundle\Twig\DateTimeOrganizationExtension;
+use OroPro\Bundle\LocaleBundle\Twig\DateTimeOrganizationExtension;
 
 class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,7 +27,7 @@ class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->helper = $this->getMockBuilder('OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper')
+        $this->helper = $this->getMockBuilder('OroPro\Bundle\LocaleBundle\Helper\OrganizationConfigHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -107,6 +107,6 @@ class DateTimeOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oropro_organization_config_datetime_organization', $this->extension->getName());
+        $this->assertEquals('oropro_locale_datetime_organization', $this->extension->getName());
     }
 }

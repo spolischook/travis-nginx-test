@@ -6,17 +6,15 @@ Table of Contents
   - [Twig Extensions](#twig-extensions)
     - [Formatter filters](#formatter-filters)
     - [oro_format_datetime_organization](#oro_format_datetime_organization)
-    - [Format Converter functions](#format-converter-functions)
-    - [calendar_date_range_organization](#calendar_date_range_organization)
 
 Twig Extensions
 ---------------
 
-OroProOrganizationConfigBundle has twig extension that provides formatter filter that allows to get formatted date by user organization localization settings.
+OroProLocaleBundle has twig extension that provides formatter filter that allows to get formatted date by organization localization settings.
 
 ### Formatter filters
 
-Twig extension DateTimeUserExtension extend DateTimeExtension and has following functions.
+DateTimeOrganizationExtension extend twig extension from platform and has following functions.
 
 #### oro_format_datetime_organization
 
@@ -41,27 +39,4 @@ UTC date is '2016-05-31 00:00:00'
 
 {{ entity.startDate|oro_format_datetime({'locale': 'en_US', 'timeZone': 'Europe/Athens'}) }}
 {# May 31, 2016, 3:00 AM #}
-```
-### Format Converter functions
-
-Twig extension DateTimeUserExtension has following functions.
-
-#### calendar_date_range_organization
-
-Returns a string represents a range between $startDate and $endDate, formatted according the given organization settings
-Allowed options:
-  * startDate,
-  * endDate,
-  * skipTime,
-  * dateType,
-  * timeType,
-  * locale,
-  * timezone,
-  * organization
-
-UTC date range is '28.06.2016 00:00:00' - '28.06.2016 00:30:00'
-
-```
-{{ calendar_date_range_organization(entity.start, entity.end, entity.allDay, 1, null, null, null, entity.organization) }}
-{# May 30, 2016 5:00 PM - 5:30 PM #}
 ```

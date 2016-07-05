@@ -1,8 +1,8 @@
 <?php
 
-namespace OroPro\Bundle\OrganizationConfigBundle\Tests\Unit\Twig;
+namespace OroPro\Bundle\CalendarBundle\Tests\Unit\Twig;
 
-use OroPro\Bundle\OrganizationConfigBundle\Twig\DateRangeFormatOrganizationExtension;
+use OroPro\Bundle\CalendarBundle\Twig\DateRangeFormatOrganizationExtension;
 
 class DateRangeFormatOrganizationExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,7 +32,7 @@ class DateRangeFormatOrganizationExtensionTest extends \PHPUnit_Framework_TestCa
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->helper = $this->getMockBuilder('OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper')
+        $this->helper = $this->getMockBuilder('OroPro\Bundle\LocaleBundle\Helper\OrganizationConfigHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -147,6 +147,6 @@ class DateRangeFormatOrganizationExtensionTest extends \PHPUnit_Framework_TestCa
 
     public function testGetName()
     {
-        $this->assertEquals('oropro_organization_config_daterange_format_organization', $this->extension->getName());
+        $this->assertEquals('oropro_calendar_daterange_format_organization', $this->extension->getName());
     }
 }

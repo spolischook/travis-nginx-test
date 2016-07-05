@@ -1,11 +1,11 @@
 <?php
 
-namespace OroPro\Bundle\OrganizationConfigBundle\Twig;
+namespace OroPro\Bundle\CalendarBundle\Twig;
 
 use Oro\Bundle\CalendarBundle\Twig\DateFormatExtension;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
-use OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper;
+use OroPro\Bundle\LocaleBundle\Helper\OrganizationConfigHelper;
 
 /**
  * DateTimeUserExtension allows get formatted date range by user organization localization settings
@@ -13,7 +13,7 @@ use OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper;
  *
  * @deprecated Since 1.11, will be removed after 1.13.
  *
- * @todo: it's a temporary workaround to fix dates in reminder emails CRM-5745 until improvement CRM-5758 is implemented
+ * @todo: it's a temporary workaround to fix dates in notification emails until improvement CRM-5758 is implemented
  */
 class DateRangeFormatOrganizationExtension extends DateFormatExtension
 {
@@ -46,6 +46,6 @@ class DateRangeFormatOrganizationExtension extends DateFormatExtension
      */
     public function getName()
     {
-        return 'oropro_organization_config_daterange_format_organization';
+        return 'oropro_calendar_daterange_format_organization';
     }
 }

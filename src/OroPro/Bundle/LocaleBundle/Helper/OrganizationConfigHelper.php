@@ -1,6 +1,6 @@
 <?php
 
-namespace OroPro\Bundle\OrganizationConfigBundle\Helper;
+namespace OroPro\Bundle\LocaleBundle\Helper;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
