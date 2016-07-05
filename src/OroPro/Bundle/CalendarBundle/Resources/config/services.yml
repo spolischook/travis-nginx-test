@@ -1,5 +1,5 @@
 services:
-    oropro_organization_config.twig.daterange_format_organization:
+    oropro_calendar.twig.daterange_format_organization:
         class: OroPro\Bundle\CalendarBundle\Twig\DateRangeFormatOrganizationExtension
         parent: oro_calendar.twig.dateformat
         decorates: oro_calendar.twig.dateformat
