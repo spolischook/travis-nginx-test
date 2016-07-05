@@ -66,6 +66,7 @@ parameters:
     orocrm_magento.event_listener.integration_sync_after.class:             OroCRM\Bundle\MagentoBundle\EventListener\IntegrationSyncAfterEventListener
     orocrm_magento.event_listener.update_integration_connectors.class:      OroCRM\Bundle\MagentoBundle\EventListener\UpdateIntegrationConnectorsListener
     orocrm_magento.event_listener.customer_datagrid_listener.class:         OroCRM\Bundle\MagentoBundle\EventListener\CustomerDataGridListener
+    orocrm_magento.even_listener.channel_delete_listener.class:             OroCRM\Bundle\MagentoBundle\EventListener\ChannelDeleteListener
 
     # generator
     orocrm_magento.magento_url_generator.class:                             OroCRM\Bundle\MagentoBundle\Service\MagentoUrlGenerator
@@ -928,3 +929,14 @@ services:
         public: false
         tags:
             - { name: routing.options_resolver }
+
+    orocrm_magento.even_listener.channel_delete_listener:
+        class: '%orocrm_magento.even_listener.channel_delete_listener.class%'
+        arguments:
+#            - "@orocrm_channel.provider.settings_provider"
+#            - "@orocrm_channel.state_cache"
+            - "@doctrine"
+#            - "@oro_security.security_facade.link"
+#            - "@oro_security.acl_helper"
+        tags:
+            - { name: kernel.event_listener, event: 'orocrm_channel.channel.delete_succeed', method: onDelete}
