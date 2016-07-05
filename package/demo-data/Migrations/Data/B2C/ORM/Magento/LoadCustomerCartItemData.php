@@ -39,7 +39,7 @@ class LoadCustomerCartItemData extends AbstractFixture implements OrderedFixture
      */
     public function load(ObjectManager $manager)
     {
-        $subscriber = new CartSubscriber();
+        $subscriber = new CartSubscriber($this->container->get('orocrm_magento.manager.abandoned_shopping_cart_flow'));
         $this->em->getEventManager()->addEventSubscriber($subscriber);
 
         $data = $this->getData();
@@ -77,7 +77,7 @@ class LoadCustomerCartItemData extends AbstractFixture implements OrderedFixture
         }
         $manager->flush();
     }
-
+    
     /**
      * {@inheritdoc}
      */

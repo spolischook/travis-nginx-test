@@ -2,6 +2,7 @@
 
 namespace OroCRM\Bundle\MagentoBundle\Controller\Dashboard;
 
+use Oro\Bundle\WorkflowBundle\Model\WorkflowAwareManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -36,9 +37,9 @@ class DashboardController extends Controller
         $dateTo   = $dateRange['end'];
         $dateFrom = $dateRange['start'];
 
-        /** @var WorkflowManager $workflowManager */
-        $workflowManager = $this->get('oro_workflow.manager');
-        $workflows       = $workflowManager->getApplicableWorkflows(Cart::class);
+        /** @var WorkflowAwareManager $workflowManager */
+        $workflowManager = $this->get('orocrm_magento.manager.abandoned_shopping_cart_flow');
+        $workflow        = $workflowManager->getWorkflow();
 
         /** @var CartRepository $shoppingCartRepository */
         $shoppingCartRepository = $this->getDoctrine()->getRepository('OroCRMMagentoBundle:Cart');
