@@ -40,3 +40,24 @@ services:
           - [setSecurityContext, [ '@security.token_storage' ]]
       tags:
           - { name: oro_config.scope, scope: user, priority: 256 }
+
+  oropro_organization_config.twig.date_time_user:
+      class: OroPro\Bundle\OrganizationConfigBundle\Twig\DateTimeUserExtension
+      parent: oro_locale.twig.date_time_user
+      calls:
+          - [setHelper, ['@oropro_organization_config.helper']]
+      tags:
+          - { name: twig.extension }
+
+  oropro_organization_config.twig.daterange_format_user:
+      class: OroPro\Bundle\OrganizationConfigBundle\Twig\DateRangeFormatUserExtension
+      parent: oro_calendar.twig.dateformat
+      calls:
+          - [setHelper, ['@oropro_organization_config.helper']]
+      tags:
+          - { name: twig.extension }
+
+  oropro_organization_config.helper:
+      class: OroPro\Bundle\OrganizationConfigBundle\Helper\OrganizationConfigHelper
+      arguments:
+          - '@service_container'
