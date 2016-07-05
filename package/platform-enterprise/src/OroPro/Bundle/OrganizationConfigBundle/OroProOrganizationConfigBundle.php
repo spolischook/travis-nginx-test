@@ -4,7 +4,6 @@ namespace OroPro\Bundle\OrganizationConfigBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 use OroPro\Bundle\OrganizationConfigBundle\DependencyInjection\Compiler\ConfigurationLabelFallbackPass;
 use OroPro\Bundle\OrganizationConfigBundle\DependencyInjection\Compiler\TwigSandboxConfigurationPass;
