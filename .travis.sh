@@ -135,10 +135,6 @@ case $step in
                 else
                     php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --skip-assets --timeout 600;
                 fi
-                php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures;
-                if [[ "$APPLICATION" == "application/commerce" ]]; then
-                    php app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures vendor/oro/commerce/src/Oro/Component/Testing/Fixtures;
-                fi;
              fi;
              if [ ! -z "$PARALLEL_PROCESSES" ]; then
                 cd ../..;
