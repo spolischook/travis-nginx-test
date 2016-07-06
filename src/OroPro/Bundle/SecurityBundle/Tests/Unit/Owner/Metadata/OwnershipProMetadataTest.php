@@ -2,6 +2,8 @@
 
 namespace OroPro\Bundle\SecurityBundle\Tests\Unit\Owner\Metadata;
 
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+
 use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipProMetadata;
 
 class OwnershipProMetadataTest extends \PHPUnit_Framework_TestCase
@@ -107,5 +109,64 @@ class OwnershipProMetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('org', $metadata->getOwnerFieldName());
         $this->assertEquals('org_id', $metadata->getOwnerColumnName());
         $this->assertFalse($metadata->isGlobalView());
+    }
+
+    /**
+     * @dataProvider getAccessLevelNamesDataProvider
+     *
+     * @param array $arguments
+     * @param array $levels
+     */
+    public function testGetAccessLevelNames(array $arguments, array $levels)
+    {
+        $reflection = new \ReflectionClass('OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipProMetadata');
+        /** @var OwnershipProMetadata $metadata */
+        $metadata = $reflection->newInstanceArgs($arguments);
+        $this->assertEquals($levels, $metadata->getAccessLevelNames());
+    }
+
+    /**
+     * @return array
+     */
+    public function getAccessLevelNamesDataProvider()
+    {
+        return [
+            'no owner' => [
+                'arguments' => [],
+                'levels' => [
+                    0 => AccessLevel::NONE_LEVEL_NAME,
+                    5 => AccessLevel::getAccessLevelName(5)
+                ],
+            ],
+            'basic level owned' => [
+                'arguments' => ['USER', 'owner', 'owner_id'],
+                'levels' => [
+                    0 => AccessLevel::NONE_LEVEL_NAME,
+                    1 => AccessLevel::getAccessLevelName(1),
+                    2 => AccessLevel::getAccessLevelName(2),
+                    3 => AccessLevel::getAccessLevelName(3),
+                    4 => AccessLevel::getAccessLevelName(4),
+                    5 => AccessLevel::getAccessLevelName(5)
+                ],
+            ],
+            'local level owned' => [
+                'arguments' => ['BUSINESS_UNIT', 'owner', 'owner_id'],
+                'levels' => [
+                    0 => AccessLevel::NONE_LEVEL_NAME,
+                    2 => AccessLevel::getAccessLevelName(2),
+                    3 => AccessLevel::getAccessLevelName(3),
+                    4 => AccessLevel::getAccessLevelName(4),
+                    5 => AccessLevel::getAccessLevelName(5)
+                ],
+            ],
+            'global level owned' => [
+                'arguments' => ['ORGANIZATION', 'owner', 'owner_id'],
+                'levels' => [
+                    0 => AccessLevel::NONE_LEVEL_NAME,
+                    4 => AccessLevel::getAccessLevelName(4),
+                    5 => AccessLevel::getAccessLevelName(5)
+                ],
+            ],
+        ];
     }
 }
