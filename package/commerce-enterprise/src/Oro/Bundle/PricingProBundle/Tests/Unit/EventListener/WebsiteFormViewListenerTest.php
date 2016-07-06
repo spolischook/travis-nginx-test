@@ -1,13 +1,13 @@
 <?php
 
-namespace OroB2B\Bundle\PricingBundle\Tests\Unit\EventListener;
+namespace Oro\Bundle\PricingProBundle\Tests\Unit\EventListener;
 
 use Oro\Bundle\UIBundle\Event\BeforeListRenderEvent;
 use Oro\Bundle\UIBundle\View\ScrollData;
+use Oro\Bundle\PricingProBundle\EventListener\WebsiteFormViewListener;
 use Oro\Component\Testing\Unit\FormViewListenerTestCase;
 
 use OroB2B\Bundle\PricingBundle\Entity\PriceListWebsiteFallback;
-use Oro\Bundle\PricingProBundle\EventListener\WebsiteFormViewListener;
 
 class WebsiteFormViewListenerTest extends FormViewListenerTestCase
 {
