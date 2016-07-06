@@ -10,6 +10,22 @@ use OroB2BPro\Bundle\AccountBundle\Datagrid\RolePermissionDatasource;
 
 class RolePermissionDatasourceTest extends RolePermissionDatasourceTestCase
 {
+    public function testGetResults()
+    {
+        $datasource = $this->getDatasource();
+        $identity = 'entity:OroB2B\Bundle\AccountBundle\Entity\Account';
+
+        $results = $this->retrieveResultsFromPermissionsDatasource($datasource, $identity);
+
+        $this->assertCount(2, $results);
+
+        foreach ($results as $record) {
+            $this->assertInstanceOf(ResultRecord::class, $record);
+            $this->assertStringStartsWith($identity, $record->getValue('identity'));
+            $this->assertNotEmpty($record->getValue('permissions'));
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,19 +39,5 @@ class RolePermissionDatasourceTest extends RolePermissionDatasourceTestCase
             $this->configEntityManager,
             $this->roleTranslationPrefixResolver
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function assertResults(array $results, $identity)
-    {
-        $this->assertCount(2, $results);
-        
-        foreach ($results as $record) {
-            $this->assertInstanceOf(ResultRecord::class, $record);
-            $this->assertStringStartsWith($identity, $record->getValue('identity'));
-            $this->assertNotEmpty($record->getValue('permissions'));
-        }
     }
 }
