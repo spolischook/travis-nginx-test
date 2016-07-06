@@ -63,7 +63,7 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 
         $token = $this->getMock('Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface');
         $token->expects($this->once())->method('getOrganizationContext')->willReturn($organization);
-        $token->expects($this->once())->method('getUser')->willReturn($user);
+        $token->expects($this->any())->method('getUser')->willReturn($user);
         $token->expects($this->once())->method('setOrganizationContext')
             ->with($this->identicalTo($preferredOrganization));
 
@@ -93,7 +93,7 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 
         $token = $this->getMock('Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface');
         $token->expects($this->once())->method('getOrganizationContext')->willReturn($organization);
-        $token->expects($this->once())->method('getUser')->willReturn($user);
+        $token->expects($this->any())->method('getUser')->willReturn($user);
         $token->expects($this->never())->method('setOrganizationContext');
 
         if ($expectedSessionSet) {
@@ -146,7 +146,7 @@ class AuthenticationListenerTest extends \PHPUnit_Framework_TestCase
 
         $token = $this->getMock('Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface');
         $token->expects($this->once())->method('getOrganizationContext')->willReturn($organization);
-        $token->expects($this->once())->method('getUser')->willReturn($user);
+        $token->expects($this->any())->method('getUser')->willReturn($user);
         $token->expects($this->never())->method('setOrganizationContext');
 
         $this->session->expects($this->at(0))->method('set')
