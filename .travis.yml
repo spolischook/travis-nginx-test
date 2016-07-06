@@ -25,7 +25,7 @@ cache:
 matrix:
      exclude:
      - php: 5.6
-       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=3
+       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=2
      - php: 5.6
        env: APPLICATION="application/platform" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=4
      - php: 5.6
@@ -35,7 +35,7 @@ matrix:
      - php: 5.6
        env: APPLICATION="application/commerce-enterprise" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
      - php: 7.0
-       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=3
+       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=2
      - php: 7.0
        env: APPLICATION="application/platform" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=4
      - php: 7.0
@@ -58,7 +58,7 @@ matrix:
      - php: 5.5
        env: APPLICATION="application/commerce-enterprise" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
      - php: 5.6
-       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=3
+       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=2
      - php: 7.0
        env: APPLICATION="application/platform" TESTSUITE="unit"
      - php: 7.0
@@ -87,7 +87,7 @@ env:
   matrix:
      - APPLICATION="application/platform" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=4
      - APPLICATION="application/crm" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=3
-     - APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=3
+     - APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=2
      - APPLICATION="application/crm-enterprise" TESTSUITE="unit"
      - APPLICATION="application/commerce" TESTSUITE="functional" DB=mysql DB_NAME=oro_commerce PARALLEL_PROCESSES=4
      - APPLICATION="application/commerce" TESTSUITE="unit"
