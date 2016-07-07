@@ -101,13 +101,7 @@ class AmqpMessageConsumer implements MessageConsumerInterface
      */
     public function acknowledge(MessageInterface $message)
     {
-        if (false == $message instanceof AmqpMessage) {
-            throw new InvalidMessageException(sprintf(
-                'A message is invalid. Message must be an instance of %s but it is %s.',
-                AmqpMessage::class,
-                get_class($message)
-            ));
-        }
+        InvalidMessageException::assertMessageInstanceOf($message, AmqpMessage::class);
 
         $this->channel->basic_ack($message->getDeliveryTag());
     }
@@ -119,13 +113,7 @@ class AmqpMessageConsumer implements MessageConsumerInterface
      */
     public function reject(MessageInterface $message, $requeue = false)
     {
-        if (false == $message instanceof AmqpMessage) {
-            throw new InvalidMessageException(sprintf(
-                'A message is invalid. Message must be an instance of %s but it is %s.',
-                AmqpMessage::class,
-                get_class($message)
-            ));
-        }
+        InvalidMessageException::assertMessageInstanceOf($message, AmqpMessage::class);
 
         $this->channel->basic_reject($message->getDeliveryTag(), $requeue);
     }
