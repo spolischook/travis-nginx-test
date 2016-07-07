@@ -6,7 +6,7 @@ use Oro\Bundle\DataGridBundle\Tools\ColumnsHelper;
 
 class ColumnsHelperTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var   ColumnsHelper*/
+    /** @var   ColumnsHelper */
     protected $columnsHelper;
 
     protected function setUp()
@@ -33,10 +33,10 @@ class ColumnsHelperTest extends \PHPUnit_Framework_TestCase
     public function prepareColumnsParamProvider()
     {
         $columnsConfig = [
-            'name'  => ['order' => 0,'renderable' => true, 'name' => 'Name'],
-            'email' => ['order' => 1,'renderable' => true, 'name' => 'Email'],
-            'data'  => ['order' => 2,'renderable' => true, 'name' => 'Data'],
-            'city'  => ['order' => 3,'renderable' => true, 'name' => 'City']
+            'name'  => [ 'order' => 0, 'renderable' => true, 'name' => 'Name' ],
+            'email' => [ 'order' => 1, 'renderable' => true, 'name' => 'Email' ],
+            'data'  => [ 'order' => 2, 'renderable' => true, 'name' => 'Data' ],
+            'city'  => [ 'order' => 3, 'renderable' => true, 'name' => 'City' ]
         ];
 
         $columnsString1 = 'name1.email1.data1.city1';
@@ -44,51 +44,51 @@ class ColumnsHelperTest extends \PHPUnit_Framework_TestCase
         $columnsString3 = 'city1.name0.email1.data1';
 
         $columnsArray = [
-            'name'  => ['order' => '2','renderable' => 'true', 'name' => 'Name'],
-            'email' => ['order' => '0','renderable' => 'true', 'name' => 'Email'],
-            'data'  => ['order' => '1','renderable' => 'true', 'name' => 'Data'],
-            'city'  => ['order' => '3','renderable' => 'false','name' => 'City']
+            'name'  => [ 'order' => '2', 'renderable' => 'true', 'name' => 'Name' ],
+            'email' => [ 'order' => '0', 'renderable' => 'true', 'name' => 'Email' ],
+            'data'  => [ 'order' => '1', 'renderable' => 'true', 'name' => 'Data' ],
+            'city'  => [ 'order' => '3', 'renderable' => 'false', 'name' => 'City' ]
         ];
 
         $result1 = [
-            'name'  => ['order' => 0,'renderable' => true, 'name' => 'Name'],
-            'email' => ['order' => 1,'renderable' => true, 'name' => 'Email'],
-            'data'  => ['order' => 2,'renderable' => true, 'name' => 'Data'],
-            'city'  => ['order' => 3,'renderable' => true, 'name' => 'City']
+            'name'  => [ 'order' => 0, 'renderable' => true, 'name' => 'Name' ],
+            'email' => [ 'order' => 1, 'renderable' => true, 'name' => 'Email' ],
+            'data'  => [ 'order' => 2, 'renderable' => true, 'name' => 'Data' ],
+            'city'  => [ 'order' => 3, 'renderable' => true, 'name' => 'City' ]
         ];
         $result2 = [
-            'name'  => ['order' => 1,'renderable' => true, 'name' => 'Name'],
-            'email' => ['order' => 2,'renderable' => true, 'name' => 'Email'],
-            'data'  => ['order' => 3,'renderable' => true, 'name' => 'Data'],
-            'city'  => ['order' => 0,'renderable' => true, 'name' => 'City']
+            'name'  => [ 'order' => 1, 'renderable' => true, 'name' => 'Name' ],
+            'email' => [ 'order' => 2, 'renderable' => true, 'name' => 'Email' ],
+            'data'  => [ 'order' => 3, 'renderable' => true, 'name' => 'Data' ],
+            'city'  => [ 'order' => 0, 'renderable' => true, 'name' => 'City' ]
         ];
 
         $result3 = [
-            'name'  => ['order' => 1,'renderable' => false,'name' => 'Name'],
-            'email' => ['order' => 2,'renderable' => true, 'name' => 'Email'],
-            'data'  => ['order' => 3,'renderable' => true, 'name' => 'Data'],
-            'city'  => ['order' => 0,'renderable' => true, 'name' => 'City']
+            'name'  => [ 'order' => 1, 'renderable' => false, 'name' => 'Name' ],
+            'email' => [ 'order' => 2, 'renderable' => true, 'name' => 'Email' ],
+            'data'  => [ 'order' => 3, 'renderable' => true, 'name' => 'Data' ],
+            'city'  => [ 'order' => 0, 'renderable' => true, 'name' => 'City' ]
         ];
 
         $result4 = [
-            'name'  => ['order' => 2,'renderable' => true, 'name' => 'Name'],
-            'email' => ['order' => 0,'renderable' => true, 'name' => 'Email'],
-            'data'  => ['order' => 1,'renderable' => true, 'name' => 'Data'],
-            'city'  => ['order' => 3,'renderable' => false,'name' => 'City']
+            'name'  => [ 'order' => 2, 'renderable' => true, 'name' => 'Name' ],
+            'email' => [ 'order' => 0, 'renderable' => true, 'name' => 'Email' ],
+            'data'  => [ 'order' => 1, 'renderable' => true, 'name' => 'Data' ],
+            'city'  => [ 'order' => 3, 'renderable' => false, 'name' => 'City' ]
         ];
 
         return [
-            'default grid state'     => [
+            'default grid state'                                          => [
                 'columnsConfigArray' => $columnsConfig,
                 'columnsString'      => $columnsString1,
                 'result'             => $result1
             ],
-            'sorted grid' => [
+            'sorted grid'                                                 => [
                 'columnsConfigArray' => $columnsConfig,
                 'columnsString'      => $columnsString2,
                 'result'             => $result2
             ],
-            'sorted grid with not renderable columns' => [
+            'sorted grid with not renderable columns'                     => [
                 'columnsConfigArray' => $columnsConfig,
                 'columnsString'      => $columnsString3,
                 'result'             => $result3
@@ -123,67 +123,67 @@ class ColumnsHelperTest extends \PHPUnit_Framework_TestCase
     public function compareColumnsDataProvider()
     {
         $array1 = [
-            'name'  => ['order' => 1,'renderable' => true],
-            'email' => ['renderable' => true,'order' => 2]
+            'name'  => [ 'order' => 1, 'renderable' => true ],
+            'email' => [ 'renderable' => true, 'order' => 2 ]
         ];
         $array2 = [
-            'email' => ['order' => 2, 'renderable' => true],
-            'name'  => ['order' => 1, 'renderable' => true]
+            'email' => [ 'order' => 2, 'renderable' => true ],
+            'name'  => [ 'order' => 1, 'renderable' => true ]
         ];
         $array3 = [
-            'email' => ['order' => 1, 'renderable' => true],
-            'name'  => ['order' => 2, 'renderable' => false]
+            'email' => [ 'order' => 1, 'renderable' => true ],
+            'name'  => [ 'order' => 2, 'renderable' => false ]
         ];
         $array4 = [
-            'email' => ['order' => 1, 'renderable' => false],
-            'name'  => ['order' => 0, 'renderable' => false]
+            'email' => [ 'order' => 1, 'renderable' => false ],
+            'name'  => [ 'order' => 0, 'renderable' => false ]
         ];
 
         $array5 = [
-            'email' => ['order' => 1, 'renderable' => false],
-            'name2' => ['order' => 1, 'renderable' => false]
+            'email' => [ 'order' => 1, 'renderable' => false ],
+            'name2' => [ 'order' => 1, 'renderable' => false ]
         ];
 
         $array6 = [
-            'email' => ['order' => 2, 'renderable' => true],
-            'name'  => ['order' => 1, 'renderable' => true],
-            'name2' => ['order' => 3, 'renderable' => true],
+            'email' => [ 'order' => 2, 'renderable' => true ],
+            'name'  => [ 'order' => 1, 'renderable' => true ],
+            'name2' => [ 'order' => 3, 'renderable' => true ],
         ];
 
         return [
-            'equal' => [
+            'equal'           => [
                 'viewData' => $array1,
                 'urlData'  => $array2,
                 'result'   => true
             ],
-            'not equal' => [
+            'not equal'       => [
                 'viewData' => $array1,
                 'urlData'  => $array3,
                 'result'   => false
             ],
-            'not equal1' => [
+            'not equal1'      => [
                 'viewData' => $array1,
                 'urlData'  => $array4,
                 'result'   => false
             ],
-            'not equal2' => [
+            'not equal2'      => [
                 'viewData' => $array3,
                 'urlData'  => $array4,
                 'result'   => false
             ],
-            'not equal3' => [
+            'not equal3'      => [
                 'viewData' => $array2,
                 'urlData'  => $array5,
                 'result'   => false
             ],
-            'not equal keys' => [
+            'not equal keys'  => [
                 'viewData' => $array2,
                 'urlData'  => $array6,
                 'result'   => false
             ],
             'not valid data2' => [
                 'viewData' => $array1,
-                'urlData'  => [],
+                'urlData'  => [ ],
                 'result'   => false
             ],
         ];
@@ -210,16 +210,24 @@ class ColumnsHelperTest extends \PHPUnit_Framework_TestCase
     public function buildColumnsOrderProvider()
     {
         $columns1 = [
-            'name'  => ['order' => 3, 'name' => 'Name'],
-            'email' => ['name' => 'Email'],
-            'data'  => ['name' => 'Data'],
-            'city'  => ['name' => 'City']
+            'name'  => [ 'order' => 3, 'name' => 'Name' ],
+            'email' => [ 'name' => 'Email' ],
+            'data'  => [ 'name' => 'Data' ],
+            'city'  => [ 'name' => 'City' ]
         ];
         $columns2 = [
-            'name'  => ['name' => 'Name'],
-            'email' => ['name' => 'Email'],
-            'data'  => ['name' => 'Data'],
-            'city'  => ['name' => 'City']
+            'name'  => [ 'name' => 'Name' ],
+            'email' => [ 'name' => 'Email' ],
+            'data'  => [ 'name' => 'Data' ],
+            'city'  => [ 'name' => 'City' ]
+        ];
+        $columns3 = [
+            'items'    => [ 'order' => 2, 'name' => 'items' ],
+            'created'  => [ 'order' => 0, 'name' => 'created' ],
+            'name'     => [ 'order' => 4, 'name' => 'name' ],
+            'source'   => [ 'order' => 5, 'name' => 'source' ],
+            'subtotal' => [ 'name' => 'subtotal' ],
+            'total'    => [ 'name' => 'total' ]
         ];
 
         $result1 = [
@@ -232,17 +240,29 @@ class ColumnsHelperTest extends \PHPUnit_Framework_TestCase
             'name'  => 0,
             'email' => 1,
             'data'  => 2,
-            'city'  => 3
+            'city'  => 3,
+        ];
+        $result3 = [
+            'created'  => 0,
+            'subtotal' => 1,
+            'items'    => 2,
+            'total'    => 3,
+            'name'     => 4,
+            'source'   => 5
         ];
 
         return [
-            'columns have default config'          => [
+            'columns have default config'           => [
                 'columnsArray' => $columns1,
                 'result'       => $result1
             ],
-            'columns does not have default config' => [
+            'columns does not have default config'  => [
                 'columnsArray' => $columns2,
                 'result'       => $result2
+            ],
+            'some columns are dynamically injected' => [
+                'columnsArray' => $columns3,
+                'result'       => $result3
             ]
         ];
     }
@@ -275,54 +295,54 @@ class ColumnsHelperTest extends \PHPUnit_Framework_TestCase
         $columnsParams3 = 'city1.name1.email1.data1';
 
         $columns1 = [
-            'name'  => ['label' => 'Name'],
-            'email' => ['label' => 'Email'],
-            'data'  => ['label' => 'Data'],
-            'city'  => ['label' => 'City'],
+            'name'  => [ 'label' => 'Name' ],
+            'email' => [ 'label' => 'Email' ],
+            'data'  => [ 'label' => 'Data' ],
+            'city'  => [ 'label' => 'City' ],
         ];
 
         $columns2 = [
-            'name'  => ['label' => 'Name',  'renderable' => true],
-            'email' => ['label' => 'Email', 'renderable' => true],
-            'data'  => ['label' => 'Data',  'order' => 2, 'renderable' => true],
-            'city'  => ['label' => 'City',  'renderable' => true]
+            'name'  => [ 'label' => 'Name', 'renderable' => true ],
+            'email' => [ 'label' => 'Email', 'renderable' => true ],
+            'data'  => [ 'label' => 'Data', 'order' => 2, 'renderable' => true ],
+            'city'  => [ 'label' => 'City', 'renderable' => true ]
         ];
 
         $columns3 = [
-            'name'  => ['label' => 'Name',  'renderable' => true],
-            'email' => ['label' => 'Email', 'renderable' => true],
-            'data'  => ['label' => 'Data',  'renderable' => true],
-            'city'  => ['label' => 'City',  'renderable' => true]
+            'name'  => [ 'label' => 'Name', 'renderable' => true ],
+            'email' => [ 'label' => 'Email', 'renderable' => true ],
+            'data'  => [ 'label' => 'Data', 'renderable' => true ],
+            'city'  => [ 'label' => 'City', 'renderable' => true ]
         ];
 
         $result1 = [
-            'name'  => ['label' => 'Name',  'order' => 0, 'renderable' => true],
-            'email' => ['label' => 'Email', 'order' => 1, 'renderable' => true],
-            'data'  => ['label' => 'Data',  'order' => 2, 'renderable' => true],
-            'city'  => ['label' => 'City',  'order' => 3, 'renderable' => true],
+            'name'  => [ 'label' => 'Name', 'order' => 0, 'renderable' => true ],
+            'email' => [ 'label' => 'Email', 'order' => 1, 'renderable' => true ],
+            'data'  => [ 'label' => 'Data', 'order' => 2, 'renderable' => true ],
+            'city'  => [ 'label' => 'City', 'order' => 3, 'renderable' => true ],
         ];
 
         $result2 = [
-            'email' => ['label' => 'Email', 'order' => 0, 'renderable' => true],
-            'data'  => ['label' => 'Data',  'order' => 1, 'renderable' => true],
-            'city'  => ['label' => 'City',  'order' => 2, 'renderable' => true],
-            'name'  => ['label' => 'Name',  'order' => 3, 'renderable' => true],
+            'email' => [ 'label' => 'Email', 'order' => 0, 'renderable' => true ],
+            'data'  => [ 'label' => 'Data', 'order' => 1, 'renderable' => true ],
+            'city'  => [ 'label' => 'City', 'order' => 2, 'renderable' => true ],
+            'name'  => [ 'label' => 'Name', 'order' => 3, 'renderable' => true ],
         ];
 
         $result3 = [
-            'city'  => ['label' => 'City',  'order' => 0, 'renderable' => true],
-            'name'  => ['label' => 'Name',  'order' => 1, 'renderable' => true],
-            'email' => ['label' => 'Email', 'order' => 2, 'renderable' => true],
-            'data'  => ['label' => 'Data',  'order' => 3, 'renderable' => true],
+            'city'  => [ 'label' => 'City', 'order' => 0, 'renderable' => true ],
+            'name'  => [ 'label' => 'Name', 'order' => 1, 'renderable' => true ],
+            'email' => [ 'label' => 'Email', 'order' => 2, 'renderable' => true ],
+            'data'  => [ 'label' => 'Data', 'order' => 3, 'renderable' => true ],
         ];
 
         return [
-            'default order' => [
+            'default order'                   => [
                 'columnsArray'  => $columns1,
                 'columnsParams' => $columnsParams1,
                 'result'        => $result1
             ],
-            'columns without order' => [
+            'columns without order'           => [
                 'columnsArray'  => $columns2,
                 'columnsParams' => $columnsParams2,
                 'result'        => $result2
