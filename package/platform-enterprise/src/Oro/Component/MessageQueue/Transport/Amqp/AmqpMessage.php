@@ -21,11 +21,6 @@ class AmqpMessage implements MessageInterface
     /**
      * @var array
      */
-    private $localProperties;
-
-    /**
-     * @var array
-     */
     private $headers;
 
     /**
