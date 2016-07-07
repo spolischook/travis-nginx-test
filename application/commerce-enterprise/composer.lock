@@ -2127,6 +2127,7 @@
                 "rest",
                 "web service"
             ],
+            "abandoned": "guzzlehttp/guzzle",
             "time": "2013-10-02 20:47:00"
         },
         {
@@ -3184,7 +3185,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -3635,16 +3636,16 @@
         },
         {
             "name": "moment/moment",
-            "version": "2.13.0",
+            "version": "2.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moment/moment.git",
-                "reference": "d6651c21c6131fbb5db891b60971357739015688"
+                "reference": "227746b29044a4c2160ae7c597c7f24aacac2635"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment/zipball/d6651c21c6131fbb5db891b60971357739015688",
-                "reference": "d6651c21c6131fbb5db891b60971357739015688",
+                "url": "https://api.github.com/repos/moment/moment/zipball/227746b29044a4c2160ae7c597c7f24aacac2635",
+                "reference": "227746b29044a4c2160ae7c597c7f24aacac2635",
                 "shasum": ""
             },
             "require": {
@@ -3685,7 +3686,7 @@
                 "time",
                 "validate"
             ],
-            "time": "2016-04-18 07:29:18"
+            "time": "2016-07-04 06:39:29"
         },
         {
             "name": "monolog/monolog",
@@ -4160,7 +4161,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/commerce-enterprise",
-                "reference": "ea73d800ab9ac50a064ccd94f729ac80c74fd976",
+                "reference": "95859fb2a66259ca2459e68a10323b995eb75d4e",
                 "shasum": null
             },
             "require": {
@@ -4170,7 +4171,7 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "OroB2BPro\\Bundle": "src/"
+                    "Oro\\Bundle": "src/"
                 }
             },
             "license": [
@@ -4452,7 +4453,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/platform-enterprise",
-                "reference": "7fb9f3d49c74037c840ef697558673a0b15634b7",
+                "reference": "a20fdd9214dba42290e0b70db2688901668bccc2",
                 "shasum": null
             },
             "require": {
