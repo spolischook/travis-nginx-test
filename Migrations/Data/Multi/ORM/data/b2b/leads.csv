@@ -1,248 +1,242 @@
-Uid,User uid,FirstName,Lastname,Email,PhoneNumber,CompanyName,Status name,Lead Source uid,Channel uid,Customer uid,Contact uid,Campaign uid
-1,52,Rose,Schmidt,RoseSchmidt@t.co,517-782-7343,Rose Schmidt,qualified,1,1,B2B:1,70,4
-2,53,Dorothy,Thompson,DorothyThompson@gmail.com,808-572-3324,Dorothy Thompson,qualified,2,1,B2B:2,71,5
-3,52,Stephanie,Romero,StephanieRomero@time.com,410-794-7279,Stephanie Romero,qualified,3,1,B2B:3,72,6
-4,53,Maria,Parker,MariaParker@t.co,518-441-4708,Maria Parker,qualified,4,1,B2B:4,73,8
-6,55,Doris,Miller,DorisMiller@time.com,707-348-9487,Doris Miller,qualified,5,1,B2B:6,74,4
-7,56,Virginia,Gibson,VirginiaGibson@t.co,707-947-4901,Virginia Gibson,qualified,6,1,B2B:7,75,5
-9,56,Wanda,Carpenter,WandaCarpenter@t.co,928-862-3347,Wanda Carpenter,qualified,1,1,B2B:9,76,8
-11,60,Nicole,Collins,NicoleCollins@gmail.com,979-234-6303,National Lumber,qualified,2,1,B2B:11,77,6
-12,61,Wanda,Martinez,WandaMartinez@gmail.com,845-508-9364,Wanda Martinez,qualified,3,1,B2B:12,78,8
-14,63,Sharon,Austin,SharonAustin@gmail.com,308-366-0524,Demimbu,qualified,4,1,B2B:14,79,8
-15,64,Kelly,Hamilton,KellyHamilton@gmail.com,410-313-0414,Kelly Hamilton,qualified,5,1,B2B:15,80,8
-16,65,Kelly,Stanley,KellyStanley@gmail.com,610-826-6577,Kelly Stanley,qualified,6,1,B2B:16,81,4
-17,66,Teresa,Hansen,TeresaHansen@sm.com,860-677-3172,Teresa Hansen,qualified,1,1,B2B:17,82,4
-18,67,Melissa,West,MelissaWest@sm.com,740-597-5172,Melissa West,qualified,2,1,B2B:18,83,5
-20,69,Dorothy,Cunningham,DorothyCunningham@sm.com,615-578-0662,Realcube,qualified,3,1,B2B:20,84,5
-21,70,Doris,Burns,DorisBurns@sm.com,678-557-7183,Doris Burns,qualified,4,1,B2B:21,85,6
-23,72,Ann,Henry,AnnHenry@sm.com,978-423-5919,Wordware,qualified,5,1,B2B:23,86,6
-24,73,Lori,Watkins,LoriWatkins@yandex.ru,646-602-2074,Lori Watkins,qualified,6,1,B2B:24,87,5
-25,74,Catherine,Parker,CatherineParker@yandex.ru,906-774-7957,Catherine Parker,qualified,1,1,B2B:25,88,4
-27,76,Martha,Gonzalez,MarthaGonzalez@yandex.ru,469-446-1959,Martha Gonzalez,qualified,2,1,B2B:27,89,4
-28,77,Dorothy,Harris,DorothyHarris@parallels.com,507-263-9822,Dorothy Harris,qualified,3,1,B2B:28,90,4
-29,78,Christine,Edwards,ChristineEdwards@parallels.com,315-791-1273,Christine Edwards,qualified,4,1,B2B:29,91,5
-30,79,Susan,Morales,SusanMorales@ll.com,786-217-4707,Susan Morales,qualified,5,1,B2B:30,92,6
-31,80,Sara,Fernandez,SaraFernandez@ll.com,919-628-3623,Sara Fernandez,qualified,6,1,B2B:31,93,4
-32,81,Annie,Alexander,AnnieAlexander@t.co,919-918-1714,Annie Alexander,qualified,1,1,B2B:32,94,5
-33,82,Patricia,Young,PatriciaYoung@t.co,910-770-9457,Patricia Young,qualified,2,1,B2B:33,95,4
-34,83,Louise,Spencer,LouiseSpencer@t.co,708-326-3396,Louise Spencer,qualified,3,1,B2B:34,96,5
-35,84,Melissa,White,MelissaWhite@t.co,252-200-2298,Melissa White,qualified,4,1,B2B:35,97,6
-36,85,Andrea,Hansen,AndreaHansen@t.co,217-401-8159,Andrea Hansen,qualified,5,1,B2B:36,98,8
-37,86,Carolyn,Jackson,CarolynJackson@sm.com,517-677-0691,Carolyn Jackson,qualified,6,1,B2B:37,99,4
-38,87,Carol,Clark,CarolClark@sm.com,985-509-3817,Carol Clark,qualified,1,1,B2B:38,100,5
-39,88,Paul,Martin,PaulMartin@gmail.com,518-348-5353,Paul Martin,qualified,2,1,B2B:39,101,8
-40,89,Arthur,Ruiz,ArthurRuiz@time.com,248-664-3142,Arthur Ruiz,qualified,3,1,B2B:40,102,6
-41,90,Anthony,Crawford,AnthonyCrawford@gmail.com,509-967-5559,Anthony Crawford,qualified,4,1,B2B:41,103,8
-42,51,Clarence,Patterson,ClarencePatterson@gmail.com,417-938-3029,Clarence Patterson,qualified,5,1,B2B:42,104,8
-43,52,Steven,Kelley,StevenKelley@time.com,818-646-6121,Steven Kelley,qualified,6,1,B2B:43,105,8
-44,53,Paul,Moreno,PaulMoreno@gmail.com,701-240-4787,Paul Moreno,qualified,1,1,B2B:44,106,4
-45,54,Martin,Knight,MartinKnight@time.com,317-722-4218,Martin Knight,qualified,2,1,B2B:45,107,4
-46,55,Aaron,Nguyen,AaronNguyen@gmail.com,937-455-2486,Aaron Nguyen,qualified,3,1,B2B:46,108,5
-47,56,Larry,Burke,LarryBurke@time.com,731-415-7808,Larry Burke,qualified,4,1,B2B:47,109,5
-48,57,Ronald,King,RonaldKing@gmail.com,425-675-2248,Ronald King,qualified,5,1,B2B:48,110,6
-49,58,Adam,Davis,AdamDavis@time.com,480-726-7173,Adam Davis,qualified,6,1,B2B:49,111,6
-50,59,Louis,Welch,LouisWelch@gmail.com,917-541-1762,Louis Welch,qualified,1,1,B2B:50,112,5
-51,60,Johnny,Griffin,JohnnyGriffin@gmail.com,217-417-9298,Johnny Griffin,qualified,2,1,B2B:51,113,4
-52,61,Paul,Ford,PaulFord@sm.com,586-755-0517,Paul Ford,qualified,3,1,B2B:52,114,4
-53,62,Dennis,Nguyen,DennisNguyen@sm.com,419-468-8316,Dennis Nguyen,qualified,4,1,B2B:53,115,4
-54,63,Nicholas,King,NicholasKing@sm.com,517-927-8422,Nicholas King,qualified,5,1,B2B:54,116,5
-55,64,Frank,Robertson,FrankRobertson@sm.com,906-406-2616,Frank Robertson,qualified,6,1,B2B:55,117,6
-56,65,Justin,Ross,JustinRoss@gmail.com,419-832-3233,Justin Ross,qualified,1,1,B2B:56,118,4
-57,66,Walter,Reyes,WalterReyes@gmail.com,330-768-4737,Walter Reyes,qualified,2,1,B2B:57,119,5
-58,67,Dennis,Kennedy,DennisKennedy@gmail.com,281-623-5140,Dennis Kennedy,qualified,3,1,B2B:58,120,4
-59,68,Donald,Myers,DonaldMyers@sm.com,305-459-6683,Donald Myers,qualified,4,1,B2B:59,121,5
-60,69,Peter,Wallace,PeterWallace@gmail.com,443-507-6224,Peter Wallace,qualified,5,1,B2B:60,122,6
-61,70,Lawrence,Greene,LawrenceGreene@sm.com,615-535-9149,Lawrence Greene,qualified,6,1,B2B:61,123,8
-62,71,Steven,Peterson,StevenPeterson@gmail.com,715-592-4801,Steven Peterson,qualified,1,1,B2B:62,124,4
-63,72,Gerald,Willis,GeraldWillis@gmail.com,229-505-3624,Gerald Willis,qualified,2,1,B2B:63,125,5
-64,73,Peter,Morrison,PeterMorrison@gmail.com,513-200-0509,Peter Morrison,qualified,3,1,B2B:64,126,
-65,74,Carlos,Smith,CarlosSmith@t.com,520-483-6772,Carlos Smith,qualified,4,1,B2B:65,127,6
-66,75,Billy,Morris,BillyMorris@gmail.com,919-688-1425,Billy Morris,qualified,5,1,B2B:66,128,8
-67,76,Samuel,Ramos,SamuelRamos@gmail.com,708-614-8639,Samuel Ramos,qualified,6,1,B2B:67,129,8
-68,77,Paul,Snyder,PaulSnyder@t.com,505-979-1343,Paul Snyder,qualified,1,1,B2B:68,130,8
-69,78,Scott,Lopez,ScottLopez@t.com,408-561-6870,Scott Lopez,qualified,2,1,B2B:69,131,4
-70,79,Henry,Lawson,HenryLawson@gmail.com,786-351-6268,Henry Lawson,qualified,3,1,B2B:70,132,4
-71,80,Howard,Ray,HowardRay@t.com,209-817-1435,Howard Ray,qualified,4,1,B2B:71,133,5
-72,81,Terry,Johnston,TerryJohnston@t.com,409-971-7396,Terry Johnston,qualified,5,1,B2B:72,134,5
-73,82,Justin,Stevens,JustinStevens@t.com,678-578-0870,Justin Stevens,qualified,6,1,B2B:73,135,6
-74,83,Sam,Moody,SamMoody@gmail.com,401-828-2067,Sam Moody,qualified,1,1,B2B:74,136,6
-75,84,Tom ,Stephens,Tom Stephens@gmail.com,813-425-5248,Tom  Stephens,qualified,2,1,B2B:75,137,5
-76,85,Christopher,Watts,ChristopherWatts@gmail.com,818-876-3647,Christopher Watts,qualified,3,1,B2B:76,138,4
-77,86,Andy,Mckenzie,AndyMckenzie@gmail.com,508-420-7533,Andy Mckenzie,qualified,4,1,B2B:77,139,4
-78,87,Miguel ,Miller,Miguel Miller@gmail.com,940-391-8042,Miguel  Miller,qualified,5,1,B2B:78,140,4
-79,88,Clayton,Adams,ClaytonAdams@gmail.com,307-868-1270,Clayton Adams,qualified,6,1,B2B:79,141,5
-80,89,Bennie ,Cortez,Bennie Cortez@gmail.com,630-242-4645,Bennie  Cortez,qualified,5,1,B2B:80,142,6
-81,90,Sherman,Alvarado,ShermanAlvarado@gmail.com,913-644-7299,Sherman Alvarado,qualified,1,1,B2B:81,143,4
-82,51,Cory,Zimmerman,CoryZimmerman@gmail.com,208-674-6632,Cory Zimmerman,qualified,2,1,B2B:82,144,5
-83,52,Melvin,Keller,MelvinKeller@gmail.com,661-695-4146,Melvin Keller,qualified,3,1,B2B:83,145,4
-84,53,Leroy,Joseph,LeroyJoseph@gmail.com,919-410-4924,Leroy Joseph,qualified,4,1,B2B:84,146,5
-85,54,Randal,Little,RandalLittle@gmail.com,815-399-3013,Randal Little,qualified,5,1,B2B:85,147,6
-86,55,Lynn,Swanson,LynnSwanson@gmail.com,660-675-0640,Lynn Swanson,qualified,1,1,B2B:86,148,
-87,56,Terry,Harvey,TerryHarvey@gmail.com,305-710-3927,Terry Harvey,qualified,2,1,B2B:87,149,4
-88,57,Emanuel,Lopez,EmanuelLopez@gmail.com,202-829-9187,Emanuel Lopez,qualified,3,1,B2B:88,150,5
-89,58,Jorge,Powell,JorgePowell@gmail.com,605-694-4291,Jorge Powell,qualified,4,1,B2B:89,151,
-90,59,Janet,Hoffman,JanetHoffman@gmail.com,859-881-5712,Janet Hoffman,qualified,5,1,B2B:90,152,6
-91,60,Frankie,Beck,FrankieBeck@gmail.com,215-800-7828,Frankie Beck,qualified,1,1,B2B:91,153,8
-92,61,Cecil ,White,Cecil White@gmail.com,760-928-5373,Cecil  White,qualified,2,1,B2B:92,154,8
-93,62,Ivan,Barton,IvanBarton@gmail.com,772-425-8759,Ivan Barton,qualified,3,1,B2B:93,155,8
-94,63,Rudolph,Mclaughlin,RudolphMclaughlin@gmail.com,910-827-9945,Rudolph Mclaughlin,qualified,4,1,B2B:94,156,4
-95,64,Bryan,Delgado,BryanDelgado@gmail.com,810-664-5574,Bryan Delgado,qualified,5,1,B2B:95,157,4
-96,65,Colin,Woods,ColinWoods@gmail.com,914-310-3462,Colin Woods,qualified,1,1,B2B:96,158,5
-97,66,Gordon,Moran,GordonMoran@gmail.com,912-554-2528,Gordon Moran,qualified,2,1,B2B:97,159,5
-98,67,Arnold,Caldwell,ArnoldCaldwell@gmail.com,952-808-3280,Arnold Caldwell,qualified,3,1,B2B:98,160,6
-99,68,Roderick,Strickland,RoderickStrickland@gmail.com,843-477-4776,Roderick Strickland,qualified,4,1,B2B:99,161,6
-100,69,Jon,Floyd,JonFloyd@gmail.com,510-761-0833,Jon Floyd,qualified,5,1,B2B:100,162,5
-101,70,James,Moreno,JamesMoreno@gmail.com,122-750-8119,James Moreno,qualified,1,1,B2B:101,163,4
-102,71,Camille,Gutierrez,CamilleGutierrez@gmail.com,410-945-7204,Camille Gutierrez,qualified,2,1,B2B:102,164,4
-103,72,Alison,White,AlisonWhite@gmail.com,804-314-5213,Alison White,qualified,3,1,B2B:103,165,4
-104,73,Gwendolyn,Howell,GwendolynHowell@gmail.com,978-358-1898,Gwendolyn Howell,qualified,4,1,B2B:104,166,5
-105,74,Kristen,Riley,KristenRiley@gmail.com,332-237-5860,Kristen Riley,qualified,5,1,B2B:105,167,6
-106,75,Susie,Perry,SusiePerry@gmail.com,11-451-4087,Susie Perry,qualified,1,1,B2B:106,168,4
-107,76,Melanie,Williamson,MelanieWilliamson@gmail.com,432-32-957,Melanie Williamson,qualified,2,1,B2B:107,169,5
-108,77,Pauline,Watkins,PaulineWatkins@gmail.com,285-248-1953,Pauline Watkins,qualified,3,1,B2B:108,170,4
-109,78,Angie,Mccarthy,AngieMccarthy@gmail.com,955-542-2908,Angie Mccarthy,qualified,4,1,B2B:109,171,5
-110,79,Amber,Gibbs,AmberGibbs@gmail.com,905-118-3939,Amber Gibbs,qualified,5,1,B2B:110,172,6
-111,80,Kelley,Brewer,KelleyBrewer@gmail.com,237-331-8711,Kelley Brewer,qualified,1,1,B2B:111,173,
-112,81,Roberta,Griffin,RobertaGriffin@gmail.com,764-507-5585,Roberta Griffin,qualified,2,1,B2B:112,174,4
-113,82,Lynette,Fernandez,LynetteFernandez@gmail.com,573-530-2217,Lynette Fernandez,qualified,3,1,B2B:113,175,5
-114,83,Alice,Love,AliceLove@gmail.com,876-57-6549,Alice Love,qualified,4,1,B2B:114,176,
-115,84,Hattie,Andrews,HattieAndrews@gmail.com,952-519-2624,Hattie Andrews,qualified,5,1,B2B:115,177,6
-116,85,Leigh,Warner,LeighWarner@gmail.com,778-142-6321,Leigh Warner,qualified,1,1,B2B:116,178,8
-117,86,Lois,Silva,LoisSilva@gmail.com,55-82-6568,Lois Silva,qualified,2,1,B2B:117,179,8
-118,87,Estelle,Valdez,EstelleValdez@gmail.com,540-288-6246,Estelle Valdez,qualified,3,1,B2B:118,180,8
-119,88,Jaime,Kennedy,JaimeKennedy@gmail.com,790-589-4874,Jaime Kennedy,qualified,4,1,B2B:119,181,4
-120,89,Viola,Mccoy,ViolaMccoy@gmail.com,985-700-8756,Viola Mccoy,qualified,5,1,B2B:120,182,4
-121,90,Shannon,Pena,ShannonPena@gmail.com,400-897-5141,Shannon Pena,qualified,1,1,B2B:121,183,5
-122,91,Martha,Jimenez,MarthaJimenez@gmail.com,687-501-8134,Martha Jimenez,qualified,2,1,B2B:122,184,5
-123,92,Marie,Erickson,MarieErickson@gmail.com,503-965-8097,Marie Erickson,qualified,3,1,B2B:123,185,6
-124,93,Anne,Castro,AnneCastro@gmail.com,132-823-4700,Anne Castro,qualified,4,1,B2B:124,186,6
-125,94,Pearl,Terry,PearlTerry@gmail.com,571-252-8222,Pearl Terry,qualified,5,1,B2B:125,187,5
-126,95,Elizabeth,Kelley,ElizabethKelley@gmail.com,804-411-3308,Elizabeth Kelley,qualified,1,1,B2B:126,188,4
-127,96,Juanita,Robinson,JuanitaRobinson@gmail.com,121-989-1844,Juanita Robinson,qualified,2,1,B2B:127,189,4
-115,60,Nancy,Lawrence,nlawrence0@jiathis.com,217-380-627,NancyLawrence,new,1,1,,,4
-116,61,Andrew,Jacobs,ajacobs1@apache.org,438-622-4506,AndrewJacobs,canceled,2,1,,,5
-117,63,Susan,Baker,sbaker2@deliciousdays.com,378-636-5970,SusanBaker,new,3,1,,,6
-118,64,Frances,Castillo,fcastillo3@hostgator.com,,FrancesCastillo,canceled,4,1,,,4
-119,65,Lois,Coleman,,,LoisColeman,new,5,1,,,5
-120,66,Jack,Thompson,,,JackThompson,canceled,1,1,,,4
-121,67,Jacqueline,Jacobs,jjacobs6@comcast.net,,JacquelineJacobs,new,2,1,,,5
-122,69,Wayne,Ellis,wellis7@prlog.org,,WayneEllis,canceled,3,1,,,6
-123,70,Dorothy,Davis,ddavis8@prweb.com,,DorothyDavis,new,4,1,,,
-124,72,William,Russell,wrussell9@etsy.com,,WilliamRussell,canceled,5,1,,,4
-125,73,Nicholas,Wood,,,NicholasWood,new,1,1,,,5
-126,74,Nicholas,Hawkins,nhawkinsb@i2i.jp,,NicholasHawkins,canceled,2,1,,,
-127,76,William,Washington,wwashingtonc@blog.com,,WilliamWashington,new,3,1,,,6
-128,77,Ruby,Lynch,rlynchd@yolasite.com,130-745-3865,RubyLynch,canceled,4,1,,,
-129,78,Dorothy,Porter,dportere@facebook.com,381-654-5148,DorothyPorter,new,5,1,,,
-130,79,Larry,Hamilton,lhamiltonf@example.com,881-742-6476,LarryHamilton,canceled,1,1,,,
-131,80,Anthony,Young,,603-39-9882,AnthonyYoung,new,2,1,,,4
-132,81,Scott,Rivera,sriverah@ucoz.com,678-15-2718,ScottRivera,canceled,3,1,,,4
-133,82,Patricia,Price,ppricei@usatoday.com,20-975-270,PatriciaPrice,new,4,1,,,5
-134,83,Sandra,Fields,sfieldsj@pcworld.com,374-966-5636,SandraFields,canceled,5,1,,,5
-135,84,Phyllis,Rice,pricek@google.com.au,,PhyllisRice,new,1,1,,,6
-136,85,Earl,Fields,efieldsl@google.co.jp,,EarlFields,canceled,2,1,,,6
-137,86,Adam,Jacobs,ajacobsm@clickbank.net,,AdamJacobs,new,3,1,,,5
-138,87,Carolyn,Hayes,chayesn@hatena.ne.jp,192-99-7926,CarolynHayes,canceled,4,1,,,4
-139,88,Douglas,Romero,dromeroo@europa.eu,156-127-9125,DouglasRomero,new,5,1,,,4
-140,89,Sara,Banks,sbanksp@uol.com.br,,SaraBanks,canceled,1,1,,,4
-141,90,Beverly,Hunt,bhuntq@nbcnews.com,,BeverlyHunt,new,2,1,,,5
-142,60,Louis,Walker,lwalkerr@disqus.com,,LouisWalker,canceled,3,1,,,6
-143,61,Christine,Jackson,cjacksons@epa.gov,,ChristineJackson,new,4,1,,,4
-144,63,Christine,Holmes,,,ChristineHolmes,canceled,5,1,,,5
-145,64,Clarence,Schmidt,cschmidtu@sciencedaily.com,769-928-677,ClarenceSchmidt,new,1,1,,,4
-146,65,Rebecca,Nguyen,rnguyenv@sbwire.com,10-616-7501,RebeccaNguyen,canceled,2,1,,,5
-147,66,Karen,Andrews,kandrewsw@de.vu,144-525-8639,KarenAndrews,new,3,1,,,6
-148,67,Ruby,Shaw,,861-374-5103,RubyShaw,canceled,4,1,,,
-149,69,Janice,Mills,jmillsy@alibaba.com,76-606-5823,JaniceMills,new,5,1,,,4
-150,70,Anna,Stevens,astevensz@zimbio.com,262-658-9371,AnnaStevens,canceled,1,1,,,5
-151,72,Ruth,Turner,rturner10@google.ru,140-186-893,RuthTurner,new,2,1,,,
-152,73,Samuel,Dunn,sdunn11@ameblo.jp,,SamuelDunn,canceled,3,1,,,6
-153,74,Phyllis,Tucker,ptucker12@cafepress.com,56-770-2184,PhyllisTucker,new,4,1,,,8
-154,76,Kelly,Weaver,kweaver13@jiathis.com,683-897-3651,KellyWeaver,canceled,5,1,,,8
-155,77,Sean,George,sgeorge14@theguardian.com,524-614-6970,SeanGeorge,new,1,1,,,8
-156,78,Sharon,Ramirez,,,SharonRamirez,canceled,2,1,,,4
-157,79,Alan,Frazier,afrazier16@github.com,,AlanFrazier,new,3,1,,,4
-158,80,Albert,Williamson,awilliamson17@storify.com,,AlbertWilliamson,canceled,4,1,,,5
-159,81,Susan,Burton,sburton18@netscape.com,,SusanBurton,new,5,1,,,5
-160,82,Jason,Rodriguez,jrodriguez19@list-manage.com,,JasonRodriguez,canceled,1,1,,,6
-161,83,Christina,Day,cday1a@go.com,,ChristinaDay,new,2,1,,,6
-162,84,Elizabeth,Johnson,ejohnson1b@state.tx.us,294-651-1179,ElizabethJohnson,canceled,3,1,,,5
-163,85,Carolyn,Wallace,cwallace1c@boston.com,963-668-708,CarolynWallace,new,4,1,,,4
-164,86,Joshua,Carpenter,jcarpenter1d@seattletimes.com,122-551-6713,JoshuaCarpenter,canceled,5,1,,,4
-165,87,Tina,Hunt,thunt1e@gov.uk,918-447-9373,TinaHunt,new,1,1,,,4
-166,88,Denise,Bryant,,414-424-5112,DeniseBryant,canceled,2,1,,,5
-167,89,Shawn,Tucker,stucker1g@qq.com,796-416-4971,ShawnTucker,new,3,1,,,6
-168,90,Stephen,Cruz,scruz1h@reverbnation.com,751-433-8652,StephenCruz,canceled,4,1,,,4
-169,60,Phyllis,James,pjames1i@ning.com,,PhyllisJames,new,5,1,,,5
-170,61,Jesse,Kelley,jkelley1j@google.com.br,479-846-3246,JesseKelley,canceled,1,1,,,4
-171,63,Barbara,Ryan,bryan1k@home.pl,56-678-6872,BarbaraRyan,new,2,1,,,5
-172,64,John,Frazier,jfrazier1l@elegantthemes.com,902-89-5970,JohnFrazier,canceled,3,1,,,6
-173,65,Terry,Young,,754-618-5942,TerryYoung,new,4,1,,,
-174,66,Jennifer,Hernandez,jhernandez1n@google.com.au,448-819-4502,JenniferHernandez,canceled,5,1,,,4
-175,67,Patricia,Hawkins,phawkins1o@businessweek.com,,PatriciaHawkins,new,1,1,,,5
-176,69,Barbara,Mcdonald,bmcdonald1p@clickbank.net,,BarbaraMcdonald,canceled,2,1,,,
-177,70,Scott,Jordan,sjordan1q@wiley.com,,ScottJordan,new,3,1,,,6
-178,72,Jeremy,Tucker,jtucker1r@hibu.com,,JeremyTucker,canceled,4,1,,,8
-179,73,Robin,Ferguson,rferguson1s@squidoo.com,,RobinFerguson,new,5,1,,,8
-180,74,Eugene,Arnold,earnold1t@nps.gov,,EugeneArnold,canceled,1,1,,,8
-181,76,Douglas,Reynolds,dreynolds1u@weebly.com,663-443-2137,DouglasReynolds,new,2,1,,,4
-182,77,Joshua,Holmes,jholmes1v@over-blog.com,282-500-2858,JoshuaHolmes,canceled,3,1,,,4
-183,78,Wayne,Lee,wlee1w@seesaa.net,118-479-8381,WayneLee,new,4,1,,,5
-184,79,Albert,Edwards,,281-524-2350,AlbertEdwards,canceled,5,1,,,5
-185,80,Cheryl,Nichols,cnichols1y@nps.gov,883-601-7271,CherylNichols,new,1,1,,,6
-186,81,Shirley,Watson,swatson1z@hostgator.com,550-264-1647,ShirleyWatson,canceled,2,1,,,6
-187,82,Julie,Gilbert,jgilbert20@baidu.com,296-102-8208,JulieGilbert,new,3,1,,,5
-188,83,Philip,Burton,pburton21@ed.gov,77-369-17,PhilipBurton,canceled,4,1,,,4
-189,84,Willie,Rogers,,6-811-2219,WillieRogers,new,5,1,,,4
-190,85,Kathleen,Black,kblack23@tumblr.com,545-289-3766,KathleenBlack,canceled,1,1,,,4
-191,86,Sean,Peters,speters24@desdev.cn,,SeanPeters,new,2,1,,,5
-192,87,Joyce,Daniels,jdaniels25@irs.gov,633-983-8101,JoyceDaniels,canceled,3,1,,,6
-193,88,Craig,Gutierrez,cgutierrez26@addtoany.com,334-734-3567,CraigGutierrez,new,4,1,,,4
-194,89,Phillip,Weaver,pweaver27@boston.com,755-953-7496,PhillipWeaver,canceled,5,1,,,5
-195,90,Carol,Lopez,,90-119-773,CarolLopez,new,1,1,,,4
-196,60,Sandra,Bradley,sbradley29@youtu.be,404-261-3856,SandraBradley,canceled,2,1,,,5
-197,61,Walter,Hanson,whanson2a@ucoz.ru,694-289-3576,WalterHanson,new,3,1,,,6
-198,63,Angela,Stevens,astevens2b@unicef.org,,AngelaStevens,canceled,4,1,,,
-199,64,Angela,Wells,awells2c@cnbc.com,,AngelaWells,new,5,1,,,4
-200,65,Julie,Morales,jmorales2d@altervista.org,,JulieMorales,canceled,1,1,,,5
-201,66,Judy,Robertson,jrobertson2e@paginegialle.it,,JudyRobertson,new,2,1,,,
-202,67,Linda,Stone,lstone2f@slashdot.org,,LindaStone,canceled,3,1,,,6
-203,69,Pamela,Richardson,prichardson2g@europa.eu,,PamelaRichardson,new,4,1,,,8
-204,70,Russell,Nguyen,rnguyen2h@state.gov,,RussellNguyen,canceled,5,1,,,8
-205,72,Kevin,Miller,kmiller2i@bloglines.com,37-724-6333,KevinMiller,new,1,1,,,8
-206,73,Scott,Sanders,ssanders2j@cbsnews.com,902-414-2937,ScottSanders,canceled,2,1,,,4
-207,74,Susan,Cruz,,844-331-2376,SusanCruz,new,3,1,,,4
-208,76,Nicholas,Evans,nevans2l@smh.com.au,66-950-1530,NicholasEvans,canceled,4,1,,,5
-209,77,Maria,Wilson,mwilson2m@unblog.fr,874-533-3534,MariaWilson,new,5,1,,,5
-210,78,Bruce,Murphy,bmurphy2n@fc2.com,,BruceMurphy,canceled,1,1,,,6
-211,79,Tammy,Matthews,tmatthews2o@nasa.gov,,TammyMatthews,new,2,1,,,6
-212,80,Billy,Freeman,bfreeman2p@weebly.com,,BillyFreeman,canceled,3,1,,,5
-213,81,Timothy,Collins,tcollins2q@fda.gov,,TimothyCollins,new,4,1,,,4
-214,82,Richard,Banks,rbanks2r@ucsd.edu,,RichardBanks,canceled,5,1,,,4
-215,83,Ernest,Porter,eporter2s@globo.com,,ErnestPorter,new,1,1,,,4
-216,84,Angela,Morris,amorris2t@google.com.br,19-422-8496,AngelaMorris,canceled,2,1,,,5
-217,85,Tammy,Warren,twarren2u@clickbank.net,721-489-2741,TammyWarren,new,3,1,,,6
-218,86,Norma,Rice,nrice2v@toplist.cz,784-344-8168,NormaRice,canceled,4,1,,,4
-219,87,Ruth,Wright,rwright2w@latimes.com,,RuthWright,new,5,1,,,5
-220,88,Annie,Dean,adean2x@indiatimes.com,,AnnieDean,canceled,1,1,,,4
-221,89,Louise,Lawrence,llawrence2y@scribd.com,,LouiseLawrence,new,2,1,,,5
-222,90,Doris,Harrison,dharrison2z@nps.gov,,DorisHarrison,canceled,3,1,,,6
-223,60,Rebecca,Young,,172-523-9492,RebeccaYoung,new,4,1,,,8
-224,61,Heather,Moore,hmoore31@istockphoto.com,972-503-9991,HeatherMoore,canceled,5,1,,,4
-225,63,Tammy,Payne,tpayne32@state.gov,,TammyPayne,new,1,1,,,5
-226,64,Lisa,West,lwest33@ebay.co.uk,821-153-520,LisaWest,canceled,2,1,,,8
-227,65,Tammy,Washington,twashington34@spiegel.de,,TammyWashington,new,3,1,,,6
-228,66,Nicholas,Martin,nmartin35@vimeo.com,,NicholasMartin,canceled,4,1,,,8
-229,67,Lori,Hughes,lhughes36@mozilla.com,134-52-8414,LoriHughes,new,5,1,,,8
-230,69,Cynthia,Hart,,364-672-2541,CynthiaHart,canceled,1,1,,,8
-231,70,Joan,Diaz,jdiaz38@is.gd,803-608-2921,JoanDiaz,new,2,1,,,4
-232,72,Amanda,Powell,,978-792-14,AmandaPowell,canceled,3,1,,,4
-233,73,Jason,Gonzalez,jgonzalez3a@wufoo.com,419-281-6057,JasonGonzalez,new,4,1,,,5
-234,74,Emily,Burns,eburns3b@privacy.gov.au,,EmilyBurns,canceled,5,1,,,5
-235,76,Robert,Murray,rmurray3c@ox.ac.uk,,RobertMurray,new,1,1,,,6
-236,77,Brenda,Hudson,bhudson3d@bluehost.com,,BrendaHudson,canceled,2,1,,,6
-237,78,Jack,Perry,,515-54-9940,JackPerry,new,3,1,,,5
-238,79,Andrea,West,awest3f@youtu.be,261-581-222,AndreaWest,canceled,4,1,,,4
-239,80,Louise,Pierce,lpierce3g@so-net.ne.jp,,LouisePierce,new,5,1,,,4
-240,81,Laura,Armstrong,larmstrong3h@bbb.org,,LauraArmstrong,canceled,1,1,,,4
-241,82,Sandra,Carroll,scarroll3i@mysql.com,14-19-7678,SandraCarroll,new,2,1,,,5
+Uid,User uid,FirstName,Lastname,Email,PhoneNumber,CompanyName,Status Name,Lead Source uid,Channel uid,Customer uid,Contact uid,Campaign uid,Twitter,LinkedIn
+1,main,Jerry,Miller,JerryMiller@ask.com,517-782-7343,Silverline,qualified,1,1,B2B:1,1,1,@JerryMiller,
+2,1001,Roy,Rodgers,RoyRodgers@mail.com,808-572-3324,Silverline,qualified,2,1,B2B:2,2,1,@RoyRodgers,
+3,2001,Richard,Hall,RichardHall@zimbio.com,410-794-7279,Freshtax,qualified,3,1,B2B:3,4,2,@RichardHall,
+4,3,Ross,Allen,RossAllen@mlb.com,518-441-4708,Freshtax,qualified,4,1,B2B:4,5,4,@RossAllen,
+5,4,Wendy,Ramos,WendyRamos@gmail.com,804-477-5590,Cherry & Webb,qualified,5,1,B2B:5,7,2,@WendyRamos,
+6,5,Kelly,Wade,KellyWade@gmail.com,707-348-9487,Cherry & Webb,qualified,6,1,B2B:6,8,2,@KellyWade,
+7,10,Jose,Burton,,707-947-4901,National Lumber,qualified,1,1,B2B:7,10,1,@JoseBurton,
+8,15,Karen,Davis,,912-342-9593,National Lumber,qualified,2,1,B2B:8,11,3,@KarenDavis,
+9,20,Terry,Simpson,TerrySimpson@time.com,928-862-3347,Demimbu,qualified,3,1,B2B:9,13,4,@TerrySimpson,
+10,25,Judy,Harris,JudyHarris@t.co,608-743-3485,Demimbu,qualified,4,1,B2B:10,14,1,@JudyHarris,
+11,30,Lillian,Oliver,LillianOliver@time.com,979-234-6303,Livetube,qualified,5,1,B2B:11,16,3,@LillianOliver,
+12,35,Arthur,Fisher,ArthurFisher@lulu.com,845-508-9364,Livetube,qualified,6,1,B2B:12,17,4,@ArthurFisher,
+13,40,Donald,Ramos,DonaldRamos@gmail.com,330-668-8830,Livetube,qualified,1,1,B2B:13,18,1,@DonaldRamos,
+14,40,Patricia,Oliver,PatriciaOliver@lulu.com,308-366-0524,Realcube,qualified,2,1,B2B:14,19,4,@PatriciaOliver,
+15,45,Rachel,Lane,RachelLane@gmail.com,410-313-0414,Realcube,qualified,3,1,B2B:15,20,4,@RachelLane,
+16,50,Lillian,Oliver,LillianOliver@lulu.com,610-826-6577,Wordware,qualified,4,1,B2B:16,22,3,@LillianOliver,
+17,1,Shirley,Graham,ShirleyGraham@gmail.com,860-677-3172,Wordware,qualified,5,1,B2B:17,23,3,@ShirleyGraham,
+18,2,Carolyn,Perkins,CarolynPerkins@gmail.com,740-597-5172,Wordpedia,qualified,6,1,B2B:18,25,2,@CarolynPerkins,
+19,3,Helen,Peters,HelenPeters@intel.com,650-733-4527,Wordpedia,qualified,1,1,B2B:19,26,4,@HelenPeters,
+20,4,Rachel,Howell,RachelHowell@time.com,615-578-0662,Wordpedia,qualified,2,1,B2B:20,27,2,@RachelHowell,
+21,5,Maria,Watkins,MariaWatkins@intel.com,678-557-7183,Fivechat,qualified,3,1,B2B:21,28,3,@MariaWatkins,
+22,6,Jean,Castillo,JeanCastillo@gmail.com,770-992-5718,Fivechat,qualified,4,1,B2B:22,29,3,@JeanCastillo,
+23,7,Stephen,Medina,StephenMedina@gmail.com,978-423-5919,Fivechat,qualified,5,1,B2B:23,30,2,@StephenMedina,
+24,8,Lawrence,Garrett,LawrenceGarrett@intel.com,646-602-2074,Avavee,qualified,6,1,B2B:24,31,3,@LawrenceGarrett,
+25,9,Sharon,Watkins,SharonWatkins@time.com,906-774-7957,Avavee,qualified,1,1,B2B:25,32,1,@SharonWatkins,
+26,10,Joyce,Fuller,JoyceFuller@adobe.com,610-453-4749,Dabshots,qualified,2,1,B2B:26,34,4,@JoyceFuller,
+27,11,Ruth,Barnes,,469-446-1959,Dabshots,qualified,3,1,B2B:27,35,1,@RuthBarnes,
+28,12,Nicole,Hart,,507-263-9822,Dabshots,qualified,4,1,B2B:28,36,3,@NicoleHart,
+29,13,Arthur,Cook,,315-791-1273,Latz,qualified,5,1,B2B:29,37,1,@ArthurCook,
+30,14,Kelly,Richardson,,786-217-4707,Latz,qualified,6,1,B2B:30,38,3,@KellyRichardson,
+31,15,Kathy,Perez,,919-628-3623,Latz,qualified,1,1,B2B:31,39,3,@KathyPerez,
+32,16,Wanda,Ford,WandaFord@gmail.com,919-918-1714,Centidel,qualified,2,1,B2B:32,40,1,@WandaFord,
+33,17,Benjamin,Ryan,BenjaminRyan@adobe.com,910-770-9457,Centidel,qualified,3,1,B2B:33,41,4,@BenjaminRyan,
+34,18,Chris,Tucker,ChrisTucker@time.com,708-326-3396,Centidel,qualified,4,1,B2B:34,42,2,@ChrisTucker,
+35,19,Bobby,Ramos,BobbyRamos@gmail.com,252-200-2298,Tagpad,qualified,5,1,B2B:35,43,3,@BobbyRamos,
+36,20,Joan,Anderson,JoanAnderson@parallels.com,217-401-8159,Tagpad,qualified,6,1,B2B:36,44,4,@JoanAnderson,
+37,22,Justin,Reyes,JustinReyes@gmail.com,517-677-0691,Abata,qualified,1,1,B2B:37,46,2,@JustinReyes,
+38,24,Evelyn,Burke,EvelynBurke@time.com,985-509-3817,Abata,qualified,2,1,B2B:38,47,3,@EvelynBurke,
+39,26,Gloria,Garrett,GloriaGarrett@parallels.com,518-348-5353,Abata,qualified,3,1,B2B:39,48,4,@GloriaGarrett,
+40,28,Annie,Mitchell,AnnieMitchell@gmail.com,248-664-3142,Youfeed,qualified,4,1,B2B:40,49,2,@AnnieMitchell,
+41,30,Frances,Gutierrez,FrancesGutierrez@lulu.com,509-967-5559,Youfeed,qualified,5,1,B2B:41,50,3,@FrancesGutierrez,
+42,32,Peter,Hayes,PeterHayes@parallels.com,417-938-3029,Youfeed,qualified,6,1,B2B:42,51,4,@PeterHayes,
+43,34,Anne,Ray,AnneRay@yandex.ru,818-646-6121,Skimia,qualified,2,1,B2B:43,52,1,@AnneRay,
+44,36,George,Mendoza,GeorgeMendoza@yandex.ru,701-240-4787,Skimia,qualified,3,1,B2B:44,53,4,@GeorgeMendoza,
+45,38,Cynthia,West,CynthiaWest@time.com,317-722-4218,Skimia,qualified,4,1,B2B:45,54,3,@CynthiaWest,
+46,40,Henry,Lawrence,HenryLawrence@yandex.ru,937-455-2486,Mydeo,qualified,5,1,B2B:46,55,1,@HenryLawrence,
+47,42,Janet,Wright,JanetWright@samsung.com,731-415-7808,Mydeo,qualified,1,1,B2B:47,56,4,@JanetWright,
+48,44,Willie,Chavez,WillieChavez@gmail.com,425-675-2248,Mydeo,qualified,2,1,B2B:48,57,3,@WillieChavez,
+49,46,Angela,James,AngelaJames@samsung.com,480-726-7173,Voonte,qualified,3,1,B2B:49,58,4,@AngelaJames,
+50,48,Ashley,Stone,AshleyStone@time.com,917-541-1762,Voonte,qualified,4,1,B2B:50,59,1,@AshleyStone,
+51,50,Billy,Hansen,BillyHansen@samsung.com,217-417-9298,Voonte,qualified,5,1,B2B:51,60,1,@BillyHansen,
+52,1,Adam,Sanders,AdamSanders@answers.com,586-755-0517,Bluecare,qualified,1,1,B2B:52,61,1,@AdamSanders,
+53,2,Russell,Howard,RussellHoward@answers.com,419-468-8316,Bluecare,qualified,2,1,B2B:53,62,3,@RussellHoward,
+54,3,Craig,Bishop,CraigBishop@answers.com,517-927-8422,Bluecare,qualified,3,1,B2B:54,63,2,@CraigBishop,
+55,4,Teresa,Ramos,TeresaRamos@gmail.com,906-406-2616,Aprunbase,qualified,4,1,B2B:55,64,2,@TeresaRamos,
+56,5,Samuel,Gray,SamuelGray@time.com,419-832-3233,Aprunbase,qualified,5,1,B2B:56,65,1,@SamuelGray,
+57,6,James,Watson,JamesWatson@gmail.com,330-768-4737,Aprunbase,qualified,1,1,B2B:57,66,2,@JamesWatson,
+58,7,Richard,Schmidt,RichardSchmidt@t.co,281-623-5140,Fintancore,qualified,2,1,B2B:58,67,1,@RichardSchmidt,
+59,8,Donald,Cooper,DonaldCooper@t.co,305-459-6683,Fintancore,qualified,3,1,B2B:59,68,2,@DonaldCooper,
+60,9,Susan,Hawkins,SusanHawkins@gmail.com,443-507-6224,Fintancore,qualified,4,1,B2B:60,69,4,@SusanHawkins,
+61,10,Sam,Moody,SamMoody@gmail.com,615-535-9149,Sunlux,qualified,5,1,B2B:61,70,1,@SamMoody,
+62,11,Tom ,Stephens,Tom Stephens@gmail.com,715-592-4801,Sunlux,qualified,1,1,B2B:62,71,3,@Tom Stephens,
+63,12,Christopher,Watts,ChristopherWatts@gmail.com,229-505-3624,Lacane,qualified,2,1,B2B:64,72,2,@ChristopherWatts,
+64,13,Andy,Mckenzie,AndyMckenzie@gmail.com,513-200-0509,Lacane,qualified,3,1,B2B:65,73,2,@AndyMckenzie,
+65,14,Miguel ,Miller,Miguel Miller@gmail.com,520-483-6772,Zotdax,qualified,4,1,B2B:67,74,,@Miguel Miller,
+66,15,Clayton,Adams,ClaytonAdams@gmail.com,919-688-1425,Zotdax,qualified,5,1,B2B:69,75,3,@ClaytonAdams,
+67,16,Bennie ,Cortez,Bennie Cortez@gmail.com,708-614-8639,Konkware,qualified,1,1,B2B:71,76,1,@Bennie Cortez,
+68,17,Sherman,Alvarado,ShermanAlvarado@gmail.com,505-979-1343,Konkware,qualified,2,1,B2B:72,77,2,@ShermanAlvarado,
+69,18,Cory,Zimmerman,CoryZimmerman@gmail.com,408-561-6870,Caneunatam,qualified,3,1,B2B:73,78,1,@CoryZimmerman,
+70,19,Melvin,Keller,MelvinKeller@gmail.com,786-351-6268,Caneunatam,qualified,4,1,B2B:75,79,2,@MelvinKeller,
+71,20,Leroy,Joseph,LeroyJoseph@gmail.com,209-817-1435,Driplex,qualified,5,1,B2B:76,80,2,@LeroyJoseph,
+72,23,Randal,Little,RandalLittle@gmail.com,409-971-7396,Driplex,qualified,1,1,B2B:78,81,2,@RandalLittle,
+73,25,Lynn,Swanson,LynnSwanson@gmail.com,678-578-0870,Ganzquote,qualified,2,1,B2B:80,82,1,@LynnSwanson,
+74,27,Terry,Harvey,TerryHarvey@gmail.com,401-828-2067,Ganzquote,qualified,3,1,B2B:81,83,,@TerryHarvey,
+75,29,Emanuel,Lopez,EmanuelLopez@gmail.com,813-425-5248,Trioice,qualified,4,1,B2B:82,84,3,@EmanuelLopez,
+76,31,Jorge,Powell,JorgePowell@gmail.com,818-876-3647,Trioice,qualified,5,1,B2B:83,85,1,@JorgePowell,
+77,33,Janet,Hoffman,JanetHoffman@gmail.com,508-420-7533,Sunjoycare,qualified,1,1,B2B:84,86,,@JanetHoffman,
+78,35,Frankie,Beck,FrankieBeck@gmail.com,940-391-8042,Sunjoycare,qualified,2,1,B2B:85,87,3,@FrankieBeck,
+79,37,Cecil ,White,Cecil White@gmail.com,307-868-1270,Goldla,qualified,3,1,B2B:86,88,,@Cecil White,
+80,39,Ivan,Barton,IvanBarton@gmail.com,630-242-4645,Goldla,qualified,4,1,B2B:87,89,1,@IvanBarton,
+81,41,Rudolph,Mclaughlin,RudolphMclaughlin@gmail.com,913-644-7299,Hotlam,qualified,5,1,B2B:88,90,3,@RudolphMclaughlin,
+82,43,Bryan,Delgado,BryanDelgado@gmail.com,208-674-6632,Hotlam,qualified,1,1,B2B:89,91,2,@BryanDelgado,
+83,45,Colin,Woods,ColinWoods@gmail.com,661-695-4146,Rankcanis,qualified,2,1,B2B:90,92,3,@ColinWoods,
+84,47,Gordon,Moran,GordonMoran@gmail.com,919-410-4924,Rankcanis,qualified,3,1,B2B:91,93,2,@GordonMoran,
+85,49,Arnold,Caldwell,ArnoldCaldwell@gmail.com,815-399-3013,Ontoholdings,qualified,4,1,B2B:92,94,1,@ArnoldCaldwell,
+86,1,Roderick,Strickland,RoderickStrickland@gmail.com,660-675-0640,Ontoholdings,qualified,5,1,B2B:93,95,,@RoderickStrickland,
+87,1,Jon,Floyd,JonFloyd@gmail.com,305-710-3927,Gogogreen,qualified,1,1,B2B:94,96,1,@JonFloyd,
+88,1,James,Moreno,JamesMoreno@gmail.com,202-829-9187,Gogogreen,qualified,2,1,B2B:95,97,3,@JamesMoreno,
+89,2,Camille,Gutierrez,CamilleGutierrez@gmail.com,605-694-4291,Redphase,qualified,3,1,B2B:96,98,2,@CamilleGutierrez,
+90,2,Alison,White,AlisonWhite@gmail.com,859-881-5712,Redphase,qualified,4,1,B2B:97,99,,@AlisonWhite,
+91,7,Gwendolyn,Howell,GwendolynHowell@gmail.com,215-800-7828,Yeartechno,qualified,5,1,B2B:98,100,,@GwendolynHowell,
+92,7,Kristen,Riley,KristenRiley@gmail.com,760-928-5373,Yeartechno,qualified,1,1,B2B:99,101,,@KristenRiley,
+93,10,Susie,Perry,SusiePerry@gmail.com,772-425-8759,Danzoomin,qualified,2,1,B2B:100,102,2,@SusiePerry,
+94,15,Melanie,Williamson,MelanieWilliamson@gmail.com,910-827-9945,Danzoomin,qualified,3,1,B2B:101,103,2,@MelanieWilliamson,
+95,main,Pauline,Watkins,PaulineWatkins@gmail.com,810-664-5574,Dondox,qualified,4,1,B2B:103,104,,@PaulineWatkins,
+96,1001,Angie,Mccarthy,AngieMccarthy@gmail.com,914-310-3462,Dondox,qualified,5,1,B2B:104,105,1,@AngieMccarthy,
+97,2001,Amber,Gibbs,AmberGibbs@gmail.com,912-554-2528,Siliconium,qualified,1,1,B2B:106,106,3,@AmberGibbs,
+98,1,Kelley,Brewer,KelleyBrewer@gmail.com,952-808-3280,Siliconium,qualified,2,1,B2B:107,107,3,@KelleyBrewer,
+99,2,Roberta,Griffin,RobertaGriffin@gmail.com,843-477-4776,Spanace,qualified,3,1,B2B:109,108,1,@RobertaGriffin,
+100,8,Lynette,Fernandez,LynetteFernandez@gmail.com,510-761-0833,Spanace,qualified,4,1,B2B:110,109,2,@LynetteFernandez,
+101,9,Alice,Love,AliceLove@gmail.com,,Goodtech,qualified,5,1,B2B:112,110,1,@AliceLove,
+102,10,Hattie,Andrews,HattieAndrews@gmail.com,,Goodtech,qualified,1,1,B2B:113,111,1,@HattieAndrews,
+103,11,Leigh,Warner,LeighWarner@gmail.com,697-435-5141,Ranfix,qualified,2,1,B2B:115,112,2,@LeighWarner,
+104,12,Lois,Silva,LoisSilva@gmail.com,407-460-1629,Ranfix,qualified,3,1,B2B:116,113,,@LoisSilva,
+105,13,Estelle,Valdez,EstelleValdez@gmail.com,,Howjaycan,qualified,4,1,B2B:117,114,2,@EstelleValdez,
+106,14,Jaime,Kennedy,JaimeKennedy@gmail.com,757-698-4022,Howjaycan,qualified,5,1,B2B:118,115,2,@JaimeKennedy,
+107,15,Viola,Mccoy,ViolaMccoy@gmail.com,937-820-4202,Keyruncone,qualified,1,1,B2B:120,116,1,@ViolaMccoy,
+108,16,Shannon,Pena,ShannonPena@gmail.com,486-295-1847,Keyruncone,qualified,2,1,B2B:121,117,3,@ShannonPena,
+109,17,Martha,Jimenez,MarthaJimenez@gmail.com,943-275-828,Stanhouse,qualified,3,1,B2B:122,118,,@MarthaJimenez,
+110,18,Marie,Erickson,MarieErickson@gmail.com,934-752-4179,Stanhouse,qualified,4,1,B2B:124,119,1,@MarieErickson,
+111,19,Anne,Castro,AnneCastro@gmail.com,778-295-7090,Ranity,qualified,5,1,B2B:125,120,3,@AnneCastro,
+112,20,Pearl,Terry,PearlTerry@gmail.com,477-180-7014,Ranity,qualified,1,1,B2B:126,121,,@PearlTerry,
+113,21,Elizabeth,Kelley,ElizabethKelley@gmail.com,,Doublehow,qualified,2,1,B2B:127,122,1,@ElizabethKelley,
+114,22,Juanita,Robinson,JuanitaRobinson@gmail.com,280-279-6497,Doublehow,qualified,3,1,B2B:128,123,1,@JuanitaRobinson,
+115,23,Nancy,Lawrence,nlawrence0@jiathis.com,217-380-627,Nancy Lawrence,new,1,1,,,1,@NancyLawrence,
+116,24,Andrew,Jacobs,ajacobs1@apache.org,438-622-4506,Andrew Jacobs,canceled,2,1,,,2,@AndrewJacobs,
+117,25,Susan,Baker,sbaker2@deliciousdays.com,378-636-5970,Susan Baker,new,3,1,,,,@SusanBaker,
+118,26,Frances,Castillo,fcastillo3@hostgator.com,516-119-1736,Frances Castillo,canceled,4,1,,,2,@FrancesCastillo,
+119,27,Lois,Coleman,,785-90-8884,Lois Coleman,new,5,1,,,2,@LoisColeman,
+120,28,Jack,Thompson,,541-584-3091,Jack Thompson,canceled,1,1,,,1,@JackThompson,
+121,29,Jacqueline,Jacobs,jjacobs6@comcast.net,808-621-7779,Jacqueline Jacobs,new,2,1,,,3,@JacquelineJacobs,
+122,30,Wayne,Ellis,wellis7@prlog.org,284-350-5352,Wayne Ellis,canceled,3,1,,,,@WayneEllis,
+123,31,Dorothy,Davis,ddavis8@prweb.com,48-175-4833,Dorothy Davis,new,4,1,,,1,@DorothyDavis,
+124,32,William,Russell,wrussell9@etsy.com,988-315-4059,William Russell,canceled,5,1,,,3,@WilliamRussell,
+125,33,Nicholas,Wood,,607-196-3594,Nicholas Wood,new,1,1,,,,@NicholasWood,
+126,34,Nicholas,Hawkins,nhawkinsb@i2i.jp,204-448-9098,Nicholas Hawkins,canceled,2,1,,,1,@NicholasHawkins,
+127,35,William,Washington,wwashingtonc@blog.com,766-775-3208,William Washington,new,3,1,,,,@WilliamWashington,
+128,36,Ruby,Lynch,rlynchd@yolasite.com,130-745-3865,Ruby Lynch,canceled,4,1,,,,@RubyLynch,
+129,37,Dorothy,Porter,dportere@facebook.com,381-654-5148,Dorothy Porter,new,5,1,,,3,@DorothyPorter,
+130,38,Larry,Hamilton,lhamiltonf@example.com,881-742-6476,Larry Hamilton,canceled,1,1,,,3,@LarryHamilton,
+131,39,Anthony,Young,,603-39-9882,Anthony Young,new,2,1,,,2,@AnthonyYoung,
+132,40,Scott,Rivera,sriverah@ucoz.com,678-15-2718,Scott Rivera,canceled,3,1,,,,@ScottRivera,
+133,41,Patricia,Price,ppricei@usatoday.com,20-975-270,Patricia Price,new,4,1,,,2,@PatriciaPrice,
+134,42,Sandra,Fields,sfieldsj@pcworld.com,374-966-5636,Sandra Fields,canceled,5,1,,,3,@SandraFields,
+135,43,Phyllis,Rice,pricek@google.com.au,,Phyllis Rice,new,1,1,,,3,@PhyllisRice,
+136,44,Earl,Fields,efieldsl@google.co.jp,,Earl Fields,canceled,2,1,,,2,@EarlFields,
+137,45,Adam,Jacobs,ajacobsm@clickbank.net,,Adam Jacobs,new,3,1,,,3,@AdamJacobs,
+138,46,Carolyn,Hayes,chayesn@hatena.ne.jp,192-99-7926,Carolyn Hayes,canceled,4,1,,,1,@CarolynHayes,
+139,47,Douglas,Romero,dromeroo@europa.eu,156-127-9125,Douglas Romero,new,5,1,,,,@DouglasRomero,
+140,48,Sara,Banks,sbanksp@uol.com.br,195-265-9934,Sara Banks,canceled,1,1,,,1,@SaraBanks,
+141,49,Beverly,Hunt,bhuntq@nbcnews.com,286-892-4492,Beverly Hunt,new,2,1,,,3,@BeverlyHunt,
+142,50,Louis,Walker,lwalkerr@disqus.com,733-672-2234,Louis Walker,canceled,3,1,,,1,@LouisWalker,
+143,1,Christine,Jackson,cjacksons@epa.gov,788-221-2193,Christine Jackson,new,4,1,,,3,@ChristineJackson,
+144,2,Christine,Holmes,,817-707-8423,Christine Holmes,canceled,5,1,,,3,@ChristineHolmes,
+145,3,Clarence,Schmidt,cschmidtu@sciencedaily.com,769-928-677,Clarence Schmidt,new,1,1,,,1,@ClarenceSchmidt,
+146,4,Rebecca,Nguyen,rnguyenv@sbwire.com,10-616-7501,Rebecca Nguyen,canceled,2,1,,,,@RebeccaNguyen,
+147,5,Karen,Andrews,kandrewsw@de.vu,144-525-8639,Karen Andrews,new,3,1,,,2,@KarenAndrews,
+148,6,Ruby,Shaw,,861-374-5103,Ruby Shaw,canceled,4,1,,,3,@RubyShaw,
+149,7,Janice,Mills,jmillsy@alibaba.com,76-606-5823,Janice Mills,new,5,1,,,,@JaniceMills,
+150,8,Anna,Stevens,astevensz@zimbio.com,262-658-9371,Anna Stevens,canceled,1,1,,,2,@AnnaStevens,
+151,9,Ruth,Turner,rturner10@google.ru,140-186-893,Ruth Turner,new,2,1,,,3,@RuthTurner,
+152,10,Samuel,Dunn,sdunn11@ameblo.jp,,Samuel Dunn,canceled,3,1,,,,@SamuelDunn,
+153,11,Phyllis,Tucker,ptucker12@cafepress.com,56-770-2184,Phyllis Tucker,new,4,1,,,2,@PhyllisTucker,
+154,12,Kelly,Weaver,kweaver13@jiathis.com,683-897-3651,Kelly Weaver,canceled,5,1,,,3,@KellyWeaver,
+155,13,Sean,George,sgeorge14@theguardian.com,524-614-6970,Sean George,new,1,1,,,,@SeanGeorge,
+156,14,Sharon,Ramirez,,730-846-4358,Sharon Ramirez,canceled,2,1,,,1,@SharonRamirez,
+157,15,Alan,Frazier,afrazier16@github.com,358-91-1812,Alan Frazier,new,3,1,,,,@AlanFrazier,
+158,16,Albert,Williamson,awilliamson17@storify.com,811-364-6571,Albert Williamson,canceled,4,1,,,3,@AlbertWilliamson,
+159,17,Susan,Burton,sburton18@netscape.com,543-424-3222,Susan Burton,new,5,1,,,1,@SusanBurton,
+160,18,Jason,Rodriguez,jrodriguez19@list-manage.com,499-122-9924,Jason Rodriguez,canceled,1,1,,,,@JasonRodriguez,
+161,19,Christina,Day,cday1a@go.com,958-350-7651,Christina Day,new,2,1,,,3,@ChristinaDay,
+162,20,Elizabeth,Johnson,ejohnson1b@state.tx.us,294-651-1179,Elizabeth Johnson,canceled,3,1,,,,@ElizabethJohnson,
+163,21,Carolyn,Wallace,cwallace1c@boston.com,963-668-708,Carolyn Wallace,new,4,1,,,1,@CarolynWallace,
+164,22,Joshua,Carpenter,jcarpenter1d@seattletimes.com,122-551-6713,Joshua Carpenter,canceled,5,1,,,1,@JoshuaCarpenter,
+165,23,Tina,Hunt,thunt1e@gov.uk,918-447-9373,Tina Hunt,new,1,1,,,1,@TinaHunt,
+166,24,Denise,Bryant,,414-424-5112,Denise Bryant,canceled,2,1,,,3,@DeniseBryant,
+167,25,Shawn,Tucker,stucker1g@qq.com,796-416-4971,Shawn Tucker,new,3,1,,,2,@ShawnTucker,
+168,26,Stephen,Cruz,scruz1h@reverbnation.com,751-433-8652,Stephen Cruz,canceled,4,1,,,2,@StephenCruz,
+169,27,Phyllis,James,pjames1i@ning.com,,Phyllis James,new,5,1,,,1,@PhyllisJames,
+170,28,Jesse,Kelley,jkelley1j@google.com.br,479-846-3246,Jesse Kelley,canceled,1,1,,,2,@JesseKelley,
+171,29,Barbara,Ryan,bryan1k@home.pl,56-678-6872,Barbara Ryan,new,2,1,,,1,@BarbaraRyan,
+172,30,John,Frazier,jfrazier1l@elegantthemes.com,902-89-5970,John Frazier,canceled,3,1,,,2,@JohnFrazier,
+173,31,Terry,Young,,754-618-5942,Terry Young,new,4,1,,,4,@TerryYoung,
+174,32,Jennifer,Hernandez,jhernandez1n@google.com.au,448-819-4502,Jennifer Hernandez,canceled,5,1,,,1,@JenniferHernandez,
+175,33,Patricia,Hawkins,phawkins1o@businessweek.com,547-560-7162,Patricia Hawkins,new,1,1,,,3,@PatriciaHawkins,
+176,34,Barbara,Mcdonald,bmcdonald1p@clickbank.net,10-421-4340,Barbara Mcdonald,canceled,2,1,,,2,@BarbaraMcdonald,
+177,35,Scott,Jordan,sjordan1q@wiley.com,534-87-8438,Scott Jordan,new,3,1,,,2,@ScottJordan,
+178,36,Jeremy,Tucker,jtucker1r@hibu.com,637-172-4711,Jeremy Tucker,canceled,4,1,,,4,@JeremyTucker,
+179,37,Robin,Ferguson,rferguson1s@squidoo.com,779-834-4491,Robin Ferguson,new,5,1,,,3,@RobinFerguson,
+180,38,Eugene,Arnold,earnold1t@nps.gov,407-506-5838,Eugene Arnold,canceled,1,1,,,1,@EugeneArnold,
+181,39,Douglas,Reynolds,dreynolds1u@weebly.com,663-443-2137,Douglas Reynolds,new,2,1,,,2,@DouglasReynolds,
+182,40,Joshua,Holmes,jholmes1v@over-blog.com,282-500-2858,Joshua Holmes,canceled,3,1,,,1,@JoshuaHolmes,
+183,41,Wayne,Lee,wlee1w@seesaa.net,118-479-8381,Wayne Lee,new,4,1,,,2,@WayneLee,
+184,42,Albert,Edwards,,281-524-2350,Albert Edwards,canceled,5,1,,,2,@AlbertEdwards,
+185,43,Cheryl,Nichols,cnichols1y@nps.gov,883-601-7271,Cheryl Nichols,new,1,1,,,2,@CherylNichols,
+186,44,Shirley,Watson,swatson1z@hostgator.com,550-264-1647,Shirley Watson,canceled,2,1,,,1,@ShirleyWatson,
+187,45,Julie,Gilbert,jgilbert20@baidu.com,296-102-8208,Julie Gilbert,new,3,1,,,,@JulieGilbert,
+188,46,Philip,Burton,pburton21@ed.gov,77-369-17,Philip Burton,canceled,4,1,,,3,@PhilipBurton,
+189,47,Willie,Rogers,,6-811-2219,Willie Rogers,new,5,1,,,1,@WillieRogers,
+190,48,Kathleen,Black,kblack23@tumblr.com,545-289-3766,Kathleen Black,canceled,1,1,,,,@KathleenBlack,
+191,49,Sean,Peters,speters24@desdev.cn,,Sean Peters,new,2,1,,,3,@SeanPeters,
+192,50,Joyce,Daniels,jdaniels25@irs.gov,633-983-8101,Joyce Daniels,canceled,3,1,,,,@JoyceDaniels,
+193,1,Craig,Gutierrez,cgutierrez26@addtoany.com,334-734-3567,Craig Gutierrez,new,4,1,,,1,@CraigGutierrez,
+194,2,Phillip,Weaver,pweaver27@boston.com,755-953-7496,Phillip Weaver,canceled,5,1,,,3,@PhillipWeaver,
+195,3,Carol,Lopez,,90-119-773,Carol Lopez,new,1,1,,,2,@CarolLopez,
+196,4,Sandra,Bradley,sbradley29@youtu.be,404-261-3856,Sandra Bradley,canceled,2,1,,,3,@SandraBradley,
+197,5,Walter,Hanson,whanson2a@ucoz.ru,694-289-3576,Walter Hanson,new,3,1,,,2,@WalterHanson,
+198,6,Angela,Stevens,astevens2b@unicef.org,588-392-9991,Angela Stevens,canceled,4,1,,,1,@AngelaStevens,
+199,7,Angela,Wells,awells2c@cnbc.com,293-262-5162,Angela Wells,new,5,1,,,,@AngelaWells,
+200,8,Julie,Morales,jmorales2d@altervista.org,315-262-2292,Julie Morales,canceled,1,1,,,1,@JulieMorales,
+201,9,Judy,Robertson,jrobertson2e@paginegialle.it,810-474-3617,Judy Robertson,new,2,1,,,3,@JudyRobertson,
+202,10,Linda,Stone,lstone2f@slashdot.org,913-596-1259,Linda Stone,canceled,3,1,,,2,@LindaStone,
+203,11,Pamela,Richardson,prichardson2g@europa.eu,872-790-4273,Pamela Richardson,new,4,1,,,4,@PamelaRichardson,
+204,12,Russell,Nguyen,rnguyen2h@state.gov,954-469-1181,Russell Nguyen,canceled,5,1,,,4,@RussellNguyen,
+205,13,Kevin,Miller,kmiller2i@bloglines.com,37-724-6333,Kevin Miller,new,1,1,,,4,@KevinMiller,
+206,14,Scott,Sanders,ssanders2j@cbsnews.com,902-414-2937,Scott Sanders,canceled,2,1,,,2,@ScottSanders,
+207,15,Susan,Cruz,,844-331-2376,Susan Cruz,new,3,1,,,2,@SusanCruz,
+208,16,Nicholas,Evans,nevans2l@smh.com.au,66-950-1530,Nicholas Evans,canceled,4,1,,,4,@NicholasEvans,
+209,17,Maria,Wilson,mwilson2m@unblog.fr,874-533-3534,Maria Wilson,new,5,1,,,1,@MariaWilson,
+210,18,Bruce,Murphy,bmurphy2n@fc2.com,,Bruce Murphy,canceled,1,1,,,3,@BruceMurphy,
+211,19,Tammy,Matthews,tmatthews2o@nasa.gov,,Tammy Matthews,new,2,1,,,3,@TammyMatthews,
+212,20,Billy,Freeman,bfreeman2p@weebly.com,,Billy Freeman,canceled,3,1,,,1,@BillyFreeman,
+213,21,Timothy,Collins,tcollins2q@fda.gov,,Timothy Collins,new,4,1,,,2,@TimothyCollins,
+214,22,Richard,Banks,rbanks2r@ucsd.edu,,Richard Banks,canceled,5,1,,,1,@RichardBanks,
+215,23,Ernest,Porter,eporter2s@globo.com,,Ernest Porter,new,1,1,,,1,@ErnestPorter,
+216,24,Angela,Morris,amorris2t@google.com.br,19-422-8496,Angela Morris,canceled,2,1,,,2,@AngelaMorris,
+217,25,Tammy,Warren,twarren2u@clickbank.net,721-489-2741,Tammy Warren,new,3,1,,,4,@TammyWarren,
+218,26,Norma,Rice,nrice2v@toplist.cz,784-344-8168,Norma Rice,canceled,4,1,,,2,@NormaRice,
+219,27,Ruth,Wright,rwright2w@latimes.com,436-320-8956,Ruth Wright,new,5,1,,,2,@RuthWright,
+220,28,Annie,Dean,adean2x@indiatimes.com,940-36-2763,Annie Dean,canceled,1,1,,,1,@AnnieDean,
+221,29,Louise,Lawrence,llawrence2y@scribd.com,605-847-5188,Louise Lawrence,new,2,1,,,3,@LouiseLawrence,
+222,30,Doris,Harrison,dharrison2z@nps.gov,195-486-776,Doris Harrison,canceled,3,1,,,4,@DorisHarrison,
+223,31,Rebecca,Young,,243-694-881,Rebecca Young,new,4,1,,,1,@RebeccaYoung,
+224,32,Heather,Moore,hmoore31@istockphoto.com,972-503-9991,Heather Moore,canceled,5,1,,,3,@HeatherMoore,
+225,33,Tammy,Payne,tpayne32@state.gov,783-839-8087,Tammy Payne,new,1,1,,,4,@TammyPayne,
+226,34,Lisa,West,lwest33@ebay.co.uk,821-153-520,Lisa West,canceled,2,1,,,1,@LisaWest,
+227,35,Tammy,Washington,twashington34@spiegel.de,724-225-4728,Tammy Washington,new,3,1,,,3,@TammyWashington,
+228,36,Nicholas,Martin,nmartin35@vimeo.com,689-765-6522,Nicholas Martin,canceled,4,1,,,1,@NicholasMartin,
+229,37,Lori,Hughes,lhughes36@mozilla.com,134-52-8414,Lori Hughes,new,5,1,,,2,@LoriHughes,
+230,38,Cynthia,Hart,,364-672-2541,Cynthia Hart,canceled,1,1,,,1,@CynthiaHart,
+231,39,Joan,Diaz,jdiaz38@is.gd,803-608-2921,Joan Diaz,new,2,1,,,1,@JoanDiaz,
+232,40,Amanda,Powell,,978-792-14,Amanda Powell,canceled,3,1,,,2,@AmandaPowell,
+233,41,Jason,Gonzalez,jgonzalez3a@wufoo.com,419-281-6057,Jason Gonzalez,new,4,1,,,4,@JasonGonzalez,
+234,42,Emily,Burns,eburns3b@privacy.gov.au,517-45-6622,Emily Burns,canceled,5,1,,,2,@EmilyBurns,
+235,43,Robert,Murray,rmurray3c@ox.ac.uk,112-231-6384,Robert Murray,new,1,1,,,2,@RobertMurray,
+236,44,Brenda,Hudson,bhudson3d@bluehost.com,96-443-2604,Brenda Hudson,canceled,2,1,,,1,@BrendaHudson,
+237,45,Jack,Perry,,515-54-9940,Jack Perry,new,3,1,,,3,@JackPerry,
+238,46,Andrea,West,awest3f@youtu.be,261-581-222,Andrea West,canceled,4,1,,,4,@AndreaWest,
+239,47,Louise,Pierce,lpierce3g@so-net.ne.jp,,Louise Pierce,new,5,1,,,1,@LouisePierce,
+240,48,Laura,Armstrong,larmstrong3h@bbb.org,,Laura Armstrong,canceled,1,1,,,3,@LauraArmstrong,
+241,49,Sandra,Carroll,scarroll3i@mysql.com,14-19-7678,Sandra Carroll,new,2,1,,,1,@SandraCarroll,
