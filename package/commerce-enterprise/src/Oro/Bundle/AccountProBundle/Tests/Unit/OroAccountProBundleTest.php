@@ -1,21 +1,21 @@
 <?php
 
-namespace OroB2BPro\Bundle\AccountBundle\Tests\Unit;
+namespace Oro\Bundle\AccountProBundle\Tests\Unit;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-use OroB2BPro\Bundle\AccountBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
-use OroB2BPro\Bundle\AccountBundle\DependencyInjection\OroB2BProAccountExtension;
-use OroB2BPro\Bundle\AccountBundle\OroB2BProAccountBundle;
+use Oro\Bundle\AccountProBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
+use Oro\Bundle\AccountProBundle\DependencyInjection\OroAccountProExtension;
+use Oro\Bundle\AccountProBundle\OroAccountProBundle;
 
 class OroB2BProAccountBundleTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var OroB2BProAccountBundle */
+    /** @var OroAccountProBundle */
     protected $bundle;
 
     protected function setUp()
     {
-        $this->bundle = new OroB2BProAccountBundle();
+        $this->bundle = new OroAccountProBundle();
     }
 
     public function testBuild()
@@ -33,6 +33,6 @@ class OroB2BProAccountBundleTest extends \PHPUnit_Framework_TestCase
 
     public function testGetContainerExtension()
     {
-        $this->assertInstanceOf(OroB2BProAccountExtension::class, $this->bundle->getContainerExtension());
+        $this->assertInstanceOf(OroAccountProExtension::class, $this->bundle->getContainerExtension());
     }
 }

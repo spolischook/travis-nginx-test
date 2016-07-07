@@ -1,6 +1,6 @@
 <?php
 
-namespace OroB2BPro\Bundle\AccountBundle\Datagrid;
+namespace Oro\Bundle\AccountProBundle\Datagrid;
 
 use OroB2B\Bundle\AccountBundle\Datagrid\RolePermissionDatasource as BaseRolePermissionDatasource;
 

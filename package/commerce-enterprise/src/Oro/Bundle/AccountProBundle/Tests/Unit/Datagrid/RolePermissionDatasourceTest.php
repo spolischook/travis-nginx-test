@@ -1,12 +1,11 @@
 <?php
 
-namespace OroB2BPro\Bundle\AccountBundle\Tests\Unit\Datagrid;
+namespace Oro\Bundle\AccountProBundle\Tests\Unit\Datagrid;
 
+use Oro\Bundle\AccountProBundle\Datagrid\RolePermissionDatasource;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 
 use OroB2B\Bundle\AccountBundle\Tests\Unit\Datagrid\RolePermissionDatasourceTestCase;
-
-use OroB2BPro\Bundle\AccountBundle\Datagrid\RolePermissionDatasource;
 
 class RolePermissionDatasourceTest extends RolePermissionDatasourceTestCase
 {

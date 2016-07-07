@@ -1,11 +1,11 @@
 <?php
 
-namespace OroB2BPro\Bundle\AccountBundle\Tests\Unit\DependencyInjection\Compiler;
+namespace Oro\Bundle\AccountProBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-use OroB2BPro\Bundle\AccountBundle\Datagrid\RolePermissionDatasource;
-use OroB2BPro\Bundle\AccountBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
+use Oro\Bundle\AccountProBundle\Datagrid\RolePermissionDatasource;
+use Oro\Bundle\AccountProBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
 
 class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
 {
