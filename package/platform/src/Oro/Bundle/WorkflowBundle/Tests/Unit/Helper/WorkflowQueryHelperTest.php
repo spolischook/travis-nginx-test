@@ -60,7 +60,8 @@ class WorkflowQueryHelperTest extends \PHPUnit_Framework_TestCase
                 WorkflowItem::class,
                 'itemAlias',
                 Join::WITH,
-                sprintf('CAST(rootAlias.ident1 as text) = CAST(itemAlias.entityId as text) AND itemAlias.entityClass = \'entityClass1\'')
+                sprintf('CAST(rootAlias.ident1 as string) = CAST(itemAlias.entityId as string)' .
+                    ' AND itemAlias.entityClass = \'entityClass1\'')
             )
             ->willReturn($this->queryBuilder);
 
@@ -69,7 +70,8 @@ class WorkflowQueryHelperTest extends \PHPUnit_Framework_TestCase
             ->with('itemAlias.currentStep', 'stepAlias');
 
         $this->assertSame(
-            $this->queryBuilder, WorkflowQueryHelper::addQuery($this->queryBuilder, 'stepAlias', 'itemAlias')
+            $this->queryBuilder,
+            WorkflowQueryHelper::addQuery($this->queryBuilder, 'stepAlias', 'itemAlias')
         );
     }
 
@@ -90,8 +92,8 @@ class WorkflowQueryHelperTest extends \PHPUnit_Framework_TestCase
                             'join' => WorkflowItem::class,
                             'alias' => 'itemAlias',
                             'conditionType' => Join::WITH,
-                            'condition' => 'CAST(entityAlias.entityIdent as text) = CAST(itemAlias.entityId as text)' .
-                                ' AND itemAlias.entityClass = \'entityClass\'',
+                            'condition' => 'CAST(entityAlias.entityIdent as string) =' .
+                                ' CAST(itemAlias.entityId as string) AND itemAlias.entityClass = \'entityClass\'',
                         ],
                         [
                             'join' => 'itemAlias.currentStep',
