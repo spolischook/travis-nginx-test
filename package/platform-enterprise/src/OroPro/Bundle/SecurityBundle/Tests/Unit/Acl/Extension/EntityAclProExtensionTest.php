@@ -5,12 +5,11 @@ namespace OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Extension;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
-use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
 
+use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipProMetadata;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProProviderStub;
@@ -86,7 +85,7 @@ class EntityAclProExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetAccessLevelNames($ownerType, $accessLevels)
     {
         $object   = new ObjectIdentity('entity', 'Acme\TestBundle\TestEntity');
-        $metaData = new OwnershipMetadata($ownerType, 'owner', 'owner');
+        $metaData = new OwnershipProMetadata($ownerType, 'owner', 'owner');
         $this->metadataProvider->setMetadata('Acme\TestBundle\TestEntity', $metaData);
         $this->assertEquals($accessLevels, $this->extension->getAccessLevelNames($object));
     }
