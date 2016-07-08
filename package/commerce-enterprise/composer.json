@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "OroB2BPro\\Bundle": "src/"
+            "Oro\\Bundle": "src/"
         }
     },
     "require": {
