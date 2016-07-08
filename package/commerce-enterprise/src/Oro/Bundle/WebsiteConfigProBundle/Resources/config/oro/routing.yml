@@ -1,0 +1,4 @@
+oro_websitepro_bundle:
+    resource:     "@OroWebsiteConfigProBundle/Controller"
+    type:         annotation
+    prefix:       /config

@@ -1,3 +1,0 @@
-config:
-    paths:
-        'orob2bprowebsite/js/app/views/website-select-view': 'bundles/orob2bprowebsite/js/app/views/website-select-view.js'
