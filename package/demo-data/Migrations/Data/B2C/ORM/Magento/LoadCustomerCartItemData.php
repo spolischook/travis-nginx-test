@@ -45,12 +45,12 @@ class LoadCustomerCartItemData extends AbstractFixture implements OrderedFixture
         $data = $this->getData();
 
         foreach ($data['carts_items'] as $cartItemData) {
-            $cart     = $this->getCartReference($cartItemData['cart uid']);
+            $cart = $this->getCartReference($cartItemData['cart uid']);
             $cartItem = new CartItem();
             $this->setObjectValues($cartItem, $cartItemData);
 
             $taxAmount = $cartItemData['price'] * $cartItem->getTaxAmount();
-            $total     = $cartItemData['price'] + $taxAmount;
+            $total = $cartItemData['price'] + $taxAmount;
 
             $cartItem->setProductId(rand(1, 100));
             $cartItem->setFreeShipping((string)0);
@@ -77,7 +77,7 @@ class LoadCustomerCartItemData extends AbstractFixture implements OrderedFixture
         }
         $manager->flush();
     }
-    
+
     /**
      * {@inheritdoc}
      */
