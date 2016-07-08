@@ -9,8 +9,6 @@ use Oro\Bundle\IntegrationBundle\Manager\DeleteProviderInterface;
 
 class MagentoDeleteProvider implements DeleteProviderInterface
 {
-    const SUPPORTS_CHANNEL_TYPE = 'magento';
-
     /** @var EntityManager */
     protected $em;
 
@@ -30,7 +28,7 @@ class MagentoDeleteProvider implements DeleteProviderInterface
      */
     public function supports($channelType)
     {
-        return static::SUPPORTS_CHANNEL_TYPE === $channelType;
+        return 'magento' === $channelType;
     }
 
     /**
