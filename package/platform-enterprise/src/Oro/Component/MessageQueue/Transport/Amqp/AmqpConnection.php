@@ -3,7 +3,7 @@ namespace Oro\Component\MessageQueue\Transport\Amqp;
 
 use Oro\Component\MessageQueue\Transport\ConnectionInterface;
 use PhpAmqpLib\Connection\AbstractConnection;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Connection\AMQPLazyConnection;
 
 class AmqpConnection implements ConnectionInterface
 {
@@ -60,7 +60,7 @@ class AmqpConnection implements ConnectionInterface
             'vhost' => '/',
         ], $config);
 
-        return new static(new AMQPStreamConnection(
+        return new static(new AMQPLazyConnection(
             $config['host'],
             $config['port'],
             $config['user'],
