@@ -46,6 +46,11 @@ class AmqpConnectionTest extends \PHPUnit_Framework_TestCase
         $connection->close();
     }
 
+    public function testShouldCreateInstanceFromConfig()
+    {
+        $this->assertInstanceOf(AmqpConnection::class, AmqpConnection::createFromConfig([]));
+    }
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|AbstractConnection
      */
