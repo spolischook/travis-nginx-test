@@ -2,6 +2,7 @@
 
 namespace OroPro\Bundle\EwsBundle\Entity\Repository;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
@@ -25,6 +26,7 @@ class EwsEmailFolderRepository extends EntityRepository
         if (!$withOutdated) {
             $qb->andWhere('folder.outdatedAt IS NULL');
         }
+        $qb->orderBy('folder.synchronizedAt', Criteria::ASC);
 
         return $qb;
     }
