@@ -10,6 +10,8 @@ use Oro\Bundle\AddressBundle\Entity\Address;
 use OroCRM\Bundle\ContactBundle\Entity\Contact;
 use OroCRM\Bundle\ContactBundle\Entity\ContactAddress;
 use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
+use OroCRM\Bundle\SalesBundle\Entity\B2bCustomerEmail;
+use OroCRM\Bundle\SalesBundle\Entity\B2bCustomerPhone;
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
 class LoadB2bCustomerData extends AbstractFixture implements OrderedFixtureInterface
@@ -67,6 +69,14 @@ class LoadB2bCustomerData extends AbstractFixture implements OrderedFixtureInter
         }
 
         $this->addCustomerAddress($customer, $contact);
+
+        $customerPhone = new B2bCustomerPhone($customerData['TelephoneNumber']);
+        $customerPhone->setPrimary(true);
+        $customer->addPhone($customerPhone);
+
+        $email = new B2bCustomerEmail($customerData['EmailAddress']);
+        $email->setPrimary(true);
+        $customer->addEmail($email);
 
         return $customer;
     }
