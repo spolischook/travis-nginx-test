@@ -92,6 +92,7 @@ class LoadWebsiteDemoData extends AbstractFixture implements ContainerAwareInter
 
         $manager->flush();
 
+        //todo add reset localizations for website BB-3367
         // Create websites
         foreach ($this->webSites as $webSite) {
             $site = new Website();
@@ -104,7 +105,7 @@ class LoadWebsiteDemoData extends AbstractFixture implements ContainerAwareInter
             $site
                 ->setName($webSite['name'])
                 ->setUrl($webSite['url'])
-                ->resetLocalizations($localizations)
+                //->resetLocalizations($localizations) //todo use direct configuration reset
                 ->setOwner($businessUnit)
                 ->setOrganization($organization);
 
