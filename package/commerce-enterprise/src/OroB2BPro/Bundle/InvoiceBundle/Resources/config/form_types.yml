@@ -1,9 +1,0 @@
-services:
-    orob2bpro_invoice.form.extension.invoice:
-        class: 'OroB2BPro\Bundle\WebsiteBundle\Form\Extension\WebsiteSelectExtension'
-        public: true
-        tags:
-            - { name: form.type_extension, alias: orob2b_invoice_type }
-        calls:
-            - [setExtendedType, ['orob2b_invoice_type']]
-            - [setLabel, ['orob2b.invoice.website.label']]

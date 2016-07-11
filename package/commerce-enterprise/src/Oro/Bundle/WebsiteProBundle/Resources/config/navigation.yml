@@ -1,0 +1,31 @@
+oro_menu_config:
+    items:
+        websites_list:
+            label:           'orob2b.website.entity_plural_label'
+            route:           'oro_websitepro_index'
+            extras:
+                position:    1000
+                routes:      ['/^oro_websitepro/']
+                description: 'oro.websitepro.menu.websites_list.description'
+
+        shortcut_websites_list:
+            label:           'orob2b.website.entity_plural_label'
+            route:           'oro_websitepro_index'
+            extras:
+                description: 'oro.websitepro.menu.shortcut_websites_list.description'
+
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        websites_list: ~
+        shortcuts:
+            children:
+                shortcut_websites_list: ~
+
+oro_titles:
+    oro_websitepro_index: ~
+    oro_websitepro_view:   '%%name%%'
+    oro_websitepro_update: '%%name%% - Edit'
+    oro_websitepro_create: 'Create Website'

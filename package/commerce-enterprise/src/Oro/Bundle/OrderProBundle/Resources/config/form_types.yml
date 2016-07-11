@@ -1,0 +1,9 @@
+services:
+    oro_orderpro.form.extension.order:
+        class: 'Oro\Bundle\WebsiteProBundle\Form\Extension\WebsiteSelectExtension'
+        public: true
+        tags:
+            - { name: form.type_extension, alias: orob2b_order_type }
+        calls:
+            - [setExtendedType, ['orob2b_order_type']]
+            - [setLabel, ['orob2b.order.website.label']]
