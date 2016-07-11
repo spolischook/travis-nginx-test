@@ -128,7 +128,7 @@ case $step in
              sphinx-build -nW -b html -d _build/doctrees . _build/html; 
           fi
           if [ ! -z "$TESTSUITE" ]; then
-             TEST_RUNNER_OPTIONS='--exclude-group=soap'
+             TEST_RUNNER_OPTIONS=''
              if [ ! -z "$SOAP" ]; then
                  TEST_RUNNER_OPTIONS='--stderr --group=soap'
              fi
