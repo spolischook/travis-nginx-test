@@ -80,6 +80,8 @@ matrix:
      - language: node_js
        node_js: 4
        env: APPLICATION="package" JS="YES"
+     - php: 7.0
+       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=3 SOAP=true
 
 env:
   global:
