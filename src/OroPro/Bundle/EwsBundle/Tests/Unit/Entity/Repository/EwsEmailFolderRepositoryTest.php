@@ -49,8 +49,7 @@ class EwsEmailFolderRepositoryTest extends OrmTestCase
             'SELECT ews_folder'
             . ' FROM OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder ews_folder'
             . ' INNER JOIN ews_folder.folder folder'
-            . ' WHERE folder.origin = :origin AND folder.outdatedAt IS NULL'
-            . ' ORDER BY folder.synchronizedAt ASC',
+            . ' WHERE folder.origin = :origin AND folder.outdatedAt IS NULL',
             $query->getDQL()
         );
 
@@ -71,8 +70,7 @@ class EwsEmailFolderRepositoryTest extends OrmTestCase
             'SELECT ews_folder'
             . ' FROM OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder ews_folder'
             . ' INNER JOIN ews_folder.folder folder'
-            . ' WHERE folder.origin = :origin'
-            . ' ORDER BY folder.synchronizedAt ASC',
+            . ' WHERE folder.origin = :origin',
             $query->getDQL()
         );
 

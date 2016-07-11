@@ -26,7 +26,6 @@ class EwsEmailFolderRepository extends EntityRepository
         if (!$withOutdated) {
             $qb->andWhere('folder.outdatedAt IS NULL');
         }
-        $qb->orderBy('folder.synchronizedAt', Criteria::ASC);
 
         return $qb;
     }
@@ -40,7 +39,13 @@ class EwsEmailFolderRepository extends EntityRepository
     public function getFoldersByOrigin(EmailOrigin $origin, $withOutdated = false)
     {
         return $this->getFoldersByOriginQueryBuilder($origin, $withOutdated)
-            ->select('ews_folder, folder')
+            ->select(
+                'ews_folder',
+                'folder',
+                'COALESCE(folder.synchronizedAt, :minDate) AS HIDDEN nullsFirstDate'
+            )
+            ->setParameter('minDate', new \DateTime('1970-01-01', new \DateTimeZone('UTC')))
+            ->orderBy('nullsFirstDate', Criteria::ASC)
             ->getQuery()
             ->getResult();
     }
