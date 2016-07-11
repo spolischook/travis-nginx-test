@@ -79,7 +79,7 @@ matrix:
        node_js: 4
        env: APPLICATION="package" JS="YES"
      - php: 7.0
-       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=2 SOAP=true
+       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=6 SOAP=true
 
 env:
   global:
