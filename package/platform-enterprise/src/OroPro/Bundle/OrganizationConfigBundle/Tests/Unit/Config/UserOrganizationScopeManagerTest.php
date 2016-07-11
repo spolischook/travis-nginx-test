@@ -154,4 +154,51 @@ class UserOrganizationScopeManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager->setScopeId(456);
         $this->assertEquals(456, $this->manager->getScopeId());
     }
+
+    public function testSetScopeIdFromEntity()
+    {
+        $user = new User();
+        $user->setId(123);
+        $organization = new Organization();
+        $organization->setId(456);
+
+        $userOrganization = $this->getMockBuilder('OroPro\Bundle\OrganizationBundle\Entity\UserOrganization')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $userOrganization->expects($this->once())->method('getId')->will($this->returnValue(789));
+
+        $repo = $this->getMockBuilder('OroPro\Bundle\OrganizationBundle\Entity\Repository\UserOrganizationRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $em   = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->doctrine->expects($this->once())
+            ->method('getManagerForClass')
+            ->with('OroProOrganizationBundle:UserOrganization')
+            ->willReturn($em);
+        $em->expects($this->once())
+            ->method('getRepository')
+            ->with('OroProOrganizationBundle:UserOrganization')
+            ->willReturn($repo);
+        $repo->expects($this->any())
+            ->method('getUserOrganization')
+            ->with($this->identicalTo($user), $this->identicalTo($organization))
+            ->will($this->returnValue($userOrganization));
+
+        $token = $this->getMock('Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface');
+
+        $this->securityContext->expects($this->once())
+            ->method('getToken')
+            ->willReturn($token);
+        $token->expects($this->never())
+            ->method('getUser');
+        $token->expects($this->once())
+            ->method('getOrganizationContext')
+            ->willReturn($organization);
+
+        $this->manager->setScopeIdFromEntity($user);
+
+        $this->assertEquals(789, $this->manager->getScopeId());
+    }
 }
