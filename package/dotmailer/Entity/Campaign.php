@@ -35,7 +35,8 @@ use OroCRM\Bundle\DotmailerBundle\Model\ExtendCampaign;
  *      },
  *      "security"={
  *          "type"="ACL",
- *          "group_name"=""
+ *          "group_name"="",
+ *          "category"="marketing"
  *      }
  *  }
  * )
