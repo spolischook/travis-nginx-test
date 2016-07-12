@@ -91,14 +91,14 @@ class ColumnsHelper
                 $orders[$name] = (int)$column[ColumnsExtension::ORDER_FIELD_NAME];
                 $ignoreList[] = $orders[$name];
             } else {
-                $orders[$name] = -1;
+                $orders[$name] = 0;
             }
         }
 
         $iteration  = 0;
         foreach ($orders as $name => &$order) {
             $iteration = $this->getFirstFreeOrder($iteration, $ignoreList);
-            if (-1 === $order) {
+            if (0 === $order) {
                 $order = $iteration;
                 $iteration++;
             } else {
