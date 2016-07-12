@@ -5,6 +5,7 @@ use Oro\Component\MessageQueue\Transport\Exception\InvalidMessageException;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\QueueInterface;
 use Oro\Component\MessageQueue\Transport\MessageConsumerInterface;
+
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use PhpAmqpLib\Message\AMQPMessage as AMQPLibMessage;
@@ -47,8 +48,11 @@ class AmqpMessageConsumer implements MessageConsumerInterface
         $this->isInit = false;
 
         $this->session = $session;
-        $this->queue = clone $queue;
         $this->channel = $channel;
+
+        // The queue consumer tag could be set while initializing the consumer.
+        // To prevent any other side effects we do a local copy of the queue.
+        $this->queue = clone $queue;
     }
 
     /**
@@ -87,11 +91,9 @@ class AmqpMessageConsumer implements MessageConsumerInterface
      */
     public function receiveNoWait()
     {
-        if ($internalMessage = $this->channel->basic_get($this->queue->getQueueName(), $noAck = false)) {
-            return $this->convertMessage($internalMessage);
-        }
+        $internalMessage = $this->channel->basic_get($this->queue->getQueueName(), $noAck = false);
 
-        return null;
+        return $internalMessage ? $this->convertMessage($internalMessage) : null;
     }
 
     /**
@@ -131,7 +133,7 @@ class AmqpMessageConsumer implements MessageConsumerInterface
             );
         }
 
-        $this->channel->basic_qos(null, 1, false);
+        $this->channel->basic_qos(0, 1, false);
 
         $callback = function (AMQPLibMessage $internalMessage) {
             $this->receivedMessage = $this->convertMessage($internalMessage);
@@ -157,9 +159,9 @@ class AmqpMessageConsumer implements MessageConsumerInterface
      */
     protected function convertMessage(AMQPLibMessage $internalMessage)
     {
-        $properties = $internalMessage->has('application_headers') ?
-            $internalMessage->get('application_headers')->getNativeData() :
-            [];
+        $properties = $internalMessage->has('application_headers')
+            ? $internalMessage->get('application_headers')->getNativeData()
+            : [];
 
         $headers = (new AMQPTable($internalMessage->get_properties()))->getNativeData();
         unset($headers['application_headers']);

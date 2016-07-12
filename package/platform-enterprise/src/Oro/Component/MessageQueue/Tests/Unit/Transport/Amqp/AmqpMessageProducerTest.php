@@ -6,6 +6,7 @@ use Oro\Component\MessageQueue\Transport\Amqp\AmqpMessageProducer;
 use Oro\Component\MessageQueue\Transport\Amqp\AmqpQueue;
 use Oro\Component\MessageQueue\Transport\Amqp\AmqpTopic;
 use Oro\Component\MessageQueue\Transport\DestinationInterface;
+use Oro\Component\MessageQueue\Transport\Exception\Exception;
 use Oro\Component\MessageQueue\Transport\Exception\InvalidDestinationException;
 use Oro\Component\MessageQueue\Transport\Exception\InvalidMessageException;
 use Oro\Component\MessageQueue\Transport\MessageProducerInterface;
@@ -33,7 +34,10 @@ class AmqpMessageProducerTest extends \PHPUnit_Framework_TestCase
 
         $invalidDestination = $this->createDestination();
 
-        $this->setExpectedException(InvalidDestinationException::class, 'A destination is not understood.');
+        $this->setExpectedException(
+            InvalidDestinationException::class,
+            'The destination must be an instance of Oro\Component\MessageQueue\Transport\Amqp\AmqpTopic'
+        );
 
         $producer->send($invalidDestination, new AmqpMessage());
     }
@@ -119,6 +123,46 @@ class AmqpMessageProducerTest extends \PHPUnit_Framework_TestCase
         $queue = new AmqpQueue('theQueueName');
 
         $producer->send($queue, new AmqpMessage());
+    }
+
+    public function testCatchAnyExceptionHappendDuringPublishingToQueueAndConvertThemToTransportException()
+    {
+        $channel = $this->createAmqpChannel();
+        $channel
+            ->expects($this->once())
+            ->method('basic_publish')
+            ->willThrowException(new \Exception)
+        ;
+
+        $producer = new AmqpMessageProducer($channel);
+
+        $queue = new AmqpQueue('aName');
+
+        $this->setExpectedException(
+            Exception::class,
+            'The transport fails to send the message due to some internal error.'
+        );
+        $producer->send($queue, new AmqpMessage());
+    }
+
+    public function testCatchAnyExceptionHappendDuringPublishingToTopicAndConvertThemToTransportException()
+    {
+        $channel = $this->createAmqpChannel();
+        $channel
+            ->expects($this->once())
+            ->method('basic_publish')
+            ->willThrowException(new \Exception)
+        ;
+
+        $producer = new AmqpMessageProducer($channel);
+
+        $topic = new AmqpTopic('aName');
+
+        $this->setExpectedException(
+            Exception::class,
+            'The transport fails to send the message due to some internal error.'
+        );
+        $producer->send($topic, new AmqpMessage());
     }
 
     public function testShouldCorrectlyConvertMessageBodyToLibMessageBody()

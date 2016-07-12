@@ -18,9 +18,13 @@ This is a complete example of message producing using only a transport layer:
 ```php
 <?php
 
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
+use Oro\Component\MessageQueue\Transport\Dbal\DbalConnection;
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DriverManager;
 
-$connection = AmqpConnection::createFromConfig($config = []);
+$doctrineConnection = DriverManager::getConnection(['url' => 'mysql://user:secret@localhost/mydb'], new Configuration);
+
+$connection = new DbalConnection($doctrineConnection, 'oro_message_queue');
 
 $session = $connection->createSession();
 
@@ -36,9 +40,13 @@ $connection->close();
 This is a complete example of message consuming using only a transport layer:
 
 ```php
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
+use Oro\Component\MessageQueue\Transport\Dbal\DbalConnection;
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DriverManager;
 
-$connection = AmqpConnection::createFromConfig($config = []);
+$doctrineConnection = DriverManager::getConnection(['url' => 'mysql://user:secret@localhost/mydb'], new Configuration);
+
+$connection = new DbalConnection($doctrineConnection, 'oro_message_queue');
 
 $session = $connection->createSession();
 
@@ -76,11 +84,15 @@ class FooMessageProcessor implements MessageProcessor
 
 ```php
 <?php
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DriverManager;
 use Oro\Component\MessageQueue\Consumption\Extensions;
 use Oro\Component\MessageQueue\Consumption\QueueConsumer;
-use Oro\Component\MessageQueue\Transport\Amqp\AmqpConnection;
+use Oro\Component\MessageQueue\Transport\Dbal\DbalConnection;
 
-$connection = AmqpConnection::createFromConfig($config = []);
+$doctrineConnection = DriverManager::getConnection(['url' => 'mysql://user:secret@localhost/mydb'], new Configuration);
+
+$connection = new DbalConnection($doctrineConnection, 'oro_message_queue');
 
 $queueConsumer = new QueueConsumer($connection, new Extensions([]));
 $queueConsumer->bind('aQueue', new FooMessageProcessor());
