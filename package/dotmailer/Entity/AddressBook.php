@@ -38,7 +38,8 @@ use OroCRM\Bundle\DotmailerBundle\Model\ExtendAddressBook;
  *      },
  *      "security"={
  *          "type"="ACL",
- *          "group_name"=""
+ *          "group_name"="",
+ *          "category"="account_management"
  *      }
  *  }
  * )
