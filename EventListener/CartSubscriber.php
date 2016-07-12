@@ -5,10 +5,13 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
+
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowAwareManager;
+
 use OroCRM\Bundle\MagentoBundle\Entity\Cart;
+
 use OroCRMPro\Bundle\DemoDataBundle\Exception\EntityNotFoundException;
 
 class CartSubscriber implements EventSubscriber
@@ -34,6 +37,9 @@ class CartSubscriber implements EventSubscriber
         'converted_to_opportunity' => 'converted',
     ];
 
+    /**
+     * @param WorkflowAwareManager $cardFlowManager
+     */
     public function __construct(WorkflowAwareManager $cardFlowManager)
     {
         $this->flow = $cardFlowManager;
@@ -69,7 +75,7 @@ class CartSubscriber implements EventSubscriber
     }
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return WorkflowStep
      * @throws EntityNotFoundException
