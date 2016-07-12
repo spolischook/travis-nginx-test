@@ -210,7 +210,7 @@ class AmqpQueue implements QueueInterface
     }
 
     /**
-     * @return \string[]
+     * @return string[]
      */
     public function getTable()
     {
@@ -218,7 +218,7 @@ class AmqpQueue implements QueueInterface
     }
 
     /**
-     * @param \string[] $table
+     * @param string[] $table
      */
     public function setTable(array $table)
     {

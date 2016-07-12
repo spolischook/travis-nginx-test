@@ -329,7 +329,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException(
             InvalidMessageException::class,
-            'A message is invalid. Message must be an instance of Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage'
+            'The message must be an instance of Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage'
         );
 
         $consumer->acknowledge($invalidMessage);
@@ -364,7 +364,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException(
             InvalidMessageException::class,
-            'A message is invalid. Message must be an instance of Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage'
+            'The message must be an instance of Oro\Component\MessageQueue\Transport\Amqp\AmqpMessage'
         );
 
         $consumer->reject($invalidMessage);

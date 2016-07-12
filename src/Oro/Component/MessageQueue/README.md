@@ -5,7 +5,7 @@ The component incorporates message queue in your application via different trans
 It contains several layers.
 
 The lowest layer is called Transport and provides an abstraction of transport protocol.
-The Consumption layer provides tools to consume messages, such as cli command, sigal handling, logging, extensions.
+The Consumption layer provides tools to consume messages, such as cli command, signal handling, logging, extensions.
 It works on top of transport layer.
 
 The Client layer provides ability to start producing\consuming messages with as less as possible configuration.

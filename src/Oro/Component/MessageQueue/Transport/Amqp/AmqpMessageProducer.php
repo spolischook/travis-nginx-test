@@ -2,6 +2,7 @@
 namespace Oro\Component\MessageQueue\Transport\Amqp;
 
 use Oro\Component\MessageQueue\Transport\DestinationInterface;
+use Oro\Component\MessageQueue\Transport\Exception\Exception;
 use Oro\Component\MessageQueue\Transport\Exception\InvalidDestinationException;
 use Oro\Component\MessageQueue\Transport\Exception\InvalidMessageException;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
@@ -44,15 +45,23 @@ class AmqpMessageProducer implements MessageProducerInterface
         $amqpMessage->set('application_headers', new AMQPTable($message->getProperties()));
 
         if ($destination instanceof  AmqpTopic) {
-            $this->channel->basic_publish(
-                $amqpMessage,
-                $destination->getTopicName(),
-                $destination->getRoutingKey(),
-                $destination->isMandatory(),
-                $destination->isImmediate()
-            );
+            try {
+                $this->channel->basic_publish(
+                    $amqpMessage,
+                    $destination->getTopicName(),
+                    $destination->getRoutingKey(),
+                    $destination->isMandatory(),
+                    $destination->isImmediate()
+                );
+            } catch (\Exception $e) {
+                throw new Exception('The transport fails to send the message due to some internal error.', null, $e);
+            }
         } elseif ($destination instanceof AmqpQueue) {
-            $this->channel->basic_publish($amqpMessage, '', $destination->getQueueName());
+            try {
+                $this->channel->basic_publish($amqpMessage, '', $destination->getQueueName());
+            } catch (\Exception $e) {
+                throw new Exception('The transport fails to send the message due to some internal error.', null, $e);
+            }
         } else {
             InvalidDestinationException::assertDestinationInstanceOf(
                 $destination,

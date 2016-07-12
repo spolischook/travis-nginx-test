@@ -2,6 +2,7 @@
 namespace Oro\Component\MessageQueue\Transport\Amqp;
 
 use Oro\Component\MessageQueue\Transport\ConnectionInterface;
+
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Connection\AMQPLazyConnection;
 
@@ -17,10 +18,10 @@ class AmqpConnection implements ConnectionInterface
      */
     public function __construct(AbstractConnection $connection)
     {
-        if (false == defined('AMQP_WITHOUT_SIGNALS')) {
+        if (!defined('AMQP_WITHOUT_SIGNALS')) {
             define('AMQP_WITHOUT_SIGNALS', false);
         }
-        if (true == AMQP_WITHOUT_SIGNALS) {
+        if (AMQP_WITHOUT_SIGNALS) {
             throw new \LogicException('The AMQP_WITHOUT_SIGNALS must be set to false.');
         }
 
