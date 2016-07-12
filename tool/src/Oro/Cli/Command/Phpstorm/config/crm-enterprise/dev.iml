@@ -10,6 +10,8 @@
       <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/platform" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/platform-serialised-fields" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-call-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-task-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-hangouts-call-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-abandoned-cart" />
       <excludeFolder url="file://$MODULE_DIR$/application/crm-enterprise/vendor/oro/crm-magento-embedded-contact-us" />
