@@ -33,28 +33,11 @@ class EntityAclProExtension extends EntityAclExtension
      */
     public function getAccessLevelNames($object, $permissionName = null)
     {
-        $minLevel = AccessLevel::BASIC_LEVEL;
-
         if ($this->getObjectClassName($object) === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
-            return AccessLevel::getAccessLevelNames($minLevel);
-        } else {
-            $metadata = $this->getMetadata($object);
-            if (!$metadata->hasOwner()) {
-                return [
-                    AccessLevel::NONE_LEVEL   => AccessLevel::NONE_LEVEL_NAME,
-                    AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
-                ];
-            }
-            if ($metadata->isBasicLevelOwned()) {
-                $minLevel = AccessLevel::BASIC_LEVEL;
-            } elseif ($metadata->isLocalLevelOwned()) {
-                $minLevel = AccessLevel::LOCAL_LEVEL;
-            } elseif ($metadata->isGlobalLevelOwned()) {
-                $minLevel = AccessLevel::GLOBAL_LEVEL;
-            }
+            return AccessLevel::getAccessLevelNames(AccessLevel::BASIC_LEVEL);
         }
-
-        return AccessLevel::getAccessLevelNames($minLevel);
+        
+        return $this->getMetadata($object)->getAccessLevelNames();
     }
 
     /**
