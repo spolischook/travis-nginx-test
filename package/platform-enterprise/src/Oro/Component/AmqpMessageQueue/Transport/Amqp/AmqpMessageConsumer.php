@@ -11,6 +11,9 @@ use PhpAmqpLib\Exception\AMQPTimeoutException;
 use PhpAmqpLib\Message\AMQPMessage as AMQPLibMessage;
 use PhpAmqpLib\Wire\AMQPTable;
 
+/**
+ * @link https://www.rabbitmq.com/amqp-0-9-1-reference.html
+ */
 class AmqpMessageConsumer implements MessageConsumerInterface
 {
     /**

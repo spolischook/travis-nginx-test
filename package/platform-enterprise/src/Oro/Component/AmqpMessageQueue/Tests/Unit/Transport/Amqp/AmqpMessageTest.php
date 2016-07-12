@@ -4,7 +4,6 @@ namespace Oro\Component\AmqpMessageQueue\Tests\Unit\Transport\Amqp;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpMessage;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\Testing\ClassExtensionTrait;
-use PhpAmqpLib\Message\AMQPMessage as AMQPLibMessage;
 
 class AmqpMessageTest extends \PHPUnit_Framework_TestCase
 {

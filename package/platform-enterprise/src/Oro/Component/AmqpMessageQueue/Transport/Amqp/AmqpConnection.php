@@ -6,6 +6,9 @@ use Oro\Component\MessageQueue\Transport\ConnectionInterface;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Connection\AMQPLazyConnection;
 
+/**
+ * @link https://www.rabbitmq.com/amqp-0-9-1-reference.html#class.connection
+ */
 class AmqpConnection implements ConnectionInterface
 {
     /**

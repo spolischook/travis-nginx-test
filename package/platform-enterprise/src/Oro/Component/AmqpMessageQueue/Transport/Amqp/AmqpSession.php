@@ -8,6 +8,9 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AbstractConnection;
 use PhpAmqpLib\Wire\AMQPTable;
 
+/**
+ * @link https://www.rabbitmq.com/amqp-0-9-1-reference.html#class.channel
+ */
 class AmqpSession implements SessionInterface
 {
     /**

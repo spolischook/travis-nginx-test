@@ -4,8 +4,8 @@ namespace Oro\Component\AmqpMessageQueue\Tests\Unit\Client;
 use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Transport\MessageProducerInterface as TransportMessageProducer;
 use Oro\Component\MessageQueue\Client\MessageProducer;
-use Oro\Component\MessageQueue\Client\AmqpDriver;
 use Oro\Component\MessageQueue\Client\Config;
+use Oro\Component\AmqpMessageQueue\Client\AmqpDriver;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpMessage;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpQueue;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpSession;
@@ -127,7 +127,7 @@ class AmqpDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($queue->isDurable());
         $this->assertFalse($queue->isNoAck());
         $this->assertFalse($queue->isNoLocal());
-        $this->assertEquals(['x-max-priority' => 5], $queue->getTable());
+        $this->assertEquals(['x-max-priority' => 4], $queue->getTable());
     }
 
     public function providePriorities()

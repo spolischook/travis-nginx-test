@@ -11,6 +11,9 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage as AMQPLibMessage;
 use PhpAmqpLib\Wire\AMQPTable;
 
+/**
+ * @link https://www.rabbitmq.com/amqp-0-9-1-reference.html
+ */
 class AmqpMessageProducer implements MessageProducerInterface
 {
     /**
@@ -44,7 +47,7 @@ class AmqpMessageProducer implements MessageProducerInterface
         $amqpMessage = new AMQPLibMessage($body, $message->getHeaders());
         $amqpMessage->set('application_headers', new AMQPTable($message->getProperties()));
 
-        if ($destination instanceof  AmqpTopic) {
+        if ($destination instanceof AmqpTopic) {
             try {
                 $this->channel->basic_publish(
                     $amqpMessage,

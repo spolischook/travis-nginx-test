@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Component\MessageQueue\Consumption\Extension;
+namespace Oro\Component\AmqpMessageQueue\Consumption\Extension;
 
 use Oro\Component\MessageQueue\Consumption\Context;
 use Oro\Component\MessageQueue\Consumption\ExtensionInterface;
@@ -8,6 +8,13 @@ use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpMessage;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpSession;
 
+/**
+ * If the message could not be processed because of an exception or fatal error.
+ * RabbitMQ tries to send this same message again and again.
+ * All the other messages behaind this broken message are not processed.
+ * The purpose of this extension to push the broken message to the end of the queue allowing to process others.
+ * Also it adds a delay so we do not fail often.
+ */
 class DelayRedeliveredMessageAmqpExtension implements ExtensionInterface
 {
     use ExtensionTrait;
@@ -41,7 +48,7 @@ class DelayRedeliveredMessageAmqpExtension implements ExtensionInterface
         ]);
         $session->declareQueue($deadQueue);
         $context->getLogger()->debug(sprintf(
-            '[DelayDeadAmqpExtension] Declare dead queue: %s',
+            '[DelayRedeliveredMessageAmqpExtension] Declare dead queue: %s',
             $deadQueue->getQueueName()
         ));
 
@@ -55,9 +62,9 @@ class DelayRedeliveredMessageAmqpExtension implements ExtensionInterface
         $deadMessage = $session->createMessage($message->getBody(), $properties, $message->getHeaders());
         
         $session->createProducer()->send($deadQueue, $deadMessage);
-        $context->getLogger()->debug('[DelayDeadAmqpExtension] Send message to dead queue');
+        $context->getLogger()->debug('[DelayRedeliveredMessageAmqpExtension] Send message to dead queue');
 
         $context->setStatus(MessageProcessorInterface::REJECT);
-        $context->getLogger()->debug('[DelayDeadAmqpExtension] Reject original message');
+        $context->getLogger()->debug('[DelayRedeliveredMessageAmqpExtension] Reject original message');
     }
 }
