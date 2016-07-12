@@ -36,7 +36,7 @@ composer install --working-dir=tool
 ```
 * Install all dependencies for the application you are going to work on, for example:
 ```bash
-composer install --working-dir=application/crm
+COMPOSER=dev.json composer install --working-dir=application/crm
 ```
 * Install application via web or command line interface
 * Repeat the previous two steps (install application dependencies and run application installer) for as many applications as necessary.

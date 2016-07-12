@@ -132,7 +132,7 @@ case $step in
              if [ ! -z "$SOAP" ]; then
                  TEST_RUNNER_OPTIONS='--stderr --group=soap'
              fi
-             composer install --optimize-autoloader --no-interaction;
+             COMPOSER=dev.json composer install --optimize-autoloader --no-interaction;
              if [ ! -z "$DB" ]; then
                 if [ ! -z "$UPDATE_FROM" ]; then
                     php app/console oro:platform:update --env test --force --no-interaction --skip-assets --timeout 600;
