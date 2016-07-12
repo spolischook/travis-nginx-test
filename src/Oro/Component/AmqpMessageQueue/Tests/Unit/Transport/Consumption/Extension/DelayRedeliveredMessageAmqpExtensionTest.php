@@ -3,7 +3,7 @@ namespace Oro\Component\AmqpMessageQueue\Tests\Unit\Consumption\Extension;
 
 use Oro\Component\MessageQueue\Consumption\Context;
 use Oro\Component\MessageQueue\Consumption\ExtensionInterface;
-use Oro\Component\MessageQueue\Consumption\Extension\DelayRedeliveredMessageAmqpExtension;
+use Oro\Component\AmqpMessageQueue\Consumption\Extension\DelayRedeliveredMessageAmqpExtension;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpMessage;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpMessageProducer;

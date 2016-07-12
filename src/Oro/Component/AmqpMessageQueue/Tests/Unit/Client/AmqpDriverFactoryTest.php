@@ -3,7 +3,7 @@ namespace Oro\Component\AmqpMessageQueue\Tests\Unit\Client;
 
 use Oro\Component\MessageQueue\Client\Config;
 use Oro\Component\MessageQueue\Client\DriverFactory;
-use Oro\Component\MessageQueue\Client\AmqpDriver;
+use Oro\Component\AmqpMessageQueue\Client\AmqpDriver;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpConnection;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpSession;
 

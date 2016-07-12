@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Component\MessageQueue\Client;
+namespace Oro\Component\AmqpMessageQueue\Client;
 
 use Oro\Component\MessageQueue\Client\Config;
 use Oro\Component\MessageQueue\Client\DriverInterface;
@@ -23,6 +23,11 @@ class AmqpDriver implements DriverInterface
     protected $config;
 
     /**
+     * @var array
+     */
+    protected $priorityMap;
+
+    /**
      * @param AmqpSession $session
      * @param Config               $config
      */
@@ -30,6 +35,14 @@ class AmqpDriver implements DriverInterface
     {
         $this->session = $session;
         $this->config = $config;
+
+        $this->priorityMap = [
+            MessagePriority::VERY_LOW => 0,
+            MessagePriority::LOW => 1,
+            MessagePriority::NORMAL => 2,
+            MessagePriority::HIGH => 3,
+            MessagePriority::VERY_HIGH => 4,
+        ];
     }
 
     /**
@@ -47,15 +60,7 @@ class AmqpDriver implements DriverInterface
      */
     public function setMessagePriority(MessageInterface $message, $priority)
     {
-        $map = [
-            MessagePriority::VERY_LOW => 0,
-            MessagePriority::LOW => 1,
-            MessagePriority::NORMAL => 2,
-            MessagePriority::HIGH => 3,
-            MessagePriority::VERY_HIGH => 4,
-        ];
-
-        if (false == array_key_exists($priority, $map)) {
+        if (false == array_key_exists($priority, $this->priorityMap)) {
             throw new \InvalidArgumentException(sprintf(
                 'Given priority could not be converted to transport\'s one. Got: %s',
                 $priority
@@ -63,7 +68,7 @@ class AmqpDriver implements DriverInterface
         }
 
         $headers = $message->getHeaders();
-        $headers['priority'] = $map[$priority];
+        $headers['priority'] = $this->priorityMap[$priority];
         $message->setHeaders($headers);
     }
 
@@ -85,7 +90,7 @@ class AmqpDriver implements DriverInterface
         $queue = $this->session->createQueue($queueName);
         $queue->setDurable(true);
         $queue->setAutoDelete(false);
-        $queue->setTable(['x-max-priority' => 5]);
+        $queue->setTable(['x-max-priority' => 4]);
         $this->session->declareQueue($queue);
 
         return $queue;

@@ -3,6 +3,9 @@ namespace Oro\Component\AmqpMessageQueue\Transport\Amqp;
 
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 
+/**
+ * @link https://www.rabbitmq.com/amqp-0-9-1-reference.html
+ */
 class AmqpMessage implements MessageInterface
 {
     const DELIVERY_MODE_NON_PERSISTENT = 1;
