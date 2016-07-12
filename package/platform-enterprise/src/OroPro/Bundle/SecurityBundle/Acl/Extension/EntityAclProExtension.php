@@ -31,7 +31,7 @@ class EntityAclProExtension extends EntityAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getAccessLevelNames($object)
+    public function getAccessLevelNames($object, $permissionName = null)
     {
         if ($this->getObjectClassName($object) === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             return AccessLevel::getAccessLevelNames(AccessLevel::BASIC_LEVEL);
