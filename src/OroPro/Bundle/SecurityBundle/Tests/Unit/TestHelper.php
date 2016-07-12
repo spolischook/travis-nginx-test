@@ -43,7 +43,10 @@ class TestHelper
         ObjectIdAccessor $idAccessor = null
     ) {
         if ($idAccessor === null) {
-            $idAccessor = new ObjectIdAccessor();
+            $doctrineHelper = $this->testCase->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
+                ->disableOriginalConstructor()
+                ->getMock();
+            $idAccessor = new ObjectIdAccessor($doctrineHelper);
         }
         if ($metadataProvider === null) {
             $metadataProvider = new OwnershipMetadataProviderStub($this->testCase);
