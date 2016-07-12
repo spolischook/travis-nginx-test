@@ -11,8 +11,10 @@ use Oro\Bundle\UserBundle\Entity\User;
 class SecurityIdentityRetrievalStrategy extends BaseStrategy
 {
     /**
-     * @var array Local storage of sids. This local cache increase performance in case if where are a lot of
+     * @var array Local storage of sids. This local cache increase performance in case if there are a lot of
      *            ACL checks during request.
+     *            key => user name
+     *            value => array of Sids
      */
     protected $sids = [];
 
@@ -21,7 +23,9 @@ class SecurityIdentityRetrievalStrategy extends BaseStrategy
      */
     public function getSecurityIdentities(TokenInterface $token)
     {
-        if (count($this->sids) === 0) {
+        $cacheKey = $token->getUsername();
+
+        if (!array_key_exists($cacheKey, $this->sids)) {
             $sids = parent::getSecurityIdentities($token);
 
             if (!$token instanceof AnonymousToken) {
@@ -36,9 +40,9 @@ class SecurityIdentityRetrievalStrategy extends BaseStrategy
                 }
             }
 
-            $this->sids = $sids;
+            $this->sids[$cacheKey] = $sids;
         }
 
-        return $this->sids;
+        return $this->sids[$cacheKey];
     }
 }
