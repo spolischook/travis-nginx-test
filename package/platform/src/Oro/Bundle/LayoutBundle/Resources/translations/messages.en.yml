@@ -17,3 +17,11 @@ oro:
                     choices:
                         no: No
                         yes: Yes
+
+        profiler:
+            title: Layout
+            tree: Layout Tree
+            context.items: Context Items
+            messages:
+                tree: Views tree is not found.
+                context.items: Context items is not found.
