@@ -7,7 +7,7 @@ use CG\Generator\PhpMethod;
 use Oro\Component\Layout\Loader\Generator\VisitContext;
 use Oro\Component\Layout\Loader\Visitor\VisitorInterface;
 
-class ImportsLayoutUpdateVisitor implements VisitorInterface
+class ImportsAwareLayoutUpdateVisitor implements VisitorInterface
 {
     /**
      * @var array
@@ -28,7 +28,7 @@ class ImportsLayoutUpdateVisitor implements VisitorInterface
     public function startVisit(VisitContext $visitContext)
     {
         $writer = $visitContext->createWriter();
-        $class  = $visitContext->getClass();
+        $class = $visitContext->getClass();
         $class->addInterfaceName('Oro\Component\Layout\ImportsAwareLayoutUpdateInterface');
         $setFactoryMethod = PhpMethod::create('getImports');
         $setFactoryMethod->setBody($writer->write('return '.var_export($this->imports, true).';')->getContent());

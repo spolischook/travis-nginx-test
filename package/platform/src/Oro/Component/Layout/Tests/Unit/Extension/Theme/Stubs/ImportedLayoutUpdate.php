@@ -2,22 +2,20 @@
 
 namespace Oro\Component\Layout\Tests\Unit\Extension\Theme\Stubs;
 
-use Oro\Component\Layout\ImportsAwareLayoutUpdateInterface;
 use Oro\Component\Layout\LayoutItemInterface;
 use Oro\Component\Layout\LayoutManipulatorInterface;
+use Oro\Component\Layout\LayoutUpdateImportInterface;
 use Oro\Component\Layout\LayoutUpdateInterface;
+use Oro\Component\Layout\Model\LayoutUpdateImport;
 
-class LayoutUpdateWithImports implements LayoutUpdateInterface, ImportsAwareLayoutUpdateInterface
+class ImportedLayoutUpdate implements LayoutUpdateInterface, LayoutUpdateImportInterface
 {
-    /**
-     * @return array
-     */
-    public function getImports()
+    public function setImport(LayoutUpdateImport $import)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function updateLayout(LayoutManipulatorInterface $layoutManipulator, LayoutItemInterface $item)
     {

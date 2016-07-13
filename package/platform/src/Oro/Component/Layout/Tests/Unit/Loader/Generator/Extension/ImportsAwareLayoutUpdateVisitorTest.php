@@ -7,19 +7,26 @@ use CG\Generator\PhpMethod;
 use CG\Core\DefaultGeneratorStrategy;
 
 use Oro\Component\Layout\Loader\Generator\VisitContext;
-use Oro\Component\Layout\Loader\Generator\Extension\ImportsLayoutUpdateVisitor;
+use Oro\Component\Layout\Loader\Generator\Extension\ImportsAwareLayoutUpdateVisitor;
 
-class ImportsLayoutUpdateVisitorTest extends \PHPUnit_Framework_TestCase
+class ImportsAwareLayoutUpdateVisitorTest extends \PHPUnit_Framework_TestCase
 {
     // @codingStandardsIgnoreStart
     public function testVisit()
     {
-        $import = [
-            'id' => 'import_id',
-            'root' => 'root_block_id',
-            'namespace' => 'import_namespace'
+        $imports = [
+            [
+                'id' => 'import_id',
+                'root' => 'root_block_id',
+                'namespace' => 'import_namespace'
+            ],
+            [
+                'id' => 'import_id_2',
+                'root' => 'root_block_id_2',
+                'namespace' => 'import_namespace_2'
+            ],
         ];
-        $condition    = new ImportsLayoutUpdateVisitor($import);
+        $condition = new ImportsAwareLayoutUpdateVisitor($imports);
         $phpClass = PhpClass::create('LayoutUpdateWithImport');
         $visitContext = new VisitContext($phpClass);
 
@@ -44,9 +51,18 @@ class LayoutUpdateWithImport implements \Oro\Component\Layout\ImportsAwareLayout
     public function getImports()
     {
         return array (
-          'id' => 'import_id',
-          'root' => 'root_block_id',
-          'namespace' => 'import_namespace',
+          0 => 
+          array (
+            'id' => 'import_id',
+            'root' => 'root_block_id',
+            'namespace' => 'import_namespace',
+          ),
+          1 => 
+          array (
+            'id' => 'import_id_2',
+            'root' => 'root_block_id_2',
+            'namespace' => 'import_namespace_2',
+          ),
         );
     }
 }
