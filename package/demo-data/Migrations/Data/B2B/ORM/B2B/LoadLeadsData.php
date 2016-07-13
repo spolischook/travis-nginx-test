@@ -9,8 +9,9 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
-use OroCRM\Bundle\SalesBundle\Entity\Lead;
 use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
+use OroCRM\Bundle\SalesBundle\Entity\Lead;
+use OroCRM\Bundle\SalesBundle\Entity\LeadAddress;
 
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
 
@@ -114,7 +115,25 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
     protected function addAddress(Lead $lead, B2bCustomer $customer)
     {
         if ($customer->getBillingAddress()) {
-            $lead->setAddress($customer->getBillingAddress());
+            $customerAddress = $customer->getBillingAddress();
+            $leadAddress = new LeadAddress();
+            //take name data from lead itself
+            $leadAddress->setNamePrefix($lead->getNamePrefix());
+            $leadAddress->setNameSuffix($lead->getNameSuffix());
+            $leadAddress->setFirstName($lead->getFirstName());
+            $leadAddress->setLastName($lead->getLastName());
+            $leadAddress->setMiddleName($lead->getMiddleName());
+
+            $leadAddress->setLabel($customerAddress->getLabel());
+            $leadAddress->setOrganization($customerAddress->getOrganization());
+            $leadAddress->setStreet($customerAddress->getStreet());
+            $leadAddress->setStreet2($customerAddress->getStreet2());
+            $leadAddress->setRegion($customerAddress->getRegion());
+            $leadAddress->setCountry($customerAddress->getCountry());
+            $leadAddress->setCity($customerAddress->getCity());
+            $leadAddress->setPostalCode($customerAddress->getPostalCode());
+            $leadAddress->setPrimary(true);
+            $lead->addAddress($leadAddress);
         }
     }
 
