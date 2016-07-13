@@ -12,16 +12,17 @@ class DateTimePicker extends Element
      * @param \DateTime $dateTime
      * @throws ExpectationException
      */
-    public function chooseDate(\DateTime $dateTime)
+    public function setValue(\DateTime $dateTime)
     {
         $this->find('css', 'input.datepicker-input')->click();
-        $this->find('css', '.ui-datepicker-month')->selectOption($dateTime->format('M'));
-        $this->find('css', '.ui-datepicker-year')->selectOption($dateTime->format('Y'));
+
+        $this->getMonthPicker()->selectOption($dateTime->format('M'));
+        $this->getYearPicker()->selectOption($dateTime->format('Y'));
         $dateValue = (string) $dateTime->format('j');
 
         /** @var NodeElement $date */
-        foreach ($this->findAll('css', '.ui-datepicker-calendar tbody a') as $date) {
-            if ($date->getText() == $dateValue) {
+        foreach ($this->getCalendar()->findAll('css', 'tbody a') as $date) {
+            if ($date->getText() === $dateValue) {
                 $date->click();
 
                 return;
@@ -32,5 +33,45 @@ class DateTimePicker extends Element
             sprintf('Can\'t choose "%s" date', $dateTime->format('Y-M-j')),
             $this->getDriver()
         );
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    protected function getMonthPicker()
+    {
+        return $this->findVisible('css', '.ui-datepicker-month');
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    protected function getYearPicker()
+    {
+        return $this->findVisible('css', '.ui-datepicker-year');
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    protected function getCalendar()
+    {
+        return $this->findVisible('css', '.ui-datepicker-calendar');
+    }
+
+    /**
+     * @param string       $selector selector engine name
+     * @param string|array $locator  selector locator
+     *
+     * @return NodeElement|null
+     */
+    protected function findVisible($selector, $locator)
+    {
+        return array_shift(array_filter(
+            $this->getPage()->findAll($selector, $locator),
+            function (NodeElement $element) {
+                return $element->isVisible();
+            }
+        ));
     }
 }
