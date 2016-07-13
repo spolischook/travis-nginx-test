@@ -24,7 +24,7 @@ define(function(require) {
         render: function() {
             var dataSource = this.prepareDataSource();
             this.chart = new FusionCharts({
-                type: 'Column3D',
+                type: dataSource.type,
                 dataSource: {
                     'chart': dataSource.chart,
                     'trendlines': dataSource.trendlines,

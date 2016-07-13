@@ -7,3 +7,23 @@ services:
         class: OroCRMPro\Bundle\OutlookBundle\Config\LayoutDataTransformer
         arguments:
             - "@translator"
+
+    orocrmpro_outlook.config_manager.api:
+        class: OroCRMPro\Bundle\OutlookBundle\Manager\ConfigApiManager
+        arguments:
+            - '@oro_config.manager.api'
+            - '@orocrmpro_outlook.api.configuration_repository'
+
+    orocrmpro_outlook.addin_manager:
+        class: OroCRMPro\Bundle\OutlookBundle\Manager\AddInManager
+        arguments:
+            - '%assetic.read_from%/bundles/orocrmprooutlook/files'
+            - 'bundles/orocrmprooutlook/files'
+            - '@assets.packages'
+            - '@orocrmpro_outlook.addin_cache'
+
+    orocrmpro_outlook.addin_cache:
+        public: false
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'orocrmpro_outlook_addin' ] ]
