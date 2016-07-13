@@ -3,6 +3,10 @@ oro_chart:
         default_settings:
             chartColors: '7fab90,fdbc7c,73a4e1,bedb99,5a8980,ceeaf2,d6a970,fee090'
         template: OroCRMProFusionChartsBundle:Chart:bar.html.twig
+    horizontal_bar_chart:
+        default_settings:
+            chartColors: '7fab90,fdbc7c,73a4e1,bedb99,5a8980,ceeaf2,d6a970,fee090'
+        template: OroCRMProFusionChartsBundle:Chart:horizontal_bar.html.twig
     line_chart:
         default_settings:
             chartColors: '7fab90,fdbc7c,73a4e1,bedb99,5a8980,ceeaf2,d6a970,fee090'
