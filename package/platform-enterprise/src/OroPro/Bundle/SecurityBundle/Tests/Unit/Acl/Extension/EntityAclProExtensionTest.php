@@ -251,6 +251,32 @@ class EntityAclProExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider validateMaskForOrganizationInvalidProvider
+     * @expectedException \Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException
+     *
+     * @param int $mask
+     */
+    public function testValidateMaskForOrganizationInvalid($mask)
+    {
+        $this->extension->validateMask($mask, new Organization());
+    }
+
+    /**
+     * @return array
+     */
+    public function validateMaskForOrganizationInvalidProvider()
+    {
+        return [
+            [(1 << 9) + 32768 /*MASK_ASSIGN_SYSTEM*/],
+            [(1 << 14) + 32768 /*MASK_SHARE_SYSTEM*/],
+            [1 << 3 /*MASK_VIEW_GLOBAL*/],
+            [1 << 2 /*MASK_VIEW_DEEP*/],
+            [1 << 1 /*MASK_VIEW_LOCAL*/],
+            [1 << 0 /*MASK_VIEW_BASIC*/]
+        ];
+    }
+
+    /**
      * @return OwnershipMetadataProProviderStub
      */
     protected function getOwnershipMetadataProviderStub()
