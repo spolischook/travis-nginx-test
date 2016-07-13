@@ -1,0 +1,6 @@
+oro_permissions:
+    SHARE:
+        exclude_entities:
+            - Oro\Bundle\CalendarBundle\Entity\Calendar
+            - Oro\Bundle\CalendarBundle\Entity\CalendarEvent
+            - Oro\Bundle\CalendarBundle\Entity\SystemCalendar

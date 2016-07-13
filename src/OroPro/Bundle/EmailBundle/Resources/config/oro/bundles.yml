@@ -1,0 +1,2 @@
+bundles:
+    - { name: OroPro\Bundle\EmailBundle\OroProEmailBundle, priority: -84 }

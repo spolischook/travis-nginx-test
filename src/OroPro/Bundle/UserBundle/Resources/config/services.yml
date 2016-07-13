@@ -6,8 +6,6 @@ parameters:
     oropro_user.helper.class: OroPro\Bundle\UserBundle\Helper\UserProHelper
     oropro_user.form.type.extension.user.class: OroPro\Bundle\UserBundle\Form\Extension\UserTypeExtension
 
-    oro_user.datagrid.datasource.role_permission_datasource.class: OroPro\Bundle\UserBundle\Datagrid\RolePermissionDatasource
-
 services:
     oropro_user.form.type.role_organization_select:
         class: %oropro_user.form.type.role_organization_select.class%
