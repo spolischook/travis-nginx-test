@@ -8,6 +8,10 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\BusinessUnit;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
+use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 
 use OroPro\Bundle\SecurityBundle\Owner\Metadata\OwnershipProMetadata;
 use OroPro\Bundle\SecurityBundle\Tests\Unit\Fixture\GlobalOrganization;
@@ -29,7 +33,7 @@ class EntityAclProExtensionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->tree = new OwnerTree();
-        $this->metadataProvider = new OwnershipMetadataProProviderStub($this);
+        $this->metadataProvider = $this->getOwnershipMetadataProviderStub();
         $this->extension = TestHelper::get($this)->createEntityAclExtension($this->metadataProvider, $this->tree);
     }
 
@@ -145,5 +149,123 @@ class EntityAclProExtensionTest extends \PHPUnit_Framework_TestCase
             AccessLevel::SYSTEM_LEVEL,
             $this->extension->getAccessLevel(1 << 4 /* MASK_VIEW_SYSTEM */, null, new \stdClass())
         );
+    }
+
+    /**
+     * @dataProvider adaptRootMaskProvider
+     *
+     * @param object $object
+     * @param string $ownerType
+     * @param int $aceMask
+     * @param int $expectedMask
+     */
+    public function testAdaptRootMask($object, $ownerType, $aceMask, $expectedMask)
+    {
+        if ($ownerType !== null) {
+            $this->metadataProvider->setMetadata(
+                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
+                new OwnershipProMetadata($ownerType, 'owner', 'owner_id')
+            );
+        }
+
+        $resultMask = $this->extension->adaptRootMask($aceMask, $object);
+        $this->assertEquals(
+            $expectedMask,
+            $resultMask,
+            sprintf(
+                'Expected "%s" -> "%s"; Actual: "%s"',
+                $this->extension->getMaskPattern($aceMask),
+                $this->extension->getMaskPattern($expectedMask),
+                $this->extension->getMaskPattern($resultMask)
+            )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public static function adaptRootMaskProvider()
+    {
+        return [
+            [
+                new TestEntity(),
+                null,
+                (1 << 4) /* MASK_VIEW_SYSTEM */ | (1 << 9) /* MASK_CREATE_SYSTEM */,
+                (1 << 4) /* MASK_VIEW_SYSTEM */ | (1 << 9) /* MASK_CREATE_SYSTEM */
+            ],
+            [
+                new TestEntity(),
+                null,
+                (1 << 0) /* MASK_VIEW_BASIC */ | (1 << 6) /* MASK_CREATE_LOCAL */,
+                (1 << 4) /* MASK_VIEW_SYSTEM */ | (1 << 9) /* MASK_CREATE_SYSTEM */
+            ],
+            [
+                new TestEntity(),
+                null,
+                ((1 << 9) | 32768) /* MASK_ASSIGN_SYSTEM */ | ((1 << 10) | 32768) /* MASK_SHARE_BASIC */,
+                32768 /* GROUP_NONE */
+            ],
+            [
+                new Organization(),
+                null,
+                (1 << 0) /* MASK_VIEW_BASIC */ | (1 << 6) /* MASK_CREATE_LOCAL */,
+                (1 << 4) /* MASK_VIEW_SYSTEM */ | (1 << 9) /* MASK_CREATE_SYSTEM */
+            ],
+            [
+                new BusinessUnit(),
+                null,
+                (1 << 0) /* MASK_VIEW_BASIC */ | (1 << 6) /* MASK_CREATE_LOCAL */,
+                (1 << 1) /* MASK_VIEW_LOCAL */ | (1 << 6) /* MASK_CREATE_LOCAL */
+            ],
+            [
+                new BusinessUnit(),
+                null,
+                (1 << 2) /* MASK_VIEW_DEEP */ | (1 << 6) /* MASK_CREATE_LOCAL */,
+                (1 << 2) /* MASK_VIEW_DEEP */ | (1 << 6) /* MASK_CREATE_LOCAL */
+            ],
+            [
+                new User(),
+                null,
+                (1 << 0) /* MASK_VIEW_BASIC */ | (1 << 6) /* MASK_CREATE_LOCAL */,
+                (1 << 1) /* MASK_VIEW_LOCAL */ | (1 << 6) /* MASK_CREATE_LOCAL */
+            ],
+            [
+                new TestEntity(),
+                'ORGANIZATION',
+                (1 << 4) /* MASK_VIEW_SYSTEM */ | (1 << 7) /* MASK_CREATE_DEEP */,
+                (1 << 4) /* MASK_VIEW_SYSTEM */ | (1 << 8) /* MASK_CREATE_GLOBAL */
+            ],
+            [
+                new TestEntity(),
+                'BUSINESS_UNIT',
+                (1 << 2) /* MASK_VIEW_DEEP */ | (1 << 5) /* MASK_CREATE_BASIC */,
+                (1 << 2) /* MASK_VIEW_DEEP */ | (1 << 6) /* MASK_CREATE_LOCAL */
+            ],
+            [
+                new TestEntity(),
+                'USER',
+                (1 << 3) /* MASK_VIEW_GLOBAL */ | (1 << 5) /* MASK_CREATE_BASIC */,
+                (1 << 3) /* MASK_VIEW_GLOBAL */ | (1 << 5) /* MASK_CREATE_BASIC */
+            ]
+        ];
+    }
+
+    /**
+     * @return OwnershipMetadataProProviderStub
+     */
+    protected function getOwnershipMetadataProviderStub()
+    {
+        $metadataProvider = new OwnershipMetadataProProviderStub($this);
+        $metadataProvider->setMetadata($metadataProvider->getGlobalLevelClass(), new OwnershipProMetadata());
+        $metadataProvider->setMetadata(
+            $metadataProvider->getLocalLevelClass(),
+            new OwnershipProMetadata('BUSINESS_UNIT', 'owner', 'owner_id')
+        );
+        $metadataProvider->setMetadata(
+            $metadataProvider->getBasicLevelClass(),
+            new OwnershipProMetadata('BUSINESS_UNIT', 'owner', 'owner_id')
+        );
+
+        return $metadataProvider;
     }
 }
