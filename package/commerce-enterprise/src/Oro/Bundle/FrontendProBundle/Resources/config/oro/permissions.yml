@@ -1,0 +1,3 @@
+oro_permissions:
+    SHARE:
+        group_names: ['default', 'commerce']
