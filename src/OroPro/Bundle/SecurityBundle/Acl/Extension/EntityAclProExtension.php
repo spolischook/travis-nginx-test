@@ -51,4 +51,12 @@ class EntityAclProExtension extends EntityAclExtension
 
         return parent::isAccessDeniedByOrganizationContext($object, $securityToken);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getOwnershipPermissions()
+    {
+        return array_merge(parent::getOwnershipPermissions(), ['SHARE']);
+    }
 }
