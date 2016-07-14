@@ -10,6 +10,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
 use OroCRM\Bundle\SalesBundle\Entity\Lead;
+use OroCRM\Bundle\SalesBundle\Entity\LeadPhone;
 use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
 
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
@@ -24,7 +25,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
     public function getData()
     {
         return [
-            'leads' => $this->loadData('b2b/leads.csv'),
+            'leads' => $this->loadData('b2b/leads.csv')
         ];
     }
 
@@ -100,11 +101,18 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
         if (!empty($leadData['campaign uid'])) {
             $lead->setCampaign($this->getCampaignReference($leadData['campaign uid']));
         }
+        if (!empty($leadData['phoneNumber'])) {
+            $leadPhone = new LeadPhone($leadData['phoneNumber']);
+            $leadPhone->setPrimary(true);
+            $lead->addPhone($leadPhone);
+        }
+
         $lead->setStatus($status)
             ->setOwner($user)
             ->setOrganization($organization)
             ->setCreatedAt($created)
             ->setUpdatedAt($this->generateUpdatedDate($created));
+
         $this->setObjectValues($lead, $leadData);
         $lead->setName($lead->getCompanyName());
 
