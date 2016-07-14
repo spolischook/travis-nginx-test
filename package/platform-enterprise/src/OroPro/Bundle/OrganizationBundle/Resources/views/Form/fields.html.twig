@@ -33,51 +33,59 @@
 {% endblock %}
 
 {% block oro_organizations_select_widget %}
+    {% if (form.vars.show_organizations_selector) %}
+        {{ block('oro_organizations_select_organizations_widget') }}
+
+        {{ form_widget(form.businessUnits) }}
+    {% else %}
+        {{ form_widget(form.businessUnits) }}
+        {{ block('oro_organizations_select_organizations_widget') }}
+    {% endif %}
+{% endblock %}
+
+{% block oro_organizations_select_organizations_widget %}
     {% spaceless %}
         {% set attr = attr|merge({'class': attr.class is defined ? attr.class ~ ' horizontal' : 'horizontal'}) %}
-        {% set attr = attr|merge({'class': attr.class ~ ' validate-group'}) %}
-        <div {{ block('widget_container_attributes') }}>
-            {% set globalOrgId = oropro_global_org_id() %}
-            {% set options = {
+        {% set attr = attr|merge({'class': attr.class }) %}
+            <div {{ block('widget_container_attributes') }}>
+                {% set globalOrgId = oropro_global_org_id() %}
+                {% set options = {
+                view: 'oroproorganization/js/app/views/organization-tree-view',
                 dataInputSelector: 'input[name="' ~ form.vars.full_name ~ '"]',
                 tree: form.vars.organization_tree_ids,
                 selectedBusinessUnits: form.vars.selected_business_units,
                 selectedOrganizations: form.vars.selected_organizations,
                 accordionEnabled: accordion_enabled
-            } %}
-            {% include 'OroOrganizationBundle:Js:organizationStructure.js.twig' %}
-            <div class="accordion organization-structure{% if not accordion_enabled %} disabled{% endif %}"
-                 data-page-component-module="oroorganization/js/app/components/organization-structure-tree-component"
-                 data-page-component-options="{{ options|json_encode }}">
-                {% for org in form.vars.organization_tree_ids %}
-                    <div class="accordion-group">
-                        <div class="accordion-heding">
-                            <div class="oro-clearfix{{ not form.vars.show_organizations_selector ? ' hide' : '' }}">
-                                <a class="accordion-toggle collapsed" data-toggle="collapse" href="#organization_{{ org.id }}"></a>
-                                <label>
-                                    <input type="checkbox"
-                                           data-name="organization"
-                                           value="{{ org.id }}"
-                                           {% if org.id in form.vars.selected_organizations %} checked="checked" {% endif %}
-                                           class="org org-id-{{ org.id }}"/>
-                                    <b>{{ org.name }}</b>
-                                    {% if not org.enabled %} ({{ 'oropro.organization.inactive'|trans }}) {% endif %}
-                                    {% if globalOrgId and globalOrgId == org.id %}
-                                        ({{ 'oropro.organization.is_global_organization'|trans }})
-                                    {% endif %}
-                                </label>
+                } %}
+                {% include 'OroOrganizationBundle:Js:organizationStructure.js.twig' %}
+                <div class="accordion organization-structure{% if not accordion_enabled %} disabled{% endif %}"
+                     data-page-component-module="oroui/js/app/components/view-component"
+                     data-page-component-options="{{ options|json_encode }}">
+                    {% for org in form.vars.organization_tree_ids %}
+                        <div class="accordion-group">
+                            <div class="accordion-heding">
+                                <div class="oro-clearfix{{ not form.vars.show_organizations_selector ? ' hide' : '' }}">
+                                    <label>
+                                        <input type="checkbox"
+                                               data-name="organization"
+                                               value="{{ org.id }}"
+                                                {% if org.id in form.vars.selected_organizations %} checked="checked" {% endif %}
+                                               class="org org-id-{{ org.id }}"/>
+                                        <b>{{ org.name }}</b>
+                                        {% if not org.enabled %} ({{ 'oropro.organization.inactive'|trans }}) {% endif %}
+                                        {% if globalOrgId and globalOrgId == org.id %}
+                                            ({{ 'oropro.organization.is_global_organization'|trans }})
+                                        {% endif %}
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        <div id="organization_{{ org.id }}" class="accordion-body collapse{% if not accordion_enabled %} in{% endif %}">
-                            <div class="accordion-inner"></div>
-                        </div>
-                    </div>
-                {% endfor %}
-                <input type="hidden" name="{{ form.vars.full_name }}"
-                       value="{{ {organizations: form.vars.selected_organizations,
-                                  businessUnits: form.vars.selected_business_units}|json_encode }}">
+                    {% endfor %}
+
+                    <input type="hidden" name="{{ form.organizations.vars.full_name  }}"
+                           value="{{ {organizations: form.vars.selected_organizations}|json_encode }}">
+                </div>
             </div>
-        </div>
     {% endspaceless %}
 {% endblock %}
 
