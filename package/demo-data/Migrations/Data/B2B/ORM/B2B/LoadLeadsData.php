@@ -46,7 +46,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
                 'customer uid',
                 'contact uid',
                 'campaign uid',
-                'phoneNumber',
+                'phonenumber',
                 'email'
             ]
         );
@@ -106,8 +106,8 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
         if (!empty($leadData['campaign uid'])) {
             $lead->setCampaign($this->getCampaignReference($leadData['campaign uid']));
         }
-        if (!empty($leadData['phoneNumber'])) {
-            $leadPhone = new LeadPhone($leadData['phoneNumber']);
+        if (!empty($leadData['phonenumber'])) {
+            $leadPhone = new LeadPhone($leadData['phonenumber']);
             $leadPhone->setPrimary(true);
             $lead->addPhone($leadPhone);
         }
