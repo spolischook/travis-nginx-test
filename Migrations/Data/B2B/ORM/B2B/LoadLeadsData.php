@@ -10,6 +10,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
 use OroCRM\Bundle\SalesBundle\Entity\Lead;
+use OroCRM\Bundle\SalesBundle\Entity\LeadEmail;
 use OroCRM\Bundle\SalesBundle\Entity\LeadPhone;
 use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
 
@@ -43,7 +44,9 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
                 'channel uid',
                 'customer uid',
                 'contact uid',
-                'campaign uid'
+                'campaign uid',
+                'phoneNumber',
+                'email'
             ]
         );
     }
@@ -68,6 +71,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      * @param array $leadData
      * @param array $statuses
      * @param User  $user
@@ -105,6 +109,11 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
             $leadPhone = new LeadPhone($leadData['phoneNumber']);
             $leadPhone->setPrimary(true);
             $lead->addPhone($leadPhone);
+        }
+        if (!empty($leadData['email'])) {
+            $leadEmail = new LeadEmail($leadData['email']);
+            $leadEmail->setPrimary(true);
+            $lead->addEmail($leadEmail);
         }
 
         $lead->setStatus($status)
