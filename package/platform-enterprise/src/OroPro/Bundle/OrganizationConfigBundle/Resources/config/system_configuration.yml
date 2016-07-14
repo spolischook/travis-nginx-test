@@ -1,0 +1,89 @@
+oro_system_configuration:
+  tree:
+      organization_configuration:
+          platform:
+              children:
+                  general_setup:
+                      priority: 20
+                      children:
+                          localization:
+                              priority: 255
+                              children:
+                                  locale_settings:
+                                      priority: 100
+                                      children:
+                                          - oro_locale.locale
+                                          - oro_locale.country
+                                          - oro_locale.format_address_by_address_country
+                                          - oro_locale.timezone
+                                          - oro_locale.currency
+                                          - oro_locale.quarter_start
+                                  map_settings:
+                                      priority: 50
+                                      children:
+                                          - oro_locale.temperature_unit
+                                          - oro_locale.wind_speed_unit
+                          language_settings:
+                              priority: 230
+                              children:
+                                  language_languages:
+                                      children:
+                                          - oro_locale.language
+                          look_and_feel:
+                              priority: 220
+                              children:
+                                  navbar_settings:
+                                      children:
+                                          - oro_ui.navbar_position
+                                  wysiwyg_settings:
+                                      children:
+                                          - oro_form.wysiwyg_enabled
+                                  activity_list_settings:
+                                      children:
+                                          - oro_activity_list.sorting_field
+                                          - oro_activity_list.sorting_direction
+                                          - oro_activity_list.per_page
+                                  grid_settings:
+                                      children:
+                                          - oro_data_grid.default_per_page
+                                          - oro_entity_pagination.enabled
+                                          - oro_entity_pagination.limit
+                                  calendar_settings:
+                                      children:
+                                          - oro_calendar.calendar_colors
+                                          - oro_calendar.event_colors
+                                  sidebar_settings:
+                                      children:
+                                          - oro_sidebar.sidebar_left_active
+                                          - oro_sidebar.sidebar_right_active
+                          email_configuration:
+                              priority: 210
+                              children:
+                                  signature_configuration:
+                                      children:
+                                          - oro_email.signature
+                                  mailboxes:
+                                      children:
+                                          - oro_email.mailbox_grid
+
+                          attachment_settings:
+                              priority: -10
+                              children:
+                                  attachment_mime_types_settings:
+                                      children:
+                                          - oro_attachment.upload_file_mime_types
+                                          - oro_attachment.upload_image_mime_types
+                  integrations:
+                      priority: 10
+                      children:
+                          integration_email_settings:
+                              children:
+                                  integrations_ews:
+                                      children:
+                                          - oro_pro_ews.enabled
+                                          - oro_pro_ews.server
+                                          - oro_pro_ews.login
+                                          - oro_pro_ews.password
+                                          - oro_pro_ews.version
+                                          - oro_pro_ews.domain_list
+                                          - oro_pro_ews.check_connection
