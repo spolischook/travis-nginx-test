@@ -39,16 +39,16 @@ define(function(require) {
                 el: this.$('[data-name=row-action]'),
                 accessLevels: this.model.get('permissions').accessLevels
             });
-            this.subview('permissions-items', new PermissionCollectionView({
-                el: this.$('[data-name=action-permissions-items]'),
-                collection: this.model.get('permissions')
-            }));
             this.subview('row-action', rolePermissionsActionView);
             rolePermissionsActionView.on('row-access-level-change', _.bind(function(data) {
                 this.model.get('permissions').each(function(model) {
                     model.set(data);
                 });
             }, this));
+            this.subview('permissions-items', new PermissionCollectionView({
+                el: this.$('[data-name=action-permissions-items]'),
+                collection: this.model.get('permissions')
+            }));
             if (fields.length > 0) {
                 this.subview('fields-list', new BaseCollectionView({
                     el: this.$('[data-name=fields-list]'),

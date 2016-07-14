@@ -21,11 +21,13 @@ define(function(require) {
             var collection = new BaseCollection(_.values(this.model.get('permissions')), {
                 model: PermissionModel
             });
-            collection.accessLevels = new AccessLevelsCollection([], {
-                routeParameters: {
-                    oid: this.model.get('identity').replace(/\\/g, '_'),
-                    permission: this.model.get('name')
-                }
+            collection.each(function(model) {
+                model.accessLevels = new AccessLevelsCollection([], {
+                    routeParameters: {
+                        oid: model.get('identity').replace(/\\/g, '_'),
+                        permission: model.get('name')
+                    }
+                });
             });
             this.listenTo(collection, 'change', this.onAccessLevelChange);
             this.subview('permissions-items', new PermissionCollectionView({
