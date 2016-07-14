@@ -1,0 +1,7 @@
+services:
+    oro_websitepro.form.type.website:
+        class: 'Oro\Bundle\WebsiteProBundle\Form\Type\WebsiteType'
+        calls:
+            - [setDataClass, ['%orob2b_website.entity.website.class%']]
+        tags:
+            - { name: form.type, alias: oro_websitepro_type }
