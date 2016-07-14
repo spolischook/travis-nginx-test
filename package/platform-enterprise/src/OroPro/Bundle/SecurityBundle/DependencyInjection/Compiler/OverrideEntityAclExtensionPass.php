@@ -48,6 +48,7 @@ class OverrideEntityAclExtensionPass implements CompilerPassInterface
         // rewrite search_helper
         if ($container->hasDefinition(self::SEARCH_ACL_HELPER)) {
             $definition = $container->getDefinition(self::SEARCH_ACL_HELPER);
+            $definition->addMethodCall('setRequest', [new Reference('request_stack')]);
             $this->setOrganizationProviderToService($definition);
         }
 
