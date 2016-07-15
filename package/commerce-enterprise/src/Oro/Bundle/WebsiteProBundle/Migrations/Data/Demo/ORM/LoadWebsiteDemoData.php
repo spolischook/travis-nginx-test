@@ -10,10 +10,13 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
 use Oro\Bundle\UserBundle\DataFixtures\UserUtilityTrait;
 
 use OroB2B\Bundle\WebsiteBundle\Entity\Website;
+
 
 class LoadWebsiteDemoData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
@@ -92,27 +95,41 @@ class LoadWebsiteDemoData extends AbstractFixture implements ContainerAwareInter
 
         $manager->flush();
 
-        //todo add reset localizations for website BB-3367
         // Create websites
         foreach ($this->webSites as $webSite) {
-            $site = new Website();
-
-            $localizations = [];
-            foreach ($webSite['localizations'] as $code) {
-                $localizations[] = $this->getLocalization('localization_' . $code);
-            }
-
-            $site
+            $manager->persist((new Website())
                 ->setName($webSite['name'])
                 ->setUrl($webSite['url'])
-                //->resetLocalizations($localizations) //todo use direct configuration reset
                 ->setOwner($businessUnit)
-                ->setOrganization($organization);
-
-            $manager->persist($site);
+                ->setOrganization($organization));
         }
 
         $manager->flush();
+
+        // Create website localizations relationships
+        /** @var ConfigManager $configManager */
+        $configManager = $this->container->get('oro_config.website');
+        foreach ($this->webSites as $webSite) {
+            $localizationIds = array_map(function ($code) {
+                return $this->getLocalization('localization_' . $code)->getId();
+            }, $webSite['localizations']);
+
+            $site = $this->getWebsiteByName($manager, $webSite['name']);
+
+            $configManager->setScopeId($site->getId());
+
+            $configManager->set(
+                'oro_locale' . ConfigManager::SECTION_MODEL_SEPARATOR . Configuration::ENABLED_LOCALIZATIONS,
+                $localizationIds
+            );
+
+            $configManager->set(
+                Configuration::getConfigKeyByName(Configuration::DEFAULT_LOCALIZATION),
+                reset($localizationIds)
+            );
+
+            $configManager->flush();
+        }
 
         // Create website sharing relationship
         foreach ($this->webSites as $webSite) {
