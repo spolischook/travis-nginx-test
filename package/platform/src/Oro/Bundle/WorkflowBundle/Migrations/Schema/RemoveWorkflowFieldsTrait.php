@@ -20,7 +20,7 @@ trait RemoveWorkflowFieldsTrait
             if (!in_array($foreignKey->getForeignTableName(), $workflowTables, true)) {
                 continue;
             }
-            
+
             $table->removeForeignKey($foreignKey->getName());
             foreach ($foreignKey->getLocalColumns() as $column) {
                 $table->dropColumn($column);

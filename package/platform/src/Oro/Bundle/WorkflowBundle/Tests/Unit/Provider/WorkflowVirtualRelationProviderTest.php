@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\Expr\Join;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Bundle\WorkflowBundle\Provider\WorkflowVirtualRelationProvider;
 
@@ -20,7 +21,6 @@ class WorkflowVirtualRelationProviderTest extends \PHPUnit_Framework_TestCase
     /** @var WorkflowVirtualRelationProvider */
     protected $provider;
 
-    /**
     /**
      * {@inheritdoc}
      */
@@ -159,7 +159,7 @@ class WorkflowVirtualRelationProviderTest extends \PHPUnit_Framework_TestCase
                 'join' => [
                     'left' => [
                         [
-                            'join' => 'OroWorkflowBundle:WorkflowItem',
+                            'join' => WorkflowItem::class,
                             'alias' => WorkflowVirtualRelationProvider::ITEMS_RELATION_NAME,
                             'conditionType' => Join::WITH,
                             'condition' => sprintf(

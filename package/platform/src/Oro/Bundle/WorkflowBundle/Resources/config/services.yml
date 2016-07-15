@@ -89,6 +89,12 @@ services:
             - '@oro_entity.doctrine_helper'
             - '@oro_workflow.manager.system_config'
 
+    oro_workflow.abstract.workflow_aware_manager:
+        class: Oro\Bundle\WorkflowBundle\Model\WorkflowAwareManager
+        abstract: true
+        arguments:
+            - '@oro_workflow.manager'
+
     oro_workflow.process.process_factory:
         class: %oro_workflow.process.process_factory.class%
         arguments:
@@ -264,8 +270,3 @@ services:
         arguments:
             - '@oro_workflow.generator.trigger_schedule_options_verifier'
             - '%oro_workflow.workflow_item.entity.class%'
-
-    oro_workflow.migration.post_up.listener:
-        class: 'Oro\Bundle\WorkflowBundle\EventListener\PostUpMigrationListener'
-        tags:
-            - { name: kernel.event_listener, event: oro_migration.post_up, method: onPostUp, priority: -70 }

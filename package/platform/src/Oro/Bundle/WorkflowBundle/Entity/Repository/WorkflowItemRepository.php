@@ -79,29 +79,14 @@ class WorkflowItemRepository extends EntityRepository
      * @param WorkflowDefinition $definition
      * @return QueryBuilder
      */
-    protected function getByDefinitionQueryBuilder(WorkflowDefinition $definition)
-    {
-        return $this->createQueryBuilder('workflowItem')
-            ->select('workflowItem.id')
-            ->where('workflowItem.definition = :definition')
-            ->setParameter('definition', $definition);
-    }
-
-    /**
-     * @param WorkflowDefinition $definition
-     * @return QueryBuilder
-     */
     public function getEntityWorkflowStepUpgradeQueryBuilder(WorkflowDefinition $definition)
     {
-        //TODO: refactor or remove this method in BAP-10979
-        $queryBuilder = $this->getByDefinitionQueryBuilder($definition);
-
         return $this->getEntityManager()->createQueryBuilder()
-            ->update($definition->getRelatedEntity(), 'entity')
-            ->set('entity.workflowStep', $definition->getStartStep()->getId())
-            ->where('entity.workflowStep IS NULL')
-            ->andWhere('entity.workflowItem IS NULL OR entity.workflowItem IN (' . $queryBuilder->getDQL() . ')')
-            ->setParameters($queryBuilder->getParameters());
+            ->update(WorkflowItem::class, 'workflowItem')
+            ->set('workflowItem.currentStep', $definition->getStartStep()->getId())
+            ->where('workflowItem.currentStep IS NULL')
+            ->andWhere('workflowItem.definition = :definition')
+            ->setParameter('definition', $definition);
     }
 
     /**
@@ -173,23 +158,27 @@ class WorkflowItemRepository extends EntityRepository
     /**
      * @param string $entityClass
      * @param array $entityIds
+     * @param bool $withWorkflowName
      * @return array
      */
-    public function getGroupedWorkflowNameAndWorkflowStepName($entityClass, array $entityIds)
+    public function getGroupedWorkflowNameAndWorkflowStepName($entityClass, array $entityIds, $withWorkflowName = true)
     {
         $entityIds = array_map(function ($item) {
             return (string)$item;
         }, $entityIds);
 
         $qb = $this->createQueryBuilder('wi');
-        $qb->select('wi.entityId AS entityId, d.label AS workflowName, ws.label AS stepName')
+        $qb->select('wi.entityId AS entityId, ws.label AS stepName')
             ->join('wi.currentStep', 'ws')
             ->join('wi.definition', 'd')
             ->where($qb->expr()->eq('wi.entityClass', ':entityClass'))
             ->andWhere($qb->expr()->in('wi.entityId', ':entityId'))
             ->setParameter('entityClass', $entityClass)
-            ->setParameter('entityId', $entityIds)
-        ;
+            ->setParameter('entityId', $entityIds);
+
+        if ($withWorkflowName) {
+            $qb->addSelect('d.label AS workflowName');
+        }
 
         $items = $qb->getQuery()->getArrayResult();
 
