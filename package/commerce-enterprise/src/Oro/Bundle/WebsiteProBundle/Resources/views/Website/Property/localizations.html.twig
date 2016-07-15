@@ -1,9 +1,0 @@
-{#todo fetch correct localizations for website (replace [] with correct data source) in scope of BB-3367 #}
-{% set localizations = [] %}
-
-{% set codes = [] %}
-{% for localization in localizations %}
-    {% set codes = codes|merge([localization.languageCode]) %}
-{% endfor %}
-
-{{ codes|join(', ') }}

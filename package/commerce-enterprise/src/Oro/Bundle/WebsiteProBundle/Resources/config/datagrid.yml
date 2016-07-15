@@ -16,11 +16,6 @@ datagrid:
                 renderable:    false
             name:
                 label:         orob2b.website.name.label
-#            localizations:
-#                label:         orob2b.website.localizations.label
-#                type:          twig
-#                frontend_type: html
-#                template:      OroWebsiteProBundle:Website:Property/localizations.html.twig #todo use template for listener fix scope of BB-3367
             createdAt:
                 label:         oro.ui.created_at
                 frontend_type: datetime
