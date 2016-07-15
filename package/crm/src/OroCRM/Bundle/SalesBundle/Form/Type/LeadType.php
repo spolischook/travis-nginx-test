@@ -13,6 +13,7 @@ class LeadType extends AbstractType
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -52,8 +53,26 @@ class LeadType extends AbstractType
                 )
             )
             ->add('jobTitle', 'text', array('required' => false, 'label' => 'orocrm.sales.lead.job_title.label'))
-            ->add('phoneNumber', 'text', array('required' => false, 'label' => 'orocrm.sales.lead.phone_number.label'))
-            ->add('email', 'email', array('required' => false, 'label' => 'orocrm.sales.lead.email.label'))
+            ->add(
+                'phones',
+                'oro_phone_collection',
+                array(
+                    'label' => 'orocrm.sales.lead.phones.label',
+                    'type' => 'oro_phone',
+                    'required' => false,
+                    'options' => array('data_class' => 'OroCRM\Bundle\SalesBundle\Entity\LeadPhone')
+                )
+            )
+            ->add(
+                'emails',
+                'oro_email_collection',
+                array(
+                    'label'    => 'orocrm.sales.lead.emails.label',
+                    'type'     => 'oro_email',
+                    'required' => false,
+                    'options'  => array('data_class' => 'OroCRM\Bundle\SalesBundle\Entity\LeadEmail')
+                )
+            )
             ->add(
                 'customer',
                 'orocrm_sales_b2bcustomer_select',
@@ -70,7 +89,21 @@ class LeadType extends AbstractType
                 )
             )
             ->add('industry', 'text', array('required' => false, 'label' => 'orocrm.sales.lead.industry.label'))
-            ->add('address', 'oro_address', array('required' => false))
+            ->add(
+                'addresses',
+                'oro_address_collection',
+                [
+                    'label'    => '',
+                    'type'     => 'orocrm_sales_lead_address',
+                    'required' => false,
+                    'add_label'  => 'orocrm.sales.lead.add_address.label',
+                    'show_form_when_empty' => false,
+                    'block_name' => 'address_collection',
+                    'options'  => [
+                        'data_class' => 'OroCRM\Bundle\SalesBundle\Entity\LeadAddress',
+                    ]
+                ]
+            )
             ->add(
                 'source',
                 'oro_enum_select',
@@ -87,7 +120,9 @@ class LeadType extends AbstractType
                     'required' => false,
                     'label' => 'orocrm.sales.lead.notes.label'
                 )
-            );
+            )
+            ->add('twitter', 'text', array('required' => false, 'label' => 'orocrm.sales.lead.twitter.label'))
+            ->add('linkedIn', 'text', array('required' => false, 'label' => 'orocrm.sales.lead.linked_in.label'));
     }
 
     /**

@@ -10,6 +10,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Entity\User;
 
 use OroCRM\Bundle\SalesBundle\Entity\Lead;
+use OroCRM\Bundle\SalesBundle\Entity\LeadAddress;
+use OroCRM\Bundle\SalesBundle\Entity\LeadEmail;
+use OroCRM\Bundle\SalesBundle\Entity\LeadPhone;
 use OroCRM\Bundle\SalesBundle\Entity\B2bCustomer;
 
 use OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\AbstractFixture;
@@ -42,7 +45,9 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
                 'channel uid',
                 'customer uid',
                 'contact uid',
-                'campaign uid'
+                'campaign uid',
+                'phonenumber',
+                'email'
             ]
         );
     }
@@ -67,6 +72,7 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
     }
 
     /**
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      * @param array $leadData
      * @param array $statuses
      * @param User  $user
@@ -100,11 +106,23 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
         if (!empty($leadData['campaign uid'])) {
             $lead->setCampaign($this->getCampaignReference($leadData['campaign uid']));
         }
+        if (!empty($leadData['phonenumber'])) {
+            $leadPhone = new LeadPhone($leadData['phonenumber']);
+            $leadPhone->setPrimary(true);
+            $lead->addPhone($leadPhone);
+        }
+        if (!empty($leadData['email'])) {
+            $leadEmail = new LeadEmail($leadData['email']);
+            $leadEmail->setPrimary(true);
+            $lead->addEmail($leadEmail);
+        }
+
         $lead->setStatus($status)
             ->setOwner($user)
             ->setOrganization($organization)
             ->setCreatedAt($created)
             ->setUpdatedAt($this->generateUpdatedDate($created));
+
         $this->setObjectValues($lead, $leadData);
         $lead->setName($lead->getCompanyName());
 
@@ -114,7 +132,25 @@ class LoadLeadsData extends AbstractFixture implements OrderedFixtureInterface
     protected function addAddress(Lead $lead, B2bCustomer $customer)
     {
         if ($customer->getBillingAddress()) {
-            $lead->setAddress($customer->getBillingAddress());
+            $customerAddress = $customer->getBillingAddress();
+            $leadAddress = new LeadAddress();
+            //take name data from lead itself
+            $leadAddress->setNamePrefix($lead->getNamePrefix());
+            $leadAddress->setNameSuffix($lead->getNameSuffix());
+            $leadAddress->setFirstName($lead->getFirstName());
+            $leadAddress->setLastName($lead->getLastName());
+            $leadAddress->setMiddleName($lead->getMiddleName());
+
+            $leadAddress->setLabel($customerAddress->getLabel());
+            $leadAddress->setOrganization($customerAddress->getOrganization());
+            $leadAddress->setStreet($customerAddress->getStreet());
+            $leadAddress->setStreet2($customerAddress->getStreet2());
+            $leadAddress->setRegion($customerAddress->getRegion());
+            $leadAddress->setCountry($customerAddress->getCountry());
+            $leadAddress->setCity($customerAddress->getCity());
+            $leadAddress->setPostalCode($customerAddress->getPostalCode());
+            $leadAddress->setPrimary(true);
+            $lead->addAddress($leadAddress);
         }
     }
 
