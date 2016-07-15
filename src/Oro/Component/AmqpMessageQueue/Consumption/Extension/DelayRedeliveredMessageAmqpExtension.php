@@ -1,9 +1,8 @@
 <?php
 namespace Oro\Component\AmqpMessageQueue\Consumption\Extension;
 
+use Oro\Component\MessageQueue\Consumption\AbstractExtension;
 use Oro\Component\MessageQueue\Consumption\Context;
-use Oro\Component\MessageQueue\Consumption\ExtensionInterface;
-use Oro\Component\MessageQueue\Consumption\ExtensionTrait;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpMessage;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpSession;
@@ -11,14 +10,12 @@ use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpSession;
 /**
  * If the message could not be processed because of an exception or fatal error.
  * RabbitMQ tries to send this same message again and again.
- * All the other messages behaind this broken message are not processed.
+ * All the other messages behind this broken message are not processed.
  * The purpose of this extension to push the broken message to the end of the queue allowing to process others.
  * Also it adds a delay so we do not fail often.
  */
-class DelayRedeliveredMessageAmqpExtension implements ExtensionInterface
+class DelayRedeliveredMessageAmqpExtension extends AbstractExtension
 {
-    use ExtensionTrait;
-
     /**
      * @param Context $context
      */
