@@ -8,6 +8,7 @@ use Oro\Bundle\SearchBundle\Query\Query;
 use Oro\Bundle\SecurityBundle\Search\AclHelper as BaseAclHelper;
 
 use OroPro\Bundle\OrganizationBundle\Provider\SystemAccessModeOrganizationProvider;
+use OroPro\Bundle\OrganizationBundle\Helper\OrganizationProHelper;
 
 class AclHelper extends BaseAclHelper
 {
@@ -17,12 +18,23 @@ class AclHelper extends BaseAclHelper
     /** @var SystemAccessModeOrganizationProvider */
     protected $organizationProvider;
 
+    /** @var OrganizationProHelper */
+    protected $organizationHelper;
+
     /**
      * @param SystemAccessModeOrganizationProvider $organizationProvider
      */
     public function setOrganizationProvider(SystemAccessModeOrganizationProvider $organizationProvider)
     {
         $this->organizationProvider = $organizationProvider;
+    }
+
+    /**
+     * @param OrganizationProHelper $organizationHelper
+     */
+    public function setOrganizationProHelper(OrganizationProHelper $organizationHelper)
+    {
+        $this->organizationHelper = $organizationHelper;
     }
 
     /**
@@ -40,7 +52,8 @@ class AclHelper extends BaseAclHelper
     protected function addOrganizationLimits(Query $query, $expr)
     {
         $organization = $this->securityFacade->getOrganization();
-        if ($organization && $organization->getIsGlobal()) {
+        $globalOrgId = $this->organizationHelper->getGlobalOrganizationId();
+        if (($organization && $organization->getIsGlobal()) || !$globalOrgId) {
             if ($this->request->getCurrentRequest()->query->has('organizations')) {
                 $organizations = $this->request->getCurrentRequest()->get('organizations');
                 if (strlen($organizations) > 0) {
