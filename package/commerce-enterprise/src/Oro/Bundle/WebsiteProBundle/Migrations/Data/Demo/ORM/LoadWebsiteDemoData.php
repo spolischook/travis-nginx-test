@@ -119,7 +119,7 @@ class LoadWebsiteDemoData extends AbstractFixture implements ContainerAwareInter
             $configManager->setScopeId($site->getId());
 
             $configManager->set(
-                'oro_locale' . ConfigManager::SECTION_MODEL_SEPARATOR . Configuration::ENABLED_LOCALIZATIONS,
+                Configuration::getConfigKeyByName(Configuration::ENABLED_LOCALIZATIONS),
                 $localizationIds
             );
 
