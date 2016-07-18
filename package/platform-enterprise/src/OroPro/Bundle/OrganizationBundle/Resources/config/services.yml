@@ -213,8 +213,7 @@ services:
             - '@oro_security.owner.ownership_metadata_provider'
             - '@oro_api.validation_helper'
         tags:
-            - { name: oro.api.processor, action: get_config, extra: !identifier_fields_only&definition, targetAction: create, priority: -52 }
-            - { name: oro.api.processor, action: get_config, extra: !identifier_fields_only&definition, targetAction: update, priority: -52 }
+            - { name: oro.api.processor, action: get_config, extra: !identifier_fields_only&definition, targetAction: update|create, priority: -52 }
 
     oropro_organization.validator.organization:
         class: OroPro\Bundle\OrganizationBundle\Validator\Constraints\OrganizationValidator
