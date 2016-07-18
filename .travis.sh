@@ -135,7 +135,7 @@ case $step in
              composer install --optimize-autoloader --no-interaction;
              if [ ! -z "$DB" ]; then
                 SKIP_ASSETS='--skip-assets'
-                if [ ! -z "$ASSETS" ]; then
+                if [ ! -z "$WITH_ASSETS" ]; then
                     SKIP_ASSETS=''
                 fi
                 if [ ! -z "$UPDATE_FROM" ]; then

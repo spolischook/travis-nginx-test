@@ -81,11 +81,9 @@ matrix:
      - php: 7.0
        env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=6 SOAP=true
      - php: 7.0
-       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=6 ASSETS=true
+       env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=6 WITH_ASSETS=true
      - php: 7.0
-       env: APPLICATION="application/commerce" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce UPDATE_FROM=commerce_beta2 PARALLEL_PROCESSES=6 ASSETS=true
-     - php: 7.0
-       env: APPLICATION="application/commerce-enterprise" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce PARALLEL_PROCESSES=6 ASSETS=true
+       env: APPLICATION="application/commerce-enterprise" TESTSUITE="functional" DB=postgresql DB_NAME=oro_commerce PARALLEL_PROCESSES=6 WITH_ASSETS=true
 
 env:
   global:
