@@ -79,7 +79,7 @@ class AmqpMessageConsumer implements MessageConsumerInterface
 
         try {
             $this->receivedMessage = null;
-            $this->channel->wait($allowedMethods = [], $nonBlocking = false, $timeout);
+            $this->channel->wait([], false, $timeout);
 
             return $this->receivedMessage;
         } catch (AMQPTimeoutException $e) {
