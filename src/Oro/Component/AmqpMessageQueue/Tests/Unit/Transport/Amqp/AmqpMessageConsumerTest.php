@@ -1,6 +1,7 @@
 <?php
 namespace Oro\Component\AmqpMessageQueue\Tests\Unit\Transport\Amqp;
 
+use Oro\Component\AmqpMessageQueue\Tests\Unit\Mock\AMQPChannelStub;
 use Oro\Component\MessageQueue\Transport\Exception\InvalidMessageException;
 use Oro\Component\MessageQueue\Transport\MessageConsumerInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
@@ -13,8 +14,6 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use PhpAmqpLib\Message\AMQPMessage as AMQPLibMessage;
 use PhpAmqpLib\Wire\AMQPTable;
-
-// @codingStandardsIgnoreStart
 
 class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,14 +31,17 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldThrowExceptionIfChannelHadCallbackBeforeInitialization()
     {
-        $this->setExpectedException(\LogicException::class, 'The channel has a callback set. We cannot use this channel because of unexpected behavior in such case');
+        $this->setExpectedException(
+            \LogicException::class,
+            'The channel has a callback set. We cannot use this channel because of unexpected behavior in such case'
+        );
 
         $channelMock = $this->createAmqpChannel();
         $channelMock->callbacks = ['has-registered-callback'];
 
         $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock,  new AmqpQueue('theQueueName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock, new AmqpQueue('theQueueName'));
 
         $consumer->receive();
     }
@@ -64,7 +66,7 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
 
         $sessionStub = $this->createAmqpSessionStub();
 
-        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock,  new AmqpQueue('theQueueName'));
+        $consumer = new AmqpMessageConsumer($sessionStub, $channelMock, new AmqpQueue('theQueueName'));
 
         $consumer->receive();
         $consumer->receive();
@@ -131,7 +133,14 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
         $channelMock
             ->expects($this->once())
             ->method('basic_consume')
-            ->with($this->anything(), 'theConsumerTag', 'theLocalBool', 'theAskBool', 'theExclusiveBool', 'theNoWaitBool')
+            ->with(
+                $this->anything(),
+                'theConsumerTag',
+                'theLocalBool',
+                'theAskBool',
+                'theExclusiveBool',
+                'theNoWaitBool'
+            )
         ;
 
         $sessionStub = $this->createAmqpSessionStub();
@@ -323,7 +332,11 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testThrowIfGivenDestinationInvalidOnAcknowledge()
     {
-        $consumer = new AmqpMessageConsumer($this->createAmqpSessionStub(), $this->createAmqpChannel(), new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer(
+            $this->createAmqpSessionStub(),
+            $this->createAmqpChannel(),
+            new AmqpQueue('aName')
+        );
 
         $invalidMessage = $this->createMessage();
 
@@ -358,7 +371,11 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function testThrowIfGivenDestinationInvalidOnReject()
     {
-        $consumer = new AmqpMessageConsumer($this->createAmqpSessionStub(), $this->createAmqpChannel(), new AmqpQueue('aName'));
+        $consumer = new AmqpMessageConsumer(
+            $this->createAmqpSessionStub(),
+            $this->createAmqpChannel(),
+            new AmqpQueue('aName')
+        );
 
         $invalidMessage = $this->createMessage();
 
@@ -436,51 +453,3 @@ class AmqpMessageConsumerTest extends \PHPUnit_Framework_TestCase
         return $this->getMock(AmqpSession::class, [], [], '', false);
     }
 }
-
-class AMQPChannelStub extends AMQPChannel
-{
-    /**
-     * @var AMQPLibMessage
-     */
-    public $receivedInternalMessage;
-
-    protected $callback;
-
-    public function __construct()
-    {
-    }
-
-    public function basic_qos($prefetch_size, $prefetch_count, $a_global)
-    {
-    }
-
-    public function wait($allowed_methods = null, $non_blocking = false, $timeout = 0)
-    {
-        call_user_func($this->callback, $this->receivedInternalMessage);
-    }
-
-    public function basic_consume(
-        $queue = '',
-        $gconsumer_tag = '',
-        $no_local = false,
-        $no_ack = false,
-        $exclusive = false,
-        $nowait = false,
-        $callback = null,
-        $ticket = null,
-        $arguments = array()
-    ) {
-        $this->callback = $callback;
-    }
-
-    public function basic_get($queue = '', $no_ack = false, $ticket = null)
-    {
-        return $this->receivedInternalMessage;
-    }
-
-    public function basic_cancel($consumer_tag, $nowait = false, $noreturn = false)
-    {
-    }
-}
-
-// @codingStandardsIgnoreEnd

@@ -21,13 +21,6 @@ class AmqpConnection implements ConnectionInterface
      */
     public function __construct(AbstractConnection $connection)
     {
-        if (!defined('AMQP_WITHOUT_SIGNALS')) {
-            define('AMQP_WITHOUT_SIGNALS', false);
-        }
-        if (AMQP_WITHOUT_SIGNALS) {
-            throw new \LogicException('The AMQP_WITHOUT_SIGNALS must be set to false.');
-        }
-
         $this->connection = $connection;
     }
 
