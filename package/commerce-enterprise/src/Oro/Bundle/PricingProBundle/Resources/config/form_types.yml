@@ -1,0 +1,8 @@
+services:
+    oro_pricingpro.form.extension.website_type:
+        class: 'Oro\Bundle\PricingProBundle\Form\Extension\WebsiteFormExtension'
+        arguments:
+            - '%orob2b_pricing.entity.price_list_to_website.class%'
+            - "@oro_pricingpro.entity_listener.website"
+        tags:
+            - { name: form.type_extension, alias: oro_websitepro_type }

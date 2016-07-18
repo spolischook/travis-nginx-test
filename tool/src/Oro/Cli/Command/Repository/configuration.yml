@@ -1,9 +1,4 @@
 repositories:
-    application/platform: git@github.com:laboro/platform-application.git
-    application/crm: git@github.com:laboro/crm-application.git
-    application/crm-enterprise: git@github.com:laboro/crm-enterprise-application.git
-    application/commerce: git@github.com:laboro/commerce-application.git
-
     package/platform: git@github.com:laboro/platform.git
     package/platform-enterprise: git@github.com:laboro/platform-enterprise.git
     package/crm: git@github.com:laboro/crm.git
@@ -20,7 +15,13 @@ repositories:
     package/magento-contact-us: git@github.com:laboro/OroCRMMagentoContactUsBundle.git
     package/task: git@github.com:laboro/OroCRMTaskBundle.git
 
-    documentation: git@github.com:orocrm/documentation.git'
+    documentation: git@github.com:orocrm/documentation.git
+
+    # split applications in the end, order matters in this section
+    application/platform: git@github.com:laboro/platform-application.git
+    application/crm: git@github.com:laboro/crm-application.git
+    application/crm-enterprise: git@github.com:laboro/crm-enterprise-application.git
+    application/commerce: git@github.com:laboro/commerce-application.git
 
 branches:
     maintenance/crm-enterprise-1.11:
@@ -94,3 +95,5 @@ branches:
         package/serialized-fields: 'master'
         package/task: 'master'
         package/zendesk: 'master'
+
+        documentation: 'master'
