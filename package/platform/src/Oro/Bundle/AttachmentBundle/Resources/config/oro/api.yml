@@ -1,4 +1,18 @@
 oro_api:
     entities:
         Oro\Bundle\AttachmentBundle\Entity\Attachment: ~
-        Oro\Bundle\AttachmentBundle\Entity\File: ~
+        Oro\Bundle\AttachmentBundle\Entity\File:
+            fields:
+                content:
+                    data_type: string
+                    depends_on: [filename]
+            actions:
+                create: false
+                update: false
+                delete: false
+                delete_list: false
+                get_subresource: false
+                get_relationship: false
+                add_relationship: false
+                update_relationship: false
+                delete_relationship: false
