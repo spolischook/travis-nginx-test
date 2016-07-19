@@ -23,6 +23,7 @@ define(function(require) {
             });
 
             this.datagrid.on('rendered', this.onGridRendered, this);
+            this.datagrid.on('content:update', this.onGridRendered, this);
         },
 
         dispose: function() {
@@ -30,7 +31,7 @@ define(function(require) {
                 return;
             }
             delete this.$mapContainerFrame;
-            this.datagrid.off('rendered', this.onGridRendered, this);
+            this.datagrid.off(null, null, this);
             MapAction.__super__.dispose.apply(this, arguments);
         },
 
@@ -52,6 +53,15 @@ define(function(require) {
                 content: this.$mapContainerFrame
             }).on('shown.bs.popover', _.bind(function() {
                 this.mapView.updateMap(this.getAddress(), this.model.get('label'));
+
+                $(document).on('mouseup', _.bind(function(e) {
+                    var $map = this.mapView.$el;
+                    if (!$map.is(e.target) && !$map.has(e.target).length) {
+                        $popoverTrigger.popover('hide');
+                    }
+                }, this));
+            }, this)).on('hidden.bs.popover', _.bind(function() {
+                $(document).off('mouseup', null, this);
             }, this));
         },
 
