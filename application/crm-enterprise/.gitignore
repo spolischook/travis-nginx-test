@@ -27,3 +27,4 @@ behat.yml
 *~
 
 /app/SymfonyRequirements.php
+/app/check.php
