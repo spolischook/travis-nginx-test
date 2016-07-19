@@ -28,6 +28,7 @@ class OroCRMCallBundleInstaller implements Installation, ActivityExtensionAwareI
     {
         $this->comment = $commentExtension;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -35,6 +36,7 @@ class OroCRMCallBundleInstaller implements Installation, ActivityExtensionAwareI
     {
         return 'v1_7';
     }
+
     /**
      * {@inheritdoc}
      */
@@ -42,6 +44,7 @@ class OroCRMCallBundleInstaller implements Installation, ActivityExtensionAwareI
     {
         $this->activityExtension = $activityExtension;
     }
+
     /**
      * {@inheritdoc}
      */
