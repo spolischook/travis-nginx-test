@@ -5,6 +5,7 @@ language: php
 branches:
   only: 
     - master
+    - maintenance/crm-enterprise-1.12
 
 php:
   - 5.5
