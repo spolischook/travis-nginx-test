@@ -20,11 +20,6 @@
             });
 
             $(function() {
-                $(document).on('change', 'input.bu:checkbox', function (e) {
-                    var org_id = $(this).data('organization');
-                    $('input.org-id-' + org_id + ':checkbox').prop('checked', true).trigger('change');
-                });
-
                 $(document).on('change', 'input.org:checkbox', function (e) {
                     roles.each(function (key, elm) {
                         var roleId = elm.value;
