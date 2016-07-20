@@ -5,6 +5,7 @@ services:
         arguments:
             - "@request_stack"
             - "@doctrine"
+
     oro_websitepro.event_listener.busines_unit_view:
         class: 'Oro\Bundle\WebsiteProBundle\EventListener\BusinessUnitViewListener'
         arguments:
@@ -13,3 +14,9 @@ services:
             - "@request_stack"
         tags:
             - { name: kernel.event_listener, event: oro_ui.scroll_data.before.businessUnitView, method: onBusinessUnitView }
+
+    oro_websitepro.provider.website_localization:
+        class: 'Oro\Bundle\WebsiteProBundle\Provider\WebsiteLocalizationProvider'
+        arguments:
+            - '@oro_config.manager'
+            - "@oro_locale.provider.localization"
