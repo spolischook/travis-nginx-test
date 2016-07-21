@@ -21,5 +21,7 @@ config:
         'oroproorganization/js/app/tools/system-access-mode-organization-provider': 'bundles/oroproorganization/js/app/tools/system-access-mode-organization-provider.js'
         'oroproorganization/js/app/components/account-type-component': 'bundles/oroproorganization/js/app/components/account-type-component.js'
         'oroproorganization/js/app/components/imap-gmail-component': 'bundles/oroproorganization/js/app/components/imap-gmail-component.js'
+        'oroproorganization/js/app/views/organization-tree-view': 'bundles/oroproorganization/js/app/views/organization-tree-view.js'
+
     appmodules:
         - oroproorganization/js/app/modules/organization-module
