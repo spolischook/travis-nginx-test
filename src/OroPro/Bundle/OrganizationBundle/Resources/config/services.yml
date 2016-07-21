@@ -32,6 +32,7 @@ parameters:
 
     oropro_organization.autocomplete.business_unit.search_handler.class:  OroPro\Bundle\OrganizationBundle\Autocomplete\BusinessUnitSearchHandler
 
+    oro_organization.autocomplete.business_unit_tree_search_handler.class: OroPro\Bundle\OrganizationBundle\Autocomplete\BusinessUnitTreeSearchHandler
 services:
     oropro_organization.twig.extension.organization:
         class: %oropro_organization.twig.extension.organization.class%

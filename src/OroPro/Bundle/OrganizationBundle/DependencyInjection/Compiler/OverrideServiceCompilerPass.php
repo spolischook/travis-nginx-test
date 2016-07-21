@@ -165,6 +165,16 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             $definition->setClass('OroPro\Bundle\OrganizationBundle\Validator\Constraints\OwnerValidator');
         }
 
+        /**
+         * Shows organization in filters of grid if logged under global organization
+         */
+        $serviceId = 'oro_organization.listener.choice_tree_filter_load_data_listener';
+        if ($container->hasDefinition($serviceId)) {
+            $definition = $container->getDefinition($serviceId);
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\EventListener\ChoiceTreeFilterLoadDataListener');
+            $definition->addMethodCall('setSecurityFacade', [new Reference('oro_security.security_facade')]);
+        }
+
         $this->overrideOrganizationsSelect($container);
     }
 
