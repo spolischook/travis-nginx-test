@@ -44,16 +44,14 @@
 
 .logo {
   display: block;
-  width: 258px;
-  height: 35px;
-  margin: 12px 0 0;
+  width: 19rem;
+  height: 3.5rem;
+  margin: 1.2rem 0 0;
+  text-indent: -999rem;
+  background-size: 100%;
 
-  text-indent: -9999px;
-
-  @media (max-width: $screen-md) {
+  @media (max-width: 991px) {
     margin: 0 auto;
-
-    background-size: 240px 32px;
   }
 }
 
@@ -114,12 +112,12 @@
   width: 100%;
 
   &__inner {
-    padding: 30px 0 20px;
+    padding-bottom: 20px;
 
     @include clearfix();
 
     @media (max-width: $screen-md) {
-      padding: 20px 0 10px;
+      padding-bottom: 10px;
     }
   }
 
@@ -135,10 +133,10 @@
     }
 
     .content__inner {
-      padding: 30px 0 0 20px;
+      padding-bottom: 20px;
 
       @media (max-width: $screen-md) {
-        padding: 20px 0 10px;
+        padding-bottom: 10px;
       }
     }
 

@@ -166,12 +166,13 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
         }
 
         /**
-         * This override widget business unit select with additional EE acl logic
+         * Shows organization in filters of grid if logged under global organization
          */
-        $serviceId = 'oro_dashboard.widget_config_value.widget_business_unit_select.converter';
+        $serviceId = 'oro_organization.listener.choice_tree_filter_load_data_listener';
         if ($container->hasDefinition($serviceId)) {
             $definition = $container->getDefinition($serviceId);
-            $definition->setClass('OroPro\Bundle\OrganizationBundle\Provider\WidgetBusinessUnitSelectConverter');
+            $definition->setClass('OroPro\Bundle\OrganizationBundle\EventListener\ChoiceTreeFilterLoadDataListener');
+            $definition->addMethodCall('setSecurityFacade', [new Reference('oro_security.security_facade')]);
         }
 
         $this->overrideOrganizationsSelect($container);

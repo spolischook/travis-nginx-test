@@ -5,6 +5,7 @@ namespace OroPro\Bundle\OrganizationBundle\EventListener;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
@@ -65,32 +66,11 @@ class AuthenticationListener
             return true;
         }
 
-        /** @var User $user */
-        $user = $token->getUser();
-        /** @var Organization $organization */
-        $organization = $token->getOrganizationContext();
-        /** @var UserPreferredOrganization $preferredEntry */
-        $preferredEntry = $this->getPreferredOrganizationRepository()->findOneBy(['user' => $user]);
-        $preferredOrg   = $preferredEntry ? $preferredEntry->getOrganization() : false;
-
-        if ($preferredOrg && $user->getOrganizations(true)->contains($preferredOrg)) {
-            // we have preferred organization, it's active and user still assigned to it then use it
-            $token->setOrganizationContext($preferredOrg);
-        } elseif ($organization && $preferredOrg && $preferredOrg->getId() !== $organization->getId()) {
-            // has preferred, but it's not available for particular user(disabled or unassigned)
-            $this->getPreferredOrganizationRepository()->updatePreferredOrganization($user, $organization);
-
-            // notify user that organization context currently activated is not expected preferred one
-            $this->session->set(self::MULTIORG_LOGIN_UNPREFERRED, true);
-        } elseif ($organization) {
-            // case if it's first login, just save preferred
-            $this->getPreferredOrganizationRepository()->savePreferredOrganization($user, $organization);
-
-            if ($user->getOrganizations(true)->count() > 1 && $user->getLoginCount() === 0) {
-                //notify that user is able to switch organization context
-                $this->session->set(self::MULTIORG_LOGIN_FIRST, true);
-            }
+        if (!$token->getUser() instanceof User) {
+            return false;
         }
+
+        $this->managePreferredOrganization($token);
     }
 
     /**
@@ -131,5 +111,40 @@ class AuthenticationListener
     protected function getPreferredOrganizationRepository()
     {
         return $this->registry->getRepository('OroProOrganizationBundle:UserPreferredOrganization');
+    }
+
+    /**
+     * @param TokenInterface $token
+     */
+    protected function managePreferredOrganization(TokenInterface $token)
+    {
+        /** @var User $user */
+        $user = $token->getUser();
+        
+        /** @var Organization $organization */
+        $organization = $token->getOrganizationContext();
+        
+        /** @var UserPreferredOrganization $preferredEntry */
+        $preferredEntry = $this->getPreferredOrganizationRepository()->findOneBy(['user' => $user]);
+        $preferredOrg   = $preferredEntry ? $preferredEntry->getOrganization() : false;
+        
+        if ($preferredOrg && $user->getOrganizations(true)->contains($preferredOrg)) {
+            // we have preferred organization, it's active and user still assigned to it then use it
+            $token->setOrganizationContext($preferredOrg);
+        } elseif ($organization && $preferredOrg && $preferredOrg->getId() !== $organization->getId()) {
+            // has preferred, but it's not available for particular user(disabled or unassigned)
+            $this->getPreferredOrganizationRepository()->updatePreferredOrganization($user, $organization);
+        
+            // notify user that organization context currently activated is not expected preferred one
+            $this->session->set(self::MULTIORG_LOGIN_UNPREFERRED, true);
+        } elseif ($organization) {
+            // case if it's first login, just save preferred
+            $this->getPreferredOrganizationRepository()->savePreferredOrganization($user, $organization);
+        
+            if ($user->getOrganizations(true)->count() > 1 && $user->getLoginCount() === 0) {
+                //notify that user is able to switch organization context
+                $this->session->set(self::MULTIORG_LOGIN_FIRST, true);
+            }
+        }
     }
 }

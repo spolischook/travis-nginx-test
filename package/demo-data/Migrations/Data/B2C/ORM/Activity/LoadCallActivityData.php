@@ -5,6 +5,8 @@ namespace OroCRMPro\Bundle\DemoDataBundle\Migrations\Data\B2C\ORM\Activity;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
+use Oro\Bundle\FormBundle\Form\DataTransformer\DurationToStringTransformer;
+
 use OroCRM\Bundle\AccountBundle\Entity\Account;
 use OroCRM\Bundle\CallBundle\Entity\Call;
 use OroCRM\Bundle\CallBundle\Entity\CallDirection;
@@ -60,6 +62,9 @@ class LoadCallActivityData extends AbstractFixture implements OrderedFixtureInte
      */
     public function load(ObjectManager $manager)
     {
+        // we need reverseTransform, create single instance to optimize memory usage
+        $durationTransformer = new DurationToStringTransformer();
+
         $data = $this->getData();
 
         $this->directions = [
@@ -70,24 +75,30 @@ class LoadCallActivityData extends AbstractFixture implements OrderedFixtureInte
         foreach ($data['account_calls'] as $callData) {
             $account        = $this->getAccountReference($callData['account uid']);
             $defaultContact = $account->getDefaultContact();
-            $this->loadActivity($manager, $account, $defaultContact, $callData);
+            $this->loadActivity($manager, $account, $defaultContact, $callData, $durationTransformer);
         }
 
         foreach ($data['contact_calls'] as $callData) {
             $contact = $this->getContactReference($callData['contact uid']);
-            $this->loadActivity($manager, $contact, $contact, $callData);
+            $this->loadActivity($manager, $contact, $contact, $callData, $durationTransformer);
         }
         $manager->flush();
     }
 
     /**
-     * @param ObjectManager   $manager
-     * @param Account|Contact $entity
-     * @param Contact|null    $contact
-     * @param                 $data
+     * @param ObjectManager                 $manager
+     * @param Account|Contact               $entity
+     * @param Contact|null                  $contact
+     * @param array                         $data
+     * @param DurationToStringTransformer   $durationTransformer
      */
-    protected function loadActivity(ObjectManager $manager, $entity, $contact, $data)
-    {
+    protected function loadActivity(
+        ObjectManager $manager,
+        $entity,
+        $contact,
+        array $data,
+        DurationToStringTransformer $durationTransformer
+    ) {
         if ($contact !== null && $contact->getPhones()->count()) {
             /** @var ContactPhone $phone */
             $phone = $contact->getPhones()->first();
@@ -104,8 +115,10 @@ class LoadCallActivityData extends AbstractFixture implements OrderedFixtureInte
                 } else {
                     $data['direction'] = null;
                 }
-                $data['duration'] = new \DateTime($data['duration'], new \DateTimeZone('UTC'));
-                $created          = $this->generateCreatedDate();
+
+                $data['duration'] = $durationTransformer->reverseTransform($data['duration']);
+
+                $created = $this->generateCreatedDate();
                 $call->setCreatedAt($created);
                 $call->setUpdatedAt($created);
                 $call->setCallDateTime($created);

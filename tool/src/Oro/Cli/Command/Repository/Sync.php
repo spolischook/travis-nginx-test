@@ -12,36 +12,30 @@ class Sync extends AbstractSync
      */
     protected function configure()
     {
-        $this->setName('repository:sync')
-            ->setDescription(
-                'Synchronize the monolithic repository subtrees with upstream repositories.'
-            )
-            ->addUsage('application/crm')
-            ->addUsage('package/platform');
         parent::configure();
+
+        $this
+            ->setName('repository:sync')
+            ->setDescription('Synchronize the monolithic repository subtrees with upstream repositories.');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function doSync(InputInterface $input, OutputInterface $output)
     {
-        $this->assertWorkingTreeEmpty();
-        $this->processSync($input, $output, $this->getRepositories($input));
-    }
+        $branchName = $this->getBranch();
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doSync(InputInterface $input, OutputInterface $output, array $repositories)
-    {
-        $twoWay = $input->getOption('two-way');
+        foreach ($this->getApplicableRepositories() as $codePath => $repository) {
+            $this->pullSubtree($repository, $codePath, $branchName);
+        }
 
-        foreach ($repositories as $codePath => $repository) {
-            $alias = $this->getAlias($codePath);
-            $output->writeln("Working on \"{$codePath}\" subtree from \"{$repository}\" repository.");
-            $this->fetchLatestDataFromRemoteBranch($alias, $repository);
-            $this->updateSubtree($codePath, $twoWay);
+        $this->updateRemote($branchName, $branchName);
+
+        if ($this->isTwoWay()) {
+            foreach ($this->getApplicableRepositories() as $codePath => $repository) {
+                $this->pushSubtree($repository, $codePath, $branchName);
+            }
         }
     }
 }

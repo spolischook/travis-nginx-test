@@ -9,6 +9,8 @@
     "mybuilder/phpunit-accelerator": "1.1.*",
     "squizlabs/php_codesniffer": "2.3.*",
     "phpmd/phpmd": "2.4.*",
+    "psr/log": "*",
+    "symfony/process": "2.7.*",
     "sebastian/phpcpd": "2.0.*"
   },
   "autoload": {

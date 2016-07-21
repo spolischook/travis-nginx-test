@@ -16,15 +16,12 @@ Scenario: Create new Account
     | Willie     | Chavez    | <email()> |
     | Arthur     | Fisher    | <email()> |
     | Wanda      | Ford      | <email()> |
-  And I open the menu "Customers" and click "Accounts"
+  And I go to Customers/Accounts
   And I press "Create Account"
-  And press select arrow in Owner field
-  And fill "Ha" in search entity field
-  And must see only one result
-  Then I press on "Harry" in search result
   And I fill "Account" form with:
     | Account Name | Good Company    |
     | Description  | Our new partner |
+    | Owner        | Harry           |
   And I press "Add"
   And check Joan Anderson and Wanda Ford in grid
   When I press "Select"
@@ -39,7 +36,7 @@ Scenario: Create new Account
   And Harry Freeman should be an owner
 
 Scenario: Edit Account
-  Given I open the menu "Customers" and click "Accounts"
+  Given I go to Customers/Accounts
   And click edit Good Company in grid
   And press select entity button on Owner field
   Then click on Todd Greene in grid
@@ -57,7 +54,7 @@ Scenario: Edit Account
   And Todd Greene should be an owner
 
 Scenario: Delete Account
-  Given I open the menu "Customers" and click "Accounts"
+  Given I go to Customers/Accounts
   And click view Oro Inc in grid
   And press "Delete Account"
   When confirm deletion
