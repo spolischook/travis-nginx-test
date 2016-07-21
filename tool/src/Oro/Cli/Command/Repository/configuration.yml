@@ -95,6 +95,7 @@ branches:
         package/platform-enterprise: 'master'
         package/serialized-fields: 'master'
         package/task: 'master'
+        package/call: 'master'
         package/zendesk: 'master'
 
         documentation: 'master'
