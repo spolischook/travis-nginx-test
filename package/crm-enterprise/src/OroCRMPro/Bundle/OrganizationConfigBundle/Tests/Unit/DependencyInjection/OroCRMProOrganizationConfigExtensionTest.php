@@ -12,16 +12,16 @@ class OroCRMProOrganizationConfigExtensionTest extends \PHPUnit_Framework_TestCa
     private $extension;
 
     /** @var ContainerBuilder */
-    private $container;
+    private $containerBuilder;
 
     protected function setUp()
     {
-        $this->container = new ContainerBuilder();
+        $this->containerBuilder = new ContainerBuilder();
         $this->extension = new OroCRMProOrganizationConfigExtension();
     }
 
     public function testLoad()
     {
-        $this->extension->load([], $this->container);
+        $this->extension->load([], $this->containerBuilder);
     }
 }
