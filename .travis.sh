@@ -128,12 +128,20 @@ case $step in
              sphinx-build -nW -b html -d _build/doctrees . _build/html; 
           fi
           if [ ! -z "$TESTSUITE" ]; then
+             TEST_RUNNER_OPTIONS=''
+             if [ ! -z "$SOAP" ]; then
+                 TEST_RUNNER_OPTIONS='--stderr --group=soap'
+             fi
              composer install --optimize-autoloader --no-interaction;
              if [ ! -z "$DB" ]; then
+                SKIP_ASSETS='--skip-assets'
+                if [ ! -z "$WITH_ASSETS" ]; then
+                    SKIP_ASSETS=''
+                fi
                 if [ ! -z "$UPDATE_FROM" ]; then
-                    php app/console oro:platform:update --env test --force --no-interaction --skip-assets --timeout 600;
+                    php app/console oro:platform:update --env test --force --no-interaction ${SKIP_ASSETS} --timeout 600;
                 else
-                    php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --skip-assets --timeout 600;
+                    php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction ${SKIP_ASSETS} --timeout 600;
                 fi
              fi;
              if [ ! -z "$PARALLEL_PROCESSES" ]; then
@@ -171,7 +179,7 @@ case $step in
                         DIRECTORY="${APPLICATION}_$i"
                     fi
                     cd $DIRECTORY
-                    { $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --verbose --stderr --testsuite=$TESTSUITE-$i-of-$PARALLEL_PROCESSES > ../../result.$i 2>&1 ; echo "$?" > "../../code.$i" ; } &
+                    { $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --verbose ${TEST_RUNNER_OPTIONS} --testsuite=$TESTSUITE-$i-of-$PARALLEL_PROCESSES > ../../result.$i 2>&1 ; echo "$?" > "../../code.$i" ; } &
                     PIDS[$i]=$!
                     cd ../..
                 done
@@ -209,7 +217,7 @@ case $step in
                     fi
                 done
              else
-                 php $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --stderr --testsuite ${TESTSUITE};
+                 php $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --testsuite ${TESTSUITE} ${TEST_RUNNER_OPTIONS};
              fi
           fi
           if [ ! -z "$CS" ]; then
