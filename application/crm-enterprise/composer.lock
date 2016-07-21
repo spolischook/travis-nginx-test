@@ -1726,7 +1726,7 @@
                     "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
                 },
                 {
-                    "name": "William Durand",
+                    "name": "William DURAND",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -3120,7 +3120,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -3922,7 +3922,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm",
-                "reference": "99db110b90f347caa374db0d3d891850eaf368fd",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -3960,7 +3960,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/magento-abandoned-cart",
-                "reference": "6789803dee831dc309bd37b71cf7de22c1755f4a",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -3997,7 +3997,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/dotmailer",
-                "reference": "221625026c7f848039d55bf6441c54b5f5a0f61b",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4034,7 +4034,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm-enterprise",
-                "reference": "f755dbb9399a4bcac2043087434296025c4d14c9",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4068,7 +4068,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/google-hangout",
-                "reference": "0bfcdcfe27214291be2542312fe9a74626d68796",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4110,7 +4110,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/magento-contact-us",
-                "reference": "db2a1cf6901ce134867ff8f2a706b3eb75a9c045",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4147,7 +4147,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/mailchimp",
-                "reference": "17a7ac1a7094e91365cc598c5c498440cafcbc49",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4185,7 +4185,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/demo-data",
-                "reference": "d878c48ca0a7df7226906d1347611ff3dbdae972",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4220,7 +4220,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/ldap",
-                "reference": "c5794d6b19a8e0ef013fd0c4cb6ace3ee72c5f85",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4258,7 +4258,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/task",
-                "reference": "4326c7d3ba88cd3e789e6c1c701741d7e3d9b26a",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4298,7 +4298,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/zendesk",
-                "reference": "ac8d629249c141ee18e3cb28d0b533eec1a56eec",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4600,7 +4600,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/platform-enterprise",
-                "reference": "ce7664d2fb1418bad4998c8f7401085a3ddcd8b0",
+                "reference": "d7c1e80c104e2b250d11429fce7c02f012bddd80",
                 "shasum": null
             },
             "require": {
@@ -4640,7 +4640,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/serialized-fields",
-                "reference": "557f7ff89242a1b3915333f378ace924c915239f",
+                "reference": null,
                 "shasum": null
             },
             "require": {
