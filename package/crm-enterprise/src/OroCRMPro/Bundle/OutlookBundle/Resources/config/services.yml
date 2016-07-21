@@ -12,9 +12,7 @@ services:
         class: OroCRMPro\Bundle\OutlookBundle\Manager\ConfigApiManager
         arguments:
             - '@oro_config.manager.api'
-            - '@oro_platform.composer.version_helper'
-            - '@orocrmpro_outlook.addin_manager'
-            - '@twig.extension.httpfoundation'
+            - '@orocrmpro_outlook.api.configuration_repository'
 
     orocrmpro_outlook.addin_manager:
         class: OroCRMPro\Bundle\OutlookBundle\Manager\AddInManager

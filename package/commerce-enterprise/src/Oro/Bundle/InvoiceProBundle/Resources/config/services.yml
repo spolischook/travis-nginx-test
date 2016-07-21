@@ -1,0 +1,9 @@
+services:
+    oro_invoicepro.event_listener.form_view:
+        parent: oro_websitepro.event_listener.form_view.abstract
+        calls:
+             - [setWebsiteLabel, ['orob2b.invoice.website.label']]
+             - [setDataClass, [%orob2b_invoice.entity.invoice.class%]]
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.invoice-edit, method: onEntityEdit }
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.invoice-view, method: onEntityView }

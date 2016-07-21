@@ -1,0 +1,46 @@
+services:
+
+    orocrmpro_outlook.api.configuration_repository:
+        class: OroCRMPro\Bundle\OutlookBundle\Api\Repository\OutlookConfigurationRepository
+        public: false
+        arguments:
+            - '@oro_platform.composer.version_helper'
+            - '@orocrmpro_outlook.addin_manager'
+            - '@twig.extension.httpfoundation'
+
+    #
+    # get_list
+    #
+
+    orocrmpro_outlook.api.get_list.security_check:
+        class: OroCRMPro\Bundle\OutlookBundle\Api\Processor\GetList\SecurityCheck
+        arguments:
+            - '@oro_security.security_facade'
+        tags:
+            - { name: oro.api.processor, action: get_list, group: security_check, class: Oro\Bundle\ConfigBundle\Api\Model\ConfigurationSection, priority: 20 }
+
+    orocrmpro_outlook.api.get_list.load_configuration_sections:
+        class: OroCRMPro\Bundle\OutlookBundle\Api\Processor\GetList\LoadConfigurationSections
+        arguments:
+            - '@orocrmpro_outlook.api.configuration_repository'
+            - '@oro_config.api.repository'
+        tags:
+            - { name: oro.api.processor, action: get_list, group: load_data, class: Oro\Bundle\ConfigBundle\Api\Model\ConfigurationSection, priority: -5 }
+
+    #
+    # get
+    #
+
+    orocrmpro_outlook.api.get.security_check:
+        class: OroCRMPro\Bundle\OutlookBundle\Api\Processor\Get\SecurityCheck
+        arguments:
+            - '@oro_security.security_facade'
+        tags:
+            - { name: oro.api.processor, action: get, group: security_check, class: Oro\Bundle\ConfigBundle\Api\Model\ConfigurationSection, priority: 20 }
+
+    orocrmpro_outlook.api.get.load_configuration_section:
+        class: OroCRMPro\Bundle\OutlookBundle\Api\Processor\Get\LoadConfigurationSection
+        arguments:
+            - '@orocrmpro_outlook.api.configuration_repository'
+        tags:
+            - { name: oro.api.processor, action: get, group: load_data, class: Oro\Bundle\ConfigBundle\Api\Model\ConfigurationSection, priority: -5 }
