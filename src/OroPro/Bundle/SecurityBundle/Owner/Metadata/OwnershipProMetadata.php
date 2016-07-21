@@ -2,6 +2,7 @@
 
 namespace OroPro\Bundle\SecurityBundle\Owner\Metadata;
 
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 
 class OwnershipProMetadata extends OwnershipMetadata
@@ -74,5 +75,30 @@ class OwnershipProMetadata extends OwnershipMetadata
             $this->organizationColumnName,
             $this->globalView
             ) = unserialize($serialized);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAccessLevelNames()
+    {
+        if (!$this->hasOwner()) {
+            return [
+                AccessLevel::NONE_LEVEL   => AccessLevel::NONE_LEVEL_NAME,
+                AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
+            ];
+        }
+
+        $minLevel = AccessLevel::BASIC_LEVEL;
+
+        if ($this->isBasicLevelOwned()) {
+            $minLevel = AccessLevel::BASIC_LEVEL;
+        } elseif ($this->isLocalLevelOwned()) {
+            $minLevel = AccessLevel::LOCAL_LEVEL;
+        } elseif ($this->isGlobalLevelOwned()) {
+            $minLevel = AccessLevel::GLOBAL_LEVEL;
+        }
+
+        return AccessLevel::getAccessLevelNames($minLevel);
     }
 }
