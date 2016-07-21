@@ -14,6 +14,7 @@ repositories:
     package/zendesk: git@github.com:laboro/OroCRMZendeskBundle.git
     package/magento-contact-us: git@github.com:laboro/OroCRMMagentoContactUsBundle.git
     package/task: git@github.com:laboro/OroCRMTaskBundle.git
+    pakage/call: git@github.com:laboro/OroCRMCallBundle.git
 
     documentation: git@github.com:orocrm/documentation.git
 
