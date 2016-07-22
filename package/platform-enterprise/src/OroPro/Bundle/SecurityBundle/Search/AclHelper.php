@@ -54,7 +54,8 @@ class AclHelper extends BaseAclHelper
         $organization = $this->securityFacade->getOrganization();
         $globalOrgId = $this->organizationHelper->getGlobalOrganizationId();
         if (($organization && $organization->getIsGlobal()) || !$globalOrgId) {
-            if ($this->request->getCurrentRequest()->query->has('organizations')) {
+            $currentRequest = $this->request->getCurrentRequest();
+            if ($currentRequest && $currentRequest->query->has('organizations')) {
                 $organizations = $this->request->getCurrentRequest()->get('organizations');
                 if (strlen($organizations) > 0) {
                     $organizations = explode(',', $organizations);
