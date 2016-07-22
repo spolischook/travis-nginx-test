@@ -53,29 +53,43 @@ class AclHelper extends BaseAclHelper
     {
         $organization = $this->securityFacade->getOrganization();
         $globalOrgId = $this->organizationHelper->getGlobalOrganizationId();
-        if (($organization && $organization->getIsGlobal()) || !$globalOrgId) {
-            $currentRequest = $this->request->getCurrentRequest();
-            if ($currentRequest && $currentRequest->query->has('organizations')) {
-                $organizations = $this->request->getCurrentRequest()->get('organizations');
-                if (strlen($organizations) > 0) {
-                    $organizations = explode(',', $organizations);
+        $currentRequest = $this->request->getCurrentRequest();
+        if ($this->isApplicableOrganizationFilter($organization, $globalOrgId, $currentRequest)) {
+            $organizations = $currentRequest->get('organizations');
+            if (strlen($organizations) > 0) {
+                $organizations = explode(',', $organizations);
 
-                    if (count($organizations) > 1
-                        || (count($organizations) === 1 && $this->getOrganizationId() !== current($organizations))
-                    ) {
-                        $query->getCriteria()->andWhere($expr->in('integer.organization', $organizations));
-
-                        return;
-                    }
-                } else {
-                    $query->getCriteria()->andWhere($expr->in('integer.organization', [0]));
+                if (count($organizations) > 1
+                    || (count($organizations) === 1 && $this->getOrganizationId() !== current($organizations))
+                ) {
+                    $query->getCriteria()->andWhere($expr->in('integer.organization', $organizations));
 
                     return;
                 }
+            } else {
+                $query->getCriteria()->andWhere($expr->in('integer.organization', [0]));
+
+                return;
             }
         }
 
         parent::addOrganizationLimits($query, $expr);
+    }
+
+    /**
+     * Check if organization is system access or we do not have global organization
+     * to add logic filter by requested organization
+     *
+     * @param $organization
+     * @param $globalOrgId
+     * @param $currentRequest
+     *
+     * @return bool
+     */
+    protected function isApplicableOrganizationFilter($organization, $globalOrgId, $currentRequest)
+    {
+        return (($organization && $organization->getIsGlobal()) || !$globalOrgId)
+        && ($currentRequest && $currentRequest->query->has('organizations'));
     }
 
     /**
