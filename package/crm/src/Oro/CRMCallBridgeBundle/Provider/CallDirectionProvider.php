@@ -1,6 +1,6 @@
 <?php
 
-namespace OroCRM\Bundle\ActivityContactBundle\Provider;
+namespace Oro\CRMCallBridgeBundle\Provider;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;

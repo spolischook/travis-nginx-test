@@ -1,8 +1,8 @@
 <?php
 
-namespace OroCRM\Bundle\ActivityContactBundle\Tests\Unit\Provider;
+namespace Oro\CRMCallBridgeBundle\Tests\Unit\Provider;
 
-use OroCRM\Bundle\ActivityContactBundle\Provider\CallDirectionProvider;
+use Oro\CRMCallBridgeBundle\Provider\CallDirectionProvider;
 use OroCRM\Bundle\CallBundle\Entity\Call;
 use OroCRM\Bundle\CallBundle\Entity\CallDirection;
 
