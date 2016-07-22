@@ -63,7 +63,7 @@ class OrganizationsSwitchingTest extends Selenium2TestCase
             ->setLastName('Last_'.$fields['username'])
             ->setEmail($fields['username'].'@mail.com')
             ->setRoles(array($fields['role']))
-            ->setBusinessUnit(array ('OroCRM', $fields['organization']))
+            ->setBusinessUnitOrganization(array ('OroCRM', $fields['organization']))
             ->uncheckInviteUser()
             ->save()
             ->assertMessage('User saved')
