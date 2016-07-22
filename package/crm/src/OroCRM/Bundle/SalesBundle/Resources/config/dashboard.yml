@@ -142,17 +142,17 @@ oro_dashboard_config:
                 minWidth: 780
             data_items:
                 in_progress:
-                    data_provider: "@orocrm_sales.provider.forecast_of_opportunities->getForecastOfOpportunitiesValues($widgetOptions$, getInProgressValues, integer)"
+                    data_provider: "@orocrm_sales.provider.forecast_of_opportunities->getForecastOfOpportunitiesValues($widgetOptions$, inProgressCount, integer)"
                     label:         orocrm.sales.dashboard.forecast_of_opportunities.in_progress.label
                     acl:           orocrm_sales_opportunity_view
                     template:      OroCRMSalesBundle:Dashboard:forecastOfOpportunitiesSubwidget.html.twig
                 total_forecast:
-                    data_provider: "@orocrm_sales.provider.forecast_of_opportunities->getForecastOfOpportunitiesValues($widgetOptions$, getTotalForecastValues, currency)"
+                    data_provider: "@orocrm_sales.provider.forecast_of_opportunities->getForecastOfOpportunitiesValues($widgetOptions$, budgetAmount, currency)"
                     label:         orocrm.sales.dashboard.forecast_of_opportunities.total_forecast.label
                     acl:           orocrm_sales_opportunity_view
                     template:      OroCRMSalesBundle:Dashboard:forecastOfOpportunitiesSubwidget.html.twig
                 weighted_forecast:
-                    data_provider: "@orocrm_sales.provider.forecast_of_opportunities->getForecastOfOpportunitiesValues($widgetOptions$, getWeightedForecastValues, currency)"
+                    data_provider: "@orocrm_sales.provider.forecast_of_opportunities->getForecastOfOpportunitiesValues($widgetOptions$, weightedForecast, currency)"
                     label:         orocrm.sales.dashboard.forecast_of_opportunities.weighted_forecast.label
                     acl:           orocrm_sales_opportunity_view
                     template:      OroCRMSalesBundle:Dashboard:forecastOfOpportunitiesSubwidget.html.twig
