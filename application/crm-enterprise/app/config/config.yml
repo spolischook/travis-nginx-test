@@ -173,6 +173,6 @@ oro_search:
 
 oro_message_queue:
     transport:
-        default: amqp
-        amqp: { host: 'localhost', port: 5672, user: 'guest', password: 'guest', vhost: '/' }
+        default: 'null'
+        'null': true
     client: ~
