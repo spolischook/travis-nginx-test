@@ -191,7 +191,7 @@ oro_dashboard_config:
                     options:
                         required: false
                         label: oro.dashboard.query_filter.label
-                        widgetType: opportunities_by_state
+                        widgetType: forecast_of_opportunities
                         entity: 'OroCRM\Bundle\SalesBundle\Entity\Opportunity'
                         collapsible: true
                         collapsed: true
