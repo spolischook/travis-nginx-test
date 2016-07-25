@@ -1,6 +1,6 @@
 <?php
 
-namespace OroCRM\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
+namespace OroCRM\Bundle\CallBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
