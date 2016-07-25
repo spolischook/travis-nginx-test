@@ -1,0 +1,27 @@
+services:
+    oro_websitepro_config.placeholder.filter:
+        class: Oro\Bundle\WebsiteConfigProBundle\Placeholder\PlaceholderFilter
+
+    oro_websitepro_config.event_listener.organization_grid_listener:
+        class: Oro\Bundle\WebsiteConfigProBundle\EventListener\WebsiteGridListener
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.base-websites-grid, method: onBuildBefore }
+
+    oro_websitepro_config.provider.form_provider:
+        class: Oro\Bundle\WebsiteConfigProBundle\Provider\WebsiteConfigurationFormProvider
+        arguments:
+            - "@oro_config.config_bag"
+            - "@form.factory"
+            - "@oro_security.security_facade"
+        tags:
+            -  { name: oro_config.configuration_provider }
+        lazy: true
+
+    oro_websitepro_config.scope.website:
+        class: Oro\Bundle\WebsiteConfigProBundle\Config\WebsiteScopeManager
+        public: false
+        parent: oro_config.scope_manager.abstract
+        calls:
+            - [setWebsiteManager, [ '@orob2b_website.manager' ]]
+        tags:
+            - { name: oro_config.scope, scope: website, priority: 270 }

@@ -1,0 +1,9 @@
+services:
+    oro_salepro.form.extension.quote:
+        class: 'Oro\Bundle\WebsiteProBundle\Form\Extension\WebsiteSelectExtension'
+        public: true
+        tags:
+            - { name: form.type_extension, alias: orob2b_sale_quote }
+        calls:
+            - [setExtendedType, ['orob2b_sale_quote']]
+            - [setLabel, ['orob2b.sale.quote.website.label']]
