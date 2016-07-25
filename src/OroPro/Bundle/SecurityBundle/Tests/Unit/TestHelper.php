@@ -121,6 +121,11 @@ class TestHelper
             ->method('isProtectedEntity')
             ->will($this->testCase->returnValue(true));
 
+        $fieldAclExtension = $this->testCase
+            ->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Extension\FieldAclExtension')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new EntityAclProExtension(
             $idAccessor,
             new EntityClassResolver($doctrine),
@@ -128,7 +133,8 @@ class TestHelper
             $metadataProvider,
             $decisionMaker,
             $this->getPermissionManagerMock($this->testCase),
-            $this->getGroupProviderMock($this->testCase)
+            $this->getGroupProviderMock($this->testCase),
+            $fieldAclExtension
         );
     }
 
