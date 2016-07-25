@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d32a058de191aae4a139ec7f88f951cf",
-    "content-hash": "cf54d6b4e953003cb937f6f8bfb020dc",
+    "hash": "3ed543dcf6c57e31d947b99e6bc9a7d2",
+    "content-hash": "0eb3b21283b279e70baadcb7df1c03e5",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3176,7 +3176,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -3922,7 +3922,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm",
-                "reference": null,
+                "reference": "f644b7ae08d9d64be8c094482734f26267967d0f",
                 "shasum": null
             },
             "require": {
@@ -3938,7 +3938,7 @@
             "autoload": {
                 "psr-0": {
                     "OroCRM\\Bundle": "src/",
-                    "Oro\\CRMTaskBundle": "src/"
+                    "Oro": "src/"
                 }
             },
             "license": [
@@ -3989,6 +3989,46 @@
                 }
             ],
             "description": "OroCRM Abandoned Cart"
+        },
+        {
+            "name": "oro/crm-call-bundle",
+            "version": "dev-master",
+            "target-dir": "src/OroCRM/Bundle/CallBundle",
+            "dist": {
+                "type": "path",
+                "url": "../../package/call",
+                "reference": "9baa3b36c5917e18d11aac2ebd1b628077d2865f",
+                "shasum": null
+            },
+            "require": {
+                "oro/platform": "self.version",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "OroCRM\\Bundle\\CallBundle": "src/"
+                }
+            },
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocrm.com"
+                }
+            ],
+            "description": "OroCRM Call Bundle",
+            "keywords": [
+                "Call",
+                "OroCRM"
+            ]
         },
         {
             "name": "oro/crm-dotmailer",
@@ -4068,10 +4108,11 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/google-hangout",
-                "reference": null,
+                "reference": "972efed72a2ad39ff9807a28ff43454eb37b65e1",
                 "shasum": null
             },
             "require": {
+                "oro/crm-call-bundle": "self.version",
                 "oro/platform": "self.version",
                 "php": ">=5.5.9"
             },
@@ -8812,7 +8853,8 @@
         "oro/crm-zendesk": 20,
         "oro/crm-pro-ldap-bundle": 20,
         "oro/crm-pro-demo-data-bundle": 20,
-        "oro/crm-task-bundle": 20
+        "oro/crm-task-bundle": 20,
+        "oro/crm-call-bundle": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
