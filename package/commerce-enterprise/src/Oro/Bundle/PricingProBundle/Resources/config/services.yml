@@ -1,0 +1,30 @@
+services:
+    oro_pricingpro.entity_listener.website:
+        class: 'Oro\Bundle\PricingProBundle\EventListener\WebsiteListener'
+        arguments:
+            - '@orob2b_pricing.price_list_with_priority_collection.handler'
+            - '@oro_api.doctrine_helper'
+            - '@orob2b_pricing.price_list_change_trigger_handler'
+        tags:
+            - { name: kernel.event_listener, event: oro.form.update_handler.before_entity_flush.oro_websitepro_type, method: beforeFlush }
+
+    oro_pricingpro.event_listener.web_site_form_view:
+        class: 'Oro\Bundle\PricingProBundle\EventListener\WebsiteFormViewListener'
+        arguments:
+            - '@request_stack'
+            - '@oro_entity.doctrine_helper'
+            - '@translator'
+            - '%orob2b_website.entity.website.class%'
+            - '%orob2b_pricing.entity.price_list_to_website.class%'
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.website-edit, method: onWebsiteEdit }
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.website-view, method: onWebsiteView }
+
+    oro_pricingpro.event_listener.price_list_form_view:
+        class: 'Oro\Bundle\PricingProBundle\EventListener\PriceListFormViewListener'
+        arguments:
+            - '@request_stack'
+            - '@translator'
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.price-list-view, method: onPriceListView }

@@ -1,4 +1,0 @@
-orob2bpro_website_bundle:
-    resource:     "@OroB2BProWebsiteConfigBundle/Controller"
-    type:         annotation
-    prefix:       /config
