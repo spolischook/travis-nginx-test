@@ -22,7 +22,7 @@ repositories:
     application/platform: git@github.com:laboro/platform-application.git
     application/crm: git@github.com:laboro/crm-application.git
     application/crm-enterprise: git@github.com:laboro/crm-enterprise-application.git
-    application/commerce: git@github.com:laboro/commerce-application.git
+    application/commerce: git@github.com:laboro/orocommerce-application.git
 
 branches:
     maintenance/crm-enterprise-1.12:
