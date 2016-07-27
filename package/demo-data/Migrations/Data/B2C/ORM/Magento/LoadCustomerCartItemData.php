@@ -39,18 +39,18 @@ class LoadCustomerCartItemData extends AbstractFixture implements OrderedFixture
      */
     public function load(ObjectManager $manager)
     {
-        $subscriber = new CartSubscriber();
+        $subscriber = new CartSubscriber($this->container->get('orocrm_magento.manager.abandoned_shopping_cart_flow'));
         $this->em->getEventManager()->addEventSubscriber($subscriber);
 
         $data = $this->getData();
 
         foreach ($data['carts_items'] as $cartItemData) {
-            $cart     = $this->getCartReference($cartItemData['cart uid']);
+            $cart = $this->getCartReference($cartItemData['cart uid']);
             $cartItem = new CartItem();
             $this->setObjectValues($cartItem, $cartItemData);
 
             $taxAmount = $cartItemData['price'] * $cartItem->getTaxAmount();
-            $total     = $cartItemData['price'] + $taxAmount;
+            $total = $cartItemData['price'] + $taxAmount;
 
             $cartItem->setProductId(rand(1, 100));
             $cartItem->setFreeShipping((string)0);
