@@ -638,6 +638,9 @@ class AclManager extends AbstractAclManager
         $key = $this->getKey($oid);
         if ($this->items[$key]->getState() !== BatchItem::STATE_DELETE) {
             $extension = $this->extensionSelector->select($oid);
+            if ($field) {
+                $extension = $extension->getFieldExtension();
+            }
             $extension->validateMask($mask, $oid);
             if ($acl === null && $this->items[$key]->getState() === BatchItem::STATE_CREATE) {
                 $this->items[$key]->addAce($type, $field, $sid, $granting, $mask, $strategy);
@@ -852,7 +855,7 @@ class AclManager extends AbstractAclManager
      *                           Set to not null class-field-based or object-field-based ACE
      * @return EntryInterface[]
      */
-    protected function doGetAces(SID $sid, OID $oid, $type, $field)
+    protected function doGetAces(SID $sid, OID $oid, $type, $field = null)
     {
         $acl = $this->getAcl($oid);
         if (!$acl) {

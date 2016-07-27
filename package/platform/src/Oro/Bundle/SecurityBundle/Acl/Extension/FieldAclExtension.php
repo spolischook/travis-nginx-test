@@ -14,11 +14,9 @@ use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\EntityObjectReference;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Oro\Bundle\SecurityBundle\Authentication\Token\OrganizationContextTokenInterface;
-use Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider;
 use Oro\Bundle\SecurityBundle\Owner\EntityOwnerAccessor;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataInterface;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\MetadataProviderInterface;
@@ -29,9 +27,6 @@ use Oro\Bundle\SecurityBundle\Owner\Metadata\MetadataProviderInterface;
 class FieldAclExtension extends AbstractAclExtension
 {
     const NAME = 'field';
-
-    /** @var EntitySecurityMetadataProvider */
-    protected $entityMetadataProvider;
 
     /** @var EntityClassResolver */
     protected $entityClassResolver;
@@ -74,19 +69,22 @@ class FieldAclExtension extends AbstractAclExtension
     protected $maskBuilderIdentityToPermissions;
 
     /**
-     * {@inheritdoc}
+     * @param ObjectIdAccessor                           $objectIdAccessor
+     * @param EntityClassResolver                        $entityClassResolver
+     * @param MetadataProviderInterface                  $metadataProvider
+     * @param AccessLevelOwnershipDecisionMakerInterface $decisionMaker
+     * @param EntityOwnerAccessor                        $entityOwnerAccessor
+     * @param ConfigProvider                             $configProvider
      */
     public function __construct(
         ObjectIdAccessor $objectIdAccessor,
         EntityClassResolver $entityClassResolver,
-        EntitySecurityMetadataProvider $entityMetadataProvider,
         MetadataProviderInterface $metadataProvider,
         AccessLevelOwnershipDecisionMakerInterface $decisionMaker,
         EntityOwnerAccessor $entityOwnerAccessor,
         ConfigProvider $configProvider
     ) {
         $this->entityClassResolver = $entityClassResolver;
-        $this->entityMetadataProvider = $entityMetadataProvider;
         $this->metadataProvider = $metadataProvider;
         $this->entityOwnerAccessor = $entityOwnerAccessor;
         $this->decisionMaker = $decisionMaker;
@@ -129,26 +127,7 @@ class FieldAclExtension extends AbstractAclExtension
      */
     public function supports($type, $id)
     {
-        if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE
-            || $type === 'Oro\Bundle\SecurityBundle\Acl\Domain\EntityObjectReference'
-        ) {
-            return $id === $this->getExtensionKey();
-        }
-
-        if ($id === $this->getExtensionKey()) {
-            $type = $this->entityClassResolver->getEntityClass(ClassUtils::getRealClass($type));
-        } else {
-            $type = ClassUtils::getRealClass($type);
-        }
-
-        if (!$this->entityClassResolver->isEntity($type)) {
-            return false;
-        }
-
-        // either id starts with 'field' (e.g. field+fieldName)
-        // or id is null (checking for new entity)
-
-        return (0 === strpos($id, self::NAME) || null === $id);
+        throw new \LogicException('Field ACL Extension does not supports supports method');
     }
 
     /**
@@ -156,7 +135,7 @@ class FieldAclExtension extends AbstractAclExtension
      */
     public function getAllowedPermissions(ObjectIdentity $oid, $fieldName = null)
     {
-        return array_keys($this->getPermissionsToIdentityMap());
+        return array_keys($this->permissionToMaskBuilderIdentity);
     }
 
     /**
@@ -164,7 +143,7 @@ class FieldAclExtension extends AbstractAclExtension
      */
     public function getClasses()
     {
-        return $this->entityMetadataProvider->getEntities();
+        throw new \LogicException('Field ACL Extension does not supports getClasses method');
     }
 
     /**
@@ -412,6 +391,27 @@ class FieldAclExtension extends AbstractAclExtension
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getObjectIdentity($val)
+    {
+        if (is_string($val)) {
+            $identity = $this->fromDescriptor($val);
+        } elseif ($val instanceof AclAnnotation) {
+            $class = $this->entityClassResolver->getEntityClass($val->getClass());
+            $identity = new ObjectIdentity($val->getType(), $class);
+        } else {
+            $identity = $this->fromDomainObject($val);
+        }
+
+        if (null === $identity->getIdentifier()) {
+            $identity = new ObjectIdentity('entity', $identity->getType());
+        }
+
+        return $identity;
+    }
+
+    /**
      * Gets all valid bitmasks for the given object
      *
      * @param string $permission
@@ -457,48 +457,10 @@ class FieldAclExtension extends AbstractAclExtension
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function parseDescriptor($descriptor, &$type, &$id, &$group)
-    {
-        parent::parseDescriptor($descriptor, $type, $id, $group);
-
-        if (strpos($id, '+')) {
-            $id = explode('+', $id)[0];
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getObjectIdentity($val)
-    {
-        if (is_string($val)) {
-            $identity = $this->fromDescriptor($val);
-        } elseif ($val instanceof AclAnnotation) {
-            $class = $this->entityClassResolver->getEntityClass($val->getClass());
-            $identity = new ObjectIdentity($val->getType(), $class);
-        } else {
-            $identity = $this->fromDomainObject($val);
-        }
-
-        if (null === $identity->getIdentifier()) {
-            $identity = new ObjectIdentity('entity', $identity->getType());
-        }
-
-        return $identity;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getPermissionsToIdentityMap($byCurrentGroup = false)
-    {
-        return $this->permissionToMaskBuilderIdentity;
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param string $maskBuilderIdentity
+     * @param string $constName
+     *
+     * @return mixed
      */
     protected function getMaskBuilderConst($maskBuilderIdentity, $constName)
     {
@@ -523,7 +485,7 @@ class FieldAclExtension extends AbstractAclExtension
         $type = $id = $group = null;
         $this->parseDescriptor($descriptor, $type, $id, $group);
 
-        $type = $this->entityClassResolver->getEntityClass(ClassUtils::getRealClass($type));
+        $type = $this->entityClassResolver->getEntityClass(ClassUtils::getRealClass($this->getObjectClassName($type)));
 
         if ($id === $this->getExtensionKey()) {
             return new ObjectIdentity($id, $type);
@@ -592,6 +554,9 @@ class FieldAclExtension extends AbstractAclExtension
             $className = $object->getType();
         } elseif (is_string($object)) {
             $className = $id = $group = null;
+            if (ObjectIdentityHelper::isFieldEncodedKey($object)) {
+                $object = ObjectIdentityHelper::decodeEntityFieldInfo($object)[0];
+            }
             $this->parseDescriptor($object, $className, $id, $group);
         } elseif ($object instanceof EntityObjectReference) {
             $className = $object->getType();

@@ -82,14 +82,16 @@ class AclExtensionSelector
             return new NullAclExtension();
         }
 
+        $fieldName = null;
         $type = $id = null;
         if (is_string($val)) {
-            $delim = strpos($val, ':');
-            if ($delim) {
-                $type = ltrim(substr($val, $delim + 1), ' ');
-                $id = strtolower(substr($val, 0, $delim));
-            }
+            list($id, $type, $fieldName) = ObjectIdentityHelper::parseIdentityString($val);
         } elseif (is_object($val)) {
+            if ($val instanceof FieldVote) {
+                $fieldName = $val->getField();
+                $val = $val->getDomainObject();
+            }
+
             if ($val instanceof ObjectIdentityInterface) {
                 $type = $val->getType();
                 $id = $val->getIdentifier();
@@ -99,10 +101,6 @@ class AclExtensionSelector
                     $type = $val->getId();
                 }
                 $id = $val->getType();
-            } elseif ($val instanceof FieldVote) {
-                // field extension shouldn't depend on actual entity identifier
-                $type = get_class($val->getDomainObject());
-                $id = 'field';
             } else {
                 $type = get_class($val);
                 $id = $this->objectIdAccessor->getId($val);
@@ -110,13 +108,14 @@ class AclExtensionSelector
         }
 
         if ($type !== null) {
-            $cacheKey = ($id ?: 'null') . '!' . $type;
+            $cacheKey = $this->getStringValue($id) . '!' . $type . '::' . $this->getStringValue($fieldName);
             if (isset($this->localCache[$cacheKey])) {
                 return $this->localCache[$cacheKey];
             }
 
             foreach ($this->extensions as $extension) {
                 if ($extension->supports($type, $id)) {
+                    $extension = $fieldName ? $extension->getFieldExtension() : $extension;
                     $this->localCache[$cacheKey] = $extension;
 
                     return $extension;
@@ -154,5 +153,15 @@ class AclExtensionSelector
         return new InvalidDomainObjectException(
             sprintf('An ACL extension was not found for: %s. Type: %s. Id: %s', $objInfo, $type, (string)$id)
         );
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return string
+     */
+    protected function getStringValue($value)
+    {
+        return $value ? (string)$value : 'null';
     }
 }
