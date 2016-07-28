@@ -4,6 +4,7 @@
   "require": {
     "php": ">=5.5.9",
     "symfony/console": "2.7.*",
+    "symfony/yaml": "2.7.*",
     "phpunit/phpunit": "4.8.*",
     "johnkary/phpunit-speedtrap": "1.0.*",
     "mybuilder/phpunit-accelerator": "1.1.*",
@@ -11,7 +12,8 @@
     "phpmd/phpmd": "2.4.*",
     "psr/log": "*",
     "symfony/process": "2.7.*",
-    "sebastian/phpcpd": "2.0.*"
+    "sebastian/phpcpd": "2.0.*",
+    "friendsofphp/php-cs-fixer": "^1.11.3"
   },
   "autoload": {
     "psr-0": {
