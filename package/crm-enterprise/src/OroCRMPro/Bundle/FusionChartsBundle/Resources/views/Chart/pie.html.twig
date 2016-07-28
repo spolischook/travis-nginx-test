@@ -22,7 +22,10 @@
         {% set isMobileVersion = isMobileVersion() %}
         {% set json = {
             'chart': {
-                'showPercentValues': '1',
+                'showPercentValues': options.settings.showPercentValues|default('1'),
+                'showPercentInTooltip': options.settings.showPercentInTooltip|default('0'),
+                'numberPrefix': options.settings.valuePrefix|default(''),
+                'numberSuffix': options.settings.valueSuffix|default(''),
                 'manageLabelOverflow': isMobileVersion ? '1' : '0',
                 'smartLabelClearance': '20',
                 'animation': '0',
