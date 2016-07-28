@@ -30,6 +30,3 @@ services:
 oro_message_queue:
     client:
         traceable_producer: true
-    transport:
-        default: 'null'
-        'null': true
