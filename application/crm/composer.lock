@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "10efc4f9cc210d599c41fa2d5e87a88f",
-    "content-hash": "1ae23fca53ebda9e2bf69b295e53c065",
+    "hash": "80f0c903980762c9b8db23b918535d43",
+    "content-hash": "6257189649800392ffdaa7c6987878d1",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1669,7 +1669,7 @@
                     "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
                 },
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -3119,7 +3119,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -3865,10 +3865,12 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm",
-                "reference": "99db110b90f347caa374db0d3d891850eaf368fd",
+                "reference": "f501ae9396f1938a6e8c589fb5f00c573ba6f99c",
                 "shasum": null
             },
             "require": {
+                "oro/crm-call-bundle": "self.version",
+                "oro/crm-task-bundle": "self.version",
                 "oro/platform": "self.version",
                 "php": ">=5.5.9"
             },
@@ -3881,7 +3883,7 @@
             "autoload": {
                 "psr-0": {
                     "OroCRM\\Bundle": "src/",
-                    "Oro\\CRMTaskBundle": "src/"
+                    "Oro": "src/"
                 }
             },
             "license": [
@@ -3934,6 +3936,46 @@
             "description": "OroCRM Abandoned Cart"
         },
         {
+            "name": "oro/crm-call-bundle",
+            "version": "dev-master",
+            "target-dir": "src/OroCRM/Bundle/CallBundle",
+            "dist": {
+                "type": "path",
+                "url": "../../package/call",
+                "reference": "9baa3b36c5917e18d11aac2ebd1b628077d2865f",
+                "shasum": null
+            },
+            "require": {
+                "oro/platform": "self.version",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "OroCRM\\Bundle\\CallBundle": "src/"
+                }
+            },
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocrm.com"
+                }
+            ],
+            "description": "OroCRM Call Bundle",
+            "keywords": [
+                "Call",
+                "OroCRM"
+            ]
+        },
+        {
             "name": "oro/crm-dotmailer",
             "version": "dev-master",
             "target-dir": "src/OroCRM/Bundle/DotmailerBundle",
@@ -3978,10 +4020,11 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/google-hangout",
-                "reference": "0bfcdcfe27214291be2542312fe9a74626d68796",
+                "reference": "972efed72a2ad39ff9807a28ff43454eb37b65e1",
                 "shasum": null
             },
             "require": {
+                "oro/crm-call-bundle": "self.version",
                 "oro/platform": "self.version",
                 "php": ">=5.5.9"
             },
@@ -7758,16 +7801,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.26",
+            "version": "4.8.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "fc1d8cd5b5de11625979125c5639347896ac2c74"
+                "reference": "c062dddcb68e44b563f66ee319ddae2b5a322a90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fc1d8cd5b5de11625979125c5639347896ac2c74",
-                "reference": "fc1d8cd5b5de11625979125c5639347896ac2c74",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c062dddcb68e44b563f66ee319ddae2b5a322a90",
+                "reference": "c062dddcb68e44b563f66ee319ddae2b5a322a90",
                 "shasum": ""
             },
             "require": {
@@ -7826,7 +7869,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-05-17 03:09:28"
+            "time": "2016-07-21 06:48:14"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -8438,8 +8481,7 @@
         "oro/crm-magento-embedded-contact-us": 20,
         "oro/crm-mail-chimp": 20,
         "oro/crm-dotmailer": 20,
-        "oro/crm-zendesk": 20,
-        "oro/crm-task-bundle": 20
+        "oro/crm-zendesk": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
