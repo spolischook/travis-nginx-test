@@ -37,6 +37,7 @@ class MultiSetDataTransformerTest extends \PHPUnit_Framework_TestCase
                     'bar' => [
                         ['label' => '2014-01-01', 'value' => 1],
                         ['label' => '2014-01-02', 'value' => 3],
+                        ['label' => '2014-01-03', 'value' => 7],
                     ],
                 ],
                 'expected' => [
@@ -44,6 +45,7 @@ class MultiSetDataTransformerTest extends \PHPUnit_Framework_TestCase
                         'category' => [
                             ['label' => '2014-01-01'],
                             ['label' => '2014-01-02'],
+                            ['label' => '2014-01-03'],
                         ]
                     ],
                     'dataset' => [
@@ -59,6 +61,7 @@ class MultiSetDataTransformerTest extends \PHPUnit_Framework_TestCase
                             'data' => [
                                 ['value' => 1],
                                 ['value' => 3],
+                                ['value' => 7],
                             ]
                         ]
                     ],
