@@ -25,6 +25,7 @@ layout:
             id: account_sidebar
             parentId: sidebar_left
             blockType: container
+            prepend: true
 
         - '@add':
             id: account_user_list_link
