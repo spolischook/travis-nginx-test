@@ -36,6 +36,26 @@ oro_dashboard_config:
                        label: oro.dashboard.date_range.label
                        value_types: true
                     show_on_widget: true
+                excludedSources:
+                    type: orocrm_type_widget_lead_source_select
+                    options:
+                        label:  orocrm.sales.dashboard.opportunities_by_lead_source_chart.excluded_sources.label
+                        tooltip:  orocrm.sales.dashboard.opportunities_by_lead_source_chart.excluded_sources.tooltip
+                        required: false
+                        configs:
+                            placeholder: orocrm.sales.dashboard.opportunities_by_lead_source_chart.excluded_sources.placeholder
+                byAmount:
+                    type: oro_type_widget_choice
+                    show_on_widget: true
+                    converter_attributes:
+                        default_selected: 0
+                    options:
+                        label:  orocrm.sales.dashboard.opportunities_by_lead_source_chart.by_amount.label
+                        tooltip: orocrm.sales.dashboard.opportunities_by_lead_source_chart.by_amount.tooltip
+                        required: true
+                        choices:
+                            0: orocrm.sales.dashboard.opportunities_by_lead_source_chart.by_amount.count
+                            1: orocrm.sales.dashboard.opportunities_by_lead_source_chart.by_amount.amount
         opportunities_by_state:
             label:       orocrm.sales.dashboard.opportunities_by_state.title
             route:       orocrm_sales_dashboard_opportunity_by_state_chart
