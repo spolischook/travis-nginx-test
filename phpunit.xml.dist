@@ -10,6 +10,7 @@
     <groups>
         <exclude>
             <group>soap</group>
+            <group>segfault</group>
         </exclude>
     </groups>
     <testsuites>
