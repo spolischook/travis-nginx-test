@@ -123,8 +123,7 @@ class TestHelper
 
         $fieldAclExtension = $this->testCase
             ->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Extension\FieldAclExtension')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor()->getMock();
 
         return new EntityAclProExtension(
             $idAccessor,
