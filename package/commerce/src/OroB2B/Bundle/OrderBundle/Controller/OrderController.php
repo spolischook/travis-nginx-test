@@ -2,8 +2,6 @@
 
 namespace OroB2B\Bundle\OrderBundle\Controller;
 
-use Doctrine\Common\Util\ClassUtils;
-
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -104,7 +102,9 @@ class OrderController extends AbstractOrderController
      */
     public function createAction(Request $request)
     {
-        return $this->update(new Order(), $request);
+        $order = new Order();
+        $order->setWebsite($this->get('orob2b_website.manager')->getCurrentWebsite());
+        return $this->update($order, $request);
     }
 
     /**

@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 
-use OroB2B\Bundle\WebsiteBundle\Entity\Repository\WebsiteRepository;
+use OroB2B\Bundle\WebsiteBundle\Provider\WebsiteProviderInterface;
 use OroB2B\Bundle\WebsiteBundle\Entity\Website;
 
 class WebsiteScopedDataType extends AbstractType
@@ -37,19 +37,34 @@ class WebsiteScopedDataType extends AbstractType
     protected $websiteCLass = 'OroB2B\Bundle\WebsiteBundle\Entity\Website';
 
     /**
+     * @var WebsiteProviderInterface
+     */
+    protected $websiteProvider;
+
+    /**
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
 
     /**
      * @param ManagerRegistry $registry
+     * @param WebsiteProviderInterface $websiteProvider
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, WebsiteProviderInterface $websiteProvider)
     {
         $this->registry = $registry;
+        $this->websiteProvider = $websiteProvider;
     }
 
     /**
@@ -176,9 +191,7 @@ class WebsiteScopedDataType extends AbstractType
     protected function getWebsites()
     {
         if (null === $this->websites) {
-            /** @var WebsiteRepository $repository */
-            $repository = $this->registry->getRepository($this->websiteCLass);
-            $this->websites = $repository->getAllWebsites();
+            $this->websites = $this->websiteProvider->getWebsites();
         }
 
         return $this->websites;

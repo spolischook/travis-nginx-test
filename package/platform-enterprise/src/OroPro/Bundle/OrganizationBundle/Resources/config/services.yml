@@ -32,6 +32,7 @@ parameters:
 
     oropro_organization.autocomplete.business_unit.search_handler.class:  OroPro\Bundle\OrganizationBundle\Autocomplete\BusinessUnitSearchHandler
 
+    oro_organization.autocomplete.business_unit_tree_search_handler.class: OroPro\Bundle\OrganizationBundle\Autocomplete\BusinessUnitTreeSearchHandler
 services:
     oropro_organization.twig.extension.organization:
         class: %oropro_organization.twig.extension.organization.class%
@@ -198,14 +199,6 @@ services:
         tags:
             - { name: form.type_extension, alias: oro_imap_configuration_gmail }
 
-    oropro_organization.api.get_config.add_organization_not_null_validator:
-        class: OroPro\Bundle\OrganizationBundle\Api\Processor\Config\GetConfig\AddOrganizationNotNullValidator
-        arguments:
-            - '@oro_api.doctrine_helper'
-            - '@oro_security.owner.ownership_metadata_provider'
-        tags:
-            - { name: oro.api.processor, action: get_config, extra: definition&!identifier_fields_only, targetAction: create, priority: -50 }
-
     oropro_organization.api.get_config.add_organization_validator:
         class: OroPro\Bundle\OrganizationBundle\Api\Processor\Config\GetConfig\AddOrganizationValidator
         arguments:
@@ -213,8 +206,7 @@ services:
             - '@oro_security.owner.ownership_metadata_provider'
             - '@oro_api.validation_helper'
         tags:
-            - { name: oro.api.processor, action: get_config, extra: definition&!identifier_fields_only, targetAction: create, priority: -52 }
-            - { name: oro.api.processor, action: get_config, extra: definition&!identifier_fields_only, targetAction: update, priority: -52 }
+            - { name: oro.api.processor, action: get_config, extra: !identifier_fields_only&definition, targetAction: update|create, priority: -50 }
 
     oropro_organization.validator.organization:
         class: OroPro\Bundle\OrganizationBundle\Validator\Constraints\OrganizationValidator

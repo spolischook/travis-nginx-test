@@ -2,15 +2,15 @@
 
 namespace OroCRM\Bundle\SalesBundle\Controller\Dashboard;
 
-use Oro\Bundle\EntityExtendBundle\Twig\EnumExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Translation\TranslatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+
 use OroCRM\Bundle\SalesBundle\Entity\Repository\SalesFunnelRepository;
+use OroCRM\Bundle\SalesBundle\Entity\SalesFunnel;
 
 class DashboardController extends Controller
 {
@@ -24,57 +24,38 @@ class DashboardController extends Controller
      */
     public function opportunitiesByLeadSourceAction($widget)
     {
-        /** @var TranslatorInterface $translator */
-        $translator = $this->get('translator');
-
-        /** @var EnumExtension $enumValueTranslator */
-        $enumValueTranslator = $this->get('oro_entity_extend.twig.extension.enum');
-
-        $data = $this->getDoctrine()
-            ->getRepository('OroCRMSalesBundle:Lead')
-            ->getOpportunitiesByLeadSource(
-                $this->get('oro_security.acl_helper'),
-                10,
-                $this->get('oro_dashboard.widget_configs')
-                    ->getWidgetOptions($this->getRequest()->query->get('_widgetId', null))
-                    ->get('dateRange')
-            );
+        $options = $this->get('oro_dashboard.widget_configs')->getWidgetOptions(
+            $this->getRequest()->query->get('_widgetId', null)
+        );
 
         // prepare chart data
-        if (empty($data)) {
-            $data[] = ['label' => $translator->trans('orocrm.sales.lead.source.none')];
-        } else {
-            // translate sources
-            foreach ($data as &$item) {
-                if ($item['source'] === null) {
-                    $item['label'] = $translator->trans('orocrm.sales.lead.source.unclassified');
-                } elseif (empty($item['source'])) {
-                    $item['label'] = $translator->trans('orocrm.sales.lead.source.others');
-                } else {
-                    $item['label'] = $enumValueTranslator->transEnum($item['source'], 'lead_source');
-                }
-                unset($item['source']);
-            }
-            // sort alphabetically by label
-            usort(
-                $data,
-                function ($a, $b) {
-                    return strcasecmp($a['label'], $b['label']);
-                }
-            );
-        }
+        $dataProvider = $this->get('orocrm_sales.provider.opportunity_by_lead_source');
+
+        $byAmount = (bool) $options->get('byAmount', false);
+
+        $data = $dataProvider->getChartData(
+            $options->get('dateRange', []),
+            $this->get('oro_user.dashboard.owner_helper')->getOwnerIds($options),
+            (array) $options->get('excludedSources'),
+            $byAmount
+        );
 
         $widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
         $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
             ->setArrayData($data)
             ->setOptions(
-                array(
+                [
                     'name' => 'pie_chart',
-                    'data_schema' => array(
-                        'label' => array('field_name' => 'label'),
-                        'value' => array('field_name' => 'itemCount')
-                    )
-                )
+                    'data_schema' => [
+                        'label' => ['field_name' => 'source'],
+                        'value' => ['field_name' => 'value'],
+                    ],
+                    'settings' => [
+                        'showPercentValues' => 1,
+                        'showPercentInTooltip' => 0,
+                        'valuePrefix' => $byAmount ? '$' : '',
+                    ]
+                ]
             )
             ->getView();
 
@@ -91,32 +72,32 @@ class DashboardController extends Controller
      */
     public function opportunityByStatusAction($widget)
     {
-        $items = $this->getDoctrine()
-            ->getRepository('OroCRMSalesBundle:Opportunity')
-            ->getOpportunitiesByStatus(
-                $this->get('oro_security.acl_helper'),
-                $this->get('oro_dashboard.widget_configs')
-                    ->getWidgetOptions($this->getRequest()->query->get('_widgetId', null))
-                    ->get('dateRange'),
-                $this->get('oro_entity_extend.enum_value_provider')->getEnumChoicesByCode('opportunity_status')
-            );
-
-        $widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
+        $options = $this->get('oro_dashboard.widget_configs')
+            ->getWidgetOptions($this->getRequest()->query->get('_widgetId', null));
+        if ($options->get('useQuantityAsData')) {
+            $valueOptions = [
+                'field_name' => 'quantity'
+            ];
+        } else {
+            $valueOptions = [
+                'field_name' => 'budget',
+                'type'       => 'currency',
+                'formatter'  => 'formatCurrency'
+            ];
+        }
+        $items = $this->get('orocrm_sales.provider.opportunity_by_status')
+            ->getOpportunitiesGroupedByStatus($options);
+        $widgetAttr              = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
         $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
             ->setArrayData($items)
             ->setOptions(
-                array(
-                    'name' => 'bar_chart',
-                    'data_schema' => array(
-                        'label' => array('field_name' => 'label'),
-                        'value' => array(
-                            'field_name' => 'budget',
-                            'type' => 'currency',
-                            'formatter' => 'formatCurrency'
-                        )
-                    ),
-                    'settings' => array('xNoTicks' => 2),
-                )
+                [
+                    'name'        => 'horizontal_bar_chart',
+                    'data_schema' => [
+                        'label' => ['field_name' => 'label'],
+                        'value' => $valueOptions
+                    ]
+                ]
             )
             ->getView();
 
@@ -137,16 +118,14 @@ class DashboardController extends Controller
             ->getWidgetOptions($this->getRequest()->query->get('_widgetId', null))
             ->get('dateRange');
 
-        $dateTo = $dateRange['end'];
+        $dateTo   = $dateRange['end'];
         $dateFrom = $dateRange['start'];
 
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');
-        $workflow = $workflowManager->getApplicableWorkflowByEntityClass(
-            'OroCRM\Bundle\SalesBundle\Entity\SalesFunnel'
-        );
+        $workflows = $workflowManager->getApplicableWorkflows(SalesFunnel::class);
 
-        $customStepCalculations = array('won_opportunity' => 'opportunity.closeRevenue');
+        $customStepCalculations = ['won_opportunity' => 'opportunity.closeRevenue'];
 
         /** @var SalesFunnelRepository $salesFunnerRepository */
         $salesFunnerRepository = $this->getDoctrine()->getRepository('OroCRMSalesBundle:SalesFunnel');
@@ -154,24 +133,24 @@ class DashboardController extends Controller
         $data = $salesFunnerRepository->getFunnelChartData(
             $dateFrom,
             $dateTo,
-            $workflow,
+            $workflows ? reset($workflows) : null,
             $customStepCalculations,
             $this->get('oro_security.acl_helper')
         );
 
-        $widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
+        $widgetAttr              = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
         $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')
             ->setArrayData($data)
             ->setOptions(
-                array(
-                    'name' => 'flow_chart',
-                    'settings' => array('quarterDate' => $dateFrom),
-                    'data_schema' => array(
-                        'label' => array('field_name' => 'label'),
-                        'value' => array('field_name' => 'value'),
-                        'isNozzle' => array('field_name' => 'isNozzle'),
-                    )
-                )
+                [
+                    'name'        => 'flow_chart',
+                    'settings'    => ['quarterDate' => $dateFrom],
+                    'data_schema' => [
+                        'label'    => ['field_name' => 'label'],
+                        'value'    => ['field_name' => 'value'],
+                        'isNozzle' => ['field_name' => 'isNozzle'],
+                    ]
+                ]
             )
             ->getView();
 

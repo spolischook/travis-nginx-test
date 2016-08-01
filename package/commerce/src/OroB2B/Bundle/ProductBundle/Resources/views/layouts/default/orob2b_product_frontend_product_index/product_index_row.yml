@@ -9,97 +9,84 @@ layout:
                 product_grid_row_image_holder:
                     blockType: container
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_quick_view:
                     blockType: block
                     options:
-                        visible: false
+                        visible: '=false'
                 product_grid_row_title:
                     blockType: block
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_primary_content_container:
                     blockType: container
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_number:
                     blockType: block
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_specification:
                     blockType: container
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_sku_container:
                     blockType: container
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_sku:
                     blockType: block
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_mfg:
                     blockType: block
                     options:
-                        visible: false
+                        visible: '=false'
                 product_grid_row_short_description:
                     blockType: block
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_details:
                     blockType: block
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_secondary_content_container:
                     blockType: container
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_secondary_content_first_container:
                     blockType: container
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_specification_delivery:
                     blockType: block
                     options:
-                        visible: false
+                        visible: '=false'
                 product_grid_row_secondary_content_second_container:
                     blockType: container
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 product_grid_row_more_info:
                     blockType: block
                     options:
-                        visible: false
+                        visible: '=false'
                 line_item_form:
                     blockType: container
                     options:
-                        vars:
-                            attr_renderer: 'block_attributes_underscore'
+                        attr_renderer: 'block_attributes_underscore'
                 line_item_form_start:
                     blockType: form_start
                     options:
-                        form: { '@value': $data.orob2b_product_line_item_form }
+                        form: '=data["orob2b_product_line_item_form"]'
                 line_item_form_fields:
-                    blockType: form
+                    blockType: form_fields
                     options:
                         preferred_fields: [quantity]
-                        form: { '@value': $data.orob2b_product_line_item_form }
+                        form: '=data["orob2b_product_line_item_form"]'
                 line_item_form_end:
                     blockType: form_end
                     options:
-                        form: { '@value': $data.orob2b_product_line_item_form }
+                        form: '=data["orob2b_product_line_item_form"]'
                 line_item_buttons:
                     blockType: container
             tree:

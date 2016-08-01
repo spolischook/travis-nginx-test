@@ -4,8 +4,6 @@ namespace OroCRMPro\Bundle\OutlookBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Asset\Packages as AssetHelper;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -36,26 +34,16 @@ class OutlookController extends Controller
      */
     public function getFiles()
     {
-        $source = [
-            'path' => $this->getParameter('assetic.read_from') . '/bundles/orocrmprooutlook/files/*.*',
-            'url'  => 'bundles/orocrmprooutlook/files'
-        ];
-
-        /** @var AssetHelper $assetHelper */
-        $assetHelper = $this->get('assets.packages');
-
-        $resources       = [];
-        $finder          = new Finder();
-        $pathParts       = explode('/', $source['path']);
-        $fileNamePattern = array_pop($pathParts);
-        $files           = $finder->name($fileNamePattern)->in(implode(DIRECTORY_SEPARATOR, $pathParts));
-        /** @var \SplFileInfo[] $files */
+        $result = [];
+        $files = $this->get('orocrmpro_outlook.addin_manager')->getFiles();
         foreach ($files as $file) {
-            $resources[$file->getFilename()] = $assetHelper->getUrl(
-                rtrim($source['url'], '/') . '/' . $file->getFilename()
-            );
+            $item = ['url' => $file['url']];
+            if (!empty($file['doc_url'])) {
+                $item['doc_url'] = $file['doc_url'];
+            }
+            $result[$file['name']] = $item;
         }
 
-        return $resources;
+        return $result;
     }
 }

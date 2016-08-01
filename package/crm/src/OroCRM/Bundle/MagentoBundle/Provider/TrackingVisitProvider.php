@@ -2,14 +2,16 @@
 
 namespace OroCRM\Bundle\MagentoBundle\Provider;
 
-use DateTime;
-
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+
 use OroCRM\Bundle\ChannelBundle\Entity\Channel;
+use OroCRM\Bundle\MagentoBundle\Entity\Customer;
 
 class TrackingVisitProvider
 {
@@ -34,12 +36,12 @@ class TrackingVisitProvider
     }
 
     /**
-     * @param DateTime $from
-     * @param DateTime $to
+     * @param \DateTime $from
+     * @param \DateTime $to
      *
      * @return int
      */
-    public function getDeeplyVisitedCount(DateTime $from, DateTime $to)
+    public function getDeeplyVisitedCount(\DateTime $from = null, \DateTime $to = null)
     {
         $qb = $this->getTrackingVisitRepository()->createQueryBuilder('t');
 
@@ -50,28 +52,35 @@ class TrackingVisitProvider
                 ->join('tw.channel', 'c')
                 ->andWhere('c.channelType = :channel')
                 ->andWhere($qb->expr()->eq('c.status', ':status'))
-                ->andWhere($qb->expr()->between('t.firstActionTime', ':from', ':to'))
                 ->setParameters([
                     'channel' => ChannelType::TYPE,
-                    'from'    => $from,
-                    'to'      => $to,
                     'status'  => Channel::STATUS_ACTIVE
                 ])
                 ->andHaving('COUNT(t.userIdentifier) > 1');
+            if ($from) {
+                $qb
+                    ->andWhere('t.firstActionTime > :from')
+                    ->setParameter('from', $from);
+            }
+            if ($to) {
+                $qb
+                    ->andWhere('t.firstActionTime < :to')
+                    ->setParameter('to', $to);
+            }
 
-            return (int) $this->aclHelper->apply($qb)->getSingleScalarResult();
+            return (int)$this->aclHelper->apply($qb)->getSingleScalarResult();
         } catch (NoResultException $ex) {
             return 0;
         }
     }
 
     /**
-     * @param DateTime $from
-     * @param DateTime $to
+     * @param \DateTime $from
+     * @param \DateTime $to
      *
      * @return int
      */
-    public function getVisitedCount(DateTime $from, DateTime $to)
+    public function getVisitedCount(\DateTime $from = null, \DateTime $to = null)
     {
         $qb = $this->getTrackingVisitRepository()->createQueryBuilder('t');
 
@@ -82,18 +91,59 @@ class TrackingVisitProvider
                 ->join('tw.channel', 'c')
                 ->andWhere('c.channelType = :channel')
                 ->andWhere($qb->expr()->eq('c.status', ':status'))
-                ->andWhere($qb->expr()->between('t.firstActionTime', ':from', ':to'))
                 ->setParameters([
                     'channel' => ChannelType::TYPE,
-                    'from'    => $from,
-                    'to'      => $to,
                     'status'  => Channel::STATUS_ACTIVE
                 ]);
+            if ($from) {
+                $qb
+                    ->andWhere('t.firstActionTime > :from')
+                    ->setParameter('from', $from);
+            }
+            if ($to) {
+                $qb
+                    ->andWhere('t.firstActionTime < :to')
+                    ->setParameter('to', $to);
+            }
 
-            return (int) $this->aclHelper->apply($qb)->getSingleScalarResult();
+            return (int)$this->aclHelper->apply($qb)->getSingleScalarResult();
         } catch (NoResultException $ex) {
             return 0;
         }
+    }
+
+    /**
+     * Return total number of visits, last visit date and visits per month
+     * filtered by customers
+     *
+     * @param Customer[] $customers
+     *
+     * @return array
+     */
+    public function getAggregates(array $customers)
+    {
+        $customerAssocName = ExtendHelper::buildAssociationName(Customer::class, 'identifier');
+
+        $result = $this->getTrackingVisitRepository()
+            ->createQueryBuilder('t')
+            ->select('COUNT(DISTINCT t.userIdentifier) cnt')
+            ->addSelect('MIN(t.firstActionTime) first')
+            ->addSelect('MAX(t.firstActionTime) last')
+            ->andWhere(sprintf('t.%s in (:customers)', $customerAssocName))
+            ->setParameter('customers', $customers)
+            ->getQuery()
+            ->getSingleResult();
+
+        $count = (int) $result['cnt'];
+        $first = new \DateTimeImmutable($result['first']);
+        $last = new \DateTimeImmutable($result['last']);
+        $monthsDiff = $last->diff($first)->m;
+
+        return [
+            'count' => $count,
+            'last' => $count > 0 ? $result['last'] : null,
+            'monthly' => $monthsDiff > 0 ? $count / $monthsDiff : $count,
+        ];
     }
 
     /**

@@ -12,6 +12,8 @@ use OroB2B\Bundle\PaymentBundle\Tests\Functional\DataFixtures\LoadPaymentTransac
  */
 class CallbackControllerTest extends WebTestCase
 {
+    const ALLOWED_REMOTE_ADDR = '173.0.81.1';
+
     protected function setUp()
     {
         $this->initClient();
@@ -25,7 +27,10 @@ class CallbackControllerTest extends WebTestCase
             foreach (['orob2b_payment_callback_return', 'orob2b_payment_callback_error'] as $route) {
                 $this->client->request(
                     $method,
-                    $this->getUrl($route, ['accessIdentifier' => 'some_key', 'accessToken' => 'some_val'])
+                    $this->getUrl($route, ['accessIdentifier' => 'some_key', 'accessToken' => 'some_val']),
+                    [],
+                    [],
+                    ['REMOTE_ADDR' => self::ALLOWED_REMOTE_ADDR]
                 );
             }
         }
@@ -34,7 +39,7 @@ class CallbackControllerTest extends WebTestCase
     public function testReturnAndErrorCallbacksDontChangeActiveAndSuccessful()
     {
         /** @var PaymentTransaction $paymentTransaction */
-        $paymentTransaction = $this->getReference(LoadPaymentTransactionData::PAYFLOW_AUTHORIZE_TRANSACTION);
+        $paymentTransaction = $this->getReference(LoadPaymentTransactionData::AUTHORIZE_TRANSACTION);
 
         foreach (['POST', 'GET'] as $method) {
             foreach (['orob2b_payment_callback_return', 'orob2b_payment_callback_error'] as $route) {
@@ -64,7 +69,9 @@ class CallbackControllerTest extends WebTestCase
                 $route,
                 ['accessIdentifier' => $paymentTransaction->getAccessIdentifier()]
             ),
-            $expectedData
+            $expectedData,
+            [],
+            ['REMOTE_ADDR' => self::ALLOWED_REMOTE_ADDR]
         );
 
         $objectManager = $this->getContainer()->get('doctrine')
@@ -84,48 +91,10 @@ class CallbackControllerTest extends WebTestCase
         );
     }
 
-    public function testNotifyChangeState()
-    {
-        $parameters = [
-            'PNREF' => 'REFERENCE',
-            'RESULT' => '0',
-            'SECURETOKEN' => 'SECURETOKEN',
-            'SECURETOKENID' => 'SECURETOKENID',
-        ];
-
-        /** @var PaymentTransaction $paymentTransaction */
-        $paymentTransaction = $this->getReference(LoadPaymentTransactionData::PAYFLOW_AUTHORIZE_TRANSACTION);
-        $this->assertFalse($paymentTransaction->isActive());
-        $this->assertFalse($paymentTransaction->isSuccessful());
-
-        $expectedData = $parameters + $paymentTransaction->getRequest();
-        $this->client->request(
-            'POST',
-            $this->getUrl(
-                'orob2b_payment_callback_notify',
-                [
-                    'accessIdentifier' => $paymentTransaction->getAccessIdentifier(),
-                    'accessToken' => $paymentTransaction->getAccessToken(),
-                ]
-            ),
-            $expectedData
-        );
-
-        $objectManager = $this->getContainer()->get('doctrine')
-            ->getRepository('OroB2BPaymentBundle:PaymentTransaction');
-
-        /** @var PaymentTransaction $paymentTransaction */
-        $paymentTransaction = $objectManager->find($paymentTransaction->getId());
-
-        $this->assertTrue($paymentTransaction->isActive());
-        $this->assertTrue($paymentTransaction->isSuccessful());
-        $this->assertEquals($expectedData, $paymentTransaction->getResponse());
-    }
-
     public function testNotifyGetIsInvalid()
     {
         /** @var PaymentTransaction $paymentTransaction */
-        $paymentTransaction = $this->getReference(LoadPaymentTransactionData::PAYFLOW_AUTHORIZE_TRANSACTION);
+        $paymentTransaction = $this->getReference(LoadPaymentTransactionData::AUTHORIZE_TRANSACTION);
         $this->assertFalse($paymentTransaction->isActive());
         $this->assertFalse($paymentTransaction->isSuccessful());
 
@@ -137,7 +106,10 @@ class CallbackControllerTest extends WebTestCase
                     'accessIdentifier' => $paymentTransaction->getAccessIdentifier(),
                     'accessToken' => $paymentTransaction->getAccessToken(),
                 ]
-            )
+            ),
+            [],
+            [],
+            ['REMOTE_ADDR' => self::ALLOWED_REMOTE_ADDR]
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), 405);
@@ -146,7 +118,7 @@ class CallbackControllerTest extends WebTestCase
     public function testNotifyTokenRequired()
     {
         /** @var PaymentTransaction $paymentTransaction */
-        $paymentTransaction = $this->getReference(LoadPaymentTransactionData::PAYFLOW_AUTHORIZE_TRANSACTION);
+        $paymentTransaction = $this->getReference(LoadPaymentTransactionData::AUTHORIZE_TRANSACTION);
         $this->assertFalse($paymentTransaction->isActive());
         $this->assertFalse($paymentTransaction->isSuccessful());
 
@@ -158,7 +130,10 @@ class CallbackControllerTest extends WebTestCase
                     'accessIdentifier' => $paymentTransaction->getAccessIdentifier(),
                     'accessToken' => '123',
                 ]
-            )
+            ),
+            [],
+            [],
+            ['REMOTE_ADDR' => self::ALLOWED_REMOTE_ADDR]
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), 404);

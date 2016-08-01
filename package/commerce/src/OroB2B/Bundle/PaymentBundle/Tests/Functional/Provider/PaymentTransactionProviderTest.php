@@ -3,10 +3,12 @@
 namespace OroB2B\Bundle\PaymentBundle\Tests\Functional\Provider;
 
 use Psr\Log\LoggerInterface;
+
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Component\Testing\Unit\EntityTrait;
+
 use OroB2B\Bundle\AccountBundle\Tests\Functional\DataFixtures\LoadAccountUserData;
 use OroB2B\Bundle\PaymentBundle\Entity\PaymentTerm;
 use OroB2B\Bundle\PaymentBundle\Entity\PaymentTransaction;
@@ -24,22 +26,21 @@ class PaymentTransactionProviderTest extends WebTestCase
 
         $this->loadFixtures(
             [
-                'OroB2B\Bundle\PaymentBundle\Tests\Functional\DataFixtures\LoadPaymentTransactionData',
-                'Oro\Bundle\TestFrameworkBundle\Fixtures\LoadUserData',
+                'OroB2B\Bundle\PaymentBundle\Tests\Functional\DataFixtures\LoadPaymentTransactionData'
             ]
         );
 
         $paymentTransactionProvider = $this->getContainer()->get('orob2b_payment.provider.payment_transaction');
 
         $this->getContainer()->get('security.token_storage')
-            ->setToken(new UsernamePasswordToken($this->getReference('default_user'), 'password', 'key'));
+            ->setToken(new UsernamePasswordToken(self::USER_NAME, self::AUTH_PW, 'user'));
 
         $this->assertNotEmpty(
             $paymentTransactionProvider->getActiveAuthorizePaymentTransaction(
                 $this->getEntity('OroB2B\Bundle\PaymentBundle\Entity\PaymentTerm', ['id' => 1]),
                 '1000',
                 'USD',
-                'payflow_gateway'
+                'payment_term'
             )
         );
     }
@@ -71,7 +72,7 @@ class PaymentTransactionProviderTest extends WebTestCase
                 $this->getEntity('OroB2B\Bundle\PaymentBundle\Entity\PaymentTerm', ['id' => 1]),
                 '1000',
                 'USD',
-                'payflow_gateway'
+                'payment_term'
             )
         );
     }
@@ -99,7 +100,7 @@ class PaymentTransactionProviderTest extends WebTestCase
         );
 
         $this->assertEmpty(
-            $paymentTransactionProvider->getActiveValidatePaymentTransaction('payflow_gateway')
+            $paymentTransactionProvider->getActiveValidatePaymentTransaction('payment_term')
         );
     }
 
@@ -123,7 +124,7 @@ class PaymentTransactionProviderTest extends WebTestCase
         );
 
         $this->assertNotEmpty(
-            $paymentTransactionProvider->getActiveValidatePaymentTransaction('payflow_gateway')
+            $paymentTransactionProvider->getActiveValidatePaymentTransaction('payment_term')
         );
     }
 
@@ -137,7 +138,7 @@ class PaymentTransactionProviderTest extends WebTestCase
         $this->getContainer()->get('security.token_storage')->setToken(null);
 
         $this->assertEmpty(
-            $paymentTransactionProvider->getActiveValidatePaymentTransaction('payflow_gateway')
+            $paymentTransactionProvider->getActiveValidatePaymentTransaction('payment_term')
         );
     }
 

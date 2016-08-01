@@ -37,7 +37,7 @@ class ConfigurationController extends FOSRestController
     {
         $this->checkConfigurationAccess();
 
-        $manager = $this->get('oro_config.manager.api');
+        $manager = $this->get('orocrmpro_outlook.config_manager.api');
 
         try {
             $data = $manager->getData($path, $this->getRequest()->get('scope', 'user'));

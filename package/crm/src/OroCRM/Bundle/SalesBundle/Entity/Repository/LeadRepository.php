@@ -2,11 +2,10 @@
 
 namespace OroCRM\Bundle\SalesBundle\Entity\Repository;
 
-use DateTime;
-
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Component\DoctrineUtils\ORM\QueryUtils;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class LeadRepository extends EntityRepository
@@ -14,30 +13,41 @@ class LeadRepository extends EntityRepository
     /**
      * Returns top $limit opportunities grouped by lead source
      *
+     * @deprecated since 1.10. Use OpportunityRepository::getOpportunitiesCountGroupByLeadSource instead
+     * @see        OpportunityRepository::getOpportunitiesCountGroupByLeadSource
+     *
      * @param  AclHelper $aclHelper
      * @param  int       $limit
      * @param  array     $dateRange
+     *
      * @return array     [itemCount, label]
      */
-    public function getOpportunitiesByLeadSource(AclHelper $aclHelper, $limit = 10, $dateRange = null)
+    public function getOpportunitiesByLeadSource(AclHelper $aclHelper, $limit = 10, $dateRange = null, $owners = [])
     {
-        $qb   = $this->createQueryBuilder('l')
+        $qb = $this->createQueryBuilder('l')
             ->select('s.id as source, count(o.id) as itemCount')
             ->leftJoin('l.opportunities', 'o')
             ->leftJoin('l.source', 's')
             ->groupBy('source');
 
-        if ($dateRange) {
+        if ($dateRange && $dateRange['start'] && $dateRange['end']) {
             $qb->andWhere($qb->expr()->between('o.createdAt', ':dateStart', ':dateEnd'))
                 ->setParameter('dateStart', $dateRange['start'])
                 ->setParameter('dateEnd', $dateRange['end']);
         }
+        if ($owners) {
+            QueryUtils::applyOptimizedIn($qb, 'o.owner', $owners);
+        }
+
         $rows = $aclHelper->apply($qb)->getArrayResult();
 
         return $this->processOpportunitiesByLeadSource($rows, $limit);
     }
 
     /**
+     * @deprecated since 1.10. Used by deprecated getOpportunitiesByLeadSource
+     * @see        LeadRepository::getOpportunitiesByLeadSource
+     *
      * @param array $rows
      * @param int   $limit
      *
@@ -88,6 +98,9 @@ class LeadRepository extends EntityRepository
     }
 
     /**
+     * @deprecated since 1.10. Used by deprecated getOpportunitiesByLeadSource
+     * @see        LeadRepository::getOpportunitiesByLeadSource
+     *
      * @param array $rows
      *
      * @return int
@@ -103,6 +116,9 @@ class LeadRepository extends EntityRepository
     }
 
     /**
+     * @deprecated since 1.10. Used by deprecated getOpportunitiesByLeadSource
+     * @see        LeadRepository::getOpportunitiesByLeadSource
+     *
      * @param array $rows
      */
     protected function sortByCountReverse(array &$rows)
@@ -113,6 +129,7 @@ class LeadRepository extends EntityRepository
                 if ($a['itemCount'] === $b['itemCount']) {
                     return 0;
                 }
+
                 return $a['itemCount'] < $b['itemCount'] ? 1 : -1;
             }
         );
@@ -120,50 +137,82 @@ class LeadRepository extends EntityRepository
 
     /**
      * @param AclHelper $aclHelper
-     * @param DateTime $start
-     * @param DateTime $end
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @param int[] $owners
      *
      * @return int
      */
-    public function getLeadsCount(AclHelper $aclHelper, DateTime $start, DateTime $end)
+    public function getLeadsCount(AclHelper $aclHelper, \DateTime $start = null, \DateTime $end = null, $owners = [])
     {
-        $qb = $this->createLeadsCountQb($start, $end);
+        $qb = $this
+            ->createLeadsCountQb($start, $end, $owners)
+            ->innerJoin('l.opportunities', 'o');
 
         return $aclHelper->apply($qb)->getSingleScalarResult();
     }
 
     /**
      * @param AclHelper $aclHelper
-     * @param DateTime $start
-     * @param DateTime $end
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @param int[] $owners
      *
      * @return int
      */
-    public function getNewLeadsCount(AclHelper $aclHelper, DateTime $start, DateTime $end)
+    public function getNewLeadsCount(AclHelper $aclHelper, \DateTime $start = null, \DateTime $end = null, $owners = [])
     {
-        $qb = $this->createLeadsCountQb($start, $end)
-            ->andWhere('l.status = :status')
-            ->setParameter('status', 'new');
+        $qb = $this->createLeadsCountQb($start, $end, $owners);
 
         return $aclHelper->apply($qb)->getSingleScalarResult();
     }
 
     /**
-     * @param DateTime $start
-     * @param DateTime $end
+     * @param AclHelper $aclHelper
+     * @param int[] $owners
+     *
+     * @return int
+     */
+    public function getOpenLeadsCount(AclHelper $aclHelper, $owners = [])
+    {
+        $qb = $this->createLeadsCountQb(null, null, $owners);
+        $qb->andWhere(
+            $qb->expr()->notIn('l.status', ['qualified', 'canceled'])
+        );
+
+        return $aclHelper->apply($qb)->getSingleScalarResult();
+    }
+
+    /**
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @param int[] $owners
      *
      * @return QueryBuilder
      */
-    protected function createLeadsCountQb(DateTime $start, DateTime $end)
-    {
-        $qb = $this->createQueryBuilder('l');
+    protected function createLeadsCountQb(
+        \DateTime $start = null,
+        \DateTime $end = null,
+        $owners = []
+    ) {
+        $qb = $this
+            ->createQueryBuilder('l')
+            ->select('COUNT(DISTINCT l.id)');
 
-        $qb
-            ->select('COUNT(DISTINCT l.id)')
-            ->andWhere($qb->expr()->between('l.createdAt', ':start', ':end'))
-            ->innerJoin('l.opportunities', 'o')
-            ->setParameter('start', $start)
-            ->setParameter('end', $end);
+        if ($start) {
+            $qb
+                ->andWhere('l.createdAt > :start')
+                ->setParameter('start', $start);
+        }
+        if ($end) {
+            $qb
+                ->andWhere('l.createdAt < :end')
+                ->setParameter('end', $end);
+        }
+
+        if ($owners) {
+            QueryUtils::applyOptimizedIn($qb, 'l.owner', $owners);
+        }
 
         return $qb;
     }

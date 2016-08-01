@@ -4,7 +4,6 @@ parameters:
     orocrm_activity_contact.provider.class:                           OroCRM\Bundle\ActivityContactBundle\Provider\ActivityContactProvider
     orocrm_activity_contact.listener.activity_listener.class:         OroCRM\Bundle\ActivityContactBundle\EventListener\ActivityListener
     orocrm_activity_contact.email_activity_direction.provider.class:  OroCRM\Bundle\ActivityContactBundle\Provider\EmailDirectionProvider
-    orocrm_activity_contact.call_activity_direction.provider.class:   OroCRM\Bundle\ActivityContactBundle\Provider\CallDirectionProvider
     orocrm_activity_contact.entity_activity_contact_data_provider.class: OroCRM\Bundle\ActivityContactBundle\Provider\EntityActivityContactDataProvider
     orocrm_activity_contact.placeholder.filter.class: OroCRM\Bundle\ActivityContactBundle\Placeholder\PlaceholderFilter
 
@@ -49,12 +48,6 @@ services:
         tags:
             - {name: orocrm_activity_direction.provider}
 
-    orocrm_activity_contact.call_activity_direction.provider:
-        class: %orocrm_activity_contact.call_activity_direction.provider.class%
-        arguments:
-            - "@oro_activity.manager"
-        tags:
-           - {name: orocrm_activity_direction.provider}
 
     orocrm_activity_contact.entity_activity_contact_data_provider:
         class: %orocrm_activity_contact.entity_activity_contact_data_provider.class%
@@ -68,8 +61,9 @@ services:
     orocrm_activity_contact.api.get_config.update_activity_contact_fields:
         class: OroCRM\Bundle\ActivityContactBundle\Api\Processor\Config\UpdateActivityContactFields
         arguments:
+            - '@oro_api.doctrine_helper'
             - '@oro_entity_config.config_manager'
             - '@orocrm_activity_contact.provider'
             - ['create', 'update']
         tags:
-            - { name: oro.api.processor, action: get_config, extra: definition&!identifier_fields_only, priority: -45 }
+            - { name: oro.api.processor, action: get_config, extra: !identifier_fields_only&definition, priority: -40 }
