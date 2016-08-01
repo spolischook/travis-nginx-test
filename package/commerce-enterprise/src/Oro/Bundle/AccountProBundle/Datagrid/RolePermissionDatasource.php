@@ -20,22 +20,6 @@ class RolePermissionDatasource extends BaseRolePermissionDatasource
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function preparePermissions(AclPrivilege $privilege, $item)
-    {
-        $data = parent::preparePermissions($privilege, $item);
-        $data['permissions'] = array_filter(
-            $data['permissions'],
-            function (array $permission) {
-                return $this->isSupportedPermission($permission['name']);
-            }
-        );
-
-        return $data;
-    }
-
-    /**
      * @param string $permissionName
      * @return bool
      */

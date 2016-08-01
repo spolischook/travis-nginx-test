@@ -8,7 +8,7 @@ use Oro\Bundle\AccountProBundle\DependencyInjection\Compiler\OverrideServiceComp
 use Oro\Bundle\AccountProBundle\DependencyInjection\OroAccountProExtension;
 use Oro\Bundle\AccountProBundle\OroAccountProBundle;
 
-class OroB2BProAccountBundleTest extends \PHPUnit_Framework_TestCase
+class OroAccountProBundleTest extends \PHPUnit_Framework_TestCase
 {
     /** @var OroAccountProBundle */
     protected $bundle;
@@ -24,7 +24,7 @@ class OroB2BProAccountBundleTest extends \PHPUnit_Framework_TestCase
         $containerBuilder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-        $containerBuilder->expects($this->once())
+        $containerBuilder->expects($this->at(0))
             ->method('addCompilerPass')
             ->with($this->isInstanceOf(OverrideServiceCompilerPass::class));
 
