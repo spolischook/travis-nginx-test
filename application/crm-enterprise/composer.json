@@ -9,6 +9,10 @@
         }
     },
    "repositories": {
+        "git": {
+            "type": "git",
+            "url": "https://github.com/orocrm/TranslationFormBundle.git"
+        },
         "package": {
             "type": "path",
             "url": "../../package/*"
@@ -28,9 +32,7 @@
         "oro/crm-dotmailer": "self.version",
         "oro/crm-zendesk": "self.version",
         "oro/crm-pro-ldap-bundle": "self.version",
-        "oro/crm-pro-demo-data-bundle": "self.version",
-        "oro/crm-task-bundle": "self.version",
-        "oro/crm-call-bundle": "self.version"
+        "oro/crm-pro-demo-data-bundle": "self.version"
     },
     "require-dev": {
         "sensio/generator-bundle": "2.5.3",
