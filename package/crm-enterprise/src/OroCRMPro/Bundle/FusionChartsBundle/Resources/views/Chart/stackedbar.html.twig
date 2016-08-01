@@ -1,0 +1,62 @@
+{% set containerId = "chart-container-" ~ random() %}
+{% if data|length > 0 %}
+    {% set componentOptions = {
+        view: 'orocrmprofusioncharts/js/app/views/stackedbar-chart-view',
+        autoRender: true,
+        chartOptions: {
+            containerId: containerId,
+            dataSource: {
+                'chart': {
+                    'animation': '0',
+                    'showValues': '0',
+                    'maxColWidth': '15',
+                    'paletteColors': options.settings.chartColors,
+
+                    'bgColor': 'transparent',
+                    'canvasBgColor': 'transparent',
+                    'showcanvasborder': '0',
+                    'showBorder': '0',
+                    'showPlotBorder': '0',
+                    'usePlotGradientColor': '0',
+                    'showShadow': '0',
+                    'divLineColor': 'eaeaea',
+                    'showAlternateHGridColor': '0',
+                    'labelDisplay': 'WRAP',
+                    'labelStep': '6',
+
+                    'numVisiblePlot': '30',
+                    'scrollToEnd': '1',
+                    'reverseLegend': '1',
+                    'legendShadow': '0',
+                    'legendBorderColor': '#a9a9a9',
+
+                    'xAxisNameFontBold': '1',
+                    'xAxisNamePadding': '15',
+                    'xaxisname': options.data_schema.label.label|default('N/A')|trans,
+                    'yAxisNameFontBold': '1',
+                    'yAxisNamePadding': '15',
+                    'yaxisname': options.data_schema.value.label|default('N/A')|trans,
+                    'flatscrollbars': '0'
+                },
+                'categories': data.categories,
+                'dataset': data.dataset,
+            },
+            options: options,
+            isCurrencyPrepend: oro_currency_symbol_prepend()
+        }
+    } %}
+
+    <div class="chart-container">
+        <div class="clearfix">
+            <div id="{{ containerId }}-chart" class="column-chart chart"
+                 data-page-component-module="oroui/js/app/components/view-component"
+                 data-page-component-options="{{ componentOptions|json_encode }}"></div>
+        </div>
+    </div>
+{% else %}
+    <div class="container-fluid">
+        <div class="clearfix no-data">
+            <span>{{ 'oro.dashboard.no_data_found'|trans }}</span>
+        </div>
+    </div>
+{% endif %}
