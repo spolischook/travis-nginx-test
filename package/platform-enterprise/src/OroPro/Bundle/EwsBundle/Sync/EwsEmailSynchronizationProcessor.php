@@ -38,6 +38,9 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
     /** Determines how often "Processed X emails" hint should be added to a log */
     const READ_HINT_COUNT = 500;
 
+    /** Time limit to sync origin in seconds */
+    const MAX_ORIGIN_SYNC_TIME = 30;
+
     /** @var EwsEmailManager */
     protected $manager;
 
@@ -71,7 +74,8 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
         // make sure that the entity builder is empty
         $this->emailEntityBuilder->clear();
-
+        
+        $processStartTime = time();
         // iterate through all folders and do a synchronization of emails for each one
         $folders = $this->syncFolders($origin);
         foreach ($folders as $folderInfo) {
@@ -109,6 +113,11 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             // update synchronization date for the current folder
             $folder->setSynchronizedAt($lastSynchronizedAt > $syncStartTime ? $lastSynchronizedAt : $syncStartTime);
             $this->em->flush($folder);
+            
+            $processSpentTime = time() - $processStartTime;
+            if ($processSpentTime > self::MAX_ORIGIN_SYNC_TIME) {
+                break;
+            }
         }
     }
 
