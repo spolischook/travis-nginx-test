@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Oro\Bundle\ApiBundle\Tests\Functional\RestJsonApiTestCase;
 
+use OroB2B\Bundle\ProductBundle\Entity\Product;
+use OroB2B\Bundle\ProductBundle\Entity\ProductUnitPrecision;
 use OroB2B\Bundle\ProductBundle\Tests\Functional\Api\ApiResponseContentTrait;
 use OroB2B\Bundle\WarehouseBundle\Entity\Warehouse;
 use OroB2B\Bundle\WarehouseBundle\Entity\WarehouseInventoryLevel;
@@ -45,7 +47,7 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
     {
         $entityType = $this->getEntityType(WarehouseInventoryLevel::class);
 
-        $params = [];
+        $params = ['include' => 'product,productUnitPrecision'];
         foreach ($filters as $filter) {
             $filterValue = '';
             foreach ($filter['references'] as $value) {
@@ -65,7 +67,7 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
         $content = json_decode($response->getContent(), true);
         $this->assertCount($expectedCount, $content['data']);
 
-        $expectedContent = $this->addReferenceRelationships($expectedContent);
+        $expectedContent = $this->addReferenceRelationshipsAndAssertIncluded($expectedContent, $content['included']);
         $this->assertIsContained($expectedContent, $content['data']);
     }
 
@@ -91,10 +93,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 10,
-                            'productSku' => 'product.1',
-                            'unit' => 'liter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.liter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'liter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -113,10 +151,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 99,
-                            'productSku' => 'product.1',
-                            'unit' => 'bottle',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.bottle',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'bottle',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -135,10 +209,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 10,
-                            'productSku' => 'product.1',
-                            'unit' => 'milliliter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.milliliter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'milliliter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -169,10 +279,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 10,
-                            'productSku' => 'product.1',
-                            'unit' => 'liter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.liter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'liter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -191,10 +337,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 99,
-                            'productSku' => 'product.1',
-                            'unit' => 'bottle',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.bottle',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'bottle',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -213,10 +395,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 12.345,
-                            'productSku' => 'product.2',
-                            'unit' => 'liter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.liter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'liter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -235,10 +453,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 98,
-                            'productSku' => 'product.2',
-                            'unit' => 'bottle',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.bottle',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'bottle',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -257,10 +511,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 42,
-                            'productSku' => 'product.2',
-                            'unit' => 'box',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.box',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'box',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -279,10 +569,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 98.765,
-                            'productSku' => 'product.2',
-                            'unit' => 'box',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.box',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'box',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -301,10 +627,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 10,
-                            'productSku' => 'product.1',
-                            'unit' => 'milliliter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.milliliter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'milliliter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -340,10 +702,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 98.765,
-                            'productSku' => 'product.2',
-                            'unit' => 'box',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.box',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'box',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -379,10 +777,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 99,
-                            'productSku' => 'product.1',
-                            'unit' => 'bottle',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.bottle',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'bottle',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -401,10 +835,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 98,
-                            'productSku' => 'product.2',
-                            'unit' => 'bottle',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.bottle',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'bottle',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -440,10 +910,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 10,
-                            'productSku' => 'product.1',
-                            'unit' => 'liter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.liter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'liter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -462,10 +968,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 99,
-                            'productSku' => 'product.1',
-                            'unit' => 'bottle',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.bottle',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'bottle',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -484,10 +1026,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 12.345,
-                            'productSku' => 'product.2',
-                            'unit' => 'liter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.liter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'liter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -506,10 +1084,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 98,
-                            'productSku' => 'product.2',
-                            'unit' => 'bottle',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.bottle',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'bottle',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -550,10 +1164,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 10,
-                            'productSku' => 'product.1',
-                            'unit' => 'liter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.liter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'liter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -572,10 +1222,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 12.345,
-                            'productSku' => 'product.2',
-                            'unit' => 'liter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.liter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'liter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -616,10 +1302,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 10,
-                            'productSku' => 'product.1',
-                            'unit' => 'liter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.liter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'liter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -638,10 +1360,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 99,
-                            'productSku' => 'product.1',
-                            'unit' => 'bottle',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.bottle',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'bottle',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -660,10 +1418,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 12.345,
-                            'productSku' => 'product.2',
-                            'unit' => 'liter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.liter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'liter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -682,10 +1476,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 98,
-                            'productSku' => 'product.2',
-                            'unit' => 'bottle',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.bottle',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'bottle',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -729,10 +1559,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 10,
-                            'productSku' => 'product.1',
-                            'unit' => 'liter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.liter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'liter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -751,10 +1617,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 99,
-                            'productSku' => 'product.1',
-                            'unit' => 'bottle',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.1',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.1',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.1.bottle',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'bottle',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -773,10 +1675,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 12.345,
-                            'productSku' => 'product.2',
-                            'unit' => 'liter',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.liter',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'liter',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -795,10 +1733,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 98,
-                            'productSku' => 'product.2',
-                            'unit' => 'bottle',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.bottle',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'bottle',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -817,10 +1791,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 42,
-                            'productSku' => 'product.2',
-                            'unit' => 'box',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.box',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'box',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -839,10 +1849,46 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         'type' => 'warehouseinventorylevels',
                         'attributes' => [
                             'quantity' => 98.765,
-                            'productSku' => 'product.2',
-                            'unit' => 'box',
                         ],
                         'relationships' => [
+                            'product' => [
+                                'data' => [
+                                    'type' => 'products',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product.2',
+                                    ],
+                                ],
+                                'included' => [
+                                    'attributes' => [
+                                        'sku' => 'product.2',
+                                    ],
+                                ],
+                            ],
+                            'productUnitPrecision' => [
+                                'data' => [
+                                    'type' => 'productunitprecisions',
+                                ],
+                                'references' => [
+                                    'product' => [
+                                        'key' => 'id',
+                                        'method' => 'getId',
+                                        'reference' => 'product_unit_precision.product.2.box',
+                                    ],
+                                ],
+                                'included' => [
+                                    'relationships' => [
+                                        'unit' => [
+                                            'data' => [
+                                                'id' => 'box',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                             'warehouse' => [
                                 'data' => [
                                     'type' => 'warehouses',
@@ -932,6 +1978,84 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
         $this->assertUpdatedInventoryLevel($result, $result['data']['id'], 1);
     }
 
+    public function testCreateEntity()
+    {
+        /** @var Warehouse $warehouse */
+        $warehouse = $this->getReference(LoadWarehousesAndInventoryLevels::WAREHOUSE2);
+        $entityType = $this->getEntityType(WarehouseInventoryLevel::class);
+
+        $data = [
+            'data' => [
+                'type' => $entityType,
+                'attributes' => ['quantity' => 100],
+                'relationships' => [
+                    'warehouse' => [
+                        'data' => [
+                            'type' => $this->getEntityType(Warehouse::class),
+                            'id' => $warehouse->getId(),
+                        ],
+                    ],
+                    'product' => [
+                        'data' => [
+                            'type' => $this->getEntityType(Product::class),
+                            'id' => 'product.1',
+                        ],
+                    ],
+                    'unit' => [
+                        'data' => [
+                            'type' => $this->getEntityType(ProductUnitPrecision::class),
+                            'id' => 'liter',
+                        ],
+                    ],
+                ]
+            ]
+        ];
+        $response = $this->request(
+            'POST',
+            $this->getUrl('oro_rest_api_post', ['entity' => $entityType]),
+            $data
+        );
+
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_FOUND);
+        $this->assertCreatedInventoryLevel($warehouse, 'product.1', 'liter', 100);
+    }
+
+    public function testCreateEntityWithDefaultUnit()
+    {
+        /** @var Warehouse $warehouse */
+        $warehouse = $this->getReference(LoadWarehousesAndInventoryLevels::WAREHOUSE1);
+        $entityType = $this->getEntityType(WarehouseInventoryLevel::class);
+
+        $data = [
+            'data' => [
+                'type' => $entityType,
+                'attributes' => ['quantity' => 50],
+                'relationships' => [
+                    'warehouse' => [
+                        'data' => [
+                            'type' => $this->getEntityType(Warehouse::class),
+                            'id' => $warehouse->getId(),
+                        ],
+                    ],
+                    'product' => [
+                        'data' => [
+                            'type' => $this->getEntityType(Product::class),
+                            'id' => 'product.2',
+                        ],
+                    ],
+                ]
+            ]
+        ];
+        $response = $this->request(
+            'POST',
+            $this->getUrl('oro_rest_api_post', ['entity' => $entityType]),
+            $data
+        );
+
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_FOUND);
+        $this->assertCreatedInventoryLevel($warehouse, 'product.2', null, 50);
+    }
+
     public function testUpdateEntityWithOneWarehouse()
     {
         /** @var EntityManagerInterface $em */
@@ -964,11 +2088,41 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
         $this->assertUpdatedInventoryLevel($result, $result['data']['id'], 100);
     }
 
+    public function testCreateEntityWithOneWarehouse()
+    {
+        /** @var Warehouse $warehouse */
+        $warehouse = $this->getReference(LoadWarehousesAndInventoryLevels::WAREHOUSE1);
+        $entityType = $this->getEntityType(WarehouseInventoryLevel::class);
+        $data = [
+            'data' => [
+                'type' => $entityType,
+                'attributes' => ['quantity' => 10],
+                'relationships' => [
+                    'product' => [
+                        'data' => [
+                            'type' => $this->getEntityType(Product::class),
+                            'id' => 'product.3',
+                        ],
+                    ]
+                ]
+            ]
+        ];
+        $response = $this->request(
+            'POST',
+            $this->getUrl('oro_rest_api_post', ['entity' => $entityType]),
+            $data
+        );
+
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_FOUND);
+        $this->assertCreatedInventoryLevel($warehouse, 'product.3', null, 10);
+    }
+
     /**
      * @param array $expectedContent
+     * @param array $includedItems
      * @return array
      */
-    protected function addReferenceRelationships(array $expectedContent)
+    protected function addReferenceRelationshipsAndAssertIncluded(array $expectedContent, array $includedItems)
     {
         foreach ($expectedContent as $key => $expected) {
             if (array_key_exists('relationships', $expected)) {
@@ -983,6 +2137,18 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
                         unset($relationship['references']);
                     }
                     $relationships[$relationshipKey] = $relationship;
+                }
+                foreach ($relationships as $relationshipKey => $relationship) {
+                    if (array_key_exists('included', $relationship)) {
+                        foreach ($includedItems as $included) {
+                            if ($included['type'] == $relationship['data']['type']
+                                && $included['id'] == $relationship['data']['id']
+                            ) {
+                                $this->assertIsContained($relationship['included'], $included);
+                            }
+                        }
+                        unset($relationships[$relationshipKey]['included']);
+                    }
                 }
                 $expectedContent[$key]['relationships'] = $relationships;
             }
@@ -1003,6 +2169,38 @@ class WarehouseInventoryLevelApiTest extends RestJsonApiTestCase
         $inventoryLevel = $doctrineHelper->getEntity(WarehouseInventoryLevel::class, $inventoryLevelId);
 
         $this->assertEquals($quantity, $result['data']['attributes']['quantity']);
+        $this->assertEquals($quantity, $inventoryLevel->getQuantity());
+    }
+
+    /**
+     * @param Warehouse $warehouse
+     * @param string $productSku
+     * @param string|null $unit
+     * @param int $quantity
+     */
+    protected function assertCreatedInventoryLevel(Warehouse $warehouse, $productSku, $unit, $quantity)
+    {
+        $doctrineHelper = $this->getContainer()->get('oro_api.doctrine_helper');
+        $productRepository = $this->doctrineHelper->getEntityRepository(Product::class);
+        $productUnitPrecisionRepository = $this->doctrineHelper->getEntityRepository(ProductUnitPrecision::class);
+        $inventoryLevelRepository = $doctrineHelper->getEntityRepository(WarehouseInventoryLevel::class);
+
+        /** @var Product $product */
+        $product = $productRepository->findOneBy(['sku' => $productSku]);
+        /** @var ProductUnitPrecision $productUnitPrecision */
+        $productUnitPrecision = $unit
+            ? $productUnitPrecisionRepository->findOneBy(['product' => $product, 'unit' => $unit])
+            : $product->getPrimaryUnitPrecision();
+        /** @var WarehouseInventoryLevel $inventoryLevel */
+        $inventoryLevel = $inventoryLevelRepository->findOneBy(
+            [
+                'product' => $product->getId(),
+                'productUnitPrecision' => $productUnitPrecision->getId(),
+                'warehouse' => $warehouse->getId(),
+            ]
+        );
+
+        $this->assertInstanceOf(WarehouseInventoryLevel::class, $inventoryLevel);
         $this->assertEquals($quantity, $inventoryLevel->getQuantity());
     }
 }
