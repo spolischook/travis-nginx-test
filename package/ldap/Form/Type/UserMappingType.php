@@ -120,6 +120,14 @@ class UserMappingType extends AbstractType
      */
     public function getName()
     {
+        return $this->getBlockPrefix();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
         return 'orocrmpro_ldap_user_mapping';
     }
 }
