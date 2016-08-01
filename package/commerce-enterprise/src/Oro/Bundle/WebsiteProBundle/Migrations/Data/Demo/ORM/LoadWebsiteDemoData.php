@@ -17,7 +17,6 @@ use Oro\Bundle\UserBundle\DataFixtures\UserUtilityTrait;
 
 use OroB2B\Bundle\WebsiteBundle\Entity\Website;
 
-
 class LoadWebsiteDemoData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
     use UserUtilityTrait;
