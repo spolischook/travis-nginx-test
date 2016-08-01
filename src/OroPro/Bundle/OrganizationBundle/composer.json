@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "2.1.*",
+        "symfony/symfony": "2.8.*",
         "oro/ui-bundle": "dev-master",
         "oro/user-bundle": "dev-master",
         "oro/organization-bundle": "dev-master"
