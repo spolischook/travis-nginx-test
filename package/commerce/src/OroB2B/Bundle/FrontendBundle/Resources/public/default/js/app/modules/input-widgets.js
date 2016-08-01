@@ -21,6 +21,9 @@ define(function(require) {
 
     InputWidgetManager.addWidget('select2', {
         selector: 'select,input.select2',
+        options: {
+            minimumResultsForSearch: -1
+        },
         Widget: Select2InputWidget
     });
 });
