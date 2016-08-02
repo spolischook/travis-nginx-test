@@ -43,7 +43,10 @@ class TestHelper
         ObjectIdAccessor $idAccessor = null
     ) {
         if ($idAccessor === null) {
-            $idAccessor = new ObjectIdAccessor();
+            $doctrineHelper = $this->testCase->getMockBuilder('Oro\Bundle\EntityBundle\ORM\DoctrineHelper')
+                ->disableOriginalConstructor()
+                ->getMock();
+            $idAccessor = new ObjectIdAccessor($doctrineHelper);
         }
         if ($metadataProvider === null) {
             $metadataProvider = new OwnershipMetadataProviderStub($this->testCase);
@@ -118,6 +121,10 @@ class TestHelper
             ->method('isProtectedEntity')
             ->will($this->testCase->returnValue(true));
 
+        $fieldAclExtension = $this->testCase
+            ->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Extension\FieldAclExtension')
+            ->disableOriginalConstructor()->getMock();
+
         return new EntityAclProExtension(
             $idAccessor,
             new EntityClassResolver($doctrine),
@@ -125,7 +132,8 @@ class TestHelper
             $metadataProvider,
             $decisionMaker,
             $this->getPermissionManagerMock($this->testCase),
-            $this->getGroupProviderMock($this->testCase)
+            $this->getGroupProviderMock($this->testCase),
+            $fieldAclExtension
         );
     }
 
