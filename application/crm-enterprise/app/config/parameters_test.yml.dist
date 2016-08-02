@@ -38,3 +38,5 @@ parameters:
     assets_version_strategy: time_hash
 
     enterprise_licence:     ~
+    message_queue_transport: 'null'
+    message_queue_transport_config: {}
