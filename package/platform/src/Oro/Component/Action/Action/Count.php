@@ -2,8 +2,6 @@
 
 namespace Oro\Component\Action\Action;
 
-use Doctrine\Common\Collections\Collection;
-
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 use Oro\Component\Action\Exception\InvalidParameterException;
@@ -11,22 +9,22 @@ use Oro\Component\Action\Exception\InvalidParameterException;
 class Count extends AbstractAction
 {
     /** @var array */
-    protected $options;
+    protected $options = [];
 
     /**
      * {@inheritdoc}
      */
     public function initialize(array $options)
     {
-        if (!isset($options['array'])) {
-            throw new InvalidParameterException('Array parameter is required.');
+        if (!isset($options['value'])) {
+            throw new InvalidParameterException('Parameter `value` is required.');
         }
 
         if (empty($options['attribute'])) {
-            throw new InvalidParameterException('Attribute name parameter is required.');
+            throw new InvalidParameterException('Parameter `attribute` is required.');
         }
         if (!$options['attribute'] instanceof PropertyPathInterface) {
-            throw new InvalidParameterException('Attribute must be valid property definition.');
+            throw new InvalidParameterException('Parameter `attribute` must be a valid property definition.');
         }
 
         $this->options = $options;
@@ -39,11 +37,11 @@ class Count extends AbstractAction
      */
     protected function executeAction($context)
     {
-        $array = $this->contextAccessor->getValue($context, $this->options['array']);
-        if ($array instanceof Collection) {
-            $array = $array->toArray();
+        $value = $this->contextAccessor->getValue($context, $this->options['value']);
+        if (!is_array($value) && !$value instanceof \Countable) {
+            $value = [];
         }
 
-        $this->contextAccessor->setValue($context, $this->options['attribute'], count($array));
+        $this->contextAccessor->setValue($context, $this->options['attribute'], count($value));
     }
 }
