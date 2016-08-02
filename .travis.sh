@@ -132,6 +132,11 @@ case $step in
              if [ ! -z "$SOAP" ]; then
                  TEST_RUNNER_OPTIONS='--stderr --group=soap'
              fi
+             if [ ! -z "$SEGFAULT" ] && [ "$TEST_RUNNER_OPTIONS" != '' ]; then
+                 TEST_RUNNER_OPTIONS="$TEST_RUNNER_OPTIONS,segfault"
+             elif [ ! -z "$SEGFAULT" ]; then
+                 TEST_RUNNER_OPTIONS='--group=segfault'
+             fi
              composer install --optimize-autoloader --no-interaction;
              if [ ! -z "$DB" ]; then
                 SKIP_ASSETS='--skip-assets'
