@@ -45,12 +45,12 @@ class WebsiteLocalizationProvider
             }
         }
 
-         $this->configManager->setScopeId(null);
+        $this->configManager->setScopeId(null);
 
-         return [
-             'default' => $defaultLocalization,
-             'enabled' => $localizations
-         ];
+        return [
+            'default' => $defaultLocalization,
+            'enabled' => $localizations
+        ];
     }
 
     /**
