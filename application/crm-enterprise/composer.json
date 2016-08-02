@@ -16,6 +16,10 @@
         "package": {
             "type": "path",
             "url": "../../package/*"
+        },
+        "composer": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
         }
     },
     "require": {

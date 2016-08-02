@@ -64,6 +64,10 @@
       "url": "../../package/*"
     },
     {
+      "type": "composer",
+      "url": "https://packagist.orocrm.com"
+    },
+    {
       "type": "git",
       "url": "https://github.com/orocrm/TranslationFormBundle.git"
     },
