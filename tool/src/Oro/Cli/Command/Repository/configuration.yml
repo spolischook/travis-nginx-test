@@ -1,9 +1,4 @@
 repositories:
-    application/platform: git@github.com:laboro/platform-application.git
-    application/crm: git@github.com:laboro/crm-application.git
-    application/crm-enterprise: git@github.com:laboro/crm-enterprise-application.git
-    application/commerce: git@github.com:laboro/commerce-application.git
-
     package/platform: git@github.com:laboro/platform.git
     package/platform-enterprise: git@github.com:laboro/platform-enterprise.git
     package/crm: git@github.com:laboro/crm.git
@@ -19,10 +14,37 @@ repositories:
     package/zendesk: git@github.com:laboro/OroCRMZendeskBundle.git
     package/magento-contact-us: git@github.com:laboro/OroCRMMagentoContactUsBundle.git
     package/task: git@github.com:laboro/OroCRMTaskBundle.git
+    package/call: git@github.com:laboro/OroCRMCallBundle.git
 
-    documentation: git@github.com:orocrm/documentation.git'
+    documentation: git@github.com:orocrm/documentation.git
+
+    # split applications in the end, order matters in this section
+    application/platform: git@github.com:laboro/platform-application.git
+    application/crm: git@github.com:laboro/crm-application.git
+    application/crm-enterprise: git@github.com:laboro/crm-enterprise-application.git
+    application/commerce: git@github.com:laboro/orocommerce-application.git
 
 branches:
+    maintenance/crm-enterprise-1.12:
+        application/crm-enterprise: '1.12'
+        application/crm: '1.10'
+        application/platform: '1.10'
+
+        package/platform: '1.10'
+        package/crm: '1.10'
+        package/crm-enterprise: '1.12'
+        package/dotmailer: '1.10'
+        package/mailchimp: '1.10'
+        package/magento-abandoned-cart: '1.10'
+        package/google-hangout: '1.10'
+        package/serialized-fields: '1.10'
+        package/zendesk: '1.10'
+        package/magento-contact-us: '1.10'
+        package/task: '1.10'
+        package/platform-enterprise: '1.12'
+        package/ldap: '1.12'
+        package/demo-data: '1.12'
+
     maintenance/crm-enterprise-1.11:
         application/crm-enterprise: '1.11'
         application/crm: '1.9'
@@ -93,4 +115,7 @@ branches:
         package/platform-enterprise: 'master'
         package/serialized-fields: 'master'
         package/task: 'master'
+        package/call: 'master'
         package/zendesk: 'master'
+
+        documentation: 'master'
