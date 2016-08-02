@@ -1,24 +1,34 @@
 {
-  "name": "oro/commerce-enterprise-application",
-  "description": "OroCommerce Enterprise Application.",
-  "license": "Commercial",
-  "authors": [
-    {
-      "name": "Oro, Inc",
-      "homepage": "http://www.orocommerce.com"
-    }
-  ],
+  "name": "oro/platform-application",
+  "description": "Oro Platform Empty Application",
+  "homepage": "https://github.com/orocrm/platform-application.git",
+  "license": "MIT",
   "autoload": {
     "psr-0": {
       "": "src/"
     }
   },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/orocrm/TranslationFormBundle.git"
+    },
+    {
+      "type": "path",
+      "url": "../../package/*"
+    },
+    {
+      "type": "composer",
+      "url": "https://packagist.orocrm.com"
+    }
+  ],
   "require": {
-    "php": ">=5.5.9",
-    "oro/commerce-enterprise": "1.x-dev"
+    "oro/platform": "1.x-dev",
+    "oro/platform-serialised-fields": "1.x-dev"
   },
   "require-dev": {
     "sensio/generator-bundle": "2.5.3",
+    "squizlabs/php_codesniffer": "2.3.3",
     "behat/behat": "3.1.0",
     "behat/mink-extension": "^2.0",
     "behat/mink-selenium2-driver": "1.*",
@@ -57,19 +67,5 @@
     "incenteev-parameters": {
       "file": "app/config/parameters.yml"
     }
-  },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://packagist.orocrm.com"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/orocrm/TranslationFormBundle.git"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/nicholas-eden/math.git"
-    }
-  ]
+  }
 }

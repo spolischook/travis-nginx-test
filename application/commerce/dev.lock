@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "13ea0f76be3023b6f74fe2bff7da0b0d",
-    "content-hash": "22c6677a0fc9ad36faa4924ad69a12e9",
+    "hash": "3f2591c684df3c4a47cb22306d646c53",
+    "content-hash": "876befbc38596552e7b77553909a7fe2",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3163,7 +3163,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -4104,7 +4104,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/commerce",
-                "reference": "4522615b1cfd17286d4b94cd5457bbd941793357",
+                "reference": "5bf96d7d212dcb5576eebf6ac12e4a49b5dc94b0",
                 "shasum": null
             },
             "require": {
@@ -4112,7 +4112,7 @@
                 "leafo/scssphp": "0.6.3",
                 "myclabs/deep-copy": "1.5.*",
                 "nicholas-eden/math": "0.6.*",
-                "oro/platform": "dev-master"
+                "oro/platform": "1.x-dev"
             },
             "type": "library",
             "extra": {
@@ -7502,33 +7502,32 @@
         },
         {
             "name": "nelmio/alice",
-            "version": "2.2.2",
+            "version": "2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/alice.git",
-                "reference": "be940d30a450043c7991f2bc6ad19682db98c8cf"
+                "reference": "c8cb3413ab5d1fa76ee84296dafe356b0c703014"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/alice/zipball/be940d30a450043c7991f2bc6ad19682db98c8cf",
-                "reference": "be940d30a450043c7991f2bc6ad19682db98c8cf",
+                "url": "https://api.github.com/repos/nelmio/alice/zipball/c8cb3413ab5d1fa76ee84296dafe356b0c703014",
+                "reference": "c8cb3413ab5d1fa76ee84296dafe356b0c703014",
                 "shasum": ""
             },
             "require": {
-                "fzaninotto/faker": "^1.0",
-                "php": "^5.6||^7.0",
-                "symfony/yaml": "^2.0||^3.0"
+                "fzaninotto/faker": "~1.0",
+                "php": ">=5.4",
+                "symfony/yaml": "~2.0|~3.0"
             },
             "require-dev": {
-                "doctrine/common": "^2.3",
-                "phpunit/phpunit": "^5.0||^4.0",
-                "symfony/phpunit-bridge": "^3.0",
-                "symfony/property-access": "^2.2||^3.0"
+                "doctrine/common": "~2.3",
+                "phpunit/phpunit": "~4.0",
+                "symfony/property-access": "~2.2|~3.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -7548,10 +7547,6 @@
                 {
                     "name": "Tim Shelburne",
                     "email": "shelburt02@gmail.com"
-                },
-                {
-                    "name": "Théo FIDRY",
-                    "email": "theo.fidry@gmail.com"
                 }
             ],
             "description": "Expressive fixtures generator",
@@ -7561,7 +7556,7 @@
                 "orm",
                 "test"
             ],
-            "time": "2016-07-15 19:50:38"
+            "time": "2016-01-07 14:44:47"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -8615,8 +8610,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "oro/commerce": 20,
-        "oro/platform": 20
+        "oro/commerce": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
