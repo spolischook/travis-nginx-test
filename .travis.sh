@@ -132,12 +132,21 @@ case $step in
              if [ ! -z "$SOAP" ]; then
                  TEST_RUNNER_OPTIONS='--stderr --group=soap'
              fi
+             if [ ! -z "$SEGFAULT" ] && [ "$TEST_RUNNER_OPTIONS" != '' ]; then
+                 TEST_RUNNER_OPTIONS="$TEST_RUNNER_OPTIONS,segfault"
+             elif [ ! -z "$SEGFAULT" ]; then
+                 TEST_RUNNER_OPTIONS='--group=segfault'
+             fi
              composer install --optimize-autoloader --no-interaction;
              if [ ! -z "$DB" ]; then
+                SKIP_ASSETS='--skip-assets'
+                if [ ! -z "$WITH_ASSETS" ]; then
+                    SKIP_ASSETS=''
+                fi
                 if [ ! -z "$UPDATE_FROM" ]; then
-                    php app/console oro:platform:update --env test --force --no-interaction --skip-assets --timeout 600;
+                    php app/console oro:platform:update --env test --force --no-interaction ${SKIP_ASSETS} --timeout 600;
                 else
-                    php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --skip-assets --timeout 600;
+                    php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction ${SKIP_ASSETS} --timeout 600;
                 fi
              fi;
              if [ ! -z "$PARALLEL_PROCESSES" ]; then
