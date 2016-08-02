@@ -59,7 +59,7 @@ trait FallbackTrait
     private function getLocalizedFallbackValue(Collection $values, Localization $localization = null)
     {
         $value = $this->getValue($values, $localization);
-        if ($value) {
+        if ($value && $localization) {
             switch ($value->getFallback()) {
                 case FallbackType::PARENT_LOCALIZATION:
                     $value = $this->getLocalizedFallbackValue($values, $localization->getParentLocalization());
