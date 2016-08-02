@@ -109,9 +109,12 @@ class LoadWebsiteDemoData extends AbstractFixture implements ContainerAwareInter
         /** @var ConfigManager $configManager */
         $configManager = $this->container->get('oro_config.website');
         foreach ($this->webSites as $webSite) {
-            $localizationIds = array_map(function ($code) {
-                return $this->getLocalization('localization_' . $code)->getId();
-            }, $webSite['localizations']);
+            $localizationIds = array_map(
+                function ($code) {
+                    return $this->getLocalization('localization_' . $code)->getId();
+                },
+                $webSite['localizations']
+            );
 
             $site = $this->getWebsiteByName($manager, $webSite['name']);
 
