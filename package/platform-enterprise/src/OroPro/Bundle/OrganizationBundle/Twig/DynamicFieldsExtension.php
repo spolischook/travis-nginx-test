@@ -39,7 +39,7 @@ class DynamicFieldsExtension extends BaseDynamicFieldsExtension
         EventDispatcherInterface $dispatcher,
         SecurityFacade $securityFacade
     ) {
-        parent::__construct($configManager, $fieldTypeHelper, $dispatcher);
+        parent::__construct($configManager, $fieldTypeHelper, $dispatcher, $securityFacade);
 
         $this->securityFacade       = $securityFacade;
         $this->organizationProvider = $configManager->getProvider('organization');
