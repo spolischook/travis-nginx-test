@@ -222,7 +222,12 @@ case $step in
                     fi
                 done
              else
-                 php $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --testsuite ${TESTSUITE} ${TEST_RUNNER_OPTIONS};
+                 if [[ "$TESTSUITE" == "behat" ]]; then
+                     vendor/bin/behat --applicable-suites -vvv
+                 else
+                     php $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --testsuite ${TESTSUITE} ${TEST_RUNNER_OPTIONS};
+                 fi
+
              fi
           fi
           if [ ! -z "$CS" ]; then

@@ -37,6 +37,8 @@ matrix:
      - php: 7.0
        env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=4
      - php: 7.0
+       env: APPLICATION="application/crm-enterprise" TESTSUITE="behat" DB=mysql
+     - php: 7.0
        env: APPLICATION="application/platform" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=4
      - php: 7.0
        env: APPLICATION="application/crm" TESTSUITE="functional" DB=mysql PARALLEL_PROCESSES=4
