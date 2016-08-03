@@ -4193,7 +4193,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/magento-abandoned-cart",
-                "reference": "6789803dee831dc309bd37b71cf7de22c1755f4a",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4270,7 +4270,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/dotmailer",
-                "reference": "221625026c7f848039d55bf6441c54b5f5a0f61b",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4307,7 +4307,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm-enterprise",
-                "reference": "f755dbb9399a4bcac2043087434296025c4d14c9",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4384,7 +4384,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/magento-contact-us",
-                "reference": "db2a1cf6901ce134867ff8f2a706b3eb75a9c045",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4421,7 +4421,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/mailchimp",
-                "reference": "17a7ac1a7094e91365cc598c5c498440cafcbc49",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4494,7 +4494,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/ldap",
-                "reference": "c5794d6b19a8e0ef013fd0c4cb6ace3ee72c5f85",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4532,7 +4532,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/task",
-                "reference": "4326c7d3ba88cd3e789e6c1c701741d7e3d9b26a",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4572,7 +4572,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/zendesk",
-                "reference": "ac8d629249c141ee18e3cb28d0b533eec1a56eec",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4874,13 +4874,14 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/platform-enterprise",
-                "reference": "a20fdd9214dba42290e0b70db2688901668bccc2",
+                "reference": "d7c1e80c104e2b250d11429fce7c02f012bddd80",
                 "shasum": null
             },
             "require": {
                 "elasticsearch/elasticsearch": "1.2.2",
                 "oro/platform": "self.version",
-                "php": ">=5.5.9"
+                "php": ">=5.5.9",
+                "php-amqplib/php-amqplib": "^2.6"
             },
             "type": "library",
             "extra": {
@@ -4890,7 +4891,8 @@
             },
             "autoload": {
                 "psr-0": {
-                    "OroPro\\Bundle": "src/"
+                    "OroPro\\Bundle": "src/",
+                    "Oro\\Component": "src/"
                 }
             },
             "license": [
@@ -4912,7 +4914,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/serialized-fields",
-                "reference": "557f7ff89242a1b3915333f378ace924c915239f",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4995,6 +4997,76 @@
                 "random"
             ],
             "time": "2016-04-03 06:00:07"
+        },
+        {
+            "name": "php-amqplib/php-amqplib",
+            "version": "v2.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-amqplib/php-amqplib.git",
+                "reference": "fa2f0d4410a11008cb36b379177291be7ee9e4f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/fa2f0d4410a11008cb36b379177291be7ee9e4f6",
+                "reference": "fa2f0d4410a11008cb36b379177291be7ee9e4f6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "replace": {
+                "videlalvaro/php-amqplib": "self.version"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8",
+                "scrutinizer/ocular": "^1.1",
+                "squizlabs/php_codesniffer": "^2.5"
+            },
+            "suggest": {
+                "ext-sockets": "Use AMQPSocketConnection"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpAmqpLib\\": "PhpAmqpLib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Alvaro Videla",
+                    "role": "Original Maintainer"
+                },
+                {
+                    "name": "John Kelly",
+                    "email": "johnmkelly86@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Raúl Araya",
+                    "email": "nubeiro@gmail.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Formerly videlalvaro/php-amqplib.  This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
+            "homepage": "https://github.com/php-amqplib/php-amqplib/",
+            "keywords": [
+                "message",
+                "queue",
+                "rabbitmq"
+            ],
+            "time": "2016-04-11 14:30:01"
         },
         {
             "name": "phpcollection/phpcollection",
