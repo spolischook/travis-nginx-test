@@ -234,7 +234,7 @@ Create an empty database, such that its values correspond to the
 Step 3. Web Server Configuration
 --------------------------------
 
-**For Apache2**, configure the server as follows:
+**For Apache 2.2**, configure the server as follows:
 
 .. code-block:: apache
     :linenos:
@@ -249,6 +249,26 @@ Step 3. Web Server Configuration
             AllowOverride All
             Order allow,deny
             Allow from All
+        </Directory>
+
+        ErrorLog /var/log/apache2/orocrm_error.log
+        CustomLog /var/log/apache2/orocrm_access.log combined
+    </VirtualHost>
+
+**For Apache 2.4**, configure the server as follows:
+
+.. code-block:: apache
+    :linenos:
+
+    <VirtualHost *:80>
+        ServerName orocrm.example.com
+
+        DirectoryIndex app.php
+        DocumentRoot [$folder_location]}/orocrm/web
+        <Directory  [$folder_location]}/orocrm/web>
+            # enable the .htaccess rewrites
+            AllowOverride All
+            Require all granted
         </Directory>
 
         ErrorLog /var/log/apache2/orocrm_error.log
@@ -518,6 +538,10 @@ If other problems occur, you can see the details in ``app/logs/oro_install.log``
     installation. Use the "--force" option to overwrite an existing installation,
     e.g. during your development process.
 
+.. hint::
+
+    After the installation finished do not forget to run ``php app/console oro:api:doc:cache:clear``
+    to warm-up the API documentation cache. This process may take several minutes.
 
 Customizing the Installation Process
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
