@@ -41,3 +41,5 @@ parameters:
                                        # incremental - the next assets version is the previous version is incremented by one (e.g. 'ver1' -> 'ver2' or '1' -> '2')
 
     enterprise_licence: ~
+    message_queue_transport: 'null'
+    message_queue_transport_config: {}

@@ -23,22 +23,27 @@ class MultiSetDataTransformer implements TransformerInterface
             'dataset' => [],
         ];
 
+        $categorySet = [];
+
         foreach ($data as $lineName => $lineData) {
             $setData = [];
-            $fillCategories = empty($result['categories']['category']);
 
             foreach ($lineData as $lineItem) {
                 $label = $lineItem['label'];
                 $value = $lineItem['value'];
 
-                if ($fillCategories) {
-                    $result['categories']['category'][] = ['label' => $label];
+                if (!isset($categorySet[$label])) {
+                    $categorySet[$label] = true;
                 }
 
                 $setData[] = ['value' => $value];
             }
 
             $result['dataset'][] = ['seriesname' => $lineName, 'data' => $setData];
+        }
+
+        foreach ($categorySet as $label => $value) {
+            $result['categories']['category'][] = ['label' => $label];
         }
 
         return new ArrayData($result);
