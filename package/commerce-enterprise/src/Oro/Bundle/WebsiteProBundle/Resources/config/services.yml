@@ -19,4 +19,4 @@ services:
         class: 'Oro\Bundle\WebsiteProBundle\Provider\WebsiteLocalizationProvider'
         arguments:
             - '@oro_config.manager'
-            - "@oro_locale.provider.localization"
+            - "@oro_locale.manager.localization"

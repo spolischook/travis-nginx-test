@@ -5,7 +5,7 @@ namespace Oro\Bundle\WebsiteProBundle\Provider;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
-use Oro\Bundle\LocaleBundle\Provider\LocalizationProvider;
+use Oro\Bundle\LocaleBundle\Manager\LocalizationManager;
 
 use OroB2B\Bundle\WebsiteBundle\Entity\Website;
 
@@ -14,17 +14,17 @@ class WebsiteLocalizationProvider
     /** @var ConfigManager */
     protected $configManager;
 
-    /** @var LocalizationProvider */
-    protected $provider;
+    /** @var LocalizationManager */
+    protected $localizationManager;
 
     /**
      * @param ConfigManager $configManager
-     * @param LocalizationProvider $provider
+     * @param LocalizationManager $localizationManager
      */
-    public function __construct(ConfigManager $configManager, LocalizationProvider $provider)
+    public function __construct(ConfigManager $configManager, LocalizationManager $localizationManager)
     {
         $this->configManager = $configManager;
-        $this->provider = $provider;
+        $this->localizationManager = $localizationManager;
     }
 
     /**
@@ -35,7 +35,7 @@ class WebsiteLocalizationProvider
     {
         $this->configManager->setScopeId($website->getId());
 
-        $localizations = $this->provider->getLocalizations($this->getEnabledLocalizationIds());
+        $localizations = $this->localizationManager->getLocalizations($this->getEnabledLocalizationIds());
         $defaultLocalization = null;
 
         $defaultLocalizationId = $this->getDefaultLocalizationId();

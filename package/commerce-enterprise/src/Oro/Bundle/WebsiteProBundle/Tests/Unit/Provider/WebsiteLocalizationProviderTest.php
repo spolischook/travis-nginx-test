@@ -5,7 +5,7 @@ namespace Oro\Bundle\WebsiteProBundle\Tests\Unit\Provider;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
-use Oro\Bundle\LocaleBundle\Provider\LocalizationProvider;
+use Oro\Bundle\LocaleBundle\Manager\LocalizationManager;
 use Oro\Bundle\WebsiteProBundle\Provider\WebsiteLocalizationProvider;
 
 use Oro\Component\Testing\Unit\EntityTrait;
@@ -19,8 +19,8 @@ class WebsiteLocalizationProviderTest extends \PHPUnit_Framework_TestCase
     /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject */
     protected $configManager;
 
-    /** @var LocalizationProvider|\PHPUnit_Framework_MockObject_MockObject */
-    protected $localizationProvider;
+    /** @var LocalizationManager|\PHPUnit_Framework_MockObject_MockObject */
+    protected $localizationManager;
 
     /** @var WebsiteLocalizationProvider */
     protected $provider;
@@ -29,16 +29,16 @@ class WebsiteLocalizationProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->configManager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
 
-        $this->localizationProvider = $this->getMockBuilder(LocalizationProvider::class)
+        $this->localizationManager = $this->getMockBuilder(LocalizationManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->provider = new WebsiteLocalizationProvider($this->configManager, $this->localizationProvider);
+        $this->provider = new WebsiteLocalizationProvider($this->configManager, $this->localizationManager);
     }
 
     protected function tearDown()
     {
-        unset($this->provider, $this->configManager, $this->localizationProvider);
+        unset($this->provider, $this->configManager, $this->localizationManager);
     }
 
     public function testGetWebsiteLocalizations()
@@ -65,7 +65,7 @@ class WebsiteLocalizationProviderTest extends \PHPUnit_Framework_TestCase
             ->willReturn(200);
         $this->configManager->expects($this->at(3))->method('setScopeId')->with(null);
 
-        $this->localizationProvider->expects($this->once())
+        $this->localizationManager->expects($this->once())
             ->method('getLocalizations')
             ->with($ids)
             ->willReturn($enabledLocalizations);
