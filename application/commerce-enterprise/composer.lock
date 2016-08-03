@@ -4392,7 +4392,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/commerce-enterprise",
-                "reference": "95859fb2a66259ca2459e68a10323b995eb75d4e",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4579,7 +4579,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/platform",
-                "reference": "5b22330ac0efb9284cb075c556c3b6fc49b2fa6e",
+                "reference": null,
                 "shasum": null
             },
             "require": {
@@ -4684,7 +4684,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/platform-enterprise",
-                "reference": null,
+                "reference": "d7c1e80c104e2b250d11429fce7c02f012bddd80",
                 "shasum": null
             },
             "require": {
