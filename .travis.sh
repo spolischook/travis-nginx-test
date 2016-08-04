@@ -145,6 +145,10 @@ case $step in
                 fi
                 if [ ! -z "$UPDATE_FROM" ]; then
                     php app/console oro:platform:update --env test --force --no-interaction ${SKIP_ASSETS} --timeout 600;
+                elif [[ "$TESTSUITE" == "behat" ]]; then
+                    php app/console oro:install --env=prod --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --application-url=http://127.0.0.1:8000/app.php --timeout 600;
+                    app/console server:start --env=prod --docroot=./web
+                    sed -i "s/base_url:.*$/base_url: 'http:\/\/127.0.0.1:8000\/app.php'/g" behat.yml.dist
                 else
                     php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction ${SKIP_ASSETS} --timeout 600;
                 fi
