@@ -4,11 +4,12 @@ namespace Oro\Bundle\AccountProBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Types\Type;
 
-use OroB2B\Bundle\AccountBundle\Entity\AccountUser;
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\MigrationBundle\Migration\ArrayLogger;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
+
+use OroB2B\Bundle\AccountBundle\Entity\AccountUser;
 
 class UpdateSharePermissionGroupNames extends ParametrizedMigrationQuery
 {
