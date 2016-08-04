@@ -75,21 +75,21 @@ class AddInManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             [
                 '1.2.3' => [
-                    'name' => 'OroCRMOutlookAddIn_1.2.3.exe',
-                    'url'  => 'fixtures/OroCRMOutlookAddIn_1.2.3.exe'
+                    'name' => 'OroCRMOutlookAddIn_1.2.3.msi',
+                    'url'  => 'fixtures/OroCRMOutlookAddIn_1.2.3.msi'
                 ]
             ],
             $addInManager->getFiles()
         );
         $this->assertEquals(
             [
-                'name' => 'OroCRMOutlookAddIn_1.2.3.exe',
-                'url'  => 'fixtures/OroCRMOutlookAddIn_1.2.3.exe'
+                'name' => 'OroCRMOutlookAddIn_1.2.3.msi',
+                'url'  => 'fixtures/OroCRMOutlookAddIn_1.2.3.msi'
             ],
             $addInManager->getFile('1.2.3')
         );
         $this->assertEquals(
-            ['OroCRMOutlookAddIn_1.2.3.exe' => 'fixtures/OroCRMOutlookAddIn_1.2.3.exe'],
+            ['OroCRMOutlookAddIn_1.2.3.msi' => 'fixtures/OroCRMOutlookAddIn_1.2.3.msi'],
             $addInManager->getBinaries()
         );
     }
@@ -106,17 +106,17 @@ class AddInManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             [
                 '2.0'       => [
-                    'name'    => 'OroCRMOutlookAddIn_2.0.exe',
-                    'url'     => 'fixtures/OroCRMOutlookAddIn_2.0.exe',
+                    'name'    => 'OroCRMOutlookAddIn_2.0.msi',
+                    'url'     => 'fixtures/OroCRMOutlookAddIn_2.0.msi',
                     'doc_url' => 'fixtures/OroCRMOutlookAddIn_2.0.md'
                 ],
                 '2.0-beta1' => [
-                    'name' => 'OroCRMOutlookAddIn_2.0-beta1.exe',
-                    'url'  => 'fixtures/OroCRMOutlookAddIn_2.0-beta1.exe'
+                    'name' => 'OroCRMOutlookAddIn_2.0-beta1.msi',
+                    'url'  => 'fixtures/OroCRMOutlookAddIn_2.0-beta1.msi'
                 ],
                 '1.2.3'     => [
-                    'name'    => 'OroCRMOutlookAddIn_1.2.3.exe',
-                    'url'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.exe',
+                    'name'    => 'OroCRMOutlookAddIn_1.2.3.msi',
+                    'url'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.msi',
                     'doc_url' => 'fixtures/OroCRMOutlookAddIn_1.2.3.md'
                 ],
             ],
@@ -124,16 +124,16 @@ class AddInManagerTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(
             [
-                'name' => 'OroCRMOutlookAddIn_2.0-beta1.exe',
-                'url'  => 'fixtures/OroCRMOutlookAddIn_2.0-beta1.exe'
+                'name' => 'OroCRMOutlookAddIn_2.0-beta1.msi',
+                'url'  => 'fixtures/OroCRMOutlookAddIn_2.0-beta1.msi'
             ],
             $addInManager->getFile('2.0-beta1')
         );
         $this->assertEquals(
             [
-                'OroCRMOutlookAddIn_2.0.exe'       => 'fixtures/OroCRMOutlookAddIn_2.0.exe',
-                'OroCRMOutlookAddIn_2.0-beta1.exe' => 'fixtures/OroCRMOutlookAddIn_2.0-beta1.exe',
-                'OroCRMOutlookAddIn_1.2.3.exe'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.exe'
+                'OroCRMOutlookAddIn_2.0.msi'       => 'fixtures/OroCRMOutlookAddIn_2.0.msi',
+                'OroCRMOutlookAddIn_2.0-beta1.msi' => 'fixtures/OroCRMOutlookAddIn_2.0-beta1.msi',
+                'OroCRMOutlookAddIn_1.2.3.msi'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.msi'
             ],
             $addInManager->getBinaries()
         );
@@ -147,17 +147,17 @@ class AddInManagerTest extends \PHPUnit_Framework_TestCase
             'min_supported_version' => '1.5',
             'files'                 => [
                 '2.0'       => [
-                    'name'    => 'OroCRMOutlookAddIn_2.0.exe',
-                    'url'     => 'fixtures/OroCRMOutlookAddIn_2.0.exe',
+                    'name'    => 'OroCRMOutlookAddIn_2.0.msi',
+                    'url'     => 'fixtures/OroCRMOutlookAddIn_2.0.msi',
                     'doc_url' => 'fixtures/OroCRMOutlookAddIn_2.0.md'
                 ],
                 '2.0-beta1' => [
-                    'name' => 'OroCRMOutlookAddIn_2.0-beta1.exe',
-                    'url'  => 'fixtures/OroCRMOutlookAddIn_2.0-beta1.exe'
+                    'name' => 'OroCRMOutlookAddIn_2.0-beta1.msi',
+                    'url'  => 'fixtures/OroCRMOutlookAddIn_2.0-beta1.msi'
                 ],
                 '1.2.3'     => [
-                    'name'    => 'OroCRMOutlookAddIn_1.2.3.exe',
-                    'url'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.exe',
+                    'name'    => 'OroCRMOutlookAddIn_1.2.3.msi',
+                    'url'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.msi',
                     'doc_url' => 'fixtures/OroCRMOutlookAddIn_1.2.3.md'
                 ],
             ]
@@ -175,16 +175,16 @@ class AddInManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1.5', $addInManager->getMinSupportedVersion());
         $this->assertEquals(
             [
-                'name'    => 'OroCRMOutlookAddIn_1.2.3.exe',
-                'url'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.exe',
+                'name'    => 'OroCRMOutlookAddIn_1.2.3.msi',
+                'url'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.msi',
                 'doc_url' => 'fixtures/OroCRMOutlookAddIn_1.2.3.md'
             ],
             $addInManager->getFile('1.2.3')
         );
         $this->assertEquals(
             [
-                'name'    => 'OroCRMOutlookAddIn_2.0.exe',
-                'url'     => 'fixtures/OroCRMOutlookAddIn_2.0.exe',
+                'name'    => 'OroCRMOutlookAddIn_2.0.msi',
+                'url'     => 'fixtures/OroCRMOutlookAddIn_2.0.msi',
                 'doc_url' => 'fixtures/OroCRMOutlookAddIn_2.0.md'
             ],
             $addInManager->getFile('2.0')
@@ -199,17 +199,17 @@ class AddInManagerTest extends \PHPUnit_Framework_TestCase
             'min_supported_version' => '1.5',
             'files'                 => [
                 '2.0'       => [
-                    'name'    => 'OroCRMOutlookAddIn_2.0.exe',
-                    'url'     => 'fixtures/OroCRMOutlookAddIn_2.0.exe',
+                    'name'    => 'OroCRMOutlookAddIn_2.0.msi',
+                    'url'     => 'fixtures/OroCRMOutlookAddIn_2.0.msi',
                     'doc_url' => 'fixtures/OroCRMOutlookAddIn_2.0.md'
                 ],
                 '2.0-beta1' => [
-                    'name' => 'OroCRMOutlookAddIn_2.0-beta1.exe',
-                    'url'  => 'fixtures/OroCRMOutlookAddIn_2.0-beta1.exe'
+                    'name' => 'OroCRMOutlookAddIn_2.0-beta1.msi',
+                    'url'  => 'fixtures/OroCRMOutlookAddIn_2.0-beta1.msi'
                 ],
                 '1.2.3'     => [
-                    'name'    => 'OroCRMOutlookAddIn_1.2.3.exe',
-                    'url'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.exe',
+                    'name'    => 'OroCRMOutlookAddIn_1.2.3.msi',
+                    'url'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.msi',
                     'doc_url' => 'fixtures/OroCRMOutlookAddIn_1.2.3.md'
                 ],
             ]
@@ -228,16 +228,16 @@ class AddInManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1.5', $addInManager->getMinSupportedVersion());
         $this->assertEquals(
             [
-                'name'    => 'OroCRMOutlookAddIn_1.2.3.exe',
-                'url'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.exe',
+                'name'    => 'OroCRMOutlookAddIn_1.2.3.msi',
+                'url'     => 'fixtures/OroCRMOutlookAddIn_1.2.3.msi',
                 'doc_url' => 'fixtures/OroCRMOutlookAddIn_1.2.3.md'
             ],
             $addInManager->getFile('1.2.3')
         );
         $this->assertEquals(
             [
-                'name'    => 'OroCRMOutlookAddIn_2.0.exe',
-                'url'     => 'fixtures/OroCRMOutlookAddIn_2.0.exe',
+                'name'    => 'OroCRMOutlookAddIn_2.0.msi',
+                'url'     => 'fixtures/OroCRMOutlookAddIn_2.0.msi',
                 'doc_url' => 'fixtures/OroCRMOutlookAddIn_2.0.md'
             ],
             $addInManager->getFile('2.0')
