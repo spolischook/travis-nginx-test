@@ -47,8 +47,11 @@ class WebsiteController extends Controller
      */
     public function infoAction(Website $website)
     {
+        $localizationProvider = $this->get('oro_websitepro.provider.website_localization');
+
         return [
             'website' => $website,
+            'localizations' => $localizationProvider->getWebsiteLocalizations($website)
         ];
     }
 
