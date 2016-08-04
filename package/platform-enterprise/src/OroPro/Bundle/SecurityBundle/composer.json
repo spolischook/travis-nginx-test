@@ -6,8 +6,8 @@
     "homepage": "https://github.com/laboro/platform-professional/src/OroPro/Bundle/SecurityBundle",
     "license": "MIT",
     "require": {
-        "php": ">=5.3.3",
-        "symfony/symfony": "2.7.*",
+        "php": ">=5.5.9",
+        "symfony/symfony": "2.8.*",
         "oro/log": "dev-master",
         "oro/cron-bundle": "dev-master"
     },

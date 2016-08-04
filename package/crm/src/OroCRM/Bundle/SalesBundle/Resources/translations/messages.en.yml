@@ -81,7 +81,7 @@ orocrm:
                 no_available_metrics: No available metrics
                 role: Role
                 owner: Owner
-                compareToDate: Compare to Date
+                compareToDate: Compare to Previous Period
                 business_unit: Business Unit
             opportunities_list:
                 title: Opportunities List
@@ -420,6 +420,19 @@ orocrm:
             source.label:            Source
             channel.label:           Channel
             owner.label:             Owner
+
+        system_configuration:
+            groups:
+                opportunity_configuration.title:               Opportunity Configuration
+                opportunity_status_probabilities:
+                    title:          Probabilities
+                    options.label:  Default probabilities for opportunity statuses
+                    options.tooltip: >
+                        Manage opportunity statuses and assign default probabilities to them,
+                        except for system statuses Closed Won and Closed Lost.
+            fields:
+                opportunity_status_probabilities:
+                    probability.tooltip:                       Enter default probability (%) for this status
 
         privilege:
             category.sales_data.label: Sales Data

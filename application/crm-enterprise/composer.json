@@ -8,7 +8,11 @@
             "": "src/"
         }
     },
-   "repositories": {
+    "repositories": {
+        "git": {
+            "type": "git",
+            "url": "https://github.com/orocrm/TranslationFormBundle.git"
+        },
         "package": {
             "type": "path",
             "url": "../../package/*"

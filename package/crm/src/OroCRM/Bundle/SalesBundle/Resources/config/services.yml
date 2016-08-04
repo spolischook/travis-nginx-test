@@ -145,6 +145,19 @@ services:
         - { name: doctrine.event_listener, event: onFlush, method: onFlush }
         - { name: doctrine.event_listener, event: postFlush, method: postFlush }
 
+    orocrm_sales.event_listener.default_probability:
+        class: OroCRM\Bundle\SalesBundle\EventListener\DefaultProbabilityListener
+        arguments:
+            - '@oro_config.user'
+            - '@oro_workflow.restriction.manager'
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate, method: preUpdate }
+
+    orocrm_sales.event_listener.config.default_probability:
+        class: OroCRM\Bundle\SalesBundle\EventListener\Config\DefaultProbabilityListener
+        tags:
+            - { name: kernel.event_listener, event: oro_config.get.oro_crm_sales.default_opportunity_probabilities, method: loadConfig }
+
     orocrm_sales.provider.phone.lead:
         class: %orocrm_sales.provider.phone.lead.class%
         tags:
@@ -171,13 +184,18 @@ services:
     orocrm_sales.provider.forecast_of_opportunities:
         class: %orocrm_sales.provider.forecast_of_opportunity.class%
         arguments:
-            - '@doctrine'
             - '@oro_locale.formatter.number'
             - '@oro_locale.formatter.date_time'
-            - '@oro_security.acl_helper'
             - '@translator'
             - '@oro_dashboard.datetime.helper'
             - '@oro_user.dashboard.owner_helper'
+            - '@orocrm_sales.provider.opportunity.forecast'
+            - '@oro_dashboard.widget_config_value.date_range.converter'
+
+    orocrm_sales.provider.probability:
+        class: OroCRM\Bundle\SalesBundle\Provider\ProbabilityProvider
+        arguments:
+            - '@oro_config.user'
 
     orocrm_sales.provider.b2b_statistics:
         class: %orocrm_sales.provider.b2b_statistics.class%
@@ -264,6 +282,11 @@ services:
             - '@oro_dashboard.filter.date_filter_processor'
             - '@oro_user.dashboard.owner_helper'
 
+    orocrm_sales.handler.opportunity_api:
+        class: OroCRM\Bundle\SalesBundle\Handler\OpportunityApiHandler
+        tags:
+            - { name: oro_entity.form.entity_field.handler }
+
     orocrm_sales.b2bcustomer_phone.manager.api:
         class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
@@ -347,3 +370,11 @@ services:
             - '@oro_dashboard.filter.date_filter_processor'
             - '@translator'
             - '@oro_entity_extend.twig.extension.enum'
+
+    orocrm_sales.provider.opportunity.forecast:
+        class: OroCRM\Bundle\SalesBundle\Provider\Opportunity\ForecastProvider
+        arguments:
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+            - '@oro_entity_extend.enum_value_provider'
+            - '@oro_query_designer.query_designer.filter_processor'

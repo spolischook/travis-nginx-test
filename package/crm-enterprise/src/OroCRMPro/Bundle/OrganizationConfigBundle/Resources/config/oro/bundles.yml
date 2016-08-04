@@ -1,0 +1,2 @@
+bundles:
+    - { name: OroCRMPro\Bundle\OrganizationConfigBundle\OroCRMProOrganizationConfigBundle, priority: 60 }
