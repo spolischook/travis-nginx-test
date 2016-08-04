@@ -3,7 +3,6 @@
 namespace OroPro\Bundle\EwsBundle\Sync;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query;
 
 use Oro\Bundle\EmailBundle\Entity\EmailUser;
 use Oro\Bundle\EmailBundle\Model\FolderType;
@@ -13,9 +12,9 @@ use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Sync\AbstractEmailSynchronizationProcessor;
 use Oro\Bundle\EmailBundle\Sync\KnownEmailAddressCheckerInterface;
-use Oro\Bundle\UserBundle\Entity\User;
 
 use OroPro\Bundle\EwsBundle\Connector\Search\SearchQuery;
+use OroPro\Bundle\EwsBundle\Connector\Search\SearchQueryBuilder;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmail;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailFolder;
 use OroPro\Bundle\EwsBundle\Entity\EwsEmailOrigin;
@@ -37,6 +36,9 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
     /** Determines how often "Processed X emails" hint should be added to a log */
     const READ_HINT_COUNT = 500;
+
+    /** Time limit to sync origin in seconds */
+    const MAX_ORIGIN_SYNC_TIME = 30;
 
     /** @var EwsEmailManager */
     protected $manager;
@@ -72,6 +74,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
         // make sure that the entity builder is empty
         $this->emailEntityBuilder->clear();
 
+        $processStartTime = time();
         // iterate through all folders and do a synchronization of emails for each one
         $folders = $this->syncFolders($origin);
         foreach ($folders as $folderInfo) {
@@ -92,15 +95,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
                 // register the current folder in the entity builder
                 $this->emailEntityBuilder->setFolder($folder);
 
-                // build a search query
-                $sqb = $this->manager->getSearchQueryBuilder();
-                if ($origin->getSynchronizedAt() && $folder->getSynchronizedAt()) {
-                    if ($folder->getType() === FolderType::SENT) {
-                        $sqb->sent($folder->getSynchronizedAt());
-                    } else {
-                        $sqb->received($folder->getSynchronizedAt());
-                    }
-                }
+                $sqb = $this->buildSearchQuery($origin, $folder);
 
                 // sync emails using this search query
                 $lastSynchronizedAt = $this->syncEmails($folderInfo, $sqb->get());
@@ -109,6 +104,11 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             // update synchronization date for the current folder
             $folder->setSynchronizedAt($lastSynchronizedAt > $syncStartTime ? $lastSynchronizedAt : $syncStartTime);
             $this->em->flush($folder);
+
+            $processSpentTime = time() - $processStartTime;
+            if ($processSpentTime > self::MAX_ORIGIN_SYNC_TIME) {
+                break;
+            }
         }
     }
 
@@ -675,5 +675,25 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             ->setEwsFolder($ewsFolder);
 
         return $ewsEmail;
+    }
+
+    /**
+     * @param EmailOrigin $origin
+     * @param EmailFolder $folder
+     *
+     * @return SearchQueryBuilder
+     */
+    protected function buildSearchQuery(EmailOrigin $origin, EmailFolder $folder)
+    {
+        $sqb = $this->manager->getSearchQueryBuilder();
+        if ($origin->getSynchronizedAt() && $folder->getSynchronizedAt()) {
+            if ($folder->getType() === FolderType::SENT) {
+                $sqb->sent($folder->getSynchronizedAt());
+            } else {
+                $sqb->received($folder->getSynchronizedAt());
+            }
+        }
+
+        return $sqb;
     }
 }
