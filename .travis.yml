@@ -85,7 +85,7 @@ matrix:
      - php: 7.0
        env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql SOAP=true SEGFAULT=true
      - php: 7.0
-       env: APPLICATION="application/crm-enterprise" TESTSUITE="behat" DB=mysql
+       env: APPLICATION="application/crm-enterprise" TESTSUITE="behat" DB=mysql WITH_ASSETS=true
 
 env:
   global:
