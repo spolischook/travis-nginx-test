@@ -1,0 +1,4 @@
+oro_permissions:
+    SHARE:
+        exclude_entities:
+            - Oro\Bundle\TestFrameworkBundle\Entity\TestActivity
