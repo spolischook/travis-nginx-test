@@ -1,17 +1,32 @@
 <?php
 
-namespace Oro\Bundle\AccountProBundle\Migrations\Schema\v1_0;
+namespace Oro\Bundle\SecurityBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Types\Type;
 
-use OroB2B\Bundle\AccountBundle\Entity\AccountUser;
 use Psr\Log\LoggerInterface;
 
 use Oro\Bundle\MigrationBundle\Migration\ArrayLogger;
 use Oro\Bundle\MigrationBundle\Migration\ParametrizedMigrationQuery;
 
-class UpdateSharePermissionGroupNames extends ParametrizedMigrationQuery
+class RemovePermissionGroupNames extends ParametrizedMigrationQuery
 {
+    /** @var array */
+    protected $permissions;
+
+    /** @var array */
+    protected $removeGroupNames;
+
+    /**
+     * @param array $permissions
+     * @param $removeGroupNames
+     */
+    public function __construct(array $permissions, array $removeGroupNames)
+    {
+        $this->permissions = $permissions;
+        $this->removeGroupNames = $removeGroupNames;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,11 +57,18 @@ class UpdateSharePermissionGroupNames extends ParametrizedMigrationQuery
 
         foreach ($permissions as $permission) {
             $groupNames = $permission['group_names'];
+            $changed = false;
 
-            if (($key = array_search(AccountUser::SECURITY_GROUP, $groupNames, true)) !== false) {
-                unset($groupNames[$key]);
+            foreach ($this->removeGroupNames as $groupName) {
+                if (($key = array_search($groupName, $groupNames, true)) !== false) {
+                    unset($groupNames[$key]);
 
-                $scheduledForUpdates = [
+                    $changed = true;
+                }
+            }
+
+            if ($changed) {
+                $scheduledForUpdates[] = [
                     'id' => $permission['id'],
                     'group_names' => $groupNames
                 ];
@@ -63,9 +85,9 @@ class UpdateSharePermissionGroupNames extends ParametrizedMigrationQuery
      */
     protected function getSharePermissions(LoggerInterface $logger)
     {
-        $sql = 'SELECT id, group_names FROM oro_security_permission WHERE name = :permission_name';
-        $params = ['permission_name' => 'SHARE'];
-        $types = ['permission_name' => Type::STRING];
+        $sql = 'SELECT id, group_names FROM oro_security_permission WHERE name IN (:permission_name)';
+        $params = ['permission_name' => $this->permissions];
+        $types = ['permission_name' => Type::SIMPLE_ARRAY];
 
         $this->logQuery($logger, $sql, $params, $types);
 
