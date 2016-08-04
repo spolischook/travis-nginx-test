@@ -18,7 +18,7 @@
     "require": {
         "php": ">=5.5.9",
         "zendframework/zend-ldap": ">=2.0",
-        "oro/platform": "self.version"
+        "oro/platform": "1.x-dev"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -1,24 +1,42 @@
 {
-  "name": "oro/commerce-enterprise-application",
-  "description": "OroCommerce Enterprise Application.",
+  "name": "oro/crm-enterprise-application",
+  "description": "The OroCRM Enterprise Application",
+  "homepage": "https://github.com/orocrm/crm-enterprise-application.git",
   "license": "Commercial",
-  "authors": [
-    {
-      "name": "Oro, Inc",
-      "homepage": "http://www.orocommerce.com"
-    }
-  ],
   "autoload": {
     "psr-0": {
       "": "src/"
     }
   },
+  "repositories": {
+    "git": {
+      "type": "git",
+      "url": "https://github.com/orocrm/TranslationFormBundle.git"
+    },
+    "package": {
+      "type": "path",
+      "url": "../../package/*"
+    },
+    "composer": {
+      "type": "composer",
+      "url": "https://packagist.orocrm.com"
+    }
+  },
   "require": {
-    "php": ">=5.5.9",
-    "oro/commerce-enterprise": "1.x-dev"
+    "oro/crm-enterprise": "1.x-dev",
+    "oro/platform-serialised-fields": "1.x-dev",
+    "oro/crm-hangouts-call-bundle": "1.x-dev",
+    "oro/crm-abandoned-cart": "1.x-dev",
+    "oro/crm-magento-embedded-contact-us": "1.x-dev",
+    "oro/crm-mail-chimp": "1.x-dev",
+    "oro/crm-dotmailer": "1.x-dev",
+    "oro/crm-zendesk": "1.x-dev",
+    "oro/crm-pro-ldap-bundle": "1.x-dev",
+    "oro/crm-pro-demo-data-bundle": "1.x-dev"
   },
   "require-dev": {
     "sensio/generator-bundle": "2.5.3",
+    "squizlabs/php_codesniffer": "2.3.3",
     "behat/behat": "3.1.0",
     "behat/mink-extension": "^2.0",
     "behat/mink-selenium2-driver": "1.*",
@@ -57,19 +75,5 @@
     "incenteev-parameters": {
       "file": "app/config/parameters.yml"
     }
-  },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://packagist.orocrm.com"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/orocrm/TranslationFormBundle.git"
-    },
-    {
-      "type": "git",
-      "url": "https://github.com/nicholas-eden/math.git"
-    }
-  ]
+  }
 }

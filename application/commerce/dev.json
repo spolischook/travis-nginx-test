@@ -1,7 +1,7 @@
 {
-  "name": "oro/commerce-enterprise-application",
-  "description": "OroCommerce Enterprise Application.",
-  "license": "Commercial",
+  "name": "oro/commerce-application",
+  "description": "OroCommerce - an open-source Business to Business Commerce application.\\This package contains a sample application.",
+  "license": "OSL-3.0",
   "authors": [
     {
       "name": "Oro, Inc",
@@ -15,7 +15,7 @@
   },
   "require": {
     "php": ">=5.5.9",
-    "oro/commerce-enterprise": "1.x-dev"
+    "oro/commerce": "1.x-dev"
   },
   "require-dev": {
     "sensio/generator-bundle": "2.5.3",
@@ -59,6 +59,10 @@
     }
   },
   "repositories": [
+    {
+      "type": "path",
+      "url": "../../package/*"
+    },
     {
       "type": "composer",
       "url": "https://packagist.orocrm.com"
