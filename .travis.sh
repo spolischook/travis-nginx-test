@@ -150,6 +150,7 @@ case $step in
                     php app/console oro:install --env=prod --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --application-url=http://127.0.0.1:8000/app.php --timeout 600;
                     phantomjs --webdriver=8643 --ignore-ssl-errors=true --disk-cache=true > /dev/null 2>&1 &
                     app/console server:start --env=prod --docroot=./web
+                    export PATH=$HOME/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH; if [ $(phantomjs --version) != '2.1.1' ]; then rm -rf $HOME/travis_phantomjs; mkdir -p $HOME/travis_phantomjs && wget https://assets.membergetmember.co/software/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $HOME/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 && tar -xvf $HOME/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $HOME/travis_phantomjs; fi
                     sed -i "s/base_url:.*$/base_url: 'http:\/\/127.0.0.1:8000\/app.php'/g" behat.yml.dist
                 else
                     php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction ${SKIP_ASSETS} --timeout 600;
@@ -229,6 +230,8 @@ case $step in
                 done
              else
                  if [[ "$TESTSUITE" == "behat" ]]; then
+                     echo "Phantomjs version:";
+                     phantomjs --version
                      vendor/bin/behat --applicable-suites -vvv
                  else
                      php $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --testsuite ${TESTSUITE} ${TEST_RUNNER_OPTIONS};

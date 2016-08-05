@@ -21,6 +21,7 @@ services:
 cache:
   directories:
     - $HOME/.composer/cache/files
+    - $HOME/travis_phantomjs
 
 matrix:
      exclude:
@@ -84,7 +85,7 @@ matrix:
        env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql PARALLEL_PROCESSES=6 WITH_ASSETS=true
      - php: 7.0
        env: APPLICATION="application/crm-enterprise" TESTSUITE="functional" DB=postgresql SOAP=true SEGFAULT=true
-     - php: 7.0
+     - php: 5.5.9
        env: APPLICATION="application/crm-enterprise" TESTSUITE="behat" DB=mysql WITH_ASSETS=true
 
 env:
