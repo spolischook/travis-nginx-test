@@ -94,7 +94,7 @@ In order to send new code from the monolithic repository into an individual down
 run the following command:
 
 ```bash
-php tool/console repository:sync --two-way
+php tool/console repository:sync --subtree-push
 ```
 
 *Note:* please pay attention to the output, produced by the repository:sync command output:
@@ -109,7 +109,7 @@ In order to update a subtree in the monolithic repository with the new code from
 of an invidual downstream repository, run the following command:
 
 ```bash
-php tool/console repository:sync --branch=some-branch
+php tool/console repository:sync --branch=some-branch --subtree-pull
 ```
 
 *Note:* The specified branch will be created in an individual downstream repository if it doesn't exist there yet
@@ -120,7 +120,7 @@ In order to send the new code from the monolithic repository into a specific bra
 repository, run the following command:
 
 ```bash
-php tool/console repository:sync --branch=some-branch --two-way
+php tool/console repository:sync --branch=some-branch --subtree-push
 ```
 
 *Note:* The specified branch will be created in an individual downstream repository if it doesn't exist there yet

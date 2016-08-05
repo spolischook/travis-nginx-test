@@ -69,7 +69,7 @@ git checkout master -- .idea .gitignore .travis.sh .travis.yml travis.php.ini to
 * Commit changes
 * Run branch command, it will import new subtree using branches from upstreams according to configuration
 ```
-php tool/console repository:branch-sync --two-way --force --add-subtree
+php tool/console repository:branch-sync --two-way --force --subtree-add
 ```
 
 * Update composer.json (for application and packages) and add composer.lock to repository (applications only)
