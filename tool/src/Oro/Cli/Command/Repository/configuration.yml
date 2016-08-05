@@ -22,7 +22,7 @@ repositories:
     application/platform: git@github.com:laboro/platform-application.git
     application/crm: git@github.com:laboro/crm-application.git
     application/crm-enterprise: git@github.com:laboro/crm-enterprise-application.git
-    application/commerce: git@github.com:laboro/orocommerce-application.git
+    application/commerce: git@github.com:laboro/commerce-application.git
 
 branches:
     maintenance/crm-enterprise-1.12:
@@ -41,6 +41,7 @@ branches:
         package/zendesk: '1.10'
         package/magento-contact-us: '1.10'
         package/task: '1.10'
+        package/call: '1.10'
         package/platform-enterprise: '1.12'
         package/ldap: '1.12'
         package/demo-data: '1.12'
