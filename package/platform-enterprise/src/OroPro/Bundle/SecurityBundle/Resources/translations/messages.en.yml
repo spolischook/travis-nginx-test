@@ -1,3 +1,5 @@
+SHARE: Share
+
 oro:
     security:
         share_scopes:

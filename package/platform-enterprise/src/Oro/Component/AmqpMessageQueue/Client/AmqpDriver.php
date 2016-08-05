@@ -97,6 +97,36 @@ class AmqpDriver implements DriverInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function delayMessage(QueueInterface $queue, MessageInterface $message, $delaySec)
+    {
+        $queueName = $queue->getQueueName();
+
+        $delayQueue = $this->session->createQueue($queueName.'.delayed');
+        $delayQueue->setDurable(true);
+        $delayQueue->setTable([
+            'x-dead-letter-exchange' => '',
+            'x-dead-letter-routing-key' => $queueName,
+        ]);
+        $this->session->declareQueue($delayQueue);
+
+        $properties = $message->getProperties();
+
+        // The x-death header must be removed because of the bug in RabbitMQ.
+        // It was reported that the bug is fixed since 3.5.4 but I tried with 3.6.1 and the bug still there.
+        // https://github.com/rabbitmq/rabbitmq-server/issues/216
+        unset($properties['x-death']);
+
+        $headers = $message->getHeaders();
+        $headers['expiration'] = (string) ($delaySec * 1000);
+
+        $delayMessage = $this->session->createMessage($message->getBody(), $properties, $headers);
+
+        $this->session->createProducer()->send($delayQueue, $delayMessage);
+    }
+
+    /**
      * @return Config
      */
     public function getConfig()

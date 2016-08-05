@@ -7,6 +7,8 @@ use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
+use OroPro\Bundle\SecurityBundle\Migrations\Schema\LoadBasePermissionsQuery;
+
 class OroProSecurityBundle implements Migration
 {
     /**
@@ -15,6 +17,8 @@ class OroProSecurityBundle implements Migration
     public function up(Schema $schema, QueryBag $queries)
     {
         self::updateAclTables($schema);
+
+        $queries->addPostQuery(new LoadBasePermissionsQuery());
     }
 
     /**
