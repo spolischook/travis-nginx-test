@@ -1,0 +1,2 @@
+bundles:
+    - { name: OroPro\Bundle\CronBundle\OroProCronBundle, priority: -79 }

@@ -24,8 +24,6 @@ parameters:
     oropro_security.form.type.share.class:        OroPro\Bundle\SecurityBundle\Form\Type\ShareType
     oropro_security.form.handler.share.class:     OroPro\Bundle\SecurityBundle\Form\Handler\ShareHandler
     oropro_security.form.model.factory.class:     OroPro\Bundle\SecurityBundle\Form\Model\Factory
-    oropro_security.form.extension.oro_acl_permission_collection.class: OroPro\Bundle\SecurityBundle\Form\Extension\PermissionCollectionTypeExtension
-    oropro_security.form.extension.oro_acl_privilege_collection.class: OroPro\Bundle\SecurityBundle\Form\Extension\PrivilegeCollectionTypeExtension
 
     #placeholders
     oropro_security.placeholder.filter.class: OroPro\Bundle\SecurityBundle\Placeholder\PlaceholderFilter
@@ -129,16 +127,6 @@ services:
         arguments:
             - 'oropro_share_form'
             - 'oropro_share'
-
-    oropro_security.form.extension.oro_acl_permission_collection:
-        class: %oropro_security.form.extension.oro_acl_permission_collection.class%
-        tags:
-            - { name: form.type_extension, alias: oro_acl_permission_collection }
-
-    oropro_security.form.extension.oro_acl_privilege_collection:
-        class: %oropro_security.form.extension.oro_acl_privilege_collection.class%
-        tags:
-            - { name: form.type_extension, alias: oro_acl_collection }
 
     #placeholders
     oropro_security.placeholder.filter:

@@ -4,7 +4,6 @@ namespace Oro\Component\AmqpMessageQueue\Tests\Unit\DependencyInjection;
 use Oro\Component\AmqpMessageQueue\DependencyInjection\AmqpTransportFactory;
 use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpConnection;
 use Oro\Component\MessageQueue\DependencyInjection\TransportFactoryInterface;
-use Oro\Component\MessageQueue\Transport\Null\NullConnection;
 use Oro\Component\Testing\ClassExtensionTrait;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;

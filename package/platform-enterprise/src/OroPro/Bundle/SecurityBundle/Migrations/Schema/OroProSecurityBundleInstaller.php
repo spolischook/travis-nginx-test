@@ -25,5 +25,7 @@ class OroProSecurityBundleInstaller implements Installation
     public function up(Schema $schema, QueryBag $queries)
     {
         OroProSecurityBundle10::updateAclTables($schema);
+
+        $queries->addPostQuery(new LoadBasePermissionsQuery());
     }
 }
