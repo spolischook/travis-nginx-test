@@ -5,6 +5,8 @@ namespace Oro\Bundle\AccountProBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+use Oro\Bundle\AccountProBundle\Datagrid\RolePermissionDatasource;
+
 class OverrideServiceCompilerPass implements CompilerPassInterface
 {
     /**
@@ -12,16 +14,17 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $serviceId = 'orob2b_account.datagrid.datasource.account_role_frontend_permission_datasource';
-        if ($container->hasDefinition($serviceId)) {
-            $definition = $container->getDefinition($serviceId);
-            $definition->setClass('Oro\Bundle\AccountProBundle\Datagrid\RolePermissionDatasource');
-        }
+        $serviceIds = [
+            'orob2b_account.datagrid.datasource.account_role_permission_datasource',
+            'orob2b_account.datagrid.datasource.account_role_frontend_permission_datasource'
+        ];
 
-        $serviceId = 'orob2b_account.datagrid.datasource.account_role_permission_datasource';
-        if ($container->hasDefinition($serviceId)) {
-            $definition = $container->getDefinition($serviceId);
-            $definition->setClass('Oro\Bundle\AccountProBundle\Datagrid\RolePermissionDatasource');
+        foreach ($serviceIds as $serviceId) {
+            if ($container->hasDefinition($serviceId)) {
+                $definition = $container->getDefinition($serviceId);
+                $definition->setClass(RolePermissionDatasource::class);
+                $definition->addMethodCall('addExcludePermission', ['SHARE']);
+            }
         }
     }
 }

@@ -26,10 +26,15 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "oro/platform-enterprise": "self.version",
-        "oro/crm": "self.version",
+        "oro/platform-enterprise": "1.x-dev",
+        "oro/crm": "1.x-dev",
         "elasticsearch/elasticsearch": "1.2.2"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
 }

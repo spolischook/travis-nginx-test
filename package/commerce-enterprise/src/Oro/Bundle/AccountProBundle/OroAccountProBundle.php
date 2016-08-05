@@ -19,7 +19,7 @@ class OroAccountProBundle extends Bundle
 
         $container->addCompilerPass(new OverrideServiceCompilerPass());
     }
-    
+
     /**
      * {@inheritDoc}
      */
