@@ -47,6 +47,10 @@ class OverrideServiceCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->method('setClass')
             ->with(RolePermissionDatasource::class)
             ->willReturnSelf();
+        $definition->expects($this->exactly(2))
+            ->method('addMethodCall')
+            ->with('addExcludePermission', ['SHARE'])
+            ->willReturnSelf();
 
         $this->containerBuilder->expects($this->exactly(2))
             ->method('hasDefinition')

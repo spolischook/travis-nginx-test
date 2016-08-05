@@ -8,7 +8,7 @@ use Oro\Bundle\AccountProBundle\DependencyInjection\Compiler\OverrideServiceComp
 use Oro\Bundle\AccountProBundle\DependencyInjection\OroAccountProExtension;
 use Oro\Bundle\AccountProBundle\OroAccountProBundle;
 
-class OroB2BProAccountBundleTest extends \PHPUnit_Framework_TestCase
+class OroAccountProBundleTest extends \PHPUnit_Framework_TestCase
 {
     /** @var OroAccountProBundle */
     protected $bundle;

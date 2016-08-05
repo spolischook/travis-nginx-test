@@ -277,7 +277,7 @@ class AddInManager
     protected function getFileType($fileExtension)
     {
         switch (strtolower($fileExtension)) {
-            case 'exe':
+            case 'msi':
                 return self::FILE_TYPE_BINARY;
             case 'md':
                 return self::FILE_TYPE_DOC;

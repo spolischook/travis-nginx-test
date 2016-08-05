@@ -31,7 +31,7 @@ class EntityAclProExtension extends EntityAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getAccessLevelNames($object)
+    public function getAccessLevelNames($object, $permissionName = null)
     {
         if ($this->getObjectClassName($object) === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             return AccessLevel::getAccessLevelNames(AccessLevel::BASIC_LEVEL);
@@ -50,5 +50,13 @@ class EntityAclProExtension extends EntityAclExtension
         }
 
         return parent::isAccessDeniedByOrganizationContext($object, $securityToken);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getOwnershipPermissions()
+    {
+        return array_merge(parent::getOwnershipPermissions(), ['SHARE']);
     }
 }

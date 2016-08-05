@@ -1,8 +1,11 @@
 <?php
 
+use Oro\Bundle\MessageQueueBundle\DependencyInjection\OroMessageQueueExtension;
+use Oro\Component\AmqpMessageQueue\DependencyInjection\AmqpTransportFactory;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 use Oro\Bundle\DistributionBundle\OroKernel;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class AppKernel extends OroKernel
 {
@@ -22,6 +25,7 @@ class AppKernel extends OroKernel
 
         if ('test' === $this->getEnvironment()) {
             $bundles[] = new Oro\Bundle\TestFrameworkBundle\OroTestFrameworkBundle();
+            $bundles[] = new OroPro\Bundle\TestFrameworkBundle\OroProTestFrameworkBundle();
             $bundles[] = new Oro\Bundle\FrontendTestFrameworkBundle\OroFrontendTestFrameworkBundle();
         }
 
@@ -60,5 +64,17 @@ class AppKernel extends OroKernel
         }
 
         $this->debug = $debug;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareContainer(ContainerBuilder $container)
+    {
+        parent::prepareContainer($container);
+
+        /** @var OroMessageQueueExtension $extension */
+        $extension = $container->getExtension('oro_message_queue');
+        $extension->addTransportFactory(new AmqpTransportFactory());
     }
 }

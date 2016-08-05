@@ -6,7 +6,7 @@ This bundle provides a functionality to work with Microsoft Outlook.
 How to deploy Outlook Add-In
 ----------------------------
 
-The Outlook Add-In installer and corresponding release notes should be located in `src/OroCRMPro/Bundle/OutlookBundle/Resources/public/files` folder. The installer file should have a name that follows next pattern `OroCRMOutlookAddIn_{version}.exe`. If there is a file with release notes it should be located in the same folder and should have a name that follows the next pattern `OroCRMOutlookAddIn_{version}.md`. Also this folder can contains `config.yml` file where you can specify the minimal version of the Outlook Add-In that is supported by the current version of the server. Here is an example of `config.yml`:
+The Outlook Add-In installer and corresponding release notes should be located in `src/OroCRMPro/Bundle/OutlookBundle/Resources/public/files` folder. The installer file should have a name that follows next pattern `OroCRMOutlookAddIn_{version}.msi`. If there is a file with release notes it should be located in the same folder and should have a name that follows the next pattern `OroCRMOutlookAddIn_{version}.md`. Also this folder can contains `config.yml` file where you can specify the minimal version of the Outlook Add-In that is supported by the current version of the server. Here is an example of `config.yml`:
 
 ```yaml
 min_supported_version: '1.5'
@@ -19,7 +19,7 @@ If a new version of Outlook Add-In is deployed together with CRM application the
 But if you need to deploy only the add-in without deploying whole CRM application you need to do the following steps:
 - copy Outlook Add-In installer and corresponding release notes to both `src/OroCRMPro/Bundle/OutlookBundle/Resources/public/files` and `/web/bundles/orocrmprooutlook/files` folders.
 - modify `config.yml` in both of these folders.
-- run `php app/console oro:outlook:cache:clear` CLI command to invalidate the add-n related caches.
+- run `php app/console oro:outlook:cache:clear` CLI command to invalidate the add-in related caches.
 
 Outlook Add-In configuration accessible through REST API
 --------------------------------------------------------
