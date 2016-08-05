@@ -1,0 +1,4 @@
+oro_permissions:
+    SHARE:
+        exclude_entities:
+            - OroB2B\Bundle\WarehouseBundle\Entity\WarehouseInventoryLevel

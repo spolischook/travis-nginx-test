@@ -138,7 +138,7 @@ case $step in
              elif [ ! -z "$SEGFAULT" ]; then
                  TEST_RUNNER_OPTIONS='--group=segfault'
              fi
-             composer install --optimize-autoloader --no-interaction;
+             COMPOSER=dev.json composer install --optimize-autoloader --no-interaction;
              if [ ! -z "$DB" ]; then
                 SKIP_ASSETS='--skip-assets'
                 if [ ! -z "$WITH_ASSETS" ]; then
