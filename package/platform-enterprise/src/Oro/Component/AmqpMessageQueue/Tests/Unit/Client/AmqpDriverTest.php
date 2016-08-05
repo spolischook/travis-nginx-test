@@ -1,6 +1,7 @@
 <?php
 namespace Oro\Component\AmqpMessageQueue\Tests\Unit\Client;
 
+use Oro\Component\AmqpMessageQueue\Transport\Amqp\AmqpMessageProducer;
 use Oro\Component\MessageQueue\Client\MessagePriority;
 use Oro\Component\MessageQueue\Transport\MessageProducerInterface as TransportMessageProducer;
 use Oro\Component\MessageQueue\Client\MessageProducer;
@@ -139,6 +140,147 @@ class AmqpDriverTest extends \PHPUnit_Framework_TestCase
             [MessagePriority::HIGH, 3],
             [MessagePriority::VERY_HIGH, 4],
         ];
+    }
+
+    public function testShouldDeclareDelayedQueueBeforeUsingIt()
+    {
+        $queue = new AmqpQueue('theQueueName');
+
+        $deadMessage = new AmqpMessage();
+
+        $message = new AmqpMessage();
+
+        $sessionMock = $this->createAmqpSessionStub($deadMessage, $this->createAmqpMessageProducer());
+        $sessionMock
+            ->expects($this->once())
+            ->method('declareQueue')
+            ->with($this->isInstanceOf(AmqpQueue::class))
+            ->willReturnCallback(function (AmqpQueue $queue) {
+                $this->assertEquals('theQueueName.delayed', $queue->getQueueName());
+                $this->assertTrue($queue->isDurable());
+                $this->assertFalse($queue->isAutoDelete());
+                $this->assertFalse($queue->isExclusive());
+                $this->assertFalse($queue->isPassive());
+                $this->assertFalse($queue->isNoAck());
+                $this->assertFalse($queue->isNoLocal());
+                $this->assertFalse($queue->isNoWait());
+                $this->assertEquals(
+                    [
+                        'x-dead-letter-exchange' => '',
+                        'x-dead-letter-routing-key' => 'theQueueName',
+                    ],
+                    $queue->getTable()
+                );
+            })
+        ;
+
+        $driver = new AmqpDriver($sessionMock, new Config('', '', '', '', ''));
+        $driver->delayMessage($queue, $message, 12345);
+    }
+
+    public function testShouldTakeEverythingFromRedeliveredMessageAndCreateDelayedOne()
+    {
+        $queue = new AmqpQueue('theQueueName');
+
+        $deadMessage = new AmqpMessage();
+
+        $message = new AmqpMessage();
+        $message->setBody('theMessageBody');
+        $message->setProperties(['aProp' => 'aPropVal']);
+        $message->setHeaders(['aHeader' => 'aHeaderVal']);
+
+        $sessionMock = $this->createAmqpSessionStub($deadMessage, $this->createAmqpMessageProducer());
+        $sessionMock
+            ->expects($this->once())
+            ->method('createMessage')
+            ->with(
+                'theMessageBody',
+                ['aProp' => 'aPropVal'],
+                ['aHeader' => 'aHeaderVal', 'expiration' => '12345000']
+            )
+            ->willReturn($deadMessage)
+        ;
+
+        $driver = new AmqpDriver($sessionMock, new Config('', '', '', '', ''));
+        $driver->delayMessage($queue, $message, 12345);
+    }
+
+    public function testShouldAddExpirationHeaderInMillisecondsAndAsString()
+    {
+        $queue = new AmqpQueue('theQueueName');
+
+        $deadMessage = new AmqpMessage();
+
+        $message = new AmqpMessage();
+        $message->setBody('theMessageBody');
+
+        $sessionMock = $this->createAmqpSessionStub($deadMessage, $this->createAmqpMessageProducer());
+        $sessionMock
+            ->expects($this->once())
+            ->method('createMessage')
+            ->with('theMessageBody', $this->anything(), $this->identicalTo(['expiration' => '12345000']))
+            ->willReturn($deadMessage)
+        ;
+
+        $driver = new AmqpDriver($sessionMock, new Config('', '', '', '', ''));
+        $driver->delayMessage($queue, $message, 12345);
+    }
+
+    public function testShouldIgnoreXDeathPropertyDueToBugInRabbitMQ()
+    {
+        $queue = new AmqpQueue('theQueueName');
+
+        $deadMessage = new AmqpMessage();
+
+        $message = new AmqpMessage();
+        $message->setProperties(['x-death' => 'x-deathVal', 'aProp' => 'aPropVal']);
+        $message->setRedelivered(true);
+
+        $sessionMock = $this->createAmqpSessionStub($deadMessage, $this->createAmqpMessageProducer());
+        $sessionMock
+            ->expects($this->once())
+            ->method('createMessage')
+            ->with($this->anything(), ['aProp' => 'aPropVal'], $this->anything())
+            ->willReturn($deadMessage)
+        ;
+
+        $driver = new AmqpDriver($sessionMock, new Config('', '', '', '', ''));
+        $driver->delayMessage($queue, $message, 12345);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|AmqpSession
+     */
+    protected function createAmqpSessionStub($deadMessage = null, $messageProducer = null)
+    {
+        $sessionMock = $this->getMock(AmqpSession::class, [], [], '', false);
+        $sessionMock
+            ->expects($this->any())
+            ->method('createMessage')
+            ->willReturn($deadMessage)
+        ;
+        $sessionMock
+            ->expects($this->any())
+            ->method('createQueue')
+            ->willReturnCallback(function ($name) {
+                return new AmqpQueue($name);
+            })
+        ;
+        $sessionMock
+            ->expects($this->any())
+            ->method('createProducer')
+            ->willReturn($messageProducer)
+        ;
+
+        return $sessionMock;
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|AmqpMessageProducer
+     */
+    protected function createAmqpMessageProducer()
+    {
+        return $this->getMock(AmqpMessageProducer::class, [], [], '', false);
     }
 
     /**

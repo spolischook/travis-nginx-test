@@ -32,7 +32,7 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "oro/platform": "self.version",
+        "oro/platform": "1.x-dev",
         "elasticsearch/elasticsearch": "1.2.2",
         "php-amqplib/php-amqplib": "^2.6"
     },
