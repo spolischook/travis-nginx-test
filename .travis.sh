@@ -232,7 +232,7 @@ case $step in
                  if [[ "$TESTSUITE" == "behat" ]]; then
                      echo "Phantomjs version:";
                      phantomjs --version
-                     vendor/bin/behat --applicable-suites -vvv
+                     vendor/bin/behat --applicable-suites -vvv -f progress
                  else
                      php $TRAVIS_BUILD_DIR/tool/vendor/bin/phpunit --testsuite ${TESTSUITE} ${TEST_RUNNER_OPTIONS};
                  fi
