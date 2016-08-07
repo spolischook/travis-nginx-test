@@ -7,7 +7,12 @@ default: &default
             base_url: 'http://dev-crm-enterprise.local/'
         Oro\Bundle\TestFrameworkBundle\Behat\ServiceContainer\OroTestFrameworkExtension:
             application_suites:
+                - OroUserBundle
+                - OroCRMBundle
+                - OroNavigationBundle
                 - OroCRMContactBundle
+                - OroCRMAccountBundle
+                - OroCRMTaskBundle
 
 selenium2:
     <<: *default
