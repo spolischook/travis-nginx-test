@@ -73,7 +73,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
 
         // make sure that the entity builder is empty
         $this->emailEntityBuilder->clear();
-
+        
         $processStartTime = time();
         // iterate through all folders and do a synchronization of emails for each one
         $folders = $this->syncFolders($origin);
@@ -104,7 +104,7 @@ class EwsEmailSynchronizationProcessor extends AbstractEmailSynchronizationProce
             // update synchronization date for the current folder
             $folder->setSynchronizedAt($lastSynchronizedAt > $syncStartTime ? $lastSynchronizedAt : $syncStartTime);
             $this->em->flush($folder);
-
+            
             $processSpentTime = time() - $processStartTime;
             if ($processSpentTime > self::MAX_ORIGIN_SYNC_TIME) {
                 break;

@@ -37,7 +37,7 @@ abstract class AbstractSync extends RootCommand
     private $path;
 
     /** @var bool */
-    private $twoWay = false;
+    private $subtreePush = false;
 
     /**
      * {@inheritdoc}
@@ -47,8 +47,8 @@ abstract class AbstractSync extends RootCommand
         $this
             ->addArgument('path', InputArgument::OPTIONAL, 'Path to subtree folder')
             ->addOption(
-                'two-way',
-                't',
+                'subtree-push',
+                null,
                 InputOption::VALUE_NONE,
                 'Whether the synchronization of upstream repositories is needed'
             )
@@ -67,9 +67,9 @@ abstract class AbstractSync extends RootCommand
             )
             ->addUsage('application/crm')
             ->addUsage('package/platform')
-            ->addUsage('package/platform --two-way')
-            ->addUsage('package/platform --branch=1.9')
-            ->addUsage('package/platform --branch=1.9 --two-way --dry-run');
+            ->addUsage('package/platform --subtree-push')
+            ->addUsage('package/platform --branch=1.9 --subtree-pull')
+            ->addUsage('package/platform --branch=1.9 --subtree-push --dry-run');
     }
 
     /**
@@ -84,7 +84,7 @@ abstract class AbstractSync extends RootCommand
         $this->branch = (string)$input->getOption('branch');
         $this->path = (string)$input->getArgument('path');
         $this->dryRun = (bool)$input->getOption('dry-run');
-        $this->twoWay = (bool)$input->getOption('two-way');
+        $this->subtreePush = (bool)$input->getOption('subtree-push');
 
         if ($this->isDryRun()) {
             $this->logger->critical('Actions not performed with --dry-run option');
@@ -114,9 +114,9 @@ abstract class AbstractSync extends RootCommand
     }
 
     /** @return boolean */
-    public function isTwoWay()
+    public function isSubtreePush()
     {
-        return $this->twoWay;
+        return $this->subtreePush;
     }
 
     /**
@@ -163,10 +163,12 @@ abstract class AbstractSync extends RootCommand
 
         if ($this->getPath()) {
             $repositories = array_intersect_key($repositories, array_flip([$this->getPath()]));
+        }
 
-            foreach ($repositories as $prefix => $repository) {
-                $this->logger->notice("{$prefix}: {$repository}");
-            }
+        foreach ($repositories as $prefix => $repository) {
+            $remoteBranch = $this->resolveRemoteBranch($baseBranch, $prefix);
+
+            $this->logger->notice("origin:{$baseBranch} => {$prefix}:{$remoteBranch}");
         }
 
         return $repositories;
@@ -249,32 +251,11 @@ abstract class AbstractSync extends RootCommand
 
         $subtreeBranch = $this->getSubtreeBranch($codePath);
 
-        $lock = str_replace(DIRECTORY_SEPARATOR, '_', $remoteAlias . '_' . $remoteBranch);
-        if (!$this->hasLock($lock)) {
-            $this->execCmd("git subtree split --prefix={$codePath} --branch={$subtreeBranch}");
-            $this->putLock($lock);
-        }
+        $this->execCmd("git subtree split --prefix={$codePath} --branch={$subtreeBranch}");
+
+        $this->fetchLatestDataFromRemoteBranch($repository, $remoteAlias, $remoteBranch);
 
         $this->updateRemote($subtreeBranch, $remoteBranch, $remoteAlias);
-    }
-
-    /**
-     * @param string $lock
-     * @return bool
-     */
-    protected function hasLock($lock)
-    {
-        return file_exists(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $lock . '.lock');
-    }
-
-    /**
-     * @param string $lock
-     */
-    protected function putLock($lock)
-    {
-        $this->logger->info("Lock $lock");
-
-        touch(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $lock . '.lock');
     }
 
     protected function assertGitVersion()
@@ -306,6 +287,10 @@ abstract class AbstractSync extends RootCommand
             $this->doSync($input, $output);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage(), $e->getTrace());
+
+            chdir($currentDir);
+
+            throw $e;
         }
         /* Restore original directory */
         chdir($currentDir);
@@ -339,8 +324,8 @@ abstract class AbstractSync extends RootCommand
             ->setTimeout(0);
 
         $returnCode = $process->run(
-            function ($level, $message) {
-                $this->logger->debug($message);
+            function ($level, $message) use ($cmd) {
+                $this->logger->debug(sprintf('%s > %s', $cmd, $message));
             }
         );
 
@@ -396,8 +381,6 @@ abstract class AbstractSync extends RootCommand
         if (!empty($branches[$baseBranch][$prefix])) {
             $remoteBranch = $branches[$baseBranch][$prefix];
         }
-
-        $this->logger->notice("origin:{$baseBranch} => {$prefix}:{$remoteBranch}");
 
         return $remoteBranch;
     }

@@ -18,8 +18,8 @@ class BranchSync extends Sync
         $this
             ->setName('repository:branch-sync')
             ->addOption(
-                'add-subtree',
-                'add',
+                'subtree-add',
+                null,
                 InputOption::VALUE_NONE,
                 'Add subtree to new branch. In case we need to sync 1.7 to master'
             )
@@ -34,7 +34,7 @@ class BranchSync extends Sync
      */
     protected function doSync(InputInterface $input, OutputInterface $output)
     {
-        $addSubtree = (bool)$input->getOption('add-subtree');
+        $addSubtree = (bool)$input->getOption('subtree-add');
 
         if ($addSubtree) {
             foreach ($this->getApplicableRepositories() as $codePath => $repository) {
