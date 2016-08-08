@@ -147,11 +147,11 @@ case $step in
                 if [ ! -z "$UPDATE_FROM" ]; then
                     php app/console oro:platform:update --env test --force --no-interaction ${SKIP_ASSETS} --timeout 600;
                 elif [[ "$TESTSUITE" == "behat" ]]; then
-                    php app/console oro:install --env=prod --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --application-url=http://127.0.0.1:8000/app.php --timeout 600;
-                    php -S 127.0.0.1:8000 -t web &
+                    php app/console oro:install --env=prod --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction --application-url=http://127.0.0.1:8080/app.php --timeout 600;
+                    bash ../../travis/install-nginx.sh
                     export PATH=$HOME/travis_phantomjs/phantomjs-2.1.1-linux-x86_64/bin:$PATH; if [ $(phantomjs --version) != '2.1.1' ]; then rm -rf $HOME/travis_phantomjs; mkdir -p $HOME/travis_phantomjs && wget https://assets.membergetmember.co/software/phantomjs-2.1.1-linux-x86_64.tar.bz2 -O $HOME/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 && tar -xvf $HOME/travis_phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2 -C $HOME/travis_phantomjs; fi
                     phantomjs --webdriver=8643 --ignore-ssl-errors=true --disk-cache=true > /dev/null 2>&1 &
-                    sed -i "s/base_url:.*$/base_url: 'http:\/\/127.0.0.1:8000\/app.php'/g" behat.yml.dist
+                    sed -i "s/base_url:.*$/base_url: 'http:\/\/127.0.0.1:8080\/app.php'/g" behat.yml.dist
                 else
                     php app/console oro:install --env test --user-name=admin --user-email=admin@example.com --user-firstname=John --user-lastname=Doe --user-password=admin --sample-data=n --organization-name=OroCRM --no-interaction ${SKIP_ASSETS} --timeout 600;
                 fi
