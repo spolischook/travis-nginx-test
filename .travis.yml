@@ -9,6 +9,9 @@ php:
 
 sudo: false
 
+services:
+  - rabbitmq
+
 matrix:
   fast_finish: true
   allow_failures:
@@ -24,9 +27,10 @@ addons:
       - realpath
 
 install:
-#  - composer install
+  - composer install
   - travis/install-nginx.sh
 
 script:
+  - php rabbitmq_test.php
   - curl -vsf 'http://localhost:8080/hello.php' &> /dev/stdout
   - cat /tmp/error.log

@@ -10,6 +10,7 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
-		"lib-curl": "*"
+		"lib-curl": "*",
+		"php-amqplib/php-amqplib": "^2.6"
 	}
 }
