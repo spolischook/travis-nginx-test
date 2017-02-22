@@ -10,4 +10,6 @@ script:
   - echo $TRAVIS_PULL_REQUEST_SHA
   - echo $TRAVIS_PULL_REQUEST_BRANCH
   - echo $TRAVIS_EVENT_TYPE
+  - echo $TRAVIS_PULL_REQUEST_BRANCH
+  - echo $TRAVIS_PULL_REQUEST_SHA
   - php php-semver-checker.phar compare --help
