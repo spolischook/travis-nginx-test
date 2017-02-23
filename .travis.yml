@@ -23,5 +23,5 @@ script:
   - cp -r $BASE_VERSION_DIR $PR_VERSION_DIR
   - cd $BASE_VERSION_DIR
   - git branch base_version $TRAVIS_BASE_COMMIT_SHA
-
   - php php-semver-checker.phar compare --help
+  - php php-semver-checker.phar compare ./ ../$PR_VERSION_DIR
