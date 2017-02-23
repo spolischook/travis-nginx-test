@@ -23,6 +23,8 @@ script:
   - ls -la
   - cd $BASE_VERSION_DIR
   - ls -la
-  - git branch base_version $TRAVIS_BASE_COMMIT_SHA
+  - git checkout $TRAVIS_BASE_COMMIT_SHA
+  - ls -la
+  - cd ../$PR_VERSION_DIR
   - php php-semver-checker.phar compare --help
-  - php php-semver-checker.phar compare ./ ../$PR_VERSION_DIR -vvv
+  - php php-semver-checker.phar compare ./ ../$BASE_VERSION_DIR -vvv
