@@ -8,8 +8,11 @@ sudo: false
 script:
   - pwd
   - echo $TRAVIS_PULL_REQUEST_SHA
+  - TRAVIS_BASE_COMMIT_SHA=$(echo $TRAVIS_COMMIT_RANGE|sed -e "s/\.\.\..*//g")
+  - echo $TRAVIS_BASE_COMMIT_SHA
   - echo $TRAVIS_PULL_REQUEST_BRANCH
   - echo $TRAVIS_EVENT_TYPE
-  - echo $TRAVIS_PULL_REQUEST_BRANCH
-  - echo $TRAVIS_PULL_REQUEST_SHA
+  - echo $TRAVIS_COMMIT_RANGE
+  - echo $TRAVIS_BUILD_DIR
+  - echo $TRAVIS_BRANCH
   - php php-semver-checker.phar compare --help
