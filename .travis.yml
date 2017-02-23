@@ -15,4 +15,13 @@ script:
   - echo $TRAVIS_COMMIT_RANGE
   - echo $TRAVIS_BUILD_DIR
   - echo $TRAVIS_BRANCH
+  - BASE_VERSION_DIR=base_version
+  - PR_VERSION_DIR=pr_version
+  - mkdir $BASE_VERSION_DIR
+  - find . -maxdepth 1 ! -regex '.*/$BASE_VERSION_DIR' ! -regex '.' -exec mv '{}' $BASE_VERSION_DIR \;
+  - ls -la
+  - cp -r $BASE_VERSION_DIR $PR_VERSION_DIR
+  - cd $BASE_VERSION_DIR
+  - git checkout --hard $TRAVIS_BASE_COMMIT_SHA
+
   - php php-semver-checker.phar compare --help
