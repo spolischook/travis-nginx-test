@@ -1,32 +1,30 @@
 language: php
 
 php:
-    - 5.4
-    - 5.5
-    - 5.6
-    - 7.0
-    - hhvm
+    - 7.1
 
 sudo: false
 
-matrix:
-  fast_finish: true
-  allow_failures:
-    - php: hhvm
-
-cache:
-  - apt
-
-addons:
-  apt:
-    packages:
-      - nginx
-      - realpath
-
-install:
-#  - composer install
-  - travis/install-nginx.sh
-
 script:
-  - curl -vsf 'http://localhost:8080/hello.php' &> /dev/stdout
-  - cat /tmp/error.log
+  - pwd
+  - echo $TRAVIS_PULL_REQUEST_SHA
+  - TRAVIS_BASE_COMMIT_SHA=$(echo $TRAVIS_COMMIT_RANGE|sed -e "s/\.\.\..*//g")
+  - echo $TRAVIS_BASE_COMMIT_SHA
+  - echo $TRAVIS_PULL_REQUEST_BRANCH
+  - echo $TRAVIS_EVENT_TYPE
+  - echo $TRAVIS_COMMIT_RANGE
+  - echo $TRAVIS_BUILD_DIR
+  - echo $TRAVIS_BRANCH
+  - BASE_VERSION_DIR=base_version
+  - PR_VERSION_DIR=pr_version
+  - mkdir $BASE_VERSION_DIR
+  - find . -maxdepth 1 ! -regex '.*/$BASE_VERSION_DIR' ! -regex '.' -exec mv '{}' $BASE_VERSION_DIR \;
+  - cp -r $BASE_VERSION_DIR $PR_VERSION_DIR
+  - ls -la
+  - cd $BASE_VERSION_DIR
+  - ls -la
+  - git checkout $TRAVIS_BASE_COMMIT_SHA
+  - ls -la
+  - cd ../$PR_VERSION_DIR
+  - php php-semver-checker.phar compare --help
+  - php php-semver-checker.phar compare ./ ../$BASE_VERSION_DIR -vvv
