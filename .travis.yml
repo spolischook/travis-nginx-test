@@ -28,5 +28,4 @@ install:
   - travis/install-nginx.sh
 
 script:
-  - curl -vsf 'http://localhost:8080/hello.php' &> /dev/stdout
-  - cat /tmp/error.log
+  - echo $TRAVIS_COMMIT_RANGE
